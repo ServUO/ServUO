@@ -49,7 +49,8 @@ namespace Server.Items
 
             if (weapon != null && (weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave))
                 return 70.0;
-            else if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
+
+            if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
                 return 90.0;
 
             return 200.0;
@@ -64,7 +65,8 @@ namespace Server.Items
 
             if (weapon != null && (weapon.PrimaryAbility == this || weapon.PrimaryAbility == Bladeweave))
                 return 30.0;
-            else if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
+
+            if (weapon != null && (weapon.SecondaryAbility == this || weapon.SecondaryAbility == Bladeweave))
                 return 60.0;
 
             return 200.0;
@@ -247,7 +249,7 @@ namespace Server.Items
             return CheckSkills(from) && CheckMana(from, false);
         }
 
-        private static readonly WeaponAbility[] m_Abilities = new WeaponAbility[34]
+        private static readonly WeaponAbility[] m_Abilities =
         {
             null,
             new ArmorIgnore(),
@@ -339,7 +341,7 @@ namespace Server.Items
 
             BaseWeapon weapon = m.Weapon as BaseWeapon;
 
-            return (weapon != null && (weapon.PrimaryAbility == a || weapon.SecondaryAbility == a));
+            return weapon != null && (weapon.PrimaryAbility == a || weapon.SecondaryAbility == a);
         }
 
         public virtual bool ValidatesDuringHit => true;
@@ -440,7 +442,7 @@ namespace Server.Items
 
         private static WeaponAbilityContext GetContext(Mobile m)
         {
-            return (m_PlayersTable[m] as WeaponAbilityContext);
+            return m_PlayersTable[m] as WeaponAbilityContext;
         }
 
         private class WeaponAbilityTimer : Timer

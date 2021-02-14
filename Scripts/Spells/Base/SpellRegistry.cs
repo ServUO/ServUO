@@ -129,7 +129,7 @@ namespace Server.Spells
             return null;
         }
 
-        private static readonly string[] m_CircleNames = new string[]
+        private static readonly string[] m_CircleNames =
         {
             "First",
             "Second",
@@ -144,12 +144,8 @@ namespace Server.Spells
             "Bushido",
             "Ninjitsu",
             "Spellweaving",
-            #region Stygian Abyss
             "Mystic",
-            #endregion
-            #region TOL
             "SkillMasteries"
-            #endregion
         };
 
         public static Spell NewSpell(string name, Mobile caster, Item scroll)

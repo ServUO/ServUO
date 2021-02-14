@@ -10,7 +10,7 @@ namespace Server.Gumps
     {
         private readonly int TextColor = 0x000F;
 
-        public PlayerMobile User { get; set; }
+        public PlayerMobile User { get; }
 
         public BankerGump(PlayerMobile pm)
             : base(150, 150)

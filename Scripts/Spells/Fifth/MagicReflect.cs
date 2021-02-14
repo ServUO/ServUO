@@ -142,25 +142,25 @@ namespace Server.Spells.Fifth
             {
                 var reduce = 0;
 
-                if (spell is MagerySpell)
+                if (spell is MagerySpell magerySpell)
                 {
-                    reduce = (int)(((MagerySpell)spell).Circle + 1) * 10;
+                    reduce = (int)(magerySpell.Circle + 1) * 10;
                 }
-                else if (spell is MysticSpell)
+                else if (spell is MysticSpell mysticSpell)
                 {
-                    reduce = (int)(((MysticSpell)spell).Circle + 1) * 10;
+                    reduce = (int)(mysticSpell.Circle + 1) * 10;
                 }
-                else if (spell is NecromancerSpell)
+                else if (spell is NecromancerSpell necroSpell)
                 {
-                    reduce = (int)((NecromancerSpell)spell).RequiredSkill;
+                    reduce = (int)necroSpell.RequiredSkill;
                 }
-                else if (spell is ArcanistSpell)
+                else if (spell is ArcanistSpell arcanistSpell)
                 {
-                    reduce = (int)((ArcanistSpell)spell).RequiredSkill;
+                    reduce = (int)arcanistSpell.RequiredSkill;
                 }
-                else if (spell is SkillMasterySpell)
+                else if (spell is SkillMasterySpell masterySpell)
                 {
-                    reduce = (int)((SkillMasterySpell)spell).RequiredSkill;
+                    reduce = (int)masterySpell.RequiredSkill;
                 }
 
                 if (reduce > context.ReflectPool)

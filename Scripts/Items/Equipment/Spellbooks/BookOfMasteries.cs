@@ -52,8 +52,8 @@ namespace Server.Items
 
             SimpleContextMenuEntry menu = new SimpleContextMenuEntry(from, 1151948, m =>
                 {
-                    if (m is PlayerMobile && IsChildOf(m.Backpack) && CheckCooldown(m))
-                        BaseGump.SendGump(new MasterySelectionGump(m as PlayerMobile, this));
+                    if (m is PlayerMobile mobile && IsChildOf(mobile.Backpack) && CheckCooldown(mobile))
+                        BaseGump.SendGump(new MasterySelectionGump(mobile, this));
                 });
 
             if (!IsChildOf(from.Backpack) || !CheckCooldown(from))
@@ -95,9 +95,9 @@ namespace Server.Items
         {
             base.AddProperty(list);
 
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                SkillName sk = ((Mobile)RootParent).Skills.CurrentMastery;
+                SkillName sk = mobile.Skills.CurrentMastery;
 
                 if (sk > 0)
                 {
@@ -105,7 +105,7 @@ namespace Server.Items
 
                     if (sk == SkillName.Spellweaving)
                     {
-                        list.Add(1060485, ArcanistSpell.GetMasteryFocusLevel((Mobile)RootParent).ToString()); // strength bonus ~1_val~
+                        list.Add(1060485, ArcanistSpell.GetMasteryFocusLevel(mobile).ToString()); // strength bonus ~1_val~
                     }
                 }
             }

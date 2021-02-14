@@ -80,8 +80,8 @@ namespace Server.Engines.Plants
                         {
                             m_Plant.Movable = true;
 
-                            if (m_Plant is MaginciaPlantItem)
-                                ((MaginciaPlantItem)m_Plant).SetToDecorative = DateTime.Now;
+                            if (m_Plant is MaginciaPlantItem item)
+                                item.SetToDecorative = DateTime.Now;
 
                             if (from.Backpack != null)
                                 from.Backpack.TryDropItem(from, m_Plant, false);

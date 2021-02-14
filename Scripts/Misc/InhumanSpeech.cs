@@ -275,23 +275,12 @@ namespace Server.Misc
                 return m_WispSpeech;
             }
         }
-        public string[] Syllables
-        {
-            get
-            {
-                return m_Syllables;
-            }
-            set
-            {
-                m_Syllables = value;
-            }
-        }
+
+        public string[] Syllables { get => m_Syllables; set => m_Syllables = value; }
+
         public string[] Keywords
         {
-            get
-            {
-                return m_Keywords;
-            }
+            get => m_Keywords;
             set
             {
                 m_Keywords = value;
@@ -300,50 +289,15 @@ namespace Server.Misc
                     m_KeywordHash[m_Keywords[i]] = m_Keywords[i];
             }
         }
-        public string[] Responses
-        {
-            get
-            {
-                return m_Responses;
-            }
-            set
-            {
-                m_Responses = value;
-            }
-        }
-        public int Hue
-        {
-            get
-            {
-                return m_Hue;
-            }
-            set
-            {
-                m_Hue = value;
-            }
-        }
-        public int Sound
-        {
-            get
-            {
-                return m_Sound;
-            }
-            set
-            {
-                m_Sound = value;
-            }
-        }
-        public IHSFlags Flags
-        {
-            get
-            {
-                return m_Flags;
-            }
-            set
-            {
-                m_Flags = value;
-            }
-        }
+
+        public string[] Responses { get => m_Responses; set => m_Responses = value; }
+
+        public int Hue { get => m_Hue; set => m_Hue = value; }
+
+        public int Sound { get => m_Sound; set => m_Sound = value; }
+
+        public IHSFlags Flags { get => m_Flags; set => m_Flags = value; }
+
         public string GetRandomSyllable()
         {
             return m_Syllables[Utility.Random(m_Syllables.Length)];

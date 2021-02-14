@@ -53,7 +53,6 @@ namespace Server.Items
             else if (!((PlayerMobile)from).UseSummoningRite)
             {
                 from.SendLocalizedMessage(1153603); // You must first use the Summoning Rite on a Summoning Tome.
-                return;
             }
             else
             {
@@ -73,10 +72,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is ExodusTomeAltar)
+                if (targeted is ExodusTomeAltar altar)
                 {
-                    ExodusTomeAltar altar = (ExodusTomeAltar)targeted;
-
                     if (altar.CheckParty(altar.Owner, from))
                     {
                         bool SacrificalRitual = altar.Rituals.Find(s => s.RitualMobile == from).Ritual2;
@@ -118,7 +115,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
         {
-            get { return m_Lifespan; }
+            get => m_Lifespan;
             set
             {
                 m_Lifespan = value;
@@ -180,9 +177,9 @@ namespace Server.Items
 
         public virtual void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -205,16 +202,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.Write(m_Lifespan);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             m_Lifespan = reader.ReadInt();
 
             StartTimer();
@@ -244,7 +241,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

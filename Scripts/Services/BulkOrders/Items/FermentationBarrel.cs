@@ -264,11 +264,11 @@ namespace Server.Items
 
         private readonly Type[][] _FruitTypes =
         {
-            new Type[] { typeof(GrapeBunch), typeof(Grapes) },
-            new Type[] { typeof(Apple) },
-            new Type[] { typeof(Peach) },
-            new Type[] { typeof(Pear) },
-            new Type[] { typeof(Plum) }
+            new[] { typeof(GrapeBunch), typeof(Grapes) },
+            new[] { typeof(Apple) },
+            new[] { typeof(Peach) },
+            new[] { typeof(Pear) },
+            new[] { typeof(Plum) }
         };
 
         public override void GetProperties(ObjectPropertyList list)
@@ -341,7 +341,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    m_Mobile.SendGump(new ConfirmFermentationGump(m_Mobile as PlayerMobile, 1157234, 1157240, confirm: _Barrel.StartFermentation)); // Are you sure you wish to start the fermentation process? 
+                    m_Mobile.SendGump(new ConfirmFermentationGump(m_Mobile as PlayerMobile, 1157234, 1157240, _Barrel.StartFermentation)); // Are you sure you wish to start the fermentation process? 
                 }
             }
         }
@@ -411,7 +411,7 @@ namespace Server.Items
             {
                 if (_Barrel.Fermenting)
                 {
-                    m_Mobile.SendGump(new ConfirmFermentationGump(m_Mobile as PlayerMobile, 1157234, 1157235, confirm: _Barrel.DoEmpty)); // Are you sure you wish to end the fermentation process? All progress and materials will be lost!
+                    m_Mobile.SendGump(new ConfirmFermentationGump(m_Mobile as PlayerMobile, 1157234, 1157235, _Barrel.DoEmpty)); // Are you sure you wish to end the fermentation process? All progress and materials will be lost!
                 }
                 else
                 {

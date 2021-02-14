@@ -9,7 +9,7 @@ namespace Server.Items
         private int m_Lifespan;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MagicKey Key { get { return m_Key; } set { m_Key = value; } }
+        public MagicKey Key { get => m_Key; set => m_Key = value; }
 
         public override int LabelNumber => 1113379;   // Puzzle Board
 
@@ -65,9 +65,9 @@ namespace Server.Items
 
         public virtual void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -123,14 +123,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // ver
+            writer.Write(0);
+
             writer.Write(m_Key);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Key = reader.ReadItem() as MagicKey;
 
             m_Timer = Timer.DelayCall(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10), Slice);

@@ -159,7 +159,7 @@ namespace Server.Mobiles
                     {
                         Map map = Map;
 
-                        if (!Alive || map == null || (i > 0 && _BubbleLocs[j].Item1 == Point3D.Zero))
+                        if (!Alive || map == null || i > 0 && _BubbleLocs[j].Item1 == Point3D.Zero)
                             continue;
 
                         Direction d = _Directions[j];
@@ -190,7 +190,7 @@ namespace Server.Mobiles
 
                         foreach (Mobile m in eable)
                         {
-                            if (m != this && CanBeHarmful(m) && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
+                            if (m != this && CanBeHarmful(m) && (m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile))
                             {
                                 hasMobile = true;
 
@@ -232,7 +232,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != this && CanBeHarmful(m) && InLOS(m) && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
+                if (m != this && CanBeHarmful(m) && InLOS(m) && (m is PlayerMobile || m is BaseCreature bc && bc.GetMaster() is PlayerMobile))
                     toget.Add(m);
             }
 
@@ -334,7 +334,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

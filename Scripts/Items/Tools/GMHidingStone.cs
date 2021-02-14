@@ -60,53 +60,17 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.Counselor)]
-        public StoneEffect AppearEffect
-        {
-            get
-            {
-                return mAppearEffect;
-            }
-            set
-            {
-                mAppearEffect = value;
-            }
-        }
+        public StoneEffect AppearEffect { get => mAppearEffect; set => mAppearEffect = value; }
+
         [Hue, CommandProperty(AccessLevel.Counselor)]
-        public int AppearEffectHue
-        {
-            get
-            {
-                return mAppearEffectHue;
-            }
-            set
-            {
-                mAppearEffectHue = value;
-            }
-        }
+        public int AppearEffectHue { get => mAppearEffectHue; set => mAppearEffectHue = value; }
+
         [CommandProperty(AccessLevel.Counselor)]
-        public StoneEffect HideEffect
-        {
-            get
-            {
-                return mHideEffect;
-            }
-            set
-            {
-                mHideEffect = value;
-            }
-        }
+        public StoneEffect HideEffect { get => mHideEffect; set => mHideEffect = value; }
+
         [Hue, CommandProperty(AccessLevel.Counselor)]
-        public int HideEffectHue
-        {
-            get
-            {
-                return mHideEffectHue;
-            }
-            set
-            {
-                mHideEffectHue = value;
-            }
-        }
+        public int HideEffectHue { get => mHideEffectHue; set => mHideEffectHue = value; }
+
         public override void OnDoubleClick(Mobile m)
         {
             if (m.IsStaff())
@@ -230,7 +194,7 @@ namespace Server.Items
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y + 1, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y - 1, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y, m.Z), m.Map, 0x3709, 17, effHue, 0);
-                    Timer t = new FireStormTimer(DateTime.UtcNow, m, effHue, 0, 1);
+                    Timer t = new FireStormTimer(m, effHue, 0, 1);
                     t.Start();
                     break;
                 case StoneEffect.FireStorm2: //CEO Using above idea, this one does the firestorm outside->in
@@ -242,7 +206,7 @@ namespace Server.Items
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y - 5, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X + 5, m.Y - 5, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X - 5, m.Y + 5, m.Z), m.Map, 0x3709, 17, effHue, 0);
-                    Timer t1 = new FireStormTimer(DateTime.UtcNow, m, effHue, 5, -1);
+                    Timer t1 = new FireStormTimer(m, effHue, 5, -1);
                     t1.Start();
                     break;
                 case StoneEffect.RedSparkle:
@@ -312,7 +276,7 @@ namespace Server.Items
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y - 5, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X + 5, m.Y - 5, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X - 5, m.Y + 5, m.Z), m.Map, 0x3709, 17, effHue, 0);
-                    Timer t2 = new FireStormTimer(DateTime.UtcNow, m, effHue, 5, -1);
+                    Timer t2 = new FireStormTimer(m, effHue, 5, -1);
                     t2.Start();
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y + 1, m.Z), m.Map, 0x374A, 15);
                     Effects.PlaySound(new Point3D(m.X, m.Y, m.Z), m.Map, 0x1f7);
@@ -351,7 +315,7 @@ namespace Server.Items
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y + 1, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y - 1, m.Z), m.Map, 0x3709, 17, effHue, 0);
                     Effects.SendLocationEffect(new Point3D(m.X, m.Y, m.Z), m.Map, 0x3709, 17, effHue, 0);
-                    Timer t3 = new FireStormTimer(DateTime.UtcNow, m, effHue, 0, 1);
+                    Timer t3 = new FireStormTimer(m, effHue, 0, 1);
                     t3.Start();
                     break;
             }
@@ -440,7 +404,7 @@ namespace Server.Items
             public int ehue;
             public int fstart;
             public int fdir;
-            public FireStormTimer(DateTime time, Mobile from, int hue, int start, int dir)
+            public FireStormTimer(Mobile from, int hue, int start, int dir)
                 : base(TimeSpan.FromSeconds(0.1), TimeSpan.FromSeconds(0.1))
             {
                 Priority = TimerPriority.FiftyMS;

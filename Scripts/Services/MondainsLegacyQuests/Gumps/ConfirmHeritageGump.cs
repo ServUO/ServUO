@@ -22,10 +22,10 @@ namespace Server.Engines.Quests
 
             object message = m_Quester.ConfirmMessage;
 
-            if (message is int)
-                AddHtmlLocalized(15, 15, 210, 75, (int)message, 0x0, false, false);
-            else if (message is string)
-                AddHtml(15, 15, 210, 75, (string)message, false, false);
+            if (message is int i)
+                AddHtmlLocalized(15, 15, 210, 75, i, 0x0, false, false);
+            else if (message is string s)
+                AddHtml(15, 15, 210, 75, s, false, false);
 
             AddButton(160, 95, 0xF7, 0xF8, (int)Buttons.Okay, GumpButtonType.Reply, 0);
             AddButton(90, 95, 0xF2, 0xF1, (int)Buttons.Close, GumpButtonType.Reply, 0);
@@ -34,7 +34,7 @@ namespace Server.Engines.Quests
         private enum Buttons
         {
             Close,
-            Okay,
+            Okay
         }
         public override void OnResponse(Network.NetState state, RelayInfo info)
         {
@@ -57,16 +57,11 @@ namespace Server.Engines.Quests
 
         private void CloseHeritageGump(object args)
         {
-            if (args is Mobile)
+            if (args is Mobile m && HeritageQuester.IsPending(m))
             {
-                Mobile m = (Mobile)args;
+                m.Send(HeritagePacket.Close);
 
-                if (HeritageQuester.IsPending(m))
-                {
-                    m.Send(HeritagePacket.Close);
-
-                    HeritageQuester.RemovePending(m);
-                }
+                HeritageQuester.RemovePending(m);
             }
         }
     }

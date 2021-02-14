@@ -34,7 +34,7 @@ namespace Server.Engines.Khaldun
                 m.SendSound(m.Female ? 0x30B : 0x41A);
 
                 m.CloseGump(typeof(GumshoeItemGump));
-                m.SendGump(new GumshoeItemGump(m, ItemID, Hue, ItemName, Cliloc, null));
+                m.SendGump(new GumshoeItemGump(ItemID, Hue, ItemName, Cliloc, null));
             }
         }
 
@@ -46,15 +46,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -77,15 +75,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -108,15 +104,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -139,15 +133,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -170,15 +162,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -201,15 +191,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

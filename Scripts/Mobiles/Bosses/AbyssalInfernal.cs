@@ -141,8 +141,8 @@ namespace Server.Mobiles
                 if (m == this || !CanBeHarmful(m))
                     continue;
 
-                if (!playersOnly && m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
-                    targets.Add(m);
+                if (!playersOnly && m is BaseCreature creature && (creature.Controlled || creature.Summoned || creature.Team != Team))
+                    targets.Add(creature);
                 else if (m.Player)
                     targets.Add(m);
             }
@@ -157,7 +157,7 @@ namespace Server.Mobiles
             new Point3D(6941, 761, 32),
             new Point3D(7015, 688, 32),
             new Point3D(7043, 751, 32),
-            new Point3D(6999, 798, 32),
+            new Point3D(6999, 798, 32)
         };
 
         public void DoCondemn()
@@ -251,8 +251,10 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && CanBeHarmful(m))
+                if ((m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile) && CanBeHarmful(m))
+                {
                     Timer.DelayCall(TimeSpan.FromSeconds(1.75), new TimerStateCallback(DoDamage_Callback), m);
+                }
             }
 
             eable.Free();
@@ -268,8 +270,8 @@ namespace Server.Mobiles
 
                 if (mount != null)
                 {
-                    if (m is PlayerMobile)
-                        ((PlayerMobile)m).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
+                    if (m is PlayerMobile mobile)
+                        mobile.SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
                     else
                         mount.Rider = null;
                 }
@@ -398,7 +400,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             int count = reader.ReadInt();
 

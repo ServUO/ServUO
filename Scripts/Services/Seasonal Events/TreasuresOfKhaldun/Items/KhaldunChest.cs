@@ -167,7 +167,7 @@ namespace Server.Items
 
         public void DelayedDelete()
         {
-            if (Locked || (m_Timer != null && m_Timer.Running))
+            if (Locked || m_Timer != null && m_Timer.Running)
                 return;
 
             EndTimer();

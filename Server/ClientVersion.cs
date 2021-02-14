@@ -97,7 +97,7 @@ namespace Server
 				return false;
 			}
 
-			var v = obj as ClientVersion;
+			ClientVersion v = obj as ClientVersion;
 
 			if (v == null)
 			{
@@ -110,7 +110,7 @@ namespace Server
 
 		private string _ToStringImpl()
 		{
-			var builder = new StringBuilder(16);
+			StringBuilder builder = new StringBuilder(16);
 
 			builder.Append(m_Major);
 			builder.Append('.');
@@ -153,11 +153,11 @@ namespace Server
 			{
 				fmt = fmt.ToLower();
 
-				var br1 = fmt.IndexOf('.');
-				var br2 = fmt.IndexOf('.', br1 + 1);
+				int br1 = fmt.IndexOf('.');
+				int br2 = fmt.IndexOf('.', br1 + 1);
 
-				var br3 = br2 + 1;
-				while (br3 < fmt.Length && Char.IsDigit(fmt, br3))
+				int br3 = br2 + 1;
+				while (br3 < fmt.Length && char.IsDigit(fmt, br3))
 				{
 					br3++;
 				}
@@ -170,7 +170,7 @@ namespace Server
 				{
 					if (m_Major <= 5 && m_Minor <= 0 && m_Revision <= 6) //Anything before 5.0.7
 					{
-						if (!Char.IsWhiteSpace(fmt, br3))
+						if (!char.IsWhiteSpace(fmt, br3))
 						{
 							m_Patch = fmt[br3] - 'a' + 1;
 						}
@@ -216,7 +216,7 @@ namespace Server
 				return 1;
 			}
 
-			var o = obj as ClientVersion;
+			ClientVersion o = obj as ClientVersion;
 
 			if (o == null)
 			{
@@ -227,39 +227,44 @@ namespace Server
 			{
 				return 1;
 			}
-			else if (m_Major < o.m_Major)
-			{
-				return -1;
-			}
-			else if (m_Minor > o.m_Minor)
-			{
-				return 1;
-			}
-			else if (m_Minor < o.m_Minor)
-			{
-				return -1;
-			}
-			else if (m_Revision > o.m_Revision)
-			{
-				return 1;
-			}
-			else if (m_Revision < o.m_Revision)
-			{
-				return -1;
-			}
-			else if (m_Patch > o.m_Patch)
-			{
-				return 1;
-			}
-			else if (m_Patch < o.m_Patch)
-			{
-				return -1;
-			}
-			else
-			{
-				return 0;
-			}
-		}
+
+            if (m_Major < o.m_Major)
+            {
+                return -1;
+            }
+
+            if (m_Minor > o.m_Minor)
+            {
+                return 1;
+            }
+
+            if (m_Minor < o.m_Minor)
+            {
+                return -1;
+            }
+
+            if (m_Revision > o.m_Revision)
+            {
+                return 1;
+            }
+
+            if (m_Revision < o.m_Revision)
+            {
+                return -1;
+            }
+
+            if (m_Patch > o.m_Patch)
+            {
+                return 1;
+            }
+
+            if (m_Patch < o.m_Patch)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
 
 		public static bool IsNull(object x)
 		{
@@ -281,8 +286,8 @@ namespace Server
 				return 1;
 			}
 
-			var a = x as ClientVersion;
-			var b = y as ClientVersion;
+			ClientVersion a = x as ClientVersion;
+			ClientVersion b = y as ClientVersion;
 
 			if (IsNull(a) || IsNull(b))
 			{

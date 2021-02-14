@@ -1,4 +1,4 @@
-﻿using Server.Network;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -8,7 +8,6 @@ namespace Server.Items
 
         [Constructable]
         public NictitatingLens()
-            : base()
         {
             Hue = 1916;
             Weight = 2.0;
@@ -52,7 +51,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -62,7 +61,6 @@ namespace Server.Items
 
         [Constructable]
         public GargishNictitatingLens()
-            : base()
         {
             Hue = 1916;
             Weight = 2.0;
@@ -105,7 +103,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -5,13 +5,13 @@ namespace Server.Gumps
 {
     public class ConfirmCallbackGump : BaseGump
     {
-        public Action<Mobile, object> ConfirmCallback { get; set; }
-        public Action<Mobile, object> CloseCallback { get; set; }
+        public Action<Mobile, object> ConfirmCallback { get; }
+        public Action<Mobile, object> CloseCallback { get; }
 
-        public TextDefinition Title { get; set; }
-        public TextDefinition Body { get; set; }
-        public object State { get; set; }
-        public string Arguments { get; set; }
+        public TextDefinition Title { get; }
+        public TextDefinition Body { get; }
+        public object State { get; }
+        public string Arguments { get; }
 
         public int ConfirmLocalization { get; }
         public int CloseLocalization { get; }
@@ -128,13 +128,13 @@ namespace Server.Gumps
 
     public class GenericConfirmCallbackGump<T> : BaseGump
     {
-        public Action<Mobile, T> ConfirmCallback { get; set; }
-        public Action<Mobile, T> CloseCallback { get; set; }
+        public Action<Mobile, T> ConfirmCallback { get; }
+        public Action<Mobile, T> CloseCallback { get; }
 
-        public TextDefinition Title { get; set; }
-        public TextDefinition Body { get; set; }
-        public T State { get; set; }
-        public string Arguments { get; set; }
+        public TextDefinition Title { get; }
+        public TextDefinition Body { get; }
+        public T State { get; }
+        public string Arguments { get; }
 
         public int ConfirmLocalization { get; }
         public int CloseLocalization { get; }

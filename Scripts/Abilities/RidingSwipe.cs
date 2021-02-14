@@ -55,8 +55,8 @@ namespace Server.Items
 
                 Items.Dismount.DoDismount(attacker, defender, mount, 10, type);
 
-                if (mount is Mobile)
-                    AOS.Damage((Mobile)mount, attacker, amount, 100, 0, 0, 0, 0);
+                if (mount is Mobile mobile)
+                    AOS.Damage(mobile, attacker, amount, 100, 0, 0, 0, 0);
 
                 defender.PlaySound(0x140);
                 defender.FixedParticles(0x3728, 10, 15, 9955, EffectLayer.Waist);

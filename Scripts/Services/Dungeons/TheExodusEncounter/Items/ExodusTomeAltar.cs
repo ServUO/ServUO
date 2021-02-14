@@ -24,14 +24,11 @@ namespace Server.Items
         private Item m_ExodusAlterAddon;
 
         public List<RitualArray> Rituals => m_Rituals;
-        public Mobile Owner
-        {
-            get { return m_Owner; }
-            set { m_Owner = value; }
-        }
+
+        public Mobile Owner { get => m_Owner; set => m_Owner = value; }
 
         [Constructable]
-        public ExodusTomeAltar(Mobile from)
+        public ExodusTomeAltar()
             : base(0x1C11)
         {
             Hue = 1943;
@@ -40,6 +37,7 @@ namespace Server.Items
             Weight = 0.0;
 
             m_Rituals = new List<RitualArray>();
+
             m_ExodusAlterAddon = new ExodusAlterAddon
             {
                 Movable = false
@@ -88,7 +86,7 @@ namespace Server.Items
         {
             if (!from.HasGump(typeof(AltarGump)))
             {
-                from.SendGump(new AltarGump(from));
+                from.SendGump(new AltarGump());
             }
         }
 
@@ -137,7 +135,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_ExodusAlterAddon = reader.ReadItem();
         }
@@ -166,7 +164,7 @@ namespace Server.Items
 
             if (party != null)
             {
-                int MemberRange = party.Members.Where(x => !from.InRange(x.Mobile, 5)).Count();
+                int MemberRange = party.Members.Count(x => !from.InRange(x.Mobile, 5));
 
                 if (MemberRange != 0)
                 {
@@ -180,7 +178,7 @@ namespace Server.Items
                 {
                     robe = info.Mobile.FindItemOnLayer(Layer.OuterTorso) as RobeofRite;
 
-                    if (!m_Rituals.Where(z => z.RitualMobile == info.Mobile && z.Ritual1 && z.Ritual2).Any() || robe == null)
+                    if (!m_Rituals.Any(z => z.RitualMobile == info.Mobile && z.Ritual1 && z.Ritual2) || robe == null)
                     {
                         from.SendLocalizedMessage(1153609, info.Mobile.Name); // ~1_PLAYER~ has not fulfilled all the requirements of the Ritual! You cannot commence until they do.
                         return;
@@ -247,11 +245,11 @@ namespace Server.Items
 
             if (!from.HasGump(typeof(AltarGump)))
             {
-                from.SendGump(new AltarGump(from));
+                from.SendGump(new AltarGump());
             }
         }
 
-        public AltarGump(Mobile owner) : base(100, 100)
+        public AltarGump() : base(100, 100)
         {
             Closable = true;
             Disposable = true;
@@ -264,8 +262,6 @@ namespace Server.Items
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

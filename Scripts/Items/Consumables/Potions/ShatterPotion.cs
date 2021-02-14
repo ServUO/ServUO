@@ -157,8 +157,8 @@ namespace Server.Items
 
         private static void EndDelay_Callback(object obj)
         {
-            if (obj is Mobile)
-                EndDelay((Mobile)obj);
+            if (obj is Mobile mobile)
+                EndDelay(mobile);
         }
 
         public static void EndDelay(Mobile m)
@@ -187,10 +187,8 @@ namespace Server.Items
                 if (Potion.Deleted || Potion.Map == Map.Internal)
                     return;
 
-                if (targeted is Mobile)
+                if (targeted is Mobile m)
                 {
-                    Mobile m = targeted as Mobile;
-
                     if (m == null || from.Map == null || !from.CanBeHarmful(m))
                         return;
 

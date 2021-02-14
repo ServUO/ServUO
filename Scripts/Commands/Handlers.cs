@@ -96,12 +96,12 @@ namespace Server.Commands
                 {
                     StringBuilder builder = new StringBuilder();
 
-                    builder.Append(reg.ToString());
+                    builder.Append(reg);
                     reg = reg.Parent;
 
                     while (reg != null)
                     {
-                        builder.Append(" <- " + reg.ToString());
+                        builder.Append(" <- " + reg);
                         reg = reg.Parent;
                     }
 
@@ -120,9 +120,8 @@ namespace Server.Commands
 
         public static void DropHolding_OnTarget(Mobile from, object obj)
         {
-            if (obj is Mobile && ((Mobile)obj).Player)
+            if (obj is Mobile targ && targ.Player)
             {
-                Mobile targ = (Mobile)obj;
                 Item held = targ.Holding;
 
                 if (held == null)
@@ -234,14 +233,13 @@ namespace Server.Commands
 
         public static void GetFollowers_OnTarget(Mobile from, object obj)
         {
-            if (obj is PlayerMobile)
+            if (obj is PlayerMobile mMaster)
             {
-                PlayerMobile master = (PlayerMobile)obj;
-                List<Mobile> pets = master.AllFollowers;
+                List<Mobile> pets = mMaster.AllFollowers;
 
                 if (pets.Count > 0)
                 {
-                    CommandLogging.WriteLine(from, "{0} {1} getting all followers of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(master));
+                    CommandLogging.WriteLine(from, "{0} {1} getting all followers of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(mMaster));
 
                     from.SendMessage("That player has {0} pet{1}.", pets.Count, pets.Count != 1 ? "s" : "");
 
@@ -249,8 +247,8 @@ namespace Server.Commands
                     {
                         Mobile pet = pets[i];
 
-                        if (pet is IMount)
-                            ((IMount)pet).Rider = null; // make sure it's dismounted
+                        if (pet is IMount mount)
+                            mount.Rider = null; // make sure it's dismounted
 
                         pet.MoveToWorld(from.Location, from.Map);
                     }
@@ -260,19 +258,15 @@ namespace Server.Commands
                     from.SendMessage("There were no pets found for that player.");
                 }
             }
-            else if (obj is Mobile && ((Mobile)obj).Player)
+            else if (obj is Mobile master && master.Player)
             {
-                Mobile master = (Mobile)obj;
                 ArrayList pets = new ArrayList();
 
                 foreach (Mobile m in World.Mobiles.Values)
                 {
-                    if (m is BaseCreature)
+                    if (m is BaseCreature bc && bc.Controlled && bc.ControlMaster == master && bc.Summoned && bc.SummonMaster == master)
                     {
-                        BaseCreature bc = (BaseCreature)m;
-
-                        if ((bc.Controlled && bc.ControlMaster == master) || (bc.Summoned && bc.SummonMaster == master))
-                            pets.Add(bc);
+                        pets.Add(bc);
                     }
                 }
 
@@ -286,8 +280,8 @@ namespace Server.Commands
                     {
                         Mobile pet = (Mobile)pets[i];
 
-                        if (pet is IMount)
-                            ((IMount)pet).Rider = null; // make sure it's dismounted
+                        if (pet is IMount mount)
+                            mount.Rider = null; // make sure it's dismounted
 
                         pet.MoveToWorld(from.Location, from.Map);
                     }
@@ -309,7 +303,7 @@ namespace Server.Commands
             List<Mobile> list = new List<Mobile>();
 
             foreach (Mobile m in World.Mobiles.Values)
-                if ((m is Banker) && !(m is BaseCreature))
+                if (m is Banker && !(m is BaseCreature))
                     list.Add(m);
 
             foreach (Mobile m in list)
@@ -322,10 +316,8 @@ namespace Server.Commands
 
                     foreach (Item item in m.GetItemsInRange(0))
                     {
-                        if (item is Spawner)
+                        if (item is Spawner spawner)
                         {
-                            Spawner spawner = (Spawner)item;
-
                             for (int i = 0; !hasBankerSpawner && i < spawner.SpawnObjects.Count; ++i)
                                 hasBankerSpawner = Insensitive.Equals(spawner.SpawnObjects[i].SpawnName, "banker");
 
@@ -405,7 +397,7 @@ namespace Server.Commands
             {
                 string v = list[i].Command;
 
-                if ((sb.Length + 1 + v.Length) >= 256)
+                if (sb.Length + 1 + v.Length >= 256)
                 {
                     m.SendAsciiMessage(0x482, sb.ToString());
                     sb = new StringBuilder();
@@ -597,7 +589,7 @@ namespace Server.Commands
             {
                 Mobile m = item.RootParent as Mobile;
 
-                return (m != null && FixMap(ref map, ref loc, m));
+                return m != null && FixMap(ref map, ref loc, m);
             }
 
             return true;
@@ -611,7 +603,7 @@ namespace Server.Commands
                 loc = m.LogoutLocation;
             }
 
-            return (map != null && map != Map.Internal);
+            return map != null && map != Map.Internal;
         }
 
         [Usage("Go [name | serial | (x y [z]) | (deg min (N | S) deg min (E | W))]")]
@@ -634,26 +626,26 @@ namespace Server.Commands
 
                     IEntity ent = World.FindEntity(ser);
 
-                    if (ent is Item)
+                    if (ent is Item item)
                     {
-                        Item item = (Item)ent;
-
                         Map map = item.Map;
                         Point3D loc = item.GetWorldLocation();
 
                         Mobile owner = item.RootParent as Mobile;
 
-                        if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(from, owner) /* !from.CanSee( owner )*/)
+                        if (owner != null && owner.Map != null && owner.Map != Map.Internal && !BaseCommand.IsAccessible(from, owner))
                         {
                             from.SendMessage("You can not go to what you can not see.");
                             return;
                         }
-                        else if (owner != null && (owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= from.AccessLevel)
+
+                        if (owner != null && (owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= from.AccessLevel)
                         {
                             from.SendMessage("You can not go to what you can not see.");
                             return;
                         }
-                        else if (!FixMap(ref map, ref loc, item))
+
+                        if (!FixMap(ref map, ref loc, item))
                         {
                             from.SendMessage("That is an internal item and you cannot go to it.");
                             return;
@@ -663,26 +655,27 @@ namespace Server.Commands
 
                         return;
                     }
-                    else if (ent is Mobile)
+
+                    if (ent is Mobile mo)
                     {
-                        Mobile m = (Mobile)ent;
+                        Map map = mo.Map;
+                        Point3D loc = mo.Location;
 
-                        Map map = m.Map;
-                        Point3D loc = m.Location;
+                        Mobile owner = mo;
 
-                        Mobile owner = m;
-
-                        if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(from, owner) /* !from.CanSee( owner )*/)
+                        if (owner.Map != null && owner.Map != Map.Internal && !BaseCommand.IsAccessible(from, owner))
                         {
                             from.SendMessage("You can not go to what you can not see.");
                             return;
                         }
-                        else if (owner != null && (owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= from.AccessLevel)
+
+                        if ((owner.Map == null || owner.Map == Map.Internal) && owner.Hidden && owner.AccessLevel >= from.AccessLevel)
                         {
                             from.SendMessage("You can not go to what you can not see.");
                             return;
                         }
-                        else if (!FixMap(ref map, ref loc, m))
+
+                        if (!FixMap(ref map, ref loc, mo))
                         {
                             from.SendMessage("That is an internal mobile and you cannot go to it.");
                             return;
@@ -770,7 +763,7 @@ namespace Server.Commands
                         */
                         int x = int.Parse(e.GetString(0));
                         int y = int.Parse(e.GetString(1));
-                        int z = (e.Length == 3) ? int.Parse(e.GetString(2)) : map.GetAverageZ(x, y);
+                        int z = e.Length == 3 ? int.Parse(e.GetString(2)) : map.GetAverageZ(x, y);
 
                         from.Location = new Point3D(x, y, z);
                     }
@@ -815,8 +808,8 @@ namespace Server.Commands
                     return;
                 }
 
-                if (targeted is Mobile)
-                    from.SendMenu(new EquipMenu(from, (Mobile)targeted, GetEquip((Mobile)targeted)));
+                if (targeted is Mobile mobile)
+                    from.SendMenu(new EquipMenu(from, mobile, GetEquip(mobile)));
             }
 
             private static ItemListEntry[] GetEquip(Mobile m)
@@ -859,7 +852,7 @@ namespace Server.Commands
                     private readonly Mobile m_Mobile;
                     private readonly Item m_Item;
                     public EquipDetailsMenu(Mobile m, Item item)
-                        : base(string.Format("{0}: {1}", item.Layer, item.GetType().Name), new string[] { "Move", "Delete", "Props" })
+                        : base(string.Format("{0}: {1}", item.Layer, item.GetType().Name), new[] { "Move", "Delete", "Props" })
                     {
                         m_Mobile = m;
                         m_Item = item;
@@ -901,17 +894,15 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile m)
                 {
-                    Mobile m = (Mobile)targeted;
-
-                    BankBox box = (m.Player ? m.BankBox : m.FindBankNoCreate());
+                    BankBox box = m.Player ? m.BankBox : m.FindBankNoCreate();
 
                     if (box != null)
                     {
-                        CommandLogging.WriteLine(from, "{0} {1} opening bank box of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(targeted));
+                        CommandLogging.WriteLine(from, "{0} {1} opening bank box of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(m));
 
-                        if (from == targeted)
+                        if (from == m)
                             box.Open();
                         else
                             box.DisplayTo(from);
@@ -933,19 +924,17 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile targ)
                 {
-                    CommandLogging.WriteLine(from, "{0} {1} dismounting {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(targeted));
-
-                    Mobile targ = (Mobile)targeted;
+                    CommandLogging.WriteLine(from, "{0} {1} dismounting {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(targ));
 
                     for (int i = 0; i < targ.Items.Count; ++i)
                     {
                         Item item = targ.Items[i];
 
-                        if (item is IMountItem)
+                        if (item is IMountItem mountItem)
                         {
-                            IMount mount = ((IMountItem)item).Mount;
+                            IMount mount = mountItem.Mount;
 
                             if (mount != null)
                                 mount.Rider = null;
@@ -978,15 +967,10 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile targ && targ.NetState != null)
                 {
-                    Mobile targ = (Mobile)targeted;
-
-                    if (targ.NetState != null)
-                    {
-                        CommandLogging.WriteLine(from, "{0} {1} opening client menu of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(targeted));
-                        from.SendGump(new ClientGump(from, targ.NetState));
-                    }
+                    CommandLogging.WriteLine(from, "{0} {1} opening client menu of {2}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(targ));
+                    from.SendGump(new ClientGump(from, targ.NetState));
                 }
             }
         }
@@ -1000,12 +984,12 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile mobile)
                 {
-                    if (((Mobile)targeted).AccessLevel >= from.AccessLevel && targeted != from)
+                    if (mobile.AccessLevel >= from.AccessLevel && mobile != from)
                         from.SendMessage("You can't do that to someone with higher Accesslevel than you!");
                     else
-                        from.SendGump(new StuckMenu(from, (Mobile)targeted, false));
+                        from.SendGump(new StuckMenu(from, mobile, false));
                 }
             }
         }

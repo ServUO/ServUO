@@ -51,7 +51,7 @@ namespace Server.Items
 
                     if (!plant.IsContract)
                     {
-                        if (plant.ContractTime.Month == DateTime.UtcNow.Month)
+                        if (plant.ContractTime.Month == DateTime.UtcNow.Month && plant.ContractTime.Year == DateTime.UtcNow.Year)
                         {
                             from.SendLocalizedMessage(1155760); // You may do this once every other month.
                             return;

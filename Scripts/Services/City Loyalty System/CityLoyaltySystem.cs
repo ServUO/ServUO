@@ -64,7 +64,7 @@ namespace Server.Engines.CityLoyalty
         Viscount = 0x00000020,
         Earl = 0x00000040,
         Marquis = 0x00000080,
-        Duke = 0x00000100,
+        Duke = 0x00000100
     }
 
     public enum TradeDeal
@@ -80,7 +80,7 @@ namespace Server.Engines.CityLoyalty
         MiningCooperative = 1154052,
         LeagueOfRangers = 1154053,
         GuildOfAssassins = 1154054,
-        WarriorsGuild = 1154055,
+        WarriorsGuild = 1154055
     }
 
     [PropertyObject]
@@ -166,7 +166,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile GovernorElect
         {
-            get { return _GovernorElect; }
+            get => _GovernorElect;
             set
             {
                 if (value != null && Governor != null)
@@ -182,7 +182,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Governor
         {
-            get { return _Governor; }
+            get => _Governor;
             set
             {
                 if (_Governor != null && _Governor != value && _Governor.NetState != null)
@@ -205,7 +205,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public bool PendingGovernor
         {
-            get { return _PendingGovernor; }
+            get => _PendingGovernor;
             set
             {
                 if (value && _GovernorElect != null)
@@ -221,7 +221,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public long Treasury
         {
-            get { return _Treasury; }
+            get => _Treasury;
             set
             {
                 _Treasury = value;
@@ -234,7 +234,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public TradeDeal ActiveTradeDeal
         {
-            get { return _ActiveTradeDeal; }
+            get => _ActiveTradeDeal;
             set
             {
                 _ActiveTradeDeal = value;
@@ -247,7 +247,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public int CompletedTrades
         {
-            get { return _CompletedTrades; }
+            get => _CompletedTrades;
             set
             {
                 _CompletedTrades = value;
@@ -257,7 +257,7 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        private Dictionary<Mobile, DateTime> CitizenWait { get; set; }
+        private Dictionary<Mobile, DateTime> CitizenWait { get; }
 
         public CityLoyaltySystem(City city)
         {
@@ -375,13 +375,13 @@ namespace Server.Engines.CityLoyalty
 
             if (AwakeingEventActive)
             {
-                foreach (CityLoyaltySystem sys in Cities.Where(s => s.City != this.City))
+                foreach (CityLoyaltySystem sys in Cities.Where(s => s.City != City))
                 {
                     CityLoyaltyEntry e = sys.GetPlayerEntry<CityLoyaltyEntry>(from, true);
 
                     if (e.Love > 10)
                     {
-                        double convert = (double)e.Love / 75.0;
+                        double convert = e.Love / 75.0;
 
                         if (convert > 0.0)
                         {
@@ -417,11 +417,13 @@ namespace Server.Engines.CityLoyalty
                 {
                     return GetHateRating(hate);
                 }
-                else if (neut > 0 && neut > love && neut > hate)
+
+                if (neut > 0 && neut > love && neut > hate)
                 {
                     return GetNeutralRating(neut);
                 }
-                else if (love > 0)
+
+                if (love > 0)
                 {
                     return GetLoveRating(love);
                 }
@@ -672,17 +674,17 @@ namespace Server.Engines.CityLoyalty
 
             CommandSystem.Register("SystemInfo", AccessLevel.Administrator, e =>
             {
-                if (e.Mobile is PlayerMobile)
+                if (e.Mobile is PlayerMobile mobile)
                 {
-                    e.Mobile.CloseGump(typeof(SystemInfoGump));
-                    Gumps.BaseGump.SendGump(new SystemInfoGump((PlayerMobile)e.Mobile));
+                    mobile.CloseGump(typeof(SystemInfoGump));
+                    Gumps.BaseGump.SendGump(new SystemInfoGump(mobile));
                 }
             });
         }
 
         private static DateTime _NextAtrophy;
 
-        public static List<CityLoyaltySystem> Cities { get; private set; } = new List<CityLoyaltySystem>();
+        public static List<CityLoyaltySystem> Cities { get; } = new List<CityLoyaltySystem>();
 
         public static bool HasTradeDeal(Mobile m, TradeDeal deal)
         {
@@ -1061,42 +1063,42 @@ namespace Server.Engines.CityLoyalty
 
         public static int[][] _LoveHatePointsTable =
         {
-            new int[] { 250 }, 								// Tier 1
-			new int[] { 500, 1000 }, 						// Tier 2
-			new int[] { 5000, 10000, 25000 }, 				// Tier 3
-			new int[] { 100000, 250000, 500000, 1000000  }, // Tier 4
+            new[] { 250 }, 								// Tier 1
+			new[] { 500, 1000 }, 						// Tier 2
+			new[] { 5000, 10000, 25000 }, 				// Tier 3
+			new[] { 100000, 250000, 500000, 1000000  }  // Tier 4
 		};
 
         public static int[][] _NuetralPointsTable =
         {
-            new int[] { 250 }, 								// Tier 1
-			new int[] { 1000 }, 							// Tier 2
-			new int[] { 25000 }, 							// Tier 3
-			new int[] { 1000000 }, 							// Tier 4
+            new[] { 250 }, 								// Tier 1
+			new[] { 1000 }, 							// Tier 2
+			new[] { 25000 }, 							// Tier 3
+			new[] { 1000000 }                           // Tier 4
 		};
 
         public static LoyaltyRating[][] _LoveLoyaltyTable =
         {
-            new LoyaltyRating[] { LoyaltyRating.Commended }, 																		// Tier 1
-			new LoyaltyRating[] { LoyaltyRating.Esteemed, LoyaltyRating.Respected }, 												// Tier 2
-			new LoyaltyRating[] { LoyaltyRating.Honored, LoyaltyRating.Admired, LoyaltyRating.Adored }, 							// Tier 3
-			new LoyaltyRating[] { LoyaltyRating.Lauded, LoyaltyRating.Exalted, LoyaltyRating.Revered, LoyaltyRating.Venerated  },   // Tier 4
+            new[] { LoyaltyRating.Commended }, 																		// Tier 1
+			new[] { LoyaltyRating.Esteemed, LoyaltyRating.Respected }, 												// Tier 2
+			new[] { LoyaltyRating.Honored, LoyaltyRating.Admired, LoyaltyRating.Adored }, 							// Tier 3
+			new[] { LoyaltyRating.Lauded, LoyaltyRating.Exalted, LoyaltyRating.Revered, LoyaltyRating.Venerated  }  // Tier 4
 		};
 
         public static LoyaltyRating[][] _HateLoyaltyTable =
         {
-            new LoyaltyRating[] { LoyaltyRating.Disfavored }, 																		// Tier 1
-			new LoyaltyRating[] { LoyaltyRating.Disliked, LoyaltyRating.Detested }, 											    // Tier 2
-			new LoyaltyRating[] { LoyaltyRating.Loathed, LoyaltyRating.Despised, LoyaltyRating.Reviled }, 							// Tier 3
-			new LoyaltyRating[] { LoyaltyRating.Scorned, LoyaltyRating.Shunned, LoyaltyRating.Villified, LoyaltyRating.Abhorred  }, // Tier 4
+            new[] { LoyaltyRating.Disfavored }, 																	  // Tier 1
+			new[] { LoyaltyRating.Disliked, LoyaltyRating.Detested }, 											      // Tier 2
+			new[] { LoyaltyRating.Loathed, LoyaltyRating.Despised, LoyaltyRating.Reviled }, 					      // Tier 3
+			new[] { LoyaltyRating.Scorned, LoyaltyRating.Shunned, LoyaltyRating.Villified, LoyaltyRating.Abhorred  }  // Tier 4
 		};
 
         public static LoyaltyRating[][] _NuetralLoyaltyTable =
         {
-            new LoyaltyRating[] { LoyaltyRating.Doubted }, 							// Tier 1
-			new LoyaltyRating[] { LoyaltyRating.Distrusted }, 						// Tier 2
-			new LoyaltyRating[] { LoyaltyRating.Disgraced }, 						// Tier 3
-			new LoyaltyRating[] { LoyaltyRating.Denigrated }, 						// Tier 4
+            new[] { LoyaltyRating.Doubted }, 						  // Tier 1
+			new[] { LoyaltyRating.Distrusted }, 					  // Tier 2
+			new[] { LoyaltyRating.Disgraced }, 						  // Tier 3
+			new[] { LoyaltyRating.Denigrated }                        // Tier 4
 		};
 
         public static bool IsLove(LoyaltyRating rating)

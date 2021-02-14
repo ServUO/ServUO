@@ -110,12 +110,13 @@ namespace Server.Commands
 			{
 				return 0;
 			}
-			else if (obj == null)
-			{
-				return 1;
-			}
 
-			var e = obj as CommandEntry;
+            if (obj == null)
+            {
+                return 1;
+            }
+
+            CommandEntry e = obj as CommandEntry;
 
 			if (e == null)
 			{
@@ -134,14 +135,14 @@ namespace Server.Commands
 
 		public static string[] Split(string value)
 		{
-			var array = value.ToCharArray();
-			var list = new List<string>();
+			char[] array = value.ToCharArray();
+			List<string> list = new List<string>();
 
 			int start = 0, end = 0;
 
 			while (start < array.Length)
 			{
-				var c = array[start];
+				char c = array[start];
 
 				if (c == '"')
 				{
@@ -225,7 +226,7 @@ namespace Server.Commands
 					text = text.Substring(m_Prefix.Length);
 				}
 
-				var indexOf = text.IndexOf(' ');
+				int indexOf = text.IndexOf(' ');
 
 				string command;
 				string[] args;
@@ -245,38 +246,38 @@ namespace Server.Commands
 					args = new string[0];
 				}
 
-				m_Entries.TryGetValue(command, out var entry);
+				m_Entries.TryGetValue(command, out CommandEntry entry);
 
-				if (entry != null)
-				{
-					if (from == null || from.AccessLevel >= entry.AccessLevel)
-					{
-						if (entry.Handler != null)
-						{
-							var e = new CommandEventArgs(from, command, argString, args);
-							entry.Handler(e);
-							EventSink.InvokeCommand(e);
-						}
-					}
-					else
-					{
-						if (from.AccessLevel <= m_BadCommandIngoreLevel)
-						{
-							return false;
-						}
+                if (entry != null)
+                {
+                    if (from == null || from.AccessLevel >= entry.AccessLevel)
+                    {
+                        if (entry.Handler != null)
+                        {
+                            CommandEventArgs e = new CommandEventArgs(from, command, argString, args);
+                            entry.Handler(e);
+                            EventSink.InvokeCommand(e);
+                        }
+                    }
+                    else
+                    {
+                        if (from.AccessLevel <= m_BadCommandIngoreLevel)
+                        {
+                            return false;
+                        }
 
-						from.SendMessage("You do not have access to that command.");
-					}
-				}
-				else if (from != null)
-				{
-					if (from.AccessLevel <= m_BadCommandIngoreLevel)
-					{
-						return false;
-					}
+                        from.SendMessage("You do not have access to that command.");
+                    }
+                }
+                else if (from != null)
+                {
+                    if (from.AccessLevel <= m_BadCommandIngoreLevel)
+                    {
+                        return false;
+                    }
 
-					from.SendMessage("That is not a valid command.");
-				}
+                    from.SendMessage("That is not a valid command.");
+                }
 
 				return true;
 			}

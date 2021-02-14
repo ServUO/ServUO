@@ -9,14 +9,14 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            if (item is BaseArmor)
+            if (item is BaseArmor armor)
             {
-                return ((BaseArmor)item).ArmorAttributes[Attribute];
+                return armor.ArmorAttributes[Attribute];
             }
 
-            if (item is BaseClothing)
+            if (item is BaseClothing clothing)
             {
-                return ((BaseClothing)item).ClothingAttributes[Attribute];
+                return clothing.ClothingAttributes[Attribute];
             }
 
             return 0;

@@ -7,7 +7,7 @@ namespace Server.Engines.BulkOrders
     {
         public override BODType BODType => BODType.Smith;
 
-        public static double[] m_BlacksmithMaterialChances = new double[]
+        public static double[] m_BlacksmithMaterialChances =
         {
             0.501953125, // None
             0.250000000, // Dull Copper
@@ -19,6 +19,7 @@ namespace Server.Engines.BulkOrders
             0.003906250, // Verite
             0.001953125  // Valorite
         };
+
         [Constructable]
         public LargeSmithBOD()
         {
@@ -139,15 +140,13 @@ namespace Server.Engines.BulkOrders
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

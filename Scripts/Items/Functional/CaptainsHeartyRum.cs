@@ -11,10 +11,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string ShipName
         {
-            get
-            {
-                return _ShipName;
-            }
+            get => _ShipName;
             set
             {
                 _ShipName = value;

@@ -54,15 +54,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -133,9 +131,8 @@ namespace Server.Engines.Quests
         {
             foreach (DamageStore ds in boss.GetLootingRights())
             {
-                if (ds.m_Mobile is PlayerMobile)
+                if (ds.m_Mobile is PlayerMobile pm)
                 {
-                    PlayerMobile pm = ds.m_Mobile as PlayerMobile;
                     WhisperingWithWispsQuest quest = QuestHelper.GetQuest<WhisperingWithWispsQuest>(pm);
 
                     if (quest != null && !quest.Completed)
@@ -168,15 +165,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

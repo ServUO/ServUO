@@ -9,8 +9,8 @@ namespace Server.Engines.Quests
         private bool m_Captured;
         private Mobile m_CapturedCaptain;
 
-        public bool Captured { get { return m_Captured; } set { m_Captured = value; } }
-        public Mobile CapturedCaptain { get { return m_CapturedCaptain; } set { m_CapturedCaptain = value; } }
+        public bool Captured { get => m_Captured; set => m_Captured = value; }
+        public Mobile CapturedCaptain { get => m_CapturedCaptain; set => m_CapturedCaptain = value; }
 
         public override bool Update(object obj)
         {
@@ -48,7 +48,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Captured = reader.ReadBool();
             m_CapturedCaptain = reader.ReadMobile();
@@ -58,8 +58,10 @@ namespace Server.Engines.Quests
 
         private void ValidateCaught()
         {
-            if (m_CapturedCaptain != null && m_CapturedCaptain is PirateCaptain && Quest is ProfessionalBountyQuest)
-                ((PirateCaptain)m_CapturedCaptain).Quest = Quest as ProfessionalBountyQuest;
+            if (m_CapturedCaptain != null && m_CapturedCaptain is PirateCaptain captain && Quest is ProfessionalBountyQuest)
+            {
+                captain.Quest = Quest as ProfessionalBountyQuest;
+            }
         }
     }
 }

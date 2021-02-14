@@ -68,8 +68,8 @@ namespace Server.Items
                     Timer.DelayCall(TimeSpan.FromSeconds(2), mob => mob.SendSpeedControl(SpeedControlType.Disable), defender);
                 }
 
-                if (attacker is BaseCreature)
-                    PetTrainingHelper.OnWeaponAbilityUsed((BaseCreature)attacker, SkillName.Ninjitsu);
+                if (attacker is BaseCreature bc)
+                    PetTrainingHelper.OnWeaponAbilityUsed(bc, SkillName.Ninjitsu);
             }
         }
 

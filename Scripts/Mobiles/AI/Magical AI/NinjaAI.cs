@@ -108,16 +108,16 @@ namespace Server.Mobiles
             int d = (int)m_Mobile.GetDistanceToSqrt(c.Location);
 
             foreach (Item item in m_Mobile.Items)
-                if (item is INinjaWeapon && ((INinjaWeapon)item).UsesRemaining > 0 && d >= ((INinjaWeapon)item).WeaponMinRange &&
-                    d <= ((INinjaWeapon)item).WeaponMaxRange)
-                    list.Add(item as INinjaWeapon);
+                if (item is INinjaWeapon weapon && weapon.UsesRemaining > 0 && d >= weapon.WeaponMinRange &&
+                    d <= weapon.WeaponMaxRange)
+                    list.Add(weapon);
 
             if (m_Mobile.Backpack != null)
             {
                 foreach (Item item in m_Mobile.Backpack.Items)
-                    if (item is INinjaWeapon && ((INinjaWeapon)item).UsesRemaining > 0 && d >= ((INinjaWeapon)item).WeaponMinRange &&
-                        d <= ((INinjaWeapon)item).WeaponMaxRange)
-                        list.Add(item as INinjaWeapon);
+                    if (item is INinjaWeapon weapon && weapon.UsesRemaining > 0 && d >= weapon.WeaponMinRange &&
+                        d <= weapon.WeaponMaxRange)
+                        list.Add(weapon);
             }
 
             if (list.Count > 0)

@@ -6,7 +6,7 @@ namespace Server.Engines.BulkOrders
     {
         public override BODType BODType => BODType.Fletching;
 
-        public static double[] m_FletchingingMaterialChances = new double[]
+        public static double[] m_FletchingingMaterialChances =
         {
             0.513718750, // None
             0.292968750, // Oak
@@ -124,15 +124,13 @@ namespace Server.Engines.BulkOrders
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

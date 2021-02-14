@@ -4,10 +4,10 @@ namespace Server.Multis
 {
     public class GargishGalleon : BaseGalleon
     {
-        public override int NorthID => 0x24 + (DamageValue * 4);
-        public override int EastID => 0x25 + (DamageValue * 4);
-        public override int SouthID => 0x26 + (DamageValue * 4);
-        public override int WestID => 0x27 + (DamageValue * 4);
+        public override int NorthID => 0x24 + DamageValue * 4;
+        public override int EastID => 0x25 + DamageValue * 4;
+        public override int SouthID => 0x26 + DamageValue * 4;
+        public override int WestID => 0x27 + DamageValue * 4;
 
         public override int HoldDistance => 6;
         public override int TillerManDistance => 1;
@@ -34,7 +34,7 @@ namespace Server.Multis
         }
 
         public override int[] CannonTileIDs => m_CannonTileIDs;
-        private static readonly int[] m_CannonTileIDs = new int[]
+        private static readonly int[] m_CannonTileIDs =
         {
             33463, 33440, 33438, 33327, 33322, 33357, 33355, //SOUTH
             33768, 33745, 33743, 33632, 33627, 33662, 33660, //WEST
@@ -53,7 +53,7 @@ namespace Server.Multis
         };
 
         public override int[] HoldIDs => m_HoldIDs;
-        private static readonly int[] m_HoldIDs = new int[]
+        private static readonly int[] m_HoldIDs =
         {
             33408, 33409, 33414, 33394, 33395, 33400, 33401, 33402, 33407, 33410, 33403, 33396, 33389, 33388, 33393, 33391, 33398, 33405, 33412,  //SOUTH
             33713, 33714, 33719, 33699, 33700, 33705, 33706, 33707, 33712, 33715, 33708, 33701, 33694, 33693, 33698, 33696, 33703, 33710, 33717,  //WEST
@@ -72,7 +72,7 @@ namespace Server.Multis
         };
 
         public override int[] HoldItemIDs => m_HoldItemIDs;
-        private static readonly int[] m_HoldItemIDs = new int[]
+        private static readonly int[] m_HoldItemIDs =
         {
             33387, 33692, 33994, 34297,
             19003, 35506, 34902, 34598,
@@ -80,11 +80,11 @@ namespace Server.Multis
         };
 
         public override int[] WheelItemIDs => m_WheelItemIDs;
-        private static readonly int[] m_WheelItemIDs = new int[]
+        private static readonly int[] m_WheelItemIDs =
         {
             33604, 33906, 34208, 34510,
             19188, 35718, 39212, 34812,
-            36623,  36923,  36322, 36020,
+            36623,  36923,  36322, 36020
         };
 
         public override ShipPosition GetCannonPosition(Point3D pnt)
@@ -171,7 +171,7 @@ namespace Server.Multis
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -191,18 +191,16 @@ namespace Server.Multis
         {
         }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 
@@ -221,18 +219,16 @@ namespace Server.Multis
         {
         }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 }

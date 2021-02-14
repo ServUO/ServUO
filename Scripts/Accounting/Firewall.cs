@@ -36,16 +36,17 @@ namespace Server
                 {
                     return obj.Equals(m_Address);
                 }
-                else if (obj is string)
+
+                if (obj is string st)
                 {
                     IPAddress otherAddress;
 
-                    if (IPAddress.TryParse((string)obj, out otherAddress))
+                    if (IPAddress.TryParse(st, out otherAddress))
                         return otherAddress.Equals(m_Address);
                 }
-                else if (obj is IPFirewallEntry)
+                else if (obj is IPFirewallEntry entry)
                 {
-                    return m_Address.Equals(((IPFirewallEntry)obj).m_Address);
+                    return m_Address.Equals(entry.m_Address);
                 }
 
                 return false;
@@ -80,11 +81,9 @@ namespace Server
 
             public override bool Equals(object obj)
             {
-                if (obj is string)
+                if (obj is string st)
                 {
-                    string entry = (string)obj;
-
-                    string[] str = entry.Split('/');
+                    string[] str = st.Split('/');
 
                     if (str.Length == 2)
                     {
@@ -99,10 +98,8 @@ namespace Server
                         }
                     }
                 }
-                else if (obj is CIDRFirewallEntry)
+                else if (obj is CIDRFirewallEntry entry)
                 {
-                    CIDRFirewallEntry entry = obj as CIDRFirewallEntry;
-
                     return m_CIDRPrefix.Equals(entry.m_CIDRPrefix) && m_CIDRLength.Equals(entry.m_CIDRLength);
                 }
 
@@ -136,15 +133,16 @@ namespace Server
 
             public override string ToString()
             {
-                return m_Entry.ToString();
+                return m_Entry;
             }
 
             public override bool Equals(object obj)
             {
                 if (obj is string)
                     return obj.Equals(m_Entry);
-                else if (obj is WildcardIPFirewallEntry)
-                    return m_Entry.Equals(((WildcardIPFirewallEntry)obj).m_Entry);
+
+                if (obj is WildcardIPFirewallEntry entry)
+                    return m_Entry.Equals(entry.m_Entry);
 
                 return false;
             }
@@ -178,15 +176,6 @@ namespace Server
                             continue;
 
                         m_Blocked.Add(ToFirewallEntry(line));
-                        /*
-                        object toAdd;
-                        IPAddress addr;
-                        if( IPAddress.TryParse( line, out addr ) )
-                        toAdd = addr;
-                        else
-                        toAdd = line;
-                        m_Blocked.Add( toAdd.ToString() );
-                        * */
                     }
                 }
             }
@@ -196,12 +185,14 @@ namespace Server
 
         public static IFirewallEntry ToFirewallEntry(object entry)
         {
-            if (entry is IFirewallEntry)
-                return (IFirewallEntry)entry;
-            else if (entry is IPAddress)
-                return new IPFirewallEntry((IPAddress)entry);
-            else if (entry is string)
-                return ToFirewallEntry((string)entry);
+            if (entry is IFirewallEntry firewallEntry)
+                return firewallEntry;
+
+            if (entry is IPAddress address)
+                return new IPFirewallEntry(address);
+
+            if (entry is string s)
+                return ToFirewallEntry(s);
 
             return null;
         }
@@ -251,12 +242,14 @@ namespace Server
 
         public static void Add(object obj)
         {
-            if (obj is IPAddress)
-                Add((IPAddress)obj);
-            else if (obj is string)
-                Add((string)obj);
-            else if (obj is IFirewallEntry)
-                Add((IFirewallEntry)obj);
+            if (obj is IPAddress address)
+                Add(address);
+
+            else if (obj is string s)
+                Add(s);
+
+            else if (obj is IFirewallEntry entry)
+                Add(entry);
         }
 
         public static void Add(IFirewallEntry entry)
@@ -307,22 +300,6 @@ namespace Server
             }
 
             return false;
-            /*
-            bool contains = false;
-            for ( int i = 0; !contains && i < m_Blocked.Count; ++i )
-            {
-            if ( m_Blocked[i] is IPAddress )
-            contains = ip.Equals( m_Blocked[i] );
-            else if ( m_Blocked[i] is String )
-            {
-            string s = (string)m_Blocked[i];
-            contains = Utility.IPMatchCIDR( s, ip );
-            if( !contains )
-            contains = Utility.IPMatch( s, ip );
-            }
-            }
-            return contains;
-            * */
         }
     }
 }

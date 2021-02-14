@@ -22,9 +22,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && IsChildOf(from.Backpack) && Titles != null && Titles.Count > 0)
+            if (from is PlayerMobile mobile && IsChildOf(mobile.Backpack) && Titles != null && Titles.Count > 0)
             {
-                from.SendGump(new InternalGump(from as PlayerMobile, this));
+                mobile.SendGump(new InternalGump(mobile, this));
             }
         }
 

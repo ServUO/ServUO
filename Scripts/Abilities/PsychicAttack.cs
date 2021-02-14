@@ -60,8 +60,8 @@ namespace Server.Items
             private int m_ManaCostMalus;
             private bool m_DoneIncrease;
 
-            public int SpellDamageMalus { get { return m_SpellDamageMalus; } set { m_SpellDamageMalus = value; m_DoneIncrease = true; } }
-            public int ManaCostMalus { get { return m_ManaCostMalus; } set { m_ManaCostMalus = value; m_DoneIncrease = true; } }
+            public int SpellDamageMalus { get => m_SpellDamageMalus; set { m_SpellDamageMalus = value; m_DoneIncrease = true; } }
+            public int ManaCostMalus { get => m_ManaCostMalus; set { m_ManaCostMalus = value; m_DoneIncrease = true; } }
             public bool DoneIncrease => m_DoneIncrease;
 
             public PsychicAttackTimer(Mobile defender)

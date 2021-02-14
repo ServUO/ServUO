@@ -69,21 +69,18 @@ namespace Server.Engines.HuntsmasterChallenge
                     case 1159206: item = new RecipeScroll(610); break;
                 }
 
-                if (item != null)
+                if (User.Backpack == null || !User.Backpack.TryDropItem(User, item, false))
                 {
-                    if (User.Backpack == null || !User.Backpack.TryDropItem(User, item, false))
-                    {
-                        User.SendLocalizedMessage(1074361); // The reward could not be given.  Make sure you have room in your pack.
-                        item.Delete();
-                    }
-                    else
-                    {
-                        OnItemCreated(item);
+                    User.SendLocalizedMessage(1074361); // The reward could not be given.  Make sure you have room in your pack.
+                    item.Delete();
+                }
+                else
+                {
+                    OnItemCreated(item);
 
-                        User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
-                        RemovePoints(citem.Points);
-                        User.PlaySound(0x5A8);
-                    }
+                    User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.
+                    RemovePoints(citem.Points);
+                    User.PlaySound(0x5A8);
                 }
             }
             else
@@ -109,7 +106,7 @@ namespace Server.Engines.HuntsmasterChallenge
             new CollectionItem(typeof(BakeKitsuneHat), 0xA42B, 1126051, 0, 1.0),
             new CollectionItem(typeof(HuntmastersRewardTitleDeed), 0x14EF, 0, 0, 1.0),            
             new CollectionItem(typeof(GargishRangersGuildSash), 0x46B5, 0, 0, 1.0),
-            new CollectionItem(typeof(RangersGuildSash), 0x1541, 0, 0, 1.0),
+            new CollectionItem(typeof(RangersGuildSash), 0x1541, 0, 0, 1.0)
         };
     }
 }

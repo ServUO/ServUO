@@ -47,10 +47,10 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
         {
-            if (from is PlayerMobile && HuntingSystem.Instance != null && HuntingSystem.Instance.Active)
+            if (from is PlayerMobile mobile && HuntingSystem.Instance != null && HuntingSystem.Instance.Active)
             {
                 list.Add(new BuyPermitEntry(this));
-                list.Add(new ClaimEntry((PlayerMobile)from, this));
+                list.Add(new ClaimEntry(mobile, this));
             }
 
             base.AddCustomContextEntries(from, list);
@@ -58,9 +58,8 @@ namespace Server.Engines.HuntsmasterChallenge
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is HuntingPermit)
+            if (dropped is HuntingPermit permit)
             {
-                HuntingPermit permit = dropped as HuntingPermit;
                 HuntingSystem sys = HuntingSystem.Instance;
 
                 if (sys == null || !sys.Active)
@@ -166,7 +165,7 @@ namespace Server.Engines.HuntsmasterChallenge
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), CheckItems);
         }

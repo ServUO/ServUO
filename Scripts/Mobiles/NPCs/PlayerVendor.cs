@@ -43,10 +43,7 @@ namespace Server.Mobiles
         public string FormattedPrice => Price.ToString("N0", CultureInfo.GetCultureInfo("en-US"));
         public string Description
         {
-            get
-            {
-                return m_Description;
-            }
+            get => m_Description;
             set
             {
                 if (value != null)
@@ -89,16 +86,16 @@ namespace Server.Mobiles
             if (!base.CheckHold(m, item, message, checkItems, plusItems, plusWeight))
                 return false;
 
-            if (Parent is PlayerVendor && item is Container && ((Container)item).Items.OfType<Container>().Any())
+            if (Parent is PlayerVendor vendor && item is Container container && container.Items.OfType<Container>().Any())
             {
-                ((PlayerVendor)Parent).SayTo(m, 1017381); // You cannot place a container that has other containers in it on a vendor.
+                vendor.SayTo(m, 1017381); // You cannot place a container that has other containers in it on a vendor.
 
                 return false;
             }
 
-            if (Parent is CommissionPlayerVendor)
+            if (Parent is CommissionPlayerVendor commissionVendor)
             {
-                BaseHouse house = ((PlayerVendor)Parent).House;
+                BaseHouse house = commissionVendor.House;
 
                 if (house != null && !house.CheckAosStorage(1 + item.TotalItems + plusItems))
                 {
@@ -201,7 +198,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class BuyEntry : ContextMenuEntry
@@ -232,7 +229,7 @@ namespace Server.Mobiles
         private BaseHouse m_House;
         private string m_ShopName;
 
-        public double CommissionPerc => 5.25;
+        public virtual double CommissionPerc => 0.0;
         public virtual bool IsCommission => false;
 
         public PlayerVendor(Mobile owner, BaseHouse house)
@@ -283,10 +280,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public string ShopName
         {
-            get
-            {
-                return m_ShopName;
-            }
+            get => m_ShopName;
             set
             {
                 if (value == null)
@@ -305,10 +299,7 @@ namespace Server.Mobiles
 
         public BaseHouse House
         {
-            get
-            {
-                return m_House;
-            }
+            get => m_House;
             set
             {
                 if (m_House != null)
@@ -333,7 +324,7 @@ namespace Server.Mobiles
                     total += vi.Price;
                 }
 
-                int perDay = (int)(60 + (total / 500) * 3);
+                int perDay = (int)(60 + total / 500 * 3);
 
                 var trinket = GetMerchantsTrinket();
 
@@ -532,10 +523,8 @@ namespace Server.Mobiles
             {
                 return House.IsOwner(m);
             }
-            else
-            {
-                return m == Owner;
-            }
+
+            return m == Owner;
         }
 
         public virtual void Destroy(bool toBackpack)
@@ -713,7 +702,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (item is SecretChest && ((SecretChest)item).Locked)
+            if (item is SecretChest chest && chest.Locked)
             {
                 SayTo(from, 1151612); // I cannot accept a number key locked item.
                 return false;
@@ -730,37 +719,31 @@ namespace Server.Mobiles
 
                     return true;
                 }
-                else
-                {
-                    from.SendLocalizedMessage(1062493); // Your vendor has sufficient funds for operation and cannot accept this gold.
 
-                    return false;
-                }                        
+                from.SendLocalizedMessage(1062493); // Your vendor has sufficient funds for operation and cannot accept this gold.
+
+                return false;
             }
-            else
+
+            bool newItem = GetVendorItem(item) == null;
+
+            if (Backpack != null && Backpack.TryDropItem(from, item, false))
             {
-                bool newItem = (GetVendorItem(item) == null);
+                if (newItem)
+                    OnItemGiven(from, item);
 
-                if (Backpack != null && Backpack.TryDropItem(from, item, false))
-                {
-                    if (newItem)
-                        OnItemGiven(from, item);
-
-                    return true;
-                }
-                else
-                {
-                    SayTo(from, 503211); // I can't carry any more.
-                    return false;
-                }
+                return true;
             }
+
+            SayTo(from, 503211); // I can't carry any more.
+            return false;
         }
 
         public override bool CheckNonlocalDrop(Mobile from, Item item, Item target)
         {
             if (IsOwner(from))
             {
-                if (item is SecretChest && ((SecretChest)item).Locked)
+                if (item is SecretChest chest && chest.Locked)
                 {
                     SayTo(from, 1151612); // I cannot accept a number key locked item.
                     return false;
@@ -774,11 +757,9 @@ namespace Server.Mobiles
 
                 return true;
             }
-            else
-            {
-                SayTo(from, 503209); // I can only take item from the shop owner.
-                return false;
-            }
+
+            SayTo(from, 503209); // I can only take item from the shop owner.
+            return false;
         }
 
         public override bool AllowEquipFrom(Mobile from)
@@ -797,13 +778,12 @@ namespace Server.Mobiles
                 {
                     return true;
                 }
-                else
-                {
-                    SayTo(from, 503223); // If you'd like to purchase an item, just ask.
-                    return false;
-                }
+
+                SayTo(from, 503223); // If you'd like to purchase an item, just ask.
+                return false;
             }
-            else if (IsOwner(from))
+
+            if (IsOwner(from))
             {
                 return true;
             }
@@ -1071,7 +1051,7 @@ namespace Server.Mobiles
             if (e.Handled || !from.Alive || from.GetDistanceToSqrt(this) > 3)
                 return;
 
-            if (e.HasKeyword(0x3C) || (e.HasKeyword(0x171) && WasNamed(e.Speech))) // vendor buy, *buy*
+            if (e.HasKeyword(0x3C) || e.HasKeyword(0x171) && WasNamed(e.Speech)) // vendor buy, *buy*
             {
                 if (IsOwner(from))
                 {
@@ -1085,7 +1065,7 @@ namespace Server.Mobiles
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x3D) || (e.HasKeyword(0x172) && WasNamed(e.Speech))) // vendor browse, *browse
+            else if (e.HasKeyword(0x3D) || e.HasKeyword(0x172) && WasNamed(e.Speech)) // vendor browse, *browse
             {
                 if (House != null && House.IsBanned(from) && !IsOwner(from))
                 {
@@ -1100,8 +1080,8 @@ namespace Server.Mobiles
                         IPooledEnumerable mobiles = e.Mobile.GetMobilesInRange(2);
 
                         foreach (Mobile m in mobiles)
-                            if (m is PlayerVendor && m.CanSee(e.Mobile) && m.InLOS(e.Mobile))
-                                ((PlayerVendor)m).OpenBackpack(from);
+                            if (m is PlayerVendor vendor && vendor.CanSee(e.Mobile) && vendor.InLOS(e.Mobile))
+                                vendor.OpenBackpack(from);
 
                         mobiles.Free();
                     }
@@ -1109,7 +1089,7 @@ namespace Server.Mobiles
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x3E) || (e.HasKeyword(0x173) && WasNamed(e.Speech))) // vendor collect, *collect
+            else if (e.HasKeyword(0x3E) || e.HasKeyword(0x173) && WasNamed(e.Speech)) // vendor collect, *collect
             {
                 if (IsOwner(from))
                 {
@@ -1118,7 +1098,7 @@ namespace Server.Mobiles
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x3F) || (e.HasKeyword(0x174) && WasNamed(e.Speech))) // vendor status, *status
+            else if (e.HasKeyword(0x3F) || e.HasKeyword(0x174) && WasNamed(e.Speech)) // vendor status, *status
             {
                 if (IsOwner(from))
                 {
@@ -1131,7 +1111,7 @@ namespace Server.Mobiles
                     SayTo(from, 503226); // What do you care? You don't run this shop.	
                 }
             }
-            else if (e.HasKeyword(0x40) || (e.HasKeyword(0x175) && WasNamed(e.Speech))) // vendor dismiss, *dismiss
+            else if (e.HasKeyword(0x40) || e.HasKeyword(0x175) && WasNamed(e.Speech)) // vendor dismiss, *dismiss
             {
                 if (IsOwner(from))
                 {
@@ -1140,7 +1120,7 @@ namespace Server.Mobiles
                     e.Handled = true;
                 }
             }
-            else if (e.HasKeyword(0x41) || (e.HasKeyword(0x176) && WasNamed(e.Speech))) // vendor cycle, *cycle
+            else if (e.HasKeyword(0x41) || e.HasKeyword(0x176) && WasNamed(e.Speech)) // vendor cycle, *cycle
             {
                 if (IsOwner(from))
                 {
@@ -1174,7 +1154,7 @@ namespace Server.Mobiles
         {
             for (int i = 0; i < Items.Count; ++i)
             {
-                Item item = Items[i] as Item;
+                Item item = Items[i];
 
                 if (item is BaseHat)
                     item.Layer = Layer.Helm;
@@ -1273,7 +1253,7 @@ namespace Server.Mobiles
                 if (!string.IsNullOrEmpty(item.Name))
                     name = item.Name;
                 else
-                    name = "#" + item.LabelNumber.ToString();
+                    name = "#" + item.LabelNumber;
 
                 from.SendLocalizedMessage(1043303, name); // Type in a price and description for ~1_ITEM~ (ESC=not for sale)
                 from.Prompt = new VendorPricePrompt(this, vi);
@@ -1310,9 +1290,9 @@ namespace Server.Mobiles
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Item)
+                if (targeted is Item item)
                 {
-                    TryToBuy((Item)targeted, from);
+                    TryToBuy(item, from);
                 }
             }
         }
@@ -1335,7 +1315,8 @@ namespace Server.Mobiles
 
                 string firstWord;
 
-                int sep = text.IndexOfAny(new char[] { ' ', ',' });
+                int sep = text.IndexOfAny(new[] { ' ', ',' });
+
                 if (sep >= 0)
                     firstWord = text.Substring(0, sep);
                 else
@@ -1380,7 +1361,7 @@ namespace Server.Mobiles
 
                     if (item is Container)
                     {
-                        if (item is LockableContainer && ((LockableContainer)item).Locked)
+                        if (item is LockableContainer container && container.Locked)
                             m_Vendor.SayTo(from, 1043298); // Locked items may not be made not-for-sale.
                         else if (item.Items.Count > 0)
                             m_Vendor.SayTo(from, 1043299); // To be not for sale, all items in a container must be for sale.
@@ -1581,7 +1562,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             Vendor = (PlayerVendor)reader.ReadMobile();
 

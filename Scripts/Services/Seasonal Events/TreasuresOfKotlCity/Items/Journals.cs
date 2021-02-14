@@ -9,18 +9,18 @@ namespace Server.Engines.TreasuresOfKotlCity
          * so I will likely need to search for food or find people with whom to trade. I also worry about becoming lost in the wilds. This 
          * is dangerous, especially without any weapons.<br> <br>I have managed to identify several fixed constellations by which to align
          * my sextant. It should give me the means to track my movements and map this new world. I plan to leave copies of my notes for 
-         * others who may come after me. My journey started at 21∞ South 42∞ West. I plan to move north toward a settlement I saw from a 
-         * tree at 8∞ South 45∞ West.<br> <br>Week 2<br> <br>The Barako Tribe worship the strength of the Great Apes of this land of Eodon. 
+         * others who may come after me. My journey started at 21¬∞ South 42¬∞ West. I plan to move north toward a settlement I saw from a 
+         * tree at 8¬∞ South 45¬∞ West.<br> <br>Week 2<br> <br>The Barako Tribe worship the strength of the Great Apes of this land of Eodon. 
          * They are a martial people; both sexes train as hunters and warriors. While they prefer to use bludgeoning weapons, one of their 
          * greatest heroes, Halawa, used a bow to rescue her infant daughter from a silverback gorilla. The tribe has built its home in the 
          * high trees.<br> <br>It seems that there is great animosity between the Barako and another tribe known as the Kurak. I am going to 
-         * leave before I am caught in the middle of their conflict. I have learned of another settlement at 3∞ North 62∞ West which may have 
+         * leave before I am caught in the middle of their conflict. I have learned of another settlement at 3¬∞ North 62¬∞ West which may have 
          * answers.<br> <br>Week 3<br> <br>The Urali are a strange people. Their skin has a green tint, likely because of diet and dyes. The 
          * color matches the turtles that are common in the area. Their warriors carry shields made from discarded turtle shells. Like the 
          * Dragon Turtle they worship, all of their chieftains are women, the strongest shield duelists in the tribe. All of the shamans of 
          * the tribe are the male descendants of a Shaman named Wamap, who created the spells of protection they still use.<br><br>The Dragon
          * Turtle did not seem as intelligent as the draconic creatures of legend, and will thus give me no answers, so I will head out in a 
-         * few days to 17∞ North 54∞ West.*/
+         * few days to 17¬∞ North 54¬∞ West.*/
 
         public override TextDefinition Title => 1157034;  // The Journal of Dr. Spector - Collection I
 
@@ -43,7 +43,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -53,10 +53,10 @@ namespace Server.Engines.TreasuresOfKotlCity
         /*Week 4<br><br>The Sakkhra both imitate and hunt the dinosaurs that thunder constantly in their section of Eodon. Given the great 
          * size of these creatures, the Sakkhra have chosen to use powerful bows to bring down the creatures from a distance. When the 
          * dinosaurs wander into their camp, the tribe forces the creature back with spears dipped in poison. In cases of stampede or 
-         * attack, the tribe will also destroy the bridges across the rivers around their settlement. The tribe is the first Iíve seen 
+         * attack, the tribe will also destroy the bridges across the rivers around their settlement. The tribe is the first I‚Äôve seen 
          * that grows crops, but they do not show the advancement needed to get me home.<br> <br>While I enjoyed my visit with the Sakkhra,
-         * I have decided to meet with the next of Eodonís tribes. The Sakkhra have warned me about the ìspiritless tribe,î but I believe 
-         * I should have no problems. I will travel to 17∞ South 81∞ West.<br> <br>Week 5<br> <br>The Barrab are very much like the insects 
+         * I have decided to meet with the next of Eodon‚Äôs tribes. The Sakkhra have warned me about the ‚Äúspiritless tribe,‚Äù but I believe 
+         * I should have no problems. I will travel to 17¬∞ South 81¬∞ West.<br> <br>Week 5<br> <br>The Barrab are very much like the insects 
          * in desert below: organized, ruthless, and complicated. The Barrab worship the Myrmidex, a terrifying insect species that lives
          * underneath Eodon. The visible entrances to their hive are gigantic. Even though the Barrab worship the insects and dress themselves
          * in discarded carapaces, the Myrmidex are still aggressive to most humans. The worst criminals of the Barrab tribe are sacrificed 
@@ -64,7 +64,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * and chief named Balakai who ruled with the help of magic and alchemy, but I was unable to translate the ending of his story to my
          * satisfaction. I did learn that female Barrab shamans get their power from something in the Myrmidex tunnels, though they seemed
          * offended when I asked for more information.<br> <br>While the Myrmidex may have answers to my questions, or possibly a Moonstone 
-         * to return me home, I do not wish to be eaten alive by such creatures. I will move on to 20∞ South 67∞ West.*/
+         * to return me home, I do not wish to be eaten alive by such creatures. I will move on to 20¬∞ South 67¬∞ West.*/
 
         public override TextDefinition Title => 1157035;  // The Journal of Dr. Spector - Collection II
 
@@ -87,7 +87,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -98,11 +98,11 @@ namespace Server.Engines.TreasuresOfKotlCity
          * proud of their tiger totem and the animal they emulate, they were not as cruel as these predator cats. I did manage to see a 
          * demonstration of the strange claws they use for hunting and combat, and I am glad I stayed on their good side. I learned about
          * a strange ruin they avoid, something to do with their ancestors. It is to the east. I plan to visit it after I meet with the 
-         * final tribe of Eodon at 40∞ South 41∞ West.<br><br>Week 7<br><br>The Jukari live among the lava flows in the shadow of a great 
+         * final tribe of Eodon at 40¬∞ South 41¬∞ West.<br><br>Week 7<br><br>The Jukari live among the lava flows in the shadow of a great 
          * volcanic range that blocks travel to the southeast. The tribe uses the fire and obsidian shards produced by the volcano as their
          * weapons, believing these to be gifts from the spirits. I asked if any had traveled into the volcanic range, and they mentioned
-         * that one of their greatest chieftains walked into the mountains with a sacred hide that protected him from the volcanoís poisonous
-         * gases. I donít believe the answers I seek can be found within the volcano. That leaves only the pyramid at 20∞South 58∞ West.
+         * that one of their greatest chieftains walked into the mountains with a sacred hide that protected him from the volcano‚Äôs poisonous
+         * gases. I don‚Äôt believe the answers I seek can be found within the volcano. That leaves only the pyramid at 20¬∞South 58¬∞ West.
          * <br><br>Week 8<br><br>I have explored every ruin I have come across and spoken with all of the tribes. None can help me return
          * through the Ethereal Void to my home. The cracked Moonstone I used to travel did not come with me, and unless I can find another
          * one, I will be trapped here. From the ruins and people, I have learned a bit about various Eodon spirits in my time here:<br>Aphazz,
@@ -132,7 +132,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -150,7 +150,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * my hand started to burn, I could not pull myself away. I heard a voice in my mind, speaking rapidly in a strange language. As I 
          * lost consciousness, one word stuck in my mind: Zipactriotl. I woke in a burning jungle clearing. Around me were dead or dying
          * Myrmidex, and my hands were burning with a strange blue flame. I did not remember slaughtering those creatures, but I knew I had.
-         * The tribes had a saying, ìKilling one Myrmidex brings the wrath of its thousand kin.î How much wrath have I earned by killing so
+         * The tribes had a saying, ‚ÄúKilling one Myrmidex brings the wrath of its thousand kin.‚Äù How much wrath have I earned by killing so
          * many?<br><br>Week 10<br><br>I am different now. My bones have reshaped themselves, and my skin is like armor. There is a charge of
          * energy around me, constantly buzzing in my ears. I am blacking out more and more, and I am losing more and more of myself. With 
          * the changes, hidden parts of the city now allow me access. I have found what appears to be a sort of stasis chamber. I will put 
@@ -177,7 +177,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -191,8 +191,8 @@ namespace Server.Engines.TreasuresOfKotlCity
          * center of a huge crater, they found a large tenebrous moonstone. The blackrock artifact bent the very shadows around it. All the 
          * Kotl recognized the raw magic before them. Some shunned the moonstone, turning and walking back into the cold, never to be seen
          * again. They were the Mixkotl, the Lost. The rest remained with the moonstone, hoping to unlock its secrets before the end came. 
-         * In the frozen crater, each day of study claimed another life, but eventually, the Kotl learned to wield the moonstoneís power. 
-         * They used it to grasp and manipulate frayed threads of existence. They knit together pieces from before the First Homeís destruction
+         * In the frozen crater, each day of study claimed another life, but eventually, the Kotl learned to wield the moonstone‚Äôs power. 
+         * They used it to grasp and manipulate frayed threads of existence. They knit together pieces from before the First Home‚Äôs destruction
          * into a new world - Eodon. Eodon presented refuge from the cold desolation Akaktolan had become, so the Kotl stepped across the 
          * threshold into the new reality. When they left, they took the Great Moonstone with them, thus closing the door to the First Home
          * forever. */
@@ -218,7 +218,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -233,9 +233,9 @@ namespace Server.Engines.TreasuresOfKotlCity
          * the city was completed, the Kotl settled into a life made easier by the magic of the moonstone. However, they wished to be free 
          * of all toil. They could never construct or empower enough automatons to take care of every task in the city, so they searched for
          * new servants. Finding no intelligent creatures in the world, they decided to create a servitor race. Using the Nowlotl crystal to
-         * tap into the moonstoneís power and select distant future variations, the Kotl bred such servants from ants. The Myrmidex were this
+         * tap into the moonstone‚Äôs power and select distant future variations, the Kotl bred such servants from ants. The Myrmidex were this
          * failed experiment. The Kotl thought that the Myrmidex might inherit the industrious nature of the ants, but instead, they gained 
-         * only the antsí warlike nature. The Myrmidex broke free of their captivity and fled the city of the Kotl. Thus, the World-Builders
+         * only the ants‚Äô warlike nature. The Myrmidex broke free of their captivity and fled the city of the Kotl. Thus, the World-Builders
          * were forced to look elsewhere for their labor.*/
 
         public override TextDefinition Title => 1157057;  // History of the Great Work II
@@ -259,7 +259,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -268,11 +268,11 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override TextDefinition Body => 1157062;
         /*The Worldwalker and Humanity<br><br>Spoken by the Memory of Katalkotl<br><br>Transcribed by Professor Ellie Rafkin<br><br>After 
          * the failure of the Myrmidex, the Kotl took more care in their manipulation of living things. They turned the power of the
-         * moonstone outward beyond Eodon. They constructed the Moon Chamber as a focal point for all of Eodonís mana. The artificial origin 
+         * moonstone outward beyond Eodon. They constructed the Moon Chamber as a focal point for all of Eodon‚Äôs mana. The artificial origin 
          * of Eodon made travel across the void between worlds difficult. However, with the awesome power of the Great Moonstone, it was
          * possible. The Kotl sent their bravest general out across the Ethereal Void: Katalkotl the Worldwalker. He and his warriors traveled
          * to dozens of worlds, bringing treasures and curiosities back to Eodon. Eventually, Katalkotl found several worlds with an 
-         * intelligent, but less civilized, species called humans. With unrivalled magic and martial power, Katalkotlís forces brought back
+         * intelligent, but less civilized, species called humans. With unrivalled magic and martial power, Katalkotl‚Äôs forces brought back
          * humans to be servants to the Kotl. Because of the mercurial connection between Eodon and the outer worlds, the humans were from
          * many different times and places. Since the Kotl language could not be spoken by the human voice box (and so the Kotl could keep 
          * the secrets of their power), the Kotl created a single language from various human tongues to communicate with their new servants.
@@ -302,7 +302,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -319,7 +319,7 @@ namespace Server.Engines.TreasuresOfKotlCity
          * Unfortunately, the Myrmidex queen had simply gone into hiding. In a subterranean hive, she produced a million eggs that hatched into
          * an army. The intelligent insects had studied the Kotl and knew the source of their power. Mysteriously, the Myrmidex raided inside 
          * Kotlan and stole the Great Moonstone. If this initial strike disarmed the Kotl, the Myrmidex then proceeded to break the back of Kotl
-         * civilization. The surface portions of Kotlan were destroyed, so the World-Builders barricaded themselves in the cityís tunnels. 
+         * civilization. The surface portions of Kotlan were destroyed, so the World-Builders barricaded themselves in the city‚Äôs tunnels. 
          * Expecting to withstand the Myrmidex for months, the Kotl found themselves facing the Myrmidex in days. The insects destroyed 
          * everything in their path: every crystal, every relic, and any trace of Kotl magic. The Myrmidex killed everyone in the city, Kotl
          * and human. Then the Myrmidex left, and the city closed up behind them.*/
@@ -345,7 +345,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

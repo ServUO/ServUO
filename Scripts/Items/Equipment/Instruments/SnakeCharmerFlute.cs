@@ -84,9 +84,9 @@ namespace Server.Items
 
                 protected override void OnTarget(Mobile from, object targ)
                 {
-                    if (targ is IPoint2D)
+                    if (targ is IPoint2D point2D)
                     {
-                        Point2D p = new Point2D((IPoint2D)targ);
+                        Point2D p = new Point2D(point2D);
 
                         if (!m_Snake.InRange(p, 10))
                         {
@@ -122,7 +122,7 @@ namespace Server.Items
             return m_SnakeTypes.Any(t => t == bc.GetType());
         }
 
-        private static readonly Type[] m_SnakeTypes = new Type[]
+        private static readonly Type[] m_SnakeTypes =
         {
             typeof(LavaSnake),    typeof(Snake),
             typeof(CoralSnake),   typeof(GiantSerpent),
@@ -147,7 +147,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

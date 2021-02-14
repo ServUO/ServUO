@@ -897,13 +897,13 @@ namespace Server.Engines.Blackthorn
 
         public override bool IsRedeemableItem(Item item)
         {
-            if (item is BaseWeapon && ((BaseWeapon)item).ReforgedSuffix == ReforgedSuffix.Minax)
+            if (item is BaseWeapon weapon && weapon.ReforgedSuffix == ReforgedSuffix.Minax)
                 return true;
-            if (item is BaseArmor && ((BaseArmor)item).ReforgedSuffix == ReforgedSuffix.Minax)
+            if (item is BaseArmor armor && armor.ReforgedSuffix == ReforgedSuffix.Minax)
                 return true;
-            if (item is BaseJewel && ((BaseJewel)item).ReforgedSuffix == ReforgedSuffix.Minax)
+            if (item is BaseJewel jewel && jewel.ReforgedSuffix == ReforgedSuffix.Minax)
                 return true;
-            if (item is BaseClothing && ((BaseClothing)item).ReforgedSuffix == ReforgedSuffix.Minax)
+            if (item is BaseClothing clothing && clothing.ReforgedSuffix == ReforgedSuffix.Minax)
                 return true;
 
             return false;
@@ -929,7 +929,7 @@ namespace Server.Engines.Blackthorn
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

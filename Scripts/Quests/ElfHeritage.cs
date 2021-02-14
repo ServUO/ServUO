@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class TheJoysOfLifeQuest : BaseQuest
     {
         public TheJoysOfLifeQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(AriellesBauble), "arielle's baubles", 3, 0x23B));
 
@@ -36,22 +35,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class DefendingTheHerdQuest : BaseQuest
     {
         public DefendingTheHerdQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Bravehorn's drinking pool"));
 
@@ -78,22 +74,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class CaretakerOfTheLandQuest : BaseQuest
     {
         public CaretakerOfTheLandQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(SosariaSap), "sap of sosaria", 1, 0x1848));
 
@@ -104,8 +97,8 @@ namespace Server.Engines.Quests
         /* Caretaker of the Land */
         public override object Title => 1072783;
         /* Hrrrrr.  Hurrrr.  Huuuman.  *creaking branches*  Suuun on baaark, roooooots diiig deeeeeep, wiiind caaaresses 
-        leeeaves … Hrrrrr.  Saaap of Sooosaria feeeeeeds us.  Hrrrrr.  Huuuman leeearn.  Caaaretaker of plaaants … teeend 
-        … prooove.<br> */
+        leeeaves â€¦ Hrrrrr.  Saaap of Sooosaria feeeeeeds us.  Hrrrrr.  Huuuman leeearn.  Caaaretaker of plaaants â€¦ teeend 
+        â€¦ prooove.<br> */
         public override object Description => 1072812;
         /* Hrrrrr.  Hrrrrr.  Huuuman. */
         public override object Refuse => 1072813;
@@ -123,22 +116,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class SeasonsQuest : BaseQuest
     {
         public SeasonsQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(RawFishSteak), "raw fish steaks", 20, 0x097A));
 
@@ -157,6 +147,7 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1072811;
         /* *sniff* fish! much-fish! */
         public override object Complete => 1074174;
+
         public override void GiveRewards()
         {
             base.GiveRewards();
@@ -167,22 +158,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TheBalanceOfNatureQuest : BaseQuest
     {
         public TheBalanceOfNatureQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(TimberWolf), "timber wolves", 15, "Huntsman's Forest"));
 
@@ -210,22 +198,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class WisdomOfTheSphynxQuest : BaseQuest
     {
         public WisdomOfTheSphynxQuest()
-            : base()
         {
             AddObjective(new InternalObjective());
 
@@ -256,15 +241,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class InternalObjective : ObtainObjective
@@ -290,15 +273,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.WriteEncodedInt(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadEncodedInt();
+                reader.ReadEncodedInt();
             }
         }
     }

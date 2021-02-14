@@ -45,12 +45,14 @@ namespace Server.Mobiles
                 SayTo(pm, 502089); // You cannot be a member of the Thieves' Guild while you are Young.
                 return false;
             }
-            else if (pm.Kills > 0)
+
+            if (pm.Kills > 0)
             {
                 SayTo(pm, 501050); // This guild is for cunning thieves, not oafish cutthroats.
                 return false;
             }
-            else if (pm.Skills[SkillName.Stealing].Base < 60.0 && !Siege.SiegeShard)
+
+            if (pm.Skills[SkillName.Stealing].Base < 60.0 && !Siege.SiegeShard)
             {
                 SayTo(pm, 501051); // You must be at least a journeyman pickpocket to join this elite organization.
                 return false;
@@ -76,14 +78,12 @@ namespace Server.Mobiles
         {
             Mobile from = e.Mobile;
 
-            if (!e.Handled && from is PlayerMobile && from.InRange(Location, 2) && e.HasKeyword(0x1F)) // *disguise*
+            if (!e.Handled && from is PlayerMobile pm && pm.InRange(Location, 2) && e.HasKeyword(0x1F)) // *disguise*
             {
-                PlayerMobile pm = (PlayerMobile)from;
-
                 if (pm.NpcGuild == NpcGuild.ThievesGuild)
-                    SayTo(from, 501839); // That particular item costs 700 gold pieces.
+                    SayTo(pm, 501839); // That particular item costs 700 gold pieces.
                 else
-                    SayTo(from, 501838); // I don't know what you're talking about.
+                    SayTo(pm, 501838); // I don't know what you're talking about.
 
                 e.Handled = true;
             }
@@ -93,13 +93,11 @@ namespace Server.Mobiles
 
         public override bool OnGoldGiven(Mobile from, Gold dropped)
         {
-            if (from is PlayerMobile && dropped.Amount == 700)
+            if (from is PlayerMobile pm && dropped.Amount == 700)
             {
-                PlayerMobile pm = (PlayerMobile)from;
-
                 if (pm.NpcGuild == NpcGuild.ThievesGuild)
                 {
-                    from.AddToBackpack(new DisguiseKit());
+                    pm.AddToBackpack(new DisguiseKit());
 
                     dropped.Delete();
                     return true;
@@ -112,15 +110,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

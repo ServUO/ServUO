@@ -57,9 +57,9 @@ namespace Server.Gumps
         public bool TitleClearing { get; set; }
         public int TitleSelected { get; set; }
 
-        public PlayerMobile User { get; set; }
+        public PlayerMobile User { get; }
 
-        public Dictionary<GumpButton, Action<GumpButton>> ButtonCallbacks { get; set; }
+        public Dictionary<GumpButton, Action<GumpButton>> ButtonCallbacks { get; }
 
         public TitlesGump(PlayerMobile pm, TitleType type = TitleType.None, TitleCategory cat = TitleCategory.None, bool description = false)
             : base(50, 50)
@@ -422,10 +422,10 @@ namespace Server.Gumps
                     string str = GetChampionTitle();
                     object description = GetChampInfo();
 
-                    if (description is int)
-                        AddHtmlLocalized(225, 70, 270, 140, (int)description, 0xFFFF, false, false);
-                    else if (description is string)
-                        AddHtml(250, 70, 270, 140, Color("#FFFFFF", (string)description), false, false);
+                    if (description is int i)
+                        AddHtmlLocalized(225, 70, 270, 140, i, 0xFFFF, false, false);
+                    else if (description is string s)
+                        AddHtml(250, 70, 270, 140, Color("#FFFFFF", s), false, false);
 
                     AddHtmlLocalized(225, 220, 160, 16, 1115027, 0xFFFF, false, false); // Paperdoll Name (Suffix)
                     AddHtml(275, 240, 245, 16, Color("#FFFFFF", str), false, false);
@@ -630,10 +630,10 @@ namespace Server.Gumps
                     int title = rewards[TitleSelected];
                     object description = GetRewardTitleInfo(title);
 
-                    if (description is int)
-                        AddHtmlLocalized(225, 70, 270, 140, (int)description, 0xFFFF, false, false);
-                    else if (description is string)
-                        AddHtml(225, 70, 270, 140, Color("#FFFFFF", (string)description), false, false);
+                    if (description is int i)
+                        AddHtmlLocalized(225, 70, 270, 140, i, 0xFFFF, false, false);
+                    else if (description is string s)
+                        AddHtml(225, 70, 270, 140, Color("#FFFFFF", s), false, false);
 
                     AddHtmlLocalized(225, 220, 160, 16, 1115029, 0xFFFF, false, false); // Subtitle
 
@@ -825,19 +825,19 @@ namespace Server.Gumps
                     {
                         object title = User.RewardTitles[i];
 
-                        if (title is int)
+                        if (title is int iTitle)
                         {
                             string cust = null;
 
-                            if ((int)title == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
+                            if (iTitle == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
                             {
                                 AddHtmlLocalized(260, 70 + (index * 22), 245, 16, 1154017, cust, 0xFFFF, false, false);
                             }
                             else
-                                AddHtmlLocalized(260, 70 + (index * 22), 245, 16, (int)title, 0xFFFF, false, false);
+                                AddHtmlLocalized(260, 70 + (index * 22), 245, 16, iTitle, 0xFFFF, false, false);
                         }
-                        else if (title is string)
-                            AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", (string)title), false, false);
+                        else if (title is string sTitle)
+                            AddHtml(260, 70 + (index * 22), 245, 16, Color("#FFFFFF", sTitle), false, false);
 
                         AddCallbackButton(225, 70 + (index * 22), 4005, 4007, i + 600, GumpButtonType.Reply, 0, b =>
                         {
@@ -855,23 +855,23 @@ namespace Server.Gumps
                     object title = User.RewardTitles[TitleSelected];
                     object description = GetRewardTitleInfo(title);
 
-                    if (description is int)
-                        AddHtmlLocalized(225, 70, 270, 140, (int)description, 0xFFFF, false, false);
-                    else if (description is string)
-                        AddHtml(225, 70, 270, 140, Color("#FFFFFF", (string)description), false, false);
+                    if (description is int iDesc)
+                        AddHtmlLocalized(225, 70, 270, 140, iDesc, 0xFFFF, false, false);
+                    else if (description is string sDesc)
+                        AddHtml(225, 70, 270, 140, Color("#FFFFFF", sDesc), false, false);
 
                     AddHtmlLocalized(225, 220, 160, 16, 1115029, 0xFFFF, false, false); // Subtitle
 
-                    if (title is int)
+                    if (title is int i)
                     {
                         string cust = null;
 
-                        if ((int)title == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
+                        if (i == 1154017 && CityLoyaltySystem.HasCustomTitle(User, out cust))
                         {
                             AddHtmlLocalized(275, 240, 245, 16, 1154017, cust, 0xFFFF, false, false);
                         }
                         else
-                            AddHtmlLocalized(275, 240, 160, 32, (int)title, 0xFFFF, false, false);
+                            AddHtmlLocalized(275, 240, 160, 32, i, 0xFFFF, false, false);
                     }
                     else
                         AddHtml(275, 240, 245, 16, Color("#FFFFFF", (string)title), false, false);

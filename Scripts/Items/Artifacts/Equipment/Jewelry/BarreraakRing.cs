@@ -4,7 +4,7 @@ namespace Server.Items
     public class BarreraaksRing : GoldRing
     {
         public override bool IsArtifact => true;
-        public override int LabelNumber => 1095049;  // Barreraak’s Old Beat Up Ring
+        public override int LabelNumber => 1095049;  // Barreraakâ€™s Old Beat Up Ring
 
         [Constructable]
         public BarreraaksRing()
@@ -42,16 +42,16 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile)
-                ((Mobile)parent).BodyMod = 334;
+            if (parent is Mobile mobile)
+                mobile.BodyMod = 334;
         }
 
         public override void OnRemoved(object parent)
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
-                ((Mobile)parent).BodyMod = 0;
+            if (parent is Mobile mobile)
+                mobile.BodyMod = 0;
         }
 
         public BarreraaksRing(Serial serial)
@@ -71,9 +71,9 @@ namespace Server.Items
             base.Deserialize(reader);
             int version = reader.ReadInt();
 
-            if (Parent is Mobile)
+            if (Parent is Mobile mobile)
             {
-                Mobile m = (Mobile)Parent;
+                Mobile m = mobile;
 
                 Timer.DelayCall(() =>
                     {

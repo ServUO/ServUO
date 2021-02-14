@@ -249,111 +249,77 @@ namespace Server.Engines.Quests
                 {
                     BaseObjective objective = m_Quest.Objectives[i];
 
-                    if (objective is SlayObjective)
+                    if (objective is SlayObjective slay)
                     {
-                        SlayObjective slay = (SlayObjective)objective;
+                        AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay
+                        AddLabel(133, offset, 0x481, slay.MaxProgress.ToString()); // Count
+                        AddLabel(163, offset, 0x481, slay.Name); // Name 
 
-                        if (slay != null)
+                        offset += 16;
+
+                        if (m_Offer)
                         {
-                            AddHtmlLocalized(98, offset, 30, 16, 1072204, 0x15F90, false, false); // Slay
-                            AddLabel(133, offset, 0x481, slay.MaxProgress.ToString()); // Count
-                            AddLabel(163, offset, 0x481, slay.Name); // Name 
-
-                            offset += 16;
-
-                            if (m_Offer)
+                            if (slay.Timed)
                             {
-                                if (slay.Timed)
-                                {
-                                    AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                                    AddLabel(223, offset, 0x481, FormatSeconds(slay.Seconds)); // %est. time remaining%
-
-                                    offset += 16;
-                                }
-                            }
-
-                            if (slay.Region != null || slay.Label > 0)
-                            {
-                                AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
-
-                                if (slay.Label > 0)
-                                {
-                                    AddHtmlLocalized(223, offset, 312, 20, slay.Label, 0xFFFFFF, false, false);
-                                }
-                                else
-                                {
-                                    AddHtmlObject(223, offset, 312, 20, slay.Region, White, false, false); // %location%
-                                }
+                                AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                AddLabel(223, offset, 0x481, FormatSeconds(slay.Seconds)); // %est. time remaining%
 
                                 offset += 16;
-                            }
-
-                            if (!m_Offer)
-                            {
-                                AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
-                                AddLabel(223, offset, 0x481, slay.CurProgress.ToString());  // %current progress%
-
-                                offset += 16;
-
-                                if (ReturnTo() != null)
-                                {
-                                    AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
-                                    AddLabel(223, offset, 0x481, ReturnTo());  // %return to%		
-
-                                    offset += 16;
-                                }
-
-                                if (slay.Timed)
-                                {
-                                    AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                                    AddLabel(223, offset, 0x481, FormatSeconds(slay.Seconds)); // %est. time remaining%
-
-                                    offset += 16;
-                                }
                             }
                         }
-                    }
-                    else if (objective is ObtainObjective)
-                    {
-                        ObtainObjective obtain = (ObtainObjective)objective;
 
-                        if (obtain != null)
+                        if (slay.Region != null || slay.Label > 0)
                         {
-                            AddHtmlLocalized(98, offset, 40, 16, 1072205, 0x15F90, false, false); // Obtain						
-                            AddLabel(143, offset, 0x481, obtain.MaxProgress + " " + obtain.Name); // %count% + %name%
+                            AddHtmlLocalized(103, offset, 312, 20, 1018327, 0x15F90, false, false); // Location
 
-                            if (obtain.Image > 0)
-                                AddItem(350, offset, obtain.Image, obtain.Hue); // Image
+                            if (slay.Label > 0)
+                            {
+                                AddHtmlLocalized(223, offset, 312, 20, slay.Label, 0xFFFFFF, false, false);
+                            }
+                            else
+                            {
+                                AddHtmlObject(223, offset, 312, 20, slay.Region, White, false, false); // %location%
+                            }
 
                             offset += 16;
+                        }
 
-                            if (m_Offer)
-                            {
-                                if (obtain.Timed)
-                                {
-                                    AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                                    AddLabel(223, offset, 0x481, FormatSeconds(obtain.Seconds)); // %est. time remaining%
-
-                                    offset += 16;
-                                }
-                                else if (obtain.Image > 0)
-                                    offset += 16;
-
-                                continue;
-                            }
+                        if (!m_Offer)
+                        {
                             AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
-                            AddLabel(223, offset, 0x481, obtain.CurProgress.ToString());    // %current progress%
+                            AddLabel(223, offset, 0x481, slay.CurProgress.ToString());  // %current progress%
 
                             offset += 16;
 
                             if (ReturnTo() != null)
                             {
                                 AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
-                                AddLabel(223, offset, 0x481, ReturnTo());  // %return to%
+                                AddLabel(223, offset, 0x481, ReturnTo());  // %return to%		
 
                                 offset += 16;
                             }
 
+                            if (slay.Timed)
+                            {
+                                AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                                AddLabel(223, offset, 0x481, FormatSeconds(slay.Seconds)); // %est. time remaining%
+
+                                offset += 16;
+                            }
+                        }
+                    }
+                    else if (objective is ObtainObjective obtain)
+                    {
+                        AddHtmlLocalized(98, offset, 40, 16, 1072205, 0x15F90, false, false); // Obtain						
+                        AddLabel(143, offset, 0x481, obtain.MaxProgress + " " + obtain.Name); // %count% + %name%
+
+                        if (obtain.Image > 0)
+                            AddItem(350, offset, obtain.Image, obtain.Hue); // Image
+
+                        offset += 16;
+
+                        if (m_Offer)
+                        {
                             if (obtain.Timed)
                             {
                                 AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
@@ -361,37 +327,54 @@ namespace Server.Engines.Quests
 
                                 offset += 16;
                             }
-                        }
-                    }
-                    else if (objective is DeliverObjective)
-                    {
-                        DeliverObjective deliver = (DeliverObjective)objective;
-
-                        if (deliver != null)
-                        {
-                            AddHtmlLocalized(98, offset, 40, 16, 1072207, 0x15F90, false, false); // Deliver						
-                            AddLabel(143, offset, 0x481, deliver.MaxProgress + " " + deliver.DeliveryName);     // %name%
-
-                            offset += 16;
-
-                            AddHtmlLocalized(103, offset, 120, 16, 1072379, 0x15F90, false, false); // Deliver to						
-                            AddLabel(223, offset, 0x481, deliver.DestName); // %deliver to%
-
-                            offset += 16;
-
-                            if (deliver.Timed)
-                            {
-                                AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
-                                AddLabel(223, offset, 0x481, FormatSeconds(deliver.Seconds)); // %est. time remaining%
-
+                            else if (obtain.Image > 0)
                                 offset += 16;
-                            }
+
+                            continue;
+                        }
+                        AddHtmlLocalized(103, offset, 120, 16, 3000087, 0x15F90, false, false); // Total			
+                        AddLabel(223, offset, 0x481, obtain.CurProgress.ToString());    // %current progress%
+
+                        offset += 16;
+
+                        if (ReturnTo() != null)
+                        {
+                            AddHtmlLocalized(103, offset, 120, 16, 1074782, 0x15F90, false, false); // Return to	
+                            AddLabel(223, offset, 0x481, ReturnTo());  // %return to%
+
+                            offset += 16;
+                        }
+
+                        if (obtain.Timed)
+                        {
+                            AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                            AddLabel(223, offset, 0x481, FormatSeconds(obtain.Seconds)); // %est. time remaining%
+
+                            offset += 16;
                         }
                     }
-                    else if (objective is EscortObjective)
+                    else if (objective is DeliverObjective deliver)
                     {
-                        EscortObjective escort = (EscortObjective)objective;
+                        AddHtmlLocalized(98, offset, 40, 16, 1072207, 0x15F90, false, false); // Deliver						
+                        AddLabel(143, offset, 0x481, deliver.MaxProgress + " " + deliver.DeliveryName);     // %name%
 
+                        offset += 16;
+
+                        AddHtmlLocalized(103, offset, 120, 16, 1072379, 0x15F90, false, false); // Deliver to						
+                        AddLabel(223, offset, 0x481, deliver.DestName); // %deliver to%
+
+                        offset += 16;
+
+                        if (deliver.Timed)
+                        {
+                            AddHtmlLocalized(103, offset, 120, 16, 1062379, 0x15F90, false, false); // Est. time remaining:
+                            AddLabel(223, offset, 0x481, FormatSeconds(deliver.Seconds)); // %est. time remaining%
+
+                            offset += 16;
+                        }
+                    }
+                    else if (objective is EscortObjective escort)
+                    {
                         if (escort != null)
                         {
                             AddHtmlLocalized(98, offset, 312, 16, 1072206, 0x15F90, false, false); // Escort to
@@ -416,10 +399,8 @@ namespace Server.Engines.Quests
                             }
                         }
                     }
-                    else if (objective is ApprenticeObjective)
+                    else if (objective is ApprenticeObjective apprentice)
                     {
-                        ApprenticeObjective apprentice = (ApprenticeObjective)objective;
-
                         if (apprentice != null)
                         {
                             AddHtmlLocalized(98, offset, 200, 16, 1077485, "#" + (1044060 + (int)apprentice.Skill) + "\t" + apprentice.MaxProgress, 0x15F90, false, false); // Increase ~1_SKILL~ to ~2_VALUE~
@@ -427,10 +408,8 @@ namespace Server.Engines.Quests
                             offset += 16;
                         }
                     }
-                    else if (objective is SimpleObjective && ((SimpleObjective)objective).Descriptions != null)
+                    else if (objective is SimpleObjective obj && obj.Descriptions != null)
                     {
-                        SimpleObjective obj = (SimpleObjective)objective;
-
                         for (int j = 0; j < obj.Descriptions.Count; j++)
                         {
                             offset += 16;
@@ -446,13 +425,13 @@ namespace Server.Engines.Quests
                     }
                     else if (objective.ObjectiveDescription != null)
                     {
-                        if (objective.ObjectiveDescription is int)
+                        if (objective.ObjectiveDescription is int iDesc)
                         {
-                            AddHtmlLocalized(98, offset, 310, 300, (int)objective.ObjectiveDescription, 0x15F90, false, false);
+                            AddHtmlLocalized(98, offset, 310, 300, iDesc, 0x15F90, false, false);
                         }
-                        else if (objective.ObjectiveDescription is string)
+                        else if (objective.ObjectiveDescription is string sDesc)
                         {
-                            AddHtmlObject(98, offset, 310, 300, (string)objective.ObjectiveDescription, LightGreen, false, false);
+                            AddHtmlObject(98, offset, 310, 300, sDesc, LightGreen, false, false);
                         }
                     }
                 }
@@ -601,11 +580,16 @@ namespace Server.Engines.Quests
             seconds -= minutes * 60;
 
             if (hours > 0 && minutes > 0)
+            {
                 return hours + ":" + minutes + ":" + seconds;
-            else if (minutes > 0)
+            }
+
+            if (minutes > 0)
+            {
                 return minutes + ":" + seconds;
-            else
-                return seconds.ToString();
+            }
+
+            return seconds.ToString();
         }
 
         public virtual string ReturnTo()
@@ -635,59 +619,49 @@ namespace Server.Engines.Quests
 
             switch (info.ButtonID)
             {
-                // close quest list
-                case (int)Buttons.Close:
+                case (int)Buttons.Close: // close quest list
                     break;
-                // close quest
-                case (int)Buttons.CloseQuest:
+                case (int)Buttons.CloseQuest: // close quest
                     m_From.SendGump(new MondainQuestGump(m_From));
                     break;
-                // accept quest
-                case (int)Buttons.AcceptQuest:
+                case (int)Buttons.AcceptQuest: // accept quest
                     if (m_Offer)
                         m_Quest.OnAccept();
                     break;
-                // refuse quest
-                case (int)Buttons.RefuseQuest:
+                case (int)Buttons.RefuseQuest: // refuse quest
                     if (m_Offer)
                     {
                         m_Quest.OnRefuse();
                         m_From.SendGump(new MondainQuestGump(m_Quest, Section.Refuse, true));
                     }
                     break;
-                // resign quest
-                case (int)Buttons.ResignQuest:
+                case (int)Buttons.ResignQuest: // resign quest
                     if (!m_Offer)
                         m_From.SendGump(new MondainResignGump(m_Quest));
                     break;
-                // accept reward
-                case (int)Buttons.AcceptReward:
+                case (int)Buttons.AcceptReward: // accept reward
                     if (!m_Offer && m_Section == Section.Rewards && m_Completed)
                         m_Quest.GiveRewards();
                     break;
-                // refuse reward
-                case (int)Buttons.RefuseReward:
+                case (int)Buttons.RefuseReward: // refuse reward
                     if (!m_Offer && m_Section == Section.Rewards && m_Completed)
                         m_Quest.RefuseRewards();
                     break;
-                // previous page
-                case (int)Buttons.PreviousPage:
-                    if (m_Section == Section.Objectives || (m_Section == Section.Rewards && !m_Completed))
+                case (int)Buttons.PreviousPage: // previous page
+                    if (m_Section == Section.Objectives || m_Section == Section.Rewards && !m_Completed)
                     {
                         m_Section = (Section)((int)m_Section - 1);
                         m_From.SendGump(new MondainQuestGump(m_Quest, m_Section, m_Offer));
                     }
                     break;
-                // next page
-                case (int)Buttons.NextPage:
+                case (int)Buttons.NextPage: // next page
                     if (m_Section == Section.Description || m_Section == Section.Objectives)
                     {
                         m_Section = (Section)((int)m_Section + 1);
                         m_From.SendGump(new MondainQuestGump(m_Quest, m_Section, m_Offer));
                     }
                     break;
-                // player complete quest
-                case (int)Buttons.Complete:
+                case (int)Buttons.Complete: // player complete quest
                     if (!m_Offer && m_Section == Section.Complete)
                     {
                         if (!m_Quest.Completed)
@@ -711,13 +685,11 @@ namespace Server.Engines.Quests
                         }
                     }
                     break;
-                // admin complete quest
-                case (int)Buttons.CompleteQuest:
+                case (int)Buttons.CompleteQuest: // admin complete quest
                     if ((int)m_From.AccessLevel > (int)AccessLevel.Counselor && m_Quest != null)
                         QuestHelper.CompleteQuest(m_From, m_Quest);
                     break;
-                // show quest
-                default:
+                default: // show quest
                     if (m_Section != Section.Main || info.ButtonID >= m_From.Quests.Count + ButtonOffset || info.ButtonID < ButtonOffset)
                         break;
 

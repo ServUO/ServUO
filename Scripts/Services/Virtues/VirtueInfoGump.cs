@@ -86,7 +86,7 @@ namespace Server.Services.Virtues
                 275,
                 400,
                 40,
-                (webPage == null) ? 1052055 : 1052052,
+                webPage == null ? 1052055 : 1052052,
                 false,
                 false); // This virtue is not yet defined. OR -click to learn more (opens webpage)
         }

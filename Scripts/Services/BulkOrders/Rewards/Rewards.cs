@@ -99,7 +99,7 @@ namespace Server.Engines.BulkOrders
         {
             if (m_Items.Length == 0)
                 return null;
-            else if (m_Items.Length == 1)
+            if (m_Items.Length == 1)
                 return m_Items[0];
 
             int totalWeight = 0;
@@ -129,14 +129,8 @@ namespace Server.Engines.BulkOrders
 
         public RewardGroup[] Groups
         {
-            get
-            {
-                return m_Groups;
-            }
-            set
-            {
-                m_Groups = value;
-            }
+            get => m_Groups;
+            set => m_Groups = value;
         }
 
         public List<CollectionItem> RewardCollection { get; set; }
@@ -315,7 +309,7 @@ namespace Server.Engines.BulkOrders
             }
             else
             {
-                Groups = new RewardGroup[]
+                Groups = new[]
                 {
                     new RewardGroup(0, new RewardItem(1, SturdyShovel)),
                     new RewardGroup(25, new RewardItem(1, SturdyPickaxe)),
@@ -381,9 +375,9 @@ namespace Server.Engines.BulkOrders
         {
             if (type == 1)
                 return new LeatherGlovesOfMining(1);
-            else if (type == 3)
+            if (type == 3)
                 return new StuddedGlovesOfMining(3);
-            else if (type == 5)
+            if (type == 5)
                 return new RingmailGlovesOfMining(5);
 
             throw new InvalidOperationException();
@@ -441,7 +435,7 @@ namespace Server.Engines.BulkOrders
 
         public static readonly SmithRewardCalculator Instance = new SmithRewardCalculator();
 
-        private readonly RewardType[] m_Types = new RewardType[]
+        private readonly RewardType[] m_Types =
         {
             // Armors
             new RewardType(200, typeof(RingmailGloves), typeof(RingmailChest), typeof(RingmailArms), typeof(RingmailLegs)),
@@ -479,91 +473,91 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private static readonly int[][][] m_GoldTable = new int[][][]
+        private static readonly int[][][] m_GoldTable =
         {
-            new int[][] // 1-part (regular)
+            new[] // 1-part (regular)
             {
-                new int[] { 150, 250, 250, 400, 400, 750, 750, 1200, 1200 },
-                new int[] { 225, 375, 375, 600, 600, 1125, 1125, 1800, 1800 },
-                new int[] { 300, 500, 750, 800, 1050, 1500, 2250, 2400, 4000 }
+                new[] { 150, 250, 250, 400, 400, 750, 750, 1200, 1200 },
+                new[] { 225, 375, 375, 600, 600, 1125, 1125, 1800, 1800 },
+                new[] { 300, 500, 750, 800, 1050, 1500, 2250, 2400, 4000 }
             },
-            new int[][] // 1-part (exceptional)
+            new[] // 1-part (exceptional)
             {
-                new int[] { 250, 400, 400, 750, 750, 1500, 1500, 3000, 3000 },
-                new int[] { 375, 600, 600, 1125, 1125, 2250, 2250, 4500, 4500 },
-                new int[] { 500, 800, 1200, 1500, 2500, 3000, 6000, 6000, 12000 }
+                new[] { 250, 400, 400, 750, 750, 1500, 1500, 3000, 3000 },
+                new[] { 375, 600, 600, 1125, 1125, 2250, 2250, 4500, 4500 },
+                new[] { 500, 800, 1200, 1500, 2500, 3000, 6000, 6000, 12000 }
             },
-            new int[][] // Ringmail (regular)
+            new[] // Ringmail (regular)
             {
-                new int[] { 3000, 5000, 5000, 7500, 7500, 10000, 10000, 15000, 15000 },
-                new int[] { 4500, 7500, 7500, 11250, 11500, 15000, 15000, 22500, 22500 },
-                new int[] { 6000, 10000, 15000, 15000, 20000, 20000, 30000, 30000, 50000 }
+                new[] { 3000, 5000, 5000, 7500, 7500, 10000, 10000, 15000, 15000 },
+                new[] { 4500, 7500, 7500, 11250, 11500, 15000, 15000, 22500, 22500 },
+                new[] { 6000, 10000, 15000, 15000, 20000, 20000, 30000, 30000, 50000 }
             },
-            new int[][] // Ringmail (exceptional)
+            new[] // Ringmail (exceptional)
             {
-                new int[] { 5000, 10000, 10000, 15000, 15000, 25000, 25000, 50000, 50000 },
-                new int[] { 7500, 15000, 15000, 22500, 22500, 37500, 37500, 75000, 75000 },
-                new int[] { 10000, 20000, 30000, 30000, 50000, 50000, 100000, 100000, 200000 }
+                new[] { 5000, 10000, 10000, 15000, 15000, 25000, 25000, 50000, 50000 },
+                new[] { 7500, 15000, 15000, 22500, 22500, 37500, 37500, 75000, 75000 },
+                new[] { 10000, 20000, 30000, 30000, 50000, 50000, 100000, 100000, 200000 }
             },
-            new int[][] // Chainmail (regular)
+            new[] // Chainmail (regular)
             {
-                new int[] { 4000, 7500, 7500, 10000, 10000, 15000, 15000, 25000, 25000 },
-                new int[] { 6000, 11250, 11250, 15000, 15000, 22500, 22500, 37500, 37500 },
-                new int[] { 8000, 15000, 20000, 20000, 30000, 30000, 50000, 50000, 100000 }
+                new[] { 4000, 7500, 7500, 10000, 10000, 15000, 15000, 25000, 25000 },
+                new[] { 6000, 11250, 11250, 15000, 15000, 22500, 22500, 37500, 37500 },
+                new[] { 8000, 15000, 20000, 20000, 30000, 30000, 50000, 50000, 100000 }
             },
-            new int[][] // Chainmail (exceptional)
+            new[] // Chainmail (exceptional)
             {
-                new int[] { 7500, 15000, 15000, 25000, 25000, 50000, 50000, 100000, 100000 },
-                new int[] { 11250, 22500, 22500, 37500, 37500, 75000, 75000, 150000, 150000 },
-                new int[] { 15000, 30000, 50000, 50000, 100000, 100000, 200000, 200000, 200000 }
+                new[] { 7500, 15000, 15000, 25000, 25000, 50000, 50000, 100000, 100000 },
+                new[] { 11250, 22500, 22500, 37500, 37500, 75000, 75000, 150000, 150000 },
+                new[] { 15000, 30000, 50000, 50000, 100000, 100000, 200000, 200000, 200000 }
             },
-            new int[][] // Platemail (regular)
+            new[] // Platemail (regular)
             {
-                new int[] { 5000, 10000, 10000, 15000, 15000, 25000, 25000, 50000, 50000 },
-                new int[] { 7500, 15000, 15000, 22500, 22500, 37500, 37500, 75000, 75000 },
-                new int[] { 10000, 20000, 30000, 30000, 50000, 50000, 100000, 100000, 200000 }
+                new[] { 5000, 10000, 10000, 15000, 15000, 25000, 25000, 50000, 50000 },
+                new[] { 7500, 15000, 15000, 22500, 22500, 37500, 37500, 75000, 75000 },
+                new[] { 10000, 20000, 30000, 30000, 50000, 50000, 100000, 100000, 200000 }
             },
-            new int[][] // Platemail (exceptional)
+            new[] // Platemail (exceptional)
             {
-                new int[] { 10000, 25000, 25000, 50000, 50000, 100000, 100000, 100000, 100000 },
-                new int[] { 15000, 37500, 37500, 75000, 75000, 150000, 150000, 150000, 150000 },
-                new int[] { 20000, 50000, 100000, 100000, 200000, 200000, 200000, 200000, 200000 }
+                new[] { 10000, 25000, 25000, 50000, 50000, 100000, 100000, 100000, 100000 },
+                new[] { 15000, 37500, 37500, 75000, 75000, 150000, 150000, 150000, 150000 },
+                new[] { 20000, 50000, 100000, 100000, 200000, 200000, 200000, 200000, 200000 }
             },
-            new int[][] // 2-part weapons (regular)
+            new[] // 2-part weapons (regular)
             {
-                new int[] { 3000, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 4500, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 6000, 0, 0, 0, 0, 0, 0, 0, 0 }
+                new[] { 3000, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 4500, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 6000, 0, 0, 0, 0, 0, 0, 0, 0 }
             },
-            new int[][] // 2-part weapons (exceptional)
+            new[] // 2-part weapons (exceptional)
             {
-                new int[] { 5000, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 7500, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 10000, 0, 0, 0, 0, 0, 0, 0, 0 }
+                new[] { 5000, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 7500, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 10000, 0, 0, 0, 0, 0, 0, 0, 0 }
             },
-            new int[][] // 5-part weapons (regular)
+            new[] // 5-part weapons (regular)
             {
-                new int[] { 4000, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 6000, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 8000, 0, 0, 0, 0, 0, 0, 0, 0 }
+                new[] { 4000, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 6000, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 8000, 0, 0, 0, 0, 0, 0, 0, 0 }
             },
-            new int[][] // 5-part weapons (exceptional)
+            new[] // 5-part weapons (exceptional)
             {
-                new int[] { 7500, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 11250, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 15000, 0, 0, 0, 0, 0, 0, 0, 0 }
+                new[] { 7500, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 11250, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 15000, 0, 0, 0, 0, 0, 0, 0, 0 }
             },
-            new int[][] // 6-part weapons (regular)
+            new[] // 6-part weapons (regular)
             {
-                new int[] { 4000, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 6000, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 10000, 0, 0, 0, 0, 0, 0, 0, 0 }
+                new[] { 4000, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 6000, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 10000, 0, 0, 0, 0, 0, 0, 0, 0 }
             },
-            new int[][] // 6-part weapons (exceptional)
+            new[] // 6-part weapons (exceptional)
             {
-                new int[] { 7500, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 11250, 0, 0, 0, 0, 0, 0, 0, 0 },
-                new int[] { 15000, 0, 0, 0, 0, 0, 0, 0, 0 }
+                new[] { 7500, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 11250, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new[] { 15000, 0, 0, 0, 0, 0, 0, 0, 0 }
             }
         };
 
@@ -654,7 +648,7 @@ namespace Server.Engines.BulkOrders
             }
             else
             {
-                Groups = new RewardGroup[]
+                Groups = new[]
                 {
                     new RewardGroup(0, new RewardItem(1, Cloth, 0)),
                     new RewardGroup(50, new RewardItem(1, Cloth, 1)),
@@ -697,14 +691,14 @@ namespace Server.Engines.BulkOrders
             return kit;
         }
 
-        private static readonly int[][] m_ClothHues = new int[][]
+        private static readonly int[][] m_ClothHues =
         {
-            new int[] { 0x483, 0x48C, 0x488, 0x48A },
-            new int[] { 0x495, 0x48B, 0x486, 0x485 },
-            new int[] { 0x48D, 0x490, 0x48E, 0x491 },
-            new int[] { 0x48F, 0x494, 0x484, 0x497 },
-            new int[] { 0x489, 0x47F, 0x482, 0x47E },
-            new int[] { 0xAAC, 0xAB4, 0xAAF, 0xAB5, 0xAAB },
+            new[] { 0x483, 0x48C, 0x488, 0x48A },
+            new[] { 0x495, 0x48B, 0x486, 0x485 },
+            new[] { 0x48D, 0x490, 0x48E, 0x491 },
+            new[] { 0x48F, 0x494, 0x484, 0x497 },
+            new[] { 0x489, 0x47F, 0x482, 0x47E },
+            new[] { 0xAAC, 0xAB4, 0xAAF, 0xAB5, 0xAAB }
         };
 
         private static Item CreateCloth(int type)
@@ -721,7 +715,7 @@ namespace Server.Engines.BulkOrders
             throw new InvalidOperationException();
         }
 
-        private static readonly int[] m_SandalHues = new int[]
+        private static readonly int[] m_SandalHues =
         {
             0x489, 0x47F, 0x482,
             0x47E, 0x48F, 0x494,
@@ -842,55 +836,55 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private static readonly int[][][] m_AosGoldTable = new int[][][]
+        private static readonly int[][][] m_AosGoldTable =
         {
-            new int[][] // 1-part (regular)
+            new[] // 1-part (regular)
             {
-                new int[] { 150, 150, 300, 300 },
-                new int[] { 225, 225, 450, 450 },
-                new int[] { 300, 400, 600, 750 }
+                new[] { 150, 150, 300, 300 },
+                new[] { 225, 225, 450, 450 },
+                new[] { 300, 400, 600, 750 }
             },
-            new int[][] // 1-part (exceptional)
+            new[] // 1-part (exceptional)
             {
-                new int[] { 300, 300, 600, 600 },
-                new int[] { 450, 450, 900, 900 },
-                new int[] { 600, 750, 1200, 1800 }
+                new[] { 300, 300, 600, 600 },
+                new[] { 450, 450, 900, 900 },
+                new[] { 600, 750, 1200, 1800 }
             },
-            new int[][] // 4-part (regular)
+            new[] // 4-part (regular)
             {
-                new int[] { 4000, 4000, 5000, 5000 },
-                new int[] { 6000, 6000, 7500, 7500 },
-                new int[] { 8000, 10000, 10000, 15000 }
+                new[] { 4000, 4000, 5000, 5000 },
+                new[] { 6000, 6000, 7500, 7500 },
+                new[] { 8000, 10000, 10000, 15000 }
             },
-            new int[][] // 4-part (exceptional)
+            new[] // 4-part (exceptional)
             {
-                new int[] { 5000, 5000, 7500, 7500 },
-                new int[] { 7500, 7500, 11250, 11250 },
-                new int[] { 10000, 15000, 15000, 20000 }
+                new[] { 5000, 5000, 7500, 7500 },
+                new[] { 7500, 7500, 11250, 11250 },
+                new[] { 10000, 15000, 15000, 20000 }
             },
-            new int[][] // 5-part (regular)
+            new[] // 5-part (regular)
             {
-                new int[] { 5000, 5000, 7500, 7500 },
-                new int[] { 7500, 7500, 11250, 11250 },
-                new int[] { 10000, 15000, 15000, 20000 }
+                new[] { 5000, 5000, 7500, 7500 },
+                new[] { 7500, 7500, 11250, 11250 },
+                new[] { 10000, 15000, 15000, 20000 }
             },
-            new int[][] // 5-part (exceptional)
+            new[] // 5-part (exceptional)
             {
-                new int[] { 7500, 7500, 10000, 10000 },
-                new int[] { 11250, 11250, 15000, 15000 },
-                new int[] { 15000, 20000, 20000, 30000 }
+                new[] { 7500, 7500, 10000, 10000 },
+                new[] { 11250, 11250, 15000, 15000 },
+                new[] { 15000, 20000, 20000, 30000 }
             },
-            new int[][] // 6-part (regular)
+            new[] // 6-part (regular)
             {
-                new int[] { 7500, 7500, 10000, 10000 },
-                new int[] { 11250, 11250, 15000, 15000 },
-                new int[] { 15000, 20000, 20000, 30000 }
+                new[] { 7500, 7500, 10000, 10000 },
+                new[] { 11250, 11250, 15000, 15000 },
+                new[] { 15000, 20000, 20000, 30000 }
             },
-            new int[][] // 6-part (exceptional)
+            new[] // 6-part (exceptional)
             {
-                new int[] { 10000, 10000, 15000, 15000 },
-                new int[] { 15000, 15000, 22500, 22500 },
-                new int[] { 20000, 30000, 30000, 50000 }
+                new[] { 10000, 10000, 15000, 15000 },
+                new[] { 15000, 15000, 22500, 22500 },
+                new[] { 20000, 30000, 30000, 50000 }
             }
         };
 
@@ -1015,68 +1009,68 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private static readonly int[][][] m_GoldTable = new int[][][]
+        private static readonly int[][][] m_GoldTable =
         {
-            new int[][] // 1-part (regular)
+            new[] // 1-part (regular)
             {
-                new int[] { 150, 150, 225, 225, 300, 300, 350, 350, 400 },
-                new int[] { 225, 225, 325, 325, 450, 450, 450, 500, 500 },
-                new int[] { 300, 400, 500, 500, 600, 750, 750, 900, 900 }
+                new[] { 150, 150, 225, 225, 300, 300, 350, 350, 400 },
+                new[] { 225, 225, 325, 325, 450, 450, 450, 500, 500 },
+                new[] { 300, 400, 500, 500, 600, 750, 750, 900, 900 }
             },
-            new int[][] // 1-part (exceptional)
+            new[] // 1-part (exceptional)
             {
-                new int[] { 300, 300, 400, 500, 600, 600, 600, 700, 700 },
-                new int[] { 450, 450, 650, 750, 900, 900, 900, 1000, 1000 },
-                new int[] { 600, 750, 850, 1000, 1200, 1800, 1800, 1800, 2000 }
+                new[] { 300, 300, 400, 500, 600, 600, 600, 700, 700 },
+                new[] { 450, 450, 650, 750, 900, 900, 900, 1000, 1000 },
+                new[] { 600, 750, 850, 1000, 1200, 1800, 1800, 1800, 2000 }
             },
-            new int[][] // 3-part (regular)
+            new[] // 3-part (regular)
             {
-                new int[] { 2500, 2500, 2500, 3500, 3500, 3500, 4500, 4500, 4500 },
-                new int[] { 4000, 4000, 4000, 5500, 5500, 5500, 7000, 7000, 7000 },
-                new int[] { 6000, 7000, 7500, 8000, 8000, 9000, 9000, 10000, 10000 }
+                new[] { 2500, 2500, 2500, 3500, 3500, 3500, 4500, 4500, 4500 },
+                new[] { 4000, 4000, 4000, 5500, 5500, 5500, 7000, 7000, 7000 },
+                new[] { 6000, 7000, 7500, 8000, 8000, 9000, 9000, 10000, 10000 }
             },
-            new int[][] // 3-part (exceptional)
+            new[] // 3-part (exceptional)
             {
-                new int[] { 4000, 4000, 5000, 5750, 6500, 6500, 6500, 7500, 8500 },
-                new int[] { 6500, 6500, 7500, 8500, 10000, 10000, 10000, 12500, 12500 },
-                new int[] { 8000, 10000, 10000, 12500, 12500, 15000, 15000, 20000, 20000 }
+                new[] { 4000, 4000, 5000, 5750, 6500, 6500, 6500, 7500, 8500 },
+                new[] { 6500, 6500, 7500, 8500, 10000, 10000, 10000, 12500, 12500 },
+                new[] { 8000, 10000, 10000, 12500, 12500, 15000, 15000, 20000, 20000 }
             },
-            new int[][] // 4-part (regular)
+            new[] // 4-part (regular)
             {
-                new int[] { 4000, 4000, 4000, 5000, 5000, 5000, 6000, 6000, 6000 },
-                new int[] { 6000, 6000, 6000, 7500, 7500, 7500, 9000, 9000, 9000 },
-                new int[] { 8000, 9000, 9500, 10000, 10000, 15000, 17500, 17500, 17500 }
+                new[] { 4000, 4000, 4000, 5000, 5000, 5000, 6000, 6000, 6000 },
+                new[] { 6000, 6000, 6000, 7500, 7500, 7500, 9000, 9000, 9000 },
+                new[] { 8000, 9000, 9500, 10000, 10000, 15000, 17500, 17500, 17500 }
             },
-            new int[][] // 4-part (exceptional)
+            new[] // 4-part (exceptional)
             {
-                new int[] { 5000, 5000, 6000, 6750, 7500, 7500, 8500, 8500, 9500 },
-                new int[] { 7500, 7500, 8500, 9500, 11250, 11250, 11250, 15000, 15000 },
-                new int[] { 10000, 1250, 1250, 15000, 15000, 20000, 20000, 25000, 25000 }
+                new[] { 5000, 5000, 6000, 6750, 7500, 7500, 8500, 8500, 9500 },
+                new[] { 7500, 7500, 8500, 9500, 11250, 11250, 11250, 15000, 15000 },
+                new[] { 10000, 1250, 1250, 15000, 15000, 20000, 20000, 25000, 25000 }
             },
-            new int[][] // 4-part (regular)
+            new[] // 4-part (regular)
             {
-                new int[] { 4000, 4000, 4000, 5000, 5000, 5000, 7000, 7000, 7000 },
-                new int[] { 6000, 6000, 6000, 7500, 7500, 7500, 9000, 9000, 9000 },
-                new int[] { 8000, 9000, 9500, 10000, 10000, 15000, 15000, 20000, 20000 }
+                new[] { 4000, 4000, 4000, 5000, 5000, 5000, 7000, 7000, 7000 },
+                new[] { 6000, 6000, 6000, 7500, 7500, 7500, 9000, 9000, 9000 },
+                new[] { 8000, 9000, 9500, 10000, 10000, 15000, 15000, 20000, 20000 }
             },
-            new int[][] // 4-part (exceptional)
+            new[] // 4-part (exceptional)
             {
-                new int[] { 5000, 5000, 6000, 6750, 7500, 7500, 9000, 9000, 15000 },
-                new int[] { 7500, 7500, 8500, 9500, 11250, 11250, 15000, 15000, 15000 },
-                new int[] { 10000, 1250, 1250, 15000, 15000, 20000, 20000, 25000, 25000 }
+                new[] { 5000, 5000, 6000, 6750, 7500, 7500, 9000, 9000, 15000 },
+                new[] { 7500, 7500, 8500, 9500, 11250, 11250, 15000, 15000, 15000 },
+                new[] { 10000, 1250, 1250, 15000, 15000, 20000, 20000, 25000, 25000 }
             },
-            new int[][] // 5-part (regular)
+            new[] // 5-part (regular)
             {
-                new int[] { 5000, 5000, 60000, 6000, 7500, 7500, 9000, 9000, 10500 },
-                new int[] { 7500, 7500, 7500, 11250, 11250, 11250, 15000, 15000, 15000 },
-                new int[] { 10000, 10000, 1250, 15000, 15000, 20000, 20000, 25000, 25000 }
+                new[] { 5000, 5000, 60000, 6000, 7500, 7500, 9000, 9000, 10500 },
+                new[] { 7500, 7500, 7500, 11250, 11250, 11250, 15000, 15000, 15000 },
+                new[] { 10000, 10000, 1250, 15000, 15000, 20000, 20000, 25000, 25000 }
             },
-            new int[][] // 5-part (exceptional)
+            new[] // 5-part (exceptional)
             {
-                new int[] { 7500, 7500, 8500, 9500, 10000, 10000, 12500, 12500, 15000 },
-                new int[] { 11250, 11250, 1250, 13500, 15000, 15000, 20000, 20000, 25000 },
-                new int[] { 15000, 1750, 1750, 20000, 20000, 30000, 30000, 40000, 50000 }
-            },
+                new[] { 7500, 7500, 8500, 9500, 10000, 10000, 12500, 12500, 15000 },
+                new[] { 11250, 11250, 1250, 13500, 15000, 15000, 20000, 20000, 25000 },
+                new[] { 15000, 1750, 1750, 20000, 20000, 30000, 30000, 40000, 50000 }
+            }
         };
 
         public override int ComputeGold(int quantity, bool exceptional, BulkMaterialType material, int itemCount, Type type)
@@ -1219,58 +1213,58 @@ namespace Server.Engines.BulkOrders
             new RewardType(350, typeof(WildStaff), typeof(ArcanistsWildStaff), typeof(AncientWildStaff), typeof(ThornedWildStaff), typeof(HardenedWildStaff)),
             new RewardType(250, typeof(LapHarp), typeof(Lute), typeof(Drums), typeof(Harp)),
             new RewardType(200, typeof(GnarledStaff), typeof(QuarterStaff), typeof(ShepherdsCrook), typeof(Tetsubo), typeof(Bokuto)),
-            new RewardType(300, typeof(WoodenBox), typeof(EmptyBookcase), typeof(WoodenBench), typeof(WoodenThrone)),
+            new RewardType(300, typeof(WoodenBox), typeof(EmptyBookcase), typeof(WoodenBench), typeof(WoodenThrone))
         };
 
-        private static readonly int[][][] m_GoldTable = new int[][][]
+        private static readonly int[][][] m_GoldTable =
         {
-            new int[][] // 1-part (regular)
+            new[] // 1-part (regular)
             {
-                new int[] { 150, 150, 225, 225, 300, 300 },
-                new int[] { 225, 225, 325, 325, 450, 450 },
-                new int[] { 300, 400, 500, 500, 600, 750 }
+                new[] { 150, 150, 225, 225, 300, 300 },
+                new[] { 225, 225, 325, 325, 450, 450 },
+                new[] { 300, 400, 500, 500, 600, 750 }
             },
-            new int[][] // 1-part (exceptional)
+            new[] // 1-part (exceptional)
             {
-                new int[] { 300, 300, 400, 500, 600, 600 },
-                new int[] { 450, 450, 650, 750, 900, 900 },
-                new int[] { 600, 750, 850, 1000, 1200, 1800 }
+                new[] { 300, 300, 400, 500, 600, 600 },
+                new[] { 450, 450, 650, 750, 900, 900 },
+                new[] { 600, 750, 850, 1000, 1200, 1800 }
             },
-            new int[][] // 2-part (regular)
+            new[] // 2-part (regular)
             {
-                new int[] { 2000, 2000, 2000, 2500, 2500, 2500 },
-                new int[] { 3000, 3000, 3000, 3750, 3750, 3750 },
-                new int[] { 4000, 4500, 4500, 5000, 5000, 7500 }
+                new[] { 2000, 2000, 2000, 2500, 2500, 2500 },
+                new[] { 3000, 3000, 3000, 3750, 3750, 3750 },
+                new[] { 4000, 4500, 4500, 5000, 5000, 7500 }
             },
-            new int[][] // 2-part (exceptional)
+            new[] // 2-part (exceptional)
             {
-                new int[] { 2500, 2500, 3000, 3350, 3350, 4000 },
-                new int[] { 3750, 3750, 4250, 4750, 5200, 5200 },
-                new int[] { 5000, 6100, 6100, 7000, 7000, 10000 }
+                new[] { 2500, 2500, 3000, 3350, 3350, 4000 },
+                new[] { 3750, 3750, 4250, 4750, 5200, 5200 },
+                new[] { 5000, 6100, 6100, 7000, 7000, 10000 }
             },
-            new int[][] // 4-part (regular)
+            new[] // 4-part (regular)
             {
-                new int[] { 4000, 4000, 4000, 5000, 5000, 5000 },
-                new int[] { 6000, 6000, 6000, 7500, 7500, 7500 },
-                new int[] { 8000, 9000, 9500, 10000, 10000, 15000 }
+                new[] { 4000, 4000, 4000, 5000, 5000, 5000 },
+                new[] { 6000, 6000, 6000, 7500, 7500, 7500 },
+                new[] { 8000, 9000, 9500, 10000, 10000, 15000 }
             },
-            new int[][] // 4-part (exceptional)
+            new[] // 4-part (exceptional)
             {
-                new int[] { 5000, 5000, 6000, 6750, 7500, 7500 },
-                new int[] { 7500, 7500, 8500, 9500, 11250, 11250 },
-                new int[] { 10000, 1250, 1250, 15000, 15000, 20000 }
+                new[] { 5000, 5000, 6000, 6750, 7500, 7500 },
+                new[] { 7500, 7500, 8500, 9500, 11250, 11250 },
+                new[] { 10000, 1250, 1250, 15000, 15000, 20000 }
             },
-            new int[][] // 5-part (regular)
+            new[] // 5-part (regular)
             {
-                new int[] { 5000, 5000, 60000, 6000, 7500, 7500 },
-                new int[] { 7500, 7500, 7500, 11250, 11250, 11250 },
-                new int[] { 10000, 10000, 1250, 15000, 15000, 20000 }
+                new[] { 5000, 5000, 60000, 6000, 7500, 7500 },
+                new[] { 7500, 7500, 7500, 11250, 11250, 11250 },
+                new[] { 10000, 10000, 1250, 15000, 15000, 20000 }
             },
-            new int[][] // 5-part (exceptional)
+            new[] // 5-part (exceptional)
             {
-                new int[] { 7500, 7500, 8500, 9500, 10000, 10000 },
-                new int[] { 11250, 11250, 1250, 1350, 15000, 15000 },
-                new int[] { 15000, 1750, 1750, 20000, 20000, 30000 }
+                new[] { 7500, 7500, 8500, 9500, 10000, 10000 },
+                new[] { 11250, 11250, 1250, 1350, 15000, 15000 },
+                new[] { 15000, 1750, 1750, 20000, 20000, 30000 }
             },
         };
 
@@ -1379,27 +1373,27 @@ namespace Server.Engines.BulkOrders
             new RewardType(450, typeof(Spellbook), typeof(NecromancerSpellbook), typeof(Runebook), typeof(RunicAtlas))
         };
 
-        private static readonly int[][] m_GoldTable = new int[][]
+        private static readonly int[][] m_GoldTable =
         {
-            new int[] // singles
+            new[] // singles
             {
                 150, 225, 300
             },
             new int[] // no 2 piece
             {
             },
-            new int[] // 3-part
+            new[] // 3-part
             {
                 4000, 6000, 8000
             },
-            new int[] // 4-part
+            new[] // 4-part
             {
                 5000, 7500, 10000
             },
-            new int[] // 5-part
+            new[] // 5-part
             {
                 7500, 11250, 15000
-            },
+            }
         };
 
         public override int ComputeGold(int quantity, bool exceptional, BulkMaterialType material, int itemCount, Type type)
@@ -1508,34 +1502,34 @@ namespace Server.Engines.BulkOrders
             new RewardType(350, typeof(Cookies), typeof(Cake), typeof(Muffins), typeof(ThreeTieredCake)),
             new RewardType(400, typeof(EnchantedApple), typeof(TribalPaint), typeof(GrapesOfWrath), typeof(EggBomb)),
             new RewardType(450, typeof(MisoSoup), typeof(WhiteMisoSoup), typeof(RedMisoSoup), typeof(AwaseMisoSoup)),
-            new RewardType(500, typeof(WasabiClumps), typeof(SushiRolls), typeof(SushiPlatter), typeof(GreenTea)),
+            new RewardType(500, typeof(WasabiClumps), typeof(SushiRolls), typeof(SushiPlatter), typeof(GreenTea))
         };
 
-        private static readonly int[][] m_GoldTable = new int[][]
+        private static readonly int[][] m_GoldTable =
         {
-            new int[] // singles
+            new[] // singles
             {
                 150, 225, 300
             },
             new int[] // no 2 piece
             {
             },
-            new int[] // 3-part
+            new[] // 3-part
             {
                 4000, 6000, 8000
             },
-            new int[] // 4-part
+            new[] // 4-part
             {
                 5000, 7500, 10000
             },
-            new int[] // 5-part
+            new[] // 5-part
             {
                 7500, 11250, 15000
             },
-            new int[] // 6-part (regular)
+            new[] // 6-part (regular)
             {
                 7500, 11250, 15000
-            },
+            }
         };
 
         public override int ComputeGold(int quantity, bool exceptional, BulkMaterialType material, int itemCount, Type type)
@@ -1657,47 +1651,47 @@ namespace Server.Engines.BulkOrders
             new RewardType(300, typeof(Bow), typeof(CompositeBow), typeof(Yumi)),
             new RewardType(300, typeof(Crossbow), typeof(HeavyCrossbow), typeof(RepeatingCrossbow)),
             new RewardType(350, typeof(MagicalShortbow), typeof(RangersShortbow), typeof(LightweightShortbow), typeof(MysticalShortbow), typeof(AssassinsShortbow)),
-            new RewardType(250, typeof(ElvenCompositeLongbow), typeof(BarbedLongbow), typeof(SlayerLongbow), typeof(FrozenLongbow), typeof(LongbowOfMight)),
+            new RewardType(250, typeof(ElvenCompositeLongbow), typeof(BarbedLongbow), typeof(SlayerLongbow), typeof(FrozenLongbow), typeof(LongbowOfMight))
         };
 
-        private static readonly int[][][] m_GoldTable = new int[][][]
+        private static readonly int[][][] m_GoldTable =
         {
-            new int[][] // 1-part (regular)
+            new[] // 1-part (regular)
             {
-                new int[] { 150, 150, 225, 225, 300, 300 },
-                new int[] { 225, 225, 325, 325, 450, 450 },
-                new int[] { 300, 400, 500, 500, 600, 750 }
+                new[] { 150, 150, 225, 225, 300, 300 },
+                new[] { 225, 225, 325, 325, 450, 450 },
+                new[] { 300, 400, 500, 500, 600, 750 }
             },
-            new int[][] // 1-part (exceptional)
+            new[] // 1-part (exceptional)
             {
-                new int[] { 300, 300, 400, 500, 600, 600 },
-                new int[] { 450, 450, 650, 750, 900, 900 },
-                new int[] { 600, 750, 850, 1000, 1200, 1800 }
+                new[] { 300, 300, 400, 500, 600, 600 },
+                new[] { 450, 450, 650, 750, 900, 900 },
+                new[] { 600, 750, 850, 1000, 1200, 1800 }
             },
-            new int[][] // 4-part (regular)
+            new[] // 4-part (regular)
             {
-                new int[] { 4000, 4000, 4000, 5000, 5000, 5000 },
-                new int[] { 6000, 6000, 6000, 7500, 7500, 7500 },
-                new int[] { 8000, 9000, 9500, 10000, 10000, 15000 }
+                new[] { 4000, 4000, 4000, 5000, 5000, 5000 },
+                new[] { 6000, 6000, 6000, 7500, 7500, 7500 },
+                new[] { 8000, 9000, 9500, 10000, 10000, 15000 }
             },
-            new int[][] // 4-part (exceptional)
+            new[] // 4-part (exceptional)
             {
-                new int[] { 5000, 5000, 6000, 6750, 7500, 7500 },
-                new int[] { 7500, 7500, 8500, 9500, 11250, 11250 },
-                new int[] { 10000, 1250, 1250, 15000, 15000, 20000 }
+                new[] { 5000, 5000, 6000, 6750, 7500, 7500 },
+                new[] { 7500, 7500, 8500, 9500, 11250, 11250 },
+                new[] { 10000, 1250, 1250, 15000, 15000, 20000 }
             },
-            new int[][] // 5-part (regular)
+            new[] // 5-part (regular)
             {
-                new int[] { 5000, 5000, 60000, 6000, 7500, 7500 },
-                new int[] { 7500, 7500, 7500, 11250, 11250, 11250 },
-                new int[] { 10000, 10000, 1250, 15000, 15000, 20000 }
+                new[] { 5000, 5000, 60000, 6000, 7500, 7500 },
+                new[] { 7500, 7500, 7500, 11250, 11250, 11250 },
+                new[] { 10000, 10000, 1250, 15000, 15000, 20000 }
             },
-            new int[][] // 5-part (exceptional)
+            new[] // 5-part (exceptional)
             {
-                new int[] { 7500, 7500, 8500, 9500, 10000, 10000 },
-                new int[] { 11250, 11250, 1250, 1350, 15000, 15000 },
-                new int[] { 15000, 1750, 1750, 20000, 20000, 30000 }
-            },
+                new[] { 7500, 7500, 8500, 9500, 10000, 10000 },
+                new[] { 11250, 11250, 1250, 1350, 15000, 15000 },
+                new[] { 15000, 1750, 1750, 20000, 20000, 30000 }
+            }
         };
 
         public override int ComputeGold(int quantity, bool exceptional, BulkMaterialType material, int itemCount, Type type)
@@ -1815,31 +1809,31 @@ namespace Server.Engines.BulkOrders
             return points;
         }
 
-        private static readonly int[][] m_GoldTable = new int[][]
+        private static readonly int[][] m_GoldTable =
         {
-            new int[] // singles
+            new[] // singles
             {
                 150, 225, 300
             },
             new int[] // no 2 piece
             {
             },
-            new int[] // 3-part
+            new[] // 3-part
             {
                 4000, 6000, 8000
             },
-            new int[] // 4-part
+            new[] // 4-part
             {
                 5000, 7500, 10000
             },
-            new int[] // 5-part
+            new[] // 5-part
             {
                 7500, 11250, 15000
             },
-            new int[] // 6-part (regular)
+            new[] // 6-part (regular)
             {
                 7500, 11250, 15000
-            },
+            }
         };
 
         public override int ComputeGold(int quantity, bool exceptional, BulkMaterialType material, int itemCount, Type type)

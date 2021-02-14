@@ -36,15 +36,12 @@ namespace Server
         {
             Type type = typeof(T);
 
-            if (type != null)
-            {
-                MethodInfo m = type.GetMethod("Validate", BindingFlags.Instance | BindingFlags.Public);
+            MethodInfo m = type.GetMethod("Validate", BindingFlags.Instance | BindingFlags.Public);
 
-                if (m != null)
-                {
-                    for (int i = 0; i < m_Queue.Count; ++i)
-                        m.Invoke(m_Queue[i], null);
-                }
+            if (m != null)
+            {
+                for (int i = 0; i < m_Queue.Count; ++i)
+                    m.Invoke(m_Queue[i], null);
             }
 
             m_Queue.Clear();

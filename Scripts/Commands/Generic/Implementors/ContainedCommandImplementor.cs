@@ -9,7 +9,7 @@ namespace Server.Commands.Generic
     {
         public ContainedCommandImplementor()
         {
-            Accessors = new string[] { "Contained" };
+            Accessors = new[] { "Contained" };
             SupportRequirement = CommandSupport.Contained;
             AccessLevel = AccessLevel.GameMaster;
             Usage = "Contained <command> [condition]";
@@ -18,7 +18,7 @@ namespace Server.Commands.Generic
 
         public override void Process(Mobile from, BaseCommand command, string[] args)
         {
-            if (command.ValidateArgs(this, new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args)))
+            if (command.ValidateArgs(new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args)))
                 from.BeginTarget(-1, command.ObjectTypes == ObjectTypes.All, TargetFlags.None, new TargetStateCallback(OnTarget), new object[] { command, args });
         }
 

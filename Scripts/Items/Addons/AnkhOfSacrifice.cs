@@ -56,8 +56,8 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (from is PlayerMobile)
-                list.Add(new LockKarmaEntry((PlayerMobile)from, Addon as AnkhOfSacrificeAddon));
+            if (from is PlayerMobile mobile)
+                list.Add(new LockKarmaEntry(mobile, Addon as AnkhOfSacrificeAddon));
 
             list.Add(new ResurrectEntry(from, Addon as AnkhOfSacrificeAddon));
         }
@@ -142,9 +142,9 @@ namespace Server.Items
                         return;
                     }
 
-                    if (from is PlayerMobile)
+                    if (from is PlayerMobile mobile)
                     {
-                        ((PlayerMobile)from).AnkhNextUse = DateTime.UtcNow + TimeSpan.FromHours(1);
+                        mobile.AnkhNextUse = DateTime.UtcNow + TimeSpan.FromHours(1);
                     }
 
                     base.OnResponse(state, info);

@@ -46,13 +46,9 @@ namespace Server.Engines.Doom
                         return;
                     }
                 }
-                else if (m is BaseCreature)
+                else if (m is BaseCreature bc && (bc.Controlled && bc.ControlMaster == Controller.Successful || bc.Summoned))
                 {
-                    BaseCreature bc = (BaseCreature)m;
-                    if ((bc.Controlled && bc.ControlMaster == Controller.Successful) || bc.Summoned)
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
             Timer kick = new LeverPuzzleController.LampRoomKickTimer(m);
@@ -76,7 +72,7 @@ namespace Server.Engines.Doom
 
         public override bool OnSkillUse(Mobile m, int Skill) /* just in case */
         {
-            if ((Controller.Successful == null) || (m.IsStaff() && m != Controller.Successful))
+            if (Controller.Successful == null || m.IsStaff() && m != Controller.Successful)
             {
                 return false;
             }

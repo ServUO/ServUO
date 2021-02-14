@@ -33,10 +33,8 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = parent as Mobile;
-
                 from.FixedParticles(0x3728, 1, 13, 5042, EffectLayer.Waist);
 
                 from.BodyMod = 723;
@@ -48,10 +46,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile && !Deleted)
+            if (parent is Mobile m && !Deleted)
             {
-                Mobile m = (Mobile)parent;
-
                 m.BodyMod = 0;
                 m.HueMod = -1;
                 m.FixedParticles(0x3728, 1, 13, 5042, EffectLayer.Waist);
@@ -91,9 +87,9 @@ namespace Server.Items
                 reader.ReadInt();
             }
 
-            if (Parent is Mobile)
+            if (Parent is Mobile mobile)
             {
-                Mobile m = (Mobile)Parent;
+                Mobile m = mobile;
 
                 Timer.DelayCall(() =>
                 {

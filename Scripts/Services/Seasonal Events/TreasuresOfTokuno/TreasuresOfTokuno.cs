@@ -30,7 +30,7 @@ namespace Server.Misc
 
         public const int ItemsPerReward = 10;
 
-        private static readonly Type[] m_LesserArtifactsTotal = new Type[]
+        private static readonly Type[] m_LesserArtifactsTotal =
         {
             typeof(AncientFarmersKasa), typeof(AncientSamuraiDo), typeof(ArmsOfTacticalExcellence), typeof(BlackLotusHood),
             typeof(DaimyosHelm), typeof(DemonForks), typeof(DragonNunchaku), typeof(Exiler), typeof(GlovesOfTheSun),
@@ -44,34 +44,14 @@ namespace Server.Misc
         private static TreasuresOfTokunoEra _DropEra = TreasuresOfTokunoEra.None;
         private static TreasuresOfTokunoEra _RewardEra = TreasuresOfTokunoEra.ToTOne;
 
-        public static TreasuresOfTokunoEra DropEra
-        {
-            get
-            {
-                return _DropEra;
-            }
-            set
-            {
-                _DropEra = value;
-            }
-        }
+        public static TreasuresOfTokunoEra DropEra { get => _DropEra; set => _DropEra = value; }
 
-        public static TreasuresOfTokunoEra RewardEra
-        {
-            get
-            {
-                return _RewardEra;
-            }
-            set
-            {
-                _RewardEra = value;
-            }
-        }
+        public static TreasuresOfTokunoEra RewardEra { get => _RewardEra; set => _RewardEra = value; }
 
-        private static readonly Type[][] m_LesserArtifacts = new Type[][]
+        private static readonly Type[][] m_LesserArtifacts =
         {
             // ToT One Rewards
-            new Type[]
+            new[]
             {
                 typeof(AncientFarmersKasa), typeof(AncientSamuraiDo), typeof(ArmsOfTacticalExcellence), typeof(BlackLotusHood),
                 typeof(DaimyosHelm), typeof(DemonForks), typeof(DragonNunchaku), typeof(Exiler), typeof(GlovesOfTheSun),
@@ -80,7 +60,7 @@ namespace Server.Misc
                 typeof(FluteOfRenewal), typeof(ChestOfHeirlooms)
             },
             // ToT Two Rewards
-            new Type[]
+            new[]
             {
                 typeof(MetalPigmentsOfTokuno), typeof(AncientFarmersKasa), typeof(AncientSamuraiDo), typeof(ArmsOfTacticalExcellence),
                 typeof(MetalPigmentsOfTokuno), typeof(BlackLotusHood), typeof(DaimyosHelm), typeof(DemonForks),
@@ -90,7 +70,7 @@ namespace Server.Misc
                 typeof(MetalPigmentsOfTokuno), typeof(FluteOfRenewal), typeof(ChestOfHeirlooms)
             },
             // ToT Three Rewards
-            new Type[]
+            new[]
             {
                 typeof(LesserPigmentsOfTokuno), typeof(AncientFarmersKasa), typeof(AncientSamuraiDo), typeof(ArmsOfTacticalExcellence),
                 typeof(LesserPigmentsOfTokuno), typeof(BlackLotusHood), typeof(DaimyosHelm), typeof(HanzosBow),
@@ -138,7 +118,7 @@ namespace Server.Misc
             if (r.IsPartOf("Yomotsu Mines") || r.IsPartOf("Fan Dancer's Dojo"))
                 return true;
 
-            return (m.Map == Map.Tokuno);
+            return m.Map == Map.Tokuno;
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)
@@ -354,15 +334,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override bool CanBeDamaged()
@@ -372,14 +350,12 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.Alive && m is PlayerMobile)
+            if (m.Alive && m is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)m;
-
                 int range = 3;
                 int turnIns = PointsSystem.TreasuresOfTokuno.GetTurnIns(pm);
 
-                if (m.Alive && Math.Abs(Z - m.Z) < 16 && InRange(m, range) && !InRange(oldLocation, range))
+                if (pm.Alive && Math.Abs(Z - pm.Z) < 16 && InRange(m, range) && !InRange(oldLocation, range))
                 {
                     if (turnIns >= TreasuresOfTokuno.ItemsPerReward)
                     {
@@ -426,20 +402,10 @@ namespace Server.Gumps
     {
         private Item m_Item;
 
-        public Item Item
-        {
-            get
-            {
-                return m_Item;
-            }
-            set
-            {
-                m_Item = value;
-            }
-        }
+        public Item Item { get => m_Item; set => m_Item = value; }
 
         public ItemTileButtonInfo(Item i)
-            : base(i.ItemID, i.Hue, ((i.Name == null || i.Name.Length <= 0) ? (TextDefinition)i.LabelNumber : (TextDefinition)i.Name))
+            : base(i.ItemID, i.Hue, (i.Name == null || i.Name.Length <= 0) ? (TextDefinition)i.LabelNumber : (TextDefinition)i.Name)
         {
             m_Item = i;
         }
@@ -459,13 +425,13 @@ namespace Server.Gumps
             for (int i = 0; i < items.Count; i++)
             {
                 Item item = (Item)items[i];
-                if (item is ChestOfHeirlooms && !((ChestOfHeirlooms)item).Locked)
+                if (item is ChestOfHeirlooms heirlooms && !heirlooms.Locked)
                     continue;
 
-                if (item is ChestOfHeirlooms && ((ChestOfHeirlooms)item).TrapLevel != 10)
+                if (item is ChestOfHeirlooms chest && chest.TrapLevel != 10)
                     continue;
 
-                if (item is PigmentsOfTokuno && ((PigmentsOfTokuno)item).Type != PigmentType.None)
+                if (item is PigmentsOfTokuno pigment && pigment.Type != PigmentType.None)
                     continue;
 
                 buttons.Add(new ItemTileButtonInfo(item));
@@ -574,18 +540,7 @@ namespace Server.Gumps
         {
             private PigmentType m_Pigment;
 
-            public PigmentType Pigment
-            {
-                get
-                {
-                    return m_Pigment;
-                }
-
-                set
-                {
-                    m_Pigment = value;
-                }
-            }
+            public PigmentType Pigment { get => m_Pigment; set => m_Pigment = value; }
 
             public PigmentsTileButtonInfo(PigmentType p)
                 : base(0xEFF, PigmentsOfTokuno.GetInfo(p)[0], PigmentsOfTokuno.GetInfo(p)[1])
@@ -595,10 +550,10 @@ namespace Server.Gumps
         }
 
         #region ToT Normal Rewards Table
-        private static readonly TypeTileButtonInfo[][] m_NormalRewards = new TypeTileButtonInfo[][]
+        private static readonly TypeTileButtonInfo[][] m_NormalRewards =
         {
             // ToT One Rewards
-            new TypeTileButtonInfo[]
+            new[]
             {
                 new TypeTileButtonInfo(typeof(SwordsOfProsperity), 0x27A9, 1070963, 1071002),
                 new TypeTileButtonInfo(typeof(SwordOfTheStampede), 0x27A2, 1070964, 1070978),
@@ -612,7 +567,7 @@ namespace Server.Gumps
                 new TypeTileButtonInfo(typeof(PigmentsOfTokuno), 0x0EFF, 1070933, 1071011)
             },
             // ToT Two Rewards
-            new TypeTileButtonInfo[]
+            new[]
             {
                 new TypeTileButtonInfo(typeof(SwordsOfProsperity), 0x27A9, 1070963, 1071002),
                 new TypeTileButtonInfo(typeof(SwordOfTheStampede), 0x27A2, 1070964, 1070978),
@@ -626,7 +581,7 @@ namespace Server.Gumps
                 new TypeTileButtonInfo(typeof(PigmentsOfTokuno), 0x0EFF, 1070933, 1071011)
             },
             // ToT Three Rewards
-            new TypeTileButtonInfo[]
+            new[]
             {
                 new TypeTileButtonInfo(typeof(SwordsOfProsperity), 0x27A9, 1070963, 1071002),
                 new TypeTileButtonInfo(typeof(SwordOfTheStampede), 0x27A2, 1070964, 1070978),
@@ -644,10 +599,10 @@ namespace Server.Gumps
         public static TypeTileButtonInfo[][] NormalRewards => m_NormalRewards;
 
         #region ToT Pigment Rewards Table
-        private static readonly PigmentsTileButtonInfo[][] m_PigmentRewards = new PigmentsTileButtonInfo[][]
+        private static readonly PigmentsTileButtonInfo[][] m_PigmentRewards =
         {
             // ToT One Pigment Rewards
-            new PigmentsTileButtonInfo[]
+            new[]
             {
                 new PigmentsTileButtonInfo(PigmentType.ParagonGold),
                 new PigmentsTileButtonInfo(PigmentType.VioletCouragePurple),
@@ -661,7 +616,7 @@ namespace Server.Gumps
                 new PigmentsTileButtonInfo(PigmentType.FireOrange)
             },
             // ToT Two Pigment Rewards
-            new PigmentsTileButtonInfo[]
+            new[]
             {
                 new PigmentsTileButtonInfo(PigmentType.FadedCoal),
                 new PigmentsTileButtonInfo(PigmentType.Coal),
@@ -674,7 +629,7 @@ namespace Server.Gumps
                 new PigmentsTileButtonInfo(PigmentType.DeepRose)
             },
             // ToT Three Pigment Rewards
-            new PigmentsTileButtonInfo[]
+            new[]
             {
                 new PigmentsTileButtonInfo(PigmentType.ParagonGold),
                 new PigmentsTileButtonInfo(PigmentType.VioletCouragePurple),
@@ -708,7 +663,7 @@ namespace Server.Gumps
             if (pm == null || !pm.InRange(m_Collector.Location, 7) || !(turnIns >= TreasuresOfTokuno.ItemsPerReward))
                 return;
 
-            bool pigments = (buttonInfo is PigmentsTileButtonInfo);
+            bool pigments = buttonInfo is PigmentsTileButtonInfo;
 
             Item item = null;
 
@@ -747,7 +702,7 @@ namespace Server.Gumps
             if (pm.AddToBackpack(item))
             {
                 PointsSystem.TreasuresOfTokuno.RemoveTurnIns(pm, TreasuresOfTokuno.ItemsPerReward);
-                m_Collector.SayTo(pm, 1070984, (item.Name == null || item.Name.Length <= 0) ? string.Format("#{0}", item.LabelNumber) : item.Name); // You have earned the gratitude of the Empire. I have placed the ~1_OBJTYPE~ in your backpack.
+                m_Collector.SayTo(pm, 1070984, item.Name == null || item.Name.Length <= 0 ? string.Format("#{0}", item.LabelNumber) : item.Name); // You have earned the gratitude of the Empire. I have placed the ~1_OBJTYPE~ in your backpack.
             }
             else
             {

@@ -157,9 +157,9 @@ namespace Server.Items
             {
                 base.GetProperties(list);
 
-                if (Addon is SheepStatue)
+                if (Addon is SheepStatue statue)
                 {
-                    list.Add(1151834, ((SheepStatue)Addon).ResourceCount.ToString()); // Resources: ~1_val~
+                    list.Add(1151834, statue.ResourceCount.ToString()); // Resources: ~1_val~
                 }
             }
 

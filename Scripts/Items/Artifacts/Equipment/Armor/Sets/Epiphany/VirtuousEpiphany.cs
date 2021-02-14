@@ -45,10 +45,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -115,10 +113,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -185,10 +181,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -255,10 +249,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -325,10 +317,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -395,10 +385,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -465,10 +453,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -535,10 +521,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -604,10 +588,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -673,10 +655,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -742,10 +722,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();
@@ -811,10 +789,8 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 foreach (Item armor in m.Items.Where(i => i is IEpiphanyArmor))
                 {
                     armor.InvalidateProperties();

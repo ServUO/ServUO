@@ -65,7 +65,7 @@ namespace Server.Items
             }
         }
 
-        private static readonly Point3D[] m_BarrierLocations = new Point3D[]
+        private static readonly Point3D[] m_BarrierLocations =
         {
             new Point3D( 33, 207, 0 ),
             new Point3D( 34, 207, 0 ),
@@ -111,7 +111,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             int amount = reader.ReadInt();
 

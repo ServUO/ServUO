@@ -21,8 +21,8 @@ namespace Server.Engines.VoidPool
         public static readonly int Red = 0x4800;
         public static readonly int Orange = 0xB104;
 
-        public PlayerMobile User { get; set; }
-        public VoidPoolController Controller { get; set; }
+        public PlayerMobile User { get; }
+        public VoidPoolController Controller { get; }
 
         public VoidPoolGump(VoidPoolController controller, PlayerMobile pm) : base(50, 50)
         {
@@ -105,10 +105,10 @@ namespace Server.Engines.VoidPool
         public static readonly int Red = 0x4800;
         public static readonly int Orange = 0xB104;
 
-        public PlayerMobile User { get; private set; }
-        public VoidPoolController Controller { get; private set; }
+        public PlayerMobile User { get; }
+        public VoidPoolController Controller { get; }
         public Dictionary<Mobile, long> Score { get; private set; }
-        public ScoreType ScoreType { get; set; }
+        public ScoreType ScoreType { get; }
 
         public ScoresGump(VoidPoolController controller, PlayerMobile pm, ScoreType type)
             : base(50, 50)
@@ -144,9 +144,9 @@ namespace Server.Engines.VoidPool
             AddHtmlLocalized(10, 10, 200, 16, 1152531, Red, false, false); // The Void Pool
             AddHtmlLocalized(10, 30, 200, 16, Controller.Map == Map.Felucca ? 1012001 : 1012000, Red, false, false); // FEl/Tram
 
-            if (loc is int)
-                AddHtmlLocalized(10, 50, 200, 16, (int)loc, Red, false, false);
-            else if (loc is string)
+            if (loc is int i)
+                AddHtmlLocalized(10, 50, 200, 16, i, Red, false, false);
+            else
                 AddHtml(10, 50, 200, 16, string.Format("<basefont color=#8B0000>{0}", (string)loc), false, false);
 
             if (ScoreType == ScoreType.BestWave)

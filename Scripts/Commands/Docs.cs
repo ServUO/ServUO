@@ -151,7 +151,7 @@ namespace Server.Commands
                     MethodInfo getMethod = prop.GetGetMethod();
                     MethodInfo setMethod = prop.GetGetMethod();
 
-                    return (getMethod != null && getMethod.IsStatic) || (setMethod != null && setMethod.IsStatic);
+                    return getMethod != null && getMethod.IsStatic || setMethod != null && setMethod.IsStatic;
                 }
 
                 return false;
@@ -1089,10 +1089,8 @@ namespace Server.Commands
                 {
                     rewards[16] = true;
                 }
-                else if (item is PowerScroll)
+                else if (item is PowerScroll ps)
                 {
-                    PowerScroll ps = (PowerScroll)item;
-
                     if (ps.Value == 105.0)
                     {
                         rewards[6] = true;
@@ -1133,10 +1131,8 @@ namespace Server.Commands
                         rewards[4] = true;
                     }
                 }
-                else if (item is RunicSewingKit)
+                else if (item is RunicSewingKit rkit)
                 {
-                    RunicSewingKit rkit = (RunicSewingKit)item;
-
                     rewards[16 + CraftResources.GetIndex(rkit.Resource)] = true;
                 }
 
@@ -1400,10 +1396,8 @@ namespace Server.Commands
                 {
                     rewards[7] = true;
                 }
-                else if (item is PowerScroll)
+                else if (item is PowerScroll ps)
                 {
-                    PowerScroll ps = (PowerScroll)item;
-
                     if (ps.Value == 105.0)
                     {
                         rewards[8] = true;
@@ -1421,16 +1415,12 @@ namespace Server.Commands
                         rewards[11] = true;
                     }
                 }
-                else if (item is RunicHammer)
+                else if (item is RunicHammer rh)
                 {
-                    RunicHammer rh = (RunicHammer)item;
-
                     rewards[11 + CraftResources.GetIndex(rh.Resource)] = true;
                 }
-                else if (item is AncientSmithyHammer)
+                else if (item is AncientSmithyHammer ash)
                 {
-                    AncientSmithyHammer ash = (AncientSmithyHammer)item;
-
                     if (ash.Bonus == 10)
                     {
                         rewards[20] = true;
@@ -1718,11 +1708,6 @@ namespace Server.Commands
                 {
                     Dictionary<int, SpeechEntry> table = tables[p];
 
-                    if (p > 0)
-                    {
-                        html.WriteLine("      <br />");
-                    }
-
                     html.WriteLine("      <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">");
                     html.WriteLine("      <tr><td class=\"tbl-border\">");
                     html.WriteLine("      <table cellpadding=\"4\" cellspacing=\"1\">");
@@ -1970,7 +1955,7 @@ namespace Server.Commands
 
                     attrs = mi.GetCustomAttributes(typeof(AliasesAttribute), false);
 
-                    AliasesAttribute aliases = (attrs.Length == 0 ? null : attrs[0] as AliasesAttribute);
+                    AliasesAttribute aliases = attrs.Length == 0 ? null : attrs[0] as AliasesAttribute;
 
                     string descString = desc.Description.Replace("<", "&lt;").Replace(">", "&gt;");
 
@@ -2668,7 +2653,7 @@ namespace Server.Commands
             {
                 object value = Enum.Parse(type, names[i]);
 
-                typeHtml.WriteLine(format, names[i], value, i < (names.Length - 1) ? "," : "");
+                typeHtml.WriteLine(format, names[i], value, i < names.Length - 1 ? "," : "");
             }
         }
 
@@ -2812,17 +2797,17 @@ namespace Server.Commands
 
             foreach (MemberInfo mi in membs)
             {
-                if (mi is PropertyInfo)
+                if (mi is PropertyInfo propertyInfo)
                 {
-                    WriteProperty((PropertyInfo)mi, typeHtml);
+                    WriteProperty(propertyInfo, typeHtml);
                 }
-                else if (mi is ConstructorInfo)
+                else if (mi is ConstructorInfo constructorInfo)
                 {
-                    WriteCtor(info.TypeName, (ConstructorInfo)mi, typeHtml);
+                    WriteCtor(info.TypeName, constructorInfo, typeHtml);
                 }
-                else if (mi is MethodInfo)
+                else if (mi is MethodInfo methodInfo)
                 {
-                    WriteMethod((MethodInfo)mi, typeHtml);
+                    WriteMethod(methodInfo, typeHtml);
                 }
             }
         }
@@ -2834,7 +2819,7 @@ namespace Server.Commands
             MethodInfo getMethod = pi.GetGetMethod();
             MethodInfo setMethod = pi.GetSetMethod();
 
-            if ((getMethod != null && getMethod.IsStatic) || (setMethod != null && setMethod.IsStatic))
+            if (getMethod != null && getMethod.IsStatic || setMethod != null && setMethod.IsStatic)
             {
                 html.Write(StaticString);
             }
@@ -2976,8 +2961,8 @@ namespace Server.Commands
                     StringBuilder linkBuilder =
                         new StringBuilder(
                             DontLink(type)
-                                ? ("<span style=\"color: blue;\">" + rootType + "</span>")
-                                : ("<a href=\"" + "@directory@" + rootType + "-T-.html\">" + rootType + "</a>"));
+                                ? "<span style=\"color: blue;\">" + rootType + "</span>"
+                                : "<a href=\"" + "@directory@" + rootType + "-T-.html\">" + rootType + "</a>");
 
                     nameBuilder.Append("&lt;");
                     fnamBuilder.Append("-");
@@ -3112,9 +3097,9 @@ namespace Server.Commands
 
     public class BodyEntry
     {
-        public Body Body { get; private set; }
-        public ModelBodyType BodyType { get; private set; }
-        public string Name { get; private set; }
+        public Body Body { get; }
+        public ModelBodyType BodyType { get; }
+        public string Name { get; }
 
         public BodyEntry(Body body, ModelBodyType bodyType, string name)
         {
@@ -3127,7 +3112,7 @@ namespace Server.Commands
         {
             BodyEntry e = (BodyEntry)obj;
 
-            return (Body == e.Body && BodyType == e.BodyType && Name == e.Name);
+            return Body == e.Body && BodyType == e.BodyType && Name == e.Name;
         }
 
         public override int GetHashCode()

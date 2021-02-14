@@ -37,9 +37,9 @@ namespace Server.Engines.TreasuresOfDoom
 
             if (item != null)
             {
-                if (item is LanternOfLight)
+                if (item is LanternOfLight light)
                 {
-                    ((LanternOfLight)item).OwnerName = User.Name;
+                    light.OwnerName = User.Name;
                 }
 
                 if (User.Backpack == null || !User.Backpack.TryDropItem(User, item, false))

@@ -12,13 +12,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
-            get { return _Charges; }
+            get => _Charges;
             set
             {
                 _Charges = value;
 
-                if (_Charges <= 0 && RootParent is Mobile)
-                    ((Mobile)RootParent).SendLocalizedMessage(1152635); // The cauldron's magic is exhausted
+                if (_Charges <= 0 && RootParent is Mobile mobile)
+                {
+                    mobile.SendLocalizedMessage(1152635); // The cauldron's magic is exhausted
+                }
 
                 InvalidateProperties();
             }
@@ -68,9 +70,9 @@ namespace Server.Items
 
         public void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -131,7 +133,6 @@ namespace Server.Items
                         if (info != null && info.ResourceTypes.Length > 0)
                         {
                             int toDrop = Math.Min(Charges * 3, dropped.Amount);
-                            CraftResource newRes = (CraftResource)res + 1;
 
                             while (toDrop % 3 != 0)
                                 toDrop--;
@@ -174,7 +175,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            public CauldronOfTransmutation Addon { get; set; }
+            public CauldronOfTransmutation Addon { get; }
 
             public InternalTarget(CauldronOfTransmutation addon)
                 : base(-1, false, TargetFlags.None)
@@ -185,10 +186,14 @@ namespace Server.Items
             protected override void OnTarget(Mobile from, object targeted)
             {
                 if (Addon == null || !from.InRange(Addon.Location, 3))
+                {
                     from.SendLocalizedMessage(500295); // You are too far away to do that.
+                }
 
-                if (targeted is Item)
-                    Addon.TryTransmutate(from, (Item)targeted);
+                if (targeted is Item item)
+                {
+                    Addon.TryTransmutate(from, item);
+                }
             }
         }
 
@@ -223,10 +228,10 @@ namespace Server.Items
                 list.Add(1072517, left.ToString()); // Lifespan: ~1_val~ seconds
 
                 CraftResource res = Addon.Resource;
-                CraftResource res2 = (CraftResource)res + 1;
+                CraftResource res2 = res + 1;
 
                 list.Add(1152630, string.Format("#{0}\t#{1}", CraftResources.GetLocalizationNumber(Addon.Resource), CraftResources.GetLocalizationNumber(res2))); // transmutes ~1_SOURCE~ to ~2_DEST~
-                list.Add(1152631, string.Format("3\t1")); // ratio ~1_INPUT~ to ~2_OUTPUT~
+                list.Add(1152631, "3\t1"); // ratio ~1_INPUT~ to ~2_OUTPUT~
                 list.Add(1060584, ((CauldronOfTransmutation)Addon).Charges.ToString()); // uses remaining: ~1_val~
 
             }
@@ -245,7 +250,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
 
@@ -265,7 +270,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Expires = reader.ReadDateTime();
 
@@ -306,9 +311,9 @@ namespace Server.Items
 
         public void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -372,7 +377,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Expires = reader.ReadDateTime();
 

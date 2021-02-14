@@ -10,11 +10,7 @@ namespace Server.Items
         private DateTime _NextUse;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextUse
-        {
-            get { return _NextUse; }
-            set { _NextUse = value; }
-        }
+        public DateTime NextUse { get => _NextUse; set => _NextUse = value; }
 
         [Constructable]
         public JacksBagOfTricks()
@@ -82,7 +78,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             NextUse = reader.ReadDateTime();
         }
@@ -122,7 +118,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -152,7 +148,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -203,7 +199,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             _Name = reader.ReadString();
         }
@@ -242,7 +238,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -280,7 +276,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -309,7 +305,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

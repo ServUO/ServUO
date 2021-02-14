@@ -38,8 +38,8 @@ namespace Server.Items
                 AddHtmlLocalized(20, 217, 250, 20, item.LabelNumber, 0xFFFFFF, false, false); // Name
 
             // item details
-            if (item is BaseFish)
-                AddHtmlLocalized(20, 239, 315, 20, ((BaseFish)item).GetDescription(), 0xFFFFFF, false, false);
+            if (item is BaseFish fish)
+                AddHtmlLocalized(20, 239, 315, 20, fish.GetDescription(), 0xFFFFFF, false, false);
             else
                 AddHtmlLocalized(20, 239, 315, 20, 1073634, 0xFFFFFF, false, false); // An aquarium decoration
 

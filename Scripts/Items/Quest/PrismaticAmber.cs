@@ -4,7 +4,6 @@ namespace Server.Items
     {
         [Constructable]
         public PrismaticAmber()
-            : base()
         {
             LootType = LootType.Blessed;
             Stackable = false;
@@ -63,15 +62,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

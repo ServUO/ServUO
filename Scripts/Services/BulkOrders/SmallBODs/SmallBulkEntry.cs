@@ -39,14 +39,8 @@ namespace Server.Engines.BulkOrders
         public Type Type => m_Type;
         public int Number
         {
-            get
-            {
-                return m_Number;
-            }
-            set
-            {
-                m_Number = value;
-            }
+            get => m_Number;
+            set => m_Number = value;
         }
         public int Graphic => m_Graphic;
         public int Hue => m_Hue;

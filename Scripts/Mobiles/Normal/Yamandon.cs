@@ -111,7 +111,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private void DoCounter(Mobile attacker)
@@ -119,7 +119,7 @@ namespace Server.Mobiles
             if (Map == null)
                 return;
 
-            if (attacker is BaseCreature && ((BaseCreature)attacker).BardProvoked)
+            if (attacker is BaseCreature creature && creature.BardProvoked)
                 return;
 
             if (0.2 > Utility.RandomDouble())
@@ -132,9 +132,9 @@ namespace Server.Mobiles
                 */
                 Mobile target = null;
 
-                if (attacker is BaseCreature)
+                if (attacker is BaseCreature baseCreature)
                 {
-                    Mobile m = ((BaseCreature)attacker).GetMaster();
+                    Mobile m = baseCreature.GetMaster();
 
                     if (m != null)
                         target = m;
@@ -153,7 +153,7 @@ namespace Server.Mobiles
                     if (m == this || !CanBeHarmful(m))
                         continue;
 
-                    if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
+                    if (m is BaseCreature bc && (bc.Controlled || bc.Summoned || bc.Team != Team))
                         targets.Add(m);
                     else if (m.Player && m.Alive)
                         targets.Add(m);

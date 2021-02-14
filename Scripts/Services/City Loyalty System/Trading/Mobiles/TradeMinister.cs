@@ -153,6 +153,11 @@ namespace Server.Engines.CityLoyalty
                     {
                         if (CityLoyaltySystem.CityTrading.TryTurnIn(from, order, Minister))
                         {
+                            if (List.ContainsKey(from))
+                            {
+                                List[from].StopTimer();
+                            }
+
                             if (order.Entry != null && order.Entry.Distance > 0)
                             {
                                 from.AddToBackpack(Minister.GiveReward(order.Entry));
@@ -183,6 +188,11 @@ namespace Server.Engines.CityLoyalty
             }
 
             protected override void OnTick()
+            {
+                StopTimer();
+            }
+
+            public void StopTimer()
             {
                 if (List.ContainsKey(_Mobile))
                 {
@@ -272,12 +282,14 @@ namespace Server.Engines.CityLoyalty
 
         private class InternalGump : Gump
         {
-            public InternalGump() : base(40, 40)
+            public InternalGump()
+                : base(100, 100)
             {
-                AddBackground(0, 0, 500, 400, 9380);
+                AddPage(0);
 
-                AddHtmlLocalized(30, 50, 400, 16, 1152962, 0x4800, false, false);	// City Trade Minister
-                AddHtmlLocalized(30, 80, 440, 320, 1152963, 0x001F, false, false);
+                AddBackground(0, 0, 479, 425, 0x24A4);
+                AddHtmlLocalized(37, 50, 415, 18, 1114513, "#1152962", 0x3442, false, false); // <DIV ALIGN=CENTER>~1_TOKEN~</DIV>
+                AddHtmlLocalized(37, 77, 415, 270, 1152963, 0x90D, false, false); // Greetings and Salutations!  I am overjoyed thou hath seen fit to donate to the City! Surely thy good deed shall be worthy of praise!  We have need for resources and wares from a variety of professions! From Lumberjacks and Miners we require boards and ingots to rebuild our homes.  From Hunters we require hides and cut leather to fashion goods and also cuts of ribs to feed the hungry.  Cooks are in need to baked bread, while any citizen wouldst nay turn away a Fisherman's fresh catch of Crab and Lobster, or even fine fish steaks!  Our archers are in need of tools for their trade, and so the Bowyer can provide Bows and Crossbows.  Our citizens are always in need of healing, restorative, and sometimes devastating salves, and so we call upon Alchemists to donate simple potions.  Finally our soldiers, ranchers, and farmers are in need of all manner of beasts.  Hitch any dogs, cats, cows, goats, horses, sheep, pigs, or chickens to the post here and we will most certainly be appreciative!  
             }
         }
 

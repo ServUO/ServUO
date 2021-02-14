@@ -30,80 +30,38 @@ namespace Server.Commands.Generic
 
         public bool ListOptimized
         {
-            get
-            {
-                return m_ListOptimized;
-            }
-            set
-            {
-                m_ListOptimized = value;
-            }
+            get => m_ListOptimized;
+            set => m_ListOptimized = value;
         }
         public string[] Commands
         {
-            get
-            {
-                return m_Commands;
-            }
-            set
-            {
-                m_Commands = value;
-            }
+            get => m_Commands;
+            set => m_Commands = value;
         }
         public string Usage
         {
-            get
-            {
-                return m_Usage;
-            }
-            set
-            {
-                m_Usage = value;
-            }
+            get => m_Usage;
+            set => m_Usage = value;
         }
         public string Description
         {
-            get
-            {
-                return m_Description;
-            }
-            set
-            {
-                m_Description = value;
-            }
+            get => m_Description;
+            set => m_Description = value;
         }
         public AccessLevel AccessLevel
         {
-            get
-            {
-                return m_AccessLevel;
-            }
-            set
-            {
-                m_AccessLevel = value;
-            }
+            get => m_AccessLevel;
+            set => m_AccessLevel = value;
         }
         public ObjectTypes ObjectTypes
         {
-            get
-            {
-                return m_ObjectTypes;
-            }
-            set
-            {
-                m_ObjectTypes = value;
-            }
+            get => m_ObjectTypes;
+            set => m_ObjectTypes = value;
         }
         public CommandSupport Supports
         {
-            get
-            {
-                return m_Implementors;
-            }
-            set
-            {
-                m_Implementors = value;
-            }
+            get => m_Implementors;
+            set => m_Implementors = value;
         }
         public static bool IsAccessible(Mobile from, object obj)
         {
@@ -112,10 +70,10 @@ namespace Server.Commands.Generic
 
             Mobile mob;
 
-            if (obj is Mobile)
-                mob = (Mobile)obj;
-            else if (obj is Item)
-                mob = ((Item)obj).RootParent as Mobile;
+            if (obj is Mobile mobile)
+                mob = mobile;
+            else if (obj is Item item)
+                mob = item.RootParent as Mobile;
             else
                 mob = null;
 
@@ -135,7 +93,7 @@ namespace Server.Commands.Generic
         {
         }
 
-        public virtual bool ValidateArgs(BaseCommandImplementor impl, CommandEventArgs e)
+        public virtual bool ValidateArgs(CommandEventArgs e)
         {
             return true;
         }
@@ -191,16 +149,16 @@ namespace Server.Commands.Generic
                 {
                     object obj = m_Responses[i];
 
-                    if (obj is MessageEntry)
+                    if (obj is MessageEntry entry)
                     {
-                        from.SendMessage(((MessageEntry)obj).ToString());
+                        from.SendMessage(entry.ToString());
 
                         if (flushToLog)
-                            CommandLogging.WriteLine(from, ((MessageEntry)obj).ToString());
+                            CommandLogging.WriteLine(from, entry.ToString());
                     }
-                    else if (obj is Gump)
+                    else if (obj is Gump gump)
                     {
-                        from.SendGump((Gump)obj);
+                        from.SendGump(gump);
                     }
                 }
             }

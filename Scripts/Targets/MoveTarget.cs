@@ -25,15 +25,13 @@ namespace Server.Targets
                     return;
                 }
 
-                if (p is Item)
-                    p = ((Item)p).GetWorldTop();
+                if (p is Item pItem)
+                    p = pItem.GetWorldTop();
 
                 CommandLogging.WriteLine(from, "{0} {1} moving {2} to {3}", from.AccessLevel, CommandLogging.Format(from), CommandLogging.Format(m_Object), new Point3D(p));
 
-                if (m_Object is Item)
+                if (m_Object is Item item)
                 {
-                    Item item = (Item)m_Object;
-
                     if (!item.Deleted)
                     {
                         from.SendMessage("Item moved.");
@@ -44,10 +42,8 @@ namespace Server.Targets
                         from.SendLocalizedMessage(1154965); // Invalid item.
                     }
                 }
-                else if (m_Object is Mobile)
+                else if (m_Object is Mobile m)
                 {
-                    Mobile m = (Mobile)m_Object;
-
                     if (!m.Deleted)
                     {
                         from.SendMessage("Mobile moved.");

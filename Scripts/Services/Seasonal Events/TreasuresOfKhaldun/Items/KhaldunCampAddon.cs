@@ -2,7 +2,8 @@ namespace Server.Items
 {
     public class KhaldunCampAddon : BaseAddon
     {
-        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents =
+        {
               {2879, -2, 6, 4}, {2883, 1, 10, 4}, {2879, -2, 7, 4}// 1	2	3	
 			, {2880, 0, 6, 4}, {2880, -1, 6, 4}, {875, 5, 5, 4}// 4	5	6	
 			, {875, -3, 5, 5}, {3014, 6, 6, 12}, {2421, 5, 8, 3}// 7	8	20	
@@ -16,7 +17,7 @@ namespace Server.Items
 			, {2879, -5, -1, 4}, {875, -6, -3, 5}// 81	83	
             , {2880, 1, 6, 4}, {2880, 2, 6, 4}, {2980, 6, 11, 13} // 84, 85, 86
             , {542, 7, 5, -1}, {542, 7, 6, -1}, {542, 7, 7, -1} // 87, 88, 89
-            , {542, 7, 8, -1}, {542, 7, 9, -1}, {542, 7, 10, -1},
+            , {542, 7, 8, -1}, {542, 7, 9, -1}, {542, 7, 10, -1}
         };
 
         public override BaseAddonDeed Deed => null;
@@ -94,7 +95,7 @@ namespace Server.Items
         {
             AddonComponent ac;
             ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
+            if (!string.IsNullOrEmpty(name))
                 ac.Name = name;
             if (hue != 0)
                 ac.Hue = hue;
@@ -117,7 +118,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

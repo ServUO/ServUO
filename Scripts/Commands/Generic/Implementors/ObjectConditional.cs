@@ -16,13 +16,13 @@ namespace Server.Commands.Generic
 
         public Type Type => m_ObjectType;
 
-        public bool IsItem => (m_ObjectType == null || m_ObjectType == typeofItem || m_ObjectType.IsSubclassOf(typeofItem));
+        public bool IsItem => m_ObjectType == null || m_ObjectType == typeofItem || m_ObjectType.IsSubclassOf(typeofItem);
 
-        public bool IsMobile => (m_ObjectType == null || m_ObjectType == typeofMobile || m_ObjectType.IsSubclassOf(typeofMobile));
+        public bool IsMobile => m_ObjectType == null || m_ObjectType == typeofMobile || m_ObjectType.IsSubclassOf(typeofMobile);
 
         public static readonly ObjectConditional Empty = new ObjectConditional(null, null);
 
-        public bool HasCompiled => (m_Conditionals != null);
+        public bool HasCompiled => m_Conditionals != null;
 
         public void Compile(ref AssemblyEmitter emitter)
         {

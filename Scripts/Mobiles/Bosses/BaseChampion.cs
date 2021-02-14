@@ -37,26 +37,34 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public virtual Item GetArtifact()
         {
             double random = Utility.RandomDouble();
+
             if (0.05 >= random)
+            {
                 return CreateArtifact(UniqueList);
-            else if (0.15 >= random)
+            }
+
+            if (0.15 >= random)
+            {
                 return CreateArtifact(SharedList);
-            else if (0.30 >= random)
+            }
+
+            if (0.30 >= random)
+            {
                 return CreateArtifact(DecorativeList);
+            }
+
             return null;
         }
 
@@ -71,10 +79,10 @@ namespace Server.Mobiles
 
             Item artifact = Loot.Construct(type);
 
-            if (artifact is MonsterStatuette && StatueTypes.Length > 0)
+            if (artifact is MonsterStatuette statuette && StatueTypes.Length > 0)
             {
-                ((MonsterStatuette)artifact).Type = StatueTypes[Utility.Random(StatueTypes.Length)];
-                ((MonsterStatuette)artifact).LootType = LootType.Regular;
+                statuette.Type = StatueTypes[Utility.Random(StatueTypes.Length)];
+                statuette.LootType = LootType.Regular;
             }
 
             return artifact;
@@ -82,7 +90,7 @@ namespace Server.Mobiles
 
         public virtual void GivePowerScrolls()
         {
-            if (Map == null || (RestrictedToFelucca && Map.Rules != MapRules.FeluccaRules))
+            if (Map == null || RestrictedToFelucca && Map.Rules != MapRules.FeluccaRules)
                 return;
 
             List<Mobile> toGive = new List<Mobile>();
@@ -195,15 +203,13 @@ namespace Server.Mobiles
                     m.AddToBackpack(item);
             }
 
-            if (item is PowerScroll && m is PlayerMobile)
+            if (item is PowerScroll && m is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)m;
-
                 for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
                 {
                     Mobile prot = pm.JusticeProtectors[j];
 
-                    if (prot.Map != m.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot) || !prot.InRange(this, 100))
+                    if (prot.Map != pm.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(pm, prot) || !prot.InRange(this, 100))
                         continue;
 
                     int chance = 0;

@@ -7,7 +7,6 @@ namespace Server.Engines.Quests
     public class UntanglingTheWebQuest : BaseQuest
     {
         public UntanglingTheWebQuest()
-            : base()
         {
             AddObjective(new AcidCreaturesObjective(typeof(IAcidCreature), "acid creatures", 12));
 
@@ -40,15 +39,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class AcidCreaturesObjective : SlayObjective
@@ -69,15 +66,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -85,7 +80,6 @@ namespace Server.Engines.Quests
     public class GreenWithEnvyQuest : BaseQuest
     {
         public GreenWithEnvyQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(EyeOfNavrey), "eye of Navrey", 1, 0x1F1C));
 
@@ -111,18 +105,17 @@ namespace Server.Engines.Quests
         /* You do good service to your people.  Now Green Goblins will do the rest.  Without power from Navery Night-Eyes,
         we will have our revenge.  Vernix keep Green Goblin end of deal. */
         public override object Complete => 1095123;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -139,11 +132,11 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[]
-                {
-                    typeof(UntanglingTheWebQuest),
-                    typeof(GreenWithEnvyQuest),
-                };
+        public override Type[] Quests => new[]
+        {
+            typeof(UntanglingTheWebQuest),
+            typeof(GreenWithEnvyQuest)
+        };
 
         public override void InitBody()
         {
@@ -169,15 +162,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Frozen = true;
             Direction = Direction.East;

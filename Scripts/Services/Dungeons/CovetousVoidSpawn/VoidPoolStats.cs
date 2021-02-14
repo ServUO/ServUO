@@ -13,9 +13,9 @@ namespace Server.Engines.VoidPool
 
         public VoidPoolController Controller { get; set; }
 
-        public Dictionary<Mobile, long> BestSingle { get; set; }
-        public Dictionary<Mobile, long> OverallTotal { get; set; }
-        public List<Dictionary<Mobile, long>> Top20 { get; set; }
+        public Dictionary<Mobile, long> BestSingle { get; }
+        public Dictionary<Mobile, long> OverallTotal { get; }
+        public List<Dictionary<Mobile, long>> Top20 { get; }
         public BestWave BestWave { get; set; }
 
         public VoidPoolStats(VoidPoolController controller)
@@ -136,7 +136,7 @@ namespace Server.Engines.VoidPool
                     writer.Write(kvp.Key);
                     writer.Write(kvp.Value);
                 }
-            };
+            }
         }
 
         public static void Configure()
@@ -279,10 +279,10 @@ namespace Server.Engines.VoidPool
 
     public class BestWave
     {
-        public Dictionary<Mobile, long> Score { get; private set; }
-        public int Waves { get; private set; }
-        public long TotalScore { get; private set; }
-        public string Date { get; private set; }
+        public Dictionary<Mobile, long> Score { get; }
+        public int Waves { get; }
+        public long TotalScore { get; }
+        public string Date { get; }
 
         public BestWave(Dictionary<Mobile, long> score, int waves)
         {

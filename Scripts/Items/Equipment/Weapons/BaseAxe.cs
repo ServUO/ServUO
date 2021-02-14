@@ -44,7 +44,8 @@ namespace Server.Items
                 from.LocalOverheadMessage(Network.MessageType.Regular, 0x3E9, 1019045); // I can't reach that
                 return;
             }
-            else if (!IsAccessibleTo(from))
+
+            if (!IsAccessibleTo(from))
             {
                 PublicOverheadMessage(Network.MessageType.Regular, 0x3E9, 1061637); // You are not allowed to access 
                 return;
@@ -75,7 +76,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

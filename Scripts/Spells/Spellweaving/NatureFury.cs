@@ -79,8 +79,8 @@ namespace Server.Spells.Spellweaving
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                if (o is IPoint3D point3D)
+                    m_Owner.Target(point3D);
             }
 
             protected override void OnTargetFinish(Mobile from)

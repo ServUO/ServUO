@@ -4,6 +4,8 @@ namespace Server.Items
 {
     public class Blocker : Item
     {
+        public override int LabelNumber => 503057;// Impassable!
+
         [Constructable]
         public Blocker()
             : base(0x21A4)
@@ -16,19 +18,16 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 503057;// Impassable!
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         protected override Packet GetWorldPacketFor(NetState state)

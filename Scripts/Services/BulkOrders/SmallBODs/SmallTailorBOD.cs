@@ -8,13 +8,14 @@ namespace Server.Engines.BulkOrders
     {
         public override BODType BODType => BODType.Tailor;
 
-        public static double[] m_TailoringMaterialChances = new double[]
+        public static double[] m_TailoringMaterialChances =
         {
             0.857421875, // None
             0.125000000, // Spined
             0.015625000, // Horned
             0.001953125  // Barbed
         };
+
         [Constructable]
         public SmallTailorBOD()
         {
@@ -38,7 +39,7 @@ namespace Server.Engines.BulkOrders
                 else
                     material = BulkMaterialType.None;
 
-                bool reqExceptional = Utility.RandomBool() || (material == BulkMaterialType.None);
+                bool reqExceptional = Utility.RandomBool() || material == BulkMaterialType.None;
 
                 SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
 
@@ -210,15 +211,13 @@ namespace Server.Engines.BulkOrders
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

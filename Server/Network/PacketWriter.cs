@@ -57,7 +57,7 @@ namespace Server.Network
 				{
 					try
 					{
-						using (var op = new StreamWriter("neterr.log"))
+						using (StreamWriter op = new StreamWriter("neterr.log"))
 						{
 							op.WriteLine("{0}\tInstance pool contains writer", DateTime.UtcNow);
 						}
@@ -187,10 +187,10 @@ namespace Server.Network
 			if (value == null)
 			{
 				Console.WriteLine("Network: Attempted to WriteAsciiFixed() with null value");
-				value = String.Empty;
+				value = string.Empty;
 			}
 
-			var length = value.Length;
+			int length = value.Length;
 
 			m_Stream.SetLength(m_Stream.Length + size);
 
@@ -225,10 +225,10 @@ namespace Server.Network
 			if (value == null)
 			{
 				Console.WriteLine("Network: Attempted to WriteAsciiNull() with null value");
-				value = String.Empty;
+				value = string.Empty;
 			}
 
-			var length = value.Length;
+			int length = value.Length;
 
 			m_Stream.SetLength(m_Stream.Length + length + 1);
 
@@ -249,10 +249,10 @@ namespace Server.Network
 			if (value == null)
 			{
 				Console.WriteLine("Network: Attempted to WriteLittleUniNull() with null value");
-				value = String.Empty;
+				value = string.Empty;
 			}
 
-			var length = value.Length;
+			int length = value.Length;
 
 			m_Stream.SetLength(m_Stream.Length + ((length + 1) * 2));
 
@@ -276,12 +276,12 @@ namespace Server.Network
 			if (value == null)
 			{
 				Console.WriteLine("Network: Attempted to WriteLittleUniFixed() with null value");
-				value = String.Empty;
+				value = string.Empty;
 			}
 
 			size *= 2;
 
-			var length = value.Length;
+			int length = value.Length;
 
 			m_Stream.SetLength(m_Stream.Length + size);
 
@@ -318,10 +318,10 @@ namespace Server.Network
 			if (value == null)
 			{
 				Console.WriteLine("Network: Attempted to WriteBigUniNull() with null value");
-				value = String.Empty;
+				value = string.Empty;
 			}
 
-			var length = value.Length;
+			int length = value.Length;
 
 			m_Stream.SetLength(m_Stream.Length + ((length + 1) * 2));
 
@@ -346,12 +346,12 @@ namespace Server.Network
 			if (value == null)
 			{
 				Console.WriteLine("Network: Attempted to WriteBigUniFixed() with null value");
-				value = String.Empty;
+				value = string.Empty;
 			}
 
 			size *= 2;
 
-			var length = value.Length;
+			int length = value.Length;
 
 			m_Stream.SetLength(m_Stream.Length + size);
 

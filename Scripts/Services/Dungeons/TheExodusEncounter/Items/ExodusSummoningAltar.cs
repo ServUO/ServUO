@@ -34,7 +34,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -67,18 +67,16 @@ namespace Server.Items
 
             public static bool IsValidTile(int itemID)
             {
-                return (itemID >= 0x149F && itemID <= 0x14D6);
+                return itemID >= 0x149F && itemID <= 0x14D6;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is StaticTarget)
+                if (targeted is StaticTarget staticTarget)
                 {
-                    StaticTarget targ = (StaticTarget)targeted;
-
-                    if (IsValidTile(targ.ItemID) && (from.Map == Map.Felucca || from.Map == Map.Trammel))
+                    if (IsValidTile(staticTarget.ItemID) && (from.Map == Map.Felucca || from.Map == Map.Trammel))
                     {
-                        bool alter = from.Map.GetItemsInRange(targ.Location, 5).Where(x => x is ExodusTomeAltar).Any();
+                        bool alter = from.Map.GetItemsInRange(staticTarget.Location, 5).Any(x => x is ExodusTomeAltar);
 
                         if (alter)
                         {
@@ -128,7 +126,7 @@ namespace Server.Items
 
                             if (p != Point3D.Zero)
                             {
-                                ExodusTomeAltar altar = new ExodusTomeAltar(from);
+                                ExodusTomeAltar altar = new ExodusTomeAltar();
                                 altar.MoveToWorld(p, from.Map);
                                 altar.Owner = from;
                                 m_Deed.Delete();
@@ -153,7 +151,7 @@ namespace Server.Items
 
         public static bool CheckExodus() // Before ritual check
         {
-            return ClockworkExodus.Instances.FirstOrDefault(m => m.Region.IsPartOf("Ver Lor Reg") && ((m.Hits >= m.HitsMax * 0.60 && m.MinHits >= m.HitsMax * 0.60) || (m.Hits >= m.HitsMax * 0.75))) != null;
+            return ClockworkExodus.Instances.FirstOrDefault(m => m.Region.IsPartOf("Ver Lor Reg") && (m.Hits >= m.HitsMax * 0.60 && m.MinHits >= m.HitsMax * 0.60 || m.Hits >= m.HitsMax * 0.75)) != null;
         }
     }
 }

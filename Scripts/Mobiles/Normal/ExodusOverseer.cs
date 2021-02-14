@@ -54,7 +54,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Rich);
-            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(PowerCrystal), typeof(ArcaneGem) }));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(PowerCrystal), typeof(ArcaneGem) }));
         }
 
         public override int GetIdleSound()
@@ -170,7 +170,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_FieldActive = CanUseField;
         }

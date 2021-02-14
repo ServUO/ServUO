@@ -142,8 +142,8 @@ namespace Server.Engines.Craft
             }
             // ****************************************
 
-            if (notice is int && (int)notice > 0)
-                AddHtmlLocalized(170, 295, 350, 40, (int)notice, LabelColor, false, false);
+            if (notice is int note && note > 0)
+                AddHtmlLocalized(170, 295, 350, 40, note, LabelColor, false, false);
             else if (notice is string)
                 AddHtml(170, 295, 350, 40, string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, notice), false, false);
 
@@ -153,7 +153,7 @@ namespace Server.Engines.Craft
                 string nameString = craftSystem.CraftSubRes.NameString;
                 int nameNumber = craftSystem.CraftSubRes.NameNumber;
 
-                int resIndex = (context == null ? -1 : context.LastResourceIndex);
+                int resIndex = context == null ? -1 : context.LastResourceIndex;
 
                 Type resourceType = craftSystem.CraftSubRes.ResType;
 
@@ -205,7 +205,7 @@ namespace Server.Engines.Craft
                 string nameString = craftSystem.CraftSubRes2.NameString;
                 int nameNumber = craftSystem.CraftSubRes2.NameNumber;
 
-                int resIndex = (context == null ? -1 : context.LastResourceIndex2);
+                int resIndex = context == null ? -1 : context.LastResourceIndex2;
 
                 Type resourceType = craftSystem.CraftSubRes2.ResType;
 
@@ -261,24 +261,24 @@ namespace Server.Engines.Craft
             return null;
         }
 
-        private readonly Type[][] m_TypesTable = new Type[][]
+        private readonly Type[][] m_TypesTable =
         {
-            new Type[]{ typeof( Log ), typeof( Board ) },
-            new Type[]{ typeof( HeartwoodLog ), typeof( HeartwoodBoard ) },
-            new Type[]{ typeof( BloodwoodLog ), typeof( BloodwoodBoard ) },
-            new Type[]{ typeof( FrostwoodLog ), typeof( FrostwoodBoard ) },
-            new Type[]{ typeof( OakLog ), typeof( OakBoard ) },
-            new Type[]{ typeof( AshLog ), typeof( AshBoard ) },
-            new Type[]{ typeof( YewLog ), typeof( YewBoard ) },
-            new Type[]{ typeof( Leather ), typeof( Hides ) },
-            new Type[]{ typeof( SpinedLeather ), typeof( SpinedHides ) },
-            new Type[]{ typeof( HornedLeather ), typeof( HornedHides ) },
-            new Type[]{ typeof( BarbedLeather ), typeof( BarbedHides ) },
+            new[]{ typeof( Log ), typeof( Board ) },
+            new[]{ typeof( HeartwoodLog ), typeof( HeartwoodBoard ) },
+            new[]{ typeof( BloodwoodLog ), typeof( BloodwoodBoard ) },
+            new[]{ typeof( FrostwoodLog ), typeof( FrostwoodBoard ) },
+            new[]{ typeof( OakLog ), typeof( OakBoard ) },
+            new[]{ typeof( AshLog ), typeof( AshBoard ) },
+            new[]{ typeof( YewLog ), typeof( YewBoard ) },
+            new[]{ typeof( Leather ), typeof( Hides ) },
+            new[]{ typeof( SpinedLeather ), typeof( SpinedHides ) },
+            new[]{ typeof( HornedLeather ), typeof( HornedHides ) },
+            new[]{ typeof( BarbedLeather ), typeof( BarbedHides ) }
         };
 
         public void CreateResList(bool opt, Mobile from)
         {
-            CraftSubResCol res = (opt ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes);
+            CraftSubResCol res = opt ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes;
 
             for (int i = 0; i < res.Count; ++i)
             {
@@ -299,7 +299,7 @@ namespace Server.Engines.Craft
                     CraftContext context = m_CraftSystem.GetContext(m_From);
 
                     AddButton(220, 260, 4005, 4007, GetButtonID(6, 4), GumpButtonType.Reply, 0);
-                    AddHtmlLocalized(255, 260, 200, 18, (context == null || !context.DoNotColor) ? 1061591 : 1061590, LabelColor, false, false);
+                    AddHtmlLocalized(255, 260, 200, 18, context == null || !context.DoNotColor ? 1061591 : 1061590, LabelColor, false, false);
                 }
 
                 int resourceCount = 0;
@@ -481,8 +481,8 @@ namespace Server.Engines.Craft
 
                 if (context != null)
                 {
-                    CraftSubResCol res = (item.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes);
-                    int resIndex = (item.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex);
+                    CraftSubResCol res = item.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes;
+                    int resIndex = item.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex;
 
                     if (resIndex >= 0 && resIndex < res.Count)
                         type = res.GetAt(resIndex).ItemType;
@@ -592,7 +592,7 @@ namespace Server.Engines.Craft
                     {
                         if (m_Page == CraftPage.PickResource && index >= 0 && index < system.CraftSubRes.Count)
                         {
-                            int groupIndex = (context == null ? -1 : context.LastGroupIndex);
+                            int groupIndex = context == null ? -1 : context.LastGroupIndex;
 
                             CraftSubRes res = system.CraftSubRes.GetAt(index);
 
@@ -610,7 +610,7 @@ namespace Server.Engines.Craft
                         }
                         else if (m_Page == CraftPage.PickResource2 && index >= 0 && index < system.CraftSubRes2.Count)
                         {
-                            int groupIndex = (context == null ? -1 : context.LastGroupIndex);
+                            int groupIndex = context == null ? -1 : context.LastGroupIndex;
 
                             CraftSubRes res = system.CraftSubRes2.GetAt(index);
 

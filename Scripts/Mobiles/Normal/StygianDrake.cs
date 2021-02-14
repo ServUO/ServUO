@@ -46,6 +46,29 @@ namespace Server.Mobiles
             SetMagicalAbility(MagicalAbility.MageryMastery);
         }
 
+        protected override void OnMapChange(Map oldMap)
+        {
+            base.OnMapChange(oldMap);
+
+            if (!Controlled && Tamable)
+            {
+                if (Utility.RandomDouble() < 0.05 + TotemRareColorChance())
+                {
+                    switch (Utility.Random(4))
+                    {
+                        case 0: { Hue = 33922; break; }
+                        case 1: { Hue = 33934; break; }
+                        case 2: { Hue = 35488; break; }
+                        case 3: { Hue = 34699; break; }
+                    }
+                }
+                else if (Totem != null)
+                {
+                    Totem = null;
+                }
+            }
+        }
+
         public StygianDrake(Serial serial)
             : base(serial)
         {
@@ -80,7 +103,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

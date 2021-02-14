@@ -224,7 +224,8 @@ namespace Server.Items
             {
                 return;
             }
-            else if (!InitialSpawn)
+
+            if (!InitialSpawn)
             {
                 for (int i = 0; i < MaxSpawn; i++)
                 {
@@ -299,7 +300,7 @@ namespace Server.Items
 
         private int SpawnCount()
         {
-            return Spawn.Keys.Where(s => s != null && !s.Deleted).Count();
+            return Spawn.Keys.Count(s => s != null && !s.Deleted);
         }
 
         private readonly Type[] _SpawnTypes =
@@ -429,7 +430,7 @@ namespace Server.Items
         {
             AddonComponent ac;
             ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
+            if (!string.IsNullOrEmpty(name))
                 ac.Name = name;
             if (hue != 0)
                 ac.Hue = hue;
@@ -443,7 +444,8 @@ namespace Server.Items
             addon.AddComponent(ac, xoffset, yoffset, zoffset);
         }
 
-        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents =
+        {
               {16017, -5, -3, 4}, {16011, -2, 4, 4}// 1	 2	 3	 
 			, {16011, -2, -4, 4}, {16020, -5, -5, 4}, {16008, -2, -5, 4}// 4	 5	 6	 
 			, {16014, -4, -3, 4}, {16011, 3, -4, 4}, {16008, -2, 3, 4}// 7	 8	 9	 

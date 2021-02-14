@@ -542,7 +542,7 @@ namespace Server.Engines.JollyRoger
             "Ghost,Two",
             "Ghost,Three",
             "Ghost,Four",
-            "Ghost,Five",
+            "Ghost,Five"
         };
 
         public static readonly string EntityName = "JollyRoger";

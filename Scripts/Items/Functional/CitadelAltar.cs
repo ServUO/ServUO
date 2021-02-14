@@ -8,10 +8,10 @@ namespace Server.Items
         public override int KeyCount => 3;
         public override MasterKey MasterKey => new CitadelKey();
 
-        public override Type[] Keys => new Type[]
-{
+        public override Type[] Keys => new[]
+        {
             typeof( TigerClawKey ), typeof( SerpentFangKey ), typeof( DragonFlameKey )
-};
+        };
 
         public override BasePeerless Boss => new Travesty();
 
@@ -25,9 +25,9 @@ namespace Server.Items
 
         public override Rectangle2D[] BossBounds => m_Bounds;
 
-        private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private readonly Rectangle2D[] m_Bounds =
         {
-            new Rectangle2D(66, 1936, 51, 39),
+            new Rectangle2D(66, 1936, 51, 39)
         };
 
         public CitadelAltar(Serial serial) : base(serial)
@@ -37,15 +37,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

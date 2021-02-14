@@ -25,7 +25,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasYelled
         {
-            get { return _HasYelled; }
+            get => _HasYelled;
             set
             {
                 if (value != _HasYelled)
@@ -67,7 +67,7 @@ namespace Server.Mobiles
 
                 MasteryInfo[] infos = MasteryInfo.Infos.Where(i => i.MasterySkill == wep.DefSkill && !i.Passive).ToArray();
 
-                if (infos != null && infos.Length > 0)
+                if (infos.Length > 0)
                 {
                     return infos;
                 }
@@ -171,15 +171,14 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != this && m != aggressor && m is BaseEodonTribesman && ((BaseEodonTribesman)m).TribeType == TribeType && m.Combatant == null)
+                if (m != this && m != aggressor && m is BaseEodonTribesman tribesman && tribesman.TribeType == TribeType && tribesman.Combatant == null)
                 {
-                    BaseEodonTribesman tribesman = m as BaseEodonTribesman;
-                    m.Warmode = true;
-                    m.Combatant = aggressor;
+                    tribesman.Warmode = true;
+                    tribesman.Combatant = aggressor;
 
                     if (!tribesman.HasYelled)
                     {
-                        m.PublicOverheadMessage(Network.MessageType.Regular, 0x47E, 1156584); // Ahhhh-OOOO! Ahhh-OOOO!
+                        tribesman.PublicOverheadMessage(Network.MessageType.Regular, 0x47E, 1156584); // Ahhhh-OOOO! Ahhh-OOOO!
                         tribesman.HasYelled = true;
                     }
                 }
@@ -218,13 +217,15 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write((int)TribeType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             TribeType = (EodonTribe)reader.ReadInt();
         }
     }
@@ -416,7 +417,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -561,11 +562,8 @@ namespace Server.Mobiles
                     break;
             }
 
-            if (weapon != null)
-            {
-                weapon.LootType = LootType.Blessed;
-                SetWearable(weapon);
-            }
+            weapon.LootType = LootType.Blessed;
+            SetWearable(weapon);
         }
 
         public override bool AlwaysAttackable => Region.IsPartOf<BattleRegion>();
@@ -584,7 +582,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -759,7 +757,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -52,14 +52,14 @@ namespace Server.Engines.BulkOrders
             PlayerVendor pv = book.RootParent as PlayerVendor;
 
             bool canDrop = book.IsChildOf(from.Backpack);
-            bool canBuy = (pv != null);
-            bool canPrice = (canDrop || canBuy);
+            bool canBuy = pv != null;
+            bool canPrice = canDrop || canBuy;
 
             if (canBuy)
             {
                 VendorItem vi = pv.GetVendorItem(book);
 
-                canBuy = (vi != null && !vi.IsForSale);
+                canBuy = vi != null && !vi.IsForSale;
             }
 
             int width = 600;
@@ -98,8 +98,8 @@ namespace Server.Engines.BulkOrders
 
                 AddImageTiled(24, 94 + (tableIndex * 32), canPrice ? 573 : 489, 2, 2624);
 
-                if (obj is BOBLargeEntry)
-                    tableIndex += ((BOBLargeEntry)obj).Entries.Length;
+                if (obj is BOBLargeEntry largeEntry)
+                    tableIndex += largeEntry.Entries.Length;
                 else if (obj is BOBSmallEntry)
                     ++tableIndex;
             }
@@ -173,79 +173,75 @@ namespace Server.Engines.BulkOrders
                 if (!CheckFilter(obj))
                     continue;
 
-                if (obj is BOBLargeEntry)
+                if (obj is BOBLargeEntry largeEntry)
                 {
-                    BOBLargeEntry e = (BOBLargeEntry)obj;
-
                     int y = 96 + (tableIndex * 32);
 
                     if (canDrop)
                         AddButton(35, y + 2, 5602, 5606, 5 + (i * 2), GumpButtonType.Reply, 0);
 
-                    if (canDrop || (canBuy && e.Price > 0))
+                    if (canDrop || (canBuy && largeEntry.Price > 0))
                     {
                         AddButton(579, y + 2, 2117, 2118, 6 + (i * 2), GumpButtonType.Reply, 0);
-                        AddLabel(495, y, 1152, e.Price.ToString());
+                        AddLabel(495, y, 1152, largeEntry.Price.ToString());
                     }
 
                     AddHtmlLocalized(61, y, 50, 32, 1062225, LabelColor, false, false); // Large
 
-                    for (int j = 0; j < e.Entries.Length; ++j)
+                    for (int j = 0; j < largeEntry.Entries.Length; ++j)
                     {
-                        BOBLargeSubEntry sub = e.Entries[j];
+                        BOBLargeSubEntry sub = largeEntry.Entries[j];
 
                         AddHtmlLocalized(103, y, 130, 32, sub.Number, LabelColor, false, false);
 
-                        if (e.RequireExceptional)
+                        if (largeEntry.RequireExceptional)
                             AddHtmlLocalized(235, y, 80, 20, 1060636, LabelColor, false, false); // exceptional
                         else
                             AddHtmlLocalized(235, y, 80, 20, 1011542, LabelColor, false, false); // normal
 
-                        object name = GetMaterialName(e.Material, e.DeedType, sub.ItemType);
+                        object name = GetMaterialName(largeEntry.Material, largeEntry.DeedType, sub.ItemType);
 
-                        if (name is int)
-                            AddHtmlLocalized(316, y, 100, 20, (int)name, LabelColor, false, false);
-                        else if (name is string)
-                            AddLabel(316, y, 1152, (string)name);
+                        if (name is int iName)
+                            AddHtmlLocalized(316, y, 100, 20, iName, LabelColor, false, false);
+                        else if (name is string sName)
+                            AddLabel(316, y, 1152, sName);
 
-                        AddLabel(421, y, 1152, string.Format("{0} / {1}", sub.AmountCur, e.AmountMax));
+                        AddLabel(421, y, 1152, string.Format("{0} / {1}", sub.AmountCur, largeEntry.AmountMax));
 
                         ++tableIndex;
                         y += 32;
                     }
                 }
-                else if (obj is BOBSmallEntry)
+                else if (obj is BOBSmallEntry smallEntry)
                 {
-                    BOBSmallEntry e = (BOBSmallEntry)obj;
-
                     int y = 96 + (tableIndex++ * 32);
 
                     if (canDrop)
                         AddButton(35, y + 2, 5602, 5606, 5 + (i * 2), GumpButtonType.Reply, 0);
 
-                    if (canDrop || (canBuy && e.Price > 0))
+                    if (canDrop || (canBuy && smallEntry.Price > 0))
                     {
                         AddButton(579, y + 2, 2117, 2118, 6 + (i * 2), GumpButtonType.Reply, 0);
-                        AddLabel(495, y, 1152, e.Price.ToString());
+                        AddLabel(495, y, 1152, smallEntry.Price.ToString());
                     }
 
                     AddHtmlLocalized(61, y, 50, 32, 1062224, LabelColor, false, false); // Small
 
-                    AddHtmlLocalized(103, y, 130, 32, e.Number, LabelColor, false, false);
+                    AddHtmlLocalized(103, y, 130, 32, smallEntry.Number, LabelColor, false, false);
 
-                    if (e.RequireExceptional)
+                    if (smallEntry.RequireExceptional)
                         AddHtmlLocalized(235, y, 80, 20, 1060636, LabelColor, false, false); // exceptional
                     else
                         AddHtmlLocalized(235, y, 80, 20, 1011542, LabelColor, false, false); // normal
 
-                    object name = GetMaterialName(e.Material, e.DeedType, e.ItemType);
+                    object name = GetMaterialName(smallEntry.Material, smallEntry.DeedType, smallEntry.ItemType);
 
-                    if (name is int)
-                        AddHtmlLocalized(316, y, 100, 20, (int)name, LabelColor, false, false);
-                    else if (name is string)
-                        AddLabel(316, y, 1152, (string)name);
+                    if (name is int iName)
+                        AddHtmlLocalized(316, y, 100, 20, iName, LabelColor, false, false);
+                    else if (name is string sName)
+                        AddLabel(316, y, 1152, sName);
 
-                    AddLabel(421, y, 1152, string.Format("{0} / {1}", e.AmountCur, e.AmountMax));
+                    AddLabel(421, y, 1152, string.Format("{0} / {1}", smallEntry.AmountCur, smallEntry.AmountMax));
                 }
             }
         }
@@ -254,27 +250,24 @@ namespace Server.Engines.BulkOrders
         {
             Item item = null;
 
-            if (obj is BOBLargeEntry)
-                item = ((BOBLargeEntry)obj).Reconstruct();
-            else if (obj is BOBSmallEntry)
-                item = ((BOBSmallEntry)obj).Reconstruct();
+            if (obj is BOBLargeEntry largeEntry)
+                item = largeEntry.Reconstruct();
+            else if (obj is BOBSmallEntry smallEntry)
+                item = smallEntry.Reconstruct();
 
             return item;
         }
 
         public bool CheckFilter(object obj)
         {
-            if (obj is BOBLargeEntry)
+            if (obj is BOBLargeEntry large)
             {
-                BOBLargeEntry e = (BOBLargeEntry)obj;
-
-                return CheckFilter(e.Material, e.AmountMax, true, e.RequireExceptional, e.DeedType, (e.Entries.Length > 0 ? e.Entries[0].ItemType : null));
+                return CheckFilter(large.Material, large.AmountMax, true, large.RequireExceptional, large.DeedType, (large.Entries.Length > 0 ? large.Entries[0].ItemType : null));
             }
-            else if (obj is BOBSmallEntry)
-            {
-                BOBSmallEntry e = (BOBSmallEntry)obj;
 
-                return CheckFilter(e.Material, e.AmountMax, false, e.RequireExceptional, e.DeedType, e.ItemType);
+            if (obj is BOBSmallEntry small)
+            {
+                return CheckFilter(small.Material, small.AmountMax, false, small.RequireExceptional, small.DeedType, small.ItemType);
             }
 
             return false;
@@ -289,19 +282,19 @@ namespace Server.Engines.BulkOrders
 
             if (f.Quality == 1 && reqExc)
                 return false;
-            else if (f.Quality == 2 && !reqExc)
+            if (f.Quality == 2 && !reqExc)
                 return false;
 
             if (f.Quantity == 1 && amountMax != 10)
                 return false;
-            else if (f.Quantity == 2 && amountMax != 15)
+            if (f.Quantity == 2 && amountMax != 15)
                 return false;
-            else if (f.Quantity == 3 && amountMax != 20)
+            if (f.Quantity == 3 && amountMax != 20)
                 return false;
 
             if (f.Type == 1 && isLarge)
                 return false;
-            else if (f.Type == 2 && !isLarge)
+            if (f.Type == 2 && !isLarge)
                 return false;
 
             if (BulkOrderSystem.NewSystemEnabled)
@@ -407,31 +400,29 @@ namespace Server.Engines.BulkOrders
                         return (mat == BulkMaterialType.Frostwood && deedType == BODType.Fletching);
                 }
             }
-            else
+
+            switch (f.Material)
             {
-                switch (f.Material)
-                {
-                    default:
-                    case 0: return true;
-                    case 1: return (deedType == BODType.Smith);
-                    case 2: return (deedType == BODType.Tailor);
+                default:
+                case 0: return true;
+                case 1: return (deedType == BODType.Smith);
+                case 2: return (deedType == BODType.Tailor);
 
-                    case 3: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Iron);
-                    case 4: return (mat == BulkMaterialType.DullCopper);
-                    case 5: return (mat == BulkMaterialType.ShadowIron);
-                    case 6: return (mat == BulkMaterialType.Copper);
-                    case 7: return (mat == BulkMaterialType.Bronze);
-                    case 8: return (mat == BulkMaterialType.Gold);
-                    case 9: return (mat == BulkMaterialType.Agapite);
-                    case 10: return (mat == BulkMaterialType.Verite);
-                    case 11: return (mat == BulkMaterialType.Valorite);
+                case 3: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Iron);
+                case 4: return (mat == BulkMaterialType.DullCopper);
+                case 5: return (mat == BulkMaterialType.ShadowIron);
+                case 6: return (mat == BulkMaterialType.Copper);
+                case 7: return (mat == BulkMaterialType.Bronze);
+                case 8: return (mat == BulkMaterialType.Gold);
+                case 9: return (mat == BulkMaterialType.Agapite);
+                case 10: return (mat == BulkMaterialType.Verite);
+                case 11: return (mat == BulkMaterialType.Valorite);
 
-                    case 12: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Cloth);
-                    case 13: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Leather);
-                    case 14: return (mat == BulkMaterialType.Spined);
-                    case 15: return (mat == BulkMaterialType.Horned);
-                    case 16: return (mat == BulkMaterialType.Barbed);
-                }
+                case 12: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Cloth);
+                case 13: return (mat == BulkMaterialType.None && BGTClassifier.Classify(deedType, itemType) == BulkGenericType.Leather);
+                case 14: return (mat == BulkMaterialType.Spined);
+                case 15: return (mat == BulkMaterialType.Horned);
+                case 16: return (mat == BulkMaterialType.Barbed);
             }
         }
 
@@ -460,8 +451,8 @@ namespace Server.Engines.BulkOrders
                 {
                     int add;
 
-                    if (obj is BOBLargeEntry)
-                        add = ((BOBLargeEntry)obj).Entries.Length;
+                    if (obj is BOBLargeEntry largeEntry)
+                        add = largeEntry.Entries.Length;
                     else
                         add = 1;
 
@@ -494,8 +485,8 @@ namespace Server.Engines.BulkOrders
                 obj = list[i];
                 if (CheckFilter(obj))
                 {
-                    if (obj is BOBLargeEntry)
-                        add = ((BOBLargeEntry)obj).Entries.Length;
+                    if (obj is BOBLargeEntry largeEntry)
+                        add = largeEntry.Entries.Length;
                     else
                         add = 1;
                     count += add;
@@ -523,8 +514,8 @@ namespace Server.Engines.BulkOrders
                     obj = list[i];
                     if (CheckFilter(obj))
                     {
-                        if (obj is BOBLargeEntry)
-                            count += ((BOBLargeEntry)obj).Entries.Length;
+                        if (obj is BOBLargeEntry largeEntry)
+                            count += largeEntry.Entries.Length;
                         else
                             count += 1;
                     }
@@ -547,29 +538,27 @@ namespace Server.Engines.BulkOrders
                         {
                             return 1079435;
                         }
-                        else
+
+                        switch (mat)
                         {
-                            switch (mat)
-                            {
-                                case BulkMaterialType.None:
-                                    return 1062226;
-                                case BulkMaterialType.DullCopper:
-                                    return 1018332;
-                                case BulkMaterialType.ShadowIron:
-                                    return 1018333;
-                                case BulkMaterialType.Copper:
-                                    return 1018334;
-                                case BulkMaterialType.Bronze:
-                                    return 1018335;
-                                case BulkMaterialType.Gold:
-                                    return 1018336;
-                                case BulkMaterialType.Agapite:
-                                    return 1018337;
-                                case BulkMaterialType.Verite:
-                                    return 1018338;
-                                case BulkMaterialType.Valorite:
-                                    return 1018339;
-                            }
+                            case BulkMaterialType.None:
+                                return 1062226;
+                            case BulkMaterialType.DullCopper:
+                                return 1018332;
+                            case BulkMaterialType.ShadowIron:
+                                return 1018333;
+                            case BulkMaterialType.Copper:
+                                return 1018334;
+                            case BulkMaterialType.Bronze:
+                                return 1018335;
+                            case BulkMaterialType.Gold:
+                                return 1018336;
+                            case BulkMaterialType.Agapite:
+                                return 1018337;
+                            case BulkMaterialType.Verite:
+                                return 1018338;
+                            case BulkMaterialType.Valorite:
+                                return 1018339;
                         }
 
                         break;
@@ -660,7 +649,7 @@ namespace Server.Engines.BulkOrders
                 default:
                     {
                         bool canDrop = m_Book.IsChildOf(m_From.Backpack);
-                        bool canPrice = canDrop || (m_Book.RootParent is PlayerVendor);
+                        bool canPrice = canDrop || m_Book.RootParent is PlayerVendor;
 
                         index -= 5;
 
@@ -687,7 +676,7 @@ namespace Server.Engines.BulkOrders
                                 if (item != null)
                                 {
                                     Container pack = m_From.Backpack;
-                                    if ((pack == null) || ((pack != null) && (!pack.CheckHold(m_From, item, true, true, 0, item.PileWeight + item.TotalWeight))))
+                                    if (pack == null || !pack.CheckHold(m_From, item, true, true, 0, item.PileWeight + item.TotalWeight))
                                     {
                                         m_From.SendLocalizedMessage(503204); // You do not have room in your backpack for this
                                         m_From.SendGump(new BOBGump(m_From, m_Book, m_Page, null));
@@ -697,8 +686,8 @@ namespace Server.Engines.BulkOrders
                                         if (m_Book.IsChildOf(m_From.Backpack))
                                         {
                                             int sizeOfDroppedBod;
-                                            if (obj is BOBLargeEntry)
-                                                sizeOfDroppedBod = ((BOBLargeEntry)obj).Entries.Length;
+                                            if (obj is BOBLargeEntry largeEntry)
+                                                sizeOfDroppedBod = largeEntry.Entries.Length;
                                             else
                                                 sizeOfDroppedBod = 1;
 
@@ -736,19 +725,18 @@ namespace Server.Engines.BulkOrders
                                 m_From.Prompt = new SetPricePrompt(m_Book, obj, m_Page, m_List);
                                 m_From.SendLocalizedMessage(1062383); // Type in a price for the deed:
                             }
-                            else if (m_Book.RootParent is PlayerVendor)
+                            else if (m_Book.RootParent is PlayerVendor pv)
                             {
-                                PlayerVendor pv = (PlayerVendor)m_Book.RootParent;
                                 VendorItem vi = pv.GetVendorItem(m_Book);
 
                                 if (vi != null && !vi.IsForSale)
                                 {
                                     int sizeOfDroppedBod;
                                     int price = 0;
-                                    if (obj is BOBLargeEntry)
+                                    if (obj is BOBLargeEntry largeEntry)
                                     {
-                                        price = ((BOBLargeEntry)obj).Price;
-                                        sizeOfDroppedBod = ((BOBLargeEntry)obj).Entries.Length;
+                                        price = largeEntry.Price;
+                                        sizeOfDroppedBod = largeEntry.Entries.Length;
                                     }
                                     else
                                     {
@@ -813,34 +801,34 @@ namespace Server.Engines.BulkOrders
                         if (!m_Book.Entries.Contains(obj))
                             continue;
 
-                        if (obj is BOBLargeEntry)
-                            ((BOBLargeEntry)obj).Price = price;
-                        else if (obj is BOBSmallEntry)
-                            ((BOBSmallEntry)obj).Price = price;
+                        if (obj is BOBLargeEntry largeEntry)
+                            largeEntry.Price = price;
+                        else if (obj is BOBSmallEntry smallEntry)
+                            smallEntry.Price = price;
                     }
 
                     from.SendMessage("Deed prices set.");
 
-                    if (from is PlayerMobile)
-                        from.SendGump(new BOBGump((PlayerMobile)from, m_Book, m_Page, m_List));
+                    if (from is PlayerMobile mobile)
+                        mobile.SendGump(new BOBGump(mobile, m_Book, m_Page, m_List));
                 }
-                else if (m_Object is BOBLargeEntry)
+                else if (m_Object is BOBLargeEntry large)
                 {
-                    ((BOBLargeEntry)m_Object).Price = price;
+                    large.Price = price;
 
                     from.SendLocalizedMessage(1062384); // Deed price set.
 
-                    if (from is PlayerMobile)
-                        from.SendGump(new BOBGump((PlayerMobile)from, m_Book, m_Page, m_List));
+                    if (from is PlayerMobile mobile)
+                        mobile.SendGump(new BOBGump(mobile, m_Book, m_Page, m_List));
                 }
-                else if (m_Object is BOBSmallEntry)
+                else if (m_Object is BOBSmallEntry small)
                 {
-                    ((BOBSmallEntry)m_Object).Price = price;
+                    small.Price = price;
 
                     from.SendLocalizedMessage(1062384); // Deed price set.
 
-                    if (from is PlayerMobile)
-                        from.SendGump(new BOBGump((PlayerMobile)from, m_Book, m_Page, m_List));
+                    if (from is PlayerMobile mobile)
+                        mobile.SendGump(new BOBGump(mobile, m_Book, m_Page, m_List));
                 }
             }
         }

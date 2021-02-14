@@ -12,7 +12,7 @@ namespace Server.Engines.JollyRoger
 {
     public class BoxArray
     {
-        public Mobile Mobile { get; set; }
+        public Mobile Mobile { get; }
         public bool Reward { get; set; }
 
         public BoxArray(Mobile m, bool r)
@@ -140,7 +140,7 @@ namespace Server.Engines.JollyRoger
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -252,7 +252,7 @@ namespace Server.Engines.JollyRoger
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Note = reader.ReadString();
             Controller = reader.ReadMobile() as SherryTheMouse;
@@ -261,8 +261,8 @@ namespace Server.Engines.JollyRoger
 
     public class NoteArray
     {
-        public string Note { get; set; }
-        public int Sound { get; set; }
+        public string Note { get; }
+        public int Sound { get; }
 
         public NoteArray(string n, int s)
         {
@@ -357,7 +357,7 @@ namespace Server.Engines.JollyRoger
             return Notes.Select(x => new { n = x, rand = Utility.Random(Notes.Count) }).OrderBy(x => x.rand).Select(x => x.n).ToList();
         }
 
-        public List<NoteArray> Notes = new List<NoteArray>()
+        public List<NoteArray> Notes = new List<NoteArray>
         {
             new NoteArray( "C4", 0x404 ),
             new NoteArray( "D", 0x409 ),
@@ -369,7 +369,7 @@ namespace Server.Engines.JollyRoger
             new NoteArray( "C5", 0x405 )
         };
 
-        public readonly static Point3D[] LuteLocations = new Point3D[]
+        public static readonly Point3D[] LuteLocations =
         {
             new Point3D(1350, 1646, 80), new Point3D(1350, 1650, 80), new Point3D(1350, 1655, 80), new Point3D(1350, 1659, 80),
             new Point3D(1355, 1646, 80), new Point3D(1355, 1650, 80), new Point3D(1355, 1655, 80), new Point3D(1355, 1659, 80)
@@ -429,7 +429,7 @@ namespace Server.Engines.JollyRoger
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             LuteList = new List<Item>();
 

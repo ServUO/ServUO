@@ -10,13 +10,13 @@ namespace Server.Misc
     {
         public static bool Enabled => SeasonalEventSystem.IsActive(EventType.VirtueArtifacts);
 
-        private static readonly Type[] m_VirtueArtifacts = new Type[]
-            {
-                typeof( KatrinasCrook ), typeof( JaanasStaff ), typeof( DragonsEnd ), typeof( AnkhPendant ),
-                typeof( SentinelsGuard ), typeof( LordBlackthornsExemplar ), typeof( MapOfTheKnownWorld ), typeof( TenthAnniversarySculpture ),
-                typeof( CompassionArms ), typeof( JusticeBreastplate ), typeof( ValorGauntlets ), typeof( HonestyGorget ),
-                typeof( SpiritualityHelm ), typeof( HonorLegs ), typeof( SacrificeSollerets )
-            };
+        private static readonly Type[] m_VirtueArtifacts =
+        {
+            typeof( KatrinasCrook ), typeof( JaanasStaff ), typeof( DragonsEnd ), typeof( AnkhPendant ),
+            typeof( SentinelsGuard ), typeof( LordBlackthornsExemplar ), typeof( MapOfTheKnownWorld ), typeof( TenthAnniversarySculpture ),
+            typeof( CompassionArms ), typeof( JusticeBreastplate ), typeof( ValorGauntlets ), typeof( HonestyGorget ),
+            typeof( SpiritualityHelm ), typeof( HonorLegs ), typeof( SacrificeSollerets )
+        };
 
         public static Type[] Artifacts => m_VirtueArtifacts;
 
@@ -32,14 +32,14 @@ namespace Server.Misc
         {
             Region r = m.Region;
 
-            if (m is BaseCreature && ((BaseCreature)m).IsChampionSpawn)
+            if (m is BaseCreature creature && creature.IsChampionSpawn)
                 return false;
 
             if (r.IsPartOf<Regions.HouseRegion>() || Multis.BaseBoat.FindBoatAt(m, m.Map) != null)
                 return false;
 
-            return (r.IsPartOf("Covetous") || r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") ||
-                r.IsPartOf("Hythloth") || r.IsPartOf("Shame") || r.IsPartOf("Wrong"));
+            return r.IsPartOf("Covetous") || r.IsPartOf("Deceit") || r.IsPartOf("Despise") || r.IsPartOf("Destard") ||
+                   r.IsPartOf("Hythloth") || r.IsPartOf("Shame") || r.IsPartOf("Wrong");
         }
 
         public override void SendMessage(PlayerMobile from, double old, double points, bool quest)

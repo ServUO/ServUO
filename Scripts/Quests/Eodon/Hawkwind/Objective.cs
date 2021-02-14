@@ -31,7 +31,7 @@ namespace Server.Engines.Quests.TimeLord
 
         public override void OnKill(BaseCreature creature, Container corpse)
         {
-            if (System is TimeForLegendsQuest && creature.GetType() == ((TimeForLegendsQuest)System).ToSlay)
+            if (System is TimeForLegendsQuest quest && creature.GetType() == quest.ToSlay)
             {
                 Complete();
             }

@@ -446,8 +446,7 @@ namespace Server.Accounting
                 DateTime banTime;
                 TimeSpan banDuration;
 
-                if (!GetBanTags(out banTime, out banDuration) || banDuration == TimeSpan.MaxValue ||
-                    DateTime.UtcNow < (banTime + banDuration))
+                if (!GetBanTags(out banTime, out banDuration) || banDuration == TimeSpan.MaxValue || DateTime.UtcNow < banTime + banDuration)
                 {
                     return true;
                 }
@@ -456,7 +455,7 @@ namespace Server.Accounting
                 Banned = false;
                 return false;
             }
-            set { SetFlag(0, value); }
+            set => SetFlag(0, value);
         }
 
         /// <summary>
@@ -465,7 +464,7 @@ namespace Server.Accounting
         [CommandProperty(AccessLevel.Administrator)]
         public bool Young
         {
-            get { return !GetFlag(1); }
+            get => !GetFlag(1);
             set
             {
                 SetFlag(1, !value);
@@ -551,7 +550,8 @@ namespace Server.Accounting
         ///     Initial AccessLevel for new characters created on this account.
         /// </summary>
         [CommandProperty(AccessLevel.Administrator, AccessLevel.Owner)]
-        public AccessLevel AccessLevel { get { return m_AccessLevel; } set { m_AccessLevel = value; } }
+        public AccessLevel AccessLevel { get => m_AccessLevel; set => m_AccessLevel = value;
+        }
 
         /// <summary>
         ///     Gets the current number of characters on this account.
@@ -580,7 +580,7 @@ namespace Server.Accounting
         ///     not supported by the client.
         /// </summary>
         [CommandProperty(AccessLevel.Administrator)]
-        public int Limit => (Siege.SiegeShard ? Siege.CharacterSlots : 7);
+        public int Limit => Siege.SiegeShard ? Siege.CharacterSlots : 7;
 
         /// <summary>
         ///     Gets the maxmimum amount of characters that this account can hold.
@@ -716,22 +716,22 @@ namespace Server.Accounting
 
             if (PlainPassword != null)
             {
-                ok = (PlainPassword == plainPassword);
+                ok = PlainPassword == plainPassword;
                 curProt = PasswordProtection.None;
             }
             else if (_MD5Password != null)
             {
-                ok = (_MD5Password == HashMD5(plainPassword));
+                ok = _MD5Password == HashMD5(plainPassword);
                 curProt = PasswordProtection.Crypt;
             }
             else if (_SHA1Password != null)
             {
-                ok = (_SHA1Password == HashSHA1(Username + plainPassword));
+                ok = _SHA1Password == HashSHA1(Username + plainPassword);
                 curProt = PasswordProtection.NewCrypt;
             }
             else
             {
-                ok = (_SHA512Password == HashSHA512(Username + plainPassword));
+                ok = _SHA512Password == HashSHA512(Username + plainPassword);
                 curProt = PasswordProtection.NewSecureCrypt;
             }
 
@@ -755,9 +755,9 @@ namespace Server.Accounting
 
         public int CompareTo(object obj)
         {
-            if (obj is Account)
+            if (obj is Account account)
             {
-                return CompareTo((Account)obj);
+                return CompareTo(account);
             }
 
             throw new ArgumentException();
@@ -1033,7 +1033,7 @@ namespace Server.Accounting
         {
             if (value)
             {
-                Flags |= (1 << index);
+                Flags |= 1 << index;
             }
             else
             {
@@ -1198,7 +1198,7 @@ namespace Server.Accounting
         /// <returns>True if allowed, false if not.</returns>
         public bool HasAccess(NetState ns)
         {
-            return (ns != null && HasAccess(ns.Address));
+            return ns != null && HasAccess(ns.Address);
         }
 
         public bool HasAccess(IPAddress ipAddress)
@@ -1304,7 +1304,7 @@ namespace Server.Accounting
         /// <returns>True if allowed, false if not.</returns>
         public bool CheckAccess(NetState ns)
         {
-            return (ns != null && CheckAccess(ns.Address));
+            return ns != null && CheckAccess(ns.Address);
         }
 
         public bool CheckAccess(IPAddress ipAddress)
@@ -1590,8 +1590,8 @@ namespace Server.Accounting
         /// </summary>
         public static int CurrencyThreshold
         {
-            get { return AccountGold.CurrencyThreshold; }
-            set { AccountGold.CurrencyThreshold = value; }
+            get => AccountGold.CurrencyThreshold;
+            set => AccountGold.CurrencyThreshold = value;
         }
 
         /// <summary>

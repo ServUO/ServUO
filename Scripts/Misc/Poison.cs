@@ -43,9 +43,9 @@ namespace Server
 
         public static Poison DecreaseLevel(Poison oldPoison)
         {
-            Poison newPoison = (oldPoison == null ? null : GetPoison(oldPoison.Level - 1));
+            Poison newPoison = oldPoison == null ? null : GetPoison(oldPoison.Level - 1);
 
-            return (newPoison == null ? oldPoison : newPoison);
+            return newPoison == null ? oldPoison : newPoison;
         }
 
         // Info
@@ -138,7 +138,7 @@ namespace Server
             private int m_LastDamage;
             private int m_Index;
 
-            public Mobile From { get { return m_From; } set { m_From = value; } }
+            public Mobile From { get => m_From; set => m_From = value; }
 
             public PoisonTimer(Mobile m, PoisonImpl p)
                 : base(p.m_Delay, p.m_Interval)
@@ -164,9 +164,7 @@ namespace Server
                     m_Mobile.LocalOverheadMessage(MessageType.Regular, 0x3F, 1053093); // * The strength of the poison overcomes your resistance! *
                 }
 
-                if ((m_Poison.RealLevel < 4 && TransformationSpellHelper.UnderTransformation(m_Mobile, typeof(VampiricEmbraceSpell))) ||
-                    (m_Poison.RealLevel <= 3 && usingPetals) ||
-                    AnimalForm.UnderTransformation(m_Mobile, typeof(Unicorn)))
+                if (m_Poison.RealLevel < 4 && TransformationSpellHelper.UnderTransformation(m_Mobile, typeof(VampiricEmbraceSpell)) || m_Poison.RealLevel <= 3 && usingPetals || AnimalForm.UnderTransformation(m_Mobile, typeof(Unicorn)))
                 {
                     if (m_Mobile.CurePoison(m_Mobile))
                     {
@@ -184,8 +182,8 @@ namespace Server
                     m_Mobile.SendLocalizedMessage(502136); // The poison seems to have worn off.
                     m_Mobile.Poison = null;
 
-                    if (m_Mobile is PlayerMobile)
-                        BuffInfo.RemoveBuff((PlayerMobile)m_Mobile, BuffIcon.Poison);
+                    if (m_Mobile is PlayerMobile mobile)
+                        BuffInfo.RemoveBuff(mobile, BuffIcon.Poison);
 
                     Stop();
                     return;
@@ -202,7 +200,7 @@ namespace Server
 
                 if (m_From != null)
                 {
-                    if (m_From is BaseCreature && ((BaseCreature)m_From).RecentSetControl && ((BaseCreature)m_From).GetMaster() == m_Mobile)
+                    if (m_From is BaseCreature creature && creature.RecentSetControl && creature.GetMaster() == m_Mobile)
                     {
                         m_From = null;
                     }

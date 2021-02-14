@@ -49,10 +49,8 @@ namespace Server.Engines.Despise
 
                 foreach (Item item in eable)
                 {
-                    if (item is Teleporter)
+                    if (item is Teleporter old)
                     {
-                        Teleporter old = (Teleporter)item;
-
                         tele = new DespiseTeleporter();
                         WeakEntityCollection.Add("despise", tele);
                         tele.PointDest = old.PointDest;

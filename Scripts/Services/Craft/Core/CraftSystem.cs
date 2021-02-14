@@ -152,27 +152,23 @@ namespace Server.Engines.Craft
             return false;
         }
 
-        public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
+        public virtual bool ConsumeOnFailure(Type resourceType, CraftItem craftItem)
         {
             return !_GlobalNoConsume.Any(t => t == resourceType);
         }
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem, ref MasterCraftsmanTalisman talisman)
         {
-            if (!ConsumeOnFailure(from, resourceType, craftItem))
+            if (!ConsumeOnFailure(resourceType, craftItem))
                 return false;
 
             Item item = from.FindItemOnLayer(Layer.Talisman);
 
-            if (item is MasterCraftsmanTalisman)
+            if (item is MasterCraftsmanTalisman mct && mct.Charges > 0)
             {
-                MasterCraftsmanTalisman mct = (MasterCraftsmanTalisman)item;
+                talisman = mct;
 
-                if (mct.Charges > 0)
-                {
-                    talisman = mct;
-                    return false;
-                }
+                return false;
             }
 
             return true;
@@ -220,9 +216,9 @@ namespace Server.Engines.Craft
         {
             Item source;
 
-            if (tool is Item)
+            if (tool is Item item)
             {
-                source = (Item)tool;
+                source = item;
             }
             else
             {

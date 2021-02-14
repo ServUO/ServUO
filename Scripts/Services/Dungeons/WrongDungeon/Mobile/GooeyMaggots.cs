@@ -65,7 +65,7 @@ namespace Server.Mobiles
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(3))
             {
                 Priority = TimerPriority.FiveSeconds;
-                creature = ((GooeyMaggots)p);
+                creature = (GooeyMaggots)p;
             }
             protected override void OnTick()
             {
@@ -88,7 +88,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();
@@ -148,7 +148,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             new InternalTimer(this).Start();
         }

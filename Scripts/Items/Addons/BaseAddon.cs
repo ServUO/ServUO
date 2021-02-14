@@ -90,9 +90,9 @@ namespace Server.Items
 
             #region High Seas
             BaseBoat boat = BaseBoat.FindBoatAt(from, from.Map);
-            if (boat != null && boat is BaseGalleon)
+            if (boat != null && boat is BaseGalleon galleon)
             {
-                ((BaseGalleon)boat).OnChop(this, from);
+                galleon.OnChop(this, from);
                 return;
             }
             #endregion

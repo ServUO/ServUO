@@ -25,10 +25,11 @@ namespace Server.Items
         public override int InitMinHits => 50;
         public override int InitMaxHits => 65;
         public override int StrReq => 45;
+
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void Serialize(GenericWriter writer)

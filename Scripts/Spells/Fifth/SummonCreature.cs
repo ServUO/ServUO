@@ -12,8 +12,8 @@ namespace Server.Spells.Fifth
             Reagent.Bloodmoss,
             Reagent.MandrakeRoot,
             Reagent.SpidersSilk);
-        // NOTE: Creature list based on 1hr of summon/release on OSI.
-        private static readonly Type[] m_Types = new Type[]
+
+        private static readonly Type[] m_Types =
         {
             typeof(PolarBear),
             typeof(GrizzlyBear),
@@ -34,6 +34,7 @@ namespace Server.Spells.Fifth
             typeof(Hind),
             typeof(Rabbit)
         };
+
         public SummonCreatureSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {

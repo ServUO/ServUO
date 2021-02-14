@@ -4,8 +4,8 @@ namespace Server.Gumps
 {
     public class StoryGump : BaseGump
     {
-        public TextDefinition Title { get; set; }
-        public PageData[] PageEntries { get; set; }
+        public TextDefinition Title { get; }
+        public PageData[] PageEntries { get; }
 
         public StoryGump(PlayerMobile pm)
             : base(pm, 100, 100)
@@ -102,9 +102,9 @@ namespace Server.Gumps
 
     public class PageData
     {
-        public int Page { get; set; }
-        public TextDefinition Text { get; set; }
-        public SelectionEntry[] Selections { get; set; }
+        public int Page { get; }
+        public TextDefinition Text { get; }
+        public SelectionEntry[] Selections { get; }
 
         public PageData(int page, TextDefinition text, params SelectionEntry[] selections)
         {
@@ -116,8 +116,8 @@ namespace Server.Gumps
 
     public class SelectionEntry
     {
-        public TextDefinition Title { get; set; }
-        public int PageTo { get; set; }
+        public TextDefinition Title { get; }
+        public int PageTo { get; }
 
         public SelectionEntry(TextDefinition text, int pageTo)
         {

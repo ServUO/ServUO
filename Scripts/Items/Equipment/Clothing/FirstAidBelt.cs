@@ -20,7 +20,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int WeightReduction
         {
-            get { return m_WeightReduction; }
+            get => m_WeightReduction;
             set
             {
                 m_WeightReduction = value;
@@ -31,7 +31,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HealingBonus
         {
-            get { return m_HealingBonus; }
+            get => m_HealingBonus;
             set
             {
                 m_HealingBonus = value;
@@ -40,7 +40,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes Attributes { get { return m_Attributes; } set { } }
+        public AosAttributes Attributes { get => m_Attributes; set { } }
 
         public Item Bandage => Items.Count > 0 ? Items[0] : null;
         public int MaxBandage => DefaultMaxWeight * 10;
@@ -90,7 +90,7 @@ namespace Server.Items
             return total;
         }
 
-        private static readonly Type[] m_Bandage = new Type[]
+        private static readonly Type[] m_Bandage =
         {
             typeof(Bandage), typeof(EnhancedBandage)
         };
@@ -137,9 +137,11 @@ namespace Server.Items
                 Items.ForEach(i => currentAmount += i.Amount);
 
                 if (item.Amount + currentAmount <= MaxBandage)
+                {
                     return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
-                else
-                    m.SendLocalizedMessage(1080017); // That container cannot hold more items.
+                }
+
+                m.SendLocalizedMessage(1080017); // That container cannot hold more items.
             }
 
             return false;
@@ -317,11 +319,9 @@ namespace Server.Items
 
         public void InvalidateWeight()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile m = (Mobile)RootParent;
-
-                m.UpdateTotals();
+                mobile.UpdateTotals();
             }
         }
     }

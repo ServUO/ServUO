@@ -109,7 +109,7 @@ namespace Server.Items
 
         public static bool CheckBloodDrink(Mobile attacker)
         {
-            return attacker.Weapon is BaseWeapon && ((BaseWeapon)attacker.Weapon).WeaponAttributes.BloodDrinker > 0;
+            return attacker.Weapon is BaseWeapon weapon && weapon.WeaponAttributes.BloodDrinker > 0;
         }
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
@@ -122,8 +122,7 @@ namespace Server.Items
             // Necromancers under Lich or Wraith Form are immune to Bleed Attacks.
             TransformContext context = TransformationSpellHelper.GetContext(defender);
 
-            if ((context != null && (context.Type == typeof(LichFormSpell) || context.Type == typeof(WraithFormSpell))) ||
-                (defender is BaseCreature && ((BaseCreature)defender).BleedImmune) || Spells.Mysticism.StoneFormSpell.CheckImmunity(defender))
+            if (context != null && (context.Type == typeof(LichFormSpell) || context.Type == typeof(WraithFormSpell)) || defender is BaseCreature bc && bc.BleedImmune || Spells.Mysticism.StoneFormSpell.CheckImmunity(defender))
             {
                 attacker.SendLocalizedMessage(1062052); // Your target is not affected by the bleed attack!
                 return;

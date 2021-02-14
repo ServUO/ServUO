@@ -195,8 +195,8 @@ namespace Server.Spells.Fifth
                     if (SpellHelper.CanRevealCaster(m))
                         m_Caster.RevealingAction();
 
-                if (m is BaseCreature)
-                    ((BaseCreature)m).OnHarmfulSpell(m_Caster);
+                if (m is BaseCreature bc)
+                    bc.OnHarmfulSpell(m_Caster);
             }
 
             public override bool OnMoveOver(Mobile m)
@@ -282,8 +282,8 @@ namespace Server.Spells.Fifth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                if (o is IPoint3D point3D)
+                    m_Owner.Target(point3D);
             }
 
             protected override void OnTargetFinish(Mobile from)

@@ -49,23 +49,23 @@ namespace Server.Items
                 incrValue = 120.0;
 
             if (wresValue > incrValue)
+            {
                 return wresValue;
-            else
-                return incrValue;
+            }
+
+            return incrValue;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Mobile.DefaultWeapon == null)
                 Mobile.DefaultWeapon = this;
@@ -87,7 +87,7 @@ namespace Server.Items
 
             double chance = (wresValue + scndValue) / 400.0;
 
-            return (chance >= Utility.RandomDouble());
+            return chance >= Utility.RandomDouble();
         }
 
         private static bool HasFreeHands(Mobile m)

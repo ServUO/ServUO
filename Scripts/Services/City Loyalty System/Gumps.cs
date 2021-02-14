@@ -11,7 +11,7 @@ namespace Server.Engines.CityLoyalty
 {
     public class BaseCityGump : BaseGump
     {
-        public CityLoyaltySystem Citizenship { get; set; }
+        public CityLoyaltySystem Citizenship { get; }
 
         public BaseCityGump(PlayerMobile pm) : base(pm, 120, 120)
         {
@@ -167,7 +167,7 @@ namespace Server.Engines.CityLoyalty
 
     public class DeclareCitizenshipGump : BaseCityGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         public DeclareCitizenshipGump(CityLoyaltySystem toDeclare, PlayerMobile pm) : base(pm)
         {
@@ -327,7 +327,7 @@ namespace Server.Engines.CityLoyalty
 
     public class CityTitlesInfoGump : BaseCityGump
     {
-        public CityTitle Title { get; private set; }
+        public CityTitle Title { get; }
 
         public CityTitlesInfoGump(PlayerMobile pm, CityTitle title) : base(pm)
         {
@@ -393,10 +393,10 @@ namespace Server.Engines.CityLoyalty
 
     public class CityStoneGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         public CityStoneGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             City = city;
 
@@ -453,10 +453,10 @@ namespace Server.Engines.CityLoyalty
 
     public class NomineesGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         public NomineesGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             City = city;
 
@@ -540,12 +540,12 @@ namespace Server.Engines.CityLoyalty
 
     public class CandidatesGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         List<BallotEntry> Candidates { get; set; }
 
         public CandidatesGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             City = city;
 
@@ -634,7 +634,7 @@ namespace Server.Engines.CityLoyalty
 
     public class ChooseTradeDealGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         public ChooseTradeDealGump(PlayerMobile pm, CityLoyaltySystem city)
             : base(pm, 75, 75)
@@ -709,17 +709,17 @@ namespace Server.Engines.CityLoyalty
             TradeDeal.MiningCooperative,
             TradeDeal.LeagueOfRangers,
             TradeDeal.GuildOfAssassins,
-            TradeDeal.WarriorsGuild,
+            TradeDeal.WarriorsGuild
         };
     }
 
     public class PlayerTitleGump : BaseGump
     {
-        public PlayerMobile Citizen { get; set; }
-        public CityLoyaltySystem City { get; set; }
+        public PlayerMobile Citizen { get; }
+        public CityLoyaltySystem City { get; }
 
         public PlayerTitleGump(PlayerMobile pm, PlayerMobile citizen, CityLoyaltySystem sys)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             Citizen = citizen;
             City = sys;
@@ -749,20 +749,17 @@ namespace Server.Engines.CityLoyalty
 
             if (relay == null || string.IsNullOrEmpty(relay.Text))
             {
-                if (entry != null)
-                {
-                    entry.CustomTitle = null;
-                    Citizen.RemoveRewardTitle(1154017, true);
+                entry.CustomTitle = null;
+                Citizen.RemoveRewardTitle(1154017, true);
 
-                    if (User != Citizen)
-                    {
-                        User.SendMessage("You have removed their title.");
-                        Citizen.SendMessage("{0} has removed your city title.", User.Name);
-                    }
-                    else
-                    {
-                        User.SendMessage("You have removed your title.");
-                    }
+                if (User != Citizen)
+                {
+                    User.SendMessage("You have removed their title.");
+                    Citizen.SendMessage("{0} has removed your city title.", User.Name);
+                }
+                else
+                {
+                    User.SendMessage("You have removed your title.");
                 }
             }
             else
@@ -771,7 +768,7 @@ namespace Server.Engines.CityLoyalty
 
                 if (BaseGuildGump.CheckProfanity(text) && text.Trim().Length > 3)
                 {
-                    if (entry != null && entry.IsCitizen)
+                    if (entry.IsCitizen)
                     {
                         Citizen.AddRewardTitle(1154017); // ~1_TITLE~ of ~2_CITY~
                         entry.CustomTitle = text.Trim();
@@ -790,9 +787,9 @@ namespace Server.Engines.CityLoyalty
 
     public class AcceptOfficeGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
-        public AcceptOfficeGump(PlayerMobile pm, CityLoyaltySystem city) : base(pm, 50, 50)
+        public AcceptOfficeGump(PlayerMobile pm, CityLoyaltySystem city) : base(pm)
         {
             City = city;
 
@@ -823,9 +820,7 @@ namespace Server.Engines.CityLoyalty
 
         public override void OnResponse(RelayInfo info)
         {
-            PlayerMobile pm = User as PlayerMobile;
-
-            if (pm == null)
+            if (!(User is PlayerMobile pm))
                 return;
 
             if (info.ButtonID == 1)
@@ -846,7 +841,7 @@ namespace Server.Engines.CityLoyalty
 
     public class ElectionStartTimeGump : BaseGump
     {
-        public ElectionStartTimeGump(PlayerMobile pm) : base(pm, 50, 50)
+        public ElectionStartTimeGump(PlayerMobile pm) : base(pm)
         {
             pm.CloseGump(typeof(ElectionStartTimeGump));
         }
@@ -877,7 +872,7 @@ namespace Server.Engines.CityLoyalty
                     if (CityLoyaltySystem.Britain.Election != null && CityLoyaltySystem.Britain.Election.StartTimes.Length >= i && CityLoyaltySystem.Britain.Election.StartTimes[i] != DateTime.MinValue)
                         start = CityLoyaltySystem.Britain.Election.StartTimes[i].Month.ToString();
 
-                    AddLabel(15, 180 + (i * 25), 0, (i + 1).ToString() + ".");
+                    AddLabel(15, 180 + (i * 25), 0, (i + 1) + ".");
                     AddImageTiled(150, 180 + (i * 25), 50, 20, 5058);
                     AddAlphaRegion(150, 180 + (i * 25), 50, 20);
                     AddTextEntry(151, 180 + (i * 25), 49, 20, 0, i + 1, start);
@@ -969,10 +964,10 @@ namespace Server.Engines.CityLoyalty
     /// </summary>
     public class OpenInventoryGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         public OpenInventoryGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             City = city;
         }
@@ -1089,7 +1084,7 @@ namespace Server.Engines.CityLoyalty
 
     public class CityMessageGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         public CityMessageGump(PlayerMobile m, CityLoyaltySystem city)
             : base(m, 100, 100)
@@ -1113,7 +1108,7 @@ namespace Server.Engines.CityLoyalty
     public class SystemInfoGump : BaseGump
     {
         public SystemInfoGump(PlayerMobile pm)
-            : base(pm, 50, 50)
+            : base(pm)
         {
         }
 
@@ -1155,10 +1150,10 @@ namespace Server.Engines.CityLoyalty
 
     public class CityInfoGump : BaseGump
     {
-        public CityLoyaltySystem City { get; set; }
+        public CityLoyaltySystem City { get; }
 
         public CityInfoGump(PlayerMobile pm, CityLoyaltySystem city)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             City = city;
         }

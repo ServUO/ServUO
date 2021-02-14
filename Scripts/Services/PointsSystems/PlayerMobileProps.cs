@@ -25,209 +25,113 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public double Blackthorn
         {
-            get
-            {
-                return (int)PointsSystem.Blackthorn.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.Blackthorn.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.Blackthorn.GetPoints(Player);
+            set => PointsSystem.Blackthorn.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double CleanUpBrit
         {
-            get
-            {
-                return (int)PointsSystem.CleanUpBritannia.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.CleanUpBritannia.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.CleanUpBritannia.GetPoints(Player);
+            set => PointsSystem.CleanUpBritannia.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double VoidPool
         {
-            get
-            {
-                return (int)PointsSystem.VoidPool.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.VoidPool.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.VoidPool.GetPoints(Player);
+            set => PointsSystem.VoidPool.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double Casino
         {
-            get
-            {
-                return (int)PointsSystem.CasinoData.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.CasinoData.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.CasinoData.GetPoints(Player);
+            set => PointsSystem.CasinoData.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double QueensLoyalty
         {
-            get
-            {
-                return (int)PointsSystem.QueensLoyalty.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.QueensLoyalty.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.QueensLoyalty.GetPoints(Player);
+            set => PointsSystem.QueensLoyalty.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double ShameCrystals
         {
-            get
-            {
-                return (int)PointsSystem.ShameCrystals.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.ShameCrystals.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.ShameCrystals.GetPoints(Player);
+            set => PointsSystem.ShameCrystals.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double DespiseCrystals
         {
-            get
-            {
-                return (int)PointsSystem.DespiseCrystals.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.DespiseCrystals.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.DespiseCrystals.GetPoints(Player);
+            set => PointsSystem.DespiseCrystals.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double ViceVsVirtue
         {
-            get
-            {
-                return (int)PointsSystem.ViceVsVirtue.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.ViceVsVirtue.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.ViceVsVirtue.GetPoints(Player);
+            set => PointsSystem.ViceVsVirtue.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double Khaldun
         {
-            get
-            {
-                return (int)PointsSystem.Khaldun.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.Khaldun.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.Khaldun.GetPoints(Player);
+            set => PointsSystem.Khaldun.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double Doom
         {
-            get
-            {
-                return (int)PointsSystem.TreasuresOfDoom.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.TreasuresOfDoom.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.TreasuresOfDoom.GetPoints(Player);
+            set => PointsSystem.TreasuresOfDoom.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double Doubloons
         {
-            get
-            {
-                return (int)PointsSystem.RisingTide.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.RisingTide.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.RisingTide.GetPoints(Player);
+            set => PointsSystem.RisingTide.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double Fellowship
         {
-            get
-            {
-                return (int)PointsSystem.FellowshipData.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.FellowshipData.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.FellowshipData.GetPoints(Player);
+            set => PointsSystem.FellowshipData.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double GauntletPoints
         {
-            get
-            {
-                return (int)PointsSystem.DoomGauntlet.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.DoomGauntlet.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.DoomGauntlet.GetPoints(Player);
+            set => PointsSystem.DoomGauntlet.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double TOTPoints
         {
-            get
-            {
-                return (int)PointsSystem.TreasuresOfTokuno.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.TreasuresOfTokuno.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.TreasuresOfTokuno.GetPoints(Player);
+            set => PointsSystem.TreasuresOfTokuno.SetPoints(Player, value);
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TOTurnIns
         {
-            get
-            {
-                return PointsSystem.TreasuresOfTokuno.GetTurnIns(Player);
-            }
-            set
-            {
-                PointsSystem.TreasuresOfTokuno.GetPlayerEntry<TreasuresOfTokuno.TOTEntry>(Player).TurnIns = value;
-            }
+            get => PointsSystem.TreasuresOfTokuno.GetTurnIns(Player);
+            set => PointsSystem.TreasuresOfTokuno.GetPlayerEntry<TreasuresOfTokuno.TOTEntry>(Player).TurnIns = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double VASPoints
         {
-            get
-            {
-                return (int)PointsSystem.VirtueArtifacts.GetPoints(Player);
-            }
-            set
-            {
-                PointsSystem.VirtueArtifacts.SetPoints(Player, value);
-            }
+            get => (int)PointsSystem.VirtueArtifacts.GetPoints(Player);
+            set => PointsSystem.VirtueArtifacts.SetPoints(Player, value);
         }
 
         private CityLoyaltyProps _CityLoyaltyProps;
@@ -404,100 +308,70 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry Moonglow
         {
-            get
-            {
-                return CityLoyaltySystem.Moonglow.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.Moonglow.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry Britain
         {
-            get
-            {
-                return CityLoyaltySystem.Britain.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.Britain.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry Jhelom
         {
-            get
-            {
-                return CityLoyaltySystem.Jhelom.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.Jhelom.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry Yew
         {
-            get
-            {
-                return CityLoyaltySystem.Yew.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.Yew.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry Minoc
         {
-            get
-            {
-                return CityLoyaltySystem.Minoc.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.Minoc.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry Trinsic
         {
-            get
-            {
-                return CityLoyaltySystem.Trinsic.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.Trinsic.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry SkaraBrae
         {
-            get
-            {
-                return CityLoyaltySystem.SkaraBrae.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.SkaraBrae.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry NewMagincia
         {
-            get
-            {
-                return CityLoyaltySystem.NewMagincia.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.NewMagincia.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityLoyaltyEntry Vesper
         {
-            get
-            {
-                return CityLoyaltySystem.Vesper.GetPlayerEntry<CityLoyaltyEntry>(Player);
-            }
+            get => CityLoyaltySystem.Vesper.GetPlayerEntry<CityLoyaltyEntry>(Player);
             set { }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CityTradeSystem.CityTradeEntry TradeEntry
         {
-            get
-            {
-                return CityLoyaltySystem.CityTrading.GetPlayerEntry<CityTradeSystem.CityTradeEntry>(Player);
-            }
+            get => CityLoyaltySystem.CityTrading.GetPlayerEntry<CityTradeSystem.CityTradeEntry>(Player);
             set { }
         }
 

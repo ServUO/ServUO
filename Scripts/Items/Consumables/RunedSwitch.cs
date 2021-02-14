@@ -56,13 +56,11 @@ namespace Server.Items
                 if (m_Item == null || m_Item.Deleted)
                     return;
 
-                if (o is BaseTalisman)
+                if (o is BaseTalisman talisman)
                 {
-                    BaseTalisman talisman = (BaseTalisman)o;
-
                     if (talisman.Charges == 0)
                     {
-                        int toCharge = talisman is MasterCraftsmanTalisman ? Utility.RandomMinMax(1, ((MasterCraftsmanTalisman)talisman).Type) : talisman.MaxCharges;
+                        int toCharge = talisman is MasterCraftsmanTalisman craftTalisman ? Utility.RandomMinMax(1, craftTalisman.Type) : talisman.MaxCharges;
                         talisman.Charges = toCharge;
                         m_Item.Delete();
                         from.SendLocalizedMessage(1075100); // The item has been recharged.
@@ -72,9 +70,9 @@ namespace Server.Items
                 }
                 else if (o is HarvestersAxe || o is GargishHarvestersAxe)
                 {
-                    if (o is HarvestersAxe)
+                    if (o is HarvestersAxe axe)
                     {
-                        ((HarvestersAxe)o).Charges = 1000;
+                        axe.Charges = 1000;
                     }
                     else if (o is GargishHarvestersAxe)
                     {

@@ -31,13 +31,13 @@ namespace Server.Items
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get => _Resource; set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
+        public Mobile Crafter { get => _Crafter; set { _Crafter = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+        public ItemQuality Quality { get => _Quality; set { _Quality = value; InvalidateProperties(); } }
 
         public bool PlayerConstructed => true;
 
@@ -84,36 +84,21 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string Description
         {
-            get
-            {
-                return m_Description;
-            }
+            get => m_Description;
             set
             {
                 m_Description = value;
                 InvalidateProperties();
             }
         }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxRange
-        {
-            get
-            {
-                return m_MaxRange;
-            }
 
-            set
-            {
-                m_MaxRange = value;
-            }
-        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MaxRange { get => m_MaxRange; set => m_MaxRange = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public uint KeyValue
         {
-            get
-            {
-                return m_KeyVal;
-            }
+            get => m_KeyVal;
 
             set
             {
@@ -121,19 +106,10 @@ namespace Server.Items
                 InvalidateProperties();
             }
         }
-        [CommandProperty(AccessLevel.GameMaster)]
-        public Item Link
-        {
-            get
-            {
-                return m_Link;
-            }
 
-            set
-            {
-                m_Link = value;
-            }
-        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public Item Link { get => m_Link; set => m_Link = value; }
+
         public static uint RandomValue()
         {
             return (uint)(0xFFFFFFFE * Utility.RandomDouble()) + 1;
@@ -153,14 +129,12 @@ namespace Server.Items
             if (cont == null || keyValue == 0)
                 return;
 
-            Item[] items = cont.FindItemsByType(new Type[] { typeof(Key), typeof(KeyRing) });
+            Item[] items = cont.FindItemsByType(new[] { typeof(Key), typeof(KeyRing) });
 
             foreach (Item item in items)
             {
-                if (item is Key)
+                if (item is Key key)
                 {
-                    Key key = (Key)item;
-
                     if (key.KeyValue == keyValue)
                         key.Delete();
                 }
@@ -178,14 +152,12 @@ namespace Server.Items
             if (cont == null)
                 return false;
 
-            Item[] items = cont.FindItemsByType(new Type[] { typeof(Key), typeof(KeyRing) });
+            Item[] items = cont.FindItemsByType(new[] { typeof(Key), typeof(KeyRing) });
 
             foreach (Item item in items)
             {
-                if (item is Key)
+                if (item is Key key)
                 {
-                    Key key = (Key)item;
-
                     if (key.KeyValue == keyValue)
                         return true;
                 }
@@ -344,52 +316,42 @@ namespace Server.Items
         {
             if (o.KeyValue == KeyValue)
             {
-                if (o is BaseDoor && !((BaseDoor)o).UseLocks())
+                if (o is BaseDoor door && !door.UseLocks())
                 {
                     return false;
                 }
-                else
+
+                o.Locked = !o.Locked;
+
+                if (o is LockableContainer lContainer && lContainer.LockLevel == -255)
                 {
-                    o.Locked = !o.Locked;
+                    lContainer.LockLevel = lContainer.RequiredSkill - 10;
+                }
 
-                    if (o is LockableContainer)
+                if (o is Item item)
+                {
+                    if (o.Locked)
+                        item.SendLocalizedMessageTo(from, 1048000); // You lock it.
+                    else
+                        item.SendLocalizedMessageTo(from, 1048001); // You unlock it.
+
+                    if (item is LockableContainer cont && cont.TrapType != TrapType.None && cont.TrapOnLockpick)
                     {
-                        LockableContainer cont = (LockableContainer)o;
-
-                        if (cont.LockLevel == -255)
-                            cont.LockLevel = cont.RequiredSkill - 10;
-                    }
-
-                    if (o is Item)
-                    {
-                        Item item = (Item)o;
-
                         if (o.Locked)
-                            item.SendLocalizedMessageTo(from, 1048000); // You lock it.
-                        else
-                            item.SendLocalizedMessageTo(from, 1048001); // You unlock it.
-
-                        if (item is LockableContainer)
                         {
-                            LockableContainer cont = (LockableContainer)item;
-
-                            if (cont.TrapType != TrapType.None && cont.TrapOnLockpick)
-                            {
-                                if (o.Locked)
-                                    item.SendLocalizedMessageTo(from, 501673); // You re-enable the trap.
-                                else
-                                    item.SendLocalizedMessageTo(from, 501672); // You disable the trap temporarily.  Lock it again to re-enable it.
-                            }
+                            cont.SendLocalizedMessageTo(from, 501673); // You re-enable the trap.
+                        }
+                        else
+                        {
+                            cont.SendLocalizedMessageTo(from, 501672); // You disable the trap temporarily.  Lock it again to re-enable it.
                         }
                     }
-
-                    return true;
                 }
+
+                return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         private class RenamePrompt : Prompt
@@ -439,15 +401,15 @@ namespace Server.Items
 
                     from.Prompt = new RenamePrompt(m_Key);
                 }
-                else if (targeted is ILockable)
+                else if (targeted is ILockable lockable)
                 {
-                    if (targeted is Plank && ((Plank)targeted).IsOpen)
+                    if (lockable is Plank plank && plank.IsOpen)
                     {
-                        ((Item)targeted).SendLocalizedMessageTo(from, 501671); // You cannot currently lock that.
+                        plank.SendLocalizedMessageTo(from, 501671); // You cannot currently lock that.
                         return;
                     }
 
-                    if (m_Key.UseOn(from, (ILockable)targeted))
+                    if (m_Key.UseOn(from, lockable))
                         number = -1;
                     else
                         number = 501668; // This key doesn't seem to unlock that.
@@ -483,10 +445,8 @@ namespace Server.Items
 
                 int number;
 
-                if (targeted is Key)
+                if (targeted is Key k)
                 {
-                    Key k = (Key)targeted;
-
                     if (k.m_KeyVal == 0)
                     {
                         number = 501675; // This key is also blank.

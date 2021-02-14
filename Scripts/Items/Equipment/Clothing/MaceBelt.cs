@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    public class MaceBelt : BaseWaist, IDyable
+    public class MaceBelt : BaseWaist
     {
         public override int LabelNumber => 1126020;  // mace belt
 
@@ -26,7 +26,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

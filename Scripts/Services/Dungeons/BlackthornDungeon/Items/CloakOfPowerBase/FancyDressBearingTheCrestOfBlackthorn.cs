@@ -6,7 +6,6 @@ namespace Server.Items
 
         [Constructable]
         public FancyDressBearingTheCrestOfBlackthorn4()
-            : base()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             Attributes.BonusStr = 2;

@@ -70,7 +70,7 @@ namespace Server.Mobiles
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(10))
             {
                 Priority = TimerPriority.FiveSeconds;
-                Mare = ((TheMasterInstructor)p);
+                Mare = (TheMasterInstructor)p;
             }
 
             protected override void OnTick()
@@ -165,7 +165,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Timer SelfDeleteTimer = new InternalSelfDeleteTimer(this);
             SelfDeleteTimer.Start();

@@ -82,13 +82,13 @@ namespace Server.Commands
 
                 if (_InBag)
                 {
-                    if (item.Parent is Container)
+                    if (item.Parent is Container parent)
                     {
-                        pack = (Container)item.Parent;
+                        pack = parent;
                     }
-                    else if (item.Parent is Mobile)
+                    else if (item.Parent is Mobile mobile)
                     {
-                        pack = ((Mobile)item.Parent).Backpack;
+                        pack = mobile.Backpack;
                     }
                     else
                     {
@@ -140,10 +140,10 @@ namespace Server.Commands
 
                         item.OnAfterDuped(o);
 
-                        if (item is Container && o is Container)
+                        if (item is Container container && o is Container cont)
                         {
                             m.SendMessage("Duping Container Children...");
-                            DupeChildren(m, (Container)item, (Container)o);
+                            DupeChildren(m, container, cont);
                         }
 
                         if (pack != null)
@@ -235,9 +235,9 @@ namespace Server.Commands
 
                 item.OnAfterDuped(o);
 
-                if (item is Container && o is Container)
+                if (item is Container container && o is Container cont)
                 {
-                    DupeChildren(m, (Container)item, (Container)o);
+                    DupeChildren(m, container, cont);
                 }
 
                 if (m != null)
@@ -308,9 +308,9 @@ namespace Server.Commands
 
                     item.OnAfterDuped(o);
 
-                    if (item is Container && o is Container)
+                    if (item is Container container && o is Container cont)
                     {
-                        DupeChildren(m, (Container)item, (Container)o);
+                        DupeChildren(m, container, cont);
                     }
 
                     dest.DropItem(o);

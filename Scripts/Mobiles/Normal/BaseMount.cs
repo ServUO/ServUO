@@ -48,10 +48,7 @@ namespace Server.Mobiles
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
-            get
-            {
-                return base.Hue;
-            }
+            get => base.Hue;
             set
             {
                 base.Hue = value;
@@ -67,9 +64,11 @@ namespace Server.Mobiles
             get
             {
                 if (InternalItem != null)
+                {
                     return InternalItem.ItemID;
-                else
-                    return 0;
+                }
+
+                return 0;
             }
             set
             {
@@ -81,10 +80,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Rider
         {
-            get
-            {
-                return m_Rider;
-            }
+            get => m_Rider;
             set
             {
                 if (m_Rider != value)
@@ -106,9 +102,9 @@ namespace Server.Mobiles
 
                         NetState ns = m_Rider.NetState;
 
-                        if (ns != null && m_Rider is PlayerMobile && ns.IsEnhancedClient && Commandable)
+                        if (ns != null && m_Rider is PlayerMobile rider && ns.IsEnhancedClient && Commandable)
                         {
-                            ns.Send(new PetWindow((PlayerMobile)m_Rider, this));
+                            ns.Send(new PetWindow(rider, this));
                         }
 
                         if (InternalItem != null)
@@ -148,7 +144,7 @@ namespace Server.Mobiles
             for (int i = 0; i < tiles.Length && !onpath; ++i)
             {
                 itemData = TileData.ItemTable[tiles[i].ID & TileData.MaxItemValue];
-                onpath = (itemData.Name == "hover over");
+                onpath = itemData.Name == "hover over";
             }
 
             return onpath;
@@ -474,9 +470,7 @@ namespace Server.Mobiles
 
             if (from.InRange(this, 1))
             {
-                bool canAccess = (from.AccessLevel >= AccessLevel.GameMaster) ||
-                                 (Controlled && ControlMaster == from) ||
-                                 (Summoned && SummonMaster == from);
+                bool canAccess = from.AccessLevel >= AccessLevel.GameMaster || Controlled && ControlMaster == from || Summoned && SummonMaster == from;
 
                 if (canAccess)
                 {
@@ -553,40 +547,38 @@ namespace Server.Mobiles
                     {
                         return false;
                     }
-                    else
+
+                    if (mount != m_Mount)
                     {
-                        if (mount != m_Mount)
+                        return true;
+                    }
+
+                    switch (m_Type)
+                    {
+                        default:
+                        case BlockMountType.RidingSwipe:
                         {
+                            if (m_Mount is Mobile mobile && mobile.Hits >= mobile.HitsMax)
+                            {
+                                ExpireMountPrevention(m_Mobile);
+                                return true;
+                            }
+                        }
+                            break;
+                        case BlockMountType.RidingSwipeEthereal:
+                        {
+                            ExpireMountPrevention(m_Mobile);
                             return true;
                         }
-
-                        switch (m_Type)
+                        case BlockMountType.RidingSwipeFlying:
                         {
-                            default:
-                            case BlockMountType.RidingSwipe:
-                                {
-                                    if (m_Mount is Mobile && ((Mobile)m_Mount).Hits >= ((Mobile)m_Mount).HitsMax)
-                                    {
-                                        ExpireMountPrevention(m_Mobile);
-                                        return true;
-                                    }
-                                }
-                                break;
-                            case BlockMountType.RidingSwipeEthereal:
-                                {
-                                    ExpireMountPrevention(m_Mobile);
-                                    return true;
-                                }
-                            case BlockMountType.RidingSwipeFlying:
-                                {
-                                    if (m_Mobile.Hits >= m_Mobile.HitsMax)
-                                    {
-                                        ExpireMountPrevention(m_Mobile);
-                                        return true;
-                                    }
-                                }
-                                break;
+                            if (m_Mobile.Hits >= m_Mobile.HitsMax)
+                            {
+                                ExpireMountPrevention(m_Mobile);
+                                return true;
+                            }
                         }
+                            break;
                     }
 
                     return false;

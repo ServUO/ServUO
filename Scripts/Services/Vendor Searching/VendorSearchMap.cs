@@ -9,7 +9,14 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class VendorSearchMap : MapItem
+    public interface ISearchMap
+    {
+        Point3D GetLocation(Mobile m);
+        Map GetMap();
+        void OnBeforeTravel(Mobile from);
+    }
+
+    public class VendorSearchMap : MapItem, ISearchMap
     {
         public readonly int TeleportCost = 1000;
         public readonly int DeleteDelayMinutes = 30;
@@ -109,7 +116,7 @@ namespace Server.Items
                             Name = house.Sign.GetName();
                     }
 
-                    Shop = (SearchItem.LabelNumber != 0) ? string.Format("#{0}", SearchItem.LabelNumber) : SearchItem.Name;
+                    Shop = SearchItem.LabelNumber != 0 ? string.Format("#{0}", SearchItem.LabelNumber) : SearchItem.Name;
                 }
             }
             else
@@ -221,7 +228,7 @@ namespace Server.Items
             list.Add(new OpenContainerEntry(from, this));
         }
 
-        public Point3D GetLocation(Mobile m)
+        public virtual Point3D GetLocation(Mobile m)
         {
             BaseHouse h = null;
 
@@ -336,9 +343,9 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                if (Clicker is PlayerMobile)
+                if (Clicker is PlayerMobile mobile)
                 {
-                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, (PlayerMobile)Clicker));
+                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, mobile));
                 }
             }
         }
@@ -406,7 +413,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }

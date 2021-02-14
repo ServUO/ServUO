@@ -57,69 +57,33 @@ namespace Server.Commands.Generic
         }
         public bool SupportsConditionals
         {
-            get
-            {
-                return m_SupportsConditionals;
-            }
-            set
-            {
-                m_SupportsConditionals = value;
-            }
+            get => m_SupportsConditionals;
+            set => m_SupportsConditionals = value;
         }
         public string[] Accessors
         {
-            get
-            {
-                return m_Accessors;
-            }
-            set
-            {
-                m_Accessors = value;
-            }
+            get => m_Accessors;
+            set => m_Accessors = value;
         }
         public string Usage
         {
-            get
-            {
-                return m_Usage;
-            }
-            set
-            {
-                m_Usage = value;
-            }
+            get => m_Usage;
+            set => m_Usage = value;
         }
         public string Description
         {
-            get
-            {
-                return m_Description;
-            }
-            set
-            {
-                m_Description = value;
-            }
+            get => m_Description;
+            set => m_Description = value;
         }
         public AccessLevel AccessLevel
         {
-            get
-            {
-                return m_AccessLevel;
-            }
-            set
-            {
-                m_AccessLevel = value;
-            }
+            get => m_AccessLevel;
+            set => m_AccessLevel = value;
         }
         public CommandSupport SupportRequirement
         {
-            get
-            {
-                return m_SupportRequirement;
-            }
-            set
-            {
-                m_SupportRequirement = value;
-            }
+            get => m_SupportRequirement;
+            set => m_SupportRequirement = value;
         }
         public Dictionary<string, BaseCommand> Commands => m_Commands;
         public static void RegisterImplementors()
@@ -165,9 +129,9 @@ namespace Server.Commands.Generic
 
             foreach (BaseExtension check in ext)
             {
-                if (check is WhereExtension)
+                if (check is WhereExtension extension)
                 {
-                    cond = (check as WhereExtension).Conditional;
+                    cond = extension.Conditional;
 
                     break;
                 }
@@ -274,23 +238,21 @@ namespace Server.Commands.Generic
             //	{
             CommandEventArgs e = new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args);
 
-            if (!command.ValidateArgs(this, e))
+            if (!command.ValidateArgs(e))
                 return;
 
             bool flushToLog = false;
 
-            if (obj is ArrayList)
+            if (obj is ArrayList aList)
             {
-                ArrayList list = (ArrayList)obj;
-
-                if (list.Count > 20)
+                if (aList.Count > 20)
                     CommandLogging.Enabled = false;
-                else if (list.Count == 0)
+                else if (aList.Count == 0)
                     command.LogFailure("Nothing was found to use this command on.");
 
-                command.ExecuteList(e, list);
+                command.ExecuteList(e, aList);
 
-                if (list.Count > 20)
+                if (aList.Count > 20)
                 {
                     flushToLog = true;
                     CommandLogging.Enabled = true;
@@ -311,11 +273,6 @@ namespace Server.Commands.Generic
             }
 
             command.Flush(from, flushToLog);
-            //	}
-            //	catch ( Exception ex )
-            //	{
-            //		from.SendMessage( ex.Message );
-            //	}
         }
 
         public virtual void Process(Mobile from, BaseCommand command, string[] args)

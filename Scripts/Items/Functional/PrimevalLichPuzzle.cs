@@ -3,29 +3,16 @@ using Server.Items;
 using System;
 using System.Collections.Generic;
 
-//
-// This implements the Primeval Lich Lever Puzzle for SA.  
-// 
-// To install, copy this file anywhere into the scripts directory tree.  Next edit
-// ChampionSpawn.cs and add the following line of code at the end of the Start() and Stop()
-// methods in the ChampionSpawn.cs file:
-// 
-//          PrimevalLichPuzzle.Update(this);
-//
-// Next compile and be sure that the Primeval Lich championSpawn is created. Then you can
-// use the command [genlichpuzzle to create the puzzle controller.  After that the puzzle
-// will become active/inactive automatically.
-//
 // The "key" property on the puzzle controller shows the solution levers,
 // numbered (west to east) as 1 thru 8 for testing purposes.
-//
+
 namespace Server.Engines.CannedEvil
 {
     public class PrimevalLichPuzzleLever : Item
     {
         private PrimevalLichPuzzle m_Controller;
         private byte m_Code;
-        // Constructor
+
         public PrimevalLichPuzzleLever(byte code, PrimevalLichPuzzle controller)
             : base(0x108C)
         {
@@ -34,7 +21,6 @@ namespace Server.Engines.CannedEvil
             Movable = false;
         }
 
-        // serialization code
         public PrimevalLichPuzzleLever(Serial serial)
             : base(serial)
         {
@@ -73,7 +59,7 @@ namespace Server.Engines.CannedEvil
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Code = reader.ReadByte();
             m_Controller = reader.ReadItem() as PrimevalLichPuzzle;
@@ -95,29 +81,26 @@ namespace Server.Engines.CannedEvil
         // puzzle lever data
         private static readonly int[][] leverdata =
         { // 3D coord, hue for levers
-            new int[] { 6981, 977, -15, 1204 }, // red
-            new int[] { 6984, 977, -15, 1150 }, // white
-            new int[] { 6987, 977, -15, 1175 }, // black
-            new int[] { 6990, 977, -15, 1264 }, // blue
-            new int[] { 7009, 977, -15, 1275 }, // purple
-            new int[] { 7012, 977, -15, 1272 }, // green
-            new int[] { 7015, 977, -15, 1260 }, // gold
-            new int[] { 7018, 977, -15, 1166 }, // pink 
+            new[] { 6981, 977, -15, 1204 }, // red
+            new[] { 6984, 977, -15, 1150 }, // white
+            new[] { 6987, 977, -15, 1175 }, // black
+            new[] { 6990, 977, -15, 1264 }, // blue
+            new[] { 7009, 977, -15, 1275 }, // purple
+            new[] { 7012, 977, -15, 1272 }, // green
+            new[] { 7015, 977, -15, 1260 }, // gold
+            new[] { 7018, 977, -15, 1166 }  // pink 
         };
 
-        // these are serialized
         private static PrimevalLichPuzzle m_Instance;
         private ChampionSpawn m_Altar;
         private long m_Key;
         private Mobile m_Successful;
         private List<PrimevalLichPuzzleLever> m_Levers;
 
-        // these are not serialized
         private byte m_NextKey;
         private int m_Correct;
         private Timer l_Timer;
 
-        // Constructor
         public PrimevalLichPuzzle(Mobile m)
             : base(0x1BC3)
         {
@@ -165,14 +148,8 @@ namespace Server.Engines.CannedEvil
         [CommandProperty(AccessLevel.GameMaster)]
         public ChampionSpawn ChampionAltar
         {
-            get
-            {
-                return m_Altar;
-            }
-            set
-            {
-                m_Altar = value;
-            }
+            get => m_Altar;
+            set => m_Altar = value;
         }
         public override string DefaultName => "puzzle control";
         public static void Initialize()
@@ -217,7 +194,8 @@ namespace Server.Engines.CannedEvil
             Utility.WriteConsoleColor(ConsoleColor.Green, "Generating Primeval Lich lever puzzle...");
 
             PrimevalLichPuzzle control = new PrimevalLichPuzzle(m);
-            if (null == control || control.Deleted)
+
+            if (control.Deleted)
             {
                 if (m != null)
                 {
@@ -274,8 +252,9 @@ namespace Server.Engines.CannedEvil
                 ResetLevers();
                 return;
             }
+
             // if the lever is correct, increment the count of correct levers pulled
-            else if (key == m_NextKey)
+            if (key == m_NextKey)
                 m_Correct++;
 
             // stop and restart the lever reset timer
@@ -329,16 +308,9 @@ namespace Server.Engines.CannedEvil
             }
 
             if (null == m_Levers)
+            {
                 m_Levers = new List<PrimevalLichPuzzleLever>();
-            //            if ( null != m_Instance && m_Instance.Deleted && this == m_Instance )
-            //            {
-            //                m_Instance = null;
-            //                return;
-            //            }
-            //            // remove if no altar exists
-            //            if ( null == m_Altar )
-            //                Timer.DelayCall( TimeSpan.FromSeconds( 0.0 ), new TimerCallback( Delete ) );
-            //            ResetLevers();
+            }
         }
 
         // search for Primeval Lich altar within 10 spaces of the expected location
@@ -346,13 +318,12 @@ namespace Server.Engines.CannedEvil
         {
             foreach (Item item in Map.Felucca.GetItemsInRange(altarLoc, 10))
             {
-                if (item is ChampionSpawn)
+                if (item is ChampionSpawn champ && ChampionSpawnType.Infuse == champ.Type)
                 {
-                    ChampionSpawn champ = (ChampionSpawn)item;
-                    if (ChampionSpawnType.Infuse == champ.Type)
-                        return champ;
+                    return champ;
                 }
             }
+
             return null;
         }
 
@@ -404,13 +375,11 @@ namespace Server.Engines.CannedEvil
                 for (int i = 0; i < len; i++)
                 {
                     lever = new PrimevalLichPuzzleLever(keymap[i], this);
-                    if (null != lever)
-                    {
-                        val = leverdata[i];
-                        lever.MoveToWorld(new Point3D(val[0], val[1], val[2]), Map.Felucca);
-                        lever.Hue = val[3];
-                        m_Levers.Add(lever);
-                    }
+
+                    val = leverdata[i];
+                    lever.MoveToWorld(new Point3D(val[0], val[1], val[2]), Map.Felucca);
+                    lever.Hue = val[3];
+                    m_Levers.Add(lever);
                 }
             }
         }
@@ -426,7 +395,7 @@ namespace Server.Engines.CannedEvil
 
             if (null != m_Levers)
             {
-                foreach (Item item in m_Levers)
+                foreach (PrimevalLichPuzzleLever item in m_Levers)
                 {
                     if (item != null && !item.Deleted)
                         item.Delete();
@@ -500,11 +469,6 @@ namespace Server.Engines.CannedEvil
                 if (null == pack || !pack.TryDropItem(m, item, false))
                     m.BankBox.DropItem(item);
             }
-        }
-
-        // generate a new keymap
-        private void GenKey()
-        {
         }
     }
 }

@@ -94,8 +94,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is BaseCreature)
-                    m_Post.EndStable(from, (BaseCreature)targeted);
+                if (targeted is BaseCreature creature)
+                    m_Post.EndStable(from, creature);
                 else if (targeted == from)
                     from.SendLocalizedMessage(502672); // HA HA HA! Sorry, I am not an inn.
                 else

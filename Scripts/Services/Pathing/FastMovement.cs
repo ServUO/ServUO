@@ -45,8 +45,7 @@ namespace Server.Movement
                 return true;
             }
 
-            if (((itemData.Flags & TileFlag.Door) != 0 || itemID == 0x692 || itemID == 0x846 || itemID == 0x873 ||
-                 (itemID >= 0x6F5 && itemID <= 0x6F6)) && ignoreDoors)
+            if (((itemData.Flags & TileFlag.Door) != 0 || itemID == 0x692 || itemID == 0x846 || itemID == 0x873 || itemID >= 0x6F5 && itemID <= 0x6F6) && ignoreDoors)
             {
                 return !(item is BaseHouseDoor) || m == null || ((BaseHouseDoor)item).CheckAccess(m);
             }
@@ -133,7 +132,6 @@ namespace Server.Movement
                 itemData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
                 flags = itemData.Flags;
 
-                #region SA
                 if (m != null && m.Flying && (Insensitive.Equals(itemData.Name, "hover over") || (flags & TileFlag.HoverOver) != 0))
                 {
                     newZ = tile.Z;
@@ -143,7 +141,7 @@ namespace Server.Movement
                 // Stygian Dragon
                 if (m != null && m.Body == 826 && map != null && map.MapID == 5)
                 {
-                    if (x >= 307 && x <= 354 && y >= 126 && y <= 192)
+                    if (x >= 307 && x <= 354 && y >= 126 && y <= 192 || x >= 42 && x <= 89 && (y >= 333 && y <= 399 || y >= 531 && y <= 597 || y >= 739 && y <= 805))
                     {
                         if (tile.Z > newZ)
                         {
@@ -152,20 +150,7 @@ namespace Server.Movement
 
                         moveIsOk = true;
                     }
-                    else if (x >= 42 && x <= 89)
-                    {
-                        if ((y >= 333 && y <= 399) || (y >= 531 && y <= 597) || (y >= 739 && y <= 805))
-                        {
-                            if (tile.Z > newZ)
-                            {
-                                newZ = tile.Z;
-                            }
-
-                            moveIsOk = true;
-                        }
-                    }
                 }
-                #endregion
 
                 if ((flags & ImpassableSurface) != TileFlag.Surface && (!canSwim || (flags & TileFlag.Wet) == 0))
                 {
@@ -187,7 +172,7 @@ namespace Server.Movement
                 {
                     int cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
 
-                    if (cmp > 0 || (cmp == 0 && ourZ > newZ))
+                    if (cmp > 0 || cmp == 0 && ourZ > newZ)
                     {
                         continue;
                     }
@@ -253,7 +238,7 @@ namespace Server.Movement
                     continue;
                 }
 
-                if ((flags & ImpassableSurface) != TileFlag.Surface && ((m != null && !m.CanSwim) || (flags & TileFlag.Wet) == 0))
+                if ((flags & ImpassableSurface) != TileFlag.Surface && (m != null && !m.CanSwim || (flags & TileFlag.Wet) == 0))
                 {
                     continue;
                 }
@@ -273,7 +258,7 @@ namespace Server.Movement
                 {
                     int cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
 
-                    if (cmp > 0 || (cmp == 0 && ourZ > newZ))
+                    if (cmp > 0 || cmp == 0 && ourZ > newZ)
                     {
                         continue;
                     }
@@ -340,7 +325,7 @@ namespace Server.Movement
             {
                 int cmp = Math.Abs(ourZ - p.Z) - Math.Abs(newZ - p.Z);
 
-                if (cmp > 0 || (cmp == 0 && ourZ > newZ))
+                if (cmp > 0 || cmp == 0 && ourZ > newZ)
                 {
                     shouldCheck = false;
                 }
@@ -396,7 +381,7 @@ namespace Server.Movement
             bool ignoreMovableImpassables = MovementImpl.IgnoresMovableImpassables(p);
             TileFlag reqFlags = ImpassableSurface;
 
-            if (p is Mobile && ((Mobile)p).CanSwim)
+            if (p is Mobile mobile && mobile.CanSwim)
             {
                 reqFlags |= TileFlag.Wet;
             }
@@ -560,14 +545,14 @@ namespace Server.Movement
             foreach (StaticTile tile in staticTiles)
             {
                 ItemData tileData = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-                int calcTop = (tile.Z + tileData.CalcHeight);
+                int calcTop = tile.Z + tileData.CalcHeight;
 
                 if (isSet && calcTop < zCenter)
                 {
                     continue;
                 }
 
-                if ((tileData.Flags & TileFlag.Surface) == 0 && ((m != null && !m.CanSwim) || (tileData.Flags & TileFlag.Wet) == 0))
+                if ((tileData.Flags & TileFlag.Surface) == 0 && (m != null && !m.CanSwim || (tileData.Flags & TileFlag.Wet) == 0))
                 {
                     continue;
                 }
@@ -608,7 +593,7 @@ namespace Server.Movement
                     continue;
                 }
 
-                if ((itemData.Flags & TileFlag.Surface) == 0 && ((m != null && !m.CanSwim) || (itemData.Flags & TileFlag.Wet) == 0))
+                if ((itemData.Flags & TileFlag.Surface) == 0 && (m != null && !m.CanSwim || (itemData.Flags & TileFlag.Wet) == 0))
                 {
                     continue;
                 }

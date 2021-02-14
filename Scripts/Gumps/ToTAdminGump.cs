@@ -121,13 +121,13 @@ namespace Server.Gumps
                 if (button % 2 == 0)
                 {
                     selectedToT = button / 2;
-                    TreasuresOfTokuno.DropEra = (TreasuresOfTokunoEra)(selectedToT);
+                    TreasuresOfTokuno.DropEra = (TreasuresOfTokunoEra)selectedToT;
                     from.SendMessage("Treasures of Tokuno " + selectedToT + " Drops have been enabled");
                 }
                 else
                 {
                     selectedToT = (button - 1) / 2;
-                    TreasuresOfTokuno.RewardEra = (TreasuresOfTokunoEra)(selectedToT);
+                    TreasuresOfTokuno.RewardEra = (TreasuresOfTokunoEra)selectedToT;
                     from.SendMessage("Treasures of Tokuno " + selectedToT + " Rewards have been enabled");
                 }
             }

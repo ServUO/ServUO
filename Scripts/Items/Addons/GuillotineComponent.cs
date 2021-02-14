@@ -128,10 +128,8 @@ namespace Server.Items
 
         private void Deactivate(object obj)
         {
-            if (obj is AddonComponent)
+            if (obj is AddonComponent c)
             {
-                AddonComponent c = (AddonComponent)obj;
-
                 if (c.ItemID == 0x1269)
                     c.ItemID = 0x1260;
                 else if (c.ItemID == 0x1260)

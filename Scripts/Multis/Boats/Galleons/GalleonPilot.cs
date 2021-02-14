@@ -207,9 +207,9 @@ namespace Server.Mobiles
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is MapItem && Galleon != null && Galleon.CanCommand(from) && Galleon.Contains(from))
+            if (dropped is MapItem mapItem && Galleon != null && Galleon.CanCommand(from) && Galleon.Contains(from))
             {
-                Galleon.AssociateMap((MapItem)dropped);
+                Galleon.AssociateMap(mapItem);
             }
 
             return false;
@@ -358,10 +358,8 @@ namespace Server.Mobiles
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is IPoint3D && from.Map != null)
+                if (targeted is IPoint3D pnt && from.Map != null)
                 {
-                    IPoint3D pnt = (IPoint3D)targeted;
-
                     BaseBoat boat = BaseBoat.FindBoatAt(pnt, from.Map);
 
                     if (boat != null && boat == m_Galleon && IsSurface(pnt))
@@ -381,10 +379,9 @@ namespace Server.Mobiles
                         eable.Free();
 
                         StaticTarget st = (StaticTarget)pnt;
-                        int z = m_Galleon.ZSurface;
+                        int z;
 
-                        if (st != null)
-                            z = st.Z;
+                        z = st.Z;
 
                         m_Pilot.MoveToWorld(new Point3D(pnt.X, pnt.Y, z), from.Map);
                     }
@@ -398,13 +395,11 @@ namespace Server.Mobiles
 
             public bool IsSurface(IPoint3D pnt)
             {
-                if (pnt is StaticTarget)
+                if (pnt is StaticTarget st && (st.Flags & TileFlag.Surface) > 0)
                 {
-                    StaticTarget st = (StaticTarget)pnt;
-
-                    if ((st.Flags & TileFlag.Surface) > 0)
-                        return true;
+                    return true;
                 }
+
                 return false;
             }
         }
@@ -468,7 +463,7 @@ namespace Server.Mobiles
             {
                 string nameStr;
 
-                if (Galleon.ShipName == null || Galleon.ShipName.Length == 0)
+                if (string.IsNullOrEmpty(Galleon.ShipName))
                     nameStr = "an unnamed ship";
                 else
                     nameStr = string.Format("the {0}", Galleon.ShipName);

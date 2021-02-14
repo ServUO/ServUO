@@ -20,10 +20,8 @@ namespace Server.Items
                 from.SendLocalizedMessage(1152244); // What would you like to arrest?
                 from.BeginTarget(10, false, TargetFlags.None, (m, targeted) =>
                     {
-                        if (targeted is Raider)
+                        if (targeted is Raider raider)
                         {
-                            Raider raider = targeted as Raider;
-
                             if (raider.InRange(m.Location, 1))
                             {
                                 if (raider.TryArrest(from))
@@ -40,13 +38,6 @@ namespace Server.Items
                 from.SendLocalizedMessage(1116249); // That must be in your backpack for you to use it.
         }
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-
-        }
-
         public GuardsmansRope(Serial serial)
             : base(serial)
         {
@@ -61,7 +52,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

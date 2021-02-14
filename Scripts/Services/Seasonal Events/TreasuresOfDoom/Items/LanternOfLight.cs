@@ -5,7 +5,7 @@ namespace Server.Items
         private string _OwnerName;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string OwnerName { get { return _OwnerName; } set { _OwnerName = value; InvalidateProperties(); } }
+        public string OwnerName { get => _OwnerName; set { _OwnerName = value; InvalidateProperties(); } }
 
         [Constructable]
         public LanternOfLight()

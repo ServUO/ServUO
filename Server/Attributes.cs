@@ -53,8 +53,8 @@ namespace Server
 				return -1;
 			}
 
-			var xPriority = GetPriority(x);
-			var yPriority = GetPriority(y);
+			int xPriority = GetPriority(x);
+			int yPriority = GetPriority(y);
 
 			if (xPriority > yPriority)
 				return 1;
@@ -67,7 +67,7 @@ namespace Server
 
 		private int GetPriority(MethodInfo mi)
 		{
-			var objs = mi.GetCustomAttributes(typeof(CallPriorityAttribute), true);
+			object[] objs = mi.GetCustomAttributes(typeof(CallPriorityAttribute), true);
 
 			if (objs == null)
 			{
@@ -79,7 +79,7 @@ namespace Server
 				return 0;
 			}
 
-			var attr = objs[0] as CallPriorityAttribute;
+			CallPriorityAttribute attr = objs[0] as CallPriorityAttribute;
 
 			if (attr == null)
 			{
@@ -146,15 +146,15 @@ namespace Server
 
 		public static bool Find(Type t, out string message)
 		{
-			var attrs = t.GetCustomAttributes(typeof(DeleteConfirmAttribute), true);
+			object[] attrs = t.GetCustomAttributes(typeof(DeleteConfirmAttribute), true);
 
 			if (attrs.Length > 0)
 			{
-				message = String.Join("\n", attrs.OfType<DeleteConfirmAttribute>().Select(a => a.Message));
+				message = string.Join("\n", attrs.OfType<DeleteConfirmAttribute>().Select(a => a.Message));
 				return true;
 			}
 
-			message = String.Empty;
+			message = string.Empty;
 			return false;
 		}
 	}

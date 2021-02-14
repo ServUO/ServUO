@@ -13,7 +13,7 @@ namespace Server.Items
         OreOnly,
         OreAndStone,
         OreAndGems,
-        StoneOnly,
+        StoneOnly
     }
 
     public abstract class BaseHarvestTool : Item, IUsesRemaining, ICraftable, IHarvestTool
@@ -25,10 +25,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get
-            {
-                return m_Crafter;
-            }
+            get => m_Crafter;
             set
             {
                 m_Crafter = value;
@@ -39,10 +36,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get
-            {
-                return m_Quality;
-            }
+            get => m_Quality;
             set
             {
                 UnscaleUses();
@@ -55,10 +49,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get
-            {
-                return m_UsesRemaining;
-            }
+            get => m_UsesRemaining;
             set
             {
                 m_UsesRemaining = value;
@@ -68,13 +59,13 @@ namespace Server.Items
 
         public void ScaleUses()
         {
-            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            m_UsesRemaining = m_UsesRemaining * GetUsesScalar() / 100;
             InvalidateProperties();
         }
 
         public void UnscaleUses()
         {
-            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
+            m_UsesRemaining = m_UsesRemaining * 100 / GetUsesScalar();
         }
 
         public int GetUsesScalar()
@@ -87,10 +78,7 @@ namespace Server.Items
 
         public bool ShowUsesRemaining
         {
-            get
-            {
-                return true;
-            }
+            get => true;
             set
             {
             }
@@ -125,7 +113,7 @@ namespace Server.Items
 
         public virtual void DisplayDurabilityTo(Mobile m)
         {
-            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
+            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining); // Durability
         }
 
         public override void OnDoubleClick(Mobile from)

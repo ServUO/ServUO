@@ -695,40 +695,34 @@ namespace Server.Engines.ResortAndCasino
             AddHtmlLocalized(15, 140, Width - 30, 16, 1154645, "#1153628", Yellow, false, false); // PAY TABLE
 
             AddHtmlLocalized(0, 160, 160, 16, 1114514, "#1153615", Yellow, false, false); // FIVE OF A KIND
-            AddHtmlLocalized(405, 160, 100, 16, 1153627, "80\t1", Yellow, false, false);
+            AddHtmlLocalized(370, 160, 100, 16, 1153627, "80\t1", Yellow, false, false);
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
                 AddImage(170 + (i * 40), 160, 1455);
 
-            AddHtmlLocalized(0, 187, 160, 16, 1114514, "#1153617", Yellow, false, false); // FIVE OF A KIND
-            AddHtmlLocalized(405, 187, 100, 16, 1153627, "3\t1", Yellow, false, false);
+            AddHtmlLocalized(0, 187, 160, 16, 1114514, "#1153617", Yellow, false, false); // FOUR OF A KIND
+            AddHtmlLocalized(370, 187, 100, 16, 1153627, "3\t1", Yellow, false, false);
 
-            for (int i = 0; i < 6; i++)
-                AddImage(170 + (i * 40), 187, i == 5 ? 1453 : 1454);
+            for (int i = 0; i < 5; i++)
+                AddImage(170 + (i * 40), 187, i == 4 ? 1453 : 1454);
 
             AddHtmlLocalized(0, 214, 160, 16, 1114514, "#1153619", Yellow, false, false); // STRAIGHT
-            AddHtmlLocalized(405, 214, 100, 16, 1153627, "3\t1", Yellow, false, false);
+            AddHtmlLocalized(370, 214, 100, 16, 1153627, "3\t1", Yellow, false, false);
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
                 AddImage(170 + (i * 40), 214, 1455 - i);
 
-            AddHtmlLocalized(0, 241, 160, 16, 1114514, "#1153619", Yellow, false, false); // STRAIGHT
-            AddHtmlLocalized(405, 241, 100, 16, 1153627, "2\t1", Yellow, false, false);
+            AddHtmlLocalized(0, 241, 160, 16, 1114514, "#1153621", Yellow, false, false); // FULL HOUSE
+            AddHtmlLocalized(370, 241, 100, 16, 1153627, "3\t2", Yellow, false, false);
 
-            for (int i = 0; i < 6; i++)
-                AddImage(170 + (i * 40), 241, 1455 - i);
+            for (int i = 0; i < 5; i++)
+                AddImage(170 + (i * 40), 241, i < 3 ? 1453 : 1452);
 
-            AddHtmlLocalized(0, 268, 160, 16, 1114514, "#1153621", Yellow, false, false); // FULL HOUSE
-            AddHtmlLocalized(405, 268, 100, 16, 1153627, "3\t2", Yellow, false, false);
+            AddHtmlLocalized(0, 268, 160, 16, 1114514, "#1153623", Yellow, false, false); // THREE OF A KIND
+            AddHtmlLocalized(370, 268, 100, 16, 1153627, "1\t1", Yellow, false, false);
 
-            for (int i = 0; i < 6; i++)
-                AddImage(170 + (i * 40), 268, i < 3 ? 1453 : 1452);
-
-            AddHtmlLocalized(0, 295, 160, 16, 1114514, "#1153623", Yellow, false, false); // THREE OF A KIND
-            AddHtmlLocalized(405, 295, 100, 16, 1153627, "1\t1", Yellow, false, false);
-
-            for (int i = 0; i < 6; i++)
-                AddImage(170 + (i * 40), 295, i < 3 ? 1452 : i == 3 ? 1453 : 1455);
+            for (int i = 0; i < 5; i++)
+                AddImage(170 + (i * 40), 268, i < 3 ? 1452 : i == 3 ? 1453 : 1455);
         }
 
         public override void BuildBetting()

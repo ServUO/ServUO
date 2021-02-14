@@ -269,10 +269,10 @@ namespace Server.Mobiles
             AddButton(168, 406, 0xFBD, 0xFBE, 9998, GumpButtonType.Reply, 0);
             AddLabel(201, 406, 0x384, "Refresh");
 
-            AddButton(280, 395, m_Spawner.DisableGlobalAutoReset ? 0xD3 : 0xD2,
-                                m_Spawner.DisableGlobalAutoReset ? 0xD2 : 0xD3, 9997, GumpButtonType.Reply, 0);
-            AddLabel(263, 410, m_Spawner.DisableGlobalAutoReset ? 68 : 33, "Disable");
-            AddLabel(247, 424, m_Spawner.DisableGlobalAutoReset ? 68 : 33, "TickReset");
+            AddButton(280, 395, m_Spawner.m_DisableGlobalAutoReset ? 0xD3 : 0xD2,
+                                m_Spawner.m_DisableGlobalAutoReset ? 0xD2 : 0xD3, 9997, GumpButtonType.Reply, 0);
+            AddLabel(263, 410, m_Spawner.m_DisableGlobalAutoReset ? 68 : 33, "Disable");
+            AddLabel(247, 424, m_Spawner.m_DisableGlobalAutoReset ? 68 : 33, "TickReset");
 
             // add run status display
             if (m_Spawner.Running)
@@ -491,7 +491,7 @@ namespace Server.Mobiles
                         {
                             // if the next spawn tick of the spawner will occur after the subgroup is available for spawning
                             // then report the next spawn tick since that is the earliest that the subgroup can actually be spawned
-                            if ((DateTime.UtcNow + m_Spawner.NextSpawn) > m_Spawner.SpawnObjects[i].NextSpawn)
+                            if (DateTime.UtcNow + m_Spawner.NextSpawn > m_Spawner.SpawnObjects[i].NextSpawn)
                             {
                                 strnext = m_Spawner.NextSpawn.ToString();
                             }
@@ -699,7 +699,7 @@ namespace Server.Mobiles
         {
             if (o is Item i)
             {
-                if (!i.Deleted && (i.Map != null) && (i.Map != Map.Internal))
+                if (!i.Deleted && i.Map != null && i.Map != Map.Internal)
                     return true;
 
                 if (from != null && !from.Deleted)
@@ -709,7 +709,7 @@ namespace Server.Mobiles
             }
             else if (o is Mobile m)
             {
-                if (!m.Deleted && (m.Map != null) && (m.Map != Map.Internal))
+                if (!m.Deleted && m.Map != null && m.Map != Map.Internal)
                     return true;
 
                 if (from != null && !from.Deleted)
@@ -1009,7 +1009,7 @@ namespace Server.Mobiles
                     }
                 case 9997:
                     {
-                        m_Spawner.DisableGlobalAutoReset = !m_Spawner.DisableGlobalAutoReset;
+                        m_Spawner.m_DisableGlobalAutoReset = !m_Spawner.m_DisableGlobalAutoReset;
                         break;
                     }
                 case 9998:  // refresh the gump

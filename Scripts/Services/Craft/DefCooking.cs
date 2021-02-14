@@ -3,29 +3,6 @@ using System;
 
 namespace Server.Engines.Craft
 {
-    #region Recipes
-    public enum CookRecipes
-    {
-        // magical
-        RotWormStew = 500,
-        GingerbreadCookie = 599,
-
-        DarkChocolateNutcracker = 600,
-        MilkChocolateNutcracker = 601,
-        WhiteChocolateNutcracker = 602,
-
-        ThreeTieredCake = 603,
-        BlackrockStew = 604,
-        Hamburger = 605,
-        HotDog = 606,
-        Sausage = 607,
-
-        GrilledSerpentSteak = 608,
-        BBQDinoRibs = 609,
-        WakuChicken = 610
-    }
-    #endregion
-
     public class DefCooking : CraftSystem
     {
         public override SkillName MainSkill => SkillName.Cooking;
@@ -69,7 +46,8 @@ namespace Server.Engines.Craft
 
             if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!tool.CheckAccessible(from, ref num))
+
+            if (!tool.CheckAccessible(from, ref num))
                 return num; // The tool must be on your person to use.
 
             return 0;
@@ -87,21 +65,25 @@ namespace Server.Engines.Craft
             if (failed)
             {
                 if (lostMaterial)
+                {
                     return 1044043; // You failed to create the item, and some of your materials are lost.
-                else
-                    return 1044157; // You failed to create the item, but no materials were lost.
+                }
+
+                return 1044157; // You failed to create the item, but no materials were lost.
             }
-            else
+
+            if (quality == 0)
+                return 502785; // You were barely able to make this item.  It's quality is below average.
+
+            if (makersMark && quality == 2)
+                return 1044156; // You create an exceptional quality item and affix your maker's mark.
+
+            if (quality == 2)
             {
-                if (quality == 0)
-                    return 502785; // You were barely able to make this item.  It's quality is below average.
-                else if (makersMark && quality == 2)
-                    return 1044156; // You create an exceptional quality item and affix your maker's mark.
-                else if (quality == 2)
-                    return 1044155; // You create an exceptional quality item.
-                else
-                    return 1044154; // You create the item.
+                return 1044155; // You create an exceptional quality item.
             }
+
+            return 1044154; // You create the item.
         }
 
         public override void InitCraftList()
@@ -277,11 +259,11 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(GingerBreadCookie), 1044497, 1031233, 35.0, 85.0, typeof(CookieMix), 1044474, 1, 1044253);
             AddRes(index, typeof(FreshGinger), 1031235, 1, 1044253);
-            AddRecipe(index, (int)CookRecipes.GingerbreadCookie);
+            AddRecipe(index, (int)CraftRecipes.GingerbreadCookie);
             SetNeedOven(index, true);
 
             index = AddCraft(typeof(ThreeTieredCake), 1044497, 1154465, 60.0, 110.0, typeof(CakeMix), 1044471, 3, 1044253);
-            AddRecipe(index, (int)CookRecipes.ThreeTieredCake);
+            AddRecipe(index, (int)CraftRecipes.ThreeTieredCake);
             SetNeedOven(index, true);
             #endregion
 
@@ -319,14 +301,14 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(BowlOfRotwormStew), 1044498, 1031706, 0.0, 100.0, typeof(RawRotwormMeat), 1031705, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.RotWormStew);
+            AddRecipe(index, (int)CraftRecipes.RotWormStew);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(BowlOfBlackrockStew), 1044498, 1115752, 30.0, 70.0, typeof(BowlOfRotwormStew), 1031706, 1, 1044253);
             AddRes(index, typeof(SmallPieceofBlackrock), 1153836, 1, 1044253);
             SetNeedHeat(index, true);
             SetItemHue(index, 1954);
-            AddRecipe(index, (int)CookRecipes.BlackrockStew);
+            AddRecipe(index, (int)CraftRecipes.BlackrockStew);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(KhaldunTastyTreat), 1044498, 1158680, 60.0, 100.0, typeof(RawFishSteak), 1044476, 40, 1044253);
@@ -337,23 +319,23 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(RawRibs), 1044485, 1, 1044253);
             AddRes(index, typeof(Lettuce), 1023184, 1, 1044253);
             SetNeedHeat(index, true);
-            AddRecipe(index, (int)CookRecipes.Hamburger);
+            AddRecipe(index, (int)CraftRecipes.Hamburger);
 
             index = AddCraft(typeof(HotDog), 1044498, 1125200, 45.0, 95.0, typeof(BreadLoaf), 1024155, 1, 1044253);
             AddRes(index, typeof(Sausage), 1125198, 1, 1044253);
             SetNeedHeat(index, true);
-            AddRecipe(index, (int)CookRecipes.HotDog);
+            AddRecipe(index, (int)CraftRecipes.HotDog);
 
             index = AddCraft(typeof(CookableSausage), 1044498, 1125198, 45.0, 95.0, typeof(Ham), 1022515, 1, 1044253);
             AddRes(index, typeof(DriedHerbs), 1023137, 1, 1044253);
             SetNeedHeat(index, true);
-            AddRecipe(index, (int)CookRecipes.Sausage);
+            AddRecipe(index, (int)CraftRecipes.Sausage);
 
             index = AddCraft(typeof(GrilledSerpentSteak), 1044498, 1159197, 45.0, 95.0, typeof(RawSeaSerpentSteak), 1126043, 1, 1044253);
             AddRes(index, typeof(FreshSeasoning), 1159200, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.GrilledSerpentSteak);
+            AddRecipe(index, (int)CraftRecipes.GrilledSerpentSteak);
 
             index = AddCraft(typeof(BBQDinoRibs), 1044498, 1159198, 45.0, 95.0, typeof(RawDinoRibs), 1126045, 1, 1044253);
             AddRes(index, typeof(FreshSeasoning), 1159200, 1, 1044253);
@@ -361,14 +343,14 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.BBQDinoRibs);
+            AddRecipe(index, (int)CraftRecipes.BBQDinoRibs);
 
             index = AddCraft(typeof(WakuChicken), 1044498, 1159199, 45.0, 95.0, typeof(RawBird), 1044470, 1, 1044253);
             AddRes(index, typeof(DriedHerbs), 1023137, 1, 1044253);
             AddRes(index, typeof(SamuelsSecretSauce), 1116338, 1, 1044253);
             SetNeedHeat(index, true);
             SetUseAllRes(index, true);
-            AddRecipe(index, (int)CookRecipes.WakuChicken);
+            AddRecipe(index, (int)CraftRecipes.WakuChicken);
             #endregion
 
             #region Enchanted
@@ -417,19 +399,19 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156390, 15.0, 100.0, typeof(SweetCocoaButter), 1156401, 1, 1044253);
             AddRes(index, typeof(SweetCocoaButter), 1124032, 1, 1156402);
             AddRes(index, typeof(CocoaLiquor), 1079999, 1, 1044253);
-            AddRecipe(index, (int)CookRecipes.DarkChocolateNutcracker);
+            AddRecipe(index, (int)CraftRecipes.DarkChocolateNutcracker);
             SetData(index, ChocolateNutcracker.ChocolateType.Dark);
 
             index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156391, 32.5, 107.5, typeof(SweetCocoaButter), 1156401, 1, 1044253);
             AddRes(index, typeof(SweetCocoaButter), 1124032, 1, 1156402);
             AddRes(index, typeof(CocoaLiquor), 1079999, 1, 1044253);
-            AddRecipe(index, (int)CookRecipes.MilkChocolateNutcracker);
+            AddRecipe(index, (int)CraftRecipes.MilkChocolateNutcracker);
             SetData(index, ChocolateNutcracker.ChocolateType.Milk);
 
             index = AddCraft(typeof(ChocolateNutcracker), 1080001, 1156392, 52.5, 127.5, typeof(SweetCocoaButter), 1156401, 1, 1044253);
             AddRes(index, typeof(SweetCocoaButter), 1124032, 1, 1156402);
             AddRes(index, typeof(CocoaLiquor), 1079999, 1, 1044253);
-            AddRecipe(index, (int)CookRecipes.WhiteChocolateNutcracker);
+            AddRecipe(index, (int)CraftRecipes.WhiteChocolateNutcracker);
             SetData(index, ChocolateNutcracker.ChocolateType.White);
             #endregion
 

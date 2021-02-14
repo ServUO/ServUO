@@ -7,7 +7,6 @@ namespace Server.Engines.Quests
     public class PeptaQuest : BaseQuest
     {
         public PeptaQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(FreshGinger), "Fresh Ginger", 1, 0x2BE3));
             AddObjective(new ObtainObjective(typeof(TribalBerry), "Tribal Berries", 2, 0x9D0));
@@ -29,18 +28,17 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1071183;
         /* Thanks for helping me out.  Here's the reward I promised you.*/
         public override object Complete => 1072272;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -48,7 +46,7 @@ namespace Server.Engines.Quests
     {
         [Constructable]
         public Pepta()
-            : base("Pepta", "The Royal Tastetester")
+            : base("Pepta", "the Royal Taste Tester")
         {
         }
 
@@ -57,10 +55,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[]
-                {
-                    typeof(PeptaQuest)
-                };
+        public override Type[] Quests => new[] { typeof(PeptaQuest) };
+
         public override void InitBody()
         {
             Female = true;
@@ -82,15 +78,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

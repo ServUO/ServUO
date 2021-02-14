@@ -113,9 +113,9 @@ namespace Server.Items
             {
                 Item deed = Deed;
 
-                if (Parent is Item)
+                if (Parent is Item item)
                 {
-                    ((Item)Parent).AddItem(deed);
+                    item.AddItem(deed);
                     deed.Location = Location;
                 }
                 else

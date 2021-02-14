@@ -118,9 +118,9 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is MapItem && Boat != null && Boat.CanCommand(from) && Boat.Contains(from))
+            if (dropped is MapItem item && Boat != null && Boat.CanCommand(from) && Boat.Contains(from))
             {
-                Boat.AssociateMap((MapItem)dropped);
+                Boat.AssociateMap(item);
             }
 
             return false;

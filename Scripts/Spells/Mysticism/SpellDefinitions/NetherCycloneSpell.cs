@@ -116,7 +116,7 @@ namespace Server.Spells.Mysticism
 
         public class InternalTarget : Target
         {
-            public NetherCycloneSpell Owner { get; set; }
+            public NetherCycloneSpell Owner { get; }
 
             public InternalTarget(NetherCycloneSpell owner)
                 : this(owner, false)
@@ -135,11 +135,13 @@ namespace Server.Spells.Mysticism
                     return;
 
                 if (!from.CanSee(o))
-                    from.SendLocalizedMessage(500237); // Target can not be seen.
-                else if (o is IPoint3D)
                 {
-                    SpellHelper.Turn(from, o);
-                    Owner.OnTarget((IPoint3D)o);
+                    from.SendLocalizedMessage(500237); // Target can not be seen.
+                }
+                else if (o is IPoint3D point3D)
+                {
+                    SpellHelper.Turn(from, point3D);
+                    Owner.OnTarget(point3D);
                 }
             }
 

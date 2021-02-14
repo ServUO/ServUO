@@ -150,16 +150,21 @@ namespace Server.Spells.Third
 
             public override bool OnMoveOver(Mobile m)
             {
-                int noto;
-
                 if (m is PlayerMobile)
                 {
-                    noto = Notoriety.Compute(m_Caster, m);
-                    if (noto == Notoriety.Enemy || noto == Notoriety.Ally)
+                    int notoriety;
+
+                    notoriety = Notoriety.Compute(m_Caster, m);
+
+                    if (notoriety == Notoriety.Enemy || notoriety == Notoriety.Ally)
+                    {
                         return false;
+                    }
 
                     if (m.Map != null && (m.Map.Rules & MapRules.FreeMovement) == 0)
+                    {
                         return false;
+                    }
                 }
                 return base.OnMoveOver(m);
             }
@@ -200,8 +205,8 @@ namespace Server.Spells.Third
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                if (o is IPoint3D point3D)
+                    m_Owner.Target(point3D);
             }
 
             protected override void OnTargetFinish(Mobile from)

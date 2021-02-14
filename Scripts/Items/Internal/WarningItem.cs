@@ -44,55 +44,29 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string WarningString
-        {
-            get
-            {
-                return m_WarningString;
-            }
-            set
-            {
-                m_WarningString = value;
-            }
-        }
+        public string WarningString { get => m_WarningString; set => m_WarningString = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int WarningNumber
-        {
-            get
-            {
-                return m_WarningNumber;
-            }
-            set
-            {
-                m_WarningNumber = value;
-            }
-        }
+        public int WarningNumber { get => m_WarningNumber; set => m_WarningNumber = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int Range
         {
-            get
-            {
-                return m_Range;
-            }
+            get => m_Range;
             set
             {
                 if (value > 18)
+                {
                     value = 18;
+                }
+
                 m_Range = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan ResetDelay
-        {
-            get
-            {
-                return m_ResetDelay;
-            }
-            set
-            {
-                m_ResetDelay = value;
-            }
-        }
+        public TimeSpan ResetDelay { get => m_ResetDelay; set => m_ResetDelay = value; }
+
         public virtual bool OnlyToTriggerer => false;
         public virtual int NeighborRange => 5;
         public override bool HandlesOnMovement => true;
@@ -116,7 +90,7 @@ namespace Server.Items
 
         public virtual void Broadcast(Mobile triggerer)
         {
-            if (m_Broadcasting || (DateTime.UtcNow < (m_LastBroadcast + m_ResetDelay)))
+            if (m_Broadcasting || DateTime.UtcNow < m_LastBroadcast + m_ResetDelay)
                 return;
 
             m_LastBroadcast = DateTime.UtcNow;
@@ -131,12 +105,16 @@ namespace Server.Items
 
                 foreach (Item item in GetItemsInRange(NeighborRange))
                 {
-                    if (item != this && item is WarningItem)
-                        list.Add((WarningItem)item);
+                    if (item != this && item is WarningItem warningItem)
+                    {
+                        list.Add(warningItem);
+                    }
                 }
 
                 for (int i = 0; i < list.Count; i++)
+                {
                     list[i].Broadcast(triggerer);
+                }
             }
 
             Timer.DelayCall(TimeSpan.Zero, InternalCallback);
@@ -211,30 +189,13 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string HintString
-        {
-            get
-            {
-                return m_HintString;
-            }
-            set
-            {
-                m_HintString = value;
-            }
-        }
+        public string HintString { get => m_HintString; set => m_HintString = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int HintNumber
-        {
-            get
-            {
-                return m_HintNumber;
-            }
-            set
-            {
-                m_HintNumber = value;
-            }
-        }
+        public int HintNumber { get => m_HintNumber; set => m_HintNumber = value; }
+
         public override bool OnlyToTriggerer => true;
+
         public override void OnDoubleClick(Mobile from)
         {
             SendMessage(from, true, m_HintString, m_HintNumber);

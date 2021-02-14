@@ -98,10 +98,8 @@ namespace Server.Items
                 if (m_Amulet == null || m_Amulet.Deleted)
                     return;
 
-                if (targeted is Mobile)
+                if (targeted is Mobile target)
                 {
-                    Mobile target = (Mobile)targeted;
-
                     if (m_Amulet.UsesRemaining <= 0)
                     {
                         from.SendLocalizedMessage(1042544); // This item is out of charges.

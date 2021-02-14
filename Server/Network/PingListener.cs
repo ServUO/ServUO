@@ -15,7 +15,7 @@ namespace Server.Network
 		{
 			ipep = new IPEndPoint(ipep.Address, Port);
 
-			var s = new UdpClient
+			UdpClient s = new UdpClient
 			{
 				Client = new Socket(ipep.AddressFamily, SocketType.Dgram, ProtocolType.Udp)
 			};
@@ -38,11 +38,11 @@ namespace Server.Network
 					Console.WriteLine("Ping Listener Failed: {0}:{1} (Unavailable)", ipep.Address, Port);
 					break;
 					default:
-						{
-							Console.WriteLine("Ping Listener Exception:");
-							Console.WriteLine(e);
-						}
-						break;
+					{
+						Console.WriteLine("Ping Listener Exception:");
+						Console.WriteLine(e);
+					}
+					break;
 				}
 			}
 
@@ -66,8 +66,8 @@ namespace Server.Network
 
 		private void EndReceive(IAsyncResult r)
 		{
-			var ripep = new IPEndPoint(IPAddress.Any, Port);
-			var recvd = _Listener.EndReceive(r, ref ripep);
+			IPEndPoint ripep = new IPEndPoint(IPAddress.Any, Port);
+			byte[] recvd = _Listener.EndReceive(r, ref ripep);
 
 			//Console.WriteLine("[PING]: \"{0}\" Received from {1}", Encoding.UTF8.GetString(recvd), ripep);
 

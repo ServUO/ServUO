@@ -97,9 +97,9 @@ namespace Server.SkillHandlers
                     int maxRange = BaseInstrument.GetBardRange(from, SkillName.Discordance);
                     Map targetMap = targ.Map;
 
-                    if (targ is BaseMount && ((BaseMount)targ).Rider != null)
+                    if (targ is BaseMount mount && mount.Rider != null)
                     {
-                        Mobile rider = ((BaseMount)targ).Rider;
+                        Mobile rider = mount.Rider;
 
                         range = (int)rider.GetDistanceToSqrt(from);
                         targetMap = rider.Map;
@@ -152,12 +152,10 @@ namespace Server.SkillHandlers
                 {
                     from.SendLocalizedMessage(1062488); // The instrument you are trying to play is no longer in your backpack!
                 }
-                else if (target is Mobile)
+                else if (target is Mobile targ)
                 {
-                    Mobile targ = (Mobile)target;
-
                     if (targ == from || !from.CanBeHarmful(targ, false, false, true) ||
-                        (targ is BaseCreature && ((BaseCreature)targ).BardImmune && ((BaseCreature)targ).ControlMaster != from))
+                        targ is BaseCreature creature && creature.BardImmune && creature.ControlMaster != from)
                     {
                         from.SendLocalizedMessage(1049535); // A song of discord would have no effect on that.
                     }
@@ -165,7 +163,7 @@ namespace Server.SkillHandlers
                     {
                         from.SendLocalizedMessage(1049537); // Your target is already in discord.
                     }
-                    else if (!targ.Player || (from is BaseCreature && ((BaseCreature)from).CanDiscord) || (targ.Player && from.Player && CanDiscordPVP(from)))
+                    else if (!targ.Player || from is BaseCreature bc && bc.CanDiscord || targ.Player && from.Player && CanDiscordPVP(from))
                     {
                         double diff = m_Instrument.GetDifficultyFor(targ) - 10.0;
                         double music = from.Skills[SkillName.Musicianship].Value;
@@ -180,14 +178,14 @@ namespace Server.SkillHandlers
                             diff -= (music - 100.0) * 0.5;
                         }
 
-                        if (from is PlayerMobile)
+                        if (from is PlayerMobile mobile)
                         {
-                            masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus((PlayerMobile)from, SkillName.Discordance);
+                            masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus(mobile, SkillName.Discordance);
                         }
 
                         if (masteryBonus > 0)
                         {
-                            diff -= (diff * ((double)masteryBonus / 100));
+                            diff -= diff * ((double)masteryBonus / 100);
                         }
 
                         if (!BaseInstrument.CheckMusicianship(from))
@@ -196,7 +194,7 @@ namespace Server.SkillHandlers
                             m_Instrument.PlayInstrumentBadly(from);
                             m_Instrument.ConsumeUse(from);
                         }
-                        else if (from.CheckTargetSkill(SkillName.Discordance, target, diff - 25.0, diff + 25.0))
+                        else if (from.CheckTargetSkill(SkillName.Discordance, targ, diff - 25.0, diff + 25.0))
                         {
                             from.SendLocalizedMessage(1049539); // You play the song surpressing your targets strength
 
@@ -219,7 +217,7 @@ namespace Server.SkillHandlers
 
                                 double discord = from.Skills[SkillName.Discordance].Value;
 
-                                var effect = (int)Math.Max(-28.0, (discord / -4.0));
+                                var effect = (int)Math.Max(-28.0, discord / -4.0);
 
                                 if (BaseInstrument.GetBaseDifficulty(targ) >= 160.0)
                                 {
@@ -244,10 +242,9 @@ namespace Server.SkillHandlers
 
                                 info = new DiscordanceInfo(from, targ, Math.Abs(effect), mods);
 
-                                #region Bard Mastery Quest
-                                if (from is PlayerMobile)
+                                if (from is PlayerMobile playerMobile)
                                 {
-                                    BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(WieldingTheSonicBladeQuest));
+                                    BaseQuest quest = QuestHelper.GetQuest(playerMobile, typeof(WieldingTheSonicBladeQuest));
 
                                     if (quest != null)
                                     {
@@ -255,13 +252,12 @@ namespace Server.SkillHandlers
                                             objective.Update(targ);
                                     }
                                 }
-                                #endregion
                             }
 
                             info.m_Timer = Timer.DelayCall(TimeSpan.Zero, TimeSpan.FromSeconds(1.25), ProcessDiscordance, info);
 
                             m_Table[targ] = info;
-                            from.NextSkillTime = Core.TickCount + (8000 - ((masteryBonus / 5) * 1000));
+                            from.NextSkillTime = Core.TickCount + (8000 - masteryBonus / 5 * 1000);
                         }
                         else
                         {
@@ -353,17 +349,17 @@ namespace Server.SkillHandlers
                     {
                         object mod = m_Mods[i];
 
-                        if (mod is ResistanceMod)
+                        if (mod is ResistanceMod resistMod)
                         {
-                            m_Target.AddResistanceMod((ResistanceMod)mod);
+                            m_Target.AddResistanceMod(resistMod);
                         }
-                        else if (mod is StatMod)
+                        else if (mod is StatMod statMod)
                         {
-                            m_Target.AddStatMod((StatMod)mod);
+                            m_Target.AddStatMod(statMod);
                         }
-                        else if (mod is SkillMod)
+                        else if (mod is SkillMod skillMod)
                         {
-                            m_Target.AddSkillMod((SkillMod)mod);
+                            m_Target.AddSkillMod(skillMod);
                         }
                     }
                 }
@@ -392,17 +388,17 @@ namespace Server.SkillHandlers
                     {
                         object mod = m_Mods[i];
 
-                        if (mod is ResistanceMod)
+                        if (mod is ResistanceMod resistMod)
                         {
-                            m_Target.RemoveResistanceMod((ResistanceMod)mod);
+                            m_Target.RemoveResistanceMod(resistMod);
                         }
-                        else if (mod is StatMod)
+                        else if (mod is StatMod statMod)
                         {
-                            m_Target.RemoveStatMod(((StatMod)mod).Name);
+                            m_Target.RemoveStatMod(statMod.Name);
                         }
-                        else if (mod is SkillMod)
+                        else if (mod is SkillMod skillMod)
                         {
-                            m_Target.RemoveSkillMod((SkillMod)mod);
+                            m_Target.RemoveSkillMod(skillMod);
                         }
                     }
                 }

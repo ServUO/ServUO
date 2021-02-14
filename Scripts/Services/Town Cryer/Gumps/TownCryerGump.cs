@@ -27,7 +27,7 @@ namespace Server.Services.TownCryer
 
         public City City
         {
-            get { return _City; }
+            get => _City;
             set
             {
                 City city = _City;
@@ -186,7 +186,7 @@ namespace Server.Services.TownCryer
 
                 CityLoyaltySystem city = CityLoyaltySystem.GetCitizenship(User, false);
 
-                if ((city != null && city.Governor == User) || User.AccessLevel >= AccessLevel.GameMaster) // Only Governors
+                if (city != null && city.Governor == User || User.AccessLevel >= AccessLevel.GameMaster) // Only Governors
                 {
                     AddButton(735, y, 0x5FD, 0x5FE, 3000 + i, GumpButtonType.Reply, 0);
                     AddButton(760, y, 0x5FF, 0x600, 3500 + i, GumpButtonType.Reply, 0);
@@ -218,7 +218,7 @@ namespace Server.Services.TownCryer
 
                 AddLabelCropped(87, y, 700, 20, 0, entry.FullTitle);
 
-                if ((guild == entry.Guild && User.GuildRank != null && User.GuildRank.Rank >= 3) || User.AccessLevel >= AccessLevel.GameMaster) // Only warlords+
+                if (guild == entry.Guild && User.GuildRank != null && User.GuildRank.Rank >= 3 || User.AccessLevel >= AccessLevel.GameMaster) // Only warlords+
                 {
                     int index = TownCryerSystem.GuildEntries.IndexOf(entry);
                     AddButton(735, y, 0x5FD, 0x5FE, 4000 + index, GumpButtonType.Reply, 0);
@@ -420,7 +420,7 @@ namespace Server.Services.TownCryer
                         {
                             CityLoyaltySystem city = CityLoyaltySystem.GetCitizenship(User, false);
 
-                            if ((city != null && city.Governor == User) || User.AccessLevel >= AccessLevel.GameMaster) // Only Governors
+                            if (city != null && city.Governor == User || User.AccessLevel >= AccessLevel.GameMaster) // Only Governors
                             {
                                 if (id < 3500)
                                 {

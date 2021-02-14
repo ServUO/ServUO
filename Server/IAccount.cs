@@ -48,7 +48,7 @@ namespace Server.Accounting
 			}
 
 
-			a.GetGoldBalance(out int gold, out var totalGold);
+			a.GetGoldBalance(out int gold, out double totalGold);
 
 			return totalGold;
 		}
@@ -71,7 +71,7 @@ namespace Server.Accounting
 			}
 
 
-			a.GetPlatBalance(out int plat, out var totalPlat);
+			a.GetPlatBalance(out int plat, out double totalPlat);
 
 			return totalPlat;
 		}

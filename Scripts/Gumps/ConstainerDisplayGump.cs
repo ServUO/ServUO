@@ -12,7 +12,7 @@ namespace Server.Gumps
         public TextDefinition Title { get; }
         public Container Container { get; }
         public List<Item> Contents { get; }
-        public bool CanTake { get; set; }
+        public bool CanTake { get; }
 
         public int Pages => Contents.Count / 50 + 1;
 

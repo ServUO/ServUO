@@ -11,7 +11,7 @@ namespace Server.Spells.Mysticism
 
         public abstract SpellCircle Circle { get; }
 
-        private static readonly int[] m_ManaTable = new int[] { 4, 6, 9, 11, 14, 20, 40, 50 };
+        private static readonly int[] m_ManaTable = { 4, 6, 9, 11, 14, 20, 40, 50 };
 
         public override TimeSpan CastDelayBase => TimeSpan.FromMilliseconds(((4 + (int)Circle) * CastDelaySecondsPerTick) * 1000);
         public override double CastDelayFastScalar => 1.0;

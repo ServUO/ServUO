@@ -86,7 +86,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public override Mobile Focus
         {
-            get { return m_Focus; }
+            get => m_Focus;
             set
             {
                 if (Deleted)
@@ -263,7 +263,8 @@ namespace Server.Mobiles
                     Stop();
                     return;
                 }
-                else if (m_Owner.Weapon is Fists)
+
+                if (m_Owner.Weapon is Fists)
                 {
                     m_Owner.Kill();
                     Stop();

@@ -5,7 +5,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BrigandCannibal()
-            : base()
         {
             Title = "the brigand cannibal";
             Hue = 33782;
@@ -55,7 +54,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

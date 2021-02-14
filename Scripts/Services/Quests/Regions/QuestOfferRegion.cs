@@ -28,7 +28,7 @@ namespace Server.Engines.Quests
             {
                 try
                 {
-                    QuestSystem qs = (QuestSystem)Activator.CreateInstance(m_Quest, new object[] { player });
+                    QuestSystem qs = (QuestSystem)Activator.CreateInstance(m_Quest, player);
                     qs.SendOffer();
                 }
                 catch (Exception ex)

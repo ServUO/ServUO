@@ -89,87 +89,85 @@ namespace Server.Multis
             {
                 return;
             }
-            else
+
+            Map map = from.Map;
+
+            if (map == null)
+                return;
+
+            if (from.AccessLevel < AccessLevel.GameMaster && (map == Map.Ilshenar || map == Map.Malas))
             {
-                Map map = from.Map;
+                from.SendLocalizedMessage(1043284); // A ship can not be created here.
+                return;
+            }
 
-                if (map == null)
-                    return;
+            BaseBoat b = BaseBoat.FindBoatAt(from, from.Map);
 
-                if (from.AccessLevel < AccessLevel.GameMaster && (map == Map.Ilshenar || map == Map.Malas))
+            if (from.Region.IsPartOf(typeof(HouseRegion)) || b != null && (b.GetType() == Boat.GetType() || !b.IsRowBoat && !(this is RowBoatDeed)))
+            {
+                from.SendLocalizedMessage(1010568, null, 0x25); // You may not place a ship while on another ship or inside a house.
+                return;
+            }
+
+            BoatDirection = d;
+            BaseBoat boat = Boat;
+
+            if (boat == null)
+                return;
+
+            p = new Point3D(p.X - Offset.X, p.Y - Offset.Y, p.Z - Offset.Z);
+
+            if (BaseBoat.IsValidLocation(p, map) && boat.CanFit(p, map, itemID))
+            {
+                if (boat.IsRowBoat)
                 {
-                    from.SendLocalizedMessage(1043284); // A ship can not be created here.
-                    return;
-                }
+                    BaseBoat lastrowboat = World.Items.Values.OfType<BaseBoat>().Where(x => x.Owner == from && x.IsRowBoat && x.Map != Map.Internal && !x.MobilesOnBoard.Any()).OrderByDescending(y => y.Serial).FirstOrDefault();
 
-                BaseBoat b = BaseBoat.FindBoatAt(from, from.Map);
-
-                if (from.Region.IsPartOf(typeof(HouseRegion)) || b != null && (b.GetType() == Boat.GetType() || !b.IsRowBoat && !(this is RowBoatDeed)))
-                {
-                    from.SendLocalizedMessage(1010568, null, 0x25); // You may not place a ship while on another ship or inside a house.
-                    return;
-                }
-
-                BoatDirection = d;
-                BaseBoat boat = Boat;
-
-                if (boat == null)
-                    return;
-
-                p = new Point3D(p.X - Offset.X, p.Y - Offset.Y, p.Z - Offset.Z);
-
-                if (BaseBoat.IsValidLocation(p, map) && boat.CanFit(p, map, itemID))
-                {
-                    if (boat.IsRowBoat)
-                    {
-                        BaseBoat lastrowboat = World.Items.Values.OfType<BaseBoat>().Where(x => x.Owner == from && x.IsRowBoat && x.Map != Map.Internal && !x.MobilesOnBoard.Any()).OrderByDescending(y => y.Serial).FirstOrDefault();
-
-                        if (lastrowboat != null)
-                            lastrowboat.Delete();
-                    }
-                    else
-                    {
-                        Delete();
-                    }
-
-                    boat.Owner = from;
-                    boat.ItemID = itemID;
-
-                    if (boat is BaseGalleon)
-                    {
-                        ((BaseGalleon)boat).SecurityEntry = new SecurityEntry((BaseGalleon)boat);
-                        ((BaseGalleon)boat).BaseBoatHue = RandomBasePaintHue();
-                    }
-
-                    if (boat.IsClassicBoat)
-                    {
-                        uint keyValue = boat.CreateKeys(from);
-
-                        if (boat.PPlank != null)
-                            boat.PPlank.KeyValue = keyValue;
-
-                        if (boat.SPlank != null)
-                            boat.SPlank.KeyValue = keyValue;
-                    }
-
-                    boat.MoveToWorld(p, map);
-                    boat.OnAfterPlacement(true);
-
-                    LighthouseAddon addon = LighthouseAddon.GetLighthouse(from);
-
-                    if (addon != null)
-                    {
-                        if (boat.CanLinkToLighthouse)
-                            from.SendLocalizedMessage(1154592); // You have linked your boat lighthouse.
-                        else
-                            from.SendLocalizedMessage(1154597); // Failed to link to lighthouse.
-                    }
+                    if (lastrowboat != null)
+                        lastrowboat.Delete();
                 }
                 else
                 {
-                    boat.Delete();
-                    from.SendLocalizedMessage(1043284); // A ship can not be created here.
+                    Delete();
                 }
+
+                boat.Owner = from;
+                boat.ItemID = itemID;
+
+                if (boat is BaseGalleon galleon)
+                {
+                    galleon.SecurityEntry = new SecurityEntry(galleon);
+                    galleon.BaseBoatHue = RandomBasePaintHue();
+                }
+
+                if (boat.IsClassicBoat)
+                {
+                    uint keyValue = boat.CreateKeys(from);
+
+                    if (boat.PPlank != null)
+                        boat.PPlank.KeyValue = keyValue;
+
+                    if (boat.SPlank != null)
+                        boat.SPlank.KeyValue = keyValue;
+                }
+
+                boat.MoveToWorld(p, map);
+                boat.OnAfterPlacement(true);
+
+                LighthouseAddon addon = LighthouseAddon.GetLighthouse(from);
+
+                if (addon != null)
+                {
+                    if (boat.CanLinkToLighthouse)
+                        from.SendLocalizedMessage(1154592); // You have linked your boat lighthouse.
+                    else
+                        from.SendLocalizedMessage(1154597); // Failed to link to lighthouse.
+                }
+            }
+            else
+            {
+                boat.Delete();
+                from.SendLocalizedMessage(1043284); // A ship can not be created here.
             }
         }
 

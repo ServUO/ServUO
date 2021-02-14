@@ -47,17 +47,15 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 8);
-            AddLoot(LootPack.Parrot, 2);
             AddLoot(LootPack.HighScrolls, 3);
             AddLoot(LootPack.MedScrolls, 3);
             AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 6));
             AddLoot(LootPack.PeerlessResource, 8);
             AddLoot(LootPack.Talisman, 5);
+            AddLoot(LootPack.LootItem<ParrotItem>(25.0));
             AddLoot(LootPack.LootItem<CapturedEssence>());
             AddLoot(LootPack.LootItem<ShimmeringCrystals>());
-
             AddLoot(LootPack.RandomLootItem(new[] { typeof(ShimmeringEffusionStatuette), typeof(CorporealBrumeStatuette), typeof(MantraEffervescenceStatuette), typeof(FetidEssenceStatuette) }, 5.0, 1));
-
             AddLoot(LootPack.LootItem<FerretImprisonedInCrystal>(5.0));
             AddLoot(LootPack.LootItem<CrystallineRing>(2.25));
         }
@@ -129,15 +127,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

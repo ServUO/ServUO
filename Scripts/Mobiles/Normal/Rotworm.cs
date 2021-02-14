@@ -5,7 +5,6 @@ using System;
 namespace Server.Mobiles
 {
     [CorpseName("a rotworm corpse")]
-    [TypeAlias("Server.Mobiles.RotWorm")]
     public class Rotworm : BaseCreature
     {
         [Constructable]
@@ -67,17 +66,11 @@ namespace Server.Mobiles
         {
             base.OnKilledBy(mob);
 
-            if (mob is PlayerMobile && 0.2 > Utility.RandomDouble())
+            if (mob is PlayerMobile pm && 0.2 > Utility.RandomDouble() && QuestHelper.HasQuest<Missing>(pm))
             {
-                PlayerMobile pm = mob as PlayerMobile;
+                pm.SendLocalizedMessage(1095146); // As the rotworm dies, you find and pickup a scroll case. Inside the scroll case is parchment. The scroll case crumbles to dust.
 
-                if (QuestHelper.HasQuest<Missing>(pm))
-                {
-                    // As the rotworm dies, you find and pickup a scroll case. Inside the scroll case is parchment. The scroll case crumbles to dust.
-                    pm.SendLocalizedMessage(1095146);
-
-                    pm.AddToBackpack(new ArielHavenWritofMembership());
-                }
+                pm.AddToBackpack(new ArielHavenWritofMembership());
             }
         }
 
@@ -100,7 +93,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

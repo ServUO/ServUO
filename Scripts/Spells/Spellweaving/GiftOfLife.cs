@@ -129,9 +129,8 @@ namespace Server.Spells.Spellweaving
             {
                 double hitsScalar = timer.Spell.HitsScalar;
 
-                if (m is BaseCreature && m.IsDeadBondedPet)
+                if (m is BaseCreature pet && pet.IsDeadBondedPet)
                 {
-                    BaseCreature pet = (BaseCreature)m;
                     Mobile master = pet.GetMaster();
 
                     if (master != null && master.NetState != null && Utility.InUpdateRange(pet, master))
@@ -179,9 +178,9 @@ namespace Server.Spells.Spellweaving
 
             protected override void OnTarget(Mobile m, object o)
             {
-                if (o is Mobile)
+                if (o is Mobile mobile)
                 {
-                    m_Owner.Target((Mobile)o);
+                    m_Owner.Target(mobile);
                 }
                 else
                 {

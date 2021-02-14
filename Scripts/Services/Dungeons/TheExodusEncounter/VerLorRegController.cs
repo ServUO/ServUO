@@ -9,23 +9,19 @@ namespace Server.Engines.Exodus
         [CommandProperty(AccessLevel.GameMaster)]
         public static bool Active
         {
-            get { return m_Active; }
+            get => m_Active;
             set { if (value) Start(); else Stop(); }
         }
 
         private static ClockworkExodus m_Mobile;
 
         [CommandProperty(AccessLevel.Administrator)]
-        public static ClockworkExodus Mobile
-        {
-            get { return m_Mobile; }
-            set { m_Mobile = value; }
-        }
+        public static ClockworkExodus Mobile { get => m_Mobile; set => m_Mobile = value; }
 
         [CommandProperty(AccessLevel.Administrator)]
         public static VerLorRegController IlshenarInstance { get; set; }
 
-        public VerLorRegController(Map map) : base(7107)
+        public VerLorRegController() : base(7107)
         {
             Name = "Ver Lor Reg Controller";
             Visible = false;
@@ -43,7 +39,7 @@ namespace Server.Engines.Exodus
         {
             if (IlshenarInstance == null)
             {
-                IlshenarInstance = new VerLorRegController(Map.Ilshenar);
+                IlshenarInstance = new VerLorRegController();
                 IlshenarInstance.MoveToWorld(new Point3D(849, 648, -40), Map.Ilshenar);
             }
         }
@@ -60,7 +56,7 @@ namespace Server.Engines.Exodus
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Active = reader.ReadBool();
             m_Mobile = (ClockworkExodus)reader.ReadMobile();

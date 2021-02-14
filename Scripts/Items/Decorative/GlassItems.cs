@@ -1357,9 +1357,8 @@ namespace Server.Items
             }
             protected override void OnTarget(Mobile from, object target)
             {
-                if (target is SilverSerpent)
+                if (target is SilverSerpent serp)
                 {
-                    SilverSerpent serp = target as SilverSerpent;
                     if (serp.Hue == 1150)
                     {
                         if (0.3 > Utility.RandomDouble())

@@ -180,12 +180,12 @@ namespace Server.Engines.Quests.Haven
         {
             get
             {
-                return Addon is Cannon ? ((Cannon)Addon).Canoneer : null;
+                return Addon is Cannon cannon ? cannon.Canoneer : null;
             }
             set
             {
-                if (Addon is Cannon)
-                    ((Cannon)Addon).Canoneer = value;
+                if (Addon is Cannon cannon)
+                    cannon.Canoneer = value;
             }
         }
         public override void Serialize(GenericWriter writer)

@@ -26,12 +26,12 @@ namespace Server.Items
 
         public void Net_OnTarget(Mobile from, object targeted)
         {
-            if (targeted is Corpse && (((Corpse)targeted).Owner == null || !((Corpse)targeted).Owner.Player))
+            if (targeted is Corpse corpse && (corpse.Owner == null || !corpse.Owner.Player))
             {
-                if (SOS.ValidateDeepWater(((Corpse)targeted).Map, ((Corpse)targeted).X, ((Corpse)targeted).Y))
+                if (SOS.ValidateDeepWater(corpse.Map, corpse.X, corpse.Y))
                 {
                     from.Animate(12, 5, 1, true, false, 0);
-                    Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(MoveCorpse), new object[] { (Corpse)targeted, from });
+                    Timer.DelayCall(TimeSpan.FromSeconds(0.5), new TimerStateCallback(MoveCorpse), new object[] { corpse, from });
                 }
                 else
                     from.SendLocalizedMessage(1010485); // You can only use this in deep water!

@@ -65,19 +65,19 @@ namespace Server.Engines.Craft
                     bool isStoreBought = false;
                     int message;
 
-                    if (targeted is BaseArmor)
+                    if (targeted is BaseArmor armor)
                     {
-                        result = Resmelt(from, (BaseArmor)targeted, ((BaseArmor)targeted).Resource);
-                        isStoreBought = !((BaseArmor)targeted).PlayerConstructed;
+                        result = Resmelt(from, armor, armor.Resource);
+                        isStoreBought = !armor.PlayerConstructed;
                     }
-                    else if (targeted is BaseWeapon)
+                    else if (targeted is BaseWeapon weapon)
                     {
-                        result = Resmelt(from, (BaseWeapon)targeted, ((BaseWeapon)targeted).Resource);
-                        isStoreBought = !((BaseWeapon)targeted).PlayerConstructed;
+                        result = Resmelt(from, weapon, weapon.Resource);
+                        isStoreBought = !weapon.PlayerConstructed;
                     }
-                    else if (targeted is DragonBardingDeed)
+                    else if (targeted is DragonBardingDeed barding)
                     {
-                        result = Resmelt(from, (DragonBardingDeed)targeted, ((DragonBardingDeed)targeted).Resource);
+                        result = Resmelt(from, barding, barding.Resource);
                         isStoreBought = false;
                     }
 
@@ -159,7 +159,7 @@ namespace Server.Engines.Craft
                     Type resourceType = info.ResourceTypes[0];
                     Item ingot = (Item)Activator.CreateInstance(resourceType);
 
-                    if (item is DragonBardingDeed || (item is BaseArmor && ((BaseArmor)item).PlayerConstructed) || (item is BaseWeapon && ((BaseWeapon)item).PlayerConstructed) || (item is BaseClothing && ((BaseClothing)item).PlayerConstructed))
+                    if (item is DragonBardingDeed || item is BaseArmor armor && armor.PlayerConstructed || item is BaseWeapon weapon && weapon.PlayerConstructed || item is BaseClothing clothing && clothing.PlayerConstructed)
                         ingot.Amount = (int)(craftResource.Amount * .66);
                     else
                         ingot.Amount = 1;

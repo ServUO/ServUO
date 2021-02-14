@@ -9,7 +9,7 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            return item is BaseWeapon ? ((BaseWeapon)item).WeaponAttributes[Attribute] : 0;
+            return item is BaseWeapon weapon ? weapon.WeaponAttributes[Attribute] : 0;
         }
 
         public override bool Matches(Item item)
@@ -330,7 +330,7 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            return item is BaseWeapon ? GetElementAttributeValue((BaseWeapon)item, Element) : 0;
+            return item is BaseWeapon weapon ? GetElementAttributeValue(weapon, Element) : 0;
         }
 
         public override bool Matches(Item item)
@@ -452,7 +452,7 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            return item is BaseRanged ? ((BaseRanged)item).Velocity : 0;
+            return item is BaseRanged ranged ? ranged.Velocity : 0;
         }
 
         public override bool Matches(Item item)

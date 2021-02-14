@@ -64,8 +64,10 @@ namespace Server.Engines.TreasuresOfDoom
 
         public override bool IsRedeemableItem(Item item)
         {
-            if (item is ICombatEquipment && ((ICombatEquipment)item).ReforgedSuffix == ReforgedSuffix.Doom)
+            if (item is ICombatEquipment equipment && equipment.ReforgedSuffix == ReforgedSuffix.Doom)
+            {
                 return true;
+            }
 
             return false;
         }
@@ -90,7 +92,7 @@ namespace Server.Engines.TreasuresOfDoom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Instance = this;
         }

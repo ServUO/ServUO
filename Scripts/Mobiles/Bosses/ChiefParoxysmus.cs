@@ -59,7 +59,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Talisman, 5);
             AddLoot(LootPack.LootItem<LardOfParoxysmus>());
             AddLoot(LootPack.RandomLootItem(new[] { typeof(ParoxysmusDinner), typeof(ParoxysmusCorrodedStein), typeof(StringOfPartsOfParoxysmusVictims) }));
-            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(25.0));
             AddLoot(LootPack.LootItem<SweatOfParoxysmus>(50.0));
             AddLoot(LootPack.LootItem<ParoxysmusSwampDragonStatuette>(5.0));
             AddLoot(LootPack.LootItem<ScepterOfTheChief>(5.0));
@@ -95,19 +95,16 @@ namespace Server.Mobiles
             base.OnDamage(amount, from, willKill);
 
             // eats pet or summons
-            if (from is BaseCreature)
+            if (from is BaseCreature creature && (creature.Controlled || creature.Summoned))
             {
-                BaseCreature creature = (BaseCreature)from;
-
-                if (creature.Controlled || creature.Summoned)
+                if (Hits < HitsMax)
                 {
-                    if (Hits < HitsMax)
-                        Hits = HitsMax;
-
-                    creature.Kill();
-
-                    Effects.PlaySound(Location, Map, 0x574);
+                    Hits = HitsMax;
                 }
+
+                creature.Kill();
+
+                Effects.PlaySound(Location, Map, 0x574);
             }
 
             // teleports player near

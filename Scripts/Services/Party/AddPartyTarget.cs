@@ -12,9 +12,8 @@ namespace Server.Engines.PartySystem
 
         protected override void OnTarget(Mobile from, object o)
         {
-            if (o is Mobile)
+            if (o is Mobile m)
             {
-                Mobile m = (Mobile)o;
                 Party p = Party.Get(from);
                 Party mp = Party.Get(m);
 
@@ -24,7 +23,7 @@ namespace Server.Engines.PartySystem
                     from.SendLocalizedMessage(1005453); // You may only add members to the party if you are the leader.
                 else if (m.Party is Mobile)
                     return;
-                else if (p != null && (p.Members.Count + p.Candidates.Count) >= Party.Capacity)
+                else if (p != null && p.Members.Count + p.Candidates.Count >= Party.Capacity)
                     from.SendLocalizedMessage(1008095); // You may only have 10 in your party (this includes candidates).
                 else if (!m.Player && m.Body.IsHuman)
                     m.SayTo(from, 1005443); // Nay, I would rather stay here and watch a nail rust.

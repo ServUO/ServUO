@@ -33,33 +33,30 @@ namespace Server.Mobiles
         public Charydbis Charydbis => m_Charydbis;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextSpawn { get { return m_NextSpawn; } set { m_NextSpawn = value; } }
+        public DateTime NextSpawn { get => m_NextSpawn; set => m_NextSpawn = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime LastAttempt { get { return m_LastAttempt; } set { m_LastAttempt = value; } }
+        public DateTime LastAttempt { get => m_LastAttempt; set => m_LastAttempt = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsSummoned { get { return m_IsSummoned; } set { m_IsSummoned = value; } }
+        public bool IsSummoned { get => m_IsSummoned; set => m_IsSummoned = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasSpawned { get { return m_HasSpawned; } set { m_HasSpawned = value; } }
+        public bool HasSpawned { get => m_HasSpawned; set => m_HasSpawned = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map Map { get { return m_Map; } set { m_Map = value; } }
+        public Map Map { get => m_Map; set => m_Map = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Rectangle2D CurrentLocation { get { return m_CurrentLocation; } set { m_CurrentLocation = value; } }
+        public Rectangle2D CurrentLocation { get => m_CurrentLocation; set => m_CurrentLocation = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Rectangle2D LastLocation { get { return m_LastLocation; } set { m_LastLocation = value; } }
+        public Rectangle2D LastLocation { get => m_LastLocation; set => m_LastLocation = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get
-            {
-                return m_Active;
-            }
+            get => m_Active;
             set
             {
                 Reset();
@@ -72,14 +69,8 @@ namespace Server.Mobiles
 
         public static CharydbisSpawner SpawnInstance
         {
-            get
-            {
-                return m_SpawnInstance;
-            }
-            set
-            {
-                m_SpawnInstance = value;
-            }
+            get => m_SpawnInstance;
+            set => m_SpawnInstance = value;
         }
 
         public CharydbisSpawner()
@@ -115,7 +106,8 @@ namespace Server.Mobiles
                     from.SendLocalizedMessage(1150198); //The spyglass goes dark, it has failed to find what you seek.
                 return false;
             }
-            else if (DateTime.UtcNow < m_NextSpawn)
+
+            if (DateTime.UtcNow < m_NextSpawn)
             {
                 from.SendLocalizedMessage(1150198); //The spyglass goes dark, it has failed to find what you seek.
                 return false;
@@ -216,7 +208,7 @@ namespace Server.Mobiles
 
                 LandTile t = map.Tiles.GetLandTile(tx, ty);
 
-                if (t.Z == -5 && ((t.ID >= 0xA8 && t.ID <= 0xAB) || (t.ID >= 0x136 && t.ID <= 0x137)) && !Spells.SpellHelper.CheckMulti(new Point3D(tx, ty, -5), map))
+                if (t.Z == -5 && (t.ID >= 0xA8 && t.ID <= 0xAB || t.ID >= 0x136 && t.ID <= 0x137) && !Spells.SpellHelper.CheckMulti(new Point3D(tx, ty, -5), map))
                 {
                     x = tx;
                     y = ty;

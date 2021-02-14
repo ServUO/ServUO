@@ -20,9 +20,9 @@ namespace Server
 			Normal,
 			Threaded
 		}
-
+		
 		public override string Name => "Standard";
-
+		
 		protected bool PermitBackgroundWrite { get; set; }
 		protected bool UseSequentialWriters => SaveType == SaveOption.Normal || !PermitBackgroundWrite;
 
@@ -42,7 +42,7 @@ namespace Server
 		{
 			while (_decayQueue.Count > 0)
 			{
-				var item = _decayQueue.Dequeue();
+				Item item = _decayQueue.Dequeue();
 
 				if (item.OnDecay())
 				{
@@ -53,7 +53,7 @@ namespace Server
 
 		protected void SaveMobiles(SaveMetrics metrics)
 		{
-			var mobiles = World.Mobiles;
+			Dictionary<Serial, Mobile> mobiles = World.Mobiles;
 
 			GenericWriter idx;
 			GenericWriter tdb;
@@ -73,9 +73,9 @@ namespace Server
 			}
 
 			idx.Write(mobiles.Count);
-			foreach (var m in mobiles.Values)
+			foreach (Mobile m in mobiles.Values)
 			{
-				var start = bin.Position;
+				long start = bin.Position;
 
 				idx.Write(m.m_TypeRef);
 				idx.Write(m.Serial);
@@ -95,7 +95,7 @@ namespace Server
 
 			tdb.Write(World.m_MobileTypes.Count);
 
-			for (var i = 0; i < World.m_MobileTypes.Count; ++i)
+			for (int i = 0; i < World.m_MobileTypes.Count; ++i)
 				tdb.Write(World.m_MobileTypes[i].FullName);
 
 			idx.Close();
@@ -105,7 +105,7 @@ namespace Server
 
 		protected void SaveItems(SaveMetrics metrics)
 		{
-			var items = World.Items;
+			Dictionary<Serial, Item> items = World.Items;
 
 			GenericWriter idx;
 			GenericWriter tdb;
@@ -125,14 +125,14 @@ namespace Server
 			}
 
 			idx.Write(items.Count);
-			foreach (var item in items.Values)
+			foreach (Item item in items.Values)
 			{
 				if (item.Decays && item.Parent == null && item.Map != Map.Internal && (item.LastMoved + item.DecayTime) <= DateTime.UtcNow)
 				{
 					_decayQueue.Enqueue(item);
 				}
 
-				var start = bin.Position;
+				long start = bin.Position;
 
 				idx.Write(item.m_TypeRef);
 				idx.Write(item.Serial);
@@ -151,7 +151,7 @@ namespace Server
 			}
 
 			tdb.Write(World.m_ItemTypes.Count);
-			for (var i = 0; i < World.m_ItemTypes.Count; ++i)
+			for (int i = 0; i < World.m_ItemTypes.Count; ++i)
 				tdb.Write(World.m_ItemTypes[i].FullName);
 
 			idx.Close();
@@ -176,9 +176,9 @@ namespace Server
 			}
 
 			idx.Write(BaseGuild.List.Count);
-			foreach (var guild in BaseGuild.List.Values)
+			foreach (BaseGuild guild in BaseGuild.List.Values)
 			{
-				var start = bin.Position;
+				long start = bin.Position;
 
 				idx.Write(0);//guilds have no typeid
 				idx.Write(guild.Id);

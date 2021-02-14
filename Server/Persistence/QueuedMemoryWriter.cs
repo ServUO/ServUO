@@ -56,30 +56,30 @@ namespace Server
 		{
 			Flush();
 
-			var memLength = (int)_memStream.Position;
+			int memLength = (int)_memStream.Position;
 
 			if (memLength > 0)
 			{
-				var memBuffer = _memStream.GetBuffer();
+				byte[] memBuffer = _memStream.GetBuffer();
 
-				var actualPosition = dataFile.Position;
+				long actualPosition = dataFile.Position;
 
 				dataFile.Write(memBuffer, 0, memLength);    //The buffer contains the data from many items.
 
 				//Console.WriteLine("Writing {0} bytes starting at {1}, with {2} things", memLength, actualPosition, _orderedIndexInfo.Count);
 
-				var indexBuffer = new byte[20];
+				byte[] indexBuffer = new byte[20];
 
 				//int indexWritten = _orderedIndexInfo.Count * indexBuffer.Length;
 				//int totalWritten = memLength + indexWritten
 
-				for (var i = 0; i < _orderedIndexInfo.Count; i++)
+				for (int i = 0; i < _orderedIndexInfo.Count; i++)
 				{
-					var info = _orderedIndexInfo[i];
+					IndexInfo info = _orderedIndexInfo[i];
 
-					var typeCode = info.typeCode;
-					var serial = info.serial;
-					var length = info.size;
+					int typeCode = info.typeCode;
+					int serial = info.serial;
+					int length = info.size;
 
 					indexBuffer[0] = (byte)info.typeCode;
 					indexBuffer[1] = (byte)(info.typeCode >> 8);

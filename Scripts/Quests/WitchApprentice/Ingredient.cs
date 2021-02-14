@@ -69,15 +69,18 @@ namespace Server.Engines.Quests.Hag
 
         public int Name => m_Name;
         public Type[] Creatures => m_Creatures;
+
         public int Quantity => m_Quantity;
         public static IngredientInfo Get(Ingredient ingredient)
         {
             int index = (int)ingredient;
 
             if (index >= 0 && index < m_Table.Length)
+            {
                 return m_Table[index];
-            else
-                return m_Table[0];
+            }
+
+            return m_Table[0];
         }
 
         public static Ingredient RandomIngredient(Ingredient[] oldIngredients)

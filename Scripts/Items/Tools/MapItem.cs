@@ -108,7 +108,7 @@ namespace Server.Items
         {
             if (!ValidateEdit(from))
                 return;
-            else if (Pins.Count >= MaxUserPins)
+            if (Pins.Count >= MaxUserPins)
                 return;
 
             Validate(ref x, ref y);
@@ -136,7 +136,7 @@ namespace Server.Items
         {
             if (!ValidateEdit(from))
                 return;
-            else if (Pins.Count >= MaxUserPins)
+            if (Pins.Count >= MaxUserPins)
                 return;
 
             Validate(ref x, ref y);
@@ -181,9 +181,9 @@ namespace Server.Items
         {
             if (!from.CanSee(this) || from.Map != Map || !from.Alive || InSecureTrade)
                 return false;
-            else if (from.AccessLevel >= AccessLevel.GameMaster)
+            if (from.AccessLevel >= AccessLevel.GameMaster)
                 return true;
-            else if (!Movable || Protected || !from.InRange(GetWorldLocation(), 2))
+            if (!Movable || Protected || !from.InRange(GetWorldLocation(), 2))
                 return false;
 
             object root = RootParent;

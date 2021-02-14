@@ -169,10 +169,8 @@ namespace Server.Items
                     return;
                 }
 
-                if (targeted is BaseCostume)
+                if (targeted is BaseCostume costume)
                 {
-                    BaseCostume costume = targeted as BaseCostume;
-
                     m_Totem.CostumeCreatureName = costume.CreatureName;
                     m_Totem.CostumeBody = costume.CostumeBody;
                     m_Totem.CostumeHue = costume.Hue;

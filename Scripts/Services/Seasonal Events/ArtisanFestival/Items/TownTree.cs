@@ -18,11 +18,7 @@ namespace Server.Engines.ArtisanFestival
         private TreeStage _Stage;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TreeStage Stage
-        {
-            get { return _Stage; }
-            set { _Stage = value; CheckTreeID(); }
-        }
+        public TreeStage Stage { get => _Stage; set { _Stage = value; CheckTreeID(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TreeType { get; private set; }
@@ -155,7 +151,8 @@ namespace Server.Engines.ArtisanFestival
             TreeType = reader.ReadInt();
         }
 
-        private static int[,] m_Type1 = new int[,] {
+        private static int[,] m_Type1 =
+        {
               {6094, -2, 5, 0}, {6094, 7, -3, 0}, {6094, 6, 4, 0}// 1	2	3	
 			, {6094, 7, 2, 0}, {6094, 5, 5, 0}, {6094, -4, -1, 0}// 4	5	6	
 			, {6093, -3, -2, 0}, {6093, -4, 2, 0}, {6093, -2, 2, 0}// 7	8	9	
@@ -209,7 +206,7 @@ namespace Server.Engines.ArtisanFestival
 			, {6085, -5, -1, 0}, {6090, -5, 0, 0}, {6088, -5, 1, 0}// 151	152	153	
         };
 
-        private static int[,] m_Type2 = new int[,]
+        private static int[,] m_Type2 =
         {
               {6093, 4, 5, 5}// 34	 35	 36	
 			, {6093, 4, 6, 5}, {6093, 5, 5, 5}, {6093, 6, 5, 5}// 37	38	39	
@@ -232,7 +229,7 @@ namespace Server.Engines.ArtisanFestival
 			, {6093, 0, -1, 5}, {6093, -1, -2, 5}, {6093, -2, -2, 5}// 88	89	90	
 		};
 
-        private static int[,] m_Type3 = new int[,]
+        private static int[,] m_Type3 =
         {
               {6093, 3, 2, 0}, {6093, 2, 3, 0}, {6093, 1, 3, 0}// 1	2	3	
 			, {6093, 0, 3, 0}, {6093, 0, -3, 0}, {6093, 1, -3, 0}// 4	5	6	
@@ -258,7 +255,7 @@ namespace Server.Engines.ArtisanFestival
 			, {6090, -3, -1, 0}, {6083, -2, -2, 0}, {6091, -1, -3, 0}// 64	65	66	
 		};
 
-        private static int[,] m_Type4 = new int[,]
+        private static int[,] m_Type4 =
         {
               {6093, -2, -4, 0}, {6093, -3, -3, 0}, {6093, -3, -2, 0}// 1	2	3	
 			, {6093, -4, -1, 0}, {6093, -4, 0, 0}, {6093, -4, 1, 0}// 4	5	6	

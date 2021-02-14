@@ -35,7 +35,8 @@ namespace Server.Spells.Mysticism
             {
                 return;
             }
-            else if (target.Paralyzed)
+
+            if (target.Paralyzed)
             {
                 Caster.SendLocalizedMessage(1080134); //Your target is already immobilized and cannot be slept.
             }
@@ -153,7 +154,7 @@ namespace Server.Spells.Mysticism
 
         public class InternalTarget : Target
         {
-            public SleepSpell Owner { get; set; }
+            public SleepSpell Owner { get; }
 
             public InternalTarget(SleepSpell owner)
                 : this(owner, false)

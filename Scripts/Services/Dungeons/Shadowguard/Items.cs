@@ -12,7 +12,7 @@ namespace Server.Engines.Shadowguard
         public override int Lifespan => 60;
         public override int LabelNumber => 1042961;  // a bottle of liquor
 
-        public BarEncounter Encounter { get; set; }
+        public BarEncounter Encounter { get; }
 
         [Constructable]
         public ShadowguardBottleOfLiquor(BarEncounter encounter) : base(0x99B)
@@ -47,10 +47,8 @@ namespace Server.Engines.Shadowguard
 
                             Delete();
                         }
-                        else if (targeted is ShadowguardPirate)
+                        else if (targeted is ShadowguardPirate pirate)
                         {
-                            ShadowguardPirate pirate = targeted as ShadowguardPirate;
-
                             m.DoHarmful(pirate);
                             m.MovingParticles(pirate, 0x99B, 10, 0, false, true, 0, 0, 9502, 6014, 0x11D, EffectLayer.Waist, 0);
 
@@ -58,7 +56,7 @@ namespace Server.Engines.Shadowguard
                             {
                                 if (pirate.Alive && !pirate.BlockReflect)
                                 {
-                                    // this is gay, but can't figure out a better way to do!
+                                    // this is dumb but can't figure out a better way to do it!
                                     pirate.BlockReflect = true;
                                     AOS.Damage(pirate, m, 300, 0, 0, 0, 0, 0, 0, 100);
                                     pirate.BlockReflect = false;
@@ -96,7 +94,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -123,7 +121,7 @@ namespace Server.Engines.Shadowguard
     public class ShadowguardApple : Apple
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardCypress Tree { get; private set; }
+        public ShadowguardCypress Tree { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public OrchardEncounter Encounter { get; set; }
@@ -157,10 +155,14 @@ namespace Server.Engines.Shadowguard
                     {
                         ShadowguardCypress tree = null;
 
-                        if (targeted is ShadowguardCypress)
-                            tree = targeted as ShadowguardCypress;
-                        else if (targeted is ShadowguardCypress.ShadowguardCypressFoilage)
-                            tree = ((ShadowguardCypress.ShadowguardCypressFoilage)targeted).Tree;
+                        if (targeted is ShadowguardCypress cypress)
+                        {
+                            tree = cypress;
+                        }
+                        else
+                        {
+                            tree = ((ShadowguardCypress.ShadowguardCypressFoilage) targeted).Tree;
+                        }
 
                         if (tree != null)
                         {
@@ -306,7 +308,7 @@ namespace Server.Engines.Shadowguard
         public OrchardEncounter Encounter { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public VirtueType VirtueType { get; set; }
+        public VirtueType VirtueType { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowguardCypressFoilage Foilage { get; set; }
@@ -418,10 +420,9 @@ namespace Server.Engines.Shadowguard
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
-
 
         public ShadowguardCypress(Serial serial) : base(serial)
         {
@@ -438,7 +439,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Foilage = reader.ReadItem() as ShadowguardCypressFoilage;
 
@@ -459,7 +460,7 @@ namespace Server.Engines.Shadowguard
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Purified
         {
-            get { return _Purified; }
+            get => _Purified;
             set
             {
                 _Purified = value;
@@ -487,10 +488,8 @@ namespace Server.Engines.Shadowguard
                 m.SendLocalizedMessage(1010086); // What do you want to use this on?
                 m.BeginTarget(3, false, Targeting.TargetFlags.None, (from, targeted) =>
                 {
-                    if (targeted is PurifyingFlames)
+                    if (targeted is PurifyingFlames flames)
                     {
-                        PurifyingFlames flames = targeted as PurifyingFlames;
-
                         if (!from.InLOS(flames))
                             from.SendLocalizedMessage(500237); // Target cannot be seen.
                         else if (!Purified)
@@ -504,10 +503,8 @@ namespace Server.Engines.Shadowguard
                             InvalidateProperties();
                         }
                     }
-                    else if (targeted is CursedSuitOfArmor)
+                    else if (targeted is CursedSuitOfArmor armor)
                     {
-                        CursedSuitOfArmor armor = targeted as CursedSuitOfArmor;
-
                         if (!from.InLOS(armor))
                             from.SendLocalizedMessage(500237); // Target cannot be seen.
                         else if (!_Purified)
@@ -578,7 +575,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Purified = reader.ReadBool();
         }
@@ -618,7 +615,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -645,7 +642,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -667,7 +664,7 @@ namespace Server.Engines.Shadowguard
         private Flow _Flow;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Flow Flow { get { return _Flow; } set { _Flow = value; InvalideIDfromFlow(); } }
+        public Flow Flow { get => _Flow; set { _Flow = value; InvalideIDfromFlow(); } }
 
         [Constructable]
         public ShadowguardCanal() : base(Utility.RandomList(39911, 39915, 39919, 39924, 39928, 39932))
@@ -797,7 +794,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Flow = (Flow)reader.ReadInt();
         }
@@ -835,7 +832,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -862,7 +859,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -902,7 +899,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -955,7 +952,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -987,7 +984,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1037,7 +1034,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

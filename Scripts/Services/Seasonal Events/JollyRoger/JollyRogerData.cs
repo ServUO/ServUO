@@ -35,7 +35,7 @@ namespace Server.Engines.JollyRoger
             }
         }
 
-        public static Dictionary<PlayerMobile, int> ShrineTitles { get; set; } = new Dictionary<PlayerMobile, int>();
+        public static Dictionary<PlayerMobile, int> ShrineTitles { get; } = new Dictionary<PlayerMobile, int>();
 
         private static readonly List<ShrineDef> ShrineDef = new List<ShrineDef>
         {
@@ -189,7 +189,7 @@ namespace Server.Engines.JollyRoger
                 var playerTitle = GetShrineTitle(pm);
                 var shrineTitle = GetTitle(shrine);
 
-                if (playerTitle == 0 || (playerTitle != shrineTitle && list.Shrine.Any(x => x.FragmentCount < count && x.Shrine != shrine)))
+                if (playerTitle == 0 || playerTitle != shrineTitle && list.Shrine.Any(x => x.FragmentCount < count && x.Shrine != shrine))
                 {
                     SetShrineTitle(pm, shrineTitle);
                 }
@@ -299,9 +299,9 @@ namespace Server.Engines.JollyRoger
 
     public class ShrineDef
     {
-        public Shrine Shrine { get; set; }
-        public int Hue { get; set; }
-        public int TitleCliloc { get; set; }
+        public Shrine Shrine { get; }
+        public int Hue { get; }
+        public int TitleCliloc { get; }
 
         public ShrineDef(Shrine s, int h, int tc)
         {
@@ -313,8 +313,8 @@ namespace Server.Engines.JollyRoger
 
     public class RewardArray
     {
-        public Mobile Mobile { get; set; }
-        public List<ShrineArray> Shrine { get; set; }
+        public Mobile Mobile { get; }
+        public List<ShrineArray> Shrine { get; }
         public bool Tabard { get; set; }
         public bool Cloak { get; set; }
 

@@ -188,7 +188,7 @@ namespace Server.Mobiles
             sb.AppendFormat("{0}", defs.SelectionList.Length);
             for (int i = 0; i < defs.SelectionList.Length; i++)
             {
-                sb.AppendFormat(":{0}", (defs.SelectionList[i] ? 1 : 0));
+                sb.AppendFormat(":{0}", defs.SelectionList[i] ? 1 : 0);
             }
             return sb.ToString();
         }
@@ -873,7 +873,7 @@ namespace Server.Mobiles
                 for (int i = 0; i < MaxEntries; i++)
                 {
                     int xpos = i / MaxEntriesPerColumn * 155;
-                    int ypos = (i % MaxEntriesPerColumn) * 22 + 30;
+                    int ypos = i % MaxEntriesPerColumn * 22 + 30;
 
                     // background for search results area
                     AddImageTiled(xpos + 205, ypos, 116, 23, 0x52);
@@ -1284,7 +1284,7 @@ namespace Server.Mobiles
             defaults.Group = info.IsSwitched(304);
             defaults.HomeRangeIsRelative = info.IsSwitched(305);
             defaults.AutoNumber = info.IsSwitched(306);
-            defaults.SequentialSpawn = (info.IsSwitched(307) ? 0 : -1);
+            defaults.SequentialSpawn = info.IsSwitched(307) ? 0 : -1;
             defaults.ExternalTriggering = info.IsSwitched(308);
             defaults.AllowGhostTrig = info.IsSwitched(309);
             defaults.SpawnOnTrigger = info.IsSwitched(311);

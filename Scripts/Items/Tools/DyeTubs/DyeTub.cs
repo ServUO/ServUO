@@ -42,16 +42,12 @@ namespace Server.Items
         public virtual bool AllowMetal => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Redyable
-        {
-            get { return m_Redyable; }
-            set { m_Redyable = value; }
-        }
+        public bool Redyable { get => m_Redyable; set => m_Redyable = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int DyedHue
         {
-            get { return m_DyedHue; }
+            get => m_DyedHue;
             set
             {
                 if (m_Redyable)
@@ -63,11 +59,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecureLevel Level
-        {
-            get { return m_SecureLevel; }
-            set { m_SecureLevel = value; }
-        }
+        public SecureLevel Level { get => m_SecureLevel; set => m_SecureLevel = value; }
 
         public virtual int TargetMessage => 500859;  // Select the clothing to dye.        
         public virtual int FailMessage => 1042083;  // You can not dye that.
@@ -92,7 +84,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 			
 			m_SecureLevel = (SecureLevel)reader.ReadInt();
 			m_Redyable = reader.ReadBool();
@@ -130,11 +122,9 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Item)
+                if (targeted is Item item)
                 {
-                    Item item = (Item)targeted;
-
-                    if (item is IDyable && m_Tub.AllowDyables)
+                    if (item is IDyable dyable && m_Tub.AllowDyables)
                     {
                         if (!from.InRange(m_Tub.GetWorldLocation(), 1) || !from.InRange(item.GetWorldLocation(), 1))
                             from.SendLocalizedMessage(500446); // That is too far away.
@@ -142,7 +132,7 @@ namespace Server.Items
                             from.SendLocalizedMessage(1061637); // You are not allowed to access this.
                         else if (item.Parent is Mobile)
                             from.SendLocalizedMessage(500861); // Can't Dye clothing that is being worn.
-                        else if (((IDyable)item).Dye(from, m_Tub))
+                        else if (dyable.Dye(from, m_Tub))
                             from.PlaySound(0x23E);
                     }
                     else if (m_Tub.AllowFurniture && (FurnitureAttribute.Check(item) || m_Tub.CanForceDye(item)))
@@ -163,7 +153,7 @@ namespace Server.Items
 
                                     if (!house.IsCoOwner(from))
                                         from.SendLocalizedMessage(501023); // You must be the owner to use this item.
-                                    else if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)) && (!(item is AddonComponent) || !house.Addons.ContainsKey(((AddonComponent)item).Addon)))
+                                    else if (!house.IsLockedDown(item) && !house.IsSecure(item) && (!(item is AddonComponent) || !house.Addons.ContainsKey(((AddonComponent)item).Addon)))
                                         from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
                                     else
                                         okay = true;

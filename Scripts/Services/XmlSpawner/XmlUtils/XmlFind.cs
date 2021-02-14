@@ -223,8 +223,7 @@ namespace Server.Mobiles
 
             if (o is Item item)
             {
-                // is the item in a container?
-                // if so, then check the region of the parent rather than the item
+                // is the item in a container? if so, then check the region of the parent rather than the item
                 Point3D loc = item.Location;
                 if (item.Parent != null && item.RootParent != null)
                 {
@@ -244,7 +243,7 @@ namespace Server.Mobiles
                 if (r == null)
                     return false;
 
-                return (r.Contains(loc));
+                return r.Contains(loc);
             }
 
             if (o is Mobile mob)
@@ -319,13 +318,9 @@ namespace Server.Mobiles
         {
             if (o is Mobile m)
             {
-                if (m.Map != Map.Internal || m.Account != null ||
-                    ((m as IMount)?.Rider != null) ||
-                    (m is GalleonPilot) || m is PetParrot ||
-                    (GenericBuyInfo.IsDisplayCache(m)) ||
-                    (m is EffectMobile) ||
-                    (m is BaseCreature creature && creature.IsStabled) ||
-                    (m is PlayerVendor && BaseHouse.AllHouses.Any(x => x.InternalizedVendors.Contains(m))))
+                if (m.Map != Map.Internal || m.Account != null || (m as IMount)?.Rider != null ||
+                    m is GalleonPilot || m is PetParrot || GenericBuyInfo.IsDisplayCache(m) || m is EffectMobile ||
+                    m is BaseCreature creature && creature.IsStabled || m is PlayerVendor && BaseHouse.AllHouses.Any(x => x.InternalizedVendors.Contains(m)))
                     return true;
             }
             else if (o is Item i)
@@ -398,7 +393,6 @@ namespace Server.Mobiles
             }
 
             // do the search through items
-
             // make a copy so that we dont get enumeration errors if World.Items.Values changes while searching
             ArrayList itemarray = null;
 
@@ -427,8 +421,8 @@ namespace Server.Mobiles
                     bool hasspawnerr = false;
                     bool hasvalidhidden = false;
 
-
-                    if (i == null || i.Deleted) continue;
+                    if (i == null || i.Deleted)
+                        continue;
 
                     // this will deal with items that are not on the internal map but hold valid internal items
                     if (criteria.Dohidevalidint && i.Map != Map.Internal && i.Map != null)
@@ -437,10 +431,8 @@ namespace Server.Mobiles
                     }
 
                     // check for map
-                    if ((i.Map == Map.Felucca && criteria.Dosearchfel) || (i.Map == Map.Trammel && criteria.Dosearchtram) ||
-                        (i.Map == Map.Malas && criteria.Dosearchmal) || (i.Map == Map.Ilshenar && criteria.Dosearchilsh) ||
-                        (i.Map == Map.TerMur && criteria.Dosearchter) || (i.Map == Map.Internal && criteria.Dosearchint) ||
-                        (i.Map == null && criteria.Dosearchnull))
+                    if (i.Map == Map.Felucca && criteria.Dosearchfel || i.Map == Map.Trammel && criteria.Dosearchtram || i.Map == Map.Malas && criteria.Dosearchmal || i.Map == Map.Ilshenar && criteria.Dosearchilsh ||
+                        i.Map == Map.TerMur && criteria.Dosearchter || i.Map == Map.Internal && criteria.Dosearchint || i.Map == null && criteria.Dosearchnull)
                     {
                         hasmap = true;
                     }
@@ -509,7 +501,7 @@ namespace Server.Mobiles
                             targetentrytype = SpawnerType.GetType(criteria.Searchspawnentry.ToLower());
                         }
 
-                        if (criteria.Searchspawnentry == null || (targetentrytype == null && criteria.Dosearchspawntype))
+                        if (criteria.Searchspawnentry == null || targetentrytype == null && criteria.Dosearchspawntype)
                         {
                             hasentry = false;
                         }
@@ -643,10 +635,8 @@ namespace Server.Mobiles
                         if (i == null || i.Deleted) continue;
 
                         // check for map
-                        if ((i.Map == Map.Felucca && criteria.Dosearchfel) || (i.Map == Map.Trammel && criteria.Dosearchtram) ||
-                            (i.Map == Map.Malas && criteria.Dosearchmal) || (i.Map == Map.Ilshenar && criteria.Dosearchilsh) ||
-                            (i.Map == Map.TerMur && criteria.Dosearchter) || (i.Map == Map.Internal && criteria.Dosearchint) ||
-                            (i.Map == null && criteria.Dosearchnull))
+                        if (i.Map == Map.Felucca && criteria.Dosearchfel || i.Map == Map.Trammel && criteria.Dosearchtram || i.Map == Map.Malas && criteria.Dosearchmal || i.Map == Map.Ilshenar && criteria.Dosearchilsh ||
+                            i.Map == Map.TerMur && criteria.Dosearchter || i.Map == Map.Internal && criteria.Dosearchint || i.Map == null && criteria.Dosearchnull)
                         {
                             hasmap = true;
                         }
@@ -694,14 +684,14 @@ namespace Server.Mobiles
                         if (criteria.Dosearchtype && !hastype) continue;
 
                         // check for name
-                        if (criteria.Dosearchname && (i.Name != null) && (criteria.Searchname != null) && (i.Name.ToLower().IndexOf(criteria.Searchname.ToLower()) >= 0))
+                        if (criteria.Dosearchname && i.Name != null && criteria.Searchname != null && i.Name.ToLower().IndexOf(criteria.Searchname.ToLower()) >= 0)
                         {
                             hasname = true;
                         }
                         if (criteria.Dosearchname && !hasname) continue;
 
                         // check for condition
-                        if (criteria.Dosearchcondition && (criteria.Searchcondition != null))
+                        if (criteria.Dosearchcondition && criteria.Searchcondition != null)
                         {
                             // check the property test
                             hascondition = BaseXmlSpawner.CheckPropertyString(null, i, criteria.Searchcondition, out status_str);
@@ -1128,7 +1118,7 @@ namespace Server.Mobiles
                 {
                     AddLabel(180, y - 50, 68, string.Format("Found {0} items/mobiles", m_SearchList.Count));
                     AddLabel(400, y - 50, 68, string.Format("Displaying {0}-{1}", DisplayFrom,
-                        (DisplayFrom + MaxEntries < m_SearchList.Count ? DisplayFrom + MaxEntries : m_SearchList.Count)));
+                        DisplayFrom + MaxEntries < m_SearchList.Count ? DisplayFrom + MaxEntries : m_SearchList.Count));
                     // count the number of selected objects
                     int count = 0;
                     foreach (SearchEntry e in m_SearchList)
@@ -1249,9 +1239,11 @@ namespace Server.Mobiles
 
                     }
 
-                    if (e.Selected) texthue = 33;
+                    if (e.Selected)
+                        texthue = 33;
 
-                    if (i == Selected) texthue = 68;
+                    if (i == Selected)
+                        texthue = 68;
 
                     // display the name
                     AddLabelCropped(248, 22 * (i % MaxEntriesPerPage) + 31, 110, 21, texthue, namestr ?? string.Empty);
@@ -1270,7 +1262,6 @@ namespace Server.Mobiles
                     AddLabelCropped(640, 22 * (i % MaxEntriesPerPage) + 31, 90, 21, texthue, ownstr);
 
                     // display the selection button
-
                     AddButton(730, 22 * (i % MaxEntriesPerPage) + 32, (e.Selected ? 0xD3 : 0xD2), (e.Selected ? 0xD2 : 0xD3), 4000 + i, GumpButtonType.Reply, 0);
                 }
             }
@@ -1483,14 +1474,16 @@ namespace Server.Mobiles
                 if (From == null || From.Deleted)
                     return 0;
 
-                IEntity entity1 = ((e1 as SearchEntry)?.Object as IEntity);
-                IEntity entity2 = ((e2 as SearchEntry)?.Object as IEntity);
+                IEntity entity1 = (e1 as SearchEntry)?.Object as IEntity;
+                IEntity entity2 = (e2 as SearchEntry)?.Object as IEntity;
 
                 if (entity1 == null && entity2 == null)
                     return 0;
-                else if (entity1 == null)
+
+                if (entity1 == null)
                     return Dsort ? 1 : -1;
-                else if (entity2 == null)
+
+                if (entity2 == null)
                     return Dsort ? -1 : 1;
 
                 if (entity1.Map != From.Map && entity2.Map != From.Map)
@@ -2125,7 +2118,6 @@ namespace Server.Mobiles
                 }
                 switch (info.ButtonID)
                 {
-
                     default:
                         {
                             if (radiostate == 1 && SearchList != null)
@@ -2147,7 +2139,7 @@ namespace Server.Mobiles
                                             }
                                             catch (Exception ex) { Diagnostics.ExceptionLogging.LogException(ex); }
                                         }
-                                        else if ((o is Mobile mobile) && !(mobile.Player))
+                                        else if (o is Mobile mobile && !mobile.Player)
                                         {
                                             try
                                             {

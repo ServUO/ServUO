@@ -10,7 +10,7 @@ namespace Server.Engines.Despise
         private Alignment m_Alignment;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Alignment Alignment { get { return m_Alignment; } set { m_Alignment = value; } }
+        public Alignment Alignment { get => m_Alignment; set => m_Alignment = value; }
 
         public override bool HandlesOnMovement => true;
 
@@ -55,14 +55,14 @@ namespace Server.Engines.Despise
                     from.Backpack.DropItem(orb);
                     from.SendLocalizedMessage(1153355); // I will follow thy guidance.
 
-                    if (from is PlayerMobile && QuestHelper.HasQuest<WhisperingWithWispsQuest>((PlayerMobile)from))
+                    if (from is PlayerMobile mobile && QuestHelper.HasQuest<WhisperingWithWispsQuest>(mobile))
                     {
-                        from.SendLocalizedMessage(1158304); // The Ankh pulses with energy in front of you! You are drawn to it! As you
+                        mobile.SendLocalizedMessage(1158304); // The Ankh pulses with energy in front of you! You are drawn to it! As you
                                                             // place your hand on the ankh an inner voice speaks to you as you are joined to your Wisp companion...
-                        from.SendLocalizedMessage(1158320, null, 0x23); // You've completed a quest objective!
-                        from.PlaySound(0x5B5);
+                        mobile.SendLocalizedMessage(1158320, null, 0x23); // You've completed a quest objective!
+                        mobile.PlaySound(0x5B5);
 
-                        Services.TownCryer.TownCryerSystem.CompleteQuest((PlayerMobile)from, 1158303, 1158308, 0x65C);
+                        Services.TownCryer.TownCryerSystem.CompleteQuest(mobile, 1158303, 1158308, 0x65C);
                     }
                 }
                 else
@@ -72,12 +72,11 @@ namespace Server.Engines.Despise
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile &&
-                !WispOrb.Orbs.Any(x => x.Owner == m) &&
-                QuestHelper.HasQuest<WhisperingWithWispsQuest>((PlayerMobile)m) &&
-                InRange(m.Location, 5) && !InRange(oldLocation, 5))
+            if (m is PlayerMobile pm && !WispOrb.Orbs.Any(x => x.Owner == m) &&
+                QuestHelper.HasQuest<WhisperingWithWispsQuest>(pm) &&
+                InRange(pm.Location, 5) && !InRange(oldLocation, 5))
             {
-                m.SendLocalizedMessage(1158311); // You have found an ankh. Use the ankh to continue your journey.
+                pm.SendLocalizedMessage(1158311); // You have found an ankh. Use the ankh to continue your journey.
             }
         }
 
@@ -89,13 +88,15 @@ namespace Server.Engines.Despise
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write((int)m_Alignment);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
+
             m_Alignment = (Alignment)reader.ReadInt();
         }
     }

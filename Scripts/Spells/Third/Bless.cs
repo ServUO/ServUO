@@ -111,9 +111,9 @@ namespace Server.Spells.Third
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
+                if (o is Mobile mobile)
                 {
-                    m_Owner.Target((Mobile)o);
+                    m_Owner.Target(mobile);
                 }
             }
 
@@ -125,7 +125,7 @@ namespace Server.Spells.Third
 
         private class InternalTimer : Timer
         {
-            public Mobile Mobile { get; set; }
+            public Mobile Mobile { get; }
 
             public InternalTimer(Mobile m, TimeSpan duration)
                 : base(duration)

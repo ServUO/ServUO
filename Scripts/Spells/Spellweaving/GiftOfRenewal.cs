@@ -173,9 +173,9 @@ namespace Server.Spells.Spellweaving
 
             protected override void OnTarget(Mobile m, object o)
             {
-                if (o is Mobile)
+                if (o is Mobile mobile)
                 {
-                    m_Owner.Target((Mobile)o);
+                    m_Owner.Target(mobile);
                 }
             }
 

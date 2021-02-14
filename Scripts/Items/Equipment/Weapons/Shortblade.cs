@@ -7,7 +7,6 @@ namespace Server.Items
         public Shortblade()
             : base(0x907)
         {
-            //Weight = 9.0;
         }
 
         public Shortblade(Serial serial)
@@ -39,7 +38,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

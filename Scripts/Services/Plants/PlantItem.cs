@@ -48,11 +48,7 @@ namespace Server.Engines.Plants
         private SecureLevel m_Level;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecureLevel Level
-        {
-            get { return m_Level; }
-            set { m_Level = value; }
-        }
+        public SecureLevel Level { get => m_Level; set => m_Level = value; }
 
         public PlantSystem PlantSystem => m_PlantSystem;
 
@@ -72,7 +68,7 @@ namespace Server.Engines.Plants
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantStatus PlantStatus
         {
-            get { return m_PlantStatus; }
+            get => m_PlantStatus;
             set
             {
                 if (m_PlantStatus == value || value < PlantStatus.BowlOfDirt || value > PlantStatus.DeadTwigs)
@@ -110,7 +106,7 @@ namespace Server.Engines.Plants
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantType PlantType
         {
-            get { return m_PlantType; }
+            get => m_PlantType;
             set
             {
                 m_PlantType = value;
@@ -121,7 +117,7 @@ namespace Server.Engines.Plants
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantHue PlantHue
         {
-            get { return m_PlantHue; }
+            get => m_PlantHue;
             set
             {
                 m_PlantHue = value;
@@ -132,7 +128,7 @@ namespace Server.Engines.Plants
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ShowType
         {
-            get { return m_ShowType; }
+            get => m_ShowType;
             set
             {
                 m_ShowType = value;
@@ -222,12 +218,12 @@ namespace Server.Engines.Plants
         {
             if (m_PlantStatus >= PlantStatus.Plant)
                 return 1060812; // plant
-            else if (m_PlantStatus >= PlantStatus.Sapling)
+            if (m_PlantStatus >= PlantStatus.Sapling)
                 return 1023305; // sapling
-            else if (m_PlantStatus >= PlantStatus.Seed)
+            if (m_PlantStatus >= PlantStatus.Seed)
                 return 1060810; // seed
-            else
-                return 1026951; // dirt
+
+            return 1026951; // dirt
         }
 
         public int GetLocalizedContainerType()
@@ -311,7 +307,7 @@ namespace Server.Engines.Plants
                     }
                     else
                     {
-                        args += string.Format("\t#{0}\t#{1}", (typeInfo.PlantCategory == PlantCategory.Default) ? hueInfo.Name : (int)typeInfo.PlantCategory, GetLocalizedPlantStatus());
+                        args += string.Format("\t#{0}\t#{1}", typeInfo.PlantCategory == PlantCategory.Default ? hueInfo.Name : (int)typeInfo.PlantCategory, GetLocalizedPlantStatus());
 
                         list.Add(hueInfo.IsBright() ? 1060832 : 1060831, args); // a ~1_val~ of ~2_val~ dirt with a ~3_val~ [bright] ~4_val~ ~5_val~
                     }
@@ -360,7 +356,7 @@ namespace Server.Engines.Plants
             else if (m_PlantStatus != PlantStatus.BowlOfDirt)
             {
                 if (RequiresUpkeep && !MaginciaPlant)
-                    from.SendLocalizedMessage(1080389, "#" + GetLocalizedPlantStatus().ToString()); // This bowl of dirt already has a ~1_val~ in it!
+                    from.SendLocalizedMessage(1080389, "#" + GetLocalizedPlantStatus()); // This bowl of dirt already has a ~1_val~ in it!
                 else
                     from.SendLocalizedMessage(1150441); // This mound of dirt already has a seed in it!
             }
@@ -423,10 +419,8 @@ namespace Server.Engines.Plants
                 return;
             }
 
-            if (item is BaseBeverage)
+            if (item is BaseBeverage beverage)
             {
-                BaseBeverage beverage = (BaseBeverage)item;
-
                 if (beverage.IsEmpty || !beverage.Pourable || beverage.Content != BeverageType.Water)
                 {
                     LabelTo(from, 1053069); // You can't use that on a plant!
@@ -444,10 +438,8 @@ namespace Server.Engines.Plants
 
                 m_PlantSystem.NextGrowth = DateTime.UtcNow + PlantSystem.CheckDelay;
             }
-            else if (item is BasePotion)
+            else if (item is BasePotion potion)
             {
-                BasePotion potion = (BasePotion)item;
-
                 int message;
                 if (ApplyPotion(potion.PotionEffect, false, out message))
                 {
@@ -459,10 +451,8 @@ namespace Server.Engines.Plants
                 }
                 LabelTo(from, message);
             }
-            else if (item is PotionKeg)
+            else if (item is PotionKeg keg)
             {
-                PotionKeg keg = (PotionKeg)item;
-
                 if (keg.Held <= 0)
                 {
                     LabelTo(from, 1053069); // You can't use that on a plant!
@@ -552,11 +542,9 @@ namespace Server.Engines.Plants
                 message = 1053065; // The plant is already soaked with this type of potion!
                 return false;
             }
-            else
-            {
-                message = 1053067; // You pour the potion over the plant.
-                return true;
-            }
+
+            message = 1053067; // You pour the potion over the plant.
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)

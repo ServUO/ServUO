@@ -25,7 +25,7 @@ namespace Server.Items
 			{
 				if (base.ItemID != value)
 				{
-					var facet = Parent == null ? Map : null;
+					Map facet = Parent == null ? Map : null;
 
 					if (facet != null)
 					{
@@ -47,7 +47,7 @@ namespace Server.Items
 		{
 			if (Parent == null)
 			{
-				var facet = Map;
+				Map facet = Map;
 
 				if (facet != null)
 				{
@@ -61,7 +61,7 @@ namespace Server.Items
 		{
 			get
 			{
-				var mcl = Components;
+				MultiComponentList mcl = Components;
 
 				if (mcl.List.Length > 0)
 				{
@@ -85,12 +85,12 @@ namespace Server.Items
 
 		public override int GetUpdateRange(Mobile m)
 		{
-			var min = m.NetState != null ? m.NetState.UpdateRange : Core.GlobalUpdateRange;
-			var max = Core.GlobalRadarRange - 1;
+			int min = m.NetState != null ? m.NetState.UpdateRange : Core.GlobalUpdateRange;
+			int max = Core.GlobalRadarRange - 1;
 
-			var w = Components.Width;
-			var h = Components.Height - 1;
-			var v = min + ((w > h ? w : h) / 2);
+			int w = Components.Width;
+			int h = Components.Height - 1;
+			int v = min + ((w > h ? w : h) / 2);
 
 			if (v > max)
 				v = max;
@@ -119,7 +119,7 @@ namespace Server.Items
 
 		public virtual bool Contains(int x, int y)
 		{
-			var mcl = Components;
+			MultiComponentList mcl = Components;
 
 			x -= X + mcl.Min.m_X;
 			y -= Y + mcl.Min.m_Y;
@@ -128,28 +128,24 @@ namespace Server.Items
 		}
 
 		public bool Contains(Mobile m)
-		{
-			if (m.Map == Map)
+        {
+            if (m.Map == Map)
 			{
 				return Contains(m.X, m.Y);
 			}
-			else
-			{
-				return false;
-			}
-		}
+
+            return false;
+        }
 
 		public bool Contains(Item item)
-		{
-			if (item.Map == Map)
+        {
+            if (item.Map == Map)
 			{
 				return Contains(item.X, item.Y);
 			}
-			else
-			{
-				return false;
-			}
-		}
+
+            return false;
+        }
 
 		public override void Serialize(GenericWriter writer)
 		{
@@ -160,7 +156,7 @@ namespace Server.Items
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
-			var version = reader.ReadInt();
+			int version = reader.ReadInt();
 		}
 	}
 }

@@ -38,15 +38,15 @@ namespace Server.Items
         {
             base.OnHit(attacker, damageable, damageBonus);
 
-            if (damageable is BaseCreature)
+            if (damageable is BaseCreature creature)
             {
                 if (attacker.FindItemOnLayer(Layer.TwoHanded) != null)
                 {
                     attacker.SendLocalizedMessage(1071501); // Your left hand must be free to steal an item from the creature.
                 }
-                else if (attacker is PlayerMobile)
+                else if (attacker is PlayerMobile mobile)
                 {
-                    StealingHandler.HandleSmugglersEdgeSteal((BaseCreature)damageable, (PlayerMobile)attacker);
+                    StealingHandler.HandleSmugglersEdgeSteal(creature, mobile);
                 }
             }
         }
@@ -103,15 +103,15 @@ namespace Server.Items
         {
             base.OnHit(attacker, damageable, damageBonus);
 
-            if (damageable is BaseCreature)
+            if (damageable is BaseCreature creature)
             {
                 if (attacker.FindItemOnLayer(Layer.TwoHanded) != null)
                 {
                     attacker.SendLocalizedMessage(1071501); // Your left hand must be free to steal an item from the creature.
                 }
-                else if (attacker is PlayerMobile)
+                else if (attacker is PlayerMobile mobile)
                 {
-                    StealingHandler.HandleSmugglersEdgeSteal((BaseCreature)damageable, (PlayerMobile)attacker);
+                    StealingHandler.HandleSmugglersEdgeSteal(creature, mobile);
                 }
             }
         }

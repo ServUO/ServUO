@@ -36,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -70,7 +70,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -104,7 +104,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -142,15 +142,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -188,15 +186,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -233,15 +229,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
     #endregion
@@ -253,14 +247,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsShipwreckedItem
         {
-            get
-            {
-                return m_IsShipwreckedItem;
-            }
-            set
-            {
-                m_IsShipwreckedItem = value;
-            }
+            get => m_IsShipwreckedItem;
+            set => m_IsShipwreckedItem = value;
         }
 
         public BaseHat(int itemID)
@@ -289,22 +277,9 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
-            switch (version)
-            {
-                case 2: goto case 1;
-                case 1:
-                    {
-                        m_IsShipwreckedItem = reader.ReadBool();
-                        break;
-                    }
-            }
-
-            if (version == 1)
-            {
-                Weight = -1;
-            }
+            m_IsShipwreckedItem = reader.ReadBool();
         }
 
         public override void AddEquipInfoAttributes(Mobile from, List<EquipInfoAttribute> attrs)
@@ -1003,8 +978,8 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile)
-                Misc.Titles.AwardKarma((Mobile)parent, -20, true);
+            if (parent is Mobile mobile)
+                Misc.Titles.AwardKarma(mobile, -20, true);
         }
 
         public OrcishKinMask(Serial serial)

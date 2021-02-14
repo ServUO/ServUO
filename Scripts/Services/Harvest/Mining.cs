@@ -59,9 +59,9 @@ namespace Server.Engines.Harvest
             oreAndStone.ConsumedPerFeluccaHarvest = 2;
 
             // The digging effect
-            oreAndStone.EffectActions = new int[] { 3 };
-            oreAndStone.EffectSounds = new int[] { 0x125, 0x126 };
-            oreAndStone.EffectCounts = new int[] { 1 };
+            oreAndStone.EffectActions = new[] { 3 };
+            oreAndStone.EffectSounds = new[] { 0x125, 0x126 };
+            oreAndStone.EffectCounts = new[] { 1 };
             oreAndStone.EffectDelay = TimeSpan.FromSeconds(1.6);
             oreAndStone.EffectSoundDelay = TimeSpan.FromSeconds(0.9);
 
@@ -73,7 +73,7 @@ namespace Server.Engines.Harvest
             oreAndStone.PackFullMessage = 1010481; // Your backpack is full, so the ore you mined is lost.
             oreAndStone.ToolBrokeMessage = 1044038; // You have worn out your tool!
 
-            res = new HarvestResource[]
+            res = new[]
             {
                 new HarvestResource(00.0, 00.0, 100.0, 1007072, typeof(IronOre), typeof(Granite)),
                 new HarvestResource(65.0, 25.0, 105.0, 1007073, typeof(DullCopperOre),  typeof(DullCopperGranite), typeof(DullCopperElemental)),
@@ -86,7 +86,7 @@ namespace Server.Engines.Harvest
                 new HarvestResource(99.0, 59.0, 139.0, 1007080, typeof(ValoriteOre), typeof(ValoriteGranite), typeof(ValoriteElemental))
             };
 
-            veins = new HarvestVein[]
+            veins = new[]
             {
                 new HarvestVein(49.6, 0.0, res[0], null), // Iron
                 new HarvestVein(11.2, 0.5, res[1], res[0]), // Dull Copper
@@ -96,13 +96,13 @@ namespace Server.Engines.Harvest
                 new HarvestVein(05.6, 0.5, res[5], res[0]), // Gold
                 new HarvestVein(04.2, 0.5, res[6], res[0]), // Agapite
                 new HarvestVein(02.8, 0.5, res[7], res[0]), // Verite
-                new HarvestVein(01.4, 0.5, res[8], res[0]), // Valorite
+                new HarvestVein(01.4, 0.5, res[8], res[0]) // Valorite
             };
 
             oreAndStone.Resources = res;
             oreAndStone.Veins = veins;
 
-            oreAndStone.BonusResources = new BonusHarvestResource[]
+            oreAndStone.BonusResources = new[]
             {
                 new BonusHarvestResource(0, 99.2, null, null), //Nothing
                 new BonusHarvestResource(100, .1, 1072562, typeof(BlueDiamond)),
@@ -150,9 +150,9 @@ namespace Server.Engines.Harvest
             sand.ConsumedPerFeluccaHarvest = 2;
 
             // The digging effect
-            sand.EffectActions = new int[] { 3 };
-            sand.EffectSounds = new int[] { 0x125, 0x126 };
-            sand.EffectCounts = new int[] { 6 };
+            sand.EffectActions = new[] { 3 };
+            sand.EffectSounds = new[] { 0x125, 0x126 };
+            sand.EffectCounts = new[] { 6 };
             sand.EffectDelay = TimeSpan.FromSeconds(1.6);
             sand.EffectSoundDelay = TimeSpan.FromSeconds(0.9);
 
@@ -164,12 +164,12 @@ namespace Server.Engines.Harvest
             sand.PackFullMessage = 1044632; // Your backpack can't hold the sand, and it is lost!
             sand.ToolBrokeMessage = 1044038; // You have worn out your tool!
 
-            res = new HarvestResource[]
+            res = new[]
             {
                 new HarvestResource(100.0, 70.0, 100.0, 1044631, typeof(Sand))
             };
 
-            veins = new HarvestVein[]
+            veins = new[]
             {
                 new HarvestVein(100.0, 0.0, res[0], null)
             };
@@ -185,7 +185,6 @@ namespace Server.Engines.Harvest
         {
             if (def == OreAndStone)
             {
-                #region Void Pool Items
                 HarvestMap hmap = HarvestMap.CheckMapOnHarvest(from, loc, def);
 
                 if (hmap != null && hmap.Resource >= CraftResource.Iron && hmap.Resource <= CraftResource.Valorite)
@@ -198,16 +197,17 @@ namespace Server.Engines.Harvest
                     if (info != null)
                         return info.ResourceTypes[1];
                 }
-                #endregion
 
                 PlayerMobile pm = from as PlayerMobile;
 
                 if (tool is ImprovedRockHammer)
                 {
                     if (from.Skills[SkillName.Mining].Base >= 100.0)
+                    {
                         return resource.Types[1];
-                    else
-                        return null;
+                    }
+
+                    return null;
                 }
 
                 if (pm != null && pm.GemMining && pm.ToggleMiningGem && from.Skills[SkillName.Mining].Base >= 100.0 && 0.1 > Utility.RandomDouble())
@@ -280,17 +280,19 @@ namespace Server.Engines.Harvest
             if (!base.CheckHarvest(from, tool, def, toHarvest))
                 return false;
 
-            if (def == Sand && !(from is PlayerMobile && from.Skills[SkillName.Mining].Base >= 100.0 && ((PlayerMobile)from).SandMining))
+            if (def == Sand && !(from is PlayerMobile mobile && mobile.Skills[SkillName.Mining].Base >= 100.0 && mobile.SandMining))
             {
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return false;
             }
-            else if (from.Mounted)
+
+            if (from.Mounted)
             {
                 from.SendLocalizedMessage(501864); // You can't mine while riding.
                 return false;
             }
-            else if (from.IsBodyMod && !from.Body.IsHuman)
+
+            if (from.IsBodyMod && !from.Body.IsHuman)
             {
                 from.SendLocalizedMessage(501865); // You can't mine while polymorphed.
                 return false;
@@ -305,14 +307,14 @@ namespace Server.Engines.Harvest
             {
                 int veinIndex = Array.IndexOf(def.Veins, vein);
 
-                if (veinIndex >= 0 && veinIndex < (def.Veins.Length - 1))
+                if (veinIndex >= 0 && veinIndex < def.Veins.Length - 1)
                     return def.Veins[veinIndex + 1];
             }
 
             return base.MutateVein(from, tool, def, bank, toHarvest, vein);
         }
 
-        private static readonly int[] m_Offsets = new int[]
+        private static readonly int[] m_Offsets =
         {
             -1, -1,
             -1, 0,
@@ -355,17 +357,15 @@ namespace Server.Engines.Harvest
                                     spawned.Combatant = from;
                                     return;
                                 }
-                                else
-                                {
-                                    int z = map.GetAverageZ(x, y);
 
-                                    if (Math.Abs(z - from.Z) < 10 && map.CanSpawnMobile(x, y, z))
-                                    {
-                                        spawned.OnBeforeSpawn(new Point3D(x, y, z), map);
-                                        spawned.MoveToWorld(new Point3D(x, y, z), map);
-                                        spawned.Combatant = from;
-                                        return;
-                                    }
+                                int z = map.GetAverageZ(x, y);
+
+                                if (Math.Abs(z - from.Z) < 10 && map.CanSpawnMobile(x, y, z))
+                                {
+                                    spawned.OnBeforeSpawn(new Point3D(x, y, z), map);
+                                    spawned.MoveToWorld(new Point3D(x, y, z), map);
+                                    spawned.Combatant = from;
+                                    return;
                                 }
                             }
 
@@ -398,8 +398,8 @@ namespace Server.Engines.Harvest
 
             if (boat || !NiterDeposit.HasBeenChecked(bank))
             {
-                int luck = from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck;
-                double bonus = (from.Skills[SkillName.Mining].Value / 9999) + ((double)luck / 150000);
+                int luck = from is PlayerMobile mobile ? mobile.RealLuck : from.Luck;
+                double bonus = from.Skills[SkillName.Mining].Value / 9999 + (double)luck / 150000;
 
                 if (boat)
                     bonus -= bonus * .33;
@@ -423,20 +423,18 @@ namespace Server.Engines.Harvest
                         NiterDeposit.AddBank(bank);
                         return true;
                     }
-                    else
-                    {
-                        for (int i = 0; i < 50; i++)
-                        {
-                            int x = Utility.RandomMinMax(loc.X - 2, loc.X + 2);
-                            int y = Utility.RandomMinMax(loc.Y - 2, loc.Y + 2);
-                            int z = from.Z;
 
-                            if (from.Map.CanSpawnMobile(x, y, z))
-                            {
-                                niter.MoveToWorld(new Point3D(x, y, z), from.Map);
-                                from.SendLocalizedMessage(1149918, niter.Size.ToString()); //You have uncovered a ~1_SIZE~ deposit of niter! Mine it to obtain saltpeter.
-                                return true;
-                            }
+                    for (int i = 0; i < 50; i++)
+                    {
+                        int x = Utility.RandomMinMax(loc.X - 2, loc.X + 2);
+                        int y = Utility.RandomMinMax(loc.Y - 2, loc.Y + 2);
+                        int z = from.Z;
+
+                        if (from.Map.CanSpawnMobile(x, y, z))
+                        {
+                            niter.MoveToWorld(new Point3D(x, y, z), from.Map);
+                            from.SendLocalizedMessage(1149918, niter.Size.ToString()); //You have uncovered a ~1_SIZE~ deposit of niter! Mine it to obtain saltpeter.
+                            return true;
                         }
                     }
 
@@ -481,22 +479,22 @@ namespace Server.Engines.Harvest
 
         public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)
         {
-            if (toHarvest is LandTarget)
+            if (from.Mounted || from.Flying)
+            {
+                from.SendLocalizedMessage(501864); // You can't dig while riding or flying.
+            }
+            else if (toHarvest is LandTarget)
             {
                 from.SendLocalizedMessage(501862); // You can't mine there.
             }
-            else if (!(toHarvest is LandTarget))
+            else
             {
                 from.SendLocalizedMessage(501863); // You can't mine that.
-            }
-            else if (from.Mounted || from.Flying)
-            {
-                from.SendLocalizedMessage(501864); // You can't dig while riding or flying.
             }
         }
 
         #region Tile lists
-        private static readonly int[] m_MountainAndCaveTiles = new int[]
+        private static readonly int[] m_MountainAndCaveTiles =
         {
             220, 221, 222, 223, 224, 225, 226, 227, 228, 229,
             230, 231, 236, 237, 238, 239, 240, 241, 242, 243,
@@ -533,7 +531,7 @@ namespace Server.Engines.Harvest
             0x4549, 0x454A, 0x454B, 0x454C, 0x454D, 0x454E, 0x454F
         };
 
-        private static readonly int[] m_SandTiles = new int[]
+        private static readonly int[] m_SandTiles =
         {
             22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
             32, 33, 34, 35, 36, 37, 38, 39, 40, 41,

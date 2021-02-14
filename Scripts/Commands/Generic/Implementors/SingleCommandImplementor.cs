@@ -6,7 +6,7 @@ namespace Server.Commands.Generic
     {
         public SingleCommandImplementor()
         {
-            Accessors = new string[] { "Single" };
+            Accessors = new[] { "Single" };
             SupportRequirement = CommandSupport.Single;
             AccessLevel = AccessLevel.Counselor;
             Usage = "Single <command>";
@@ -31,13 +31,13 @@ namespace Server.Commands.Generic
                 e.Mobile.SendMessage("That is either an invalid command name or one that does not support this modifier.");
             else if (e.Mobile.AccessLevel < command.AccessLevel)
                 e.Mobile.SendMessage("You do not have access to that command.");
-            else if (command.ValidateArgs(this, e))
+            else if (command.ValidateArgs(e))
                 Process(e.Mobile, command, e.Arguments);
         }
 
         public override void Process(Mobile from, BaseCommand command, string[] args)
         {
-            if (command.ValidateArgs(this, new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args)))
+            if (command.ValidateArgs(new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args)))
                 from.BeginTarget(-1, command.ObjectTypes == ObjectTypes.All, TargetFlags.None, new TargetStateCallback(OnTarget), new object[] { command, args });
         }
 

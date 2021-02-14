@@ -6,10 +6,13 @@ namespace Server.Items
 {
     public class ParrotItem : Item
     {
-        private static readonly int[] m_Hues = new int[]
+        private static readonly int[] m_Hues =
         {
             0x3, 0xD, 0x13, 0x1C, 0x21, 0x30, 0x3F, 0x44, 0x59, 0x62, 0x71
         };
+
+        public override int LabelNumber => 1074281;// pet parrot
+
         [Constructable]
         public ParrotItem()
             : base(0x20EE)
@@ -23,7 +26,6 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1074281;// pet parrot
         public override void OnDoubleClick(Mobile from)
         {
             if (IsChildOf(from.Backpack))
@@ -38,15 +40,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public class InternalTarget : Target
@@ -60,14 +60,10 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is AddonComponent)
+                if (targeted is AddonComponent component)
                 {
-                    AddonComponent component = (AddonComponent)targeted;
-
-                    if (component.Addon is ParrotPerchAddon)
+                    if (component.Addon is ParrotPerchAddon perch)
                     {
-                        ParrotPerchAddon perch = (ParrotPerchAddon)component.Addon;
-
                         BaseHouse house = BaseHouse.FindHouseAt(perch);
 
                         if (house != null && house.IsCoOwner(from))

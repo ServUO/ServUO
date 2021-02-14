@@ -35,9 +35,8 @@ namespace Server.Spells.Sixth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
+                if (o is Mobile m)
                 {
-                    Mobile m = (Mobile)o;
                     BaseCreature bc = m as BaseCreature;
 
                     if (!from.CanSee(m))

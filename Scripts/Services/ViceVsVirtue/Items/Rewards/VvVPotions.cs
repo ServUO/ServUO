@@ -10,7 +10,7 @@ namespace Server.Engines.VvV
         AntiParalysis = 0x1,
         Supernova = 0x2,
         StatLossRemoval = 0x4,
-        GreaterStamina = 0x8,
+        GreaterStamina = 0x8
     }
 
     public class VvVPotionKeg : Item
@@ -19,10 +19,10 @@ namespace Server.Engines.VvV
         private int _Charges;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PotionType PotionType { get { return _PotionType; } set { _PotionType = value; InvalidateProperties(); } }
+        public PotionType PotionType { get => _PotionType; set { _PotionType = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Charges { get { return _Charges; } set { _Charges = value; if (_Charges <= 0) Delete(); else InvalidateProperties(); } }
+        public int Charges { get => _Charges; set { _Charges = value; if (_Charges <= 0) Delete(); else InvalidateProperties(); } }
 
         public override double DefaultWeight => 10 + _Charges * 1.8;
 
@@ -129,7 +129,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             PotionType = (PotionType)reader.ReadInt();
             Charges = reader.ReadInt();
@@ -342,7 +342,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -395,7 +395,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -471,7 +471,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -526,7 +526,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -583,7 +583,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

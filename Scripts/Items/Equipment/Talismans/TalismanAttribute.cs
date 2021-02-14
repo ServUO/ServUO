@@ -69,43 +69,25 @@ namespace Server.Items
             None = 0x00000000,
             Type = 0x00000001,
             Name = 0x00000002,
-            Amount = 0x00000004,
+            Amount = 0x00000004
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public Type Type
         {
-            get
-            {
-                return m_Type;
-            }
-            set
-            {
-                m_Type = value;
-            }
+            get => m_Type;
+            set => m_Type = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public TextDefinition Name
         {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
-            }
+            get => m_Name;
+            set => m_Name = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public int Amount
         {
-            get
-            {
-                return m_Amount;
-            }
-            set
-            {
-                m_Amount = value;
-            }
+            get => m_Amount;
+            set => m_Amount = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsEmpty => m_Type == null;
@@ -151,7 +133,7 @@ namespace Server.Items
 
         public int ScaleDamage(Mobile from, int damage)
         {
-            if (from != null && (from.GetType() == m_Type || (m_Type != null && from.GetType().IsSubclassOf(m_Type))))
+            if (from != null && (from.GetType() == m_Type || m_Type != null && from.GetType().IsSubclassOf(m_Type)))
                 return (int)(damage * (1 - m_Amount / 100.0));
 
             return damage;
@@ -165,7 +147,7 @@ namespace Server.Items
 
         private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
         {
-            return ((flags & toGet) != 0);
+            return (flags & toGet) != 0;
         }
     }
 }

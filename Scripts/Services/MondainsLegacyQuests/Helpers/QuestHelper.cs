@@ -21,10 +21,10 @@ namespace Server.Engines.Quests
 
             while (region != null)
             {
-                if (region is ApprenticeRegion && ((ApprenticeRegion)region).Table[from] is BuffInfo)
+                if (region is ApprenticeRegion apprenticeRegion && apprenticeRegion.Table[from] is BuffInfo)
                 {
-                    BuffInfo.RemoveBuff(from, (BuffInfo)((ApprenticeRegion)region).Table[from]);
-                    ((ApprenticeRegion)region).Table[from] = null;
+                    BuffInfo.RemoveBuff(from, (BuffInfo)apprenticeRegion.Table[from]);
+                    apprenticeRegion.Table[from] = null;
                 }
 
                 region = region.Parent;
@@ -43,9 +43,9 @@ namespace Server.Engines.Quests
 
             BaseQuest quest = null;
 
-            if (quester is ITierQuester)
+            if (quester is ITierQuester tierQuester)
             {
-                quest = TierQuestInfo.RandomQuest(from, (ITierQuester)quester);
+                quest = TierQuestInfo.RandomQuest(from, tierQuester);
             }
             else if (quests.Length > 0)
             {
@@ -65,15 +65,16 @@ namespace Server.Engines.Quests
                 {
                     return quest;
                 }
-                else if (quester is Mobile && message)
+
+                if (quester is Mobile mobile && message)
                 {
-                    if (quester is MondainQuester)
+                    if (mobile is MondainQuester mondainQuester)
                     {
-                        ((MondainQuester)quester).OnOfferFailed();
+                        mondainQuester.OnOfferFailed();
                     }
-                    else if (quester is Mobile)
+                    else
                     {
-                        ((Mobile)quester).Say(1080107); // I'm sorry, I have nothing for you at this time.
+                        mobile.Say(1080107); // I'm sorry, I have nothing for you at this time.
                     }
                 }
             }
@@ -93,8 +94,9 @@ namespace Server.Engines.Quests
                 {
                     return false;
                 }
+
                 // if player already has an active quest from the chain
-                else if (InChainProgress(from, quest))
+                if (InChainProgress(from, quest))
                 {
                     return false;
                 }
@@ -135,9 +137,9 @@ namespace Server.Engines.Quests
             {
                 if (quest.DoneOnce)
                 {
-                    if (message && quester is Mobile)
+                    if (message && quester is Mobile mobile)
                     {
-                        ((Mobile)quester).Say(1075454); // I can not offer you the quest again.
+                        mobile.Say(1075454); // I can not offer you the quest again.
                     }
 
                     return false;
@@ -147,7 +149,7 @@ namespace Server.Engines.Quests
 
                 if (DateTime.UtcNow < endTime)
                 {
-                    if (message && quester is Mobile)
+                    if (message && quester is Mobile mobile)
                     {
                         TimeSpan ts = endTime - DateTime.UtcNow;
                         string str;
@@ -161,7 +163,7 @@ namespace Server.Engines.Quests
                         else
                             str = "I can offer this quest again very soon.";
 
-                        ((Mobile)quester).SayTo(player, false, str);
+                        mobile.SayTo(player, false, str);
                     }
 
                     return false;
@@ -232,10 +234,8 @@ namespace Server.Engines.Quests
 
                         return false;
                     }
-                    else
-                    {
-                        info.Reset(delay);
-                    }
+
+                    info.Reset(delay);
                 }
                 else
                 {
@@ -289,29 +289,6 @@ namespace Server.Engines.Quests
                 return true;
             }
 
-            /*for (int i = 0; i < quests.Length; i ++)
-            {
-                for (int j = 0; j < player.Quests.Count; j ++)
-                {
-                    BaseQuest quest = player.Quests[j];
-
-                    if (quests[i].IsAssignableFrom(quest.GetType()))
-                    {
-                        if (quest.Completed)
-                        {
-                            player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
-                        }
-                        else
-                        {
-                            player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
-                            quest.InProgress();
-                        }
-
-                        return true;
-                    }
-                }
-            }*/
-
             return false;
         }
 
@@ -346,32 +323,6 @@ namespace Server.Engines.Quests
                 return true;
             }
 
-            /*for (int i = 0; i < player.Quests.Count; i ++)
-            {
-                BaseQuest quest = player.Quests[i];
-
-                if (quest.Quester == null && quest.QuesterType == null)
-                    continue;
-
-                if (quest.QuesterType == quester.GetType())
-                {
-                    if (quest.Completed)
-                    {
-                        if (quest.Complete == null && !AnyRewards(quest))
-                            quest.GiveRewards();
-                        else
-                            player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
-                    }
-                    else
-                    {
-                        player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
-                        quest.InProgress();
-                    }
-
-                    return true;
-                }
-            }*/
-
             return false;
         }
 
@@ -398,27 +349,26 @@ namespace Server.Engines.Quests
                 {
                     BaseObjective objective = quest.Objectives[j];
 
-                    if (objective is DeliverObjective)
+                    if (objective is DeliverObjective deliver && deliver.Update(vendor))
                     {
-                        DeliverObjective deliver = (DeliverObjective)objective;
-
-                        if (deliver.Update(vendor))
+                        if (quest.Completed)
                         {
-                            if (quest.Completed)
+                            player.SendLocalizedMessage(1046258, null, 0x23); // Your quest is complete.
+                            player.PlaySound(quest.CompleteSound);
+
+                            quest.OnCompleted();
+
+                            if (vendor is MondainQuester quester)
                             {
-                                player.SendLocalizedMessage(1046258, null, 0x23); // Your quest is complete.
-                                player.PlaySound(quest.CompleteSound);
-
-                                quest.OnCompleted();
-
-                                if (vendor is MondainQuester)
-                                    player.SendGump(new MondainQuestGump(player, quest, MondainQuestGump.Section.Complete, false, true, (MondainQuester)vendor));
-                                else
-                                    player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                                player.SendGump(new MondainQuestGump(player, quest, MondainQuestGump.Section.Complete, false, true, quester));
                             }
-
-                            return true;
+                            else
+                            {
+                                player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.Complete, false, true));
+                            }
                         }
+
+                        return true;
                     }
                 }
             }
@@ -572,8 +522,11 @@ namespace Server.Engines.Quests
                     DeliverObjective deliver = (DeliverObjective)quest.Objectives[i];
 
                     if (quest.StartingItem != null)
+                    {
                         continue;
-                    else if (deliver.MaxProgress > CountQuestItems(quest.Owner, deliver.Delivery))
+                    }
+
+                    if (deliver.MaxProgress > CountQuestItems(quest.Owner, deliver.Delivery))
                     {
                         quest.Owner.SendLocalizedMessage(1074813);  // You have failed to complete your delivery.
                         deliver.Fail();
@@ -670,9 +623,9 @@ namespace Server.Engines.Quests
 
         public static void OnKilledBy(OnKilledByEventArgs e)
         {
-            if (e.KilledBy is PlayerMobile)
+            if (e.KilledBy is PlayerMobile pm)
             {
-                CheckCreature((PlayerMobile)e.KilledBy, e.Killed);
+                CheckCreature(pm, e.Killed);
             }
         }
 
@@ -718,23 +671,18 @@ namespace Server.Engines.Quests
                 {
                     BaseObjective objective = quest.Objectives[j];
 
-                    if (objective is ObtainObjective)
+                    if (objective is ObtainObjective obtain && obtain.Update(item))
                     {
-                        ObtainObjective obtain = (ObtainObjective)objective;
-
-                        if (obtain.Update(item))
+                        if (quest.Completed)
                         {
-                            if (quest.Completed)
-                            {
-                                quest.OnCompleted();
-                            }
-                            else if (obtain.Completed)
-                            {
-                                player.PlaySound(quest.UpdateSound);
-                            }
-
-                            return true;
+                            quest.OnCompleted();
                         }
+                        else if (obtain.Completed)
+                        {
+                            player.PlaySound(quest.UpdateSound);
+                        }
+
+                        return true;
                     }
                 }
             }
@@ -771,20 +719,15 @@ namespace Server.Engines.Quests
                 {
                     BaseObjective objective = quest.Objectives[j];
 
-                    if (objective is ApprenticeObjective)
+                    if (objective is ApprenticeObjective apprentice && apprentice.Update(skill))
                     {
-                        ApprenticeObjective apprentice = (ApprenticeObjective)objective;
-
-                        if (apprentice.Update(skill))
+                        if (quest.Completed)
                         {
-                            if (quest.Completed)
-                            {
-                                quest.OnCompleted();
-                            }
-                            else if (apprentice.Completed)
-                            {
-                                player.PlaySound(quest.UpdateSound);
-                            }
+                            quest.OnCompleted();
+                        }
+                        else if (apprentice.Completed)
+                        {
+                            player.PlaySound(quest.UpdateSound);
                         }
                     }
                 }
@@ -806,16 +749,11 @@ namespace Server.Engines.Quests
                 {
                     BaseObjective objective = quest.Objectives[j];
 
-                    if (objective is ApprenticeObjective && !objective.Completed)
+                    if (objective is ApprenticeObjective apprentice && !apprentice.Completed && apprentice.Region != null)
                     {
-                        ApprenticeObjective apprentice = (ApprenticeObjective)objective;
-
-                        if (apprentice.Region != null)
+                        if (player.Region.IsPartOf(apprentice.Region) && skill.SkillName == apprentice.Skill)
                         {
-                            if (player.Region.IsPartOf(apprentice.Region) && skill.SkillName == apprentice.Skill)
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
                 }
@@ -938,14 +876,10 @@ namespace Server.Engines.Quests
 
         private void ToggleQuestItem_Callback(Mobile from, object obj)
         {
-            if (from is PlayerMobile)
+            if (from is PlayerMobile player)
             {
-                PlayerMobile player = (PlayerMobile)from;
-
-                if (obj is Item)
+                if (obj is Item item)
                 {
-                    Item item = (Item)obj;
-
                     if (item.Parent != null && item.Parent == player.Backpack)
                     {
                         if (!QuestHelper.CheckItem(player, item))

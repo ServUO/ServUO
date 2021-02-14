@@ -75,18 +75,18 @@ namespace Server.Items
 
         public override void QuantityChanged()
         {
-            if (Content == BeverageType.Water && Quantity == 0 && m_Linked && RootParent is Mobile)
+            if (Content == BeverageType.Water && Quantity == 0 && m_Linked && RootParent is Mobile mobile)
             {
-                if (((Mobile)RootParent).InRange(m_LinkLocation, 10) && ((Mobile)RootParent).Map == m_LinkMap)
+                if (mobile.InRange(m_LinkLocation, 10) && mobile.Map == m_LinkMap)
                 {
                     Quantity = MaxQuantity;
 
-                    ((Mobile)RootParent).SendLocalizedMessage(1115901);  // The decanter has automatically been filled from the linked water trough.
-                    ((Mobile)RootParent).PlaySound(0x4E);
+                    mobile.SendLocalizedMessage(1115901);  // The decanter has automatically been filled from the linked water trough.
+                    mobile.PlaySound(0x4E);
                 }
                 else
                 {
-                    ((Mobile)RootParent).SendLocalizedMessage(1115972);  // The decanter’s refill attempt failed because the linked water trough is not in the area.
+                    mobile.SendLocalizedMessage(1115972);  // The decanter’s refill attempt failed because the linked water trough is not in the area.
                 }
             }
         }
@@ -171,17 +171,17 @@ namespace Server.Items
                 Point3D location = new Point3D();
                 Map map = Map.Felucca;
 
-                if (targ is StaticTarget)
+                if (targ is StaticTarget sTarget)
                 {
-                    itemID = ((StaticTarget)targ).ItemID;
-                    location = ((StaticTarget)targ).Location;
+                    itemID = sTarget.ItemID;
+                    location = sTarget.Location;
                     map = from.Map;
                 }
-                else if (targ is Item)
+                else if (targ is Item item)
                 {
-                    itemID = ((Item)targ).ItemID;
-                    location = ((Item)targ).Location;
-                    map = ((Item)targ).Map;
+                    itemID = item.ItemID;
+                    location = item.Location;
+                    map = item.Map;
                 }
 
                 if (itemID >= 0xB41 && itemID <= 0xB44)

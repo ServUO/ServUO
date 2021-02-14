@@ -138,12 +138,10 @@ namespace Server.Items
 
                 int[][] RacialData = (m_From.Race == Race.Human) ? HumanArray : ElvenArray;
 
-                if (m_From is PlayerMobile)
+                if (m_From is PlayerMobile pm)
                 {
-                    PlayerMobile pm = (PlayerMobile)m_From;
-
                     pm.SetHairMods(-1, -1); // clear any hairmods (disguise kit, incognito)
-                    m_From.HairItemID = (m_From.Female) ? RacialData[info.ButtonID][2] : RacialData[info.ButtonID][3];
+                    pm.HairItemID = (pm.Female) ? RacialData[info.ButtonID][2] : RacialData[info.ButtonID][3];
                     m_Deed.Delete();
                 }
             }

@@ -66,26 +66,28 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
 
         public bool CouldFit(IPoint3D p, Map map)
         {
             if (map == null || !map.CanFit(p.X, p.Y, p.Z, ItemData.Height))
+            {
                 return false;
+            }
 
             if (FacingEast)
-                return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // west wall                
-            else
-                return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // north wall
+            {
+                return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // west wall
+            }
+
+            return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // north wall
         }
     }
 
@@ -125,15 +127,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
 
         private class InternalGump : Gump
@@ -161,7 +161,7 @@ namespace Server.Items
                 AddPage(0);
 
                 AddBackground(50, 89, 647, 505, 2600);
-                AddLabel(103, 114, 0, @"Choose from the following:");
+                AddLabel(103, 114, 0, "Choose from the following:");
 
                 int itemID = Start;
 
@@ -175,15 +175,14 @@ namespace Server.Items
                         AddButton(92 + i * 65, 155, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
                         AddTooltip(1104344 + i);
                     }
-                    else if (i > 8 && i < 18)
+                    else if (i < 18)
                     {
-
                         AddItem(82 + ((i - 9) * 65), 330, itemID);
                         AddTooltip(1104344 + i);
                         AddButton(92 + ((i - 9) * 65), 305, 0x845, 0x846, itemID, GumpButtonType.Reply, 0);
                         AddTooltip(1104344 + i);
                     }
-                    else if (i >= 18 && 26 >= i)
+                    else if (26 >= i)
                     {
                         AddItem(82 + ((i - 18) * 65), 480, itemID);
                         AddTooltip(1104344 + i);
@@ -263,9 +262,13 @@ namespace Server.Items
                                     DecorativeShardShield shield = null;
 
                                     if (north)
+                                    {
                                         shield = new DecorativeShardShield(GetSouthItemID(m_ItemID));
-                                    else if (west)
+                                    }
+                                    else
+                                    {
                                         shield = new DecorativeShardShield(m_ItemID);
+                                    }
 
                                     house.Addons[shield] = from;
                                     shield.MoveToWorld(p3d, map);

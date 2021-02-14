@@ -18,7 +18,7 @@ namespace Server.Items
         }
 
         public static PlunderBeaconSpawner Spawner { get; set; }
-        public Dictionary<PlunderZone, List<PlunderBeaconAddon>> PlunderBeacons { get; set; }
+        public Dictionary<PlunderZone, List<PlunderBeaconAddon>> PlunderBeacons { get; }
 
         public static void AddPlunderBeacon(PlunderZone zone, PlunderBeaconAddon beacon)
         {

@@ -24,7 +24,7 @@ namespace Server.Items
 
         protected override void OnTick()
         {
-            if ((HonestyPickup + TimeSpan.FromHours(ExpireTime)) < DateTime.UtcNow)
+            if (HonestyPickup + TimeSpan.FromHours(ExpireTime) < DateTime.UtcNow)
             {
                 Remove();
             }
@@ -51,19 +51,17 @@ namespace Server.Items
             {
                 Owner.HonestyItem = false;
 
-                if (Owner.RootParent is Mobile)
+                if (Owner.RootParent is Mobile mobile)
                 {
-                    ((Mobile)Owner.RootParent).SendLocalizedMessage(1151519); // You claim the item as your own.  Finders keepers, losers weepers!
+                    mobile.SendLocalizedMessage(1151519); // You claim the item as your own.  Finders keepers, losers weepers!
                 }
             }
         }
 
         public override void OnAfterDuped(ItemSocket oldSocket)
         {
-            if (oldSocket is HonestyItemSocket)
+            if (oldSocket is HonestyItemSocket honesty)
             {
-                HonestyItemSocket honesty = oldSocket as HonestyItemSocket;
-
                 HonestyRegion = honesty.HonestyRegion;
                 HonestyOwner = honesty.HonestyOwner;
                 HonestyPickup = honesty.HonestyPickup;

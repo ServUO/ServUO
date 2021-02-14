@@ -145,16 +145,18 @@ namespace Server
                 isInteger = int.TryParse(value, out i);
 
             if (isInteger)
+            {
                 return new TextDefinition(i);
-            else
-                return new TextDefinition(value);
+            }
+
+            return new TextDefinition(value);
         }
 
         public override string ToString()
         {
             if (m_Number > 0)
                 return string.Concat("#", m_Number.ToString());
-            else if (m_String != null)
+            if (m_String != null)
                 return m_String;
 
             return "";
@@ -164,7 +166,7 @@ namespace Server
         {
             if (m_Number > 0)
                 return string.Format("{0} (0x{0:X})", m_Number);
-            else if (m_String != null)
+            if (m_String != null)
                 return string.Format("\"{0}\"", m_String);
 
             return propsGump ? "-empty-" : "empty";
@@ -174,7 +176,7 @@ namespace Server
         {
             if (m_Number > 0)
                 return m_Number.ToString();
-            else if (m_String != null)
+            if (m_String != null)
                 return m_String;
 
             return "";

@@ -29,10 +29,7 @@ namespace Server.Engines.Khaldun
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasBeenExamined
         {
-            get
-            {
-                return _HasBeenExamined;
-            }
+            get => _HasBeenExamined;
             set
             {
                 bool current = _HasBeenExamined;
@@ -157,7 +154,7 @@ namespace Server.Engines.Khaldun
         {
             public override int MessageCliloc => 1158557;
 
-            public TrapDoor Door { get; set; }
+            public TrapDoor Door { get; }
 
             public TrapDoorPrompt(TrapDoor door)
             {
@@ -194,7 +191,6 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(Keyword);
@@ -205,8 +201,7 @@ namespace Server.Engines.Khaldun
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Keyword = reader.ReadString();
             Destination = reader.ReadPoint3D();

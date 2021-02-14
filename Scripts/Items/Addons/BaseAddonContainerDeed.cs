@@ -149,9 +149,8 @@ namespace Server.Items
                         m_Deed.Delete();
                         house.Addons[addon] = from;
 
-                        if (addon is GardenShedAddon)
+                        if (addon is GardenShedAddon ad)
                         {
-                            GardenShedAddon ad = addon as GardenShedAddon;
                             house.Addons[ad.SecondContainer] = from;
                         }
 

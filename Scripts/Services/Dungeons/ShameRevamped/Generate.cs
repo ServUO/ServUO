@@ -84,11 +84,13 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Trammel))
             {
-                dictionary = new Dictionary<Point3D, int>();
-                dictionary[new Point3D(-1, 0, 0)] = 2272;
-                dictionary[new Point3D(0, 0, 0)] = 2272;
-                dictionary[new Point3D(2, 0, 0)] = 2272;
-                dictionary[new Point3D(1, 0, 0)] = 2272;
+                dictionary = new Dictionary<Point3D, int>
+                {
+                    [new Point3D(-1, 0, 0)] = 2272,
+                    [new Point3D(0, 0, 0)] = 2272,
+                    [new Point3D(2, 0, 0)] = 2272,
+                    [new Point3D(1, 0, 0)] = 2272
+                };
 
                 ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
@@ -98,11 +100,13 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
             {
-                dictionary = new Dictionary<Point3D, int>();
-                dictionary[new Point3D(-1, 0, 0)] = 2272;
-                dictionary[new Point3D(0, 0, 0)] = 2272;
-                dictionary[new Point3D(2, 0, 0)] = 2272;
-                dictionary[new Point3D(1, 0, 0)] = 2272;
+                dictionary = new Dictionary<Point3D, int>
+                {
+                    [new Point3D(-1, 0, 0)] = 2272,
+                    [new Point3D(0, 0, 0)] = 2272,
+                    [new Point3D(2, 0, 0)] = 2272,
+                    [new Point3D(1, 0, 0)] = 2272
+                };
 
                 ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5405, 90, 10), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
@@ -115,11 +119,13 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Trammel))
             {
-                dictionary = new Dictionary<Point3D, int>();
-                dictionary[new Point3D(0, -1, 0)] = 2272;
-                dictionary[new Point3D(0, 0, 0)] = 2272;
-                dictionary[new Point3D(0, 1, 0)] = 2272;
-                dictionary[new Point3D(0, 2, 0)] = 2272;
+                dictionary = new Dictionary<Point3D, int>
+                {
+                    [new Point3D(0, -1, 0)] = 2272,
+                    [new Point3D(0, 0, 0)] = 2272,
+                    [new Point3D(0, 1, 0)] = 2272,
+                    [new Point3D(0, 2, 0)] = 2272
+                };
 
                 ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
@@ -129,11 +135,13 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
             {
-                dictionary = new Dictionary<Point3D, int>();
-                dictionary[new Point3D(0, -1, 0)] = 2272;
-                dictionary[new Point3D(0, 0, 0)] = 2272;
-                dictionary[new Point3D(0, 1, 0)] = 2272;
-                dictionary[new Point3D(0, 2, 0)] = 2272;
+                dictionary = new Dictionary<Point3D, int>
+                {
+                    [new Point3D(0, -1, 0)] = 2272,
+                    [new Point3D(0, 0, 0)] = 2272,
+                    [new Point3D(0, 1, 0)] = 2272,
+                    [new Point3D(0, 2, 0)] = 2272
+                };
 
                 ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5472, 26, -30), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);
@@ -146,10 +154,12 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Trammel))
             {
-                dictionary = new Dictionary<Point3D, int>();
-                dictionary[new Point3D(-1, 0, 0)] = 1059;
-                dictionary[new Point3D(0, 0, 0)] = 1059;
-                dictionary[new Point3D(1, 0, 0)] = 1059;
+                dictionary = new Dictionary<Point3D, int>
+                {
+                    [new Point3D(-1, 0, 0)] = 1059,
+                    [new Point3D(0, 0, 0)] = 1059,
+                    [new Point3D(1, 0, 0)] = 1059
+                };
 
                 ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Trammel);
                 WeakEntityCollection.Add("newshame", wall);
@@ -159,10 +169,12 @@ namespace Server.Engines.ShameRevamped
 
             if (!CheckForAltar(altarLoc, Map.Felucca))
             {
-                dictionary = new Dictionary<Point3D, int>();
-                dictionary[new Point3D(-1, 0, 0)] = 1059;
-                dictionary[new Point3D(0, 0, 0)] = 1059;
-                dictionary[new Point3D(1, 0, 0)] = 1059;
+                dictionary = new Dictionary<Point3D, int>
+                {
+                    [new Point3D(-1, 0, 0)] = 1059,
+                    [new Point3D(0, 0, 0)] = 1059,
+                    [new Point3D(1, 0, 0)] = 1059
+                };
 
                 ShameWall wall = new ShameWall(dictionary, altarLoc, new Point3D(5621, 43, 0), Map.Felucca);
                 WeakEntityCollection.Add("newshame", wall);

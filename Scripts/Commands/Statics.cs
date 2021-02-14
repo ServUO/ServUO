@@ -215,7 +215,7 @@ namespace Server
                             int length = -1;
                             int extra = 0;
 
-                            if ((oldTileCount + newTileCount) > 0)
+                            if (oldTileCount + newTileCount > 0)
                             {
                                 mulWriter.Seek(0, SeekOrigin.End);
 

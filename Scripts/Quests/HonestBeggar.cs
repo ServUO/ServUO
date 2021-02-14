@@ -6,11 +6,10 @@ namespace Server.Engines.Quests
     public class HonestBeggarQuest : BaseQuest
     {
         public HonestBeggarQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(ReginasRing), "regina's ring", 1, typeof(Regina), "Regina"));
 
-            AddReward(new BaseReward(1075394)); // Find the ring’s owner.
+            AddReward(new BaseReward(1075394)); // Find the ringâ€™s owner.
         }
 
         public override QuestChain ChainID => QuestChain.HonestBeggar;
@@ -26,30 +25,28 @@ namespace Server.Engines.Quests
         /* I see. Too good to help an honest beggar like me, eh? */
         public override object Refuse => 1075395;
         /* A jewel like this must be worth a lot, so it must belong to some noble or another. I would show it around the castle. 
-        Someone’s bound to recognize it. */
+        Someoneâ€™s bound to recognize it. */
         public override object Uncomplete => 1075396;
         /* Didst thou find my ring? I thank thee very much! It is an old ring, and a gift from my husband. I was most distraught 
         when I realized it was missing. */
         public override object Complete => 1075397;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class ReginasThanksQuest : BaseQuest
     {
         public ReginasThanksQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(ReginasLetter), "regina's letter", 1, typeof(Evan), "Evan"));
 
@@ -58,9 +55,9 @@ namespace Server.Engines.Quests
 
         public override QuestChain ChainID => QuestChain.HonestBeggar;
         public override bool DoneOnce => true;
-        /* Regina’s Thanks */
+        /* Reginaâ€™s Thanks */
         public override object Title => 1075398;
-        /* What’s that you say? It was a humble beggar that found my ring? Such honesty must be rewarded. Here, take this packet 
+        /* Whatâ€™s that you say? It was a humble beggar that found my ring? Such honesty must be rewarded. Here, take this packet 
         and return it to him, and I will be in your debt. */
         public override object Description => 1075399;
         /* Hmph. Very well. What did you say his name was? */
@@ -70,18 +67,17 @@ namespace Server.Engines.Quests
         /* What? For me? Let me see . . . these sapphire earrings are for you, it says. Oh, she wants to offer me a job! This is 
         the most wonderful thing that ever happened to me!  */
         public override object Complete => 1075403;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

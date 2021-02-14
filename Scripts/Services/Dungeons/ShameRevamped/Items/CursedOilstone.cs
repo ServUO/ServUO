@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Server.Items
 {
     public class CursedOilstone : Item
@@ -31,8 +29,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1151813, "#1151809"); // You do not have a required component: ~1_val~
             else
             {
-                from.Backpack.ConsumeTotal(new Type[] { typeof(QuartzGrit), typeof(CorrosiveAsh) },
-                                           new int[] { 1, 1 });
+                from.Backpack.ConsumeTotal(new[] { typeof(QuartzGrit), typeof(CorrosiveAsh) }, new[] { 1, 1 });
 
                 Consume();
 
@@ -49,15 +46,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

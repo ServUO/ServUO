@@ -90,8 +90,10 @@ namespace Server.Engines.SorcerersDungeon
 
         public override bool IsRedeemableItem(Item item)
         {
-            if (item is ICombatEquipment && ((ICombatEquipment)item).ReforgedSuffix == ReforgedSuffix.EnchantedOrigin)
+            if (item is ICombatEquipment equipment && equipment.ReforgedSuffix == ReforgedSuffix.EnchantedOrigin)
+            {
                 return true;
+            }
 
             return false;
         }
@@ -116,7 +118,7 @@ namespace Server.Engines.SorcerersDungeon
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Ilshenar)
             {

@@ -49,15 +49,13 @@ namespace Server.SkillHandlers
 
                 int number = -1;
 
-                if (targeted is Mobile)
+                if (targeted is Mobile targ)
                 {
-                    Mobile targ = (Mobile)targeted;
-
                     if (targ.Player) // We can't beg from players
                     {
                         number = 500398; // Perhaps just asking would work better.
                     }
-                    else if (!targ.Body.IsHuman || targeted is PlayerVendor || targeted is PlayerBarkeeper) // Make sure the NPC is human and not a player controlled vendor.
+                    else if (!targ.Body.IsHuman || targ is PlayerVendor || targ is PlayerBarkeeper) // Make sure the NPC is human and not a player controlled vendor.
                     {
                         number = 500399; // There is little chance of getting money from that!
                     }
@@ -113,7 +111,7 @@ namespace Server.SkillHandlers
                 {
                     Container theirPack = m_Target.Backpack;
 
-                    double badKarmaChance = 0.5 - ((double)m_From.Karma / 8570);
+                    double badKarmaChance = 0.5 - (double)m_From.Karma / 8570;
 
                     if (theirPack == null && m_Target.Race != Race.Elf)
                     {
@@ -129,7 +127,7 @@ namespace Server.SkillHandlers
                         if (m_Target.Race != Race.Elf)
                         {
                             int toConsume = theirPack.GetAmount(typeof(Gold)) / 10;
-                            int max = 10 + (m_From.Fame / 2500);
+                            int max = 10 + m_From.Fame / 2500;
 
                             if (max > 14)
                             {

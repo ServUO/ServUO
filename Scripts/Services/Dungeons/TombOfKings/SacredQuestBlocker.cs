@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -26,8 +26,8 @@ namespace Server.Items
 
             PlayerMobile pm = m as PlayerMobile;
 
-            if (m is BaseCreature)
-                pm = ((BaseCreature)m).ControlMaster as PlayerMobile;
+            if (m is BaseCreature creature)
+                pm = creature.ControlMaster as PlayerMobile;
 
             if (pm != null && pm.AbyssEntry)
             {
@@ -35,12 +35,10 @@ namespace Server.Items
 
                 return true;
             }
-            else
-            {
-                m.SendLocalizedMessage(1112226); // Thou must be on a Sacred Quest to pass through.
 
-                return false;
-            }
+            m.SendLocalizedMessage(1112226); // Thou must be on a Sacred Quest to pass through.
+
+            return false;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -52,7 +50,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

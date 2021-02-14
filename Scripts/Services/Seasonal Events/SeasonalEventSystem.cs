@@ -51,7 +51,7 @@ namespace Server.Engines.SeasonalEvents
     {
         public static string FilePath = Path.Combine("Saves/Misc", "SeasonalEvents.bin");
 
-        public static List<SeasonalEvent> Entries { get; set; } = new List<SeasonalEvent>();
+        public static List<SeasonalEvent> Entries { get; } = new List<SeasonalEvent>();
 
         public static void Configure()
         {
@@ -88,9 +88,9 @@ namespace Server.Engines.SeasonalEvents
         [Description("Displays a menu to configure various seasonal systems.")]
         public static void SendGump(CommandEventArgs e)
         {
-            if (e.Mobile is PlayerMobile)
+            if (e.Mobile is PlayerMobile mobile)
             {
-                BaseGump.SendGump(new SeasonalEventGump((PlayerMobile)e.Mobile));
+                BaseGump.SendGump(new SeasonalEventGump(mobile));
             }
         }
 
@@ -136,9 +136,9 @@ namespace Server.Engines.SeasonalEvents
             {
                 entry.Status = EventStatus.Inactive;
 
-                if (from is PlayerMobile)
+                if (from is PlayerMobile mobile)
                 {
-                    BaseGump.SendGump(new SeasonalEventGump((PlayerMobile)from));
+                    BaseGump.SendGump(new SeasonalEventGump(mobile));
                 }
             }
         }
@@ -199,10 +199,7 @@ namespace Server.Engines.SeasonalEvents
         [CommandProperty(AccessLevel.Administrator)]
         public virtual EventStatus Status
         {
-            get
-            {
-                return _Status;
-            }
+            get => _Status;
             set
             {
                 EventStatus old = _Status;
@@ -217,10 +214,10 @@ namespace Server.Engines.SeasonalEvents
         }
 
         [CommandProperty(AccessLevel.Administrator)]
-        public string Name { get; private set; }
+        public string Name { get; }
 
         [CommandProperty(AccessLevel.Administrator)]
-        public EventType EventType { get; private set; }
+        public EventType EventType { get; }
 
         [CommandProperty(AccessLevel.Administrator)]
         public int MonthStart { get; set; }
@@ -231,7 +228,7 @@ namespace Server.Engines.SeasonalEvents
         [CommandProperty(AccessLevel.Administrator)]
         public int Duration
         {
-            get { return _Duration; }
+            get => _Duration;
             set
             {
                 if (!FreezeDuration)
@@ -305,10 +302,8 @@ namespace Server.Engines.SeasonalEvents
                         {
                             return now.Month == MonthStart && now.Day == DayStart;
                         }
-                        else
-                        {
-                            return now > starts && now < starts + TimeSpan.FromDays(Duration);
-                        }
+
+                        return now > starts && now < starts + TimeSpan.FromDays(Duration);
                     }
             }
         }

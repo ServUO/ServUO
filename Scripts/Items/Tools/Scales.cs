@@ -11,13 +11,13 @@ namespace Server.Items
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get => _Resource; set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
+        public Mobile Crafter { get => _Crafter; set { _Crafter = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+        public ItemQuality Quality { get => _Quality; set { _Quality = value; InvalidateProperties(); } }
 
         public bool PlayerConstructed => true;
 
@@ -128,12 +128,11 @@ namespace Server.Items
                 {
                     message = "It cannot weight itself.";
                 }
-                else if (targeted is Item)
+                else if (targeted is Item item)
                 {
-                    Item item = (Item)targeted;
                     object root = item.RootParent;
 
-                    if ((root != null && root != from) || item.Parent == from)
+                    if (root != null && root != from || item.Parent == from)
                     {
                         message = "You decide that item's current location is too awkward to get an accurate result.";
                     }

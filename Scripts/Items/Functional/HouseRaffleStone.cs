@@ -122,10 +122,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public HouseRaffleState CurrentState
         {
-            get
-            {
-                return m_State;
-            }
+            get => m_State;
             set
             {
                 if (m_State != value)
@@ -146,10 +143,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public Rectangle2D PlotBounds
         {
-            get
-            {
-                return m_Bounds;
-            }
+            get => m_Bounds;
             set
             {
                 m_Bounds = value;
@@ -161,10 +155,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public Map PlotFacet
         {
-            get
-            {
-                return m_Facet;
-            }
+            get => m_Facet;
             set
             {
                 m_Facet = value;
@@ -176,10 +167,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public Mobile Winner
         {
-            get
-            {
-                return m_Winner;
-            }
+            get => m_Winner;
             set
             {
                 m_Winner = value;
@@ -189,22 +177,13 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public HouseRaffleDeed Deed
         {
-            get
-            {
-                return m_Deed;
-            }
-            set
-            {
-                m_Deed = value;
-            }
+            get => m_Deed;
+            set => m_Deed = value;
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public DateTime Started
         {
-            get
-            {
-                return m_Started;
-            }
+            get => m_Started;
             set
             {
                 m_Started = value;
@@ -214,10 +193,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public TimeSpan Duration
         {
-            get
-            {
-                return m_Duration;
-            }
+            get => m_Duration;
             set
             {
                 m_Duration = value;
@@ -238,22 +214,13 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public HouseRaffleExpireAction ExpireAction
         {
-            get
-            {
-                return m_ExpireAction;
-            }
-            set
-            {
-                m_ExpireAction = value;
-            }
+            get => m_ExpireAction;
+            set => m_ExpireAction = value;
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Seer)]
         public int TicketPrice
         {
-            get
-            {
-                return m_TicketPrice;
-            }
+            get => m_TicketPrice;
             set
             {
                 m_TicketPrice = Math.Max(0, value);
@@ -345,9 +312,11 @@ namespace Server.Items
         public string FormatPrice()
         {
             if (m_TicketPrice == 0)
+            {
                 return "FREE";
-            else
-                return string.Format("{0} gold", m_TicketPrice);
+            }
+
+            return string.Format("{0} gold", m_TicketPrice);
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -427,7 +396,7 @@ namespace Server.Items
             {
                 Container bank = from.FindBankNoCreate();
 
-                if (m_TicketPrice == 0 || (from.Backpack != null && from.Backpack.ConsumeTotal(typeof(Gold), m_TicketPrice)) || Mobiles.Banker.Withdraw(from, m_TicketPrice, true))
+                if (m_TicketPrice == 0 || from.Backpack != null && from.Backpack.ConsumeTotal(typeof(Gold), m_TicketPrice) || Mobiles.Banker.Withdraw(from, m_TicketPrice, true))
                 {
                     m_Entries.Add(new RaffleEntry(from));
 
@@ -545,7 +514,7 @@ namespace Server.Items
                     }
                 case 0:
                     {
-                        bool oldActive = (version < 3) ? reader.ReadBool() : false;
+                        bool oldActive = version < 3 ? reader.ReadBool() : false;
 
                         m_Bounds = reader.ReadRect2D();
                         m_Facet = reader.ReadMap();

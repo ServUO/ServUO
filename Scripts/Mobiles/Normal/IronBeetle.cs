@@ -201,7 +201,7 @@ namespace Server.Mobiles
                             int amount = def.ConsumedPerHarvest;
                             int feluccaAmount = def.ConsumedPerFeluccaHarvest;
 
-                            bool inFelucca = (map == Map.Felucca);
+                            bool inFelucca = map == Map.Felucca;
 
                             if (inFelucca)
                                 item.Amount = feluccaAmount;
@@ -213,8 +213,8 @@ namespace Server.Mobiles
 
                         item.MoveToWorld(loc, map);
 
-                        system.DoHarvestingEffect(this, null, def, map, loc);
-                        system.DoHarvestingSound(this, null, def, null);
+                        system.DoHarvestingEffect(this, def, loc);
+                        system.DoHarvestingSound(this, def, null);
 
                         // Mine for gems
                         BonusHarvestResource bonus = def.GetBonusResource();
@@ -286,7 +286,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

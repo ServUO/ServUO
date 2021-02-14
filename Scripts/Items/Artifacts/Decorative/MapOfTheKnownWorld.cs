@@ -12,18 +12,14 @@ namespace Server.Items
         private SecureLevel m_Level;
 
         public override bool IsArtifact => true;
+        public override int LabelNumber => 1075571; // A map of the known world
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecureLevel Level
-        {
-            get { return m_Level; }
-            set { m_Level = value; }
-        }
+        public SecureLevel Level { get => m_Level; set => m_Level = value; }
 
         [Constructable]
         public MapOfTheKnownWorld() : base(0x3BB6)
         {
-            Name = "a map of the known world";
             Weight = 1.0;
             LootType = LootType.Blessed;
         }
@@ -52,7 +48,7 @@ namespace Server.Items
         {
             public InternalGump() : base(50, 50)
             {
-                AddImage(0, 0, 0x12B); //299
+                AddImage(0, 0, 0x12B);
             }
         }
 
@@ -63,7 +59,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt((int)m_Level);
@@ -72,8 +67,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Level = (SecureLevel)reader.ReadEncodedInt();
         }

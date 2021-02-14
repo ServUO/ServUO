@@ -21,8 +21,11 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (RootParent != null || !from.InRange(GetWorldLocation(), 3) || Movable || IsLockedDown || IsSecure)
+            {
                 return;
-            else if (from.Backpack != null && m_Span == 0)
+            }
+
+            if (from.Backpack != null && m_Span == 0)
             {
                 Item key = from.Backpack.FindItemByType(typeof(MagicKey));
 
@@ -46,11 +49,11 @@ namespace Server.Items
 
         public override void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile m = (Mobile)RootParent;
+                Mobile m = mobile;
 
-                if (m != null && m.Map != Map.Internal)
+                if (m.Map != Map.Internal)
                 {
                     if (m_PuzzleRoom.Contains(m.Location))
                     {
@@ -136,13 +139,15 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Span);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Span = reader.ReadInt();
         }
     }

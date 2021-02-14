@@ -6,7 +6,6 @@ namespace Server.Items
 
         [Constructable]
         public GargishFancyBearingTheCrestOfBlackthorn3()
-            : base()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             SkillBonuses.SetValues(0, SkillName.Stealth, 10.0);
@@ -27,13 +26,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                MaxHitPoints = 0;
-                HitPoints = 0;
-            }
+            reader.ReadInt();
         }
     }
 }

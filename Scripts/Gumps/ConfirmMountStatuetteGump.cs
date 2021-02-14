@@ -22,14 +22,14 @@ namespace Server.Gumps
 
             BaseCreature m = null;
 
-            if (m_Item is ICreatureStatuette)
+            if (m_Item is ICreatureStatuette statuette)
             {
-                m = Activator.CreateInstance(((ICreatureStatuette)m_Item).CreatureType) as BaseCreature;
+                m = Activator.CreateInstance(statuette.CreatureType) as BaseCreature;
             }
 
             if (m != null)
             {
-                if ((from.Followers + m.ControlSlots) > from.FollowersMax)
+                if (from.Followers + m.ControlSlots > from.FollowersMax)
                 {
                     m.Delete();
                     from.SendLocalizedMessage(1114321); // You have too many followers to control that pet.

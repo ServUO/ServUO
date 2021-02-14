@@ -231,12 +231,12 @@ namespace Server.Gumps
 
                 if (p != null)
                 {
-                    if (p is Item)
-                        p = ((Item)p).GetWorldTop();
-                    else if (p is Mobile)
-                        p = ((Mobile)p).Location;
+                    if (p is Item item)
+                        p = item.GetWorldTop();
+                    else if (p is Mobile mobile)
+                        p = mobile.Location;
 
-                    Commands.Add.Invoke(from, new Point3D(p), new Point3D(p), new string[] { m_Type.Name });
+                    Commands.Add.Invoke(from, new Point3D(p), new Point3D(p), new[] { m_Type.Name });
 
                     from.Target = new InternalTarget(m_Type, m_SearchResults, m_SearchString, m_Page);
                 }

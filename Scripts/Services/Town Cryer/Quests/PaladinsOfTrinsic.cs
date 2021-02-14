@@ -51,15 +51,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -118,7 +116,7 @@ namespace Server.Engines.Quests
 
     public class Morz : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(PaladinsOfTrinsic) };
+        public override Type[] Quests => new[] { typeof(PaladinsOfTrinsic) };
 
         public static Morz TramInstance { get; set; }
         public static Morz FelInstance { get; set; }
@@ -172,9 +170,9 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(Location, 5))
+            if (m is PlayerMobile mobile && mobile.InRange(Location, 5))
             {
-                PaladinsOfTrinsic quest = QuestHelper.GetQuest((PlayerMobile)m, typeof(PaladinsOfTrinsic)) as PaladinsOfTrinsic;
+                PaladinsOfTrinsic quest = QuestHelper.GetQuest(mobile, typeof(PaladinsOfTrinsic)) as PaladinsOfTrinsic;
 
                 if (quest != null)
                 {
@@ -182,7 +180,7 @@ namespace Server.Engines.Quests
                 }
                 else
                 {
-                    PaladinsOfTrinsic2 quest2 = QuestHelper.GetQuest((PlayerMobile)m, typeof(PaladinsOfTrinsic2)) as PaladinsOfTrinsic2;
+                    PaladinsOfTrinsic2 quest2 = QuestHelper.GetQuest(mobile, typeof(PaladinsOfTrinsic2)) as PaladinsOfTrinsic2;
 
                     if (quest2 != null)
                     {
@@ -192,7 +190,7 @@ namespace Server.Engines.Quests
                         }
                         else
                         {
-                            m.SendGump(new MondainQuestGump(quest2, MondainQuestGump.Section.InProgress, false));
+                            mobile.SendGump(new MondainQuestGump(quest2, MondainQuestGump.Section.InProgress, false));
                             quest2.InProgress();
                         }
                     }
@@ -202,13 +200,13 @@ namespace Server.Engines.Quests
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5) && !InRange(oldLocation, 5))
+            if (m is PlayerMobile mobile && InRange(mobile.Location, 5) && !InRange(oldLocation, 5))
             {
-                PaladinsOfTrinsic2 quest = QuestHelper.GetQuest<PaladinsOfTrinsic2>((PlayerMobile)m);
+                PaladinsOfTrinsic2 quest = QuestHelper.GetQuest<PaladinsOfTrinsic2>(mobile);
 
                 if (quest != null && !quest.SentMessage && quest.Completed)
                 {
-                    m.SendLocalizedMessage(1158111); // You have proven yourself Honorable, the Lord Commander looks overjoyed as you approach him triumphantly! Speak to him to claim your reward!
+                    mobile.SendLocalizedMessage(1158111); // You have proven yourself Honorable, the Lord Commander looks overjoyed as you approach him triumphantly! Speak to him to claim your reward!
                     quest.SentMessage = true;
                 }
             }
@@ -222,15 +220,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

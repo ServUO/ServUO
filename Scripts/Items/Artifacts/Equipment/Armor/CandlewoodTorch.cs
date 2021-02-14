@@ -52,10 +52,10 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile && Burning)
+            if (parent is Mobile mobile && Burning)
             {
-                Mobiles.MeerMage.StopEffect((Mobile)parent, true);
-                SwarmContext.CheckRemove((Mobile)parent);
+                Mobiles.MeerMage.StopEffect(mobile, true);
+                SwarmContext.CheckRemove(mobile);
             }
         }
 

@@ -192,9 +192,9 @@ namespace Server.Items
             double checkbagpoint;
             bool added = false;
 
-            if (item is BaseContainer)
+            if (item is BaseContainer container)
             {
-                Container c = (Container)item;
+                Container c = container;
 
                 List<Item> list = c.FindItemsByType<Item>();
 
@@ -227,9 +227,9 @@ namespace Server.Items
 
         public void ConfirmCleanupItem(Item item)
         {
-            if (item is BaseContainer)
+            if (item is BaseContainer container)
             {
-                Container c = (Container)item;
+                Container c = container;
 
                 List<Item> list = c.FindItemsByType<Item>();
 

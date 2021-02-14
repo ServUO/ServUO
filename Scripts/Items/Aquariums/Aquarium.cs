@@ -1,4 +1,5 @@
 using Server.ContextMenus;
+using Server.Engines.Craft;
 using Server.Gumps;
 using Server.Multis;
 using Server.Network;
@@ -299,10 +300,8 @@ namespace Server.Items
 
             bool takeItem = true;
 
-            if (dropped is FishBowl)
+            if (dropped is FishBowl bowl)
             {
-                FishBowl bowl = (FishBowl)dropped;
-
                 if (bowl.Empty || !AddFish(from, bowl.Fish))
                     return false;
 
@@ -310,10 +309,8 @@ namespace Server.Items
 
                 takeItem = false;
             }
-            else if (dropped is BaseFish)
+            else if (dropped is BaseFish fish)
             {
-                BaseFish fish = (BaseFish)dropped;
-
                 if (!AddFish(from, fish))
                     return false;
             }
@@ -331,10 +328,8 @@ namespace Server.Items
 
                 from.SendLocalizedMessage(1074259, "1"); // ~1_NUM~ unit(s) of food have been added to the aquarium.
             }
-            else if (dropped is BaseBeverage)
+            else if (dropped is BaseBeverage beverage)
             {
-                BaseBeverage beverage = (BaseBeverage)dropped;
-
                 if (beverage.IsEmpty || !beverage.Pourable || beverage.Content != BeverageType.Water)
                 {
                     from.SendLocalizedMessage(500840); // Can't pour that in there.
@@ -821,10 +816,8 @@ namespace Server.Items
                 return false;
             }
 
-            if (item is BaseFish)
+            if (item is BaseFish fish)
             {
-                BaseFish fish = (BaseFish)item;
-
                 FishBowl bowl;
 
                 if ((bowl = GetEmptyBowl(from)) != null)
@@ -1316,6 +1309,14 @@ namespace Server.Items
         {
         }
 
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            Resource = CraftResource.None;
+            Hue = 0;
+
+            return quality;
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -1372,6 +1373,14 @@ namespace Server.Items
         public WallMountedAquariumDeed(Serial serial)
             : base(serial)
         {
+        }
+
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            Resource = CraftResource.None;
+            Hue = 0;
+
+            return quality;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -1486,6 +1495,14 @@ namespace Server.Items
         public LargeElegantAquariumDeed(Serial serial)
             : base(serial)
         {
+        }
+
+        public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
+        {
+            Resource = CraftResource.None;
+            Hue = 0;
+
+            return quality;
         }
 
         public override void OnDoubleClick(Mobile from)

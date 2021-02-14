@@ -26,7 +26,7 @@ namespace Server.Mobiles
 
                 AreaEffect[] effects = profile.GetAreaEffects().Where(a => !a.IsInCooldown(bc)).ToArray();
 
-                if (effects != null && effects.Length > 0)
+                if (effects.Length > 0)
                 {
                     effect = effects[Utility.Random(effects.Length)];
                 }
@@ -61,9 +61,9 @@ namespace Server.Mobiles
                 return false;
             }
 
-            return !RequiresCombatant || (defender != null && defender.Alive && !defender.Deleted &&
-                    !defender.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) &&
-                    defender.Map == attacker.Map && attacker.InLOS(defender));
+            return !RequiresCombatant || defender != null && defender.Alive && !defender.Deleted &&
+                !defender.IsDeadBondedPet && defender.InRange(attacker.Location, MaxRange) &&
+                defender.Map == attacker.Map && attacker.InLOS(defender);
         }
 
         public bool CheckMana(BaseCreature bc)
@@ -356,8 +356,10 @@ namespace Server.Mobiles
             {
                 AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(creature);
 
-                if ((profile != null && profile.HasAbility(MagicalAbility.Poisoning)) || 0.2 > Utility.RandomDouble())
+                if (profile != null && profile.HasAbility(MagicalAbility.Poisoning) || 0.2 > Utility.RandomDouble())
+                {
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
+                }
             }
         }
 
@@ -427,9 +429,9 @@ namespace Server.Mobiles
                 m.RevealingAction();
             }
 
-            if (creature is IAuraCreature)
+            if (creature is IAuraCreature auraCreature)
             {
-                ((IAuraCreature)creature).AuraEffect(m);
+                auraCreature.AuraEffect(m);
             }
         }
 

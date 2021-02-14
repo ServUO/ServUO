@@ -15,7 +15,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public GemType GemType
         {
-            get { return _GemType; }
+            get => _GemType;
             set
             {
                 if (Type != null && Type.IsSubclassOf(typeof(BaseJewel)))
@@ -28,7 +28,7 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public static double[] m_TinkerMaterialChances = new double[]
+        public static double[] m_TinkerMaterialChances =
         {
             0.501953125, // None
             0.250000000, // Dull Copper
@@ -255,14 +255,14 @@ namespace Server.Engines.BulkOrders
         */
         private static readonly Type[][] _TinkerTypeTable =
         {
-            new Type[] { typeof(Spoon), typeof(SpoonRight), typeof(SpoonLeft) },
-            new Type[] { typeof(Fork), typeof(ForkRight), typeof(ForkLeft) },
-            new Type[] { typeof(Knife), typeof(KnifeRight), typeof(KnifeLeft) },
-            new Type[] { typeof(Clock), typeof(ClockRight), typeof(ClockLeft) },
-            new Type[] { typeof(GoldRing), typeof(SilverRing) },
-            new Type[] { typeof(GoldBracelet), typeof(SilverBracelet) },
-            new Type[] { typeof(GoldEarrings), typeof(SilverEarrings) },
-            new Type[] { typeof(SmithHammer), typeof(SmithyHammer) }
+            new[] { typeof(Spoon), typeof(SpoonRight), typeof(SpoonLeft) },
+            new[] { typeof(Fork), typeof(ForkRight), typeof(ForkLeft) },
+            new[] { typeof(Knife), typeof(KnifeRight), typeof(KnifeLeft) },
+            new[] { typeof(Clock), typeof(ClockRight), typeof(ClockLeft) },
+            new[] { typeof(GoldRing), typeof(SilverRing) },
+            new[] { typeof(GoldBracelet), typeof(SilverBracelet) },
+            new[] { typeof(GoldEarrings), typeof(SilverEarrings) },
+            new[] { typeof(SmithHammer), typeof(SmithyHammer) }
         };
 
         public static bool CheckTinkerType(Type actual, Type lookingfor)

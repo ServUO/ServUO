@@ -49,10 +49,10 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 2);
-            AddLoot(LootPack.Parrot);
             AddLoot(LootPack.MedScrolls);
             AddLoot(LootPack.HighScrolls);
             AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(0, 2));
+            AddLoot(LootPack.LootItem<ParrotItem>(10.0));
         }
 
         public override void OnDeath(Container c)
@@ -82,7 +82,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

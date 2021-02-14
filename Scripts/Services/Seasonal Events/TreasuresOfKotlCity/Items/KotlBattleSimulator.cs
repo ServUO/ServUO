@@ -12,7 +12,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public static int Levels = 7;
         public static Rectangle2D SpawnBounds = new Rectangle2D(500, 2272, 87, 71);
-        public static Type[] SpawnTypes = new Type[] { typeof(SpectralKotlWarrior), typeof(SpectralMyrmidexWarrior) };
+        public static Type[] SpawnTypes = { typeof(SpectralKotlWarrior), typeof(SpectralMyrmidexWarrior) };
 
         public static TimeSpan BattleDuration = TimeSpan.FromMinutes(60);
         public static TimeSpan NextSpawnDuration => TimeSpan.FromSeconds(Utility.RandomMinMax(2, 25));
@@ -22,7 +22,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return _Active; }
+            get => _Active;
             set
             {
                 bool active = _Active;
@@ -114,10 +114,8 @@ namespace Server.Engines.TreasuresOfKotlCity
                         EndSimulation();
                         return;
                     }
-                    else
-                    {
-                        IncreaseLevel();
-                    }
+
+                    IncreaseLevel();
                 }
 
                 Timer.DelayCall(NextSpawnDuration, DoSpawn);
@@ -194,22 +192,19 @@ namespace Server.Engines.TreasuresOfKotlCity
                 case 1: bc = new SpectralMyrmidexWarrior(strong); break;
             }
 
-            if (bc != null)
-            {
-                bc.Spawner = this;
+            bc.Spawner = this;
 
-                bc.Home = HomeLocation;
-                bc.RangeHome = HomeRange;
+            bc.Home = HomeLocation;
+            bc.RangeHome = HomeRange;
 
-                bc.OnBeforeSpawn(loc, Map.TerMur);
-                bc.MoveToWorld(loc, Map.TerMur);
-                bc.OnAfterSpawn();
+            bc.OnBeforeSpawn(loc, Map.TerMur);
+            bc.MoveToWorld(loc, Map.TerMur);
+            bc.OnAfterSpawn();
 
-                if (Spawn == null)
-                    Spawn = new List<ISpawnable>();
+            if (Spawn == null)
+                Spawn = new List<ISpawnable>();
 
-                Spawn.Add(bc);
-            }
+            Spawn.Add(bc);
         }
 
         public KotlBattleSimulator(Serial serial)
@@ -280,10 +275,8 @@ namespace Server.Engines.TreasuresOfKotlCity
                         EndSimulation();
                         return;
                     }
-                    else
-                    {
-                        IncreaseLevel();
-                    }
+
+                    IncreaseLevel();
                 }
                 else
                 {
@@ -310,9 +303,9 @@ namespace Server.Engines.TreasuresOfKotlCity
 
                             foreach (Item i in eable)
                             {
-                                if (i is Teleporter)
+                                if (i is Teleporter teleporter)
                                 {
-                                    ((Teleporter)i).PointDest = new Point3D(543, 2479, 2);
+                                    teleporter.PointDest = new Point3D(543, 2479, 2);
                                 }
                             }
                         }

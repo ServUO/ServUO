@@ -32,16 +32,14 @@ namespace Server.Engines.Quests
 
             foreach (KeyValuePair<Type, int> kvp in line)
             {
-                Line[kvp.Key] = new int[] { 0, kvp.Value };
+                Line[kvp.Key] = new[] { 0, kvp.Value };
             }
         }
 
         public override bool Update(object obj)
         {
-            if (obj is Item)
+            if (obj is Item item)
             {
-                Item item = (Item)obj;
-
                 foreach (KeyValuePair<Type, int[]> kvp in Line)
                 {
                     if (item.GetType() == kvp.Key)
@@ -86,7 +84,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             int count = reader.ReadInt();
             Line = new Dictionary<Type, int[]>();

@@ -37,10 +37,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantPigmentHue PigmentHue
         {
-            get
-            {
-                return m_Hue;
-            }
+            get => m_Hue;
             set
             {
                 m_Hue = value;
@@ -145,8 +142,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1112243); // You decide not to waste pigments by mixing variations of the same hue.
                 }
-                else if ((PlantPigmentHue.White == m_Item.PigmentHue && PlantPigmentHueInfo.IsBright(pigment.PigmentHue)) ||
-                         (PlantPigmentHue.White == pigment.PigmentHue && PlantPigmentHueInfo.IsBright(m_Item.PigmentHue)))
+                else if (PlantPigmentHue.White == m_Item.PigmentHue && PlantPigmentHueInfo.IsBright(pigment.PigmentHue) || PlantPigmentHue.White == pigment.PigmentHue && PlantPigmentHueInfo.IsBright(m_Item.PigmentHue))
                 {
                     from.SendLocalizedMessage(1112241); // This pigment is too diluted to be faded further.
                 }

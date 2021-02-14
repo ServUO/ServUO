@@ -86,8 +86,12 @@ namespace Server.Items
                     List<Mobile> mobiles = region.GetMobiles();
 
                     foreach (Mobile m in mobiles)
-                        if (m is BaseCreature && ((BaseCreature)m).ControlMaster == from)
-                            m.MoveToWorld(new Point3D(3785, 1107, 20), Map);
+                    {
+                        if (m is BaseCreature bc && bc.ControlMaster == from)
+                        {
+                            bc.MoveToWorld(new Point3D(3785, 1107, 20), Map);
+                        }
+                    }
                 }
 
                 // teleport player
@@ -98,15 +102,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
-            get { return _Resource; }
+            get => _Resource;
             set
             {
                 CraftResource old = _Resource;

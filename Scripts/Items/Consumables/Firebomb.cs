@@ -103,8 +103,8 @@ namespace Server.Items
                             HeldBy.PublicOverheadMessage(MessageType.Regular, 957, false, m_Ticks.ToString());
                         else if (RootParent == null)
                             PublicOverheadMessage(MessageType.Regular, 957, false, m_Ticks.ToString());
-                        else if (RootParent is Mobile)
-                            ((Mobile)RootParent).PublicOverheadMessage(MessageType.Regular, 957, false, m_Ticks.ToString());
+                        else if (RootParent is Mobile mobile)
+                            mobile.PublicOverheadMessage(MessageType.Regular, 957, false, m_Ticks.ToString());
 
                         break;
                     }
@@ -127,9 +127,9 @@ namespace Server.Items
                             m_Users = null;
                         }
 
-                        if (RootParent is Mobile)
+                        if (RootParent is Mobile mobile)
                         {
-                            Mobile parent = (Mobile)RootParent;
+                            Mobile parent = mobile;
                             parent.SendLocalizedMessage(1060583); // The firebomb explodes in your hand!
                             AOS.Damage(parent, Utility.Random(3) + 4, 0, 100, 0, 0, 0);
                         }
@@ -189,8 +189,8 @@ namespace Server.Items
 
             IEntity to;
 
-            if (p is Mobile)
-                to = (Mobile)p;
+            if (p is Mobile mobile)
+                to = mobile;
             else
                 to = new Entity(Serial.Zero, new Point3D(p), Map);
 

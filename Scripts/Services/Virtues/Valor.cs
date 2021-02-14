@@ -35,7 +35,7 @@ namespace Server.Services.Virtues
 
             try
             {
-                if ((pm.LastValorLoss + LossDelay) < DateTime.UtcNow)
+                if (pm.LastValorLoss + LossDelay < DateTime.UtcNow)
                 {
                     if (VirtueHelper.Atrophy(from, VirtueName.Valor, LossAmount))
                         from.SendLocalizedMessage(1054040); // You have lost some Valor.

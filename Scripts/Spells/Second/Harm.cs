@@ -80,9 +80,9 @@ namespace Server.Spells.Second
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IDamageable)
+                if (o is IDamageable damageable)
                 {
-                    m_Owner.Target((IDamageable)o);
+                    m_Owner.Target(damageable);
                 }
             }
 

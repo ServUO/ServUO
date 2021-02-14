@@ -34,7 +34,7 @@ namespace Server.Spells.Fifth
                 Effects.SendLocationParticles(EffectItem.Create(e.Location, e.Map, EffectItem.DefaultDuration), 0x376A, 9, 20, 5042);
                 Effects.PlaySound(e.Location, e.Map, 0x201);
 
-                if (e is Item item && (e.GetType().IsDefined(typeof(DispellableFieldAttribute), false) || (item is Moongate && !((Moongate)item).Dispellable)))
+                if (e is Item item && (e.GetType().IsDefined(typeof(DispellableFieldAttribute), false) || (item is Moongate gate && !gate.Dispellable)))
                 {
                     item.Delete();
                 }
@@ -54,9 +54,9 @@ namespace Server.Spells.Fifth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IEntity)
+                if (o is IEntity entity)
                 {
-                    m_Owner.Target((IEntity)o);
+                    m_Owner.Target(entity);
                 }
             }
 

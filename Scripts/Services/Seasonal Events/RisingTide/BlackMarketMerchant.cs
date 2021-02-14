@@ -61,9 +61,9 @@ namespace Server.Engines.RisingTide
 
         public override void AwardPoints(PlayerMobile pm, Item item, int amount)
         {
-            if (item is MaritimeCargo)
+            if (item is MaritimeCargo cargo)
             {
-                PointsSystem.RisingTide.AwardPoints(pm, ((MaritimeCargo)item).GetAwardAmount());
+                PointsSystem.RisingTide.AwardPoints(pm, cargo.GetAwardAmount());
             }
         }
 
@@ -105,7 +105,7 @@ namespace Server.Engines.RisingTide
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

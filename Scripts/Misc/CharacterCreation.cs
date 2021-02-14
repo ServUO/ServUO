@@ -134,7 +134,9 @@ namespace Server.Misc
             for (int i = 0; i < a.Length; ++i)
             {
                 if (a[i] == null)
-                    return (a[i] = new PlayerMobile());
+                {
+                    return a[i] = new PlayerMobile();
+                }
             }
 
             return null;
@@ -175,10 +177,8 @@ namespace Server.Misc
 
             bool young = false;
 
-            if (newChar is PlayerMobile)
+            if (newChar is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)newChar;
-
                 pm.AutoRenewInsurance = true;
 
                 double skillcap = Config.Get("PlayerCaps.SkillCap", 1000.0d) / 10;
@@ -316,7 +316,7 @@ namespace Server.Misc
 
             FixStats(ref str, ref dex, ref intel, max);
 
-            if (str < 10 || str > 60 || dex < 10 || dex > 60 || intel < 10 || intel > 60 || (str + dex + intel) != max)
+            if (str < 10 || str > 60 || dex < 10 || dex > 60 || intel < 10 || intel > 60 || str + dex + intel != max)
             {
                 str = 10;
                 dex = 10;
@@ -354,7 +354,7 @@ namespace Server.Misc
                 }
             }
 
-            return (total == 100 || total == 120);
+            return total == 100 || total == 120;
         }
 
         private static void SetStats(Mobile m, NetState state, int prof, int str, int dex, int intel)
@@ -504,9 +504,9 @@ namespace Server.Misc
             }
 
             bool addSkillItems = true;
-            bool elf = (m.Race == Race.Elf);
-            bool human = (m.Race == Race.Human);
-            bool gargoyle = (m.Race == Race.Gargoyle);
+            bool elf = m.Race == Race.Elf;
+            bool human = m.Race == Race.Human;
+            bool gargoyle = m.Race == Race.Gargoyle;
 
             switch (prof)
             {
@@ -525,8 +525,7 @@ namespace Server.Misc
                     }
                 case 4: // Necromancer
                     {
-                        Container regs = new BagOfNecroReagents(50);
-                        PackItem(regs);
+                        PackItem(new BagOfNecroReagents(50));
 
                         if (elf || human)
                             EquipItem(new BoneHelm());
@@ -539,7 +538,7 @@ namespace Server.Misc
                             EquipItem(NecroHue(new LeafGloves()));
                             EquipItem(NecroHue(new LeafGorget()));
                             EquipItem(NecroHue(new LeafGorget()));
-                            EquipItem(NecroHue(new ElvenPants())); //TODO: Verify the pants
+                            EquipItem(NecroHue(new ElvenPants()));
                             EquipItem(new ElvenBoots());
                         }
                         else if (human)
@@ -562,13 +561,7 @@ namespace Server.Misc
                             EquipItem(NecroHue(new GargishLeatherKilt()));
                         }
 
-                        Spellbook
-                            book = new NecromancerSpellbook(
-                                (ulong)0x8981); // animate dead, evil omen, pain spike, summon familiar, wraith form
-
-                        PackItem(book);
-
-                        book.LootType = LootType.Blessed;
+                        PackItem(new NecromancerSpellbook((ulong)0x8981)); // animate dead, evil omen, pain spike, summon familiar, wraith form
 
                         addSkillItems = false;
                         break;
@@ -583,7 +576,7 @@ namespace Server.Misc
                             EquipItem(new LeafArms());
                             EquipItem(new LeafChest());
                             EquipItem(new LeafLegs());
-                            EquipItem(new ElvenBoots()); //Verify hue
+                            EquipItem(new ElvenBoots()); 
                         }
                         else if (human)
                         {
@@ -606,11 +599,7 @@ namespace Server.Misc
                             EquipItem(new GargishPlateKilt());
                         }
 
-                        Spellbook book = new BookOfChivalry((ulong)0x3FF)
-                        {
-                            LootType = LootType.Blessed
-                        };
-                        PackItem(book);
+                        PackItem(new BookOfChivalry());
 
                         addSkillItems = false;
                         break;
@@ -642,16 +631,14 @@ namespace Server.Misc
                         PackItem(new Scissors());
                         PackItem(new Bandage(50));
 
-                        Spellbook book = new BookOfBushido();
-                        PackItem(book);
+                        PackItem(new BookOfBushido());
 
                         addSkillItems = false;
                         break;
                     }
                 case 7: // Ninja
                     {
-                        int[] hues = new[] { 0x1A8, 0xEC, 0x99, 0x90, 0xB5, 0x336, 0x89 };
-                        //TODO: Verify that's ALL the hues for that above.
+                        int[] hues = { 0x1A8, 0xEC, 0x99, 0x90, 0xB5, 0x336, 0x89 };
 
                         if (elf || human)
                         {
@@ -679,8 +666,7 @@ namespace Server.Misc
 
                         PackItem(new SmokeBomb());
 
-                        Spellbook book = new BookOfNinjitsu();
-                        PackItem(book);
+                        PackItem(new BookOfNinjitsu());
 
                         addSkillItems = false;
                         break;
@@ -848,9 +834,9 @@ namespace Server.Misc
 
         private static void AddSkillItems(SkillName skill, Mobile m)
         {
-            bool elf = (m.Race == Race.Elf);
-            bool human = (m.Race == Race.Human);
-            bool gargoyle = (m.Race == Race.Gargoyle);
+            bool elf = m.Race == Race.Elf;
+            bool human = m.Race == Race.Human;
+            bool gargoyle = m.Race == Race.Gargoyle;
 
             switch (skill)
             {
@@ -859,14 +845,12 @@ namespace Server.Misc
                         PackItem(new Bottle(4));
                         PackItem(new MortarPestle());
 
-                        int hue = Utility.RandomPinkHue();
-
                         if (elf)
                         {
                             if (m.Female)
-                                EquipItem(new FemaleElvenRobe(hue));
+                                EquipItem(new FemaleElvenRobe(Utility.RandomPinkHue()));
                             else
-                                EquipItem(new MaleElvenRobe(hue));
+                                EquipItem(new MaleElvenRobe(Utility.RandomPinkHue()));
                         }
                         else
                         {
@@ -878,38 +862,34 @@ namespace Server.Misc
                     {
                         PackItem(new Bandage(3));
 
-                        int hue = Utility.RandomYellowHue();
-
                         if (elf)
                         {
                             if (m.Female)
-                                EquipItem(new FemaleElvenRobe(hue));
+                                EquipItem(new FemaleElvenRobe(Utility.RandomYellowHue()));
                             else
-                                EquipItem(new MaleElvenRobe(hue));
+                                EquipItem(new MaleElvenRobe(Utility.RandomYellowHue()));
                         }
                         else
                         {
-                            EquipItem(new Robe(hue));
+                            EquipItem(new Robe(Utility.RandomYellowHue()));
                         }
                         break;
                     }
                 case SkillName.AnimalLore:
                     {
-                        int hue = Utility.RandomBlueHue();
-
                         if (elf)
                         {
                             EquipItem(new WildStaff());
 
                             if (m.Female)
-                                EquipItem(new FemaleElvenRobe(hue));
+                                EquipItem(new FemaleElvenRobe(Utility.RandomBlueHue()));
                             else
-                                EquipItem(new MaleElvenRobe(hue));
+                                EquipItem(new MaleElvenRobe(Utility.RandomBlueHue()));
                         }
                         else
                         {
                             EquipItem(new ShepherdsCrook());
-                            EquipItem(new Robe(hue));
+                            EquipItem(new Robe(Utility.RandomBlueHue()));
                         }
                         break;
                     }
@@ -1056,7 +1036,7 @@ namespace Server.Misc
                     }
                 case SkillName.Chivalry:
                     {
-                        PackItem(new BookOfChivalry((ulong)0x3FF));
+                        PackItem(new BookOfChivalry());
                         break;
                     }
                 case SkillName.DetectHidden:
@@ -1086,19 +1066,13 @@ namespace Server.Misc
                     {
                         EquipItem(new FishingPole());
 
-                        int hue = Utility.RandomYellowHue();
-
                         if (elf)
                         {
-                            Item i = new Circlet
-                            {
-                                Hue = hue
-                            };
-                            EquipItem(i);
+                            EquipItem(new Circlet());
                         }
                         else if (human)
                         {
-                            EquipItem(new FloppyHat(hue));
+                            EquipItem(new FloppyHat(Utility.RandomYellowHue()));
                         }
 
                         break;
@@ -1169,18 +1143,13 @@ namespace Server.Misc
                     }
                 case SkillName.Magery:
                     {
-                        BagOfReagents regs = new BagOfReagents(50);
-                        PackItem(regs);
+                        PackItem(new BagOfReagents(50));
 
                         PackScroll(0);
                         PackScroll(1);
                         PackScroll(2);
 
-                        Spellbook book = new Spellbook((ulong)0x382A8C38)
-                        {
-                            LootType = LootType.Blessed
-                        };
-                        EquipItem(book);
+                        EquipItem(new Spellbook((ulong)0x382A8C38));
 
                         if (elf)
                         {
@@ -1213,20 +1182,8 @@ namespace Server.Misc
                     }
                 case SkillName.Necromancy:
                     {
-                        Container regs = new BagOfNecroReagents(50);
-
-                        PackItem(regs);
-
-                        regs.LootType = LootType.Regular;
-
-                        // RunUO fix
-                        Spellbook
-                            book = new NecromancerSpellbook(
-                                (ulong)0x8981)
-                            {
-                                LootType = LootType.Blessed
-                            }; // animate dead, evil omen, pain spike, summon familiar, wraith form
-                        PackItem(book);
+                        PackItem(new BagOfNecroReagents(50));
+                        PackItem(new NecromancerSpellbook((ulong)0x8981)); // animate dead, evil omen, pain spike, summon familiar, wraith form
 
                         break;
                     }
@@ -1234,7 +1191,7 @@ namespace Server.Misc
                     {
                         if (human || elf)
                         {
-                            EquipItem(new Hakama(0x2C3)); //Only ninjas get the hued one.
+                            EquipItem(new Hakama(0x2C3)); 
                             EquipItem(new Kasa());
                         }
 
@@ -1335,12 +1292,10 @@ namespace Server.Misc
                                     shoes.Delete();
                             }
 
-                            int hue = Utility.RandomYellowHue();
-
                             if (elf)
-                                EquipItem(new ElvenBoots(hue));
+                                EquipItem(new ElvenBoots(Utility.RandomYellowHue()));
                             else
-                                EquipItem(new Boots(hue));
+                                EquipItem(new Boots(Utility.RandomYellowHue()));
 
                             EquipItem(new SkinningKnife());
                         }
@@ -1363,7 +1318,6 @@ namespace Server.Misc
                             EquipItem(new LeatherGloves());
                         else if (gargoyle)
                         {
-                            // Why not give them arm armor?
                             EquipItem(new GargishLeatherArms());
                         }
 

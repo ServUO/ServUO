@@ -16,13 +16,11 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m is PlayerMobile)
+            if (m is PlayerMobile player)
             {
-                PlayerMobile player = (PlayerMobile)m;
-
                 if (player.AbyssEntry)
                 {
-                    return base.OnMoveOver(m);
+                    return base.OnMoveOver(player);
                 }
 
                 player.SendLocalizedMessage(1112226); // Thou must be on a Sacred Quest to pass through.	

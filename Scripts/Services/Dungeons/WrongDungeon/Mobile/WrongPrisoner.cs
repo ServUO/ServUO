@@ -7,7 +7,6 @@ namespace Server.Engines.Quests
     {
         [Constructable]
         public WrongPrisoner()
-            : base()
         {
             Title = "the prisoner";
             IsPrisoner = true;
@@ -31,23 +30,18 @@ namespace Server.Engines.Quests
 
         public override bool IsInvulnerable => !Controlled;
 
-        public override Type[] Quests => new Type[]
-                {
-                    typeof(EscortToWrongEntrance)
-                };
+        public override Type[] Quests => new[] { typeof(EscortToWrongEntrance) };
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

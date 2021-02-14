@@ -47,14 +47,14 @@ namespace Server.Guilds
 		public static BaseGuild Find(int id)
 		{
 
-			m_GuildList.TryGetValue(id, out var g);
+			m_GuildList.TryGetValue(id, out BaseGuild g);
 
 			return g;
 		}
 
 		public static BaseGuild FindByName(string name)
 		{
-			foreach (var g in m_GuildList.Values)
+			foreach (BaseGuild g in m_GuildList.Values)
 			{
 				if (g.Name == name)
 				{
@@ -67,7 +67,7 @@ namespace Server.Guilds
 
 		public static BaseGuild FindByAbbrev(string abbr)
 		{
-			foreach (var g in m_GuildList.Values)
+			foreach (BaseGuild g in m_GuildList.Values)
 			{
 				if (g.Abbreviation == abbr)
 				{
@@ -80,14 +80,14 @@ namespace Server.Guilds
 
 		public static List<BaseGuild> Search(string find)
 		{
-			var words = find.ToLower().Split(' ');
-			var results = new List<BaseGuild>();
+			string[] words = find.ToLower().Split(' ');
+			List<BaseGuild> results = new List<BaseGuild>();
 
-			foreach (var g in m_GuildList.Values)
+			foreach (BaseGuild g in m_GuildList.Values)
 			{
-				var match = true;
-				var name = g.Name.ToLower();
-				for (var i = 0; i < words.Length; i++)
+				bool match = true;
+				string name = g.Name.ToLower();
+				for (int i = 0; i < words.Length; i++)
 				{
 					if (name.IndexOf(words[i]) == -1)
 					{
@@ -107,7 +107,7 @@ namespace Server.Guilds
 
 		public override string ToString()
 		{
-			return System.String.Format("0x{0:X} \"{1} [{2}]\"", m_Id, Name, Abbreviation);
+			return string.Format("0x{0:X} \"{1} [{2}]\"", m_Id, Name, Abbreviation);
 		}
 	}
 }

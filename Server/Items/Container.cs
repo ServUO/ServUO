@@ -20,7 +20,7 @@ namespace Server.Items
 		#region Enhanced Client Support
 		public virtual void ValidateGridLocation(Item item)
 		{
-			var pos = item.GridLocation;
+			byte pos = item.GridLocation;
 
 			if (!IsFreePosition(pos))
 			{
@@ -40,8 +40,8 @@ namespace Server.Items
 
 		public virtual byte GetNewPosition(byte current)
 		{
-			var index = 0;
-			var next = (byte)(current + 1);
+			int index = 0;
+			byte next = (byte)(current + 1);
 
 			while (++index < 0x7D)
 			{
@@ -70,7 +70,7 @@ namespace Server.Items
 
 		public virtual void ValidatePositions()
 		{
-			foreach (var item in Items)
+			foreach (Item item in Items)
 			{
 				if (IsFreePosition(item.GridLocation))
 				{
@@ -118,7 +118,7 @@ namespace Server.Items
 			get => base.ItemID;
 			set
 			{
-				var oldID = ItemID;
+				int oldID = ItemID;
 
 				base.ItemID = value;
 
@@ -150,16 +150,14 @@ namespace Server.Items
 		public virtual int MaxWeight
 		{
 			get
-			{
-				if (Parent is Container && ((Container)Parent).MaxWeight == 0)
+            {
+                if (Parent is Container container && container.MaxWeight == 0)
 				{
 					return 0;
 				}
-				else
-				{
-					return DefaultMaxWeight;
-				}
-			}
+
+                return DefaultMaxWeight;
+            }
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -181,7 +179,7 @@ namespace Server.Items
 
 		public virtual int GetDroppedSound(Item item)
 		{
-			var dropSound = item.GetDropSound();
+			int dropSound = item.GetDropSound();
 
 			return dropSound != -1 ? dropSound : DropSound;
 		}
@@ -240,7 +238,7 @@ namespace Server.Items
 					return false;
 				}
 
-				var maxItems = MaxItems;
+				int maxItems = MaxItems;
 
 				if (checkItems && maxItems != 0 &&
 					(TotalItems + plusItems + item.TotalItems + (item.IsVirtualItem ? 0 : 1)) > maxItems)
@@ -254,7 +252,7 @@ namespace Server.Items
 				}
 				else
 				{
-					var maxWeight = MaxWeight;
+					int maxWeight = MaxWeight;
 
 					if (maxWeight != 0 && (TotalWeight + plusWeight + item.TotalWeight + item.PileWeight) > maxWeight)
 					{
@@ -268,17 +266,17 @@ namespace Server.Items
 				}
 			}
 
-			var parent = Parent;
+			object parent = Parent;
 
 			while (parent != null)
 			{
-				if (parent is Container)
+				if (parent is Container container)
 				{
-					return ((Container)parent).CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+					return container.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
 				}
-				else if (parent is Item)
+				else if (parent is Item pItem)
 				{
-					parent = ((Item)parent).Parent;
+					parent = pItem.Parent;
 				}
 				else
 				{
@@ -291,12 +289,12 @@ namespace Server.Items
 
 		public virtual bool CheckStack(Mobile from, Item item)
 		{
-			if (item == null || item.Deleted || !item.Stackable)
-			{
-				return false;
-			}
-
-			foreach (var i in Items)
+            if (item == null || item.Deleted || !item.Stackable)
+            {
+                return false;
+            }
+            
+			foreach (Item i in Items)
 			{
 				if (i.WillStack(from, item))
 				{
@@ -348,8 +346,8 @@ namespace Server.Items
 
 			public int Compare(object x, object y)
 			{
-				var a = (Item)x;
-				var b = (Item)y;
+				Item a = (Item)x;
+				Item b = (Item)y;
 
 				return m_Grouper(a, b);
 			}
@@ -368,31 +366,31 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
-			var typedItems = FindItemsByType(type, recurse);
+			Item[] typedItems = FindItemsByType(type, recurse);
 
-			var groups = new List<List<Item>>();
-			var idx = 0;
+			List<List<Item>> groups = new List<List<Item>>();
+			int idx = 0;
 
 			while (idx < typedItems.Length)
 			{
-				var a = typedItems[idx++];
+				Item a = typedItems[idx++];
 
 				if (validator != null && !validator(a))
 					continue;
 
-				var group = new List<Item>
+				List<Item> group = new List<Item>
 				{
 					a
 				};
 
 				while (idx < typedItems.Length)
 				{
-					var b = typedItems[idx];
+					Item b = typedItems[idx];
 
 					if (validator != null && !validator(b))
 						continue;
 
-					var v = grouper(a, b);
+					int v = grouper(a, b);
 
 					if (v == 0)
 					{
@@ -409,17 +407,17 @@ namespace Server.Items
 				groups.Add(group);
 			}
 
-			var items = new Item[groups.Count][];
-			var totals = new int[groups.Count];
+			Item[][] items = new Item[groups.Count][];
+			int[] totals = new int[groups.Count];
 
-			var hasEnough = false;
+			bool hasEnough = false;
 
-			for (var i = 0; i < groups.Count; ++i)
+			for (int i = 0; i < groups.Count; ++i)
 			{
 				items[i] = groups[i].ToArray();
 				//items[i] = (Item[])(((ArrayList)groups[i]).ToArray( typeof( Item ) ));
 
-				for (var j = 0; j < items[i].Length; ++j)
+				for (int j = 0; j < items[i].Length; ++j)
 				{
 					totals[i] += items[i][j].Amount;
 				}
@@ -435,17 +433,17 @@ namespace Server.Items
 				return false;
 			}
 
-			for (var i = 0; i < items.Length; ++i)
+			for (int i = 0; i < items.Length; ++i)
 			{
 				if (totals[i] >= amount)
 				{
-					var need = amount;
+					int need = amount;
 
-					for (var j = 0; j < items[i].Length; ++j)
+					for (int j = 0; j < items[i].Length; ++j)
 					{
-						var item = items[i][j];
+						Item item = items[i][j];
 
-						var theirAmount = item.Amount;
+						int theirAmount = item.Amount;
 
 						if (theirAmount < need)
 						{
@@ -494,36 +492,36 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
-			var items = new Item[types.Length][][];
-			var totals = new int[types.Length][];
+			Item[][][] items = new Item[types.Length][][];
+			int[][] totals = new int[types.Length][];
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
-				var typedItems = FindItemsByType(types[i], recurse);
+				Item[] typedItems = FindItemsByType(types[i], recurse);
 
-				var groups = new List<List<Item>>();
-				var idx = 0;
+				List<List<Item>> groups = new List<List<Item>>();
+				int idx = 0;
 
 				while (idx < typedItems.Length)
 				{
-					var a = typedItems[idx++];
+					Item a = typedItems[idx++];
 
 					if (validator != null && !validator(a))
 						continue;
 
-					var group = new List<Item>
+					List<Item> group = new List<Item>
 					{
 						a
 					};
 
 					while (idx < typedItems.Length)
 					{
-						var b = typedItems[idx];
+						Item b = typedItems[idx];
 
 						if (validator != null && !validator(b))
 							continue;
 
-						var v = grouper(a, b);
+						int v = grouper(a, b);
 
 						if (v == 0)
 						{
@@ -543,14 +541,14 @@ namespace Server.Items
 				items[i] = new Item[groups.Count][];
 				totals[i] = new int[groups.Count];
 
-				var hasEnough = false;
+				bool hasEnough = false;
 
-				for (var j = 0; j < groups.Count; ++j)
+				for (int j = 0; j < groups.Count; ++j)
 				{
 					items[i][j] = groups[j].ToArray();
 					//items[i][j] = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
 
-					for (var k = 0; k < items[i][j].Length; ++k)
+					for (int k = 0; k < items[i][j].Length; ++k)
 					{
 						totals[i][j] += items[i][j][k].Amount;
 					}
@@ -567,19 +565,19 @@ namespace Server.Items
 				}
 			}
 
-			for (var i = 0; i < items.Length; ++i)
+			for (int i = 0; i < items.Length; ++i)
 			{
-				for (var j = 0; j < items[i].Length; ++j)
+				for (int j = 0; j < items[i].Length; ++j)
 				{
 					if (totals[i][j] >= amounts[i])
 					{
-						var need = amounts[i];
+						int need = amounts[i];
 
-						for (var k = 0; k < items[i][j].Length; ++k)
+						for (int k = 0; k < items[i][j].Length; ++k)
 						{
-							var item = items[i][j][k];
+							Item item = items[i][j][k];
 
-							var theirAmount = item.Amount;
+							int theirAmount = item.Amount;
 
 							if (theirAmount < need)
 							{
@@ -629,36 +627,36 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
-			var items = new Item[types.Length][][];
-			var totals = new int[types.Length][];
+			Item[][][] items = new Item[types.Length][][];
+			int[][] totals = new int[types.Length][];
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
-				var typedItems = FindItemsByType(types[i], recurse);
+				Item[] typedItems = FindItemsByType(types[i], recurse);
 
-				var groups = new List<List<Item>>();
-				var idx = 0;
+				List<List<Item>> groups = new List<List<Item>>();
+				int idx = 0;
 
 				while (idx < typedItems.Length)
 				{
-					var a = typedItems[idx++];
+					Item a = typedItems[idx++];
 
 					if (validator != null && !validator(a))
 						continue;
 
-					var group = new List<Item>
+					List<Item> group = new List<Item>
 					{
 						a
 					};
 
 					while (idx < typedItems.Length)
 					{
-						var b = typedItems[idx];
+						Item b = typedItems[idx];
 
 						if (validator != null && !validator(b))
 							continue;
 
-						var v = grouper(a, b);
+						int v = grouper(a, b);
 
 						if (v == 0)
 						{
@@ -678,13 +676,13 @@ namespace Server.Items
 				items[i] = new Item[groups.Count][];
 				totals[i] = new int[groups.Count];
 
-				var hasEnough = false;
+				bool hasEnough = false;
 
-				for (var j = 0; j < groups.Count; ++j)
+				for (int j = 0; j < groups.Count; ++j)
 				{
 					items[i][j] = groups[j].ToArray();
 
-					for (var k = 0; k < items[i][j].Length; ++k)
+					for (int k = 0; k < items[i][j].Length; ++k)
 					{
 						totals[i][j] += items[i][j][k].Amount;
 					}
@@ -701,19 +699,19 @@ namespace Server.Items
 				}
 			}
 
-			for (var i = 0; i < items.Length; ++i)
+			for (int i = 0; i < items.Length; ++i)
 			{
-				for (var j = 0; j < items[i].Length; ++j)
+				for (int j = 0; j < items[i].Length; ++j)
 				{
 					if (totals[i][j] >= amounts[i])
 					{
-						var need = amounts[i];
+						int need = amounts[i];
 
-						for (var k = 0; k < items[i][j].Length; ++k)
+						for (int k = 0; k < items[i][j].Length; ++k)
 						{
-							var item = items[i][j][k];
+							Item item = items[i][j][k];
 
-							var theirAmount = item.Amount;
+							int theirAmount = item.Amount;
 
 							if (theirAmount < need)
 							{
@@ -762,14 +760,14 @@ namespace Server.Items
 				throw new ArgumentException();
 			}
 
-			var items = new Item[types.Length][];
-			var totals = new int[types.Length];
+			Item[][] items = new Item[types.Length][];
+			int[] totals = new int[types.Length];
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
 				items[i] = FindItemsByType(types[i], recurse);
 
-				for (var j = 0; j < items[i].Length; ++j)
+				for (int j = 0; j < items[i].Length; ++j)
 				{
 					totals[i] += items[i][j].Amount;
 				}
@@ -780,15 +778,15 @@ namespace Server.Items
 				}
 			}
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
-				var need = amounts[i];
+				int need = amounts[i];
 
-				for (var j = 0; j < items[i].Length; ++j)
+				for (int j = 0; j < items[i].Length; ++j)
 				{
-					var item = items[i][j];
+					Item item = items[i][j];
 
-					var theirAmount = item.Amount;
+					int theirAmount = item.Amount;
 
 					if (theirAmount < need)
 					{
@@ -833,14 +831,14 @@ namespace Server.Items
 				throw new ArgumentException();
 			}
 
-			var items = new Item[types.Length][];
-			var totals = new int[types.Length];
+			Item[][] items = new Item[types.Length][];
+			int[] totals = new int[types.Length];
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
 				items[i] = FindItemsByType(types[i], recurse);
 
-				for (var j = 0; j < items[i].Length; ++j)
+				for (int j = 0; j < items[i].Length; ++j)
 				{
 					totals[i] += items[i][j].Amount;
 				}
@@ -851,15 +849,15 @@ namespace Server.Items
 				}
 			}
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
-				var need = amounts[i];
+				int need = amounts[i];
 
-				for (var j = 0; j < items[i].Length; ++j)
+				for (int j = 0; j < items[i].Length; ++j)
 				{
-					var item = items[i][j];
+					Item item = items[i][j];
 
-					var theirAmount = item.Amount;
+					int theirAmount = item.Amount;
 
 					if (theirAmount < need)
 					{
@@ -899,12 +897,12 @@ namespace Server.Items
 
 		public bool ConsumeTotal(Type type, int amount, bool recurse, OnItemConsumed callback)
 		{
-			var items = FindItemsByType(type, recurse);
+			Item[] items = FindItemsByType(type, recurse);
 
 			// First pass, compute total
-			var total = 0;
+			int total = 0;
 
-			for (var i = 0; i < items.Length; ++i)
+			for (int i = 0; i < items.Length; ++i)
 			{
 				total += items[i].Amount;
 			}
@@ -913,13 +911,13 @@ namespace Server.Items
 			{
 				// We've enough, so consume it
 
-				var need = amount;
+				int need = amount;
 
-				for (var i = 0; i < items.Length; ++i)
+				for (int i = 0; i < items.Length; ++i)
 				{
-					var item = items[i];
+					Item item = items[i];
 
-					var theirAmount = item.Amount;
+					int theirAmount = item.Amount;
 
 					if (theirAmount < need)
 					{
@@ -955,9 +953,9 @@ namespace Server.Items
 
 		public int ConsumeUpTo(Type type, int amount, bool recurse)
 		{
-			var consumed = 0;
+			int consumed = 0;
 
-			var toDelete = new Queue<Item>();
+			Queue<Item> toDelete = new Queue<Item>();
 
 			RecurseConsumeUpTo(this, type, amount, recurse, ref consumed, toDelete);
 
@@ -974,16 +972,16 @@ namespace Server.Items
 		{
 			if (current != null && current.Items.Count > 0)
 			{
-				var list = current.Items;
+				List<Item> list = current.Items;
 
-				for (var i = 0; i < list.Count; ++i)
+				for (int i = 0; i < list.Count; ++i)
 				{
-					var item = list[i];
+					Item item = list[i];
 
 					if (type.IsAssignableFrom(item.GetType()))
 					{
-						var need = amount - consumed;
-						var theirAmount = item.Amount;
+						int need = amount - consumed;
+						int theirAmount = item.Amount;
 
 						if (theirAmount <= need)
 						{
@@ -1015,25 +1013,25 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
-			var best = 0;
+			int best = 0;
 
-			var typedItems = FindItemsByType(type, recurse);
+			Item[] typedItems = FindItemsByType(type, recurse);
 
-			var groups = new List<List<Item>>();
-			var idx = 0;
+			List<List<Item>> groups = new List<List<Item>>();
+			int idx = 0;
 
 			while (idx < typedItems.Length)
 			{
-				var a = typedItems[idx++];
-				var group = new List<Item>
+				Item a = typedItems[idx++];
+				List<Item> group = new List<Item>
 				{
 					a
 				};
 
 				while (idx < typedItems.Length)
 				{
-					var b = typedItems[idx];
-					var v = grouper(a, b);
+					Item b = typedItems[idx];
+					int v = grouper(a, b);
 
 					if (v == 0)
 					{
@@ -1050,14 +1048,14 @@ namespace Server.Items
 				groups.Add(group);
 			}
 
-			for (var i = 0; i < groups.Count; ++i)
+			for (int i = 0; i < groups.Count; ++i)
 			{
-				var items = groups[i].ToArray();
+				Item[] items = groups[i].ToArray();
 
 				//Item[] items = (Item[])(((ArrayList)groups[i]).ToArray( typeof( Item ) ));
-				var total = 0;
+				int total = 0;
 
-				for (var j = 0; j < items.Length; ++j)
+				for (int j = 0; j < items.Length; ++j)
 				{
 					total += items[j].Amount;
 				}
@@ -1078,25 +1076,25 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
-			var best = 0;
+			int best = 0;
 
-			var typedItems = FindItemsByType(types, recurse);
+			Item[] typedItems = FindItemsByType(types, recurse);
 
-			var groups = new List<List<Item>>();
-			var idx = 0;
+			List<List<Item>> groups = new List<List<Item>>();
+			int idx = 0;
 
 			while (idx < typedItems.Length)
 			{
-				var a = typedItems[idx++];
-				var group = new List<Item>
+				Item a = typedItems[idx++];
+				List<Item> group = new List<Item>
 				{
 					a
 				};
 
 				while (idx < typedItems.Length)
 				{
-					var b = typedItems[idx];
-					var v = grouper(a, b);
+					Item b = typedItems[idx];
+					int v = grouper(a, b);
 
 					if (v == 0)
 					{
@@ -1113,13 +1111,13 @@ namespace Server.Items
 				groups.Add(group);
 			}
 
-			for (var j = 0; j < groups.Count; ++j)
+			for (int j = 0; j < groups.Count; ++j)
 			{
-				var items = groups[j].ToArray();
+				Item[] items = groups[j].ToArray();
 				//Item[] items = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
-				var total = 0;
+				int total = 0;
 
-				for (var k = 0; k < items.Length; ++k)
+				for (int k = 0; k < items.Length; ++k)
 				{
 					total += items[k].Amount;
 				}
@@ -1140,27 +1138,27 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
-			var best = 0;
+			int best = 0;
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
-				var typedItems = FindItemsByType(types[i], recurse);
+				Item[] typedItems = FindItemsByType(types[i], recurse);
 
-				var groups = new List<List<Item>>();
-				var idx = 0;
+				List<List<Item>> groups = new List<List<Item>>();
+				int idx = 0;
 
 				while (idx < typedItems.Length)
 				{
-					var a = typedItems[idx++];
-					var group = new List<Item>
+					Item a = typedItems[idx++];
+					List<Item> group = new List<Item>
 					{
 						a
 					};
 
 					while (idx < typedItems.Length)
 					{
-						var b = typedItems[idx];
-						var v = grouper(a, b);
+						Item b = typedItems[idx];
+						int v = grouper(a, b);
 
 						if (v == 0)
 						{
@@ -1177,13 +1175,13 @@ namespace Server.Items
 					groups.Add(group);
 				}
 
-				for (var j = 0; j < groups.Count; ++j)
+				for (int j = 0; j < groups.Count; ++j)
 				{
-					var items = groups[j].ToArray();
+					Item[] items = groups[j].ToArray();
 					//Item[] items = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
-					var total = 0;
+					int total = 0;
 
-					for (var k = 0; k < items.Length; ++k)
+					for (int k = 0; k < items.Length; ++k)
 					{
 						total += items[k].Amount;
 					}
@@ -1205,11 +1203,11 @@ namespace Server.Items
 
 		public int GetAmount(Type type, bool recurse)
 		{
-			var items = FindItemsByType(type, recurse);
+			Item[] items = FindItemsByType(type, recurse);
 
-			var amount = 0;
+			int amount = 0;
 
-			for (var i = 0; i < items.Length; ++i)
+			for (int i = 0; i < items.Length; ++i)
 			{
 				amount += items[i].Amount;
 			}
@@ -1224,11 +1222,11 @@ namespace Server.Items
 
 		public int GetAmount(Type[] types, bool recurse)
 		{
-			var items = FindItemsByType(types, recurse);
+			Item[] items = FindItemsByType(types, recurse);
 
-			var amount = 0;
+			int amount = 0;
 
-			for (var i = 0; i < items.Length; ++i)
+			for (int i = 0; i < items.Length; ++i)
 			{
 				amount += items[i].Amount;
 			}
@@ -1261,11 +1259,11 @@ namespace Server.Items
 		{
 			if (current != null && current.Items.Count > 0)
 			{
-				var items = current.Items;
+				List<Item> items = current.Items;
 
-				for (var i = 0; i < items.Count; ++i)
+				for (int i = 0; i < items.Count; ++i)
 				{
-					var item = items[i];
+					Item item = items[i];
 
 					if (type.IsAssignableFrom(item.GetType())) // item.GetType().IsAssignableFrom( type ) )
 					{
@@ -1301,11 +1299,11 @@ namespace Server.Items
 		{
 			if (current != null && current.Items.Count > 0)
 			{
-				var items = current.Items;
+				List<Item> items = current.Items;
 
-				for (var i = 0; i < items.Count; ++i)
+				for (int i = 0; i < items.Count; ++i)
 				{
-					var item = items[i];
+					Item item = items[i];
 
 					if (InTypeList(item, types))
 					{
@@ -1334,11 +1332,11 @@ namespace Server.Items
 		{
 			if (current != null && current.Items.Count > 0)
 			{
-				var list = current.Items;
+				List<Item> list = current.Items;
 
-				for (var i = 0; i < list.Count; ++i)
+				for (int i = 0; i < list.Count; ++i)
 				{
-					var item = list[i];
+					Item item = list[i];
 
 					if (type.IsAssignableFrom(item.GetType()))
 					{
@@ -1346,7 +1344,7 @@ namespace Server.Items
 					}
 					else if (recurse && item is Container)
 					{
-						var check = RecurseFindItemByType(item, type, recurse);
+						Item check = RecurseFindItemByType(item, type, recurse);
 
 						if (check != null)
 						{
@@ -1373,11 +1371,11 @@ namespace Server.Items
 		{
 			if (current != null && current.Items.Count > 0)
 			{
-				var list = current.Items;
+				List<Item> list = current.Items;
 
-				for (var i = 0; i < list.Count; ++i)
+				for (int i = 0; i < list.Count; ++i)
 				{
-					var item = list[i];
+					Item item = list[i];
 
 					if (InTypeList(item, types))
 					{
@@ -1385,7 +1383,7 @@ namespace Server.Items
 					}
 					else if (recurse && item is Container)
 					{
-						var check = RecurseFindItemByType(item, types, recurse);
+						Item check = RecurseFindItemByType(item, types, recurse);
 
 						if (check != null)
 						{
@@ -1422,7 +1420,7 @@ namespace Server.Items
 				m_FindItemsList.Clear();
 			}
 
-			var list = new List<T>();
+			List<T> list = new List<T>();
 
 			RecurseFindItemsByType(this, recurse, list, predicate);
 
@@ -1434,15 +1432,15 @@ namespace Server.Items
 		{
 			if (current != null && current.Items.Count > 0)
 			{
-				var items = current.Items;
+				List<Item> items = current.Items;
 
-				for (var i = 0; i < items.Count; ++i)
+				for (int i = 0; i < items.Count; ++i)
 				{
-					var item = items[i];
+					Item item = items[i];
 
 					if (typeof(T).IsAssignableFrom(item.GetType()))
 					{
-						var typedItem = (T)item;
+						T typedItem = (T)item;
 
 						if (predicate == null || predicate(typedItem))
 						{
@@ -1482,15 +1480,15 @@ namespace Server.Items
 		{
 			if (current != null && current.Items.Count > 0)
 			{
-				var list = current.Items;
+				List<Item> list = current.Items;
 
-				for (var i = 0; i < list.Count; ++i)
+				for (int i = 0; i < list.Count; ++i)
 				{
-					var item = list[i];
+					Item item = list[i];
 
 					if (typeof(T).IsAssignableFrom(item.GetType()))
 					{
-						var typedItem = (T)item;
+						T typedItem = (T)item;
 
 						if (predicate == null || predicate(typedItem))
 						{
@@ -1499,7 +1497,7 @@ namespace Server.Items
 					}
 					else if (recurse && item is Container)
 					{
-						var check = RecurseFindItemByType(item, recurse, predicate);
+						T check = RecurseFindItemByType(item, recurse, predicate);
 
 						if (check != null)
 						{
@@ -1515,9 +1513,9 @@ namespace Server.Items
 
 		private static bool InTypeList(Item item, Type[] types)
 		{
-			var t = item.GetType();
+			Type t = item.GetType();
 
-			for (var i = 0; i < types.Length; ++i)
+			for (int i = 0; i < types.Length; ++i)
 			{
 				if (types[i].IsAssignableFrom(t))
 				{
@@ -1558,7 +1556,7 @@ namespace Server.Items
 
 			writer.Write(3); // version
 
-			var flags = SaveFlag.None;
+			SaveFlag flags = SaveFlag.None;
 
 			SetSaveFlag(ref flags, SaveFlag.MaxItems, m_MaxItems != -1);
 			SetSaveFlag(ref flags, SaveFlag.GumpID, m_GumpID != -1);
@@ -1598,82 +1596,82 @@ namespace Server.Items
 		{
 			base.Deserialize(reader);
 
-			var version = reader.ReadInt();
+			int version = reader.ReadInt();
 
 			switch (version)
 			{
 				case 3:
 				case 2:
+				{
+					SaveFlag flags = (SaveFlag)reader.ReadByte();
+
+					if (GetSaveFlag(flags, SaveFlag.MaxItems))
 					{
-						var flags = (SaveFlag)reader.ReadByte();
-
-						if (GetSaveFlag(flags, SaveFlag.MaxItems))
-						{
-							m_MaxItems = reader.ReadEncodedInt();
-						}
-						else
-						{
-							m_MaxItems = -1;
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.GumpID))
-						{
-							m_GumpID = reader.ReadEncodedInt();
-						}
-						else
-						{
-							m_GumpID = -1;
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.DropSound))
-						{
-							m_DropSound = reader.ReadEncodedInt();
-						}
-						else
-						{
-							m_DropSound = -1;
-						}
-
-						m_LiftOverride = GetSaveFlag(flags, SaveFlag.LiftOverride);
-
-						break;
+						m_MaxItems = reader.ReadEncodedInt();
 					}
+					else
+					{
+						m_MaxItems = -1;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.GumpID))
+					{
+						m_GumpID = reader.ReadEncodedInt();
+					}
+					else
+					{
+						m_GumpID = -1;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.DropSound))
+					{
+						m_DropSound = reader.ReadEncodedInt();
+					}
+					else
+					{
+						m_DropSound = -1;
+					}
+
+					m_LiftOverride = GetSaveFlag(flags, SaveFlag.LiftOverride);
+
+					break;
+				}
 				case 1:
-					{
-						m_MaxItems = reader.ReadInt();
-						goto case 0;
-					}
+				{
+					m_MaxItems = reader.ReadInt();
+					goto case 0;
+				}
 				case 0:
+				{
+					if (version < 1)
 					{
-						if (version < 1)
-						{
-							m_MaxItems = m_GlobalMaxItems;
-						}
-
-						m_GumpID = reader.ReadInt();
-						m_DropSound = reader.ReadInt();
-
-						if (m_GumpID == DefaultGumpID)
-						{
-							m_GumpID = -1;
-						}
-
-						if (m_DropSound == DefaultDropSound)
-						{
-							m_DropSound = -1;
-						}
-
-						if (m_MaxItems == DefaultMaxItems)
-						{
-							m_MaxItems = -1;
-						}
-
-						//m_Bounds = new Rectangle2D( reader.ReadPoint2D(), reader.ReadPoint2D() );
-						reader.ReadPoint2D();
-						reader.ReadPoint2D();
-
-						break;
+						m_MaxItems = m_GlobalMaxItems;
 					}
+
+					m_GumpID = reader.ReadInt();
+					m_DropSound = reader.ReadInt();
+
+					if (m_GumpID == DefaultGumpID)
+					{
+						m_GumpID = -1;
+					}
+
+					if (m_DropSound == DefaultDropSound)
+					{
+						m_DropSound = -1;
+					}
+
+					if (m_MaxItems == DefaultMaxItems)
+					{
+						m_MaxItems = -1;
+					}
+
+					//m_Bounds = new Rectangle2D( reader.ReadPoint2D(), reader.ReadPoint2D() );
+					reader.ReadPoint2D();
+					reader.ReadPoint2D();
+
+					break;
+				}
 			}
 
 			UpdateContainerData();
@@ -1743,16 +1741,16 @@ namespace Server.Items
 			m_TotalItems = 0;
 			m_TotalWeight = 0;
 
-			var items = m_Items;
+			List<Item> items = m_Items;
 
 			if (items == null)
 			{
 				return;
 			}
 
-			for (var i = 0; i < items.Count; ++i)
+			for (int i = 0; i < items.Count; ++i)
 			{
-				var item = items[i];
+				Item item = items[i];
 
 				item.UpdateTotals();
 
@@ -1797,30 +1795,30 @@ namespace Server.Items
 
 		public virtual bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
 		{
-			if (CheckStack(from, dropped))
-			{
-				if (!CheckHold(from, dropped, sendFullMessage, false))
-				{
-					return false;
-				}
+            if (CheckStack(from, dropped))
+            {
+                if (!CheckHold(from, dropped, sendFullMessage, false))
+                {
+                    return false;
+                }
 
-				var list = Items;
+                List<Item> list = Items;
 
-				for (var i = 0; i < list.Count; ++i)
-				{
-					var item = list[i];
+                for (int i = 0; i < list.Count; ++i)
+                {
+                    Item item = list[i];
 
-					if (!(item is Container) && item.StackWith(from, dropped, false))
-					{
-						return true;
-					}
-				}
-			}
-
-			if (!CheckHold(from, dropped, sendFullMessage, true))
-			{
-				return false;
-			}
+                    if (!(item is Container) && item.StackWith(from, dropped, false))
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            if (!CheckHold(from, dropped, sendFullMessage, true))
+            {
+                return false;
+            }
 
 			DropItem(dropped);
 
@@ -1836,10 +1834,10 @@ namespace Server.Items
 
 		public virtual void Destroy()
 		{
-			var loc = GetWorldLocation();
-			var map = Map;
+			Point3D loc = GetWorldLocation();
+			Map map = Map;
 
-			for (var i = Items.Count - 1; i >= 0; --i)
+			for (int i = Items.Count - 1; i >= 0; --i)
 			{
 				if (i < Items.Count)
 				{
@@ -1860,8 +1858,8 @@ namespace Server.Items
 
 			AddItem(dropped);
 
-			var bounds = dropped.GetGraphicBounds();
-			var ourBounds = Bounds;
+			Rectangle2D bounds = dropped.GetGraphicBounds();
+			Rectangle2D ourBounds = Bounds;
 
 			int x, y;
 
@@ -1898,11 +1896,11 @@ namespace Server.Items
 			{
 				DisplayTo(from);
 
-				var cont = GetSecureTradeCont();
+				SecureTradeContainer cont = GetSecureTradeCont();
 
 				if (cont != null)
 				{
-					var trade = cont.Trade;
+					SecureTrade trade = cont.Trade;
 
 					if (trade != null && trade.From.Mobile == from)
 					{
@@ -1929,7 +1927,7 @@ namespace Server.Items
 				return false;
 			}
 
-			var root = RootParent;
+			object root = RootParent;
 
 			if (root == null || root is Item || root == from || from.IsStaff())
 			{
@@ -1954,7 +1952,7 @@ namespace Server.Items
 		{
 			ProcessOpeners(to);
 
-			var ns = to.NetState;
+			NetState ns = to.NetState;
 
 			if (ns == null)
 			{
@@ -1967,7 +1965,7 @@ namespace Server.Items
 
 			to.Send(new ContainerContent(to, this));
 
-			foreach (var o in Items)
+			foreach (Item o in Items)
 			{
 				to.Send(o.OPLPacket);
 			}
@@ -1977,16 +1975,16 @@ namespace Server.Items
 		{
 			if (!IsPublicContainer)
 			{
-				var contains = false;
+				bool contains = false;
 
 				if (Openers != null)
 				{
-					var worldLoc = GetWorldLocation();
-					var map = Map;
+					Point3D worldLoc = GetWorldLocation();
+					Map map = Map;
 
-					for (var i = 0; i < Openers.Count; ++i)
+					for (int i = 0; i < Openers.Count; ++i)
 					{
-						var mob = Openers[i];
+						Mobile mob = Openers[i];
 
 						if (mob == opener)
 						{
@@ -1994,7 +1992,7 @@ namespace Server.Items
 						}
 						else
 						{
-							var range = GetUpdateRange(mob);
+							int range = GetUpdateRange(mob);
 
 							if (mob.Map != map || !mob.InRange(worldLoc, range))
 							{
@@ -2058,7 +2056,7 @@ namespace Server.Items
 		{
 			m_Table = new Dictionary<int, ContainerData>();
 
-			var path = Path.Combine(Core.BaseDirectory, "Data/containers.cfg");
+			string path = Path.Combine(Core.BaseDirectory, "Data/containers.cfg");
 
 			if (!File.Exists(path))
 			{
@@ -2066,7 +2064,7 @@ namespace Server.Items
 				return;
 			}
 
-			using (var reader = new StreamReader(path))
+			using (StreamReader reader = new StreamReader(path))
 			{
 				string line;
 
@@ -2081,28 +2079,28 @@ namespace Server.Items
 
 					try
 					{
-						var split = line.Split('\t');
+						string[] split = line.Split('\t');
 
 						if (split.Length >= 3)
 						{
-							var gumpID = Utility.ToInt32(split[0]);
+							int gumpID = Utility.ToInt32(split[0]);
 
-							var aRect = split[1].Split(' ');
+							string[] aRect = split[1].Split(' ');
 							if (aRect.Length < 4)
 							{
 								continue;
 							}
 
-							var x = Utility.ToInt32(aRect[0]);
-							var y = Utility.ToInt32(aRect[1]);
-							var width = Utility.ToInt32(aRect[2]);
-							var height = Utility.ToInt32(aRect[3]);
+							int x = Utility.ToInt32(aRect[0]);
+							int y = Utility.ToInt32(aRect[1]);
+							int width = Utility.ToInt32(aRect[2]);
+							int height = Utility.ToInt32(aRect[3]);
 
-							var bounds = new Rectangle2D(x, y, width, height);
+							Rectangle2D bounds = new Rectangle2D(x, y, width, height);
 
-							var dropSound = Utility.ToInt32(split[2]);
+							int dropSound = Utility.ToInt32(split[2]);
 
-							var data = new ContainerData(gumpID, bounds, dropSound);
+							ContainerData data = new ContainerData(gumpID, bounds, dropSound);
 
 							if (m_Default == null)
 							{
@@ -2111,11 +2109,11 @@ namespace Server.Items
 
 							if (split.Length >= 4)
 							{
-								var aIDs = split[3].Split(',');
+								string[] aIDs = split[3].Split(',');
 
-								for (var i = 0; i < aIDs.Length; i++)
+								for (int i = 0; i < aIDs.Length; i++)
 								{
-									var id = Utility.ToInt32(aIDs[i]);
+									int id = Utility.ToInt32(aIDs[i]);
 
 									if (m_Table.ContainsKey(id))
 									{
@@ -2147,7 +2145,7 @@ namespace Server.Items
 
 		public static ContainerData GetData(int itemID)
 		{
-			m_Table.TryGetValue(itemID, out var data);
+			m_Table.TryGetValue(itemID, out ContainerData data);
 
 			if (data != null)
 			{

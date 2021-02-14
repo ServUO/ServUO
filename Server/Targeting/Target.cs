@@ -34,14 +34,14 @@ namespace Server.Targeting
 
 		public static void Cancel(Mobile m)
 		{
-			var ns = m.NetState;
+			NetState ns = m.NetState;
 
 			if (ns != null)
 			{
 				ns.Send(CancelTarget.Instance);
 			}
 
-			var targ = m.Target;
+			Target targ = m.Target;
 
 			if (targ != null)
 			{
@@ -151,7 +151,7 @@ namespace Server.Targeting
 
 		public void Invoke(Mobile from, object targeted)
 		{
-			var enhancedClient = from.NetState != null && from.NetState.IsEnhancedClient;
+			bool enhancedClient = from.NetState != null && from.NetState.IsEnhancedClient;
 
 			CancelTimeout();
 			from.ClearTarget();
@@ -166,9 +166,9 @@ namespace Server.Targeting
 			Point3D loc;
 			Map map;
 
-			if (targeted is LandTarget)
+			if (targeted is LandTarget landTarget)
 			{
-				loc = ((LandTarget)targeted).Location;
+				loc = landTarget.Location;
 				map = from.Map;
 
 				if (enhancedClient && loc.X == 0 && loc.Y == 0 && !from.InRange(loc, 10))
@@ -178,51 +178,51 @@ namespace Server.Targeting
 					return;
 				}
 			}
-			else if (targeted is StaticTarget)
+			else if (targeted is StaticTarget staticTarget)
 			{
-				loc = ((StaticTarget)targeted).Location;
+				loc = staticTarget.Location;
 				map = from.Map;
 			}
-			else if (targeted is Mobile)
+			else if (targeted is Mobile mobile)
 			{
-				if (((Mobile)targeted).Deleted)
+				if (mobile.Deleted)
 				{
-					OnTargetDeleted(from, targeted);
-					OnTargetFinish(from);
-					return;
-				}
-				else if (!((Mobile)targeted).CanTarget)
-				{
-					OnTargetUntargetable(from, targeted);
+					OnTargetDeleted(from, mobile);
 					OnTargetFinish(from);
 					return;
 				}
 
-				loc = ((Mobile)targeted).Location;
-				map = ((Mobile)targeted).Map;
+                if (!mobile.CanTarget)
+                {
+                    OnTargetUntargetable(from, mobile);
+                    OnTargetFinish(from);
+                    return;
+                }
+
+                loc = mobile.Location;
+				map = mobile.Map;
 			}
-			else if (targeted is Item)
+			else if (targeted is Item item)
 			{
-				var item = (Item)targeted;
-
-				if (item.Deleted)
+                if (item.Deleted)
 				{
-					OnTargetDeleted(from, targeted);
-					OnTargetFinish(from);
-					return;
-				}
-				else if (!item.CanTarget)
-				{
-					OnTargetUntargetable(from, targeted);
+					OnTargetDeleted(from, item);
 					OnTargetFinish(from);
 					return;
 				}
 
-				var root = item.RootParent;
+                if (!item.CanTarget)
+                {
+                    OnTargetUntargetable(from, item);
+                    OnTargetFinish(from);
+                    return;
+                }
+
+                object root = item.RootParent;
 
 				if (!m_AllowNonlocal && root is Mobile && root != from && from.AccessLevel == AccessLevel.Player)
 				{
-					OnNonlocalTarget(from, targeted);
+					OnNonlocalTarget(from, item);
 					OnTargetFinish(from);
 					return;
 				}
@@ -251,21 +251,21 @@ namespace Server.Targeting
 				{
 					OnTargetOutOfLOS(from, targeted);
 				}
-				else if (targeted is Item && ((Item)targeted).InSecureTrade)
+				else if (targeted is Item tradeItem && tradeItem.InSecureTrade)
 				{
-					OnTargetInSecureTrade(from, targeted);
+					OnTargetInSecureTrade(from, tradeItem);
 				}
-				else if (targeted is Item && !((Item)targeted).IsAccessibleTo(from))
+				else if (targeted is Item item && !item.IsAccessibleTo(from))
 				{
-					OnTargetNotAccessible(from, targeted);
+					OnTargetNotAccessible(from, item);
 				}
-				else if (targeted is Item && !((Item)targeted).CheckTarget(from, this, targeted))
+				else if (targeted is Item unTargetable && !unTargetable.CheckTarget(from, this, unTargetable))
 				{
-					OnTargetUntargetable(from, targeted);
+					OnTargetUntargetable(from, unTargetable);
 				}
-				else if (targeted is Mobile && !((Mobile)targeted).CheckTarget(from, this, targeted))
+				else if (targeted is Mobile mobile && !mobile.CheckTarget(from, this, mobile))
 				{
-					OnTargetUntargetable(from, targeted);
+					OnTargetUntargetable(from, mobile);
 				}
 				else if (from.Region.OnTarget(from, this, targeted))
 				{

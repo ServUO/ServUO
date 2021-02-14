@@ -73,7 +73,7 @@ namespace Server
 
 		public static void Broadcast(int hue, bool ascii, AccessLevel access, string text)
 		{
-			var e = new WorldBroadcastEventArgs(hue, ascii, access, text);
+			WorldBroadcastEventArgs e = new WorldBroadcastEventArgs(hue, ascii, access, text);
 
 			EventSink.InvokeWorldBroadcast(e);
 
@@ -82,7 +82,7 @@ namespace Server
 			text = e.Text;
 			access = e.Access;
 
-			if (String.IsNullOrWhiteSpace(text))
+			if (string.IsNullOrWhiteSpace(text))
 			{
 				return;
 			}
@@ -98,11 +98,11 @@ namespace Server
 				p = new UnicodeMessage(Serial.MinusOne, -1, MessageType.Regular, hue, 3, "ENU", "System", text);
 			}
 
-			var list = NetState.Instances;
+			List<NetState> list = NetState.Instances;
 
 			p.Acquire();
 
-			foreach (var s in list)
+			foreach (NetState s in list)
 			{
 				if (s.Mobile != null && s.Mobile.AccessLevel >= access)
 				{
@@ -122,7 +122,7 @@ namespace Server
 
 		public static void Broadcast(int hue, bool ascii, AccessLevel access, string format, params object[] args)
 		{
-			Broadcast(hue, ascii, access, String.Format(format, args));
+			Broadcast(hue, ascii, access, string.Format(format, args));
 		}
 
 		private interface IEntityEntry
@@ -207,15 +207,15 @@ namespace Server
 
 		private static List<Tuple<ConstructorInfo, string>> ReadTypes(BinaryReader tdbReader)
 		{
-			var count = tdbReader.ReadInt32();
+			int count = tdbReader.ReadInt32();
 
-			var types = new List<Tuple<ConstructorInfo, string>>(count);
+			List<Tuple<ConstructorInfo, string>> types = new List<Tuple<ConstructorInfo, string>>(count);
 
-			for (var i = 0; i < count; ++i)
+			for (int i = 0; i < count; ++i)
 			{
-				var typeName = tdbReader.ReadString();
+				string typeName = tdbReader.ReadString();
 
-				var t = ScriptCompiler.FindTypeByFullName(typeName);
+				Type t = ScriptCompiler.FindTypeByFullName(typeName);
 
 				if (t == null)
 				{
@@ -284,7 +284,7 @@ namespace Server
 					}
 				}
 
-				var ctor = t.GetConstructor(m_SerialTypeArray);
+				ConstructorInfo ctor = t.GetConstructor(m_SerialTypeArray);
 
 				if (ctor != null)
 				{
@@ -292,7 +292,7 @@ namespace Server
 				}
 				else
 				{
-					throw new Exception(String.Format("Type '{0}' does not have a serialization constructor", t));
+					throw new Exception(string.Format("Type '{0}' does not have a serialization constructor", t));
 				}
 			}
 
@@ -313,43 +313,43 @@ namespace Server
 			Console.WriteLine("World: Loading...");
 			Utility.PopColor();
 
-			var watch = Stopwatch.StartNew();
+			Stopwatch watch = Stopwatch.StartNew();
 
 			Loading = true;
 
 			_addQueue = new Queue<IEntity>();
 			_deleteQueue = new Queue<IEntity>();
+			
+			object[] ctorArgs = new object[1];
 
-			var ctorArgs = new object[1];
-
-			var items = new List<ItemEntry>();
-			var mobiles = new List<MobileEntry>();
-			var guilds = new List<GuildEntry>();
+			List<ItemEntry> items = new List<ItemEntry>();
+			List<MobileEntry> mobiles = new List<MobileEntry>();
+			List<GuildEntry> guilds = new List<GuildEntry>();
 
 			if (File.Exists(MobileIndexPath) && File.Exists(MobileTypesPath))
 			{
-				using (var idx = new FileStream(MobileIndexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream idx = new FileStream(MobileIndexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var idxReader = new BinaryReader(idx);
+					BinaryReader idxReader = new BinaryReader(idx);
 
-					using (var tdb = new FileStream(MobileTypesPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+					using (FileStream tdb = new FileStream(MobileTypesPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
-						var tdbReader = new BinaryReader(tdb);
+						BinaryReader tdbReader = new BinaryReader(tdb);
 
-						var types = ReadTypes(tdbReader);
+						List<Tuple<ConstructorInfo, string>> types = ReadTypes(tdbReader);
 
-						var mobileCount = idxReader.ReadInt32();
-
+						int mobileCount = idxReader.ReadInt32();
+						
 						Mobiles = new Dictionary<Serial, Mobile>(mobileCount);
 
-						for (var i = 0; i < mobileCount; ++i)
+						for (int i = 0; i < mobileCount; ++i)
 						{
-							var typeID = idxReader.ReadInt32();
-							var serial = idxReader.ReadInt32();
-							var pos = idxReader.ReadInt64();
-							var length = idxReader.ReadInt32();
+							int typeID = idxReader.ReadInt32();
+							int serial = idxReader.ReadInt32();
+							long pos = idxReader.ReadInt64();
+							int length = idxReader.ReadInt32();
 
-							var objs = types[typeID];
+							Tuple<ConstructorInfo, string> objs = types[typeID];
 
 							if (objs == null)
 							{
@@ -357,8 +357,8 @@ namespace Server
 							}
 
 							Mobile m = null;
-							var ctor = objs.Item1;
-							var typeName = objs.Item2;
+							ConstructorInfo ctor = objs.Item1;
+							string typeName = objs.Item2;
 
 							try
 							{
@@ -367,7 +367,7 @@ namespace Server
 							}
 							catch (Exception ex)
 							{
-								Diagnostics.ExceptionLogging.LogException(ex);
+                                Diagnostics.ExceptionLogging.LogException(ex);
 							}
 
 							if (m != null)
@@ -390,28 +390,28 @@ namespace Server
 
 			if (File.Exists(ItemIndexPath) && File.Exists(ItemTypesPath))
 			{
-				using (var idx = new FileStream(ItemIndexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream idx = new FileStream(ItemIndexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var idxReader = new BinaryReader(idx);
+					BinaryReader idxReader = new BinaryReader(idx);
 
-					using (var tdb = new FileStream(ItemTypesPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+					using (FileStream tdb = new FileStream(ItemTypesPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 					{
-						var tdbReader = new BinaryReader(tdb);
+						BinaryReader tdbReader = new BinaryReader(tdb);
 
-						var types = ReadTypes(tdbReader);
+						List<Tuple<ConstructorInfo, string>> types = ReadTypes(tdbReader);
 
-						var itemCount = idxReader.ReadInt32();
+						int itemCount = idxReader.ReadInt32();
 
 						Items = new Dictionary<Serial, Item>(itemCount);
 
-						for (var i = 0; i < itemCount; ++i)
+						for (int i = 0; i < itemCount; ++i)
 						{
-							var typeID = idxReader.ReadInt32();
-							var serial = idxReader.ReadInt32();
-							var pos = idxReader.ReadInt64();
-							var length = idxReader.ReadInt32();
+							int typeID = idxReader.ReadInt32();
+							int serial = idxReader.ReadInt32();
+							long pos = idxReader.ReadInt64();
+							int length = idxReader.ReadInt32();
 
-							var objs = types[typeID];
+							Tuple<ConstructorInfo, string> objs = types[typeID];
 
 							if (objs == null)
 							{
@@ -419,8 +419,8 @@ namespace Server
 							}
 
 							Item item = null;
-							var ctor = objs.Item1;
-							var typeName = objs.Item2;
+							ConstructorInfo ctor = objs.Item1;
+							string typeName = objs.Item2;
 
 							try
 							{
@@ -429,7 +429,7 @@ namespace Server
 							}
 							catch (Exception e)
 							{
-								Diagnostics.ExceptionLogging.LogException(e);
+                                Diagnostics.ExceptionLogging.LogException(e);
 							}
 
 							if (item != null)
@@ -452,28 +452,28 @@ namespace Server
 
 			if (File.Exists(GuildIndexPath))
 			{
-				using (var idx = new FileStream(GuildIndexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream idx = new FileStream(GuildIndexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var idxReader = new BinaryReader(idx);
+					BinaryReader idxReader = new BinaryReader(idx);
 
-					var guildCount = idxReader.ReadInt32();
-
-					var createEventArgs = new CreateGuildEventArgs(-1);
-
-					for (var i = 0; i < guildCount; ++i)
+					int guildCount = idxReader.ReadInt32();
+					
+					CreateGuildEventArgs createEventArgs = new CreateGuildEventArgs(-1);
+					
+					for (int i = 0; i < guildCount; ++i)
 					{
 						idxReader.ReadInt32(); //no typeid for guilds
-
-						var id = idxReader.ReadInt32();
-						var pos = idxReader.ReadInt64();
-						var length = idxReader.ReadInt32();
+						
+						int id = idxReader.ReadInt32();
+						long pos = idxReader.ReadInt64();
+						int length = idxReader.ReadInt32();
 
 						createEventArgs.Id = id;
-
+						
 						EventSink.InvokeCreateGuild(createEventArgs);
-
-						var guild = createEventArgs.Guild;
-
+						
+						BaseGuild guild = createEventArgs.Guild;
+						
 						if (guild != null)
 						{
 							guilds.Add(new GuildEntry(guild, pos, length));
@@ -486,20 +486,20 @@ namespace Server
 
 			bool failedMobiles = false, failedItems = false, failedGuilds = false;
 			Type failedType = null;
-			var failedSerial = Serial.Zero;
+			Serial failedSerial = Serial.Zero;
 			Exception failed = null;
-			var failedTypeID = 0;
+			int failedTypeID = 0;
 
 			if (File.Exists(MobileDataPath))
 			{
-				using (var bin = new FileStream(MobileDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream bin = new FileStream(MobileDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var reader = new BinaryFileReader(new BinaryReader(bin));
+					BinaryFileReader reader = new BinaryFileReader(new BinaryReader(bin));
 
-					for (var i = 0; i < mobiles.Count; ++i)
+					for (int i = 0; i < mobiles.Count; ++i)
 					{
-						var entry = mobiles[i];
-						var m = entry.Mobile;
+						MobileEntry entry = mobiles[i];
+						Mobile m = entry.Mobile;
 
 						if (m != null)
 						{
@@ -508,12 +508,12 @@ namespace Server
 							try
 							{
 								LoadingType = entry.TypeName;
-
+								
 								m.Deserialize(reader);
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on {0} *****", m.GetType()));
+									throw new Exception(string.Format("***** Bad serialize on {0} *****", m.GetType()));
 								}
 							}
 							catch (Exception e)
@@ -537,14 +537,14 @@ namespace Server
 
 			if (!failedMobiles && File.Exists(ItemDataPath))
 			{
-				using (var bin = new FileStream(ItemDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream bin = new FileStream(ItemDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var reader = new BinaryFileReader(new BinaryReader(bin));
+					BinaryFileReader reader = new BinaryFileReader(new BinaryReader(bin));
 
-					for (var i = 0; i < items.Count; ++i)
+					for (int i = 0; i < items.Count; ++i)
 					{
-						var entry = items[i];
-						var item = entry.Item;
+						ItemEntry entry = items[i];
+						Item item = entry.Item;
 
 						if (item != null)
 						{
@@ -553,12 +553,12 @@ namespace Server
 							try
 							{
 								LoadingType = entry.TypeName;
-
+								
 								item.Deserialize(reader);
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on {0} *****", item.GetType()));
+									throw new Exception(string.Format("***** Bad serialize on {0} *****", item.GetType()));
 								}
 							}
 							catch (Exception e)
@@ -584,14 +584,14 @@ namespace Server
 
 			if (!failedMobiles && !failedItems && File.Exists(GuildDataPath))
 			{
-				using (var bin = new FileStream(GuildDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream bin = new FileStream(GuildDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var reader = new BinaryFileReader(new BinaryReader(bin));
+					BinaryFileReader reader = new BinaryFileReader(new BinaryReader(bin));
 
-					for (var i = 0; i < guilds.Count; ++i)
+					for (int i = 0; i < guilds.Count; ++i)
 					{
-						var entry = guilds[i];
-						var g = entry.Guild;
+						GuildEntry entry = guilds[i];
+						BaseGuild g = entry.Guild;
 
 						if (g != null)
 						{
@@ -603,7 +603,7 @@ namespace Server
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on Guild {0} *****", g.Id));
+									throw new Exception(string.Format("***** Bad serialize on Guild {0} *****", g.Id));
 								}
 							}
 							catch (Exception e)
@@ -648,7 +648,7 @@ namespace Server
 							{
 								if (failedMobiles)
 								{
-									for (var i = 0; i < mobiles.Count;)
+									for (int i = 0; i < mobiles.Count;)
 									{
 										if (mobiles[i].TypeID == failedTypeID)
 										{
@@ -662,7 +662,7 @@ namespace Server
 								}
 								else if (failedItems)
 								{
-									for (var i = 0; i < items.Count;)
+									for (int i = 0; i < items.Count;)
 									{
 										if (items[i].TypeID == failedTypeID)
 										{
@@ -693,7 +693,7 @@ namespace Server
 				}
 
 				throw new Exception(
-					String.Format(
+					string.Format(
 						"Load failed (items={0}, mobiles={1}, guilds={2}, type={3}, serial={4})",
 						failedItems,
 						failedMobiles,
@@ -709,7 +709,7 @@ namespace Server
 
 			ProcessSafetyQueues();
 
-			foreach (var item in Items.Values)
+			foreach (Item item in Items.Values)
 			{
 				if (item.Parent == null)
 					item.UpdateTotals();
@@ -717,7 +717,7 @@ namespace Server
 				item.ClearProperties();
 			}
 
-			foreach (var m in Mobiles.Values)
+			foreach (Mobile m in Mobiles.Values)
 			{
 				m.UpdateRegion(); // Is this really needed?
 				m.UpdateTotals();
@@ -740,7 +740,7 @@ namespace Server
 		{
 			while (_addQueue.Count > 0)
 			{
-				var entity = _addQueue.Dequeue();
+				IEntity entity = _addQueue.Dequeue();
 
 				if (entity is Item item)
 				{
@@ -754,7 +754,7 @@ namespace Server
 
 			while (_deleteQueue.Count > 0)
 			{
-				var entity = _deleteQueue.Dequeue();
+				IEntity entity = _deleteQueue.Dequeue();
 
 				if (entity is Item item)
 				{
@@ -769,8 +769,8 @@ namespace Server
 
 		private static void AppendSafetyLog(string action, IEntity entity)
 		{
-			var message =
-				String.Format(
+			string message =
+				string.Format(
 					"Warning: Attempted to {1} {2} during world save." + "{0}This action could cause inconsistent state." +
 					"{0}It is strongly advised that the offending scripts be corrected.",
 					Environment.NewLine,
@@ -786,7 +786,7 @@ namespace Server
 
 			try
 			{
-				using (var op = new StreamWriter("world-save-errors.log", true))
+				using (StreamWriter op = new StreamWriter("world-save-errors.log", true))
 				{
 					op.WriteLine("{0}\t{1}", DateTime.UtcNow, message);
 					op.WriteLine(new StackTrace(2).ToString());
@@ -795,7 +795,7 @@ namespace Server
 			}
 			catch (Exception ex)
 			{
-				Diagnostics.ExceptionLogging.LogException(ex);
+                Diagnostics.ExceptionLogging.LogException(ex);
 			}
 		}
 
@@ -816,15 +816,15 @@ namespace Server
 				Directory.CreateDirectory("Saves/Guilds/");
 			}
 
-			using (var idx = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
+			using (FileStream idx = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
 			{
-				var idxWriter = new BinaryWriter(idx);
+				BinaryWriter idxWriter = new BinaryWriter(idx);
 
 				idxWriter.Write(list.Count);
 
-				for (var i = 0; i < list.Count; ++i)
+				for (int i = 0; i < list.Count; ++i)
 				{
-					var e = list[i];
+					T e = list[i];
 
 					idxWriter.Write(e.TypeID);
 					idxWriter.Write(e.Serial);
@@ -836,7 +836,7 @@ namespace Server
 			}
 		}
 
-		static internal int m_Saves;
+		internal static int m_Saves;
 
 		public static void Save()
 		{
@@ -866,12 +866,12 @@ namespace Server
 				Broadcast(0x35, false, AccessLevel.Player, "The world is saving, please wait.");
 			}
 
-			var strategy = SaveStrategy.Acquire();
+			SaveStrategy strategy = SaveStrategy.Acquire();
 			Console.WriteLine("Core: Using {0} save strategy", strategy.Name.ToLowerInvariant());
 
 			Console.WriteLine("World: Saving...");
 
-			var watch = Stopwatch.StartNew();
+			Stopwatch watch = Stopwatch.StartNew();
 
 			if (!Directory.Exists("Saves/Mobiles/"))
 			{
@@ -898,7 +898,7 @@ namespace Server
 
 			if (m_Metrics)
 			{
-				using (var metrics = new SaveMetrics())
+				using (SaveMetrics metrics = new SaveMetrics())
 					strategy.Save(metrics, permitBackgroundWrite);
 			}
 			else
@@ -948,8 +948,8 @@ namespace Server
 			}
 		}
 
-		static internal List<Type> m_ItemTypes = new List<Type>();
-		static internal List<Type> m_MobileTypes = new List<Type>();
+		internal static List<Type> m_ItemTypes = new List<Type>();
+		internal static List<Type> m_MobileTypes = new List<Type>();
 
 		public static IEntity FindEntity(Serial serial)
 		{
@@ -967,7 +967,7 @@ namespace Server
 
 		public static Mobile FindMobile(Serial serial)
 		{
-			Mobiles.TryGetValue(serial, out var mob);
+			Mobiles.TryGetValue(serial, out Mobile mob);
 
 			return mob;
 		}
@@ -987,7 +987,7 @@ namespace Server
 
 		public static Item FindItem(Serial serial)
 		{
-			Items.TryGetValue(serial, out var item);
+			Items.TryGetValue(serial, out Item item);
 
 			return item;
 		}

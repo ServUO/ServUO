@@ -78,7 +78,7 @@ namespace Server.Mobiles
         public override int Hides => 30;
         public override HideType HideType => HideType.Barbed;
         public override int Scales => 7;
-        public override ScaleType ScaleType => (Body == 12 ? ScaleType.Yellow : ScaleType.Red);
+        public override ScaleType ScaleType => Body == 12 ? ScaleType.Yellow : ScaleType.Red;
         public override int DragonBlood => 48;
         public override bool CanFlee => false;
 
@@ -127,7 +127,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         #region Crimson Meteor
@@ -311,9 +311,11 @@ namespace Server.Mobiles
             private static int GetItemID(bool south)
             {
                 if (south)
+                {
                     return 0x398C;
-                else
-                    return 0x3996;
+                }
+
+                return 0x3996;
             }
 
             public override void OnAfterDelete()
@@ -372,7 +374,7 @@ namespace Server.Mobiles
 
             public bool CanTargetMob(Mobile m)
             {
-                return m != m_Owner && m_Owner.CanBeHarmful(m, false) && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile));
+                return m != m_Owner && m_Owner.CanBeHarmful(m, false) && (m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile);
             }
 
             public FireField(Serial serial)

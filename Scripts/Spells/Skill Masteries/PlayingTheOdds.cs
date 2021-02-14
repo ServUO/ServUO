@@ -86,8 +86,10 @@ namespace Server.Spells.SkillMasteries
                 {
                     if (HitLower.ApplyDefense(mob))
                     {
-                        if (wep is BaseRanged && !(wep is BaseThrown))
-                            Caster.MovingEffect(mob, ((BaseRanged)wep).EffectID, 18, 1, false, false);
+                        if (wep is BaseRanged ranged && !(ranged is BaseThrown))
+                        {
+                            Caster.MovingEffect(mob, ranged.EffectID, 18, 1, false, false);
+                        }
 
                         mob.PlaySound(0x28E);
                         Effects.SendTargetEffect(mob, 0x37BE, 1, 4, 0x23, 3);

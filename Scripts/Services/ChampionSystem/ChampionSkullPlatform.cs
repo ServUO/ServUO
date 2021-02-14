@@ -92,13 +92,12 @@ namespace Server.Engines.CannedEvil
 
         public bool Validate(ChampionSkullBrazier brazier)
         {
-            return (brazier != null && brazier.Skull != null && !brazier.Skull.Deleted);
+            return brazier != null && brazier.Skull != null && !brazier.Skull.Deleted;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Power);
@@ -112,23 +111,14 @@ namespace Server.Engines.CannedEvil
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 0:
-                    {
-                        m_Power = reader.ReadItem() as ChampionSkullBrazier;
-                        m_Enlightenment = reader.ReadItem() as ChampionSkullBrazier;
-                        m_Venom = reader.ReadItem() as ChampionSkullBrazier;
-                        m_Pain = reader.ReadItem() as ChampionSkullBrazier;
-                        m_Greed = reader.ReadItem() as ChampionSkullBrazier;
-                        m_Death = reader.ReadItem() as ChampionSkullBrazier;
-
-                        break;
-                    }
-            }
+            m_Power = reader.ReadItem() as ChampionSkullBrazier;
+            m_Enlightenment = reader.ReadItem() as ChampionSkullBrazier;
+            m_Venom = reader.ReadItem() as ChampionSkullBrazier;
+            m_Pain = reader.ReadItem() as ChampionSkullBrazier;
+            m_Greed = reader.ReadItem() as ChampionSkullBrazier;
+            m_Death = reader.ReadItem() as ChampionSkullBrazier;
         }
     }
 }

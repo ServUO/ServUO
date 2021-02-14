@@ -111,11 +111,14 @@ namespace Server.Mobiles
 
         public override WeaponAbility GetWeaponAbility()
         {
-            if (Weapon is BaseWeapon)
+            if (Weapon is BaseWeapon weapon)
             {
                 if (Utility.RandomBool())
-                    return ((BaseWeapon)Weapon).PrimaryAbility;
-                return ((BaseWeapon)Weapon).SecondaryAbility;
+                {
+                    return weapon.PrimaryAbility;
+                }
+
+                return weapon.SecondaryAbility;
             }
 
             return WeaponAbility.WhirlwindAttack;
@@ -159,7 +162,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextSummon = DateTime.UtcNow;
         }

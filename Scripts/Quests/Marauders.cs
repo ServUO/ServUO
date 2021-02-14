@@ -7,7 +7,6 @@ namespace Server.Engines.Quests
     public class MaraudersQuest : BaseQuest
     {
         public MaraudersQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Ogre), "ogres", 10, "Sanctuary"));
 
@@ -28,30 +27,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072687;
         /* You can't miss those ogres, they're huge and just outside the gates here. */
         public override object Uncomplete => 1072688;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Sanctuary;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TheBrainsOfTheOperationQuest : BaseQuest
     {
         public TheBrainsOfTheOperationQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(OgreLord), "ogre lords", 10, "Sanctuary"));
 
@@ -71,30 +63,23 @@ namespace Server.Engines.Quests
         /* Ogre Lords are pretty easy to recognize.  They're the ones ordering the other ogres about in a lordly 
         manner.  Striking down their leadership will throw the ogres into confusion and dismay! */
         public override object Uncomplete => 1072709;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Sanctuary;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TheBrawnQuest : BaseQuest
     {
         public TheBrawnQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Cyclops), "cyclops", 6, "Sanctuary"));
 
@@ -113,30 +98,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072711;
         /* Make sure you fully assess all of the cyclopian tactical abilities! */
         public override object Uncomplete => 1072712;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Sanctuary;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TheBiggerTheyAreQuest : BaseQuest
     {
         public TheBiggerTheyAreQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Titan), "titans", 3, "Sanctuary"));
 
@@ -155,23 +133,17 @@ namespace Server.Engines.Quests
         /* Those titans don't skulk very well.  You should be able to track them easily ... their footsteps are 
         easily the largest around. */
         public override object Uncomplete => 1072715;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Sanctuary;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

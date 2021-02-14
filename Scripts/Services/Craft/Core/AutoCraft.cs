@@ -85,8 +85,8 @@ namespace Server.Engines.Craft
 
             if (context != null)
             {
-                CraftSubResCol res = (m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes);
-                int resIndex = (m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex);
+                CraftSubResCol res = m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes;
+                int resIndex = m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex;
 
                 if (resIndex > -1)
                     m_TypeRes = res.GetAt(resIndex).ItemType;

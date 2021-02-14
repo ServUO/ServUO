@@ -30,12 +30,7 @@ namespace Server.Mobiles
             if (!base.CheckTeach(skill, from))
                 return false;
 
-            return (skill == SkillName.Anatomy) ||
-                   (skill == SkillName.Camping) ||
-                   (skill == SkillName.Forensics) ||
-                   (skill == SkillName.Healing) ||
-                   (skill == SkillName.SpiritSpeak) ||
-                   (skill == SkillName.Mysticism);
+            return skill == SkillName.Anatomy || skill == SkillName.Camping || skill == SkillName.Forensics || skill == SkillName.Healing || skill == SkillName.SpiritSpeak || skill == SkillName.Mysticism;
         }
 
         public override bool CheckResurrect(Mobile m)
@@ -45,7 +40,8 @@ namespace Server.Mobiles
                 Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
-            else if (m.Murderer)
+
+            if (m.Murderer)
             {
                 Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
                 return false;
@@ -57,15 +53,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

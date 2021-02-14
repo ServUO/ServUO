@@ -17,13 +17,13 @@ namespace Server.Items
         private HuntingKillEntry m_KillEntry;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public Mobile Owner { get => m_Owner; set => m_Owner = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool ProducedTrophy { get { return m_ProducedTrophy; } set { m_ProducedTrophy = value; } }
+        public bool ProducedTrophy { get => m_ProducedTrophy; set => m_ProducedTrophy = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public HuntingKillEntry KillEntry { get { return m_KillEntry; } set { m_KillEntry = value; } }
+        public HuntingKillEntry KillEntry { get => m_KillEntry; set => m_KillEntry = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasDocumentedKill => m_KillEntry != null;
@@ -34,7 +34,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasSubmitted
         {
-            get { return m_HasSubmitted; }
+            get => m_HasSubmitted;
             set
             {
                 m_HasSubmitted = value;
@@ -108,10 +108,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Corpse)
+                if (targeted is Corpse c)
                 {
-                    Corpse c = targeted as Corpse;
-
                     if (!from.InRange(c.Location, 3))
                         from.SendLocalizedMessage(500446); // That is too far away.
                     if (c.VisitedByTaxidermist)
@@ -224,7 +222,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             m_Owner = reader.ReadMobile();
             m_ProducedTrophy = reader.ReadBool();

@@ -51,7 +51,7 @@ namespace Server.Misc
             double n = (double)cur / max;
             double v = Math.Sqrt(m.Skills[skill].Value * 0.005);
 
-            n *= (1.0 - v);
+            n *= 1.0 - v;
             n += v;
 
             m.CheckSkill(skill, n);
@@ -85,7 +85,7 @@ namespace Server.Misc
 
             double rate = 1.0 / (1.42 + (bonus / 100));
 
-            if (from is BaseCreature && ((BaseCreature)from).IsMonster)
+            if (from is BaseCreature creature && creature.IsMonster)
             {
                 rate *= 1.95;
             }
@@ -149,8 +149,8 @@ namespace Server.Misc
         {
             double points = AosAttributes.GetValue(from, AosAttribute.RegenHits);
 
-            if (from is BaseCreature)
-                points += ((BaseCreature)from).DefaultHitsRegen;
+            if (from is BaseCreature creature)
+                points += creature.DefaultHitsRegen;
 
             if (from is PlayerMobile && from.Race == Race.Human)	//Is this affected by the cap?
                 points += 2;
@@ -182,8 +182,8 @@ namespace Server.Misc
         {
             double points = AosAttributes.GetValue(from, AosAttribute.RegenStam);
 
-            if (from is BaseCreature)
-                points += ((BaseCreature)from).DefaultStamRegen;
+            if (from is BaseCreature creature)
+                points += creature.DefaultStamRegen;
 
             if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
                 points += 15;
@@ -210,8 +210,8 @@ namespace Server.Misc
         {
             double points = AosAttributes.GetValue(from, AosAttribute.RegenMana);
 
-            if (from is BaseCreature)
-                points += ((BaseCreature)from).DefaultManaRegen;
+            if (from is BaseCreature creature)
+                points += creature.DefaultManaRegen;
 
             if (CheckTransform(from, typeof(VampiricEmbraceSpell)))
                 points += 3;

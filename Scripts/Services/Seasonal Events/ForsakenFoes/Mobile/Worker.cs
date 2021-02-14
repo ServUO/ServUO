@@ -147,12 +147,10 @@ namespace Server.Engines.Fellowship
 
                 return true;
             }
-            else
-            {
-                SayTo(from, 500607, 0x3B2); // I'm not interested in that.
 
-                return false;
-            }
+            SayTo(from, 500607, 0x3B2); // I'm not interested in that.
+
+            return false;
         }
 
         public override void OnDoubleClick(Mobile m)
@@ -176,7 +174,7 @@ namespace Server.Engines.Fellowship
 
         public class WorkerGump : Gump
         {
-            private static readonly int[,] clilocs = new int[,]
+            private static readonly int[,] clilocs =
             {
                 {1159238, 1159239},
                 {1159236, 1159240},
@@ -185,7 +183,7 @@ namespace Server.Engines.Fellowship
                 {1159236, 1159243},
                 {1159236, 1159244},
                 {1159236, 1159245},
-                {1159236, 1159246},
+                {1159236, 1159246}
             };
 
             public WorkerGump(Mobile from, FellowshipChain chain)
@@ -230,7 +228,7 @@ namespace Server.Engines.Fellowship
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Chain = (FellowshipChain)reader.ReadInt();
 

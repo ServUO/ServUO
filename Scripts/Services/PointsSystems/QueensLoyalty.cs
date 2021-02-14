@@ -39,8 +39,8 @@ namespace Server.Engines.Points
             if (!Entries.ContainsKey(type))
                 return;
 
-            if (damager is BaseCreature && (((BaseCreature)damager).Controlled || ((BaseCreature)damager).Summoned))
-                damager = ((BaseCreature)damager).GetMaster();
+            if (damager is BaseCreature creature && (creature.Controlled || creature.Summoned))
+                damager = creature.GetMaster();
 
             if (damager == null)
                 return;

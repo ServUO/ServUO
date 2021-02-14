@@ -6,15 +6,15 @@ namespace Server.Mobiles
 {
     public class TrainingDefinition
     {
-        public Type CreatureType { get; private set; }
-        public Class Class { get; private set; }
-        public MagicalAbility MagicalAbilities { get; private set; }
-        public SpecialAbility[] SpecialAbilities { get; private set; }
-        public WeaponAbility[] WeaponAbilities { get; private set; }
-        public AreaEffect[] AreaEffects { get; private set; }
+        public Type CreatureType { get; }
+        public Class Class { get; }
+        public MagicalAbility MagicalAbilities { get; }
+        public SpecialAbility[] SpecialAbilities { get; }
+        public WeaponAbility[] WeaponAbilities { get; }
+        public AreaEffect[] AreaEffects { get; }
 
-        public int ControlSlotsMin { get; private set; }
-        public int ControlSlotsMax { get; private set; }
+        public int ControlSlotsMin { get; }
+        public int ControlSlotsMax { get; }
 
         public TrainingDefinition(
             Type type,

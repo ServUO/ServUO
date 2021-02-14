@@ -12,7 +12,7 @@ namespace Server.Engines.VoidPool
         private bool _Active;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public VoidPoolController Controller { get; set; }
+        public VoidPoolController Controller { get; }
 
         public List<SpawnEntry> Spawns { get; set; }
 
@@ -22,7 +22,7 @@ namespace Server.Engines.VoidPool
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return _Active; }
+            get => _Active;
             set
             {
                 bool active = _Active;
@@ -87,15 +87,15 @@ namespace Server.Engines.VoidPool
                 Spawns.Clear();
 
             Spawns = new List<SpawnEntry>();
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5564, 1888, 26, 31) }));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5554, 1888, 8, 28) }));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5596, 1888, 8, 28) }));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5536, 1876, 8, 8), new Rectangle2D(5552, 1840, 11, 42) }));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5600, 1860, 8, 8), new Rectangle2D(5596, 1872, 15, 12) }));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5608, 1832, 15, 15), new Rectangle2D(5616, 1848, 11, 34) }));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5568, 1852, 22, 14) }, 15));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5568, 1824, 22, 11) }));
-            Spawns.Add(new SpawnEntry(this, new Rectangle2D[] { new Rectangle2D(5501, 1800, 42, 19) }, 15));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5564, 1888, 26, 31) }));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5554, 1888, 8, 28) }));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5596, 1888, 8, 28) }));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5536, 1876, 8, 8), new Rectangle2D(5552, 1840, 11, 42) }));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5600, 1860, 8, 8), new Rectangle2D(5596, 1872, 15, 12) }));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5608, 1832, 15, 15), new Rectangle2D(5616, 1848, 11, 34) }));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5568, 1852, 22, 14) }, 15));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5568, 1824, 22, 11) }));
+            Spawns.Add(new SpawnEntry(this, new[] { new Rectangle2D(5501, 1800, 42, 19) }, 15));
         }
 
         public void RemoveFromSpawner(ISpawnable spawnable)
@@ -258,10 +258,10 @@ namespace Server.Engines.VoidPool
 
         public class SpawnEntry
         {
-            public Level3Spawner Spawner { get; set; }
+            public Level3Spawner Spawner { get; }
 
-            public Rectangle2D[] Bounds { get; private set; }
-            public int MaxCount { get; private set; }
+            public Rectangle2D[] Bounds { get; }
+            public int MaxCount { get; }
 
             public int CurrentCount => Spawn.Count;
             public VoidType SpawnType { get; set; }
@@ -334,7 +334,7 @@ namespace Server.Engines.VoidPool
 
             public void Deserialize(GenericReader reader)
             {
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 Spawn = new List<BaseCreature>();
                 int count = reader.ReadInt();

@@ -15,16 +15,18 @@ namespace Server.Commands
         private static readonly Type m_EnumType = typeof(Enum);
         private static readonly Type m_TypeType = typeof(Type);
         private static readonly Type m_ParsableType = typeof(ParsableAttribute);
-        private static readonly Type[] m_ParseTypes = new Type[] { typeof(string) };
+        private static readonly Type[] m_ParseTypes = { typeof(string) };
         private static readonly object[] m_ParseArgs = new object[1];
-        private static readonly Type[] m_SignedNumerics = new Type[]
+
+        private static readonly Type[] m_SignedNumerics =
         {
             typeof(long),
             typeof(int),
             typeof(short),
             typeof(sbyte)
         };
-        private static readonly Type[] m_UnsignedNumerics = new Type[]
+
+        private static readonly Type[] m_UnsignedNumerics =
         {
             typeof(ulong),
             typeof(uint),
@@ -248,33 +250,35 @@ namespace Server.Commands
                 {
                     return Enum.Parse(type, value, true);
                 }
-                else if (IsType(type))
+
+                if (IsType(type))
                 {
                     return ScriptCompiler.FindTypeByName(value);
                 }
-                else if (IsParsable(type))
+
+                if (IsParsable(type))
                 {
                     return ParseParsable(type, value);
                 }
-                else
+
+                object obj = value;
+
+                if (value != null && value.StartsWith("0x"))
                 {
-                    object obj = value;
+                    if (IsSignedNumeric(type))
+                        obj = Convert.ToInt64(value.Substring(2), 16);
+                    else if (IsUnsignedNumeric(type))
+                        obj = Convert.ToUInt64(value.Substring(2), 16);
 
-                    if (value != null && value.StartsWith("0x"))
-                    {
-                        if (IsSignedNumeric(type))
-                            obj = Convert.ToInt64(value.Substring(2), 16);
-                        else if (IsUnsignedNumeric(type))
-                            obj = Convert.ToUInt64(value.Substring(2), 16);
-
-                        obj = Convert.ToInt32(value.Substring(2), 16);
-                    }
-
-                    if (obj == null && !type.IsValueType)
-                        return null;
-                    else
-                        return Convert.ChangeType(obj, type);
+                    obj = Convert.ToInt32(value.Substring(2), 16);
                 }
+
+                if (obj == null && !type.IsValueType)
+                {
+                    return null;
+                }
+
+                return Convert.ChangeType(obj, type);
             }
             catch
             {
@@ -355,14 +359,13 @@ namespace Server.Commands
 
                         sb.AppendFormat("0x{0:X}; ", built.Serial.Value);
 
-                        if (built is Item)
+                        if (built is Item item)
                         {
                             Container pack = packs[i];
-                            pack.DropItem((Item)built);
+                            pack.DropItem(item);
                         }
-                        else if (built is Mobile)
+                        else if (built is Mobile m)
                         {
-                            Mobile m = (Mobile)built;
                             m.MoveToWorld(new Point3D(start.X, start.Y, start.Z), map);
                         }
                     }
@@ -385,14 +388,12 @@ namespace Server.Commands
 
                             sb.AppendFormat("0x{0:X}; ", built.Serial.Value);
 
-                            if (built is Item)
+                            if (built is Item item)
                             {
-                                Item item = (Item)built;
                                 item.MoveToWorld(new Point3D(x, y, z), map);
                             }
-                            else if (built is Mobile)
+                            else if (built is Mobile m)
                             {
-                                Mobile m = (Mobile)built;
                                 m.MoveToWorld(new Point3D(x, y, z), map);
                             }
                         }
@@ -550,7 +551,7 @@ namespace Server.Commands
 
         public static bool IsType(Type type)
         {
-            return (type == m_TypeType || type.IsSubclassOf(m_TypeType));
+            return type == m_TypeType || type.IsSubclassOf(m_TypeType);
         }
 
         public static bool IsParsable(Type type)
@@ -695,10 +696,10 @@ namespace Server.Commands
 
                 if (p != null)
                 {
-                    if (p is Item)
-                        p = ((Item)p).GetWorldTop();
-                    else if (p is Mobile)
-                        p = ((Mobile)p).Location;
+                    if (p is Item item)
+                        p = item.GetWorldTop();
+                    else if (p is Mobile mobile)
+                        p = mobile.Location;
 
                     Point3D point = new Point3D(p);
                     Add.Invoke(from, point, point, m_Args);

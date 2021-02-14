@@ -1,15 +1,10 @@
-/*
-snicker7
-Released: 03/26/06
-*/
-
 namespace Server.Mobiles
 {
     public class GMEthereal : EtherealMount
     {
         public override int FollowerSlots => 0;
 
-        private static readonly EtherealInfo[] EthyItemTypes = new EtherealInfo[]
+        private static readonly EtherealInfo[] EthyItemTypes =
         {
             new EtherealInfo(0x20DD, 0x3EAA), //Horse
             new EtherealInfo(0x20F6, 0x3EAB), //Llama
@@ -76,10 +71,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.Counselor)]
         public EtherealTypes EthyType
         {
-            get
-            {
-                return m_EthyType;
-            }
+            get => m_EthyType;
             set
             {
                 if ((int)value > EthyItemTypes.Length)
@@ -123,13 +115,15 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
             writer.Write(1); // version
+
             writer.Write((int)m_EthyType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             EthyType = (EtherealTypes)reader.ReadInt();
         }
 

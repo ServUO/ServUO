@@ -12,14 +12,14 @@ namespace Server.Items
     /// </summary>
     public class PropertyEffect
     {
-        public Mobile Attacker { get; set; }
-        public Mobile Victim { get; set; }
-        public Item Owner { get; set; }
-        public TimeSpan Duration { get; set; }
-        public TimeSpan TickDuration { get; set; }
+        public Mobile Attacker { get; }
+        public Mobile Victim { get; }
+        public Item Owner { get; }
+        public TimeSpan Duration { get; }
+        public TimeSpan TickDuration { get; }
         public Timer Timer { get; set; }
 
-        public static List<PropertyEffect> Effects { get; set; } = new List<PropertyEffect>();
+        public static List<PropertyEffect> Effects { get; } = new List<PropertyEffect>();
 
         public PropertyEffect(Mobile from, Mobile victim, Item owner, TimeSpan duration, TimeSpan tickduration)
         {
@@ -92,7 +92,7 @@ namespace Server.Items
             {
                 Effect = effect;
 
-                if (effect != null && effect.Duration > TimeSpan.MinValue)
+                if (effect.Duration > TimeSpan.MinValue)
                     m_Expires = DateTime.UtcNow + effect.Duration;
                 else
                     m_Expires = DateTime.MinValue;
@@ -100,7 +100,7 @@ namespace Server.Items
 
             protected override void OnTick()
             {
-                if (Effect.Attacker == null || (Effect.Attacker.Deleted || !Effect.Attacker.Alive || Effect.Attacker.IsDeadBondedPet))
+                if (Effect.Attacker == null || Effect.Attacker.Deleted || !Effect.Attacker.Alive || Effect.Attacker.IsDeadBondedPet)
                 {
                     Effect.RemoveEffects();
                 }
@@ -351,6 +351,7 @@ namespace Server.Items
                 case DamageType.Energy: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterEnergy);
                 case DamageType.AllTypes: return SAAbsorptionAttributes.GetValue(from, SAAbsorptionAttribute.EaterDamage);
             }
+
             return 0;
         }
 
@@ -368,7 +369,7 @@ namespace Server.Items
 
     public class SplinteringWeaponContext : PropertyEffect
     {
-        public static List<Mobile> BleedImmune { get; set; } = new List<Mobile>();
+        public static List<Mobile> BleedImmune { get; } = new List<Mobile>();
 
         public SplinteringWeaponContext(Mobile from, Mobile defender, Item weapon)
             : base(from, defender, weapon, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(4))

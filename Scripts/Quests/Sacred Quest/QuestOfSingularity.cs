@@ -4,7 +4,7 @@ namespace Server.Engines.Quests
 {
     public class QuestOfSingularity : BaseQuest
     {
-        public QuestOfSingularity() : base()
+        public QuestOfSingularity()
         {
             AddObjective(new QuestionAndAnswerObjective(4, m_EntryTable));
         }
@@ -71,7 +71,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public static void Configure()

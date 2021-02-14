@@ -33,15 +33,13 @@ namespace Server.SkillHandlers
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is BaseWeapon)
+                if (targeted is BaseWeapon weap)
                 {
-                    if (from.CheckTargetSkill(SkillName.ArmsLore, targeted, 0, 100))
+                    if (from.CheckTargetSkill(SkillName.ArmsLore, weap, 0, 100))
                     {
-                        BaseWeapon weap = (BaseWeapon)targeted;
-
                         if (weap.MaxHitPoints != 0)
                         {
-                            int hp = (int)((weap.HitPoints / (double)weap.MaxHitPoints) * 10);
+                            int hp = (int)(weap.HitPoints / (double)weap.MaxHitPoints * 10);
 
                             if (hp < 0)
                                 hp = 0;
@@ -52,7 +50,7 @@ namespace Server.SkillHandlers
                         }
 
                         int damage = (weap.MaxDamage + weap.MinDamage) / 2;
-                        int hand = (weap.Layer == Layer.OneHanded ? 0 : 1);
+                        int hand = weap.Layer == Layer.OneHanded ? 0 : 1;
 
                         if (damage < 3)
                             damage = 0;
@@ -62,15 +60,15 @@ namespace Server.SkillHandlers
                         WeaponType type = weap.Type;
 
                         if (type == WeaponType.Ranged)
-                            from.SendLocalizedMessage(1038224 + (damage * 9));
+                            from.SendLocalizedMessage(1038224 + damage * 9);
                         else if (type == WeaponType.Piercing)
-                            from.SendLocalizedMessage(1038218 + hand + (damage * 9));
+                            from.SendLocalizedMessage(1038218 + hand + damage * 9);
                         else if (type == WeaponType.Slashing)
-                            from.SendLocalizedMessage(1038220 + hand + (damage * 9));
+                            from.SendLocalizedMessage(1038220 + hand + damage * 9);
                         else if (type == WeaponType.Bashing)
-                            from.SendLocalizedMessage(1038222 + hand + (damage * 9));
+                            from.SendLocalizedMessage(1038222 + hand + damage * 9);
                         else
-                            from.SendLocalizedMessage(1038216 + hand + (damage * 9));
+                            from.SendLocalizedMessage(1038216 + hand + damage * 9);
 
                         if (weap.Poison != null && weap.PoisonCharges > 0)
                             from.SendLocalizedMessage(1038284); // It appears to have poison smeared on it.
@@ -80,15 +78,13 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(500353); // You are not certain...
                     }
                 }
-                else if (targeted is BaseArmor)
+                else if (targeted is BaseArmor arm)
                 {
-                    if (from.CheckTargetSkill(SkillName.ArmsLore, targeted, 0, 100))
+                    if (from.CheckTargetSkill(SkillName.ArmsLore, arm, 0, 100))
                     {
-                        BaseArmor arm = (BaseArmor)targeted;
-
                         if (arm.MaxHitPoints != 0)
                         {
-                            int hp = (int)((arm.HitPoints / (double)arm.MaxHitPoints) * 10);
+                            int hp = (int)(arm.HitPoints / (double)arm.MaxHitPoints * 10);
 
                             if (hp < 0)
                                 hp = 0;
@@ -105,13 +101,11 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(500353); // You are not certain...
                     }
                 }
-                else if (targeted is SwampDragon && ((SwampDragon)targeted).HasBarding)
+                else if (targeted is SwampDragon pet && pet.HasBarding)
                 {
-                    SwampDragon pet = (SwampDragon)targeted;
-
-                    if (from.CheckTargetSkill(SkillName.ArmsLore, targeted, 0, 100))
+                    if (from.CheckTargetSkill(SkillName.ArmsLore, pet, 0, 100))
                     {
-                        int perc = (4 * pet.BardingHP) / pet.BardingMaxHP;
+                        int perc = 4 * pet.BardingHP / pet.BardingMaxHP;
 
                         if (perc < 0)
                             perc = 0;

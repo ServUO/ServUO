@@ -22,7 +22,7 @@ namespace Server.Engines.VvV
         public override bool HandlesOnMovement => !Visible;
         public bool CheckWhenHidden => true;
 
-        public VvVSigil(VvVBattle battle, Point3D home)
+        public VvVSigil(VvVBattle battle)
             : base(0x99C7)
         {
             Battle = battle;
@@ -70,11 +70,11 @@ namespace Server.Engines.VvV
 
         private Mobile FindOwner(object parent)
         {
-            if (parent is Item)
-                return ((Item)parent).RootParent as Mobile;
+            if (parent is Item item)
+                return item.RootParent as Mobile;
 
-            if (parent is Mobile)
-                return (Mobile)parent;
+            if (parent is Mobile mobile)
+                return mobile;
 
             return null;
         }
@@ -146,7 +146,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             LastStolen = reader.ReadDateTime();
             HomeLocation = reader.ReadPoint3D();

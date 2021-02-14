@@ -130,7 +130,7 @@ namespace Server.Misc
 
                 string root = GetRoot();
                 string rootBackup = Combine(root, string.Format("Backups/Crashed/{0}/", timeStamp));
-                string rootOrigin = Combine(root, string.Format("Saves/"));
+                string rootOrigin = Combine(root, "Saves/");
 
                 // Create new directories
                 CreateDirectory(rootBackup);

@@ -30,14 +30,16 @@ namespace Server.Items
             {
                 Item item = pack.FindItemByType(typeof(ExperimentalGem));
 
-                if (item != null && item is ExperimentalGem && ((ExperimentalGem)item).Complete)
+                if (item != null && item is ExperimentalGem gem && gem.Complete)
                 {
-                    item.Delete();
+                    gem.Delete();
 
                     Item toDrop = GetRandomDrop();
 
                     if (toDrop != null)
+                    {
                         AddItemFor(toDrop, from);
+                    }
                 }
             }
 
@@ -46,9 +48,9 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool message)
         {
-            if (dropped is ExperimentalGem && ((ExperimentalGem)dropped).Complete && from.InRange(Location, 2))
+            if (dropped is ExperimentalGem gem && gem.Complete && from.InRange(Location, 2))
             {
-                dropped.Delete();
+                gem.Delete();
 
                 Item toDrop = GetRandomDrop();
 
@@ -174,13 +176,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // ver
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Instancing = new Dictionary<Item, Mobile>();
         }

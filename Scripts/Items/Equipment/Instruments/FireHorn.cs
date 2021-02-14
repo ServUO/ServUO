@@ -81,13 +81,15 @@ namespace Server.Items
                 else
                     avgDamage = weightAvg / 2;
 
-                minDamage = (avgDamage * 9) / 10;
-                maxDamage = (avgDamage * 10) / 9;
+                minDamage = avgDamage * 9 / 10;
+                maxDamage = avgDamage * 10 / 9;
 
                 double damage = Utility.RandomMinMax(minDamage, maxDamage);
 
                 if (count > 1)
-                    damage = (damage * 2) / count;
+                {
+                    damage = damage * 2 / count;
+                }
 
                 foreach (Mobile m in targets)
                 {
@@ -112,15 +114,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
 
         private static void EndAction(object state)
@@ -172,8 +172,8 @@ namespace Server.Items
                     return;
 
                 IPoint3D loc;
-                if (targeted is Item)
-                    loc = ((Item)targeted).GetWorldLocation();
+                if (targeted is Item item)
+                    loc = item.GetWorldLocation();
                 else
                     loc = targeted as IPoint3D;
 

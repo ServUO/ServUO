@@ -7,7 +7,7 @@ namespace Server.Engines.VvV
 {
     public class BattleStatsGump : Gump
     {
-        public VvVBattle Battle { get; set; }
+        public VvVBattle Battle { get; }
 
         public static readonly int Color16 = Quests.BaseQuestGump.C32216(0xB22222);
 

@@ -82,7 +82,8 @@ namespace Server.Items
                 from.SendLocalizedMessage(1049048); // You cannot use your prospector tool on that.
                 return;
             }
-            else if (vein != defaultVein)
+
+            if (vein != defaultVein)
             {
                 from.SendLocalizedMessage(1049049); // That ore looks to be prospected already.
                 return;
@@ -94,7 +95,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1049048); // You cannot use your prospector tool on that.
             }
-            else if (veinIndex >= (def.Veins.Length - 1))
+            else if (veinIndex >= def.Veins.Length - 1)
             {
                 from.SendLocalizedMessage(1049061); // You cannot improve valorite ore through prospecting.
             }

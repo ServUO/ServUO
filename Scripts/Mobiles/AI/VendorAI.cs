@@ -147,9 +147,9 @@ namespace Server.Mobiles
 
         public override double TransformMoveDelay(double delay)
         {
-            if (m_Mobile is BaseVendor)
+            if (m_Mobile is BaseVendor vendor)
             {
-                return ((BaseVendor)m_Mobile).GetMoveDelay;
+                return vendor.GetMoveDelay;
             }
 
             return base.TransformMoveDelay(delay);

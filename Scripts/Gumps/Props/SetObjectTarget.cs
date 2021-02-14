@@ -37,8 +37,8 @@ namespace Server.Gumps
             {
                 if (m_Type == typeof(Type))
                     targeted = targeted.GetType();
-                else if ((m_Type == typeof(BaseAddon) || m_Type.IsAssignableFrom(typeof(BaseAddon))) && targeted is AddonComponent)
-                    targeted = ((AddonComponent)targeted).Addon;
+                else if ((m_Type == typeof(BaseAddon) || m_Type.IsAssignableFrom(typeof(BaseAddon))) && targeted is AddonComponent component)
+                    targeted = component.Addon;
 
                 if (m_Type.IsAssignableFrom(targeted.GetType()))
                 {

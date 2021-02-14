@@ -34,6 +34,7 @@ namespace Server.Items
         public override WeaponType DefType => WeaponType.Bashing;
         public override WeaponAnimation DefAnimation => WeaponAnimation.Bash1H;
         public override HarvestSystem HarvestSystem => null;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -43,7 +44,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -36,10 +36,8 @@ namespace Server.SkillHandlers
                 {
                     from.SendLocalizedMessage(502816); // You feel that such an action would be inappropriate.
                 }
-                else if (targeted is Food)
+                else if (targeted is Food food)
                 {
-                    Food food = (Food)targeted;
-
                     if (from.CheckTargetSkill(SkillName.TasteID, food, 0, 100))
                     {
                         if (food.Poison != null)
@@ -58,17 +56,13 @@ namespace Server.SkillHandlers
                         food.SendLocalizedMessageTo(from, 502823); // You cannot discern anything about this substance.
                     }
                 }
-                else if (targeted is BasePotion)
+                else if (targeted is BasePotion potion)
                 {
-                    BasePotion potion = (BasePotion)targeted;
-
                     potion.SendLocalizedMessageTo(from, 502813); // You already know what kind of potion that is.
                     potion.SendLocalizedMessageTo(from, potion.LabelNumber);
                 }
-                else if (targeted is PotionKeg)
+                else if (targeted is PotionKeg keg)
                 {
-                    PotionKeg keg = (PotionKeg)targeted;
-
                     if (keg.Held <= 0)
                     {
                         keg.SendLocalizedMessageTo(from, 502228); // There is nothing in the keg to taste!

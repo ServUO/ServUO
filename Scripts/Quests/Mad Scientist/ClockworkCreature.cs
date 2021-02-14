@@ -41,7 +41,7 @@ namespace Server.Mobiles
             new ClockworkCreatureDef( ClockworkCreatureType.Vollem,             "a vollem",             0x125 ),
             new ClockworkCreatureDef( ClockworkCreatureType.Juggernaut,         "a juggernaut",         0x300 ),
             new ClockworkCreatureDef( ClockworkCreatureType.ExodusMinion,       "an exodus minion",     0x2F5 ),
-            new ClockworkCreatureDef( ClockworkCreatureType.LeatherWolf,        "a leather wolf",       0x2E3 ),
+            new ClockworkCreatureDef( ClockworkCreatureType.LeatherWolf,        "a leather wolf",       0x2E3 )
         };
 
         [Constructable]
@@ -75,7 +75,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

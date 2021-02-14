@@ -6,8 +6,8 @@ namespace Server.Items
 {
     public class PumpkinDefinition
     {
-        public int UnlitItemID { get; set; }
-        public int LitItemID { get; set; }
+        public int UnlitItemID { get; }
+        public int LitItemID { get; }
 
         public PumpkinDefinition(int unlit, int lit)
         {
@@ -59,10 +59,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is BaseCarvablePumpkin)
+                if (targeted is BaseCarvablePumpkin pumpkin)
                 {
-                    BaseCarvablePumpkin pumpkin = (BaseCarvablePumpkin)targeted;
-
                     if (!pumpkin.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1045158); // You must have the item in your backpack to target it.
@@ -96,7 +94,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -150,7 +148,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             CarvedBy = reader.ReadString();
         }
@@ -158,7 +156,7 @@ namespace Server.Items
 
     public class CarvablePumpkinTall : BaseCarvablePumpkin
     {
-        public override PumpkinDefinition[] PumpkinDefinition => new PumpkinDefinition[]
+        public override PumpkinDefinition[] PumpkinDefinition => new[]
                 {
                      new PumpkinDefinition(0x9934, 0x9931),
                      new PumpkinDefinition(0x9935, 0x9936),
@@ -194,13 +192,13 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class CarvableGordPumpkinTall : BaseCarvablePumpkin
     {
-        public override PumpkinDefinition[] PumpkinDefinition => new PumpkinDefinition[]
+        public override PumpkinDefinition[] PumpkinDefinition => new[]
                 {
                      new PumpkinDefinition(0x9D23, 0x9D24),
                      new PumpkinDefinition(0x9D27, 0x9D28),
@@ -238,7 +236,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -246,7 +244,7 @@ namespace Server.Items
     {
         public override bool ForceShowProperties => true;
 
-        public override PumpkinDefinition[] PumpkinDefinition => new PumpkinDefinition[]
+        public override PumpkinDefinition[] PumpkinDefinition => new[]
                 {
                      new PumpkinDefinition(0x9F23, 0x9F24),
                      new PumpkinDefinition(0x9F27, 0x9F28),
@@ -279,7 +277,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

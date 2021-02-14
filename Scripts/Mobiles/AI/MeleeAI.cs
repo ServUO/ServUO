@@ -29,7 +29,7 @@ namespace Server.Mobiles
         {
             IDamageable c = m_Mobile.Combatant;
 
-            if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive || (c is Mobile && ((Mobile)c).IsDeadBondedPet))
+            if (c == null || c.Deleted || c.Map != m_Mobile.Map || !c.Alive || c is Mobile mobile && mobile.IsDeadBondedPet)
             {
                 m_Mobile.DebugSay("My combatant is gone, so my guard is up");
 

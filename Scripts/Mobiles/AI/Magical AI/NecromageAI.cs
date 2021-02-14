@@ -188,7 +188,7 @@ namespace Server.Mobiles
 
         public override bool IsBeneficial(Target targ)
         {
-            if (targ is SkillMasterySpell.MasteryTarget && ((SkillMasterySpell.MasteryTarget)targ).Owner is ConduitSpell)
+            if (targ is SkillMasterySpell.MasteryTarget target && target.Owner is ConduitSpell)
             {
                 return true;
             }

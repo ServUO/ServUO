@@ -10,7 +10,7 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return System.String.Format("{{ echandleinput }}");
+			return string.Format("{{ echandleinput }}");
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("echandleinput");

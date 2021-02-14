@@ -33,64 +33,19 @@ namespace Server.Misc
         {
         }
 
-        public ShardPollOption[] Options
-        {
-            get
-            {
-                return m_Options;
-            }
-            set
-            {
-                m_Options = value;
-            }
-        }
-        public IPAddress[] Addresses
-        {
-            get
-            {
-                return m_Addresses;
-            }
-            set
-            {
-                m_Addresses = value;
-            }
-        }
+        public ShardPollOption[] Options { get => m_Options; set => m_Options = value; }
+
+        public IPAddress[] Addresses { get => m_Addresses; set => m_Addresses = value; }
+
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
-        public string Title
-        {
-            get
-            {
-                return m_Title;
-            }
-            set
-            {
-                m_Title = ShardPollPrompt.UrlToHref(value);
-            }
-        }
+        public string Title { get => m_Title; set => m_Title = ShardPollPrompt.UrlToHref(value); }
+
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
-        public TimeSpan Duration
-        {
-            get
-            {
-                return m_Duration;
-            }
-            set
-            {
-                m_Duration = value;
-            }
-        }
+        public TimeSpan Duration { get => m_Duration; set => m_Duration = value; }
+
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
-        public DateTime StartTime
-        {
-            get
-            {
-                return m_StartTime;
-            }
-            set
-            {
-                m_StartTime = value;
-            }
-        }
+        public DateTime StartTime { get => m_StartTime; set => m_StartTime = value; }
+
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
         public TimeSpan TimeRemaining
         {
@@ -101,7 +56,7 @@ namespace Server.Misc
 
                 try
                 {
-                    TimeSpan ts = (m_StartTime + m_Duration) - DateTime.UtcNow;
+                    TimeSpan ts = m_StartTime + m_Duration - DateTime.UtcNow;
 
                     if (ts < TimeSpan.Zero)
                         return TimeSpan.Zero;
@@ -118,10 +73,7 @@ namespace Server.Misc
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
         public bool Active
         {
-            get
-            {
-                return m_Active;
-            }
+            get => m_Active;
             set
             {
                 if (m_Active == value)
@@ -340,10 +292,7 @@ namespace Server.Misc
 
         public string Title
         {
-            get
-            {
-                return m_Title;
-            }
+            get => m_Title;
             set
             {
                 m_Title = value;
@@ -352,17 +301,9 @@ namespace Server.Misc
         }
         public int LineBreaks => m_LineBreaks;
         public int Votes => m_Voters.Length;
-        public IPAddress[] Voters
-        {
-            get
-            {
-                return m_Voters;
-            }
-            set
-            {
-                m_Voters = value;
-            }
-        }
+
+        public IPAddress[] Voters { get => m_Voters; set => m_Voters = value; }
+
         public bool HasAlreadyVoted(NetState ns)
         {
             if (ns == null)

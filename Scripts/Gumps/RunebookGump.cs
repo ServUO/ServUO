@@ -55,15 +55,15 @@ namespace Server.Gumps
         {
             if (map == Map.Trammel)
                 return 10;
-            else if (map == Map.Felucca)
+            if (map == Map.Felucca)
                 return 81;
-            else if (map == Map.Ilshenar)
+            if (map == Map.Ilshenar)
                 return 1102;
-            else if (map == Map.Malas)
+            if (map == Map.Malas)
                 return 1102;
-            else if (map == Map.Tokuno)
+            if (map == Map.Tokuno)
                 return 1154;
-            else if (map == Map.TerMur)
+            if (map == Map.TerMur)
                 return 1645;
 
             return 0;
@@ -338,7 +338,7 @@ namespace Server.Gumps
             }
             else if (buttonID == 1) // Rename book
             {
-                if (Book.CheckAccess(from) && Book.Movable != false)
+                if (Book.CheckAccess(from) && Book.Movable)
                 {
                     from.Prompt = new InternalPrompt(Book);
                 }
@@ -389,7 +389,7 @@ namespace Server.Gumps
                                 }
                             case 8: // Drop rune
                                 {
-                                    if (Book.CheckAccess(from) && Book.Movable != false)
+                                    if (Book.CheckAccess(from) && Book.Movable)
                                     {
                                         Book.DropRune(from, e, index);
 

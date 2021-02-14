@@ -46,9 +46,9 @@ namespace Server.Regions
 
     public class VirtueDef
     {
-        public Shrine Shrine { get; set; }
-        public Rectangle2D Area { get; set; }
-        public string Title { get; set; }
+        public Shrine Shrine { get; }
+        public Rectangle2D Area { get; }
+        public string Title { get; }
 
         public VirtueDef(Shrine shrine, Rectangle2D area, string title)
         {
@@ -60,7 +60,7 @@ namespace Server.Regions
 
     public class WellOfSoulsVirtuesRegion : Region
     {
-        private static readonly List<VirtueDef> Virtue = new List<VirtueDef>()
+        private static readonly List<VirtueDef> Virtue = new List<VirtueDef>
         {
             new VirtueDef(Shrine.Spirituality, new Rectangle2D(2262, 1561, 4, 4), "Spiritual"),
             new VirtueDef(Shrine.Compassion, new Rectangle2D(2248, 1557, 4, 4), "Compassionate"),
@@ -69,7 +69,7 @@ namespace Server.Regions
             new VirtueDef(Shrine.Humility, new Rectangle2D(2262, 1539, 4, 4), "Humble"),
             new VirtueDef(Shrine.Justice, new Rectangle2D(2269, 1541, 4, 4) , "Just"),
             new VirtueDef(Shrine.Valor, new Rectangle2D(2276, 1547, 4, 4), "Valiant"),
-            new VirtueDef(Shrine.Sacrifice, new Rectangle2D(2276, 1557, 4, 4), "Sacrificing"),
+            new VirtueDef(Shrine.Sacrifice, new Rectangle2D(2276, 1557, 4, 4), "Sacrificing")
         };
 
         public WellOfSoulsVirtuesRegion()

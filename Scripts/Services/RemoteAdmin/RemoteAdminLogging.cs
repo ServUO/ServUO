@@ -14,14 +14,8 @@ namespace Server.RemoteAdmin
         const string LogSubDirectory = "RemoteAdmin";
         public static bool Enabled
         {
-            get
-            {
-                return m_Enabled;
-            }
-            set
-            {
-                m_Enabled = value;
-            }
+            get => m_Enabled;
+            set => m_Enabled = value;
         }
         public static StreamWriter Output => m_Output;
         public static void LazyInitialize()

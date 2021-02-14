@@ -21,7 +21,7 @@ namespace Server.Items
         {
             AddonComponent ac;
             ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
+            if (!string.IsNullOrEmpty(name))
                 ac.Name = name;
             if (hue != 0)
                 ac.Hue = hue;
@@ -44,7 +44,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -53,7 +53,7 @@ namespace Server.Items
         public static BlackthornEntry InstanceTram { get; set; }
         public static BlackthornEntry InstanceFel { get; set; }
 
-        private static readonly int[,] m_AddOnSimpleComponents = new int[,]
+        private static readonly int[,] m_AddOnSimpleComponents =
         {
               {6923, 7, 3, 0}, {12906, -5, 12, 0}, {12906, -4, 12, 0}// 10	18	19	
 			, {12906, -4, 11, 0}, {12906, -5, 11, 0}, {12906, -6, 11, 0}// 20	21	22	
@@ -169,7 +169,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

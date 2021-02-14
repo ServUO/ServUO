@@ -22,8 +22,6 @@ namespace Server.Engines.Points
         DespiseCrystals,
         ShameCrystals,
         CasinoData,
-
-        //City Trading
         CityTrading,
 
         // City Loyalty System
@@ -41,20 +39,17 @@ namespace Server.Engines.Points
         Blackthorn,
         CleanUpBritannia,
         ViceVsVirtue,
-
         TreasuresOfKotlCity,
         PVPArena,
-
         Khaldun,
         Doom,
         SorcerersDungeon,
         RisingTide,
-
         GauntletPoints,
         TOT,
         VAS,
         FellowshipData,
-        JollyRogerData,
+        JollyRogerData
     }
 
     public abstract class PointsSystem
@@ -140,7 +135,7 @@ namespace Server.Engines.Points
             if (quest)
                 from.SendLocalizedMessage(1113719, ((int)points).ToString(), 0x26); //You have received ~1_val~ loyalty points as a reward for completing the quest. 
             else
-                from.SendLocalizedMessage(1115920, string.Format("{0}\t{1}", Name.ToString(), ((int)points).ToString()));  // Your loyalty to ~1_GROUP~ has increased by ~2_AMOUNT~;Original
+                from.SendLocalizedMessage(1115920, string.Format("{0}\t{1}", Name, ((int)points).ToString()));  // Your loyalty to ~1_GROUP~ has increased by ~2_AMOUNT~;Original
         }
 
         public virtual bool DeductPoints(Mobile from, double points, bool message = false)
@@ -151,12 +146,12 @@ namespace Server.Engines.Points
             {
                 return false;
             }
-            else
-            {
-                entry.Points -= points;
 
-                if (message)
-                    from.SendLocalizedMessage(1115921, string.Format("{0}\t{1}", Name.ToString(), ((int)points).ToString()));  // Your loyalty to ~1_GROUP~ has decreased by ~2_AMOUNT~;Original
+            entry.Points -= points;
+
+            if (message)
+            {
+                from.SendLocalizedMessage(1115921, string.Format("{0}\t{1}", Name, ((int) points).ToString())); // Your loyalty to ~1_GROUP~ has decreased by ~2_AMOUNT~;Original
             }
 
             return true;

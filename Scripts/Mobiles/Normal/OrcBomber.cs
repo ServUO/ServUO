@@ -104,10 +104,10 @@ namespace Server.Mobiles
 
                 m_Thrown++;
 
-                if (0.75 >= Utility.RandomDouble() && (m_Thrown % 2) == 1) // 75% chance to quickly throw another bomb
+                if (0.75 >= Utility.RandomDouble() && m_Thrown % 2 == 1) // 75% chance to quickly throw another bomb
                     m_NextBomb = DateTime.UtcNow + TimeSpan.FromSeconds(3.0);
                 else
-                    m_NextBomb = DateTime.UtcNow + TimeSpan.FromSeconds(5.0 + (10.0 * Utility.RandomDouble())); // 5-15 seconds
+                    m_NextBomb = DateTime.UtcNow + TimeSpan.FromSeconds(5.0 + 10.0 * Utility.RandomDouble()); // 5-15 seconds
             }
         }
 
@@ -129,7 +129,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class InternalTimer : Timer

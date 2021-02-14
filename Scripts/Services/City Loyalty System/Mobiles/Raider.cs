@@ -86,9 +86,9 @@ namespace Server.Mobiles
             {
                 m.SendLocalizedMessage(1152247); // That person is already under arrest.
             }
-            else if (m is PlayerMobile && ((PlayerMobile)m).AllFollowers.FirstOrDefault(mob => mob is Raider) != null)
+            else if (m is PlayerMobile pm && pm.AllFollowers.FirstOrDefault(mob => mob is Raider) != null)
             {
-                m.SendLocalizedMessage(1152249); // You already have a prisoner.
+                pm.SendLocalizedMessage(1152249); // You already have a prisoner.
             }
             else if (Hits > ((double)HitsMax / 10))
             {
@@ -158,7 +158,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             TimeToDelete = reader.ReadDateTime();
         }

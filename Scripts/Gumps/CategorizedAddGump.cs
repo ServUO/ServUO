@@ -37,7 +37,7 @@ namespace Server.Gumps
         public int ItemID => m_ItemID;
         public int Hue => m_Hue;
         public CAGCategory Parent => m_Parent;
-        public override string Caption => (m_Type == null ? "bad type" : m_Type.Name);
+        public override string Caption => m_Type == null ? "bad type" : m_Type.Name;
         public override void OnClick(Mobile from, int page)
         {
             if (m_Type == null)
@@ -295,9 +295,8 @@ namespace Server.Gumps
 
                 AddButton(x + SetOffsetX, y + SetOffsetY, SetButtonID1, SetButtonID2, i + 4, GumpButtonType.Reply, 0);
 
-                if (node is CAGObject)
+                if (node is CAGObject obj)
                 {
-                    CAGObject obj = (CAGObject)node;
                     int itemID = obj.ItemID;
 
                     Rectangle2D bounds = ItemBounds.Table[itemID];

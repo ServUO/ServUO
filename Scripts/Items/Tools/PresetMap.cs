@@ -28,7 +28,7 @@ namespace Server.Items
             Bounds = entry.Bounds;
         }
 
-        public override int LabelNumber => (m_LabelNumber == 0 ? base.LabelNumber : m_LabelNumber);
+        public override int LabelNumber => m_LabelNumber == 0 ? base.LabelNumber : m_LabelNumber;
 
         public PresetMap(Serial serial) : base(serial)
         {
@@ -79,8 +79,8 @@ namespace Server.Items
             m_Bounds = new Rectangle2D(xLeft, yTop, xRight - xLeft, yBottom - yTop);
         }
 
-        private static readonly PresetMapEntry[] m_Table = new PresetMapEntry[]
-            {
+        private static readonly PresetMapEntry[] m_Table =
+        {
                 new PresetMapEntry( 1041189, 200, 200, 1092, 1396, 1736, 1924 ), // map of Britain
 				new PresetMapEntry( 1041203, 200, 200, 0256, 1792, 1736, 2560 ), // map of Britain to Skara Brae
 				new PresetMapEntry( 1041192, 200, 200, 1024, 1280, 2304, 3072 ), // map of Britain to Trinsic
@@ -114,7 +114,7 @@ namespace Server.Items
                 new PresetMapEntry( 0,       200, 200, 890,  430,  1090, 600  ), // Luna
                 new PresetMapEntry( 0,       200, 200, 1920, 1240, 2130, 1430 ), // Umbra
                 new PresetMapEntry( 0,       200, 200, 5630, 3080, 5860, 3330 ), // Papua
-                new PresetMapEntry( 0,       200, 200, 5140, 3900, 5330, 4094 ), // Deliucia
+                new PresetMapEntry( 0,       200, 200, 5140, 3900, 5330, 4094 ) // Deliucia
 			};
 
         public static PresetMapEntry[] Table => m_Table;

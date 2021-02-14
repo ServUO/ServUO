@@ -6,83 +6,83 @@ using System.IO;
 namespace Server
 {
 	public static class Persistence
-	{
-		public static void SerializeBlock(GenericWriter writer, Action<GenericWriter> serializer)
-		{
-			var data = Array.Empty<byte>();
+    {
+        public static void SerializeBlock(GenericWriter writer, Action<GenericWriter> serializer)
+        {
+            byte[] data = Array.Empty<byte>();
 
-			if (serializer != null)
-			{
-				using (var ms = new MemoryStream())
-				{
-					var w = new BinaryFileWriter(ms, true);
+            if (serializer != null)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    BinaryFileWriter w = new BinaryFileWriter(ms, true);
 
-					try
-					{
-						serializer(w);
+                    try
+                    {
+                        serializer(w);
 
-						w.Flush();
+                        w.Flush();
 
-						data = ms.ToArray();
-					}
-					finally
-					{
-						w.Close();
-					}
-				}
-			}
+                        data = ms.ToArray();
+                    }
+                    finally
+                    {
+                        w.Close();
+                    }
+                }
+            }
 
-			writer.Write(0x0C0FFEE0);
-			writer.Write(data.Length);
+            writer.Write(0x0C0FFEE0);
+            writer.Write(data.Length);
 
-			for (var i = 0; i < data.Length; i++)
-			{
-				writer.Write(data[i]);
-			}
-		}
+            for (int i = 0; i < data.Length; i++)
+            {
+                writer.Write(data[i]);
+            }
+        }
 
-		public static void DeserializeBlock(GenericReader reader, Action<GenericReader> deserializer)
-		{
-			if (reader.PeekInt() == 0x0C0FFEE0 && reader.ReadInt() == 0x0C0FFEE0)
-			{
-				var length = reader.ReadInt();
+        public static void DeserializeBlock(GenericReader reader, Action<GenericReader> deserializer)
+        {
+            if (reader.PeekInt() == 0x0C0FFEE0 && reader.ReadInt() == 0x0C0FFEE0)
+            {
+                int length = reader.ReadInt();
 
-				var data = Array.Empty<byte>();
+                byte[] data = Array.Empty<byte>();
 
-				if (length > 0)
-				{
-					data = new byte[length];
-				}
+                if (length > 0)
+                {
+                    data = new byte[length];
+                }
 
-				for (var i = 0; i < data.Length; i++)
-				{
-					data[i] = reader.ReadByte();
-				}
+                for (int i = 0; i < data.Length; i++)
+                {
+                    data[i] = reader.ReadByte();
+                }
 
-				if (deserializer != null)
-				{
-					using (var ms = new MemoryStream(data))
-					{
-						var r = new BinaryFileReader(new BinaryReader(ms));
+                if (deserializer != null)
+                {
+                    using (MemoryStream ms = new MemoryStream(data))
+                    {
+                        BinaryFileReader r = new BinaryFileReader(new BinaryReader(ms));
 
-						try
-						{
-							deserializer(r);
-						}
-						finally
-						{
-							r.Close();
-						}
-					}
-				}
-			}
-			else
-			{
-				deserializer?.Invoke(reader);
-			}
-		}
+                        try
+                        {
+                            deserializer(r);
+                        }
+                        finally
+                        {
+                            r.Close();
+                        }
+                    }
+                }
+            }
+            else 
+            {
+                deserializer?.Invoke(reader);
+            }
+        }
 
-		public static void Serialize(string path, Action<GenericWriter> serializer)
+        public static void Serialize(string path, Action<GenericWriter> serializer)
 		{
 			Serialize(new FileInfo(path), serializer);
 		}
@@ -103,9 +103,9 @@ namespace Server
 
 			file.Refresh();
 
-			using (var fs = file.OpenWrite())
+			using (FileStream fs = file.OpenWrite())
 			{
-				var writer = new BinaryFileWriter(fs, true);
+				BinaryFileWriter writer = new BinaryFileWriter(fs, true);
 
 				try
 				{
@@ -163,9 +163,9 @@ namespace Server
 
 			file.Refresh();
 
-			using (var fs = file.OpenRead())
+			using (FileStream fs = file.OpenRead())
 			{
-				var reader = new BinaryFileReader(new BinaryReader(fs));
+				BinaryFileReader reader = new BinaryFileReader(new BinaryReader(fs));
 
 				try
 				{
@@ -175,14 +175,14 @@ namespace Server
 				{
 					if (file.Length > 0)
 					{
-						throw new Exception(String.Format("[Persistence]: {0}", eos));
+						throw new Exception(string.Format("[Persistence]: {0}", eos));
 					}
 				}
 				catch (Exception e)
 				{
 					Utility.WriteConsoleColor(ConsoleColor.Red, "[Persistence]: An error was encountered while loading a saved object");
 
-					throw new Exception(String.Format("[Persistence]: {0}", e));
+					throw new Exception(string.Format("[Persistence]: {0}", e));
 				}
 				finally
 				{

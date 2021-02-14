@@ -26,7 +26,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Balanced
         {
-            get { return Attributes.BalancedWeapon > 0; }
+            get => Attributes.BalancedWeapon > 0;
             set
             {
                 if (value)
@@ -39,7 +39,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Velocity
         {
-            get { return m_Velocity; }
+            get => m_Velocity;
             set
             {
                 m_Velocity = value;
@@ -59,8 +59,8 @@ namespace Server.Items
         {
             long nextShoot;
 
-            if (attacker is PlayerMobile)
-                nextShoot = ((PlayerMobile)attacker).NextMovementTime + 250;
+            if (attacker is PlayerMobile mobile)
+                nextShoot = mobile.NextMovementTime + 250;
             else
                 nextShoot = attacker.LastMoveTime + attacker.ComputeMovementSpeed();
 
@@ -106,14 +106,13 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, IDamageable damageable, double damageBonus)
         {
-            if (AmmoType != null && attacker.Player && damageable is Mobile && !((Mobile)damageable).Player && (((Mobile)damageable).Body.IsAnimal || ((Mobile)damageable).Body.IsMonster) &&
-                0.4 >= Utility.RandomDouble())
+            if (AmmoType != null && attacker.Player && damageable is Mobile m && !m.Player && (m.Body.IsAnimal || m.Body.IsMonster) && 0.4 >= Utility.RandomDouble())
             {
                 Item ammo = Ammo;
 
                 if (ammo != null)
                 {
-                    ((Mobile)damageable).AddToBackpack(ammo);
+                    m.AddToBackpack(ammo);
                 }
             }
 

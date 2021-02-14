@@ -23,14 +23,15 @@ namespace Server.Mobiles
         private bool m_BuddyMutate;
 
         public virtual int GroupAmount => 2;
+
         public virtual VoidEvolution Evolution => VoidEvolution.None;
         public virtual int Stage => 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool BuddyMutate { get { return m_BuddyMutate; } set { m_BuddyMutate = value; } }
+        public bool BuddyMutate { get => m_BuddyMutate; set => m_BuddyMutate = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextMutate { get { return m_NextMutate; } set { m_NextMutate = value; } }
+        public DateTime NextMutate { get => m_NextMutate; set => m_NextMutate = value; }
 
         public override bool PlayerRangeSensitive => Evolution != VoidEvolution.Killing && Stage < 3;
         public override bool AlwaysMurderer => true;
@@ -100,9 +101,9 @@ namespace Server.Mobiles
 
         public Type[][] m_EvolutionCycle =
         {
-            new Type[] { typeof(Betballem),     typeof(Ballem),     typeof(UsagralemBallem) },
-            new Type[] { typeof(Anlorzen),      typeof(Anlorlem),   typeof(Anlorvaglem) },
-            new Type[] { typeof(Anzuanord),     typeof(Relanord),   typeof(Vasanord) }
+            new[] { typeof(Betballem),     typeof(Ballem),     typeof(UsagralemBallem) },
+            new[] { typeof(Anlorzen),      typeof(Anlorlem),   typeof(Anlorvaglem) },
+            new[] { typeof(Anzuanord),     typeof(Relanord),   typeof(Vasanord) }
         };
 
         private BaseCreature _MutateTo;
@@ -140,8 +141,8 @@ namespace Server.Mobiles
                 if (0.05 > Utility.RandomDouble())
                     SpawnOrtanords();
 
-                if (bc is BaseVoidCreature)
-                    ((BaseVoidCreature)bc).BuddyMutate = m_BuddyMutate;
+                if (bc is BaseVoidCreature creature)
+                    creature.BuddyMutate = m_BuddyMutate;
 
                 Delete();
             }
@@ -195,10 +196,8 @@ namespace Server.Mobiles
             {
                 ISpawner s = Spawner;
 
-                if (s is XmlSpawner)
+                if (s is XmlSpawner xml)
                 {
-                    XmlSpawner xml = (XmlSpawner)s;
-
                     if (xml.SpawnObjects == null)
                         return;
 

@@ -37,7 +37,7 @@ namespace Server.PathAlgorithms.FastAStar
             x *= 11;
             y *= 11;
 
-            return (x * x) + (y * y) + (z * z);
+            return x * x + y * y + z * z;
         }
 
         public override bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal)
@@ -103,7 +103,7 @@ namespace Server.PathAlgorithms.FastAStar
                     if (!wasTouched)
                     {
                         int newCost = m_Nodes[bestNode].cost + 1;
-                        int newTotal = newCost + Heuristic(newNode % AreaSize, (newNode / AreaSize) % AreaSize, m_Nodes[newNode].z);
+                        int newTotal = newCost + Heuristic(newNode % AreaSize, newNode / AreaSize % AreaSize, m_Nodes[newNode].z);
 
                         if (!wasTouched || m_Nodes[newNode].total > newTotal)
                         {
@@ -122,7 +122,7 @@ namespace Server.PathAlgorithms.FastAStar
 
                                     while (parent != -1)
                                     {
-                                        path[pathCount++] = GetDirection(parent % AreaSize, (parent / AreaSize) % AreaSize, newNode % AreaSize, (newNode / AreaSize) % AreaSize);
+                                        path[pathCount++] = GetDirection(parent % AreaSize, parent / AreaSize % AreaSize, newNode % AreaSize, newNode / AreaSize % AreaSize);
                                         newNode = parent;
                                         parent = m_Nodes[newNode].parent;
 
@@ -149,7 +149,7 @@ namespace Server.PathAlgorithms.FastAStar
         public int GetSuccessors(int p, IPoint3D pnt, Map map)
         {
             int px = p % AreaSize;
-            int py = (p / AreaSize) % AreaSize;
+            int py = p / AreaSize % AreaSize;
             int pz = m_Nodes[p].z;
             int x, y, z;
 
@@ -268,7 +268,7 @@ namespace Server.PathAlgorithms.FastAStar
             z += PlaneOffset;
             z /= PlaneHeight;
 
-            return x + (y * AreaSize) + (z * AreaSize * AreaSize);
+            return x + y * AreaSize + z * AreaSize * AreaSize;
         }
 
         private int FindBest(int node)

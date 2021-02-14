@@ -31,15 +31,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public virtual void RegisterDamageTo(Mobile m)
@@ -134,7 +132,7 @@ namespace Server.Mobiles
 
             if (0.05 >= random)
                 return CreateArtifact(UniqueSAList);
-            else if (0.15 >= random)
+            if (0.15 >= random)
                 return CreateArtifact(SharedSAList);
 
             return null;

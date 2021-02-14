@@ -62,7 +62,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public void SpawnBogling(Mobile m)
@@ -114,7 +114,7 @@ namespace Server.Mobiles
 
                 foreach (Mobile m in toEat)
                 {
-                    Hits += (m.Hits / 2);
+                    Hits += m.Hits / 2;
                     m.Delete();
                 }
             }
@@ -124,7 +124,7 @@ namespace Server.Mobiles
         {
             base.OnGotMeleeAttack(attacker);
 
-            if (Hits > (HitsMax / 4))
+            if (Hits > HitsMax / 4)
             {
                 if (0.25 >= Utility.RandomDouble())
                     SpawnBogling(attacker);

@@ -19,7 +19,7 @@ namespace Server.Engines.MyrmidexInvasion
         {
             base.OnDeath(m);
 
-            bool nomaster = m is BaseCreature && ((BaseCreature)m).GetMaster() == null;
+            bool nomaster = m is BaseCreature creature && creature.GetMaster() == null;
 
             if (BattleSpawner.Instance != null && BattleSpawner.Instance.Active && nomaster && Spawner != null)
             {
@@ -33,7 +33,7 @@ namespace Server.Engines.MyrmidexInvasion
                     {
                         Mobile killer = m.LastKiller;
 
-                        if (killer == null || (killer is BaseCreature && !(((BaseCreature)killer).GetMaster() is PlayerMobile)))
+                        if (killer == null || killer is BaseCreature bc && !(bc.GetMaster() is PlayerMobile))
                         {
                             m.Corpse.Delete();
                         }
@@ -43,8 +43,10 @@ namespace Server.Engines.MyrmidexInvasion
 
         public override void OnExit(Mobile m)
         {
-            if (m is PlayerMobile && Spawner != null)
-                Spawner.OnLeaveRegion((PlayerMobile)m);
+            if (m is PlayerMobile mobile && Spawner != null)
+            {
+                Spawner.OnLeaveRegion(mobile);
+            }
 
             base.OnExit(m);
         }

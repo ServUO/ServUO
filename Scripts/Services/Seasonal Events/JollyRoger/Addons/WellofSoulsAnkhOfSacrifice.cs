@@ -10,7 +10,6 @@ namespace Server.Items
     {
         [Constructable]
         public WOSAnkhOfSacrifice()
-            : base()
         {
             AddComponent(new AnkhOfSacrificeComponent(0x1E5D), 0, 0, 0);
             AddComponent(new AnkhOfSacrificeComponent(0x1E5C), 1, 0, 0);
@@ -87,7 +86,7 @@ namespace Server.Items
 
     public class TabardRewardGump : Gump
     {
-        public Shrine _Shrine { get; set; }
+        public Shrine _Shrine { get; }
 
         public TabardRewardGump(Shrine shrine)
             : base(100, 100)
@@ -162,7 +161,7 @@ namespace Server.Items
 
     public class TabardClaimConfirmGump : Gump
     {
-        public Shrine _Shrine { get; set; }
+        public Shrine _Shrine { get; }
 
         public TabardClaimConfirmGump(Shrine shrine)
             : base(340, 340)

@@ -43,7 +43,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (!(item is EtherealSoulbinder) || item is EtherealSoulbinder && ((EtherealSoulbinder)item).SoulPoint <= 0)
+            if (!(item is EtherealSoulbinder) || ((EtherealSoulbinder)item).SoulPoint <= 0)
             {
                 from.SendLocalizedMessage(1159170); // The machine only accepts filled ethereal soulbinders.
                 return false;
@@ -69,7 +69,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

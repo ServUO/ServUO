@@ -23,7 +23,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public HuntType HuntType
         {
-            get { return m_HuntType; }
+            get => m_HuntType;
             set
             {
                 m_HuntType = value;
@@ -133,7 +133,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             m_HuntType = (HuntType)reader.ReadInt();
 

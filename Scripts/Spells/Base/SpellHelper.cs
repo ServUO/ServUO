@@ -89,10 +89,8 @@ namespace Server.Spells
             {
                 return 25;
             }
-            else
-            {
-                return 20;
-            }
+
+            return 20;
         }
 
         public static int GetSpellDamageBonus(Mobile caster, IDamageable damageable, SkillName skill, bool playerVsPlayer)
@@ -120,7 +118,6 @@ namespace Server.Spells
         #endregion 
 
         private static readonly TimeSpan AosDamageDelay = TimeSpan.FromSeconds(1.0);
-        private static readonly TimeSpan OldDamageDelay = TimeSpan.FromSeconds(0.5);
 
         public static TimeSpan GetDamageDelayForSpell(Spell sp)
         {
@@ -151,10 +148,8 @@ namespace Server.Spells
             {
                 BaseMulti multi = sector.Multis[i];
 
-                if (multi is BaseHouse)
+                if (multi is BaseHouse bh)
                 {
-                    BaseHouse bh = (BaseHouse)multi;
-
                     if ((houses && bh.IsInside(p, 16)) || (housingrange > 0 && bh.InRange(p, housingrange)))
                         return true;
                 }
@@ -175,10 +170,8 @@ namespace Server.Spells
             if (target == null)
                 return;
 
-            if (target is Item)
+            if (target is Item item)
             {
-                Item item = (Item)target;
-
                 if (item.RootParent != from)
                     d = (int)from.GetDirectionTo(item.GetWorldLocation());
             }
@@ -275,12 +268,9 @@ namespace Server.Spells
 
         public static bool CanRevealCaster(Mobile m)
         {
-            if (m is BaseCreature)
+            if (m is BaseCreature c && !c.Controlled)
             {
-                BaseCreature c = (BaseCreature)m;
-
-                if (!c.Controlled)
-                    return true;
+                return true;
             }
 
             return false;
@@ -288,13 +278,12 @@ namespace Server.Spells
 
         public static void GetSurfaceTop(ref IPoint3D p)
         {
-            if (p is Item)
+            if (p is Item item)
             {
-                p = ((Item)p).GetSurfaceTop();
+                p = item.GetSurfaceTop();
             }
-            else if (p is StaticTarget)
+            else if (p is StaticTarget t)
             {
-                StaticTarget t = (StaticTarget)p;
                 int z = t.Z;
 
                 if ((t.Flags & TileFlag.Surface) == 0)
@@ -316,7 +305,7 @@ namespace Server.Spells
         {
             if (offset > 0)
                 return AddStatBonus(m, m, type, offset, duration);
-            else if (offset < 0)
+            if (offset < 0)
                 return AddStatCurse(m, m, type, -offset, duration);
 
             return true;
@@ -451,17 +440,16 @@ namespace Server.Spells
         {
             Guild g = m.Guild as Guild;
 
-            if (g == null && m is BaseCreature)
+            if (g == null && m is BaseCreature bc)
             {
-                BaseCreature c = (BaseCreature)m;
-                m = c.ControlMaster;
+                m = bc.ControlMaster;
 
                 if (m != null)
                     g = m.Guild as Guild;
 
                 if (g == null)
                 {
-                    m = c.SummonMaster;
+                    m = bc.SummonMaster;
 
                     if (m != null)
                         g = m.Guild as Guild;
@@ -630,7 +618,7 @@ namespace Server.Spells
                     continue;
                 }
 
-                if (id is Mobile && !ValidIndirectTarget(caster, (Mobile)id))
+                if (id is Mobile mobile && !ValidIndirectTarget(caster, mobile))
                 {
                     continue;
                 }
@@ -641,7 +629,7 @@ namespace Server.Spells
             eable.Free();
         }
 
-        private static readonly int[] m_Offsets = new int[]
+        private static readonly int[] m_Offsets =
         {
             -1, -1,
             -1, 0,
@@ -723,15 +711,13 @@ namespace Server.Spells
                     p = new Point3D(x, y, p.Z);
                     return true;
                 }
-                else
-                {
-                    int z = map.GetAverageZ(x, y);
 
-                    if (map.CanSpawnMobile(x, y, z))
-                    {
-                        p = new Point3D(x, y, z);
-                        return true;
-                    }
+                int z = map.GetAverageZ(x, y);
+
+                if (map.CanSpawnMobile(x, y, z))
+                {
+                    p = new Point3D(x, y, z);
+                    return true;
                 }
             }
 
@@ -742,7 +728,7 @@ namespace Server.Spells
 
         private delegate bool TravelValidator(Map map, Point3D loc);
 
-        private static readonly TravelValidator[] m_Validators = new TravelValidator[]
+        private static readonly TravelValidator[] m_Validators =
         {
             IsFeluccaT2A,
             IsKhaldun,
@@ -765,10 +751,10 @@ namespace Server.Spells
             IsTombOfKings,
             IsMazeOfDeath,
             IsSAEntrance,
-            IsEodon,
+            IsEodon
         };
 
-        private static readonly bool[,] m_Rules = new bool[,]
+        private static readonly bool[,] m_Rules =
         {
 					/*T2A(Fel),	Khaldun,	Ilshenar,	Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel),	Gauntlet(Malas),	Gauntlet(Ferry),	SafeZone,	ChampionSpawn,	Dungeons(Tokuno[Malas]),	LampRoom(Doom),	GuardianRoom(Doom),	Heartwood,	MLDungeons, SA Dungeons		Tomb of Kings	Maze of Death	SA Entrance,    Eodon*/
 /* Recall From */	{ false, false,      true,       true,       false,      false,          true,           false,      false,              false,              true,       false,          true,                       false,          false,              false,      false,      true,           true,           false,          false,          true} ,
@@ -817,13 +803,13 @@ namespace Server.Spells
             {
                 if (caster.IsPlayer())
                 {
-                    // Jail region
                     if (caster.Region.IsPartOf<Jail>())
                     {
                         caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
                         return false;
                     }
-                    else if (caster.Region is GreenAcres)
+
+                    if (caster.Region is GreenAcres)
                     {
                         caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
                         return false;
@@ -831,12 +817,9 @@ namespace Server.Spells
                 }
 
                 // Always allow monsters to teleport
-                if (caster is BaseCreature && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom))
+                if (caster is BaseCreature bc && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom) && !bc.Controlled && !bc.Summoned)
                 {
-                    BaseCreature bc = (BaseCreature)caster;
-
-                    if (!bc.Controlled && !bc.Summoned)
-                        return true;
+                    return true;
                 }
 
                 if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
@@ -892,12 +875,14 @@ namespace Server.Spells
                 m.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;
             }
-            else if (CheckCombat(m))
+
+            if (CheckCombat(m))
             {
                 m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return false;
             }
-            else if (WeightOverloading.IsOverloaded(m))
+
+            if (WeightOverloading.IsOverloaded(m))
             {
                 m.SendLocalizedMessage(502359, "", 0x22); // Thou art too encumbered to move.
                 return false;
@@ -995,12 +980,12 @@ namespace Server.Spells
             if (map != Map.Malas)
                 return false;
 
-            int x = loc.X, y = loc.Y, z = loc.Z;
+            int x = loc.X, y = loc.Y;
 
-            bool r1 = (x >= 0 && y >= 0 && x <= 128 && y <= 128);
-            bool r2 = (x >= 45 && y >= 320 && x < 195 && y < 710);
+            bool r1 = x >= 0 && y >= 0 && x <= 128 && y <= 128;
+            bool r2 = x >= 45 && y >= 320 && x < 195 && y < 710;
 
-            return (r1 || r2);
+            return r1 || r2;
         }
 
         public static bool IsDoomGauntlet(Map map, Point3D loc)
@@ -1104,8 +1089,8 @@ namespace Server.Spells
         //towns
         public static bool IsTown(IPoint3D loc, Mobile caster)
         {
-            if (loc is Item)
-                loc = ((Item)loc).GetWorldLocation();
+            if (loc is Item item)
+                loc = item.GetWorldLocation();
 
             return IsTown(new Point3D(loc), caster);
         }
@@ -1124,8 +1109,8 @@ namespace Server.Spells
 
         public static bool CheckTown(IPoint3D loc, Mobile caster)
         {
-            if (loc is Item)
-                loc = ((Item)loc).GetWorldLocation();
+            if (loc is Item item)
+                loc = item.GetWorldLocation();
 
             return CheckTown(new Point3D(loc), caster);
         }
@@ -1144,52 +1129,52 @@ namespace Server.Spells
         //magic reflection
         public static bool CheckReflect(Spell spell, Mobile caster, ref Mobile target)
         {
-            IDamageable c = caster as IDamageable;
-            IDamageable t = target as IDamageable;
+            IDamageable c = caster;
+            IDamageable t = target;
 
             bool reflect = CheckReflect(spell, ref c, ref t);
 
-            if (c is Mobile)
-                caster = (Mobile)c;
+            if (c is Mobile casterMobile)
+                caster = casterMobile;
 
-            if (t is Mobile)
-                target = (Mobile)t;
+            if (t is Mobile targetMobile)
+                target = targetMobile;
 
             return reflect;
         }
 
         public static bool CheckReflect(Spell spell, IDamageable caster, ref Mobile target)
         {
-            IDamageable t = target as IDamageable;
+            IDamageable t = target;
 
             bool reflect = CheckReflect(spell, ref caster, ref t);
 
-            if (t is Mobile)
-                caster = (Mobile)t;
+            if (t is Mobile mobile)
+                caster = mobile;
 
             return reflect;
         }
 
         public static bool CheckReflect(Spell spell, Mobile caster, ref IDamageable target)
         {
-            IDamageable c = caster as IDamageable;
+            IDamageable c = caster;
 
             bool reflect = CheckReflect(spell, ref c, ref target);
 
-            if (c is Mobile)
-                caster = (Mobile)c;
+            if (c is Mobile mobile)
+                caster = mobile;
 
             return reflect;
         }
 
         public static bool CheckReflect(Spell spell, ref Mobile caster, ref IDamageable target)
         {
-            IDamageable c = caster as IDamageable;
+            IDamageable c = caster;
 
             bool reflect = CheckReflect(spell, ref c, ref target);
 
-            if (c is Mobile)
-                caster = (Mobile)c;
+            if (c is Mobile mobile)
+                caster = mobile;
 
             return reflect;
         }
@@ -1205,10 +1190,10 @@ namespace Server.Spells
 
             if (spell.SpellDamageType == DamageType.Spell)
             {
-                if (defender is DamageableItem && ((DamageableItem)defender).CheckReflect(spell, source))
+                if (defender is DamageableItem item && item.CheckReflect(spell, source))
                 {
                     IDamageable temp = source;
-                    source = defender;
+                    source = item;
                     defender = temp;
                     return true;
                 }
@@ -1287,11 +1272,11 @@ namespace Server.Spells
 
             if (delay == TimeSpan.Zero)
             {
-                if (from is BaseCreature)
-                    ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage);
+                if (from is BaseCreature fromCreature)
+                    fromCreature.AlterSpellDamageTo(target, ref iDamage);
 
-                if (target is BaseCreature)
-                    ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
+                if (target is BaseCreature targetCreature)
+                    targetCreature.AlterSpellDamageFrom(from, ref iDamage);
 
                 target.Damage(iDamage, from);
             }
@@ -1300,12 +1285,10 @@ namespace Server.Spells
                 new SpellDamageTimer(spell, target, from, iDamage, delay).Start();
             }
 
-            if (target is BaseCreature && from != null && delay == TimeSpan.Zero)
+            if (target is BaseCreature bc && from != null && delay == TimeSpan.Zero)
             {
-                BaseCreature c = (BaseCreature)target;
-
-                c.OnHarmfulSpell(from);
-                c.OnDamagedBySpell(from);
+                bc.OnHarmfulSpell(from);
+                bc.OnDamagedBySpell(from);
             }
         }
 
@@ -1357,11 +1340,11 @@ namespace Server.Spells
 
             if (delay == TimeSpan.Zero)
             {
-                if (from is BaseCreature && target != null)
-                    ((BaseCreature)from).AlterSpellDamageTo(target, ref iDamage);
+                if (from is BaseCreature fromCreature && target != null)
+                    fromCreature.AlterSpellDamageTo(target, ref iDamage);
 
-                if (target is BaseCreature)
-                    ((BaseCreature)target).AlterSpellDamageFrom(from, ref iDamage);
+                if (target is BaseCreature targetCreature)
+                    targetCreature.AlterSpellDamageFrom(from, ref iDamage);
 
                 DamageType dtype = spell != null ? spell.SpellDamageType : DamageType.Spell;
 
@@ -1390,10 +1373,8 @@ namespace Server.Spells
                 new SpellDamageTimerAOS(spell, damageable, from, iDamage, phys, fire, cold, pois, nrgy, chaos, direct, delay, dfa).Start();
             }
 
-            if (target is BaseCreature && from != null && delay == TimeSpan.Zero)
+            if (target is BaseCreature c && from != null && delay == TimeSpan.Zero)
             {
-                BaseCreature c = (BaseCreature)target;
-
                 c.OnHarmfulSpell(from);
                 c.OnDamagedBySpell(from);
             }
@@ -1450,11 +1431,11 @@ namespace Server.Spells
 
             protected override void OnTick()
             {
-                if (m_From is BaseCreature)
-                    ((BaseCreature)m_From).AlterSpellDamageTo(m_Target, ref m_Damage);
+                if (m_From is BaseCreature fromCreature)
+                    fromCreature.AlterSpellDamageTo(m_Target, ref m_Damage);
 
-                if (m_Target is BaseCreature)
-                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
+                if (m_Target is BaseCreature targetCreature)
+                    targetCreature.AlterSpellDamageFrom(m_From, ref m_Damage);
 
                 m_Target.Damage(m_Damage);
                 if (m_Spell != null)
@@ -1505,11 +1486,11 @@ namespace Server.Spells
             {
                 Mobile target = m_Target as Mobile;
 
-                if (m_From is BaseCreature && target != null)
-                    ((BaseCreature)m_From).AlterSpellDamageTo(target, ref m_Damage);
+                if (m_From is BaseCreature fromCreature && target != null)
+                    fromCreature.AlterSpellDamageTo(target, ref m_Damage);
 
-                if (m_Target is BaseCreature && m_From != null)
-                    ((BaseCreature)m_Target).AlterSpellDamageFrom(m_From, ref m_Damage);
+                if (m_Target is BaseCreature targetCreature && m_From != null)
+                    targetCreature.AlterSpellDamageFrom(m_From, ref m_Damage);
 
                 DamageType dtype = m_Spell != null ? m_Spell.SpellDamageType : DamageType.Spell;
 
@@ -1525,12 +1506,10 @@ namespace Server.Spells
                     target.DFA = DFAlgorithm.Standard;
                 }
 
-                if (m_Target is BaseCreature && m_From != null)
+                if (m_Target is BaseCreature bc && m_From != null)
                 {
-                    BaseCreature c = (BaseCreature)m_Target;
-
-                    c.OnHarmfulSpell(m_From);
-                    c.OnDamagedBySpell(m_From);
+                    bc.OnHarmfulSpell(m_From);
+                    bc.OnDamagedBySpell(m_From);
                 }
 
                 if (target != null)
@@ -1636,12 +1615,14 @@ namespace Server.Spells
                 caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
                 return false;
             }
-            else if (AnimalForm.UnderTransformation(caster))
+
+            if (AnimalForm.UnderTransformation(caster))
             {
                 caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
                 return false;
             }
-            else if (caster.Flying && !(spell is VampiricEmbraceSpell))
+
+            if (caster.Flying && !(spell is VampiricEmbraceSpell))
             {
                 caster.SendLocalizedMessage(1112567); // You are flying.
                 return false;

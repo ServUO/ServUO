@@ -1,4 +1,4 @@
-﻿using Server.Multis;
+using Server.Multis;
 using System;
 using System.Linq;
 
@@ -182,7 +182,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Weight = reader.ReadInt();
             m_Fisher = reader.ReadMobile();
@@ -333,7 +333,7 @@ namespace Server.Items
             {
                 BaseHouse house = BaseHouse.FindHouseAt(c);
 
-                if (house != null && (house.IsCoOwner(from) || (house.Addons.ContainsKey(this) && house.Addons[this] == from)))
+                if (house != null && (house.IsCoOwner(from) || house.Addons.ContainsKey(this) && house.Addons[this] == from))
                 {
                     from.AddToBackpack(new FishTrophyDeed(m_FishWeight, m_Fisher, m_DateCaught, info.DeedNumber, info.AddonNumber, info.NorthID));
 
@@ -355,6 +355,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_TypeName.Name);
             writer.Write(m_FishWeight);
             writer.Write(m_Fisher);
@@ -364,7 +365,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             string name = reader.ReadString();
             m_TypeName = ScriptCompiler.FindTypeByName(name);
@@ -387,10 +388,8 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Addon != null && Addon is FishTrophy)
+            if (Addon is FishTrophy trophy)
             {
-                FishTrophy trophy = Addon as FishTrophy;
-
                 list.Add(1070858, trophy.FishWeight.ToString());
                 list.Add(1070857, trophy.Fisher != null ? trophy.Fisher.Name : "Unknown");
                 list.Add(string.Format("[{0}]", trophy.DateCaught.ToShortDateString()));
@@ -408,7 +407,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

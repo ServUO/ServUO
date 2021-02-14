@@ -45,7 +45,7 @@ namespace Server.Diagnostics
 		public static PacketSendProfile Acquire(Type type)
 		{
 
-			if (!_profiles.TryGetValue(type, out var prof))
+			if (!_profiles.TryGetValue(type, out PacketSendProfile prof))
 			{
 				_profiles.Add(type, prof = new PacketSendProfile(type));
 			}
@@ -82,7 +82,7 @@ namespace Server.Diagnostics
 		public static PacketReceiveProfile Acquire(int packetId)
 		{
 
-			if (!_profiles.TryGetValue(packetId, out var prof))
+			if (!_profiles.TryGetValue(packetId, out PacketReceiveProfile prof))
 			{
 				_profiles.Add(packetId, prof = new PacketReceiveProfile(packetId));
 			}
@@ -91,7 +91,7 @@ namespace Server.Diagnostics
 		}
 
 		public PacketReceiveProfile(int packetId)
-			: base(String.Format("0x{0:X2}", packetId))
+			: base(string.Format("0x{0:X2}", packetId))
 		{ }
 	}
 }

@@ -45,41 +45,14 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-        public Point3D HomeLocation
-        {
-            get
-            {
-                return m_HomeLocation;
-            }
-            set
-            {
-                m_HomeLocation = value;
-            }
-        }
+        public Point3D HomeLocation { get => m_HomeLocation; set => m_HomeLocation = value; }
+
         [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-        public Map HomeMap
-        {
-            get
-            {
-                return m_HomeMap;
-            }
-            set
-            {
-                m_HomeMap = value;
-            }
-        }
+        public Map HomeMap { get => m_HomeMap; set => m_HomeMap = value; }
+
         [CommandProperty(AccessLevel.Counselor)]
-        public bool AutoRes
-        {
-            get
-            {
-                return m_AutoRes;
-            }
-            set
-            {
-                m_AutoRes = value;
-            }
-        }
+        public bool AutoRes { get => m_AutoRes; set => m_AutoRes = value; }
+
         public static void GetContextMenuEntries(Mobile from, Item item, List<ContextMenuEntry> list)
         {
             list.Add(new GoHomeEntry(from, item));
@@ -92,18 +65,15 @@ namespace Server.Items
             {
                 return;
             }
+
+            if (m_Owner != from)
+            {
+                from.SendMessage("This is not yours to use.");
+            }
             else
             {
-                if (m_Owner != from)
-                {
-                    from.SendMessage("This is not yours to use.");
-                    return;
-                }
-                else
-                {
-                    base.GetContextMenuEntries(from, list);
-                    GetContextMenuEntries(from, this, list);
-                }
+                base.GetContextMenuEntries(from, list);
+                GetContextMenuEntries(from, this, list);
             }
         }
 
@@ -136,7 +106,7 @@ namespace Server.Items
             if (m_Owner == null)
             {
                 m_Owner = from;
-                Name = m_Owner.Name.ToString() + "'s Staff Orb";
+                Name = m_Owner.Name + "'s Staff Orb";
                 HomeLocation = from.Location;
                 HomeMap = from.Map;
                 from.SendMessage("This orb has been assigned to you.");
@@ -145,8 +115,7 @@ namespace Server.Items
             {
                 if (m_Owner != from)
                 {
-                    from.SendMessage("This is not your's to use.");
-                    return;
+                    from.SendMessage("This is not yours to use.");
                 }
                 else
                 {

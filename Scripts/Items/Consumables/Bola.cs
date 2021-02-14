@@ -186,16 +186,14 @@ namespace Server.Items
                 if (m_Bola.Deleted)
                     return;
 
-                if ((obj is Item))
+                if ((obj is Item item))
                 {
-                    ((Item)obj).PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1049628, from.NetState); // You have no reason to throw a bola at that.
+                    item.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1049628, from.NetState); // You have no reason to throw a bola at that.
                     return;
                 }
 
-                if (obj is Mobile)
+                if (obj is Mobile to)
                 {
-                    Mobile to = (Mobile)obj;
-
                     if (!m_Bola.IsChildOf(from.Backpack))
                     {
                         m_Bola.PrivateOverheadMessage(MessageType.Regular, 946, 1040019, from.NetState); // The bola must be in your pack to use it.

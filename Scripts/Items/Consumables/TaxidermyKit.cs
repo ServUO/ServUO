@@ -141,7 +141,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1042600); // That is not a corpse!
                 }
-                else if (targeted is Corpse && ((Corpse)targeted).VisitedByTaxidermist)
+                else if (targeted is Corpse corpse && corpse.VisitedByTaxidermist)
                 {
                     from.SendLocalizedMessage(1042596); // That corpse seems to have been visited by a taxidermist already.
                 }
@@ -154,10 +154,8 @@ namespace Server.Items
                     from.SendLocalizedMessage(1042603); // You would not understand how to use the kit.
                 }
                 #region Huntmasters Challenge
-                else if (targeted is HuntingPermit)
+                else if (targeted is HuntingPermit lic)
                 {
-                    HuntingPermit lic = targeted as HuntingPermit;
-
                     if (from.Backpack == null || !lic.IsChildOf(from.Backpack))
                         from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     else if (!lic.CanUseTaxidermyOn)
@@ -197,8 +195,8 @@ namespace Server.Items
                 {
                     object obj = targeted;
 
-                    if (obj is Corpse)
-                        obj = ((Corpse)obj).Owner;
+                    if (obj is Corpse oCorpse)
+                        obj = oCorpse.Owner;
 
                     if (obj != null)
                     {
@@ -217,36 +215,30 @@ namespace Server.Items
                                     int weight = 0;
                                     DateTime dateCaught = DateTime.MinValue;
 
-                                    if (targeted is BigFish)
+                                    if (targeted is BigFish bFish)
                                     {
-                                        BigFish fish = targeted as BigFish;
+                                        hunter = bFish.Fisher;
+                                        weight = (int)bFish.Weight;
+                                        dateCaught = bFish.DateCaught;
 
-                                        hunter = fish.Fisher;
-                                        weight = (int)fish.Weight;
-                                        dateCaught = fish.DateCaught;
-
-                                        fish.Consume();
+                                        bFish.Consume();
                                     }
                                     #region High Seas
-                                    else if (targeted is RareFish)
+                                    else if (targeted is RareFish rFish)
                                     {
-                                        RareFish fish = targeted as RareFish;
-
-                                        hunter = fish.Fisher;
-                                        weight = (int)fish.Weight;
-                                        dateCaught = fish.DateCaught;
+                                        hunter = rFish.Fisher;
+                                        weight = (int)rFish.Weight;
+                                        dateCaught = rFish.DateCaught;
 
                                         from.AddToBackpack(new FishTrophyDeed(weight, hunter, dateCaught, m_Table[i].DeedNumber, m_Table[i].AddonNumber, m_Table[i].NorthID));
 
-                                        fish.Delete();
+                                        rFish.Delete();
                                         m_Kit.Delete();
                                         return;
                                     }
 
-                                    else if (targeted is RareCrabAndLobster)
+                                    else if (targeted is RareCrabAndLobster fish)
                                     {
-                                        RareCrabAndLobster fish = targeted as RareCrabAndLobster;
-
                                         hunter = fish.Fisher;
                                         weight = (int)fish.Weight;
                                         dateCaught = fish.DateCaught;
@@ -267,8 +259,8 @@ namespace Server.Items
 
                                     from.AddToBackpack(new TrophyDeed(m_Table[i], hunter, weight));
 
-                                    if (targeted is Corpse)
-                                        ((Corpse)targeted).VisitedByTaxidermist = true;
+                                    if (targeted is Corpse tCorpse)
+                                        tCorpse.VisitedByTaxidermist = true;
 
                                     m_Kit.Delete();
                                     return;
@@ -435,9 +427,9 @@ namespace Server.Items
             {
                 Item deed = Deed;
 
-                if (Parent is Item)
+                if (Parent is Item item)
                 {
-                    ((Item)Parent).AddItem(deed);
+                    item.AddItem(deed);
                     deed.Location = Location;
                 }
                 else

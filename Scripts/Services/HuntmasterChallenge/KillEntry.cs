@@ -46,7 +46,7 @@ namespace Server.Engines.HuntsmasterChallenge
             double perc1 = (double)((HuntingKillEntry)o).Measurement / info1.MaxMeasurement;
             double perc2 = (double)m_Measurement / info2.MaxMeasurement;
 
-            return (int)((perc1 * 100) - (perc2 * 100));
+            return (int)(perc1 * 100 - perc2 * 100);
         }
 
         public HuntingKillEntry(GenericReader reader)

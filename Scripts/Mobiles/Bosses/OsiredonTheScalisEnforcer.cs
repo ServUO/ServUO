@@ -30,9 +30,9 @@ namespace Server.Mobiles
         public override double TreasureMapChance => .50;
         public override int TreasureMapLevel => 7;
 
-        public override Type[] UniqueList => new Type[] { typeof(EnchantedCoralBracelet), typeof(WandOfThunderingGlory), typeof(LeviathanHideBracers), typeof(SmilingMoonBlade) };
-        public override Type[] SharedList => new Type[] { typeof(MiniSoulForgeDeed) };
-        public override Type[] DecorativeList => new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
+        public override Type[] UniqueList => new[] { typeof(EnchantedCoralBracelet), typeof(WandOfThunderingGlory), typeof(LeviathanHideBracers), typeof(SmilingMoonBlade) };
+        public override Type[] SharedList => new[] { typeof(MiniSoulForgeDeed) };
+        public override Type[] DecorativeList => new[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
 
         public override bool NoGoodies => true;
 
@@ -152,9 +152,9 @@ namespace Server.Mobiles
                 MovingParticles(combatant, 0x36D4, 5, 0, false, false, 195, 0, 9502, 3006, 0, 0, 0);
                 AOS.Damage(combatant, this, (int)damage, 100, 0, 0, 0, 0);
 
-                if (combatant is PlayerMobile && combatant.Mount != null)
+                if (combatant is PlayerMobile mobile && mobile.Mount != null)
                 {
-                    (combatant as PlayerMobile).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
+                    mobile.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
                 }
 
                 m_NextWaterBall = DateTime.UtcNow + TimeSpan.FromMinutes(1);
@@ -206,12 +206,12 @@ namespace Server.Mobiles
             IPooledEnumerable eable = GetMobilesInRange(8);
             foreach (Mobile mob in eable)
             {
-                if (!CanBeHarmful(mob, false) || mob == this || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() == this))
+                if (!CanBeHarmful(mob, false) || mob == this || mob is BaseCreature creature && creature.GetMaster() == this)
                     continue;
                 if (mob.Player)
                     toExplode.Add(mob);
-                if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != Team))
-                    toExplode.Add(mob);
+                if (mob is BaseCreature bc && (bc.Controlled || bc.Summoned || bc.Team != Team))
+                    toExplode.Add(bc);
             }
             eable.Free();
 
@@ -282,7 +282,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextSpawn = DateTime.UtcNow;
             m_NextSpecial = DateTime.UtcNow;
@@ -298,10 +298,10 @@ namespace Server.Mobiles
         public ParasiticEel(Mobile master)
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            if (master is Osiredon)
+            if (master is Osiredon osiredon)
             {
-                m_Master = master;
-                ((Osiredon)master).AddEel(this);
+                m_Master = osiredon;
+                osiredon.AddEel(this);
             }
 
             Name = "a parasitic eel";
@@ -347,8 +347,10 @@ namespace Server.Mobiles
 
         public override void Delete()
         {
-            if (m_Master != null && m_Master is Osiredon)
-                ((Osiredon)m_Master).RemoveEel(this);
+            if (m_Master != null && m_Master is Osiredon osiredon)
+            {
+                osiredon.RemoveEel(this);
+            }
 
             base.Delete();
         }
@@ -367,13 +369,15 @@ namespace Server.Mobiles
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Master);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Master = reader.ReadMobile();
         }
     }

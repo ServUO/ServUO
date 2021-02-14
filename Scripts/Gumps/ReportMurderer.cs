@@ -51,13 +51,13 @@ namespace Server.Gumps
                         }
                     }
                 }
-                if (ai.Attacker.Player && (DateTime.UtcNow - ai.LastCombatTime) < TimeSpan.FromSeconds(30.0) && !toGive.Contains(ai.Attacker))
+                if (ai.Attacker.Player && DateTime.UtcNow - ai.LastCombatTime < TimeSpan.FromSeconds(30.0) && !toGive.Contains(ai.Attacker))
                     toGive.Add(ai.Attacker);
             }
 
             foreach (AggressorInfo ai in m.Aggressed)
             {
-                if (ai.Defender.Player && (DateTime.UtcNow - ai.LastCombatTime) < TimeSpan.FromSeconds(30.0) && !toGive.Contains(ai.Defender))
+                if (ai.Defender.Player && DateTime.UtcNow - ai.LastCombatTime < TimeSpan.FromSeconds(30.0) && !toGive.Contains(ai.Defender))
                     toGive.Add(ai.Defender);
             }
 
@@ -66,8 +66,8 @@ namespace Server.Gumps
                 int n = Notoriety.Compute(g, m);
 
                 int theirKarma = m.Karma, ourKarma = g.Karma;
-                bool innocent = (n == Notoriety.Innocent);
-                bool criminal = (n == Notoriety.Criminal || n == Notoriety.Murderer);
+                bool innocent = n == Notoriety.Innocent;
+                bool criminal = n == Notoriety.Criminal || n == Notoriety.Murderer;
 
                 int fameAward = m.Fame / 200;
                 int karmaAward = 0;
@@ -86,7 +86,7 @@ namespace Server.Gumps
                 }
             }
 
-            if (m is PlayerMobile && ((PlayerMobile)m).NpcGuild == NpcGuild.ThievesGuild)
+            if (m is PlayerMobile mobile && mobile.NpcGuild == NpcGuild.ThievesGuild)
                 return;
 
             if (killers.Count > 0)
@@ -123,9 +123,8 @@ namespace Server.Gumps
                             ((PlayerMobile)from).RecentlyReported.Add(killer);
                             Timer.DelayCall(TimeSpan.FromMinutes(10), new TimerStateCallback(ReportedListExpiry_Callback), new object[] { from, killer });
 
-                            if (killer is PlayerMobile)
+                            if (killer is PlayerMobile pk)
                             {
-                                PlayerMobile pk = (PlayerMobile)killer;
                                 pk.ResetKillTime();
                                 pk.SendLocalizedMessage(1049067);//You have been reported for murder!
 

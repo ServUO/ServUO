@@ -8,7 +8,7 @@ namespace Server.Mobiles
         private bool m_HasDecanter = true;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasDecanter { get { return m_HasDecanter; } set { m_HasDecanter = value; } }
+        public bool HasDecanter { get => m_HasDecanter; set => m_HasDecanter = value; }
 
         [Constructable]
         public WaterElemental()

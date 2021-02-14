@@ -125,24 +125,20 @@ namespace Server.Items
                     // Now we also know the deed is still in the players backpack,
                     // as is the item the player wants to bless. Let's go and
                     // bless it.
-                    if (item is BaseArmor)
+                    if (item is BaseArmor mitem1)
                     {
-                        BaseArmor mitem = (BaseArmor)item;
-                        mitem.BlessedBy = from;
+                        mitem1.BlessedBy = from;
                     }
-                    else if (item is BaseClothing)
+                    else if (item is BaseClothing mitem2)
                     {
-                        BaseClothing mitem = (BaseClothing)item;
-                        mitem.BlessedBy = from;
+                        mitem2.BlessedBy = from;
                     }
-                    else if (item is BaseWeapon)
+                    else if (item is BaseWeapon mitem3)
                     {
-                        BaseWeapon mitem = (BaseWeapon)item;
-                        mitem.BlessedBy = from;
+                        mitem3.BlessedBy = from;
                     }
-                    else if (item is BaseJewel)
+                    else if (item is BaseJewel mitem)
                     {
-                        BaseJewel mitem = (BaseJewel)item;
                         mitem.BlessedBy = from;
                     }
 

@@ -12,7 +12,7 @@ namespace Server.Mobiles
         Casting = 5,
         Misc = 6,
         HitEffects = 7,
-        SkillBonusGear = 8,
+        SkillBonusGear = 8
     }
 
     public abstract class Property

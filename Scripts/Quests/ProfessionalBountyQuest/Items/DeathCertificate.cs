@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 
 namespace Server.Items
 {
@@ -14,10 +14,8 @@ namespace Server.Items
         public DeathCertificate(Mobile owner)
             : base(0x14F0)
         {
-            if (owner is PirateCaptain)
+            if (owner is PirateCaptain capt)
             {
-                PirateCaptain capt = (PirateCaptain)owner;
-
                 if (capt.PirateName > 0)
                     m_Owner = string.Format("#{0}\t#{1}\t#{2}", capt.Adjective, capt.Noun, capt.PirateName);
                 else
@@ -44,13 +42,15 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Owner);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Owner = reader.ReadString();
         }
     }

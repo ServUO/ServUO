@@ -299,7 +299,7 @@ namespace Server.Engines.Quests
             ["Server.Engines.Quests.TimeLord.TimeForLegendsQuest"] = new[]
             {
                 "TimeForLegendsObjective"
-            },
+            }
         };
 
         private static readonly string[] _QuestTypes = _QuestTable.Keys.ToArray();

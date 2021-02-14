@@ -59,10 +59,8 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                 }
-                else if (targeted is EtherealMount)
+                else if (targeted is EtherealMount mount)
                 {
-                    EtherealMount mount = targeted as EtherealMount;
-
                     if (!mount.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1045158); // You must have the item in your backpack to target it.
@@ -105,7 +103,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             IsRewardItem = reader.ReadBool();
         }

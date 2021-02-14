@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
 {
     public class IndoctrinationOfABattleRouserQuest : BaseQuest
     {
-        public IndoctrinationOfABattleRouserQuest() : base()
+        public IndoctrinationOfABattleRouserQuest()
         {
             AddObjective(new ProvocationObjective());
 
@@ -67,15 +67,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -92,7 +90,7 @@ namespace Server.Engines.Quests
 
         public override bool Update(object obj)
         {
-            if (obj is Mobile && (((Mobile)obj).GetType() == typeof(WanderingHealer) || ((Mobile)obj).GetType() == typeof(EvilWanderingHealer)))
+            if (obj is Mobile mobile && (mobile.GetType() == typeof(WanderingHealer) || mobile.GetType() == typeof(EvilWanderingHealer)))
             {
                 CurProgress++;
 
@@ -113,15 +111,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -139,10 +135,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[]
-                {
-                    typeof(IndoctrinationOfABattleRouserQuest),
-                };
+        public override Type[] Quests => new[] { typeof(IndoctrinationOfABattleRouserQuest) };
 
         public override void InitBody()
         {
@@ -164,15 +157,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -21,11 +21,8 @@ namespace Server.Items
                 m.SendLocalizedMessage(1155613); // Target the weapon, spellbook, or instrument you wish to apply this to...
                 m.BeginTarget(-1, false, Targeting.TargetFlags.None, (from, targeted) =>
                 {
-                    if (targeted is Item && targeted is ISlayer)
+                    if (targeted is Item item && item is ISlayer slayer)
                     {
-                        Item item = (Item)targeted;
-                        ISlayer slayer = (ISlayer)targeted;
-
                         SlayerSocket socket = item.GetSocket<SlayerSocket>();
 
                         if (socket == null || socket.Slayer != SlayerName.Silver)

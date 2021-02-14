@@ -132,7 +132,7 @@ namespace Server.Services.TownCryer
 
         public static bool IsExempt(Mobile m)
         {
-            return m is PlayerMobile && TownCryerExempt.Contains((PlayerMobile)m);
+            return m is PlayerMobile mobile && TownCryerExempt.Contains(mobile);
         }
 
         public static void AddExempt(PlayerMobile pm)
@@ -195,9 +195,9 @@ namespace Server.Services.TownCryer
 
                         foreach (Mobile m in eable)
                         {
-                            if (m is TownCrier)
+                            if (m is TownCrier crier)
                             {
-                                BaseGump.SendGump(new TownCryerGreetingsGump(player, (TownCrier)m));
+                                BaseGump.SendGump(new TownCryerGreetingsGump(player, crier));
                                 break;
                             }
                         }
@@ -304,10 +304,8 @@ namespace Server.Services.TownCryer
 
         public static void GetContextMenus(TownCrier tc, Mobile from, List<ContextMenuEntry> list)
         {
-            if (from is PlayerMobile)
+            if (from is PlayerMobile pm)
             {
-                PlayerMobile pm = from as PlayerMobile;
-
                 if (pm.AccessLevel >= EMAccess)
                 {
                     list.Add(new AddGreetingEntry(tc));
@@ -325,7 +323,7 @@ namespace Server.Services.TownCryer
 
                 if (g != null && pm.GuildRank != null && pm.GuildRank.Rank >= 3 && g.Leader == pm && (pm.AccessLevel > AccessLevel.Player || g.Members.Count >= MinGuildMemberCount))
                 {
-                    list.Add(new UpdateGuildEntry(from, tc));
+                    list.Add(new UpdateGuildEntry(pm, tc));
                 }
             }
         }
@@ -349,9 +347,8 @@ namespace Server.Services.TownCryer
 
         public static bool UnderMysteriousPotionEffects(Mobile m, bool checkQuest = false)
         {
-            return
-                MysteriousPotionEffects != null && MysteriousPotionEffects.ContainsKey(m) && MysteriousPotionEffects[m] > DateTime.UtcNow &&
-                (!checkQuest || m is PlayerMobile && QuestHelper.HasQuest<AForcedSacraficeQuest2>((PlayerMobile)m));
+            return MysteriousPotionEffects != null && MysteriousPotionEffects.ContainsKey(m) && MysteriousPotionEffects[m] > DateTime.UtcNow &&
+                   (!checkQuest || m is PlayerMobile mobile && QuestHelper.HasQuest<AForcedSacraficeQuest2>(mobile));
         }
 
         public static void AddMysteriousPotionEffects(Mobile m)
@@ -651,10 +648,9 @@ namespace Server.Services.TownCryer
 
         public override void OnClick()
         {
-            if (Owner.From is PlayerMobile && Owner.From.AccessLevel >= AccessLevel.GameMaster)
+            if (Owner.From is PlayerMobile pm && pm.AccessLevel >= AccessLevel.GameMaster)
             {
-                //BaseGump.SendGump(new CreateGreetingEntryGump((PlayerMobile)Owner.From, Cryer));
-                BaseGump.SendGump(new TownCryerGreetingsGump((PlayerMobile)Owner.From, Cryer));
+                BaseGump.SendGump(new TownCryerGreetingsGump(pm, Cryer));
             }
         }
     }
@@ -672,15 +668,15 @@ namespace Server.Services.TownCryer
 
         public override void OnClick()
         {
-            if (Owner.From is PlayerMobile)
+            if (Owner.From is PlayerMobile pm)
             {
                 if (TownCryerSystem.ModeratorEntries.Count < TownCryerSystem.MaxEMEntries)
                 {
-                    BaseGump.SendGump(new CreateEMEntryGump((PlayerMobile)Owner.From, Cryer));
+                    BaseGump.SendGump(new CreateEMEntryGump(pm, Cryer));
                 }
                 else
                 {
-                    Owner.From.SendLocalizedMessage(1158038); // You have reached the maximum entry count.  Please remove some and try again.
+                    pm.SendLocalizedMessage(1158038); // You have reached the maximum entry count.  Please remove some and try again.
                 }
             }
         }
@@ -698,9 +694,8 @@ namespace Server.Services.TownCryer
 
         public override void OnClick()
         {
-            if (Owner.From is PlayerMobile)
+            if (Owner.From is PlayerMobile pm)
             {
-                PlayerMobile pm = Owner.From as PlayerMobile;
                 CityLoyaltySystem system = CityLoyaltySystem.GetCitizenship(pm, false);
 
                 if (TownCryerSystem.IsGovernor(pm, system))

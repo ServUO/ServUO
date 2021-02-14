@@ -40,7 +40,7 @@ namespace Server.SkillHandlers
                 double skill = from.Skills[SkillName.Forensics].Value;
                 double minSkill = 30.0;
 
-                if (target is Corpse)
+                if (target is Corpse c)
                 {
                     if (skill < minSkill)
                     {
@@ -48,17 +48,15 @@ namespace Server.SkillHandlers
                         return;
                     }
 
-                    if (from.CheckTargetSkill(SkillName.Forensics, target, minSkill, 55.0))
+                    if (from.CheckTargetSkill(SkillName.Forensics, c, minSkill, 55.0))
                     {
-                        Corpse c = (Corpse)target;
-
                         if (c.m_Forensicist != null)
                             from.SendLocalizedMessage(1042750, c.m_Forensicist); // The forensicist  ~1_NAME~ has already discovered that:
                         else
                             c.m_Forensicist = from.Name;
 
                         if (((Body)c.Amount).IsHuman)
-                            from.SendLocalizedMessage(1042751, (c.Killer == null ? "no one" : c.Killer.Name));//This person was killed by ~1_KILLER_NAME~
+                            from.SendLocalizedMessage(1042751, c.Killer == null ? "no one" : c.Killer.Name);//This person was killed by ~1_KILLER_NAME~
 
                         if (c.Looters.Count > 0)
                         {
@@ -92,7 +90,7 @@ namespace Server.SkillHandlers
                     }
                     else if (from.CheckTargetSkill(SkillName.Forensics, target, 36.0, 100.0))
                     {
-                        if (target is PlayerMobile && ((PlayerMobile)target).NpcGuild == NpcGuild.ThievesGuild)
+                        if (target is PlayerMobile mobile && mobile.NpcGuild == NpcGuild.ThievesGuild)
                         {
                             from.SendLocalizedMessage(501004);//That individual is a thief!
                         }
@@ -106,16 +104,14 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                     }
                 }
-                else if (target is ILockpickable)
+                else if (target is ILockpickable p)
                 {
                     if (skill < 41.0)
                     {
                         from.SendLocalizedMessage(501003); //You notice nothing unusual.
                     }
-                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
+                    else if (from.CheckTargetSkill(SkillName.Forensics, p, 41.0, 100.0))
                     {
-                        ILockpickable p = (ILockpickable)target;
-
                         if (p.Picker != null)
                         {
                             from.SendLocalizedMessage(1042749, p.Picker.Name);//This lock was opened by ~1_PICKER_NAME~
@@ -130,13 +126,11 @@ namespace Server.SkillHandlers
                         from.SendLocalizedMessage(501001);//You cannot determain anything useful.
                     }
                 }
-                else if (target is Item)
+                else if (target is Item item)
                 {
-                    Item item = (Item)target;
-
-                    if (item is IForensicTarget)
+                    if (item is IForensicTarget forensicTarget)
                     {
-                        ((IForensicTarget)item).OnForensicEval(from);
+                        forensicTarget.OnForensicEval(from);
                     }
                     else if (skill < 41.0)
                     {
@@ -151,7 +145,7 @@ namespace Server.SkillHandlers
                         if (honestySocket.HonestyOwner == null)
                             Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
 
-                        if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
+                        if (from.CheckTargetSkill(SkillName.Forensics, item, 41.0, 100.0))
                         {
                             string region = honestySocket.HonestyRegion == null ? "an unknown place" : honestySocket.HonestyRegion;
 

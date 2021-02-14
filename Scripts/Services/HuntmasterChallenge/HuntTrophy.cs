@@ -13,16 +13,16 @@ namespace Server.Items
         private int m_Index;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public string Owner { get => m_Owner; set => m_Owner = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string KillLocation { get { return m_Location; } set { m_Location = value; } }
+        public string KillLocation { get => m_Location; set => m_Location = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Measurement { get { return m_Measurement; } set { m_Measurement = value; } }
+        public int Measurement { get => m_Measurement; set => m_Measurement = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string DateKilled { get { return m_DateKilled; } set { m_DateKilled = value; } }
+        public string DateKilled { get => m_DateKilled; set => m_DateKilled = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TextDefinition Species => Info.Species;
@@ -48,10 +48,7 @@ namespace Server.Items
 
                 return m_Index;
             }
-            set
-            {
-                m_Index = value;
-            }
+            set => m_Index = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -166,16 +163,16 @@ namespace Server.Items
         private int m_Index;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public string Owner { get => m_Owner; set => m_Owner = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string KillLocation { get { return m_Location; } set { m_Location = value; } }
+        public string KillLocation { get => m_Location; set => m_Location = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Measurement { get { return m_Measurement; } set { m_Measurement = value; } }
+        public int Measurement { get => m_Measurement; set => m_Measurement = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string DateKilled { get { return m_DateKilled; } set { m_DateKilled = value; } }
+        public string DateKilled { get => m_DateKilled; set => m_DateKilled = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TextDefinition Species => Info.Species;
@@ -201,10 +198,7 @@ namespace Server.Items
 
                 return m_Index;
             }
-            set
-            {
-                m_Index = value;
-            }
+            set => m_Index = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -374,9 +368,9 @@ namespace Server.Items
         {
             HuntTrophy trophy = new HuntTrophy(m_Owner, Index, m_Measurement, m_DateKilled, m_Location);
 
-            if (Parent is Container)
+            if (Parent is Container container)
             {
-                ((Container)Parent).DropItem(trophy);
+                container.DropItem(trophy);
             }
             else
             {

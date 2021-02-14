@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Server.Items
 {
-    public class AuctionMap : MapItem
+    public class AuctionMap : MapItem, ISearchMap
     {
         public readonly int TeleportCost = 1000;
         public readonly int DeleteDelayMinutes = 30;
@@ -109,8 +109,6 @@ namespace Server.Items
 
         public string[] GetCoords()
         {
-            string[] array = new string[2];
-
             Point3D loc = Point3D.Zero;
             Map locmap = Map.Internal;
 
@@ -138,11 +136,11 @@ namespace Server.Items
 
                 if (Sextant.Format(new Point3D(x, y, z), map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
                 {
-                    return new string[] { string.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"), map.ToString() };
+                    return new[] { string.Format("{0}° {1}'{2}, {3}° {4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W"), map.ToString() };
                 }
             }
 
-            return new string[] { "an unknown location", "Unknown" };
+            return new[] { "an unknown location", "Unknown" };
         }
 
         public BaseHouse GetHouse()
@@ -254,9 +252,9 @@ namespace Server.Items
 
             public override void OnClick()
             {
-                if (Clicker is PlayerMobile)
+                if (Clicker is PlayerMobile mobile)
                 {
-                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, (PlayerMobile)Clicker));
+                    BaseGump.SendGump(new ConfirmTeleportGump(VendorMap, mobile));
                 }
             }
         }
@@ -283,7 +281,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             AuctionSafe = reader.ReadItem() as IAuctionItem;
             AuctionItem = reader.ReadItem();

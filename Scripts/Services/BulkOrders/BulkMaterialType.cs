@@ -23,7 +23,7 @@ namespace Server.Engines.BulkOrders
         YewWood,
         Heartwood,
         Bloodwood,
-        Frostwood,
+        Frostwood
     }
 
     public enum BulkGenericType
@@ -45,7 +45,8 @@ namespace Server.Engines.BulkOrders
 
                 return BulkGenericType.Cloth;
             }
-            else if (deedType == BODType.Tinkering && itemType != null)
+
+            if (deedType == BODType.Tinkering && itemType != null)
             {
                 if (itemType == typeof(Clock) || itemType.IsSubclassOf(typeof(Clock)))
                     return BulkGenericType.Wood;

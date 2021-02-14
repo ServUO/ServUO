@@ -20,7 +20,7 @@ namespace Server.Items
 
     public class AmmoInfo
     {
-        private static Dictionary<Type, AmmoInfo> Infos { get; set; } = new Dictionary<Type, AmmoInfo>();
+        private static Dictionary<Type, AmmoInfo> Infos { get; } = new Dictionary<Type, AmmoInfo>();
 
         public static void Initialize()
         {
@@ -31,19 +31,19 @@ namespace Server.Items
             Infos[typeof(FrostCannonball)] = new AmmoInfo(typeof(HeavyFrostCannonball), AmmunitionType.FrostCannonball, 1149634, 30, 50, 3, true, 50, 0, 50, 0, 0, false);
         }
 
-        public Type Type { get; set; }
-        public AmmunitionType AmmoType { get; set; }
-        public TextDefinition Name { get; set; }
-        public int MinDamage { get; set; }
-        public int MaxDamage { get; set; }
-        public int LateralOffset { get; set; }
-        public int PhysicalDamage { get; set; }
-        public int FireDamage { get; set; }
-        public int ColdDamage { get; set; }
-        public int PoisonDamage { get; set; }
-        public int EnergyDamage { get; set; }
-        public bool SingleTarget { get; set; }
-        public bool RequiresSurface { get; set; }
+        public Type Type { get; }
+        public AmmunitionType AmmoType { get; }
+        public TextDefinition Name { get; }
+        public int MinDamage { get; }
+        public int MaxDamage { get; }
+        public int LateralOffset { get; }
+        public int PhysicalDamage { get; }
+        public int FireDamage { get; }
+        public int ColdDamage { get; }
+        public int PoisonDamage { get; }
+        public int EnergyDamage { get; }
+        public bool SingleTarget { get; }
+        public bool RequiresSurface { get; }
 
         public AmmoInfo(Type type, AmmunitionType ammoType, TextDefinition name, int minDamage, int maxDamage, int lateralOffset)
             : this(type, ammoType, name, minDamage, maxDamage, lateralOffset, true, 100, 0, 0, 0, 0, false)
@@ -74,31 +74,12 @@ namespace Server.Items
 
 
         /// <summary>
-        /// Gets damage for Rising Tides Cannons. This differentiates between the cannon sizes.
+        /// Gets damage for Cannons.
         /// </summary>
-        /// <param name="cannon"></param>
         /// <returns></returns>
-        public int GetDamage(BaseShipCannon cannon)
+        public int GetDamage()
         {
             return Utility.RandomMinMax(MinDamage, MaxDamage);
-
-            // Fucking EA, after rising tide, made all cannons deal the same amount of damage. I don't get it. If they ever pull their head out of their asses, or you
-            // want, use the code below...
-
-            /*if (AmmoType == AmmunitionType.Grapeshot)
-            {
-                return Utility.RandomMinMax(MinDamage, MaxDamage);
-            }
-
-            int baseDamage = Utility.RandomMinMax(info.MinDamage, info.MaxDamage);
-
-            switch (cannon.Power)
-            {
-                default:
-                case CannonPower.Light: return baseDamage;
-                case CannonPower.Heavy: return baseDamage + 1500;
-                case CannonPower.Massive: return baseDamage + 3000;
-            }*/
         }
 
         public static AmmoInfo GetAmmoInfo(Type ammoType)

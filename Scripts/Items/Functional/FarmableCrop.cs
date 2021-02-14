@@ -32,10 +32,10 @@ namespace Server.Items
             if (!from.InRange(loc, 2) || !from.InLOS(this))
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             else if (!m_Picked)
-                OnPicked(from, loc, map);
+                OnPicked(loc, map);
         }
 
-        public virtual void OnPicked(Mobile from, Point3D loc, Map map)
+        public virtual void OnPicked(Point3D loc, Map map)
         {
             ItemID = GetPickedID();
 

@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
 {
     public class TheBeaconOfHarmonyQuest : BaseQuest
     {
-        public TheBeaconOfHarmonyQuest() : base()
+        public TheBeaconOfHarmonyQuest()
         {
             AddObjective(new PeacemakingObjective());
 
@@ -67,15 +67,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -94,7 +92,7 @@ namespace Server.Engines.Quests
 
         public override bool Update(object obj)
         {
-            if (obj is Mobile && ((Mobile)obj).GetType() == m_Type)
+            if (obj is Mobile mobile && mobile.GetType() == m_Type)
             {
                 CurProgress++;
 
@@ -115,15 +113,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -141,10 +137,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[]
-                {
-                    typeof(TheBeaconOfHarmonyQuest),
-                };
+        public override Type[] Quests => new[] { typeof(TheBeaconOfHarmonyQuest) };
 
         public override void InitBody()
         {
@@ -166,15 +159,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -64,19 +64,19 @@ namespace Server.Engines.Khaldun
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5))
+            if (m is PlayerMobile mobile && InRange(mobile.Location, 5))
             {
-                GoingGumshoeQuest2 quest = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
+                GoingGumshoeQuest2 quest = QuestHelper.GetQuest<GoingGumshoeQuest2>(mobile);
 
                 if (quest != null)
                 {
-                    m.SendLocalizedMessage(1158606, null, 0x23); /* You've spoken to the Grave Digger and have paid your respects to those who 
+                    mobile.SendLocalizedMessage(1158606, null, 0x23); /* You've spoken to the Grave Digger and have paid your respects to those who 
                                                                     perished in the fight against the titans. How someone could defile a grave 
                                                                     stone, you have no idea. You decide to take a closer look... */
 
-                    m.PlaySound(quest.UpdateSound);
+                    mobile.PlaySound(quest.UpdateSound);
 
-                    m.SendGump(new InternalGump());
+                    mobile.SendGump(new InternalGump());
                 }
             }
         }
@@ -106,15 +106,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

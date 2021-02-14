@@ -13,9 +13,16 @@ namespace Server.Mobiles
     public static class GuideHelper
     {
         private static readonly Dictionary<string, List<Vertex>> m_GraphDefinitions = new Dictionary<string, List<Vertex>>();
+
         private static readonly List<int> m_ShopDefinitions = new List<int>();
-        private static readonly char[] m_Separators = new char[] { '\t', ' ' };
+
+        private static readonly char[] m_Separators =
+        {
+            '\t', ' '
+        };
+
         private static readonly string m_Delimiter = "--------------------------------------------------------------------------";
+
         public static void LogMessage(string line)
         {
             try
@@ -68,8 +75,10 @@ namespace Server.Mobiles
                         {
                             string[] split = line.Split(m_Separators, StringSplitOptions.RemoveEmptyEntries);
 
-                            if (split != null && split.Length > 1)
+                            if (split.Length > 1)
+                            {
                                 m_ShopDefinitions.Add(int.Parse(split[1]));
+                            }
                         }
                     }
                 }
@@ -151,7 +160,7 @@ namespace Server.Mobiles
                                         current.Teleporter = bool.Parse(split[5]);
                                     }
                                     else
-                                        throw new Exception(string.Format("Incomplete vertex definition!"));
+                                        throw new Exception("Incomplete vertex definition!");
                                 }
                             }
                         }
@@ -382,14 +391,16 @@ namespace Server.Mobiles
 
                     foreach (Vertex v in list)
                     {
-                        writer.WriteLine(string.Format("V:\t{0}\t{1}\t{2}\t{3}\t{4}", v.ID, v.Location.X, v.Location.Y, v.Location.Z, v.Teleporter.ToString()));
+                        writer.WriteLine("V:\t{0}\t{1}\t{2}\t{3}\t{4}", v.ID, v.Location.X, v.Location.Y, v.Location.Z, v.Teleporter.ToString());
 
                         if (v.Shops.Count > 0)
                         {
                             writer.Write("S:");
 
                             foreach (int i in v.Shops)
-                                writer.Write(string.Format("\t{0}", i));
+                            {
+                                writer.Write("\t{0}", i);
+                            }
 
                             writer.WriteLine();
                         }
@@ -399,7 +410,9 @@ namespace Server.Mobiles
                             writer.Write("N:");
 
                             foreach (Vertex n in v.Vertices)
-                                writer.Write(string.Format("\t{0}", n.ID));
+                            {
+                                writer.Write("\t{0}", n.ID);
+                            }
 
                             writer.WriteLine();
                         }
@@ -437,71 +450,35 @@ namespace Server.Mobiles
             public int ID => m_ID;
             public Point3D Location
             {
-                get
-                {
-                    return m_Location;
-                }
-                set
-                {
-                    m_Location = value;
-                }
+                get => m_Location;
+                set => m_Location = value;
             }
             public List<Vertex> Vertices => m_Vertices;
             public List<int> Shops => m_Shops;
             public bool Teleporter
             {
-                get
-                {
-                    return m_Teleporter;
-                }
-                set
-                {
-                    m_Teleporter = value;
-                }
+                get => m_Teleporter;
+                set => m_Teleporter = value;
             }
             public Vertex Previous
             {
-                get
-                {
-                    return m_Previous;
-                }
-                set
-                {
-                    m_Previous = value;
-                }
+                get => m_Previous;
+                set => m_Previous = value;
             }
             public int Distance
             {
-                get
-                {
-                    return m_Distance;
-                }
-                set
-                {
-                    m_Distance = value;
-                }
+                get => m_Distance;
+                set => m_Distance = value;
             }
             public bool Visited
             {
-                get
-                {
-                    return m_Visited;
-                }
-                set
-                {
-                    m_Visited = value;
-                }
+                get => m_Visited;
+                set => m_Visited = value;
             }
             public bool Removed
             {
-                get
-                {
-                    return m_Removed;
-                }
-                set
-                {
-                    m_Removed = value;
-                }
+                get => m_Removed;
+                set => m_Removed = value;
             }
             public int DistanceTo(Vertex to)
             {
@@ -576,7 +553,9 @@ namespace Server.Mobiles
             public T Pop()
             {
                 if (m_List.Count == 0)
-                    return default(T);
+                {
+                    return default;
+                }
 
                 T top = m_List[0];
                 T temp;
@@ -597,13 +576,19 @@ namespace Server.Mobiles
                     ltl = ltr = cltc = false;
 
                     if (m_List.Count > lchild)
-                        ltl = (m_List[parent].CompareTo(m_List[lchild]) > 0);
+                    {
+                        ltl = m_List[parent].CompareTo(m_List[lchild]) > 0;
+                    }
 
                     if (m_List.Count > rchild)
-                        ltr = (m_List[parent].CompareTo(m_List[rchild]) > 0);
+                    {
+                        ltr = m_List[parent].CompareTo(m_List[rchild]) > 0;
+                    }
 
                     if (ltl && ltr)
-                        cltc = (m_List[lchild].CompareTo(m_List[rchild]) > 0);
+                    {
+                        cltc = m_List[lchild].CompareTo(m_List[rchild]) > 0;
+                    }
 
                     if (ltl && !ltr)
                     {
@@ -747,15 +732,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
 
         public void StopGuiding()
@@ -873,7 +856,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public AttendantMaleGuide()
-            : base()
         {
         }
 
@@ -908,15 +890,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -924,7 +904,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public AttendantFemaleGuide()
-            : base()
         {
         }
 
@@ -965,15 +944,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

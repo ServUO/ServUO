@@ -54,8 +54,10 @@ namespace Server.Items
             {
                 if (weapon.WeaponMinRange == 0 || !from.InRange(target, weapon.WeaponMinRange))
                 {
-                    if (from is PlayerMobile)
-                        ((PlayerMobile)from).NinjaWepCooldown = true;
+                    if (from is PlayerMobile mobile)
+                    {
+                        mobile.NinjaWepCooldown = true;
+                    }
 
                     from.Direction = from.GetDirectionTo(target);
 
@@ -70,8 +72,10 @@ namespace Server.Items
                         Timer.DelayCall(TimeSpan.FromSeconds(1.0), OnHit, new object[] { from, target, weapon });
                     }
 
-                    if (from is PlayerMobile)
-                        Timer.DelayCall(TimeSpan.FromSeconds(2.5), ResetUsing, (PlayerMobile)from);
+                    if (from is PlayerMobile pm)
+                    {
+                        Timer.DelayCall(TimeSpan.FromSeconds(2.5), ResetUsing, pm);
+                    }
                 }
                 else
                 {
@@ -89,7 +93,7 @@ namespace Server.Items
         {
             if (weapon.UsesRemaining > 0)
             {
-                INinjaAmmo ammo = Activator.CreateInstance(weapon.AmmoType, new object[] { weapon.UsesRemaining }) as INinjaAmmo;
+                INinjaAmmo ammo = Activator.CreateInstance(weapon.AmmoType, weapon.UsesRemaining) as INinjaAmmo;
 
                 ammo.Poison = weapon.Poison;
                 ammo.PoisonCharges = weapon.PoisonCharges;
@@ -116,16 +120,13 @@ namespace Server.Items
                     }
                     else
                     {
-                        if (weapon.UsesRemaining > 0)
+                        if (weapon.UsesRemaining > 0 && (weapon.Poison == null && ammo.Poison != null || weapon.Poison != null && ammo.Poison != null && weapon.Poison.Level != ammo.Poison.Level))
                         {
-                            if ((weapon.Poison == null && ammo.Poison != null)
-                                || ((weapon.Poison != null && ammo.Poison != null) && weapon.Poison.Level != ammo.Poison.Level))
-                            {
-                                Unload(from, weapon);
-                                need = Math.Min(MaxUses, ammo.UsesRemaining);
-                            }
+                            Unload(from, weapon);
+                            need = Math.Min(MaxUses, ammo.UsesRemaining);
                         }
-                        int poisonneeded = Math.Min((MaxUses - weapon.PoisonCharges), ammo.PoisonCharges);
+
+                        int poisonneeded = Math.Min(MaxUses - weapon.PoisonCharges, ammo.PoisonCharges);
 
                         weapon.UsesRemaining += need;
                         weapon.PoisonCharges += poisonneeded;
@@ -181,10 +182,8 @@ namespace Server.Items
                         {
                             return true;
                         }
-                        else
-                        {
-                            from.SendLocalizedMessage(weapon.NoFreeHandMessage);
-                        }
+
+                        from.SendLocalizedMessage(weapon.NoFreeHandMessage);
                     }
                     else
                     {
@@ -315,9 +314,9 @@ namespace Server.Items
 
             if (WeaponIsValid(weapon, from))
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile mobile)
                 {
-                    Shoot(player, (Mobile)targeted, weapon);
+                    Shoot(player, mobile, weapon);
                 }
                 else if (targeted.GetType() == weapon.AmmoType)
                 {
@@ -369,7 +368,7 @@ namespace Server.Items
             {
                 weapon = wep;
 
-                Enabled = (weapon.UsesRemaining > 0);
+                Enabled = weapon.UsesRemaining > 0;
             }
 
             public override void OnClick()

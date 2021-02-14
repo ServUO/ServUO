@@ -5,6 +5,7 @@ using Server.Multis;
 using Server.Network;
 using Server.Targeting;
 using System;
+using Server.Engines.NewMagincia;
 
 namespace Server.Spells.Seventh
 {
@@ -58,17 +59,20 @@ namespace Server.Spells.Seventh
                 Caster.SendLocalizedMessage(1061632); // You can't do that while carrying the sigil.
                 return false;
             }
-            else if (Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
+
+            if (Engines.CityLoyalty.CityTradeSystem.HasTrade(Caster))
             {
                 Caster.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
                 return false;
             }
-            else if (Caster.Criminal)
+
+            if (Caster.Criminal)
             {
                 Caster.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;
             }
-            else if (SpellHelper.CheckCombat(Caster))
+
+            if (SpellHelper.CheckCombat(Caster))
             {
                 Caster.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return false;
@@ -113,7 +117,7 @@ namespace Server.Spells.Seventh
             else if (!SpellHelper.CheckTravel(Caster, map, loc, TravelCheckType.GateTo))
             {
             }
-            else if (map == Map.Felucca && Caster is PlayerMobile && ((PlayerMobile)Caster).Young)
+            else if (map == Map.Felucca && Caster is PlayerMobile pm && pm.Young)
             {
                 Caster.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
@@ -258,6 +262,7 @@ namespace Server.Spells.Seventh
             }
 
             public override bool ShowFeluccaWarning => true;
+
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
@@ -302,10 +307,8 @@ namespace Server.Spells.Seventh
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is RecallRune)
+                if (o is RecallRune rune)
                 {
-                    RecallRune rune = (RecallRune)o;
-
                     if (rune.Marked)
                     {
                         if (rune.Type == RecallRuneType.Ship)
@@ -322,9 +325,9 @@ namespace Server.Spells.Seventh
                         from.SendLocalizedMessage(501805); // That rune is not yet marked.
                     }
                 }
-                else if (o is Runebook)
+                else if (o is Runebook book)
                 {
-                    RunebookEntry e = ((Runebook)o).Default;
+                    RunebookEntry e = book.Default;
 
                     if (e != null)
                     {
@@ -342,10 +345,8 @@ namespace Server.Spells.Seventh
                         from.SendLocalizedMessage(502354); // Target is not marked.
                     }
                 }
-                else if (o is Engines.NewMagincia.WritOfLease)
+                else if (o is WritOfLease lease)
                 {
-                    Engines.NewMagincia.WritOfLease lease = (Engines.NewMagincia.WritOfLease)o;
-
                     if (lease.RecallLoc != Point3D.Zero && lease.Facet != null && lease.Facet != Map.Internal)
                         m_Owner.Effect(lease.RecallLoc, lease.Facet, false);
                     else

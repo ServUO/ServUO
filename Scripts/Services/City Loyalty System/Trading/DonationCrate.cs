@@ -9,7 +9,7 @@ namespace Server.Engines.CityLoyalty
     public class CityDonationItem : Item
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
+        public CityLoyaltySystem CitySystem { get => CityLoyaltySystem.GetCityInstance(City); set { } }
 
         public City City { get; protected set; }
 
@@ -75,11 +75,9 @@ namespace Server.Engines.CityLoyalty
                     SendMessageTo(from, 1152926); // The City thanks you for your generosity!
                     return !(dropped is Container);
                 }
-                else
-                {
-                    SendMessageTo(from, 1152927); // Your generosity is appreciated but the City does not require this item.
-                    return false;
-                }
+
+                SendMessageTo(from, 1152927); // Your generosity is appreciated but the City does not require this item.
+                return false;
             }
 
             return false;
@@ -101,9 +99,9 @@ namespace Server.Engines.CityLoyalty
                     if (sys != null)
                     {
                         // TODO: If anything adds to treasure, change this
-                        if (item is MaritimeCargo)
+                        if (item is MaritimeCargo cargo)
                         {
-                            AddToTreasury(sys, (MaritimeCargo)item);
+                            AddToTreasury(sys, cargo);
                         }
 
                         item.Delete();
@@ -134,7 +132,7 @@ namespace Server.Engines.CityLoyalty
 
         private class InternalTarget : Target
         {
-            public CityDonationItem Item { get; private set; }
+            public CityDonationItem Item { get; }
 
             public InternalTarget(CityDonationItem item) : base(3, false, TargetFlags.None)
             {
@@ -143,9 +141,8 @@ namespace Server.Engines.CityLoyalty
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is BaseCreature)
+                if (targeted is BaseCreature bc)
                 {
-                    BaseCreature bc = targeted as BaseCreature;
                     Type t = bc.GetType();
 
                     if (bc.Controlled && !bc.Summoned && bc.GetMaster() == from)
@@ -197,7 +194,7 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             City = (City)reader.ReadInt();
             Minister = reader.ReadMobile() as TradeMinister;
@@ -248,7 +245,7 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Table = ItemTable;
 
@@ -299,7 +296,7 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Table = PetTable;
 

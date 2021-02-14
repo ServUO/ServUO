@@ -51,12 +51,14 @@ namespace Server.Spells.SkillMasteries
                 Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
                 return false;
             }
-            else if (TransformationSpellHelper.UnderTransformation(Caster))
+
+            if (TransformationSpellHelper.UnderTransformation(Caster))
             {
                 Caster.SendLocalizedMessage(1063219); // You cannot mimic an animal while in that form.
                 return false;
             }
-            else if (DisguiseTimers.IsDisguised(Caster))
+
+            if (DisguiseTimers.IsDisguised(Caster))
             {
                 Caster.SendLocalizedMessage(1061631); // You can't do that while disguised.
                 return false;

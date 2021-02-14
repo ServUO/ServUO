@@ -52,7 +52,7 @@ namespace Server.Engines.ShameRevamped
 
             foreach (Item item in eable)
             {
-                if (item is AddonComponent && ((AddonComponent)item).Addon is ShameWall && ((AddonComponent)item).Addon.Visible)
+                if (item is AddonComponent component && component.Addon is ShameWall && component.Addon.Visible)
                 {
                     active = true;
                     break;

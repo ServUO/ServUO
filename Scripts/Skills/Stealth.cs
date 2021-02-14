@@ -88,7 +88,7 @@ namespace Server.SkillHandlers
                     m.RevealingAction();
                     BuffInfo.RemoveBuff(m, BuffIcon.HidingAndOrStealth);
                 }
-                else if (m.CheckSkill(SkillName.Stealth, -20.0 + (armorRating * 2), 60.0 + (armorRating * 2)))
+                else if (m.CheckSkill(SkillName.Stealth, -20.0 + armorRating * 2, 60.0 + armorRating * 2))
                 {
                     int steps = (int)(m.Skills[SkillName.Stealth].Value / 5.0);
 

@@ -12,18 +12,15 @@ namespace Server.Mobiles
         Astaroth,
         Faulinei,
         Nosfentor
-    };
+    }
 
     [CorpseName("a shadowlord corpse")]
     public class Shadowlord : BasePeerless
     {
-        //private static readonly List<Shadowlord> m_Instances = new List<Shadowlord>();
-        //public static List<Shadowlord> Instances => m_Instances;
-
         private ShadowlordType m_Type;
         public virtual Type[] ArtifactDrops => _ArtifactTypes;
 
-        private readonly Type[] _ArtifactTypes = new Type[]
+        private readonly Type[] _ArtifactTypes =
         {
             typeof(Abhorrence),         typeof(CaptainJohnesBlade),             typeof(Craven),
             typeof(Equivocation),       typeof(GargishCaptainJohnesBlade),      typeof(GargishEquivocation),
@@ -33,10 +30,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowlordType Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get => m_Type;
             set
             {
                 m_Type = value;
@@ -44,7 +38,7 @@ namespace Server.Mobiles
             }
         }
 
-        public List<DarkWisp> Wisps { get; set; } = new List<DarkWisp>();
+        public List<DarkWisp> Wisps { get; } = new List<DarkWisp>();
 
         [Constructable]
         public Shadowlord()
@@ -96,24 +90,16 @@ namespace Server.Mobiles
             SetSpecialAbility(SpecialAbility.LifeDrain);
         }
 
+        public Shadowlord(Serial serial)
+            : base(serial)
+        {
+        }
+
         public override void GetProperties(ObjectPropertyList list)
         {
             base.GetProperties(list);
 
             list.Add("#{0}", 1154453 + (int)m_Type); // Shadowlord of ..
-        }
-
-        public Shadowlord(Serial serial)
-            : base(serial)
-        {
-            //m_Instances.Add(this);
-        }
-
-        public override void OnAfterDelete()
-        {
-            //m_Instances.Remove(this);
-
-            base.OnAfterDelete();
         }
 
         public override bool AlwaysMurderer => true;
@@ -176,7 +162,7 @@ namespace Server.Mobiles
 
             foreach (DamageStore ds in rights.Where(s => s.m_HasRight))
             {
-                int luck = ds.m_Mobile is PlayerMobile ? ((PlayerMobile)ds.m_Mobile).RealLuck : ds.m_Mobile.Luck;
+                int luck = ds.m_Mobile is PlayerMobile mobile ? mobile.RealLuck : ds.m_Mobile.Luck;
                 int chance = 75 + (luck / 15);
 
                 if (chance > Utility.Random(5000))
@@ -212,7 +198,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Type = (ShadowlordType)reader.ReadInt();
         }

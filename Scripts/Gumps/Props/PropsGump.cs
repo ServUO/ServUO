@@ -214,15 +214,13 @@ namespace Server.Gumps
                 return o.ToString();
             }
 
-            if (o is char)
+            if (o is char oChar)
             {
-                return string.Format("0x{0:X} '{1}'", (int)(char)o, (char)o);
+                return string.Format("0x{0:X} '{1}'", (int)oChar, oChar);
             }
 
-            if (o is Serial)
+            if (o is Serial s)
             {
-                Serial s = (Serial)o;
-
                 if (s.IsValid)
                 {
                     if (s.IsItem)
@@ -241,30 +239,28 @@ namespace Server.Gumps
                 return string.Format("{0} (0x{0:X})", o);
             }
 
-            if (o is Mobile)
+            if (o is Mobile mobile)
             {
-                return string.Format("(M) 0x{0:X} \"{1}\"", ((Mobile)o).Serial.Value, ((Mobile)o).Name);
+                return string.Format("(M) 0x{0:X} \"{1}\"", mobile.Serial.Value, mobile.Name);
             }
 
-            if (o is Item)
+            if (o is Item item)
             {
-                return string.Format("(I) 0x{0:X} \"{1}\"", ((Item)o).Serial.Value, ((Item)o).Name);
+                return string.Format("(I) 0x{0:X} \"{1}\"", item.Serial.Value, item.Name);
             }
 
-            if (o is Type)
+            if (o is Type type)
             {
-                return ((Type)o).Name;
+                return type.Name;
             }
 
-            if (o is IAccount)
+            if (o is IAccount account)
             {
-                return ((IAccount)o).Username;
+                return account.Username;
             }
 
-            if (o is Color)
+            if (o is Color c)
             {
-                Color c = (Color)o;
-
                 if (c.IsNamedColor)
                 {
                     return c.Name;
@@ -273,14 +269,14 @@ namespace Server.Gumps
                 return string.Format("#{0:X6}", c.ToArgb() & 0x00FFFFFF);
             }
 
-            if (o is TextDefinition)
+            if (o is TextDefinition definition)
             {
-                return ((TextDefinition)o).Format(true);
+                return definition.Format(true);
             }
 
-            if (o is IDynamicEnum)
+            if (o is IDynamicEnum dEnum)
             {
-                return ((IDynamicEnum)o).Value;
+                return dEnum.Value;
             }
 
             return o.ToString();
@@ -497,10 +493,10 @@ namespace Server.Gumps
 
                                 from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Map.GetMapNames(), values));
                             }
-                            else if (IsType(type, _TypeOfSkills) && m_Object is Mobile)
+                            else if (IsType(type, _TypeOfSkills) && m_Object is Mobile mobile)
                             {
-                                from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
-                                from.SendGump(new SkillsGump(from, (Mobile)m_Object));
+                                from.SendGump(new PropertiesGump(from, mobile, m_Stack, m_List, m_Page));
+                                from.SendGump(new SkillsGump(from, mobile));
                             }
                             else if (IsType(type, _TypeofColor))
                             {
@@ -600,15 +596,13 @@ namespace Server.Gumps
                 return o.ToString();
             }
 
-            if (o is char)
+            if (o is char oChar)
             {
-                return string.Format("0x{0:X} '{1}'", (int)(char)o, (char)o);
+                return string.Format("0x{0:X} '{1}'", (int)oChar, oChar);
             }
 
-            if (o is Serial)
+            if (o is Serial s)
             {
-                Serial s = (Serial)o;
-
                 if (s.IsValid)
                 {
                     if (s.IsItem)
@@ -630,30 +624,28 @@ namespace Server.Gumps
                 return string.Format("{0} (0x{0:X})", o);
             }
 
-            if (o is Mobile)
+            if (o is Mobile mobile)
             {
-                return string.Format("(M) 0x{0:X} \"{1}\"", ((Mobile)o).Serial.Value, ((Mobile)o).Name);
+                return string.Format("(M) 0x{0:X} \"{1}\"", mobile.Serial.Value, mobile.Name);
             }
 
-            if (o is Item)
+            if (o is Item item)
             {
-                return string.Format("(I) 0x{0:X} \"{1}\"", ((Item)o).Serial.Value, ((Item)o).Name);
+                return string.Format("(I) 0x{0:X} \"{1}\"", item.Serial.Value, item.Name);
             }
 
-            if (o is Type)
+            if (o is Type type)
             {
-                return ((Type)o).Name;
+                return type.Name;
             }
 
-            if (o is IAccount)
+            if (o is IAccount account)
             {
-                return ((IAccount)o).Username;
+                return account.Username;
             }
 
-            if (o is Color)
+            if (o is Color c)
             {
-                Color c = (Color)o;
-
                 if (c.IsNamedColor)
                 {
                     return c.Name;
@@ -766,10 +758,8 @@ namespace Server.Gumps
 
                 object o = m_List[index];
 
-                if (o is Type)
+                if (o is Type type)
                 {
-                    Type type = (Type)o;
-
                     AddImageTiled(x, y, TypeWidth, EntryHeight, EntryGumpID);
                     AddLabelCropped(x + TextOffsetX, y, TypeWidth - TextOffsetX, EntryHeight, TextHue, type.Name);
                     x += TypeWidth + OffsetSize;
@@ -779,10 +769,8 @@ namespace Server.Gumps
                         AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
                     }
                 }
-                else if (o is PropertyInfo)
+                else if (o is PropertyInfo prop)
                 {
-                    PropertyInfo prop = (PropertyInfo)o;
-
                     AddImageTiled(x, y, NameWidth, EntryHeight, EntryGumpID);
                     AddLabelCropped(x + TextOffsetX, y, NameWidth - TextOffsetX, EntryHeight, TextHue, prop.Name);
                     x += NameWidth + OffsetSize;

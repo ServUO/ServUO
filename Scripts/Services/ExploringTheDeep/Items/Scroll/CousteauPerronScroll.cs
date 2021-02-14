@@ -18,7 +18,7 @@ namespace Server.Items
         {
             if (!from.HasGump(typeof(CousteauPerronInformationGump)))
             {
-                from.SendGump(new CousteauPerronInformationGump(from));
+                from.SendGump(new CousteauPerronInformationGump());
             }
         }
 
@@ -36,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -49,10 +49,10 @@ namespace Server.Items
 
         private static void CousteauPerronInformationGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new CousteauPerronInformationGump(e.Mobile));
+            e.Mobile.SendGump(new CousteauPerronInformationGump());
         }
 
-        public CousteauPerronInformationGump(Mobile owner) : base(50, 50)
+        public CousteauPerronInformationGump() : base(50, 50)
         {
             Closable = true;
             Disposable = true;
@@ -67,8 +67,6 @@ namespace Server.Items
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

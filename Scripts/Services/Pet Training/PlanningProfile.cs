@@ -7,8 +7,8 @@ namespace Server.Mobiles
 {
     public class PlanningProfile
     {
-        public BaseCreature Creature { get; private set; }
-        public List<PlanningEntry> Entries { get; private set; }
+        public BaseCreature Creature { get; }
+        public List<PlanningEntry> Entries { get; }
 
         public PlanningProfile(BaseCreature bc)
         {
@@ -30,9 +30,9 @@ namespace Server.Mobiles
 
             Entries.Add(new PlanningEntry(tp, value, cost));
 
-            if (tp is MagicalAbility && (MagicalAbility)tp <= MagicalAbility.WrestlingMastery)
+            if (tp is MagicalAbility ability && ability <= MagicalAbility.WrestlingMastery)
             {
-                TrainingPoint trainingPoint = PetTrainingHelper.GetTrainingPoint(tp);
+                TrainingPoint trainingPoint = PetTrainingHelper.GetTrainingPoint(ability);
 
                 foreach (PlanningEntry en in Entries)
                 {
@@ -40,9 +40,7 @@ namespace Server.Mobiles
                     {
                         foreach (TrainingPointRequirement req in trainingPoint.Requirements.Where(r => r != null))
                         {
-                            if ((req.Requirement is WeaponAbility && en.TrainPoint is WeaponAbility) ||
-                               (req.Requirement is SpecialAbility && en.TrainPoint is SpecialAbility) ||
-                                (req.Requirement is AreaEffect && en.TrainPoint is AreaEffect))
+                            if (req.Requirement is WeaponAbility && en.TrainPoint is WeaponAbility || req.Requirement is SpecialAbility && en.TrainPoint is SpecialAbility || req.Requirement is AreaEffect && en.TrainPoint is AreaEffect)
                             {
                                 en.Value = 0;
                                 en.Cost = 0;
@@ -101,52 +99,52 @@ namespace Server.Mobiles
                 PlanningEntry entry = Entries[i];
                 object o = entry.TrainPoint;
 
-                if (o is MagicalAbility)
+                if (o is MagicalAbility ability)
                 {
                     writer.Write(1);
-                    writer.Write((int)(MagicalAbility)o);
+                    writer.Write((int)ability);
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }
-                else if (o is SpecialAbility)
+                else if (o is SpecialAbility specialAbility)
                 {
                     writer.Write(2);
-                    writer.Write(Array.IndexOf(SpecialAbility.Abilities, (SpecialAbility)o));
+                    writer.Write(Array.IndexOf(SpecialAbility.Abilities, specialAbility));
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }
-                else if (o is AreaEffect)
+                else if (o is AreaEffect effect)
                 {
                     writer.Write(3);
-                    writer.Write(Array.IndexOf(AreaEffect.Effects, (AreaEffect)o));
+                    writer.Write(Array.IndexOf(AreaEffect.Effects, effect));
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }
-                else if (o is WeaponAbility)
+                else if (o is WeaponAbility weaponAbility)
                 {
                     writer.Write(4);
-                    writer.Write(Array.IndexOf(WeaponAbility.Abilities, (WeaponAbility)o));
+                    writer.Write(Array.IndexOf(WeaponAbility.Abilities, weaponAbility));
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }
-                else if (o is PetStat)
+                else if (o is PetStat stat)
                 {
                     writer.Write(5);
-                    writer.Write((int)(PetStat)o);
+                    writer.Write((int)stat);
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }
-                else if (o is ResistanceType)
+                else if (o is ResistanceType resistType)
                 {
                     writer.Write(6);
-                    writer.Write((int)(ResistanceType)o);
+                    writer.Write((int)resistType);
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }
-                else if (o is SkillName)
+                else if (o is SkillName skillName)
                 {
                     writer.Write(7);
-                    writer.Write((int)(SkillName)o);
+                    writer.Write((int)skillName);
                     writer.Write(entry.Value);
                     writer.Write(entry.Cost);
                 }

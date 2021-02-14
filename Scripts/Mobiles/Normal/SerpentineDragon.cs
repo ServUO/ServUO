@@ -60,7 +60,7 @@ namespace Server.Mobiles
         public override int Meat => 19;
         public override int Scales => 6;
 
-        public override ScaleType ScaleType => (Utility.RandomBool() ? ScaleType.Black : ScaleType.White);
+        public override ScaleType ScaleType => Utility.RandomBool() ? ScaleType.Black : ScaleType.White;
         public override int TreasureMapLevel => 4;
         public override bool CanAngerOnTame => true;
 
@@ -105,7 +105,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

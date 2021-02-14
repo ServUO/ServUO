@@ -34,7 +34,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string EngravedText
         {
-            get { return m_EngravedText; }
+            get => m_EngravedText;
             set
             {
                 m_EngravedText = value;
@@ -47,9 +47,9 @@ namespace Server.Items
         private bool m_ShowUsesRemaining;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
+        public int UsesRemaining { get => m_UsesRemaining; set { m_UsesRemaining = value; InvalidateProperties(); } }
 
-        public bool ShowUsesRemaining { get { return m_ShowUsesRemaining; } set { m_ShowUsesRemaining = value; InvalidateProperties(); } }
+        public bool ShowUsesRemaining { get => m_ShowUsesRemaining; set { m_ShowUsesRemaining = value; InvalidateProperties(); } }
 
         public void ScaleUses()
         {
@@ -78,20 +78,20 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsVvVItem
         {
-            get { return _VvVItem; }
+            get => _VvVItem;
             set { _VvVItem = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner
         {
-            get { return _Owner; }
+            get => _Owner;
             set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
         }
 
         public virtual string OwnerName
         {
-            get { return _OwnerName; }
+            get => _OwnerName;
             set { _OwnerName = value; InvalidateProperties(); }
         }
 
@@ -212,7 +212,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BlessedBy
         {
-            get { return m_BlessedBy; }
+            get => m_BlessedBy;
             set
             {
                 m_BlessedBy = value;
@@ -252,25 +252,25 @@ namespace Server.Items
 
         #region Getters & Setters
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes Attributes { get { return m_AosAttributes; } set { } }
+        public AosAttributes Attributes { get => m_AosAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosWeaponAttributes WeaponAttributes { get { return m_AosWeaponAttributes; } set { } }
+        public AosWeaponAttributes WeaponAttributes { get => m_AosWeaponAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SkillBonuses { get { return m_AosSkillBonuses; } set { } }
+        public AosSkillBonuses SkillBonuses { get => m_AosSkillBonuses; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosElementAttributes AosElementDamages { get { return m_AosElementDamages; } set { } }
+        public AosElementAttributes AosElementDamages { get => m_AosElementDamages; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SAAbsorptionAttributes AbsorptionAttributes { get { return m_SAAbsorptionAttributes; } set { } }
+        public SAAbsorptionAttributes AbsorptionAttributes { get => m_SAAbsorptionAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
+        public NegativeAttributes NegativeAttributes { get => m_NegativeAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ExtendedWeaponAttributes ExtendedWeaponAttributes { get { return m_ExtendedWeaponAttributes; } set { } }
+        public ExtendedWeaponAttributes ExtendedWeaponAttributes { get => m_ExtendedWeaponAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ConsecratedWeaponContext ConsecratedContext { get; set; }
@@ -278,7 +278,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Identified
         {
-            get { return m_Identified; }
+            get => m_Identified;
             set
             {
                 m_Identified = value;
@@ -289,7 +289,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HitPoints
         {
-            get { return m_Hits; }
+            get => m_Hits;
             set
             {
                 if (m_Hits == value)
@@ -311,7 +311,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxHitPoints
         {
-            get { return m_MaxHits; }
+            get => m_MaxHits;
             set
             {
                 m_MaxHits = value;
@@ -323,7 +323,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int PoisonCharges
         {
-            get { return m_PoisonCharges; }
+            get => m_PoisonCharges;
             set
             {
                 m_PoisonCharges = value;
@@ -334,7 +334,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Poison Poison
         {
-            get { return m_Poison; }
+            get => m_Poison;
             set
             {
                 m_Poison = value;
@@ -345,7 +345,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get { return m_Quality; }
+            get => m_Quality;
             set
             {
                 UnscaleDurability();
@@ -360,7 +360,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get { return m_Crafter; }
+            get => m_Crafter;
             set
             {
                 m_Crafter = value;
@@ -371,7 +371,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SlayerName Slayer
         {
-            get { return m_Slayer; }
+            get => m_Slayer;
             set
             {
                 m_Slayer = value;
@@ -382,7 +382,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SlayerName Slayer2
         {
-            get { return m_Slayer2; }
+            get => m_Slayer2;
             set
             {
                 m_Slayer2 = value;
@@ -393,7 +393,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public TalismanSlayerName Slayer3
         {
-            get { return m_Slayer3; }
+            get => m_Slayer3;
             set
             {
                 m_Slayer3 = value;
@@ -404,7 +404,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
-            get { return m_Resource; }
+            get => m_Resource;
             set
             {
                 UnscaleDurability();
@@ -416,12 +416,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed { get { return m_PlayerConstructed; } set { m_PlayerConstructed = value; } }
+        public bool PlayerConstructed { get => m_PlayerConstructed; set => m_PlayerConstructed = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxRange
         {
-            get { return (m_MaxRange == -1 ? AosMaxRange : m_MaxRange); }
+            get => m_MaxRange == -1 ? AosMaxRange : m_MaxRange;
             set
             {
                 m_MaxRange = value;
@@ -430,15 +430,15 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public WeaponAnimation Animation { get { return (m_Animation == (WeaponAnimation)(-1) ? AosAnimation : m_Animation); } set { m_Animation = value; } }
+        public WeaponAnimation Animation { get => m_Animation == (WeaponAnimation)(-1) ? AosAnimation : m_Animation; set => m_Animation = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public WeaponType Type { get { return (m_Type == (WeaponType)(-1) ? AosType : m_Type); } set { m_Type = value; } }
+        public WeaponType Type { get => m_Type == (WeaponType)(-1) ? AosType : m_Type; set => m_Type = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SkillName Skill
         {
-            get { return (m_Skill == (SkillName)(-1) ? AosSkill : m_Skill); }
+            get => m_Skill == (SkillName)(-1) ? AosSkill : m_Skill;
             set
             {
                 m_Skill = value;
@@ -447,15 +447,15 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int HitSound { get { return (m_HitSound == -1 ? AosHitSound : m_HitSound); } set { m_HitSound = value; } }
+        public int HitSound { get => m_HitSound == -1 ? AosHitSound : m_HitSound; set => m_HitSound = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MissSound { get { return (m_MissSound == -1 ? AosMissSound : m_MissSound); } set { m_MissSound = value; } }
+        public int MissSound { get => m_MissSound == -1 ? AosMissSound : m_MissSound; set => m_MissSound = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int MinimumDamage
         {
-            get { return (m_MinDamage == -1 ? MinDamage : m_MinDamage); }
+            get => m_MinDamage == -1 ? MinDamage : m_MinDamage;
             set
             {
                 m_MinDamage = value;
@@ -466,7 +466,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaximumDamage
         {
-            get { return (m_MaxDamage == -1 ? MaxDamage : m_MaxDamage); }
+            get => m_MaxDamage == -1 ? MaxDamage : m_MaxDamage;
             set
             {
                 m_MaxDamage = value;
@@ -513,10 +513,10 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int DexRequirement { get { return (m_DexReq == -1 ? DexterityReq : m_DexReq); } set { m_DexReq = value; } }
+        public int DexRequirement { get => m_DexReq == -1 ? DexterityReq : m_DexReq; set => m_DexReq = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int IntRequirement { get { return (m_IntReq == -1 ? IntelligenceReq : m_IntReq); } set { m_IntReq = value; } }
+        public int IntRequirement { get => m_IntReq == -1 ? IntelligenceReq : m_IntReq; set => m_IntReq = value; }
 
         public Mobile FocusWeilder { get; set; }
         public Mobile EnchantedWeilder { get; set; }
@@ -526,8 +526,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimesImbued
         {
-            get { return m_TimesImbued; }
-            set { m_TimesImbued = value; }
+            get => m_TimesImbued;
+            set => m_TimesImbued = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -552,11 +552,11 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DImodded
         {
-            get { return m_DImodded; }
-            set { m_DImodded = value; }
+            get => m_DImodded;
+            set => m_DImodded = value;
         }
 
-        public int[] BaseResists => new int[] { 0, 0, 0, 0, 0 };
+        public int[] BaseResists => new[] { 0, 0, 0, 0, 0 };
 
         public virtual void OnAfterImbued(Mobile m, int mod, int value)
         {
@@ -565,7 +565,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SearingWeapon
         {
-            get { return HasSocket<SearingWeapon>(); }
+            get => HasSocket<SearingWeapon>();
             set
             {
                 if (!value)
@@ -582,21 +582,21 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemPower ItemPower
         {
-            get { return m_ItemPower; }
+            get => m_ItemPower;
             set { m_ItemPower = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ReforgedPrefix ReforgedPrefix
         {
-            get { return m_ReforgedPrefix; }
+            get => m_ReforgedPrefix;
             set { m_ReforgedPrefix = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ReforgedSuffix ReforgedSuffix
         {
-            get { return m_ReforgedSuffix; }
+            get => m_ReforgedSuffix;
             set { m_ReforgedSuffix = value; InvalidateProperties(); }
         }
         #endregion
@@ -762,7 +762,8 @@ namespace Server.Items
                 m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500214); // You already have something in both hands.
                 return true;
             }
-            else if (Layer == Layer.OneHanded && layer == Layer.TwoHanded && !(item is BaseShield) && !(item is BaseEquipableLight))
+
+            if (Layer == Layer.OneHanded && layer == Layer.TwoHanded && !(item is BaseShield) && !(item is BaseEquipableLight))
             {
                 m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500215); // // You can only wield one weapon at a time.
                 return true;
@@ -803,36 +804,39 @@ namespace Server.Items
             {
                 return false;
             }
-            else if (from.Dex < DexRequirement)
+
+            if (from.Dex < DexRequirement)
             {
                 from.SendLocalizedMessage(1071936); // You cannot equip that.
                 return false;
             }
-            else if (from.Str < AOS.Scale(StrRequirement, 100 - GetLowerStatReq()))
+
+            if (from.Str < AOS.Scale(StrRequirement, 100 - GetLowerStatReq()))
             {
                 from.SendLocalizedMessage(500213); // You are not strong enough to equip that.
                 return false;
             }
-            else if (from.Int < IntRequirement)
+
+            if (from.Int < IntRequirement)
             {
                 from.SendLocalizedMessage(1071936); // You cannot equip that.
                 return false;
             }
-            else if (!from.CanBeginAction(typeof(BaseWeapon)))
+
+            if (!from.CanBeginAction(typeof(BaseWeapon)))
             {
                 from.SendLocalizedMessage(3000201); // You must wait to perform another action.
                 return false;
             }
-            else if (BlessedBy != null && BlessedBy != from)
+
+            if (BlessedBy != null && BlessedBy != from)
             {
                 from.SendLocalizedMessage(1075277); // That item is blessed by another player.
 
                 return false;
             }
-            else
-            {
-                return base.CanEquip(from);
-            }
+
+            return base.CanEquip(from);
         }
 
         public override bool OnEquip(Mobile from)
@@ -841,7 +845,7 @@ namespace Server.Items
             int dexBonus = m_AosAttributes.BonusDex;
             int intBonus = m_AosAttributes.BonusInt;
 
-            if ((strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            if (strBonus != 0 || dexBonus != 0 || intBonus != 0)
             {
                 Mobile m = from;
 
@@ -876,7 +880,7 @@ namespace Server.Items
                 from.AddSkillMod(m_MageMod);
             }
 
-            if ((m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30) || Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > 0)
+            if (m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30 || Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > 0)
             {
                 AddMysticMod(from);
             }
@@ -890,10 +894,8 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.AddTo(from);
 
                 if (IsSetItem)
@@ -924,9 +926,8 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
                 BaseWeapon weapon = m.Weapon as BaseWeapon;
 
                 string modName = Serial.ToString();
@@ -948,7 +949,7 @@ namespace Server.Items
 
                 m_AosSkillBonuses.Remove();
 
-                ImmolatingWeaponSpell.StopImmolating(this, (Mobile)parent);
+                ImmolatingWeaponSpell.StopImmolating(this, m);
                 Spells.Mysticism.EnchantSpell.OnWeaponRemoved(this, m);
 
                 if (FocusWeilder != null)
@@ -1089,8 +1090,10 @@ namespace Server.Items
 
             if (defender == null)
             {
-                if (damageable is IDamageableItem)
-                    return ((IDamageableItem)damageable).CheckHit(attacker);
+                if (damageable is IDamageableItem item)
+                {
+                    return item.CheckHit(attacker);
+                }
 
                 return true;
             }
@@ -1147,14 +1150,14 @@ namespace Server.Items
 
             chance *= 1.0 + ((double)bonus / 100);
 
-            if (atkWeapon is BaseThrown)
+            if (atkWeapon is BaseThrown thrown)
             {
                 //Distance malas
                 if (attacker.InRange(defender, 1))  //Close Quarters
                 {
                     chance -= (.12 - Math.Min(12, (attacker.Skills[SkillName.Throwing].Value + attacker.RawDex) / 20) / 10);
                 }
-                else if (attacker.GetDistanceToSqrt(defender) < ((BaseThrown)atkWeapon).MinThrowRange)  //too close
+                else if (attacker.GetDistanceToSqrt(defender) < thrown.MinThrowRange)  //too close
                 {
                     chance -= .12;
                 }
@@ -1235,7 +1238,7 @@ namespace Server.Items
 
             WeaponAbility a = WeaponAbility.GetCurrentAbility(attacker);
 
-            if (a != null && (!a.OnBeforeSwing(attacker, defender)))
+            if (a != null && !a.OnBeforeSwing(attacker, defender))
             {
                 WeaponAbility.ClearCurrentAbility(attacker);
             }
@@ -1261,7 +1264,7 @@ namespace Server.Items
             {
                 Spell sp = attacker.Spell as Spell;
 
-                canSwing = (sp == null || !sp.IsCasting || !sp.BlocksMovement);
+                canSwing = sp == null || !sp.IsCasting || !sp.BlocksMovement;
             }
 
             if (canSwing && attacker.HarmfulCheck(damageable))
@@ -1327,10 +1330,8 @@ namespace Server.Items
             {
                 return MissSound;
             }
-            else
-            {
-                return -1;
-            }
+
+            return -1;
         }
 
         public virtual int GetMissDefendSound(Mobile attacker, Mobile defender)
@@ -1393,7 +1394,8 @@ namespace Server.Items
 
                 return success;
             }
-            else if (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged))
+
+            if (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged))
             {
                 BaseWeapon weapon = defender.Weapon as BaseWeapon;
 
@@ -1402,7 +1404,7 @@ namespace Server.Items
                     return false;
                 }
 
-                double divisor = (weapon.Layer == Layer.OneHanded && defender.Player) ? 48000.0 : 41140.0;
+                double divisor = weapon.Layer == Layer.OneHanded && defender.Player ? 48000.0 : 41140.0;
 
                 double chance = (parry * bushido) / divisor;
 
@@ -1419,7 +1421,7 @@ namespace Server.Items
                     chance += 0.05;
                 }
 
-                // Evasion grants a variable bonus post ML. 50% prior.
+                // Evasion grants a variable bonus post ML.
                 if (Evasion.IsEvading(defender))
                 {
                     chance *= Evasion.GetParryScalar(defender);
@@ -1439,7 +1441,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    success = (aosChance > Utility.RandomDouble());
+                    success = aosChance > Utility.RandomDouble();
                     // Only skillcheck if wielding a shield & there's no effect from Bushido
                 }
 
@@ -1461,9 +1463,7 @@ namespace Server.Items
 
             bool blocked = false;
 
-            if (defender.Player || defender.Body.IsHuman || (defender is BaseCreature &&
-                                                            ((BaseCreature)defender).Controlled &&
-                                                            defender.Skills[SkillName.Wrestling].Base >= 100))
+            if (defender.Player || defender.Body.IsHuman || defender is BaseCreature bc && bc.Controlled && bc.Skills[SkillName.Wrestling].Base >= 100)
             {
                 blocked = CheckParry(defender);
                 BaseWeapon weapon = defender.Weapon as BaseWeapon;
@@ -1511,7 +1511,6 @@ namespace Server.Items
                     {
                         shield.OnHit(this, damage);
 
-                        #region Stygian Abyss
                         if (shield.ArmorAttributes.ReactiveParalyze > 0 && 30 > Utility.Random(100))
                         {
                             int secs = (int)Math.Max(1, Math.Max(8, defender.Skills[SkillName.EvalInt].Value / 10) - attacker.Skills[SkillName.MagicResist].Value / 10);
@@ -1520,10 +1519,8 @@ namespace Server.Items
                             attacker.PlaySound(0x204);
                             attacker.FixedEffect(0x376A, 6, 1);
                         }
-                        #endregion
                     }
 
-                    #region Stygian Abyss
                     else if (weapon != null && weapon.Layer == Layer.TwoHanded && weapon.WeaponAttributes.ReactiveParalyze > 0 && 30 > Utility.Random(100))
                     {
                         int secs = (int)Math.Max(1, Math.Max(8, defender.Skills[SkillName.EvalInt].Value / 10) - attacker.Skills[SkillName.MagicResist].Value / 10);
@@ -1532,10 +1529,8 @@ namespace Server.Items
                         attacker.PlaySound(0x204);
                         attacker.FixedEffect(0x376A, 6, 1);
                     }
-                    #endregion
 
-                    //Skill Masteries
-                    SkillMasterySpell.OnParried(attacker, defender);
+                    SkillMasterySpell.OnParried(attacker, defender); // Skill Masteries
                 }
             }
 
@@ -1547,8 +1542,10 @@ namespace Server.Items
                 {
                     toHit.OnHit(this, damage); // call OnHit to lose durability
 
-                    if (toHit is Item && !((Item)toHit).Deleted && (attacker is VeriteElemental || attacker is ValoriteElemental))
-                        VeriteElemental.OnHit(defender, (Item)toHit, damage);
+                    if (toHit is Item hit && !hit.Deleted && (attacker is VeriteElemental || attacker is ValoriteElemental))
+                    {
+                        VeriteElemental.OnHit(defender, hit, damage);
+                    }
                 }
             }
 
@@ -1565,7 +1562,7 @@ namespace Server.Items
             return items[Utility.Random(items.Length)];
         }
 
-        private readonly List<Layer> _DamageLayers = new List<Layer>()
+        private readonly List<Layer> _DamageLayers = new List<Layer>
         {
             Layer.FirstValid,
             Layer.OneHanded,
@@ -1587,7 +1584,7 @@ namespace Server.Items
             Layer.Cloak,
             Layer.OuterTorso,
             Layer.OuterLegs,
-            Layer.InnerLegs,
+            Layer.InnerLegs
         };
 
         public virtual int AbsorbDamage(Mobile attacker, Mobile defender, int damage)
@@ -1604,7 +1601,7 @@ namespace Server.Items
 
             BaseCreature bc = attacker as BaseCreature;
 
-            if (bc == null || bc.PackInstinct == PackInstinct.None || (!bc.Controlled && !bc.Summoned))
+            if (bc == null || bc.PackInstinct == PackInstinct.None || !bc.Controlled && !bc.Summoned)
             {
                 return 0;
             }
@@ -1627,11 +1624,9 @@ namespace Server.Items
 
             foreach (Mobile m in eable)
             {
-                if (m != attacker && m is BaseCreature)
+                if (m != attacker && m is BaseCreature tc)
                 {
-                    BaseCreature tc = (BaseCreature)m;
-
-                    if ((tc.PackInstinct & bc.PackInstinct) == 0 || (!tc.Controlled && !tc.Summoned))
+                    if ((tc.PackInstinct & bc.PackInstinct) == 0 || !tc.Controlled && !tc.Summoned)
                     {
                         continue;
                     }
@@ -1656,15 +1651,18 @@ namespace Server.Items
             {
                 return 100;
             }
-            else if (inPack >= 4)
+
+            if (inPack >= 4)
             {
                 return 75;
             }
-            else if (inPack >= 3)
+
+            if (inPack >= 3)
             {
                 return 50;
             }
-            else if (inPack >= 2)
+
+            if (inPack >= 2)
             {
                 return 25;
             }
@@ -1677,7 +1675,7 @@ namespace Server.Items
 
         public bool InDoubleStrike
         {
-            get { return m_InDoubleStrike; }
+            get => m_InDoubleStrike;
             set
             {
                 m_InDoubleStrike = value;
@@ -1691,7 +1689,7 @@ namespace Server.Items
 
         public bool ProcessingMultipleHits
         {
-            get { return m_ProcessingMultipleHits; }
+            get => m_ProcessingMultipleHits;
             set
             {
                 m_ProcessingMultipleHits = value;
@@ -1806,7 +1804,7 @@ namespace Server.Items
             double chance = NegativeAttributes.Antique > 0 ? 5 : 0;
             bool acidicTarget = MaxRange <= 1 && m_AosAttributes.SpellChanneling == 0 && !(this is Fists) && (defender is Slime || defender is ToxicElemental || defender is CorrosiveSlime);
 
-            if (acidicTarget || (defender != null && splintering) || Utility.Random(40) <= chance)
+            if (acidicTarget || defender != null && splintering || Utility.Random(40) <= chance)
             {
                 if (MaxRange <= 1 && acidicTarget)
                 {
@@ -1840,8 +1838,10 @@ namespace Server.Items
                         {
                             MaxHitPoints--;
 
-                            if (Parent is Mobile)
-                                ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            if (Parent is Mobile mobile)
+                            {
+                                mobile.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            }
 
                             if (m_MaxHits <= 0)
                                 Delete();
@@ -1852,7 +1852,7 @@ namespace Server.Items
 
             WeaponAbility weavabil;
             bool bladeweaving = Bladeweave.BladeWeaving(attacker, out weavabil);
-            bool ignoreArmor = (a is ArmorIgnore || (move != null && move.IgnoreArmor(attacker)) || (bladeweaving && weavabil is ArmorIgnore));
+            bool ignoreArmor = a is ArmorIgnore || move != null && move.IgnoreArmor(attacker) || bladeweaving && weavabil is ArmorIgnore;
 
             // object is not a mobile, so we end here
             if (defender == null)
@@ -1989,17 +1989,15 @@ namespace Server.Items
             TransformContext context = TransformationSpellHelper.GetContext(defender);
 
             if ((m_Slayer == SlayerName.Silver || m_Slayer2 == SlayerName.Silver || SetHelper.GetSetSlayer(attacker) == SlayerName.Silver)
-                && ((context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell))
-                || (defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E))))
+                && (context != null && context.Spell is NecromancerSpell && context.Type != typeof(HorrificBeastSpell)
+                || defender is BaseCreature && (defender.Body == 747 || defender.Body == 748 || defender.Body == 749 || defender.Hue == 0x847E)))
             {
                 // Every necromancer transformation other than horrific beast takes an additional 25% damage
                 percentageBonus += 25;
             }
 
-            if (attacker is PlayerMobile && !(defender is PlayerMobile))
+            if (attacker is PlayerMobile pmAttacker && !(defender is PlayerMobile))
             {
-                PlayerMobile pmAttacker = (PlayerMobile)attacker;
-
                 if (pmAttacker.HonorActive && pmAttacker.InRange(defender, 1))
                 {
                     percentageBonus += 25;
@@ -2068,7 +2066,7 @@ namespace Server.Items
 
             if (damage == 0) // parried
             {
-                if ((a != null && a.Validate(attacker)) || (move != null && move.Validate(attacker)))
+                if (a != null && a.Validate(attacker) || move != null && move.Validate(attacker))
                 {
                     if (a != null && a.CheckMana(attacker, true))
                     {
@@ -2109,7 +2107,7 @@ namespace Server.Items
             {
                 int d = SearingWeaponContext.Damage;
 
-                if ((ranged && 10 > Utility.Random(100)) || 20 > Utility.Random(100))
+                if (ranged && 10 > Utility.Random(100) || 20 > Utility.Random(100))
                 {
                     AOS.Damage(defender, attacker, d, 0, 100, 0, 0, 0);
                     AOS.Damage(attacker, null, 4, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
@@ -2202,7 +2200,7 @@ namespace Server.Items
                 attacker.Mana = Math.Min(attacker.ManaMax, attacker.Mana + mana);
             }
 
-            double propertyBonus = (move == null) ? 1.0 : move.GetPropertyBonus(attacker);
+            double propertyBonus = move == null ? 1.0 : move.GetPropertyBonus(attacker);
 
             int lifeLeech = 0;
             int stamLeech = 0;
@@ -2234,9 +2232,9 @@ namespace Server.Items
             {
                 int toHeal = Utility.RandomMinMax(0, (int)(AOS.Scale(damageGiven, lifeLeech) * 0.3));
 
-                if (defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura)
+                if (defender is BaseCreature creature && creature.TaintedLifeAura)
                 {
-                    AOS.Damage(attacker, defender, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
+                    AOS.Damage(attacker, creature, toHeal, false, 0, 0, 0, 0, 0, 0, 100, false, false, false);
                     attacker.SendLocalizedMessage(1116778); //The tainted life force energy damages you as your body tries to absorb it.
                 }
                 else
@@ -2248,7 +2246,7 @@ namespace Server.Items
                 Effects.SendPacket(defender.Location, defender.Map, new ParticleEffect(EffectType.FixedFrom, defender.Serial, Serial.Zero, 0x3728, defender.Location, defender.Location, 1, 12, false, false, 1963, 0, 0, 9042, 1, defender.Serial, 16, 0));
             }
 
-            if (toHealCursedWeaponSpell != 0 && !(defender is BaseCreature && ((BaseCreature)defender).TaintedLifeAura))
+            if (toHealCursedWeaponSpell != 0 && !(defender is BaseCreature bcDefender && bcDefender.TaintedLifeAura))
             {
                 attacker.Hits += toHealCursedWeaponSpell;
             }
@@ -2407,20 +2405,20 @@ namespace Server.Items
                         hldGlasses = attrs.HitLowerDefend;
                 }
 
-                if ((hldWep > 0 && hldWep > Utility.Random(100)) || (hldGlasses > 0 && hldGlasses > Utility.Random(100)))
+                if (hldWep > 0 && hldWep > Utility.Random(100) || hldGlasses > 0 && hldGlasses > Utility.Random(100))
                 {
                     DoLowerDefense(attacker, defender);
                 }
             }
 
-            if (attacker is BaseCreature)
+            if (attacker is BaseCreature aBc)
             {
-                ((BaseCreature)attacker).OnGaveMeleeAttack(defender);
+                aBc.OnGaveMeleeAttack(defender);
             }
 
-            if (defender is BaseCreature)
+            if (defender is BaseCreature dBc)
             {
-                ((BaseCreature)defender).OnGotMeleeAttack(attacker);
+                dBc.OnGotMeleeAttack(attacker);
             }
 
             if (a != null)
@@ -2435,9 +2433,9 @@ namespace Server.Items
                 move.OnHit(attacker, defender, damage);
             }
 
-            if (defender is IHonorTarget && ((IHonorTarget)defender).ReceivedHonorContext != null)
+            if (defender is IHonorTarget target && target.ReceivedHonorContext != null)
             {
-                ((IHonorTarget)defender).ReceivedHonorContext.OnTargetHit(attacker);
+                target.ReceivedHonorContext.OnTargetHit(attacker);
             }
 
             if (!ranged)
@@ -2605,9 +2603,9 @@ namespace Server.Items
         {
             bool dispellable = false;
 
-            if (defender is BaseCreature)
+            if (defender is BaseCreature creature)
             {
-                dispellable = ((BaseCreature)defender).Summoned && !((BaseCreature)defender).IsAnimatedDead;
+                dispellable = creature.Summoned && !creature.IsAnimatedDead;
             }
 
             if (!dispellable)
@@ -2671,9 +2669,9 @@ namespace Server.Items
                     attacker.SendLocalizedMessage(1072794); // Your arrow hits its mark with velocity!
                 }
 
-                if (damageable is Mobile && ((Mobile)damageable).Player)
+                if (damageable is Mobile mobile && mobile.Player)
                 {
-                    ((Mobile)damageable).SendLocalizedMessage(1072795); // You have been hit by an arrow with velocity!
+                    mobile.SendLocalizedMessage(1072795); // You have been hit by an arrow with velocity!
                 }
             }
 
@@ -2816,9 +2814,9 @@ namespace Server.Items
                 SlayerEntry defSlayer2 = SlayerGroup.GetEntryByName(defISlayer.Slayer2);
                 SlayerEntry defSetSlayer = SlayerGroup.GetEntryByName(SetHelper.GetSetSlayer(defender));
 
-                if (defISlayer is Item && defSlayer == null && defSlayer2 == null)
+                if (defISlayer is Item item && defSlayer == null && defSlayer2 == null)
                 {
-                    defSlayer = SlayerGroup.GetEntryByName(SlayerSocket.GetSlayer((Item)defISlayer));
+                    defSlayer = SlayerGroup.GetEntryByName(SlayerSocket.GetSlayer(item));
                 }
 
                 if (defSlayer != null && defSlayer.Group.OppositionSuperSlays(attacker) ||
@@ -2840,7 +2838,8 @@ namespace Server.Items
             {
                 return CheckSlayerResult.Slayer;
             }
-            else if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
+
+            if (Slayer3 != TalismanSlayerName.None && TalismanSlayer.Slays(Slayer3, defender))
             {
                 return CheckSlayerResult.Slayer;
             }
@@ -2848,7 +2847,7 @@ namespace Server.Items
             return CheckSlayerResult.None;
         }
 
-        private readonly List<SlayerName> _SuperSlayers = new List<SlayerName>()
+        private readonly List<SlayerName> _SuperSlayers = new List<SlayerName>
         {
             SlayerName.Repond, SlayerName.Silver, SlayerName.Fey,
             SlayerName.ElementalBan, SlayerName.Exorcism, SlayerName.ArachnidDoom,
@@ -2914,7 +2913,7 @@ namespace Server.Items
         #region Elemental Damage
         public static int[] GetElementDamages(Mobile m)
         {
-            int[] o = new[] { 100, 0, 0, 0, 0, 0, 0 };
+            int[] o = { 100, 0, 0, 0, 0, 0, 0 };
 
             BaseWeapon w = m.Weapon as BaseWeapon ?? Fists;
 
@@ -2929,10 +2928,8 @@ namespace Server.Items
         public virtual void GetDamageTypes(
             Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)
         {
-            if (wielder is BaseCreature)
+            if (wielder is BaseCreature bc)
             {
-                BaseCreature bc = (BaseCreature)wielder;
-
                 phys = bc.PhysicalDamage;
                 fire = bc.FireDamage;
                 cold = bc.ColdDamage;
@@ -2989,7 +2986,7 @@ namespace Server.Items
 
             int appliedDamage = attrDamage;
 
-            if ((appliedDamage + element) > 100)
+            if (appliedDamage + element > 100)
             {
                 appliedDamage = 100 - element;
             }
@@ -3029,9 +3026,9 @@ namespace Server.Items
                 move.OnMiss(attacker, defender);
             }
 
-            if (defender is IHonorTarget && ((IHonorTarget)defender).ReceivedHonorContext != null)
+            if (defender is IHonorTarget target && target.ReceivedHonorContext != null)
             {
-                ((IHonorTarget)defender).ReceivedHonorContext.OnTargetMissed(attacker);
+                target.ReceivedHonorContext.OnTargetMissed(attacker);
             }
 
             SkillMasterySpell.OnMiss(attacker, defender);
@@ -3039,10 +3036,8 @@ namespace Server.Items
 
         public virtual void GetBaseDamageRange(Mobile attacker, out int min, out int max)
         {
-            if (attacker is BaseCreature)
+            if (attacker is BaseCreature c)
             {
-                BaseCreature c = (BaseCreature)attacker;
-
                 if (c.DamageMin >= 0)
                 {
                     min = c.DamageMin;
@@ -3050,10 +3045,10 @@ namespace Server.Items
                     return;
                 }
 
-                if (this is Fists && !attacker.Body.IsHuman)
+                if (this is Fists && !c.Body.IsHuman)
                 {
-                    min = attacker.Str / 28;
-                    max = attacker.Str / 28;
+                    min = c.Str / 28;
+                    max = c.Str / 28;
                     return;
                 }
             }
@@ -3145,8 +3140,7 @@ namespace Server.Items
             }
             #endregion
 
-            double totalBonus = strengthBonus + anatomyBonus + tacticsBonus + lumberBonus +
-                                (damageBonus / 100.0);
+            double totalBonus = strengthBonus + anatomyBonus + tacticsBonus + lumberBonus + (damageBonus / 100.0);
 
             return damage + (int)(damage * totalBonus);
         }
@@ -3217,7 +3211,7 @@ namespace Server.Items
 
         private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
         {
-            return ((flags & toGet) != 0);
+            return (flags & toGet) != 0;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -3579,7 +3573,7 @@ namespace Server.Items
 
         private static bool GetSaveFlag(SetFlag flags, SetFlag toGet)
         {
-            return ((flags & toGet) != 0);
+            return (flags & toGet) != 0;
         }
 
         [Flags]
@@ -3597,7 +3591,7 @@ namespace Server.Items
             FireBonus = 0x00000100,
             ColdBonus = 0x00000200,
             PoisonBonus = 0x00000400,
-            EnergyBonus = 0x00000800,
+            EnergyBonus = 0x00000800
         }
         #endregion
 
@@ -3716,7 +3710,7 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SetFlag.WeaponAttributes))
                         {
-                            m_SetSelfRepair = (new AosWeaponAttributes(this, reader)).SelfRepair;
+                            m_SetSelfRepair = new AosWeaponAttributes(this, reader).SelfRepair;
                         }
 
                         if (GetSaveFlag(flags, SetFlag.SkillBonuses))
@@ -3819,7 +3813,7 @@ namespace Server.Items
 
                         if (GetSaveFlag(flags, SaveFlag.Identified))
                         {
-                            m_Identified = (version >= 6 || reader.ReadBool());
+                            m_Identified = version >= 6 || reader.ReadBool();
                         }
 
                         if (GetSaveFlag(flags, SaveFlag.StrReq))
@@ -4052,7 +4046,6 @@ namespace Server.Items
                     }
             }
 
-            #region Mondain's Legacy Sets
             if (m_SetAttributes == null)
             {
                 m_SetAttributes = new AosAttributes(this);
@@ -4062,7 +4055,6 @@ namespace Server.Items
             {
                 m_SetSkillBonuses = new AosSkillBonuses(this);
             }
-            #endregion
 
             if (Parent is Mobile)
             {
@@ -4073,31 +4065,31 @@ namespace Server.Items
             int dexBonus = m_AosAttributes.BonusDex;
             int intBonus = m_AosAttributes.BonusInt;
 
-            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            if (Parent is Mobile mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
             {
-                Mobile m = (Mobile)Parent;
+                Mobile mob = mobile;
 
                 string modName = Serial.ToString();
 
                 if (strBonus != 0)
                 {
-                    m.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));
+                    mob.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));
                 }
 
                 if (dexBonus != 0)
                 {
-                    m.AddStatMod(new StatMod(StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero));
+                    mob.AddStatMod(new StatMod(StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero));
                 }
 
                 if (intBonus != 0)
                 {
-                    m.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
+                    mob.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
                 }
             }
 
-            if (Parent is Mobile)
+            if (Parent is Mobile m)
             {
-                ((Mobile)Parent).CheckStatTimers();
+                m.CheckStatTimers();
             }
 
             if (m_Hits <= 0 && m_MaxHits <= 0)
@@ -4183,7 +4175,7 @@ namespace Server.Items
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
-            get { return base.Hue; }
+            get => base.Hue;
             set
             {
                 base.Hue = value;
@@ -4790,7 +4782,7 @@ namespace Server.Items
             {
                 list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
             }
-            else if ((prop = Parent is Mobile ? Enhancement.GetValue((Mobile)Parent, ExtendedWeaponAttribute.MysticWeapon) : 0) != 0)
+            else if ((prop = Parent is Mobile mobile ? Enhancement.GetValue(mobile, ExtendedWeaponAttribute.MysticWeapon) : 0) != 0)
             {
                 list.Add(1155881, (30 - prop).ToString());   // mystic weapon -~1_val~ skill
             }
@@ -4820,7 +4812,7 @@ namespace Server.Items
                 list.Add(1072792); // Balanced
             }
 
-            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
+            if ((prop = GetLuckBonus() + m_AosAttributes.Luck) != 0)
             {
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
             }
@@ -4900,7 +4892,7 @@ namespace Server.Items
                 list.Add(1060413, prop.ToString()); // faster casting ~1_val~
             }
 
-            if ((prop = (m_AosAttributes.AttackChance)) != 0)
+            if ((prop = m_AosAttributes.AttackChance) != 0)
             {
                 list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
             }
@@ -4925,7 +4917,7 @@ namespace Server.Items
                 list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
             }
 
-            if ((prop = (m_AosAttributes.WeaponDamage + damBonus)) != 0)
+            if ((prop = m_AosAttributes.WeaponDamage + damBonus) != 0)
             {
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
             }
@@ -5138,9 +5130,11 @@ namespace Server.Items
         public bool CanShowPoisonCharges()
         {
             if (PrimaryAbility == WeaponAbility.InfectiousStrike || SecondaryAbility == WeaponAbility.InfectiousStrike)
+            {
                 return true;
+            }
 
-            return RootParent is Mobile && SkillMasterySpell.HasSpell((Mobile)RootParent, typeof(InjectedStrikeSpell));
+            return RootParent is Mobile mobile && SkillMasterySpell.HasSpell(mobile, typeof(InjectedStrikeSpell));
         }
 
         public override bool DropToWorld(Mobile from, Point3D p)
@@ -5191,12 +5185,9 @@ namespace Server.Items
                 Attributes.WeaponDamage += 35;
             }
 
-            if (!craftItem.ForceNonExceptional)
+            if (!craftItem.ForceNonExceptional && tool is BaseRunicTool runicTool)
             {
-                if (tool is BaseRunicTool)
-                {
-                    ((BaseRunicTool)tool).ApplyAttributesTo(this);
-                }
+                runicTool.ApplyAttributesTo(this);
             }
 
             if (Quality == ItemQuality.Exceptional)
@@ -5207,7 +5198,7 @@ namespace Server.Items
                 from.CheckSkill(SkillName.ArmsLore, 0, 100);
             }
 
-            if (craftItem != null && !craftItem.ForceNonExceptional)
+            if (!craftItem.ForceNonExceptional)
             {
                 CraftResourceInfo resInfo = CraftResources.GetInfo(m_Resource);
 
@@ -5271,7 +5262,7 @@ namespace Server.Items
         public virtual SetItem SetID => SetItem.None;
         public virtual int Pieces => 0;
 
-        public virtual bool BardMasteryBonus => (SetID == SetItem.Virtuoso);
+        public virtual bool BardMasteryBonus => SetID == SetItem.Virtuoso;
 
         public bool IsSetItem => SetID != SetItem.None;
 
@@ -5282,7 +5273,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetHue
         {
-            get { return m_SetHue; }
+            get => m_SetHue;
             set
             {
                 m_SetHue = value;
@@ -5290,9 +5281,9 @@ namespace Server.Items
             }
         }
 
-        public bool SetEquipped { get { return m_SetEquipped; } set { m_SetEquipped = value; } }
+        public bool SetEquipped { get => m_SetEquipped; set => m_SetEquipped = value; }
 
-        public bool LastEquipped { get { return m_LastEquipped; } set { m_LastEquipped = value; } }
+        public bool LastEquipped { get => m_LastEquipped; set => m_LastEquipped = value; }
 
         private AosAttributes m_SetAttributes;
         private AosSkillBonuses m_SetSkillBonuses;
@@ -5300,15 +5291,15 @@ namespace Server.Items
         private int m_SetPhysicalBonus, m_SetFireBonus, m_SetColdBonus, m_SetPoisonBonus, m_SetEnergyBonus;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes SetAttributes { get { return m_SetAttributes; } set { } }
+        public AosAttributes SetAttributes { get => m_SetAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SetSkillBonuses { get { return m_SetSkillBonuses; } set { } }
+        public AosSkillBonuses SetSkillBonuses { get => m_SetSkillBonuses; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetSelfRepair
         {
-            get { return m_SetSelfRepair; }
+            get => m_SetSelfRepair;
             set
             {
                 m_SetSelfRepair = value;
@@ -5319,10 +5310,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetPhysicalBonus
         {
-            get
-            {
-                return m_SetPhysicalBonus;
-            }
+            get => m_SetPhysicalBonus;
             set
             {
                 m_SetPhysicalBonus = value;
@@ -5333,10 +5321,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetFireBonus
         {
-            get
-            {
-                return m_SetFireBonus;
-            }
+            get => m_SetFireBonus;
             set
             {
                 m_SetFireBonus = value;
@@ -5347,10 +5332,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetColdBonus
         {
-            get
-            {
-                return m_SetColdBonus;
-            }
+            get => m_SetColdBonus;
             set
             {
                 m_SetColdBonus = value;
@@ -5361,10 +5343,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetPoisonBonus
         {
-            get
-            {
-                return m_SetPoisonBonus;
-            }
+            get => m_SetPoisonBonus;
             set
             {
                 m_SetPoisonBonus = value;
@@ -5375,10 +5354,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetEnergyBonus
         {
-            get
-            {
-                return m_SetEnergyBonus;
-            }
+            get => m_SetEnergyBonus;
             set
             {
                 m_SetEnergyBonus = value;
@@ -5416,7 +5392,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Altered
         {
-            get { return m_Altered; }
+            get => m_Altered;
             set
             {
                 m_Altered = value;

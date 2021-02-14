@@ -32,9 +32,9 @@ namespace Server.Engines.BulkOrders
             m_Graphic = bod.Graphic;
             m_Hue = bod.GraphicHue;
 
-            if (bod is SmallTinkerBOD)
+            if (bod is SmallTinkerBOD tinkerBod)
             {
-                m_GemType = ((SmallTinkerBOD)bod).GemType;
+                m_GemType = tinkerBod.GemType;
             }
         }
 
@@ -87,16 +87,11 @@ namespace Server.Engines.BulkOrders
         public int Graphic => m_Graphic;
         public int Hue => m_Hue;
         public GemType GemType => m_GemType;
+
         public int Price
         {
-            get
-            {
-                return m_Price;
-            }
-            set
-            {
-                m_Price = value;
-            }
+            get => m_Price;
+            set => m_Price = value;
         }
         public Item Reconstruct()
         {

@@ -38,7 +38,7 @@ namespace Server.Engines.Events
             {
                 Rectangle2D rect = m_PumpkinFields[i];
 
-                int spawncount = ((rect.Height * rect.Width) / 20);
+                int spawncount = (rect.Height * rect.Width) / 20;
                 int pumpkins = 0;
 
                 foreach (Item item in map.GetItemsInBounds(rect))

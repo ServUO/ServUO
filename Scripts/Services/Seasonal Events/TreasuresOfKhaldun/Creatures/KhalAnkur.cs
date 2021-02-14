@@ -173,10 +173,9 @@ namespace Server.Mobiles
 
                     m_NextSpawn = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(120, 180));
                 }
-                else if (Spawn.Creatures.OfType<KhalAnkurWarriors>().Where(x => x._Type == KhalAnkurWarriors.WarriorType.General && !x.Deleted).Count() <= 0)
+                else if (Spawn.Creatures.OfType<KhalAnkurWarriors>().Count(x => x._Type == KhalAnkurWarriors.WarriorType.General && !x.Deleted) <= 0)
                 {
                     Blessed = false;
-                    return;
                 }
             }
         }
@@ -289,7 +288,7 @@ namespace Server.Mobiles
                     if (!from.Alive || from == this || from.AccessLevel > AccessLevel.Player)
                         continue;
 
-                    if (points.Count > 0 && (from is PlayerMobile || (from is BaseCreature && (((BaseCreature)from).Controlled) || ((BaseCreature)from).Summoned)))
+                    if (points.Count > 0 && (from is PlayerMobile || from is BaseCreature creature && creature.Controlled || ((BaseCreature)from).Summoned))
                     {
                         Point3D point = points[Utility.Random(points.Count)];
                         from.MoveToWorld(point, pmmap);
@@ -370,7 +369,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Spawn = reader.ReadItem<ChampionSpawn>();
         }

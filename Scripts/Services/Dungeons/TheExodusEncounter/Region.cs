@@ -19,7 +19,7 @@ namespace Server.Engines.Exodus
             new Point3D(987, 1007, -35),
             new Point3D(1175, 1287, -30),
             new Point3D(1532, 1341, -3),
-            new Point3D(527, 218, -44),
+            new Point3D(527, 218, -44)
         };
 
         public VerLorRegCity(XmlElement xml, Map map, Region parent)
@@ -86,7 +86,7 @@ namespace Server.Engines.Exodus
         {
         }
 
-        private static readonly Type[] m_Mobile = new Type[]
+        private static readonly Type[] m_Mobile =
         {
             typeof(ExodusDrone), typeof(ExodusMinion), typeof(ExodusMinionLord), typeof(ExodusSentinel), typeof(ExodusOverseer),
             typeof(EnslavedGargoyle), typeof(ExodusZealot), typeof(ExodusJuggernaut), typeof(Golem), typeof(GolemController),

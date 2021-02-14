@@ -130,32 +130,36 @@ namespace Server.Spells.Seventh
             }
 
             public override bool BlocksFit => true;
+
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
 
             public override bool OnMoveOver(Mobile m)
             {
-                int noto;
-
                 if (m is PlayerMobile)
                 {
+                    int noto;
+
                     noto = Notoriety.Compute(m_Caster, m);
+
                     if (noto == Notoriety.Enemy || noto == Notoriety.Ally)
+                    {
                         return false;
+                    }
 
                     if (m.Map != null && (m.Map.Rules & MapRules.FreeMovement) == 0)
+                    {
                         return false;
+                    }
                 }
                 return base.OnMoveOver(m);
             }
@@ -197,8 +201,8 @@ namespace Server.Spells.Seventh
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                if (o is IPoint3D point3D)
+                    m_Owner.Target(point3D);
             }
 
             protected override void OnTargetFinish(Mobile from)

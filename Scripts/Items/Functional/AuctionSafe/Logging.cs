@@ -19,11 +19,11 @@ namespace Server.Engines.Auction
 
         public static void LogAuctionEvent(Auction auction, string text)
         {
-            string path = Path.Combine(LogDirectory, string.Format("{0}-{1:X6}-{2}.log", auction.AuctionItem.GetType().Name.ToString(), auction.AuctionItem.Serial.ToString(), GetTimeStamp(auction.StartTime)));
+            string path = Path.Combine(LogDirectory, string.Format("{0}-{1:X6}-{2}.log", auction.AuctionItem.GetType().Name, auction.AuctionItem.Serial.ToString(), GetTimeStamp(auction.StartTime)));
 
             using (StreamWriter sw = new StreamWriter(path, true))
             {
-                sw.WriteLine(string.Format("{0}: {1}", DateTime.Now, text));
+                sw.WriteLine("{0}: {1}", DateTime.Now, text);
             }
         }
 

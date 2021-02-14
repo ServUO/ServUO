@@ -520,7 +520,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    bool young = mobile is PlayerMobile && ((PlayerMobile)mobile).Young;
+                    bool young = mobile is PlayerMobile pm && pm.Young;
 
                     checkLists = young ? PMList.ListsYoung : PMList.Lists;
                 }

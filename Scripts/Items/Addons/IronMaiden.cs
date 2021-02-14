@@ -99,8 +99,8 @@ namespace Server.Items
 
         private void Deactivate(object obj)
         {
-            if (obj is AddonComponent)
-                ((AddonComponent)obj).ItemID = 0x1249;
+            if (obj is AddonComponent component)
+                component.ItemID = 0x1249;
         }
     }
 

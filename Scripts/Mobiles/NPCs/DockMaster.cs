@@ -104,8 +104,8 @@ namespace Server.Mobiles
             Container pack = from.Backpack;
             Container hold;
 
-            if (boat is BaseGalleon)
-                hold = ((BaseGalleon)boat).GalleonHold;
+            if (boat is BaseGalleon galleon)
+                hold = galleon.GalleonHold;
             else
                 hold = boat.Hold;
 
@@ -203,10 +203,10 @@ namespace Server.Mobiles
 
                 foreach (Item item in eable)
                 {
-                    if (item is BaseBoat && ((BaseBoat)item).Owner == from && InRange(item.Location, DryDockDistance))
+                    if (item is BaseBoat boat && boat.Owner == from && InRange(boat.Location, DryDockDistance))
                     {
                         eable.Free();
-                        return (BaseBoat)item;
+                        return boat;
                     }
                 }
 
@@ -229,7 +229,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 

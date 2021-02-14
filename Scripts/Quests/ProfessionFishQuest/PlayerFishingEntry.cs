@@ -18,8 +18,8 @@ namespace Server.Engines.Quests
         private readonly Dictionary<int, int> m_TimesFished = new Dictionary<int, int>();
 
         public Mobile Player => m_Player;
-        public double Reputation { get { return m_Reputation; } set { m_Reputation = value; } }
-        public bool HasRecievedBritGal { get { return m_HasRecievedBritGal; } set { m_HasRecievedBritGal = value; } }
+        public double Reputation { get => m_Reputation; set => m_Reputation = value; }
+        public bool HasRecievedBritGal { get => m_HasRecievedBritGal; set => m_HasRecievedBritGal = value; }
         public Dictionary<int, int> HaveFished => m_HaveFished;
         public Dictionary<int, int> TimesFished => m_TimesFished;
 
@@ -288,7 +288,7 @@ namespace Server.Engines.Quests
             "a moderate",
             "a tremendous",
             "an outstanding",
-            "an enormous",
+            "an enormous"
         };
 
         public static void FishMongerStatus_OnCommand(CommandEventArgs e)

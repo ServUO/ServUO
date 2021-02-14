@@ -29,7 +29,7 @@ namespace Server.Engines.Doom
             if (m_Controller.Enabled)
                 return;
 
-            if ((m_Wanderer == null || !m_Wanderer.Alive))
+            if (m_Wanderer == null || !m_Wanderer.Alive)
             {
                 m_Wanderer = new WandererOfTheVoid();
                 m_Wanderer.MoveToWorld(LeverPuzzleController.lr_Enter, Map.Malas);
@@ -53,13 +53,15 @@ namespace Server.Engines.Doom
         {
             base.Serialize(writer);
             writer.Write(0); // version
+
             writer.Write(m_Controller);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Controller = reader.ReadItem() as LeverPuzzleController;
         }
     }
@@ -90,13 +92,15 @@ namespace Server.Engines.Doom
         {
             base.Serialize(writer);
             writer.Write(0); // version
+
             writer.Write(m_Controller);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Controller = reader.ReadItem() as LeverPuzzleController;
         }
     }
@@ -145,6 +149,7 @@ namespace Server.Engines.Doom
         {
             base.Serialize(writer);
             writer.Write(0); // version
+
             writer.Write(m_Code);
             writer.Write(m_Controller);
         }
@@ -152,7 +157,8 @@ namespace Server.Engines.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Code = reader.ReadUShort();
             m_Controller = reader.ReadItem() as LeverPuzzleController;
         }
@@ -201,7 +207,7 @@ namespace Server.Engines.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

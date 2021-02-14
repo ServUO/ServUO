@@ -18,32 +18,17 @@ namespace Server.Engines.Quests
         public virtual QuestItemInfo[] Info => null;
         public QuestSystem System
         {
-            get
-            {
-                return m_System;
-            }
-            set
-            {
-                m_System = value;
-            }
+            get => m_System;
+            set => m_System = value;
         }
         public bool HasBeenRead
         {
-            get
-            {
-                return m_HasBeenRead;
-            }
-            set
-            {
-                m_HasBeenRead = value;
-            }
+            get => m_HasBeenRead;
+            set => m_HasBeenRead = value;
         }
         public int CurProgress
         {
-            get
-            {
-                return m_CurProgress;
-            }
+            get => m_CurProgress;
             set
             {
                 m_CurProgress = value;
@@ -52,17 +37,13 @@ namespace Server.Engines.Quests
         }
         public bool HasCompleted
         {
-            get
-            {
-                return m_HasCompleted;
-            }
-            set
-            {
-                m_HasCompleted = value;
-            }
+            get => m_HasCompleted;
+            set => m_HasCompleted = value;
         }
+
         public virtual bool Completed => m_CurProgress >= MaxProgress;
-        public bool IsSingleObjective => (MaxProgress == 1);
+        public bool IsSingleObjective => MaxProgress == 1;
+
         public virtual void BaseDeserialize(GenericReader reader)
         {
             int version = reader.ReadEncodedInt();

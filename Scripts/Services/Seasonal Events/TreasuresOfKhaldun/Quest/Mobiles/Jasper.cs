@@ -54,22 +54,22 @@ namespace Server.Engines.Khaldun
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(Location, 5))
+            if (m is PlayerMobile mobile && mobile.InRange(Location, 5))
             {
-                GoingGumshoeQuest quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
+                GoingGumshoeQuest quest = QuestHelper.GetQuest<GoingGumshoeQuest>(mobile);
 
                 if (quest != null && quest.Completed)
                 {
                     quest.GiveRewards();
 
-                    BaseQuest newquest = QuestHelper.RandomQuest((PlayerMobile)m, new Type[] { typeof(GoingGumshoeQuest2) }, this);
+                    BaseQuest newquest = QuestHelper.RandomQuest(mobile, new[] { typeof(GoingGumshoeQuest2) }, this);
 
                     if (newquest != null)
-                        m.SendGump(new MondainQuestGump(newquest));
+                        mobile.SendGump(new MondainQuestGump(newquest));
                 }
                 else
                 {
-                    GoingGumshoeQuest2 quest2 = QuestHelper.GetQuest<GoingGumshoeQuest2>((PlayerMobile)m);
+                    GoingGumshoeQuest2 quest2 = QuestHelper.GetQuest<GoingGumshoeQuest2>(mobile);
 
                     if (quest2 != null)
                     {
@@ -78,20 +78,20 @@ namespace Server.Engines.Khaldun
                             quest2.Objectives[0].CurProgress++;
                             quest2.GiveRewards(); // TODO: Does this quest end here?
 
-                            BaseQuest newquest = QuestHelper.RandomQuest((PlayerMobile)m, new Type[] { typeof(GoingGumshoeQuest3) }, this);
+                            BaseQuest newquest = QuestHelper.RandomQuest(mobile, new[] { typeof(GoingGumshoeQuest3) }, this);
 
                             if (newquest != null)
-                                m.SendGump(new MondainQuestGump(newquest));
+                                mobile.SendGump(new MondainQuestGump(newquest));
                         }
                         else
                         {
-                            m.SendGump(new MondainQuestGump(quest2, MondainQuestGump.Section.InProgress, false));
+                            mobile.SendGump(new MondainQuestGump(quest2, MondainQuestGump.Section.InProgress, false));
                             quest2.InProgress();
                         }
                     }
                     else
                     {
-                        GoingGumshoeQuest3 quest3 = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)m);
+                        GoingGumshoeQuest3 quest3 = QuestHelper.GetQuest<GoingGumshoeQuest3>(mobile);
 
                         if (quest3 != null)
                         {
@@ -100,29 +100,29 @@ namespace Server.Engines.Khaldun
                                 quest3.Objectives[0].CurProgress++;
                                 quest3.GiveRewards(); // TODO: Does this quest end here?
 
-                                BaseQuest newquest = QuestHelper.RandomQuest((PlayerMobile)m, new Type[] { typeof(GoingGumshoeQuest4) }, this);
+                                BaseQuest newquest = QuestHelper.RandomQuest(mobile, new[] { typeof(GoingGumshoeQuest4) }, this);
 
                                 if (newquest != null)
-                                    m.SendGump(new MondainQuestGump(newquest));
+                                    mobile.SendGump(new MondainQuestGump(newquest));
                             }
                             else
                             {
-                                m.SendGump(new MondainQuestGump(quest3, MondainQuestGump.Section.InProgress, false));
+                                mobile.SendGump(new MondainQuestGump(quest3, MondainQuestGump.Section.InProgress, false));
                                 quest3.InProgress();
                             }
                         }
                         else
                         {
-                            GoingGumshoeQuest4 quest4 = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
+                            GoingGumshoeQuest4 quest4 = QuestHelper.GetQuest<GoingGumshoeQuest4>(mobile);
 
                             if (quest4 != null && !quest4.IsComplete)
                             {
-                                m.SendGump(new MondainQuestGump(quest4, MondainQuestGump.Section.InProgress, false));
+                                mobile.SendGump(new MondainQuestGump(quest4, MondainQuestGump.Section.InProgress, false));
                                 quest4.InProgress();
                             }
                             else if (quest4 == null)
                             {
-                                SayTo(m, 1080107); // I'm sorry, I have nothing for you at this time.
+                                SayTo(mobile, 1080107); // I'm sorry, I have nothing for you at this time.
                             }
                         }
                     }
@@ -132,9 +132,9 @@ namespace Server.Engines.Khaldun
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && InLOS(m) && InRange(m.Location, 3) && !InRange(oldLocation, 3))
+            if (m is PlayerMobile mobile && InLOS(mobile) && InRange(mobile.Location, 3) && !InRange(oldLocation, 3))
             {
-                GoingGumshoeQuest quest = QuestHelper.GetQuest<GoingGumshoeQuest>((PlayerMobile)m);
+                GoingGumshoeQuest quest = QuestHelper.GetQuest<GoingGumshoeQuest>(mobile);
 
                 if (quest != null)
                 {
@@ -143,14 +143,14 @@ namespace Server.Engines.Khaldun
                 }
                 else
                 {
-                    GoingGumshoeQuest4 quest2 = QuestHelper.GetQuest<GoingGumshoeQuest4>((PlayerMobile)m);
+                    GoingGumshoeQuest4 quest2 = QuestHelper.GetQuest<GoingGumshoeQuest4>(mobile);
 
                     if (quest2 != null && quest2.IsComplete)
                     {
                         quest2.Objectives[0].CurProgress++;
 
-                        m.SendGump(new InternalGump());
-                        m.PlaySound(quest2.CompleteSound);
+                        mobile.SendGump(new InternalGump());
+                        mobile.PlaySound(quest2.CompleteSound);
                         quest2.GiveRewards();
                     }
                 }
@@ -186,15 +186,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

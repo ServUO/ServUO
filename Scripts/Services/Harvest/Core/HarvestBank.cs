@@ -35,10 +35,7 @@ namespace Server.Engines.Harvest
                 CheckRespawn();
                 return m_Vein;
             }
-            set
-            {
-                m_Vein = value;
-            }
+            set => m_Vein = value;
         }
         public HarvestVein DefaultVein
         {

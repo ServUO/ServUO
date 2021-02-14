@@ -42,8 +42,7 @@ namespace Server.Items
 
         public bool CheckRange(Point3D loc, int range)
         {
-            return ((Z + 8) >= loc.Z && (loc.Z + 16) > Z) &&
-                   Utility.InRange(GetWorldLocation(), loc, range);
+            return Z + 8 >= loc.Z && (loc.Z + 16) > Z && Utility.InRange(GetWorldLocation(), loc, range);
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
@@ -70,15 +69,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

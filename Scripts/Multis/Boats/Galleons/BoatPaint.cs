@@ -1,4 +1,4 @@
-﻿using Server.Multis;
+using Server.Multis;
 using Server.Targeting;
 
 namespace Server.Items
@@ -11,7 +11,7 @@ namespace Server.Items
         private bool m_Permanent;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Permanent { get { return m_Permanent; } set { m_Permanent = value; } }
+        public bool Permanent { get => m_Permanent; set => m_Permanent = value; }
 
         public BoatPaint(object hue) : this((int)hue)
         {
@@ -46,10 +46,9 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is IPoint3D)
+                if (targeted is IPoint3D point3D)
                 {
-                    IPoint3D pnt = (IPoint3D)targeted;
-                    BaseGalleon galleon = BaseGalleon.FindGalleonAt(pnt, from.Map);
+                    BaseGalleon galleon = BaseGalleon.FindGalleonAt(point3D, from.Map);
 
                     if (galleon == null || !galleon.Contains(from))
                         return;
@@ -57,7 +56,7 @@ namespace Server.Items
                     if (galleon.GetSecurityLevel(from) < SecurityLevel.Captain)
                         from.SendMessage("You must be the captain to paint this ship!");
 
-                    else if (galleon.Contains(pnt)/*&& boat.X == pnt.X && boat.Y == pnt.Y*/)
+                    else if (galleon.Contains(point3D))
                     {
                         if (m_Paint.Permanent)
                         {
@@ -88,7 +87,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -124,7 +123,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

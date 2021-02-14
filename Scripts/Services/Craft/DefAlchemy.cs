@@ -3,16 +3,6 @@ using System;
 
 namespace Server.Engines.Craft
 {
-    public enum AlchemyRecipes
-    {
-        BarrabHemolymphConcentrate = 900,
-        JukariBurnPoiltice = 901,
-        KurakAmbushersEssence = 902,
-        BarakoDraftOfMight = 903,
-        UraliTranceTonic = 904,
-        SakkhraProphylaxisPotion = 905,
-    }
-
     public class DefAlchemy : CraftSystem
     {
         public override SkillName MainSkill => SkillName.Alchemy;
@@ -48,7 +38,8 @@ namespace Server.Engines.Craft
 
             if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!tool.CheckAccessible(from, ref num))
+
+            if (!tool.CheckAccessible(from, ref num))
                 return num; // The tool must be on your person to use.
 
             return 0;
@@ -78,27 +69,23 @@ namespace Server.Engines.Craft
                     from.AddToBackpack(new Bottle());
                     return 500287; // You fail to create a useful potion.
                 }
-                else
-                {
-                    return 1044043; // You failed to create the item, and some of your materials are lost.
-                }
-            }
-            else
-            {
-                from.PlaySound(0x240); // Sound of a filling bottle
 
-                if (IsPotion(item.ItemType))
-                {
-                    if (quality == -1)
-                        return 1048136; // You create the potion and pour it into a keg.
-                    else
-                        return 500279; // You pour the potion into a bottle...
-                }
-                else
-                {
-                    return 1044154; // You create the item.
-                }
+                return 1044043; // You failed to create the item, and some of your materials are lost.
             }
+
+            from.PlaySound(0x240); // Sound of a filling bottle
+
+            if (IsPotion(item.ItemType))
+            {
+                if (quality == -1)
+                {
+                    return 1048136; // You create the potion and pour it into a keg.
+                }
+
+                return 500279; // You pour the potion into a bottle...
+            }
+
+            return 1044154; // You create the item.
         }
 
         public override void InitCraftList()
@@ -138,7 +125,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(Ginseng), 1044356, 20, 1044364);
             AddRes(index, typeof(PlantClippings), 1112131, 5, 1044253);
             AddRes(index, typeof(MyrmidexEggsac), 1156725, 5, 1044253);
-            AddRecipe(index, (int)AlchemyRecipes.BarrabHemolymphConcentrate);
+            AddRecipe(index, (int)CraftRecipes.BarrabHemolymphConcentrate);
 
             // Enhancement
             index = AddCraft(typeof(AgilityPotion), 1116349, 1044540, 15.0, 65.0, typeof(Bloodmoss), 1044354, 1, 1044362);
@@ -159,39 +146,39 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(InvisibilityPotion), 1116349, 1074860, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(Bloodmoss), 1044354, 4, 1044362);
             AddRes(index, typeof(Nightshade), 1044358, 3, 1044366);
-            AddRecipe(index, (int)TinkerRecipes.InvisibilityPotion);
+            AddRecipe(index, (int)CraftRecipes.InvisibilityPotion);
 
             index = AddCraft(typeof(JukariBurnPoiltice), 1116349, 1156726, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(BlackPearl), 1044353, 20, 1044361);
             AddRes(index, typeof(Vanilla), 1080000, 10, 1080008);
             AddRes(index, typeof(LavaBerry), 1156727, 5, 1044253);
-            AddRecipe(index, (int)AlchemyRecipes.JukariBurnPoiltice);
+            AddRecipe(index, (int)CraftRecipes.JukariBurnPoiltice);
 
             index = AddCraft(typeof(KurakAmbushersEssence), 1116349, 1156728, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(Bloodmoss), 1044354, 20, 1044362);
             AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
             AddRes(index, typeof(TigerPelt), 1156727, 10, 1044253);
-            AddRecipe(index, (int)AlchemyRecipes.KurakAmbushersEssence);
+            AddRecipe(index, (int)CraftRecipes.KurakAmbushersEssence);
 
             index = AddCraft(typeof(BarakoDraftOfMight), 1116349, 1156729, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(SpidersSilk), 1044360, 20, 1044368);
             AddRes(index, typeof(BaseBeverage), 1022459, 10, 1044253);
             AddRes(index, typeof(PerfectBanana), 1156730, 5, 1044253);
             SetBeverageType(index, BeverageType.Liquor);
-            AddRecipe(index, (int)AlchemyRecipes.BarakoDraftOfMight);
+            AddRecipe(index, (int)CraftRecipes.BarakoDraftOfMight);
 
             index = AddCraft(typeof(UraliTranceTonic), 1116349, 1156734, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(MandrakeRoot), 1044357, 20, 1044365);
             AddRes(index, typeof(YellowScales), 1156799, 10, 1044253);
             AddRes(index, typeof(RiverMoss), 1156731, 5, 1044253);
-            AddRecipe(index, (int)AlchemyRecipes.UraliTranceTonic);
+            AddRecipe(index, (int)CraftRecipes.UraliTranceTonic);
 
             index = AddCraft(typeof(SakkhraProphylaxisPotion), 1116349, 1156732, 51.0, 151.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(Nightshade), 1044358, 20, 1044366);
             AddRes(index, typeof(BaseBeverage), 1022503, 10, 1044253);
             AddRes(index, typeof(BlueCorn), 1156733, 5, 1044253);
             SetBeverageType(index, BeverageType.Wine);
-            AddRecipe(index, (int)AlchemyRecipes.SakkhraProphylaxisPotion);
+            AddRecipe(index, (int)CraftRecipes.SakkhraProphylaxisPotion);
 
             // Toxic
             index = AddCraft(typeof(LesserPoisonPotion), 1116350, 1044548, -5.0, 45.0, typeof(Nightshade), 1044358, 1, 1044366);
@@ -208,11 +195,11 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(ParasiticPotion), 1116350, 1072942, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(ParasiticPlant), 1073474, 5, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.ParasiticPotion);
+            AddRecipe(index, (int)CraftRecipes.ParasiticPotion);
 
             index = AddCraft(typeof(DarkglowPotion), 1116350, 1072943, 65.0, 115.0, typeof(Bottle), 1044529, 1, 500315);
             AddRes(index, typeof(LuminescentFungi), 1073475, 5, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.DarkglowPotion);
+            AddRecipe(index, (int)CraftRecipes.DarkglowPotion);
 
             index = AddCraft(typeof(ScouringToxin), 1116350, 1112292, 75.0, 100.0, typeof(ToxicVenomSac), 1112291, 1, 1044253);
             AddRes(index, typeof(Bottle), 1044529, 1, 500315);

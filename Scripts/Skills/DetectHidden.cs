@@ -49,12 +49,12 @@ namespace Server.SkillHandlers
                 bool foundAnyone = false;
 
                 Point3D p;
-                if (targ is Mobile)
-                    p = ((Mobile)targ).Location;
-                else if (targ is Item)
-                    p = ((Item)targ).Location;
-                else if (targ is IPoint3D)
-                    p = new Point3D((IPoint3D)targ);
+                if (targ is Mobile mobile)
+                    p = mobile.Location;
+                else if (targ is Item item)
+                    p = item.Location;
+                else if (targ is IPoint3D point3D)
+                    p = new Point3D(point3D);
                 else
                     p = src.Location;
 
@@ -86,8 +86,8 @@ namespace Server.SkillHandlers
 
                             if (src.AccessLevel >= trg.AccessLevel && (ss >= ts || houseCheck) && Utility.RandomDouble() > shadow)
                             {
-                                if ((trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y)) ||
-                                     (!houseCheck && !CanDetect(src, trg, true)))
+                                if (trg is ShadowKnight && (trg.X != p.X || trg.Y != p.Y) ||
+                                     !houseCheck && !CanDetect(src, trg, true))
                                     continue;
 
                                 trg.RevealingAction();
@@ -112,7 +112,7 @@ namespace Server.SkillHandlers
                         {
                             IRevealableItem dItem = item as IRevealableItem;
 
-                            if (dItem == null || (item.Visible && dItem.CheckWhenHidden))
+                            if (dItem == null || item.Visible && dItem.CheckWhenHidden)
                                 continue;
 
                             if (dItem.CheckReveal(src))
@@ -159,7 +159,7 @@ namespace Server.SkillHandlers
                 if (src.Race == Race.Elf)
                     ss += 20;
 
-                if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < (ss - ts) + 1)
+                if (src.AccessLevel >= m.AccessLevel && Utility.Random(1000) < ss - ts + 1)
                 {
                     m.RevealingAction();
                     m.SendLocalizedMessage(500814); // You have been revealed!
@@ -172,7 +172,7 @@ namespace Server.SkillHandlers
 
             foreach (Item item in eable)
             {
-                if (!item.Visible && item is IRevealableItem && ((IRevealableItem)item).CheckPassiveDetect(src))
+                if (!item.Visible && item is IRevealableItem revealableItem && revealableItem.CheckPassiveDetect(src))
                 {
                     src.SendLocalizedMessage(1153493); // Your keen senses detect something hidden in the area...
                 }
@@ -189,12 +189,12 @@ namespace Server.SkillHandlers
             }
 
             // No invulnerable NPC's
-            if (src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
+            if (src.Blessed || src is BaseCreature creature && creature.IsInvulnerable)
             {
                 return false;
             }
 
-            if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
+            if (target.Blessed || target is BaseCreature baseCreature && baseCreature.IsInvulnerable)
             {
                 return false;
             }

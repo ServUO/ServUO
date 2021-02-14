@@ -27,10 +27,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
-            get
-            {
-                return m_Charges;
-            }
+            get => m_Charges;
             set
             {
                 m_Charges = value;

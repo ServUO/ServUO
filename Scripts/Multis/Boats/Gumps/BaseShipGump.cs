@@ -23,8 +23,10 @@ namespace Server.Gumps
 
             string shipName = "unnamed ship";
 
-            if (galleon.ShipName != null && galleon.ShipName != string.Empty && galleon.ShipName != "")
+            if (!string.IsNullOrEmpty(galleon.ShipName) && galleon.ShipName != "")
+            {
                 shipName = galleon.ShipName;
+            }
 
             AddHtmlLocalized(10, 38, 75, 18, 1149761, LabelColor, false, false); //Ship:
             AddLabel(80, 38, 0x53, shipName);

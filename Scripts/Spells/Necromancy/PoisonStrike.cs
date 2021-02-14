@@ -96,8 +96,8 @@ namespace Server.Spells.Necromancy
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IDamageable)
-                    m_Owner.Target((IDamageable)o);
+                if (o is IDamageable damageable)
+                    m_Owner.Target(damageable);
             }
 
             protected override void OnTargetFinish(Mobile from)

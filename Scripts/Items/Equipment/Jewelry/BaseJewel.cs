@@ -546,8 +546,8 @@ namespace Server.Items
                         {
                             MaxHitPoints -= wear;
 
-                            if (Parent is Mobile)
-                                ((Mobile)Parent).LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            if (Parent is Mobile mobile)
+                                mobile.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                         }
                         else
                         {
@@ -574,10 +574,8 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.AddTo(from);
 
                 int strBonus = m_AosAttributes.BonusStr;
@@ -617,10 +615,8 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.Remove();
 
                 string modName = Serial.ToString();
@@ -1094,9 +1090,9 @@ namespace Server.Items
                         int dexBonus = m_AosAttributes.BonusDex;
                         int intBonus = m_AosAttributes.BonusInt;
 
-                        if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+                        if (Parent is Mobile mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
                         {
-                            Mobile m = (Mobile)Parent;
+                            Mobile m = mobile;
 
                             string modName = Serial.ToString();
 
@@ -1110,8 +1106,8 @@ namespace Server.Items
                                 m.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
                         }
 
-                        if (Parent is Mobile)
-                            ((Mobile)Parent).CheckStatTimers();
+                        if (Parent is Mobile mob)
+                            mob.CheckStatTimers();
 
                         break;
                     }

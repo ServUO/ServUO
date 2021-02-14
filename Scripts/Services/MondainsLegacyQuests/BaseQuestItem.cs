@@ -29,27 +29,16 @@ namespace Server.Engines.Quests
         public virtual int Lifespan => 0;
         public int Duration
         {
-            get
-            {
-                return m_Duration;
-            }
+            get => m_Duration;
             set
             {
                 m_Duration = value;
                 InvalidateProperties();
             }
         }
-        public BaseQuest Quest
-        {
-            get
-            {
-                return m_Quest;
-            }
-            set
-            {
-                m_Quest = value;
-            }
-        }
+
+        public BaseQuest Quest { get => m_Quest; set => m_Quest = value; }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (!IsChildOf(from.Backpack) && Movable)
@@ -76,7 +65,7 @@ namespace Server.Engines.Quests
 
                 if (chain != null && chain.Quester != null && chain.Quester.IsAssignableFrom(GetType()))
                 {
-                    BaseQuest quest = QuestHelper.RandomQuest(player, new Type[] { chain.CurrentQuest }, this);
+                    BaseQuest quest = QuestHelper.RandomQuest(player, new[] { chain.CurrentQuest }, this);
 
                     if (quest != null)
                     {
@@ -112,7 +101,6 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Duration);
@@ -122,8 +110,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Duration = reader.ReadInt();
             m_InDelivery = reader.ReadBool();
@@ -156,12 +143,14 @@ namespace Server.Engines.Quests
             {
                 StopTimer();
 
-                if (Parent is Backpack)
+                if (Parent is Backpack backpack)
                 {
-                    Backpack pack = (Backpack)Parent;
+                    Backpack pack = backpack;
 
-                    if (pack.Parent is PlayerMobile)
-                        QuestHelper.RemoveStatus((PlayerMobile)pack.Parent, this);
+                    if (pack.Parent is PlayerMobile mobile)
+                    {
+                        QuestHelper.RemoveStatus(mobile, this);
+                    }
                 }
 
                 Delete();

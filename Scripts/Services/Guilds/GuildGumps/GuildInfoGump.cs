@@ -86,7 +86,7 @@ namespace Server.Guilds
 
             AddBackground(445, 370, 100, 26, 0x2486);
             AddButton(447, 375, 0x845, 0x846, 7, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(472, 373, 60, 26, 3006115, (m_IsResigning) ? 0x5000 : 0, false, false); // Resign
+            AddHtmlLocalized(472, 373, 60, 26, 3006115, m_IsResigning ? 0x5000 : 0, false, false); // Resign
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)

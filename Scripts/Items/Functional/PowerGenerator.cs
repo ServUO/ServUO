@@ -30,18 +30,17 @@ namespace Server.Items
         }
 
         public override bool ShareHue => false;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
 
         private void AddGeneratorComponent(int itemID, int x, int y, int z)
@@ -87,10 +86,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SideLength
         {
-            get
-            {
-                return m_SideLength;
-            }
+            get => m_SideLength;
             set
             {
                 if (value < 3)
@@ -267,7 +263,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt(m_SideLength);
@@ -285,8 +280,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_SideLength = reader.ReadEncodedInt();
 
@@ -309,25 +303,13 @@ namespace Server.Items
 
             public int X
             {
-                get
-                {
-                    return m_X;
-                }
-                set
-                {
-                    m_X = value;
-                }
+                get => m_X;
+                set => m_X = value;
             }
             public int Y
             {
-                get
-                {
-                    return m_Y;
-                }
-                set
-                {
-                    m_Y = value;
-                }
+                get => m_Y;
+                set => m_Y = value;
             }
         }
 

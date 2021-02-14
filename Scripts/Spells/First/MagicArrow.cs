@@ -18,7 +18,7 @@ namespace Server.Spells.First
         public override SpellCircle Circle => SpellCircle.First;
         public override bool DelayedDamageStacking => false;
         public override bool DelayedDamage => true;
-        public override Type[] DelayDamageFamily => new Type[] { typeof(Mysticism.NetherBoltSpell) };
+        public override Type[] DelayDamageFamily => new[] { typeof(Mysticism.NetherBoltSpell) };
         public override void OnCast()
         {
             Caster.Target = new InternalTarget(this);
@@ -77,9 +77,9 @@ namespace Server.Spells.First
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IDamageable)
+                if (o is IDamageable damageable)
                 {
-                    m_Owner.Target((IDamageable)o);
+                    m_Owner.Target(damageable);
                 }
             }
 

@@ -11,7 +11,7 @@ namespace Server.Mobiles
     {
         private readonly int _Label = 0xF424E5;
 
-        public BaseCreature Creature { get; private set; }
+        public BaseCreature Creature { get; }
 
         public NewAnimalLoreGump(PlayerMobile pm, BaseCreature bc)
             : base(pm, 250, 50)
@@ -604,7 +604,7 @@ namespace Server.Mobiles
             if (color == null)
             {
                 if (val <= 0)
-                    return string.Format("<div align=right>---</div>");
+                    return "<div align=right>---</div>";
 
                 return string.Format("<div align=right>{0}%</div>", val);
             }
@@ -636,7 +636,7 @@ namespace Server.Mobiles
             return 0xF3EE3;
         }
 
-        public BaseCreature Creature { get; private set; }
+        public BaseCreature Creature { get; }
 
         public PetTrainingProgressGump(PlayerMobile pm, BaseCreature bc)
             : base(pm, 50, 200)
@@ -651,7 +651,7 @@ namespace Server.Mobiles
                 p.TrainingProfile.HasBegunTraining &&
                 p.Map == User.Map));
 
-            if (pets == null || pets.Count == 0)
+            if (pets.Count == 0)
             {
                 AddBackground(0, 24, 254, 170, 0x24A4);
                 return;
@@ -849,7 +849,7 @@ namespace Server.Mobiles
 
             foreach (SkillName skill in PetTrainingHelper.MagicSkills)
             {
-                if ((!PetTrainingHelper.CommonSkill(Creature, skill) && Creature.Skills[skill].Base <= 0) || Creature.Skills[skill].Cap >= 120)
+                if (!PetTrainingHelper.CommonSkill(Creature, skill) && Creature.Skills[skill].Base <= 0 || Creature.Skills[skill].Cap >= 120)
                     continue;
 
                 TrainingPoint tp = PetTrainingHelper.GetTrainingPoint(skill);
@@ -867,8 +867,10 @@ namespace Server.Mobiles
 
             foreach (SkillName skill in PetTrainingHelper.CombatSkills)
             {
-                if ((!PetTrainingHelper.CommonSkill(Creature, skill) && Creature.Skills[skill].Base <= 0) || Creature.Skills[skill].Cap >= 120)
+                if (!PetTrainingHelper.CommonSkill(Creature, skill) && Creature.Skills[skill].Base <= 0 || Creature.Skills[skill].Cap >= 120)
+                {
                     continue;
+                }
 
                 TrainingPoint tp = PetTrainingHelper.GetTrainingPoint(skill);
 
@@ -888,16 +890,12 @@ namespace Server.Mobiles
                 MagicalAbility abil = PetTrainingHelper.MagicalAbilities[i];
                 Mobile master = Creature.ControlMaster;
 
-                if ((abil == MagicalAbility.Chivalry && master != null && master.Karma < 0) ||
-                    (abil == MagicalAbility.Necromancy && master != null && master.Karma > 0) ||
-                    (abil == MagicalAbility.Necromage && master != null && master.Karma > 0))
+                if (abil == MagicalAbility.Chivalry && master != null && master.Karma < 0 || abil == MagicalAbility.Necromancy && master != null && master.Karma > 0 || abil == MagicalAbility.Necromage && master != null && master.Karma > 0)
                 {
                     continue;
                 }
 
-                if ((Definition.MagicalAbilities & abil) == 0 || AbilityProfile.HasAbility(abil) ||
-                    !AbilityProfile.CanChooseMagicalAbility(abil) || /*(abil <= MagicalAbility.WrestlingMastery && AbilityProfile.AbilityCount() >= 3) ||*/
-                    ((abil & MagicalAbility.Tokuno) != 0 && !AbilityProfile.TokunoTame))
+                if ((Definition.MagicalAbilities & abil) == 0 || AbilityProfile.HasAbility(abil) || !AbilityProfile.CanChooseMagicalAbility(abil) || (abil & MagicalAbility.Tokuno) != 0 && !AbilityProfile.TokunoTame)
                 {
                     continue;
                 }
@@ -1015,9 +1013,9 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if (o is SpecialAbility[])
+            if (o is SpecialAbility[] abilities)
             {
-                if (!AbilityProfile.CanChooseSpecialAbility((SpecialAbility[])o))
+                if (!AbilityProfile.CanChooseSpecialAbility(abilities))
                 {
                     return false;
                 }
@@ -1027,7 +1025,7 @@ namespace Server.Mobiles
                     return true;
                 }
 
-                foreach (SpecialAbility ability in (SpecialAbility[])o)
+                foreach (SpecialAbility ability in abilities)
                 {
                     if (!AbilityProfile.HasAbility(ability))
                     {
@@ -1035,14 +1033,14 @@ namespace Server.Mobiles
                     }
                 }
             }
-            else if (o is WeaponAbility[])
+            else if (o is WeaponAbility[] weaponAbilities)
             {
                 if (!AbilityProfile.CanChooseWeaponAbility())
                 {
                     return false;
                 }
 
-                foreach (WeaponAbility ability in (WeaponAbility[])o)
+                foreach (WeaponAbility ability in weaponAbilities)
                 {
                     if (!AbilityProfile.HasAbility(ability))
                     {
@@ -1050,7 +1048,7 @@ namespace Server.Mobiles
                     }
                 }
             }
-            else if (o is AreaEffect[])
+            else if (o is AreaEffect[] effects)
             {
                 if (!AbilityProfile.CanChooseAreaEffect())
                 {
@@ -1062,7 +1060,7 @@ namespace Server.Mobiles
                     return true;
                 }
 
-                foreach (AreaEffect ability in (AreaEffect[])o)
+                foreach (AreaEffect ability in effects)
                 {
                     if (!AbilityProfile.HasAbility(ability))
                     {
@@ -1070,9 +1068,9 @@ namespace Server.Mobiles
                     }
                 }
             }
-            else if (o is SkillName[])
+            else if (o is SkillName[] names)
             {
-                foreach (SkillName name in (SkillName[])o)
+                foreach (SkillName name in names)
                 {
                     Skill skill = Creature.Skills[name];
 
@@ -1280,10 +1278,8 @@ namespace Server.Mobiles
 
                 double originalValueWeight = valueWeight;
 
-                if (TrainingPoint.TrainPoint is PetStat && (PetStat)TrainingPoint.TrainPoint <= PetStat.Mana)
+                if (TrainingPoint.TrainPoint is PetStat stat && stat <= PetStat.Mana)
                 {
-                    PetStat stat = (PetStat)TrainingPoint.TrainPoint;
-
                     double maxTotalCap = PetTrainingHelper.GetTrainingCapTotal(stat);
                     double currentTotal = stat <= PetStat.Int ? PetTrainingHelper.GetTotalStatWeight(Creature) : PetTrainingHelper.GetTotalAttributeWeight(Creature);
 
@@ -1293,12 +1289,11 @@ namespace Server.Mobiles
                     }
                     else if (currentTotal + nonAdjustedWeight > maxTotalCap)
                     {
-                        valueWeight -= (currentTotal + nonAdjustedWeight) - maxTotalCap;
+                        valueWeight -= currentTotal + nonAdjustedWeight - maxTotalCap;
                     }
                 }
-                else if (TrainingPoint.TrainPoint is ResistanceType)
+                else if (TrainingPoint.TrainPoint is ResistanceType resist)
                 {
-                    ResistanceType resist = (ResistanceType)TrainingPoint.TrainPoint;
                     double maxTotalCap = PetTrainingHelper.GetTrainingCapTotal(resist);
                     double currentTotal = PetTrainingHelper.GetTotalResistWeight(Creature);
 
@@ -1308,7 +1303,7 @@ namespace Server.Mobiles
                     }
                     else if (currentTotal + nonAdjustedWeight > maxTotalCap)
                     {
-                        valueWeight -= (currentTotal + nonAdjustedWeight) - maxTotalCap;
+                        valueWeight -= currentTotal + nonAdjustedWeight - maxTotalCap;
                     }
                 }
 
@@ -1346,8 +1341,10 @@ namespace Server.Mobiles
 
                     int reqCost = req.Cost;
 
-                    if (req.Requirement is SkillName && Creature.Skills[(SkillName)req.Requirement].Value > 0)
+                    if (req.Requirement is SkillName skillName && Creature.Skills[skillName].Value > 0)
+                    {
                         reqCost = 0;
+                    }
 
                     AddLabel(245, 225 + (i * 20), 0x26, reqCost.ToString());
                     AddTooltip(1157523);

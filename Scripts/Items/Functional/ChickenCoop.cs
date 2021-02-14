@@ -21,8 +21,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
-            get { return m_Level; }
-            set { m_Level = value; }
+            get => m_Level;
+            set => m_Level = value;
         }
 
         public Dictionary<Mobile, List<BaseCreature>> Stored => m_Stored;
@@ -209,7 +209,7 @@ namespace Server.Items
 
             for (int i = 0; i < stabled.Count; i++)
             {
-                BaseCreature pet = stabled[i] as BaseCreature;
+                BaseCreature pet = stabled[i];
 
                 if (pet == null || pet.Deleted)
                 {
@@ -220,7 +220,6 @@ namespace Server.Items
 
                     stabled.RemoveAt(i);
                     --i;
-                    continue;
                 }
             }
 
@@ -265,7 +264,7 @@ namespace Server.Items
             if (Deleted || !from.CheckAlive() || !CanUse() || !CheckAccess(from))
                 return;
 
-            else if (GetCount() >= MaxStables)
+            if (GetCount() >= MaxStables)
             {
                 from.SendLocalizedMessage(1114325); // There is no more room in your chicken coop!
             }
@@ -299,7 +298,7 @@ namespace Server.Items
             if (Deleted || !from.CheckAlive() || !CanUse() || !CheckAccess(from))
                 return;
 
-            else if (!pet.Controlled || pet.ControlMaster != from)
+            if (!pet.Controlled || pet.ControlMaster != from)
             {
                 from.SendLocalizedMessage(1042562); // You do not own that pet!
             }
@@ -362,7 +361,7 @@ namespace Server.Items
 
             for (int i = 0; i < stabled.Count; ++i)
             {
-                BaseCreature pet = stabled[i] as BaseCreature;
+                BaseCreature pet = stabled[i];
 
                 if (pet == null || pet.Deleted)
                 {
@@ -378,7 +377,7 @@ namespace Server.Items
 
                 ++stabledCount;
 
-                if ((from.Followers + pet.ControlSlots) <= from.FollowersMax)
+                if (from.Followers + pet.ControlSlots <= from.FollowersMax)
                 {
                     pet.SetControlMaster(from);
 
@@ -494,9 +493,8 @@ namespace Server.Items
                 {
                     Mobile chicken = reader.ReadMobile();
 
-                    if (chicken != null && chicken is BaseCreature)
+                    if (chicken is BaseCreature bc)
                     {
-                        BaseCreature bc = chicken as BaseCreature;
                         bc.IsStabled = true;
                         list.Add(bc);
                     }

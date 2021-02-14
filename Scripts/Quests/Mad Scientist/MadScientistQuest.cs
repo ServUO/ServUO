@@ -108,7 +108,7 @@ namespace Server.Engines.Quests
             new SutekIngredientInfo(SutekIngredient.BlackPowder,   new Point3D(920, 597, -6),    0x0B48, 1112815, 0x497),
             new SutekIngredientInfo(SutekIngredient.WhitePowder,   new Point3D(926, 602, -6),    0x241D, 1112816),
             new SutekIngredientInfo(SutekIngredient.BluePowder,    new Point3D(926, 594, -4),    0x241E, 1112817),
-            new SutekIngredientInfo(SutekIngredient.Nails,         new Point3D(915, 589, -14),   0x102E, 1024142),
+            new SutekIngredientInfo(SutekIngredient.Nails,         new Point3D(915, 589, -14),   0x102E, 1024142)
         };
 
         private static readonly Dictionary<Mobile, QuestContext> m_Table = new Dictionary<Mobile, QuestContext>();

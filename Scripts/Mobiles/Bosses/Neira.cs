@@ -102,8 +102,8 @@ namespace Server.Mobiles
             if (mount != null)
                 mount.Rider = null;
 
-            if (mount is Mobile)
-                ((Mobile)mount).Delete();
+            if (mount is Mobile mobile)
+                mobile.Delete();
 
             return base.OnBeforeDeath();
         }
@@ -192,7 +192,7 @@ namespace Server.Mobiles
 
         private void CheckSpeedBoost()
         {
-            if (Hits < (HitsMax / 4))
+            if (Hits < HitsMax / 4)
             {
                 if (!m_SpeedBoost)
                 {
@@ -219,10 +219,7 @@ namespace Server.Mobiles
 
             public Mobile Rider
             {
-                get
-                {
-                    return m_Item.Rider;
-                }
+                get => m_Item.Rider;
                 set
                 {
                 }
@@ -258,7 +255,6 @@ namespace Server.Mobiles
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
 
                 writer.Write(m_Rider);
@@ -267,8 +263,7 @@ namespace Server.Mobiles
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 m_Rider = reader.ReadMobile();
 

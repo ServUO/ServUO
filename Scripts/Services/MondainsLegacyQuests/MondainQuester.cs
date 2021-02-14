@@ -67,7 +67,7 @@ namespace Server.Engines.Quests
 
                 if (chain != null && chain.Quester != null && chain.Quester == GetType())
                 {
-                    BaseQuest quest = QuestHelper.RandomQuest(player, new Type[] { chain.CurrentQuest }, this);
+                    BaseQuest quest = QuestHelper.RandomQuest(player, new[] { chain.CurrentQuest }, this);
 
                     if (quest != null)
                     {
@@ -116,10 +116,8 @@ namespace Server.Engines.Quests
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.Alive && !m.Hidden && m is PlayerMobile)
+            if (m.Alive && !m.Hidden && m is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)m;
-
                 int range = AutoTalkRange;
 
                 if (range >= 0 && InRange(m, range) && !InRange(oldLocation, range))
@@ -127,7 +125,7 @@ namespace Server.Engines.Quests
 
                 range = AutoSpeakRange;
 
-                if (InLOS(m) && range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && DateTime.UtcNow >= m_Spoken + SpeakDelay)
+                if (InLOS(pm) && range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && DateTime.UtcNow >= m_Spoken + SpeakDelay)
                 {
                     if (Utility.Random(100) < 50)
                         Advertise();
@@ -139,8 +137,10 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m.Alive && m is PlayerMobile)
-                OnTalk((PlayerMobile)m);
+            if (m.Alive && m is PlayerMobile mobile)
+            {
+                OnTalk(mobile);
+            }
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -158,7 +158,6 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             if (CantWalk)
@@ -168,8 +167,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Spoken = DateTime.UtcNow;
 

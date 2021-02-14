@@ -64,7 +64,7 @@ namespace Server.Items
 
         public void OnMine(Mobile from, Item tool)
         {
-            if (tool is IUsesRemaining && ((IUsesRemaining)tool).UsesRemaining < 1)
+            if (tool is IUsesRemaining remaining && remaining.UsesRemaining < 1)
                 return;
 
             from.Direction = from.GetDirectionTo(Location);
@@ -111,10 +111,8 @@ namespace Server.Items
 
         public void CheckTool(Item tool)
         {
-            if (tool != null && tool is IUsesRemaining)
+            if (tool != null && tool is IUsesRemaining toolWithUses)
             {
-                IUsesRemaining toolWithUses = (IUsesRemaining)tool;
-
                 toolWithUses.ShowUsesRemaining = true;
 
                 if (toolWithUses.UsesRemaining > 0)

@@ -20,7 +20,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return _Active; }
+            get => _Active;
             set
             {
                 bool active = _Active;
@@ -123,7 +123,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public void Activate()
         {
-            if (Link && Stations != null && Stations.Where(s => s.Active).Count() == Stations.Count)
+            if (Link && Stations != null && Stations.Count(s => s.Active) == Stations.Count)
             {
                 if (!KotlBattleSimulator.Instance.Active)
                 {
@@ -242,7 +242,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Active = reader.ReadBool();
             Chest1 = reader.ReadItem() as InternalContainer;
@@ -328,7 +328,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

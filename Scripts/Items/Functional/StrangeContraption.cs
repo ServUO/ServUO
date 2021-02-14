@@ -56,11 +56,8 @@ namespace Server.Items
                     StrangeContraptionAddon.Table.Remove(m);
                     return true;
                 }
-                else
-                {
-                    m.SendLocalizedMessage(1060001); // You throw the switch, but the mechanism cannot be engaged again so soon.
-                }
 
+                m.SendLocalizedMessage(1060001); // You throw the switch, but the mechanism cannot be engaged again so soon.
                 return false;
             }
 
@@ -70,7 +67,7 @@ namespace Server.Items
                 {
                     if (CanDrop(m_Mobile))
                     {
-                        Container pack = m_Mobile.Backpack as Container;
+                        Container pack = m_Mobile.Backpack;
 
                         if (pack == null)
                             return;
@@ -113,7 +110,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -201,7 +198,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

@@ -16,31 +16,23 @@ namespace Server.Items
         private string _EngravedText;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string EngravedText { get { return _EngravedText; } set { _EngravedText = value; InvalidateProperties(); } }
+        public string EngravedText { get => _EngravedText; set { _EngravedText = value; InvalidateProperties(); } }
 
         private bool _VvVItem;
         private Mobile _Owner;
         private string _OwnerName;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsVvVItem
-        {
-            get { return _VvVItem; }
-            set { _VvVItem = value; InvalidateProperties(); }
-        }
+        public bool IsVvVItem { get => _VvVItem; set { _VvVItem = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner
         {
-            get { return _Owner; }
+            get => _Owner;
             set { _Owner = value; if (_Owner != null) _OwnerName = _Owner.Name; InvalidateProperties(); }
         }
 
-        public virtual string OwnerName
-        {
-            get { return _OwnerName; }
-            set { _OwnerName = value; InvalidateProperties(); }
-        }
+        public virtual string OwnerName { get => _OwnerName; set { _OwnerName = value; InvalidateProperties(); } }
 
         /* Armor internals work differently now (Jun 19 2003)
         * 
@@ -151,10 +143,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BlessedBy
         {
-            get
-            {
-                return m_BlessedBy;
-            }
+            get => m_BlessedBy;
             set
             {
                 m_BlessedBy = value;
@@ -203,14 +192,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public AMA MeditationAllowance
         {
-            get
-            {
-                return (m_Meditate == (AMA)(-1) ? AosMedAllowance : m_Meditate);
-            }
-            set
-            {
-                m_Meditate = value;
-            }
+            get => m_Meditate == (AMA)(-1) ? AosMedAllowance : m_Meditate;
+            set => m_Meditate = value;
         }
 
         public int ArmorBase
@@ -243,9 +226,11 @@ namespace Server.Items
             get
             {
                 if (m_ArmorBase == -1)
+                {
                     return ArmorBase;
-                else
-                    return m_ArmorBase;
+                }
+
+                return m_ArmorBase;
             }
             set
             {
@@ -254,7 +239,7 @@ namespace Server.Items
             }
         }
 
-        public double BaseArmorRatingScaled => (BaseArmorRating * ArmorScalar);
+        public double BaseArmorRatingScaled => BaseArmorRating * ArmorScalar;
 
         public virtual double ArmorRating
         {
@@ -304,7 +289,7 @@ namespace Server.Items
             }
         }
 
-        public double ArmorRatingScaled => (ArmorRating * ArmorScalar);
+        public double ArmorRatingScaled => ArmorRating * ArmorScalar;
 
         #region Publish 81 Armor Refinement
         private int m_RefinedPhysical;
@@ -314,19 +299,19 @@ namespace Server.Items
         private int m_RefinedEnergy;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RefinedPhysical { get { return m_RefinedPhysical; } set { m_RefinedPhysical = value; InvalidateProperties(); } }
+        public int RefinedPhysical { get => m_RefinedPhysical; set { m_RefinedPhysical = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RefinedFire { get { return m_RefinedFire; } set { m_RefinedFire = value; InvalidateProperties(); } }
+        public int RefinedFire { get => m_RefinedFire; set { m_RefinedFire = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RefinedCold { get { return m_RefinedCold; } set { m_RefinedCold = value; InvalidateProperties(); } }
+        public int RefinedCold { get => m_RefinedCold; set { m_RefinedCold = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RefinedPoison { get { return m_RefinedPoison; } set { m_RefinedPoison = value; InvalidateProperties(); } }
+        public int RefinedPoison { get => m_RefinedPoison; set { m_RefinedPoison = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RefinedEnergy { get { return m_RefinedEnergy; } set { m_RefinedEnergy = value; InvalidateProperties(); } }
+        public int RefinedEnergy { get => m_RefinedEnergy; set { m_RefinedEnergy = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int RefinedDefenseChance => -(m_RefinedPhysical + m_RefinedFire + m_RefinedCold + m_RefinedPoison + m_RefinedEnergy);
@@ -487,23 +472,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int GorgonLenseCharges
         {
-            get { return m_GorgonLenseCharges; }
+            get => m_GorgonLenseCharges;
             set { m_GorgonLenseCharges = value; if (value == 0) m_GorgonLenseType = LenseType.None; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public LenseType GorgonLenseType
-        {
-            get { return m_GorgonLenseType; }
-            set { m_GorgonLenseType = value; InvalidateProperties(); }
-        }
+        public LenseType GorgonLenseType { get => m_GorgonLenseType; set { m_GorgonLenseType = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int TimesImbued
-        {
-            get { return m_TimesImbued; }
-            set { m_TimesImbued = value; InvalidateProperties(); }
-        }
+        public int TimesImbued { get => m_TimesImbued; set { m_TimesImbued = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsImbued
@@ -525,39 +502,19 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PhysNonImbuing
-        {
-            get { return m_PhysNonImbuing; }
-            set { m_PhysNonImbuing = value; }
-        }
+        public int PhysNonImbuing { get => m_PhysNonImbuing; set => m_PhysNonImbuing = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int FireNonImbuing
-        {
-            get { return m_FireNonImbuing; }
-            set { m_FireNonImbuing = value; }
-        }
+        public int FireNonImbuing { get => m_FireNonImbuing; set => m_FireNonImbuing = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ColdNonImbuing
-        {
-            get { return m_ColdNonImbuing; }
-            set { m_ColdNonImbuing = value; }
-        }
+        public int ColdNonImbuing { get => m_ColdNonImbuing; set => m_ColdNonImbuing = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PoisonNonImbuing
-        {
-            get { return m_PoisonNonImbuing; }
-            set { m_PoisonNonImbuing = value; }
-        }
+        public int PoisonNonImbuing { get => m_PoisonNonImbuing; set => m_PoisonNonImbuing = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EnergyNonImbuing
-        {
-            get { return m_EnergyNonImbuing; }
-            set { m_EnergyNonImbuing = value; }
-        }
+        public int EnergyNonImbuing { get => m_EnergyNonImbuing; set => m_EnergyNonImbuing = value; }
 
         public virtual int[] BaseResists
         {
@@ -580,33 +537,18 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ReforgedPrefix ReforgedPrefix
-        {
-            get { return m_ReforgedPrefix; }
-            set { m_ReforgedPrefix = value; InvalidateProperties(); }
-        }
+        public ReforgedPrefix ReforgedPrefix { get => m_ReforgedPrefix; set { m_ReforgedPrefix = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ReforgedSuffix ReforgedSuffix
-        {
-            get { return m_ReforgedSuffix; }
-            set { m_ReforgedSuffix = value; InvalidateProperties(); }
-        }
+        public ReforgedSuffix ReforgedSuffix { get => m_ReforgedSuffix; set { m_ReforgedSuffix = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemPower ItemPower
-        {
-            get { return m_ItemPower; }
-            set { m_ItemPower = value; InvalidateProperties(); }
-        }
+        public ItemPower ItemPower { get => m_ItemPower; set { m_ItemPower = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrBonus
         {
-            get
-            {
-                return (m_StrBonus == -1 ? AosStrBonus : m_StrBonus);
-            }
+            get => m_StrBonus == -1 ? AosStrBonus : m_StrBonus;
             set
             {
                 m_StrBonus = value;
@@ -617,10 +559,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int DexBonus
         {
-            get
-            {
-                return (m_DexBonus == -1 ? AosDexBonus : m_DexBonus);
-            }
+            get => m_DexBonus == -1 ? AosDexBonus : m_DexBonus;
             set
             {
                 m_DexBonus = value;
@@ -631,10 +570,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int IntBonus
         {
-            get
-            {
-                return (m_IntBonus == -1 ? AosIntBonus : m_IntBonus);
-            }
+            get => m_IntBonus == -1 ? AosIntBonus : m_IntBonus;
             set
             {
                 m_IntBonus = value;
@@ -664,10 +600,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int DexRequirement
         {
-            get
-            {
-                return (m_DexReq == -1 ? DexReq : m_DexReq);
-            }
+            get => m_DexReq == -1 ? DexReq : m_DexReq;
             set
             {
                 m_DexReq = value;
@@ -678,10 +611,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int IntRequirement
         {
-            get
-            {
-                return (m_IntReq == -1 ? IntReq : m_IntReq);
-            }
+            get => m_IntReq == -1 ? IntReq : m_IntReq;
             set
             {
                 m_IntReq = value;
@@ -692,10 +622,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Identified
         {
-            get
-            {
-                return m_Identified;
-            }
+            get => m_Identified;
             set
             {
                 m_Identified = value;
@@ -704,25 +631,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed
-        {
-            get
-            {
-                return m_PlayerConstructed;
-            }
-            set
-            {
-                m_PlayerConstructed = value;
-            }
-        }
+        public bool PlayerConstructed { get => m_PlayerConstructed; set => m_PlayerConstructed = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual CraftResource Resource
         {
-            get
-            {
-                return m_Resource;
-            }
+            get => m_Resource;
             set
             {
                 if (m_Resource != value || m_Resource == DefaultResource)
@@ -739,8 +653,10 @@ namespace Server.Items
                     Invalidate();
                     InvalidateProperties();
 
-                    if (Parent is Mobile)
-                        ((Mobile)Parent).UpdateResistances();
+                    if (Parent is Mobile mobile)
+                    {
+                        mobile.UpdateResistances();
+                    }
 
                     ScaleDurability();
                 }
@@ -763,14 +679,10 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxHitPoints
         {
-            get
-            {
-                return m_MaxHitPoints;
-            }
+            get => m_MaxHitPoints;
             set
             {
                 m_MaxHitPoints = value;
-
                 InvalidateProperties();
             }
         }
@@ -778,10 +690,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HitPoints
         {
-            get
-            {
-                return m_HitPoints;
-            }
+            get => m_HitPoints;
             set
             {
                 if (value != m_HitPoints && MaxHitPoints > 0)
@@ -801,10 +710,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get
-            {
-                return m_Crafter;
-            }
+            get => m_Crafter;
             set
             {
                 m_Crafter = value;
@@ -815,10 +721,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get
-            {
-                return m_Quality;
-            }
+            get => m_Quality;
             set
             {
                 UnscaleDurability();
@@ -843,29 +746,25 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes Attributes { get { return m_AosAttributes; } set { } }
+        public AosAttributes Attributes { get => m_AosAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosArmorAttributes ArmorAttributes { get { return m_AosArmorAttributes; } set { } }
+        public AosArmorAttributes ArmorAttributes { get => m_AosArmorAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SkillBonuses { get { return m_AosSkillBonuses; } set { } }
+        public AosSkillBonuses SkillBonuses { get => m_AosSkillBonuses; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SAAbsorptionAttributes AbsorptionAttributes { get { return m_SAAbsorptionAttributes; } set { } }
+        public SAAbsorptionAttributes AbsorptionAttributes { get => m_SAAbsorptionAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
+        public NegativeAttributes NegativeAttributes { get => m_NegativeAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosWeaponAttributes WeaponAttributes { get { return m_AosWeaponAttributes; } set { } }
+        public AosWeaponAttributes WeaponAttributes { get => m_AosWeaponAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TalismanAttribute Protection
-        {
-            get { return m_TalismanProtection; }
-            set { m_TalismanProtection = value; InvalidateProperties(); }
-        }
+        public TalismanAttribute Protection { get => m_TalismanProtection; set { m_TalismanProtection = value; InvalidateProperties(); } }
 
         public override double DefaultWeight
         {
@@ -895,20 +794,22 @@ namespace Server.Items
         public int ComputeStatBonus(StatType type)
         {
             if (type == StatType.Str)
+            {
                 return StrBonus + Attributes.BonusStr;
-            else if (type == StatType.Dex)
+            }
+
+            if (type == StatType.Dex)
+            {
                 return DexBonus + Attributes.BonusDex;
-            else
-                return IntBonus + Attributes.BonusInt;
+            }
+
+            return IntBonus + Attributes.BonusInt;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int PhysicalBonus
         {
-            get
-            {
-                return m_PhysicalBonus;
-            }
+            get => m_PhysicalBonus;
             set
             {
                 m_PhysicalBonus = value;
@@ -919,10 +820,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int FireBonus
         {
-            get
-            {
-                return m_FireBonus;
-            }
+            get => m_FireBonus;
             set
             {
                 m_FireBonus = value;
@@ -933,10 +831,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int ColdBonus
         {
-            get
-            {
-                return m_ColdBonus;
-            }
+            get => m_ColdBonus;
             set
             {
                 m_ColdBonus = value;
@@ -947,10 +842,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int PoisonBonus
         {
-            get
-            {
-                return m_PoisonBonus;
-            }
+            get => m_PoisonBonus;
             set
             {
                 m_PoisonBonus = value;
@@ -961,10 +853,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int EnergyBonus
         {
-            get
-            {
-                return m_EnergyBonus;
-            }
+            get => m_EnergyBonus;
             set
             {
                 m_EnergyBonus = value;
@@ -1104,17 +993,7 @@ namespace Server.Items
 
         private static double[] m_ArmorScalars = { 0.07, 0.07, 0.14, 0.15, 0.22, 0.35 };
 
-        public static double[] ArmorScalars
-        {
-            get
-            {
-                return m_ArmorScalars;
-            }
-            set
-            {
-                m_ArmorScalars = value;
-            }
-        }
+        public static double[] ArmorScalars { get => m_ArmorScalars; set => m_ArmorScalars = value; }
 
         public static void ValidateMobile(Mobile m)
         {
@@ -1125,11 +1004,9 @@ namespace Server.Items
 
                 Item item = m.Items[i];
 
-                if (item is BaseArmor)
+                if (item is BaseArmor armor)
                 {
-                    BaseArmor armor = (BaseArmor)item;
-
-                    if (!RaceDefinitions.ValidateEquipment(m, item))
+                    if (!RaceDefinitions.ValidateEquipment(m, armor))
                     {
                         m.AddToBackpack(armor);
                     }
@@ -1180,10 +1057,8 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.AddTo(from);
 
                 if (IsSetItem)
@@ -1206,15 +1081,19 @@ namespace Server.Items
             int scale = 100;
 
             if (m_MaxHitPoints > 0 && m_HitPoints < m_MaxHitPoints)
-                scale = 50 + ((50 * m_HitPoints) / m_MaxHitPoints);
+            {
+                scale = 50 + 50 * m_HitPoints / m_MaxHitPoints;
+            }
 
-            return (armor * scale) / 100;
+            return armor * scale / 100;
         }
 
         protected void Invalidate()
         {
-            if (Parent is Mobile)
-                ((Mobile)Parent).Delta(MobileDelta.Armor); // Tell them armor rating has changed
+            if (Parent is Mobile mobile)
+            {
+                mobile.Delta(MobileDelta.Armor); // Tell them armor rating has changed
+            }
         }
 
         public BaseArmor(Serial serial)
@@ -1230,7 +1109,7 @@ namespace Server.Items
 
         private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
         {
-            return ((flags & toGet) != 0);
+            return (flags & toGet) != 0;
         }
 
         [Flags]
@@ -1278,7 +1157,7 @@ namespace Server.Items
 
         private static bool GetSaveFlag(SetFlag flags, SetFlag toGet)
         {
-            return ((flags & toGet) != 0);
+            return (flags & toGet) != 0;
         }
 
         [Flags]
@@ -1421,7 +1300,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.ColdBonus, m_ColdBonus != 0);
             SetSaveFlag(ref flags, SaveFlag.PoisonBonus, m_PoisonBonus != 0);
             SetSaveFlag(ref flags, SaveFlag.EnergyBonus, m_EnergyBonus != 0);
-            SetSaveFlag(ref flags, SaveFlag.Identified, m_Identified != false);
+            SetSaveFlag(ref flags, SaveFlag.Identified, m_Identified);
             SetSaveFlag(ref flags, SaveFlag.MaxHitPoints, m_MaxHitPoints != 0);
             SetSaveFlag(ref flags, SaveFlag.HitPoints, m_HitPoints != 0);
             SetSaveFlag(ref flags, SaveFlag.Crafter, m_Crafter != null);
@@ -1436,7 +1315,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.IntReq, m_IntReq != -1);
             SetSaveFlag(ref flags, SaveFlag.MedAllowance, m_Meditate != (AMA)(-1));
             SetSaveFlag(ref flags, SaveFlag.SkillBonuses, !m_AosSkillBonuses.IsEmpty);
-            SetSaveFlag(ref flags, SaveFlag.PlayerConstructed, m_PlayerConstructed != false);
+            SetSaveFlag(ref flags, SaveFlag.PlayerConstructed, m_PlayerConstructed);
             SetSaveFlag(ref flags, SaveFlag.xAbsorptionAttributes, !m_SAAbsorptionAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
@@ -1599,7 +1478,7 @@ namespace Server.Items
                             m_SetAttributes = new AosAttributes(this);
 
                         if (GetSaveFlag(sflags, SetFlag.ArmorAttributes))
-                            m_SetSelfRepair = (new AosArmorAttributes(this, reader)).SelfRepair;
+                            m_SetSelfRepair = new AosArmorAttributes(this, reader).SelfRepair;
 
                         if (GetSaveFlag(sflags, SetFlag.SkillBonuses))
                             m_SetSkillBonuses = new AosSkillBonuses(this, reader);
@@ -1688,7 +1567,7 @@ namespace Server.Items
                             m_EnergyBonus = reader.ReadEncodedInt();
 
                         if (GetSaveFlag(flags, SaveFlag.Identified))
-                            m_Identified = (version >= 7 || reader.ReadBool());
+                            m_Identified = version >= 7 || reader.ReadBool();
 
                         if (GetSaveFlag(flags, SaveFlag.MaxHitPoints))
                             m_MaxHitPoints = reader.ReadEncodedInt();
@@ -1802,9 +1681,9 @@ namespace Server.Items
             int dexBonus = ComputeStatBonus(StatType.Dex);
             int intBonus = ComputeStatBonus(StatType.Int);
 
-            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            if (Parent is Mobile mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
             {
-                Mobile m = (Mobile)Parent;
+                Mobile m = mobile;
 
                 string modName = Serial.ToString();
 
@@ -1818,8 +1697,10 @@ namespace Server.Items
                     m.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
             }
 
-            if (Parent is Mobile)
-                ((Mobile)Parent).CheckStatTimers();
+            if (Parent is Mobile pMobile)
+            {
+                pMobile.CheckStatTimers();
+            }
         }
 
         public virtual CraftResource DefaultResource => CraftResource.Iron;
@@ -1882,7 +1763,8 @@ namespace Server.Items
                 {
                     return false;
                 }
-                else if (!AllowMaleWearer && !from.Female)
+
+                if (!AllowMaleWearer && !from.Female)
                 {
                     if (AllowFemaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1010388); // Only females can wear this.
@@ -1891,7 +1773,8 @@ namespace Server.Items
 
                     return false;
                 }
-                else if (!AllowFemaleWearer && from.Female)
+
+                if (!AllowFemaleWearer && from.Female)
                 {
                     if (AllowMaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1063343); // Only males can wear this.
@@ -1900,35 +1783,34 @@ namespace Server.Items
 
                     return false;
                 }
-                #region Personal Bless Deed
-                else if (BlessedBy != null && BlessedBy != from)
+
+                if (BlessedBy != null && BlessedBy != from)
                 {
                     from.SendLocalizedMessage(1075277); // That item is blessed by another player.
 
                     return false;
                 }
-                #endregion
-                else
-                {
-                    int strBonus = ComputeStatBonus(StatType.Str), strReq = ComputeStatReq(StatType.Str);
-                    int dexBonus = ComputeStatBonus(StatType.Dex), dexReq = ComputeStatReq(StatType.Dex);
-                    int intBonus = ComputeStatBonus(StatType.Int), intReq = ComputeStatReq(StatType.Int);
 
-                    if (from.Dex < dexReq || (from.Dex + dexBonus) < 1)
-                    {
-                        from.SendLocalizedMessage(502077); // You do not have enough dexterity to equip this item.
-                        return false;
-                    }
-                    else if (from.Str < strReq || (from.Str + strBonus) < 1)
-                    {
-                        from.SendLocalizedMessage(500213); // You are not strong enough to equip that.
-                        return false;
-                    }
-                    else if (from.Int < intReq || (from.Int + intBonus) < 1)
-                    {
-                        from.SendLocalizedMessage(1071936); // You cannot equip that.
-                        return false;
-                    }
+                int strBonus = ComputeStatBonus(StatType.Str), strReq = ComputeStatReq(StatType.Str);
+                int dexBonus = ComputeStatBonus(StatType.Dex), dexReq = ComputeStatReq(StatType.Dex);
+                int intBonus = ComputeStatBonus(StatType.Int), intReq = ComputeStatReq(StatType.Int);
+
+                if (from.Dex < dexReq || from.Dex + dexBonus < 1)
+                {
+                    from.SendLocalizedMessage(502077); // You do not have enough dexterity to equip this item.
+                    return false;
+                }
+
+                if (from.Str < strReq || from.Str + strBonus < 1)
+                {
+                    from.SendLocalizedMessage(500213); // You are not strong enough to equip that.
+                    return false;
+                }
+
+                if (from.Int < intReq || from.Int + intBonus < 1)
+                {
+                    from.SendLocalizedMessage(1071936); // You cannot equip that.
+                    return false;
                 }
             }
 
@@ -1941,10 +1823,10 @@ namespace Server.Items
                 return true;
 
             if (Layer == Layer.Pants)
-                return (m.FindItemOnLayer(Layer.InnerLegs) != null);
+                return m.FindItemOnLayer(Layer.InnerLegs) != null;
 
             if (Layer == Layer.Shirt)
-                return (m.FindItemOnLayer(Layer.InnerTorso) != null);
+                return m.FindItemOnLayer(Layer.InnerTorso) != null;
 
             return false;
         }
@@ -1976,9 +1858,8 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
                 string modName = Serial.ToString();
 
                 m.RemoveStatMod(modName + "Str");
@@ -1987,11 +1868,13 @@ namespace Server.Items
 
                 m_AosSkillBonuses.Remove();
 
-                ((Mobile)parent).Delta(MobileDelta.Armor); // Tell them armor rating has changed
+                m.Delta(MobileDelta.Armor); // Tell them armor rating has changed
                 m.CheckStatTimers();
 
                 if (IsSetItem && m_SetEquipped)
+                {
                     SetHelper.RemoveSetBonus(m, SetID, this);
+                }
             }
 
             base.OnRemoved(parent);
@@ -2031,7 +1914,7 @@ namespace Server.Items
                     if (weapon.Type == WeaponType.Bashing)
                         wear = Absorbed / 2;
 
-                    if (wear > 0 && m_MaxHitPoints > 0)
+                    if (m_MaxHitPoints > 0)
                     {
                         if (m_HitPoints >= wear)
                         {
@@ -2050,8 +1933,8 @@ namespace Server.Items
                             {
                                 MaxHitPoints -= wear;
 
-                                if (Parent is Mobile)
-                                    ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                                if (Parent is Mobile mobile)
+                                    mobile.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
                             }
                             else
                             {
@@ -2078,10 +1961,7 @@ namespace Server.Items
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
-            get
-            {
-                return base.Hue;
-            }
+            get => base.Hue;
             set
             {
                 base.Hue = value;
@@ -2158,7 +2038,7 @@ namespace Server.Items
             if (base.AllowEquipedCast(from))
                 return true;
 
-            return (m_AosAttributes.SpellChanneling != 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) != 0);
+            return m_AosAttributes.SpellChanneling != 0 || Enhancement.GetValue(from, AosAttribute.SpellChanneling) != 0;
         }
 
         public virtual int GetLuckBonus()
@@ -2243,8 +2123,10 @@ namespace Server.Items
                 list.Add(1111709); // Gargoyles Only
             }
 
-            if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
-                list.Add(1116176 + ((int)((SurgeShield)this).Surge));
+            if (this is SurgeShield && ((SurgeShield) this).Surge > SurgeType.None)
+            {
+                list.Add(1116176 + (int) ((SurgeShield) this).Surge);
+            }
 
             m_NegativeAttributes.GetProperties(list, this);
             m_AosSkillBonuses.GetProperties(list);
@@ -2383,7 +2265,7 @@ namespace Server.Items
             if ((prop = m_AosAttributes.RegenMana) != 0)
                 list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
 
-            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
+            if ((prop = GetLuckBonus() + m_AosAttributes.Luck) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
 
             if ((prop = m_AosAttributes.EnhancePotions) != 0)
@@ -2493,8 +2375,10 @@ namespace Server.Items
                 DistributeExceptionalBonuses(from, tool is BaseRunicTool); // Not sure since when, but right now 15 points are added, not 14.
             }
 
-            if (tool is BaseRunicTool && !craftItem.ForceNonExceptional)
-                ((BaseRunicTool)tool).ApplyAttributesTo(this);
+            if (tool is BaseRunicTool runicTool && !craftItem.ForceNonExceptional)
+            {
+                runicTool.ApplyAttributesTo(this);
+            }
 
             if (!craftItem.ForceNonExceptional)
             {
@@ -2662,7 +2546,7 @@ namespace Server.Items
             return false;
         }
 
-        public static Type[] _MageArmorTypes = new Type[]
+        public static Type[] _MageArmorTypes =
         {
             typeof(HeavyPlateJingasa),  typeof(LightPlateJingasa),
             typeof(PlateMempo),         typeof(PlateDo),
@@ -2688,9 +2572,9 @@ namespace Server.Items
 
         public virtual int Pieces => 0;
 
-        public virtual bool BardMasteryBonus => (SetID == SetItem.Virtuoso);
+        public virtual bool BardMasteryBonus => SetID == SetItem.Virtuoso;
 
-        public bool IsSetItem => (SetID != SetItem.None);
+        public bool IsSetItem => SetID != SetItem.None;
 
         private int m_SetHue;
         private bool m_SetEquipped;
@@ -2699,10 +2583,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetHue
         {
-            get
-            {
-                return m_SetHue;
-            }
+            get => m_SetHue;
             set
             {
                 m_SetHue = value;
@@ -2710,65 +2591,24 @@ namespace Server.Items
             }
         }
 
-        public bool SetEquipped
-        {
-            get
-            {
-                return m_SetEquipped;
-            }
-            set
-            {
-                m_SetEquipped = value;
-            }
-        }
+        public bool SetEquipped { get => m_SetEquipped; set => m_SetEquipped = value; }
 
-        public bool LastEquipped
-        {
-            get
-            {
-                return m_LastEquipped;
-            }
-            set
-            {
-                m_LastEquipped = value;
-            }
-        }
+        public bool LastEquipped { get => m_LastEquipped; set => m_LastEquipped = value; }
 
         private AosAttributes m_SetAttributes;
         private AosSkillBonuses m_SetSkillBonuses;
         private int m_SetSelfRepair;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes SetAttributes
-        {
-            get
-            {
-                return m_SetAttributes;
-            }
-            set
-            {
-            }
-        }
+        public AosAttributes SetAttributes { get => m_SetAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SetSkillBonuses
-        {
-            get
-            {
-                return m_SetSkillBonuses;
-            }
-            set
-            {
-            }
-        }
+        public AosSkillBonuses SetSkillBonuses { get => m_SetSkillBonuses; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetSelfRepair
         {
-            get
-            {
-                return m_SetSelfRepair;
-            }
+            get => m_SetSelfRepair;
             set
             {
                 m_SetSelfRepair = value;
@@ -2781,10 +2621,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetPhysicalBonus
         {
-            get
-            {
-                return m_SetPhysicalBonus;
-            }
+            get => m_SetPhysicalBonus;
             set
             {
                 m_SetPhysicalBonus = value;
@@ -2795,10 +2632,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetFireBonus
         {
-            get
-            {
-                return m_SetFireBonus;
-            }
+            get => m_SetFireBonus;
             set
             {
                 m_SetFireBonus = value;
@@ -2809,10 +2643,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetColdBonus
         {
-            get
-            {
-                return m_SetColdBonus;
-            }
+            get => m_SetColdBonus;
             set
             {
                 m_SetColdBonus = value;
@@ -2823,10 +2654,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetPoisonBonus
         {
-            get
-            {
-                return m_SetPoisonBonus;
-            }
+            get => m_SetPoisonBonus;
             set
             {
                 m_SetPoisonBonus = value;
@@ -2837,10 +2665,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SetEnergyBonus
         {
-            get
-            {
-                return m_SetEnergyBonus;
-            }
+            get => m_SetEnergyBonus;
             set
             {
                 m_SetEnergyBonus = value;
@@ -2869,9 +2694,9 @@ namespace Server.Items
                 if (m_SetEnergyBonus != 0)
                     list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%		
             }
-            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParent is Mobile)
+            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParent is Mobile mobile)
             {
-                Mobile m = (Mobile)RootParent;
+                Mobile m = mobile;
 
                 if (m_SetPhysicalBonus != 0)
                     list.Add(1080361, SetHelper.GetSetTotalResist(m, ResistanceType.Physical).ToString()); // physical resist ~1_val~% (total)
@@ -2891,19 +2716,19 @@ namespace Server.Items
             else
             {
                 if (m_SetPhysicalBonus != 0)
-                    list.Add(1080361, ((BasePhysicalResistance * Pieces) + m_SetPhysicalBonus).ToString()); // physical resist ~1_val~% (total)
+                    list.Add(1080361, (BasePhysicalResistance * Pieces + m_SetPhysicalBonus).ToString()); // physical resist ~1_val~% (total)
 
                 if (m_SetFireBonus != 0)
-                    list.Add(1080362, ((BaseFireResistance * Pieces) + m_SetFireBonus).ToString()); // fire resist ~1_val~% (total)
+                    list.Add(1080362, (BaseFireResistance * Pieces + m_SetFireBonus).ToString()); // fire resist ~1_val~% (total)
 
                 if (m_SetColdBonus != 0)
-                    list.Add(1080363, ((BaseColdResistance * Pieces) + m_SetColdBonus).ToString()); // cold resist ~1_val~% (total)
+                    list.Add(1080363, (BaseColdResistance * Pieces + m_SetColdBonus).ToString()); // cold resist ~1_val~% (total)
 
                 if (m_SetPoisonBonus != 0)
-                    list.Add(1080364, ((BasePoisonResistance * Pieces) + m_SetPoisonBonus).ToString()); // poison resist ~1_val~% (total)
+                    list.Add(1080364, (BasePoisonResistance * Pieces + m_SetPoisonBonus).ToString()); // poison resist ~1_val~% (total)
 
                 if (m_SetEnergyBonus != 0)
-                    list.Add(1080365, ((BaseEnergyResistance * Pieces) + m_SetEnergyBonus).ToString()); // energy resist ~1_val~% (total)
+                    list.Add(1080365, (BaseEnergyResistance * Pieces + m_SetEnergyBonus).ToString()); // energy resist ~1_val~% (total)
             }
 
             int prop;
@@ -2948,7 +2773,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Altered
         {
-            get { return m_Altered; }
+            get => m_Altered;
             set
             {
                 m_Altered = value;

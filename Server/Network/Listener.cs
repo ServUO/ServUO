@@ -42,7 +42,7 @@ namespace Server.Network
 			m_OnAccept = OnAccept;
 			try
 			{
-				var res = m_Listener.BeginAccept(m_OnAccept, m_Listener);
+				IAsyncResult res = m_Listener.BeginAccept(m_OnAccept, m_Listener);
 			}
 			catch (SocketException ex)
 			{
@@ -54,7 +54,7 @@ namespace Server.Network
 
 		private Socket Bind(IPEndPoint ipep)
 		{
-			var s = new Socket(ipep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+			Socket s = new Socket(ipep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
 			try
 			{
@@ -70,11 +70,9 @@ namespace Server.Network
 			}
 			catch (Exception e)
 			{
-				if (e is SocketException)
+				if (e is SocketException se)
 				{
-					var se = (SocketException)e;
-
-					if (se.ErrorCode == 10048)
+                    if (se.ErrorCode == 10048)
 					{
 						// WSAEADDRINUSE
 						Utility.PushColor(ConsoleColor.Red);
@@ -103,7 +101,7 @@ namespace Server.Network
 
 		private void DisplayListener()
 		{
-			var ipep = m_Listener.LocalEndPoint as IPEndPoint;
+			IPEndPoint ipep = m_Listener.LocalEndPoint as IPEndPoint;
 
 			if (ipep == null)
 			{
@@ -112,11 +110,11 @@ namespace Server.Network
 
 			if (ipep.Address.Equals(IPAddress.Any) || ipep.Address.Equals(IPAddress.IPv6Any))
 			{
-				var adapters = NetworkInterface.GetAllNetworkInterfaces();
-				foreach (var adapter in adapters)
+				NetworkInterface[] adapters = NetworkInterface.GetAllNetworkInterfaces();
+				foreach (NetworkInterface adapter in adapters)
 				{
-					var properties = adapter.GetIPProperties();
-					foreach (var unicast in properties.UnicastAddresses)
+					IPInterfaceProperties properties = adapter.GetIPProperties();
+					foreach (UnicastIPAddressInformation unicast in properties.UnicastAddresses)
 					{
 						if (ipep.AddressFamily == unicast.Address.AddressFamily)
 						{
@@ -151,7 +149,7 @@ namespace Server.Network
 
 		private void OnAccept(IAsyncResult asyncResult)
 		{
-			var listener = (Socket)asyncResult.AsyncState;
+			Socket listener = (Socket)asyncResult.AsyncState;
 
 			Socket accepted = null;
 
@@ -196,7 +194,7 @@ namespace Server.Network
 		{
 			try
 			{
-				var args = new SocketConnectEventArgs(socket);
+				SocketConnectEventArgs args = new SocketConnectEventArgs(socket);
 
 				EventSink.InvokeSocketConnect(args);
 
@@ -261,7 +259,7 @@ namespace Server.Network
 
 		public void Dispose()
 		{
-			var socket = Interlocked.Exchange(ref m_Listener, null);
+			Socket socket = Interlocked.Exchange(ref m_Listener, null);
 
 			if (socket != null)
 			{

@@ -18,7 +18,7 @@ namespace Server
 
         public static int LevelOverride
         {
-            get { return _LevelOverride; }
+            get => _LevelOverride;
             set
             {
                 _LevelOverride = value;
@@ -70,13 +70,13 @@ namespace Server
                 return NightLevel;
 
             if (hours < 6)
-                return NightLevel + (((((hours - 4) * 60) + minutes) * (DayLevel - NightLevel)) / 120);
+                return NightLevel + (((hours - 4) * 60) + minutes) * (DayLevel - NightLevel) / 120;
 
             if (hours < 22)
                 return DayLevel;
 
             if (hours < 24)
-                return DayLevel + (((((hours - 22) * 60) + minutes) * (NightLevel - DayLevel)) / 120);
+                return DayLevel + (((hours - 22) * 60) + minutes) * (NightLevel - DayLevel) / 120;
 
             return NightLevel; // should never be
         }

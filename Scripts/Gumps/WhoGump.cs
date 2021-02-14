@@ -89,7 +89,7 @@ namespace Server.Gumps
             {
                 Mobile m = states[i].Mobile;
 
-                if (m != null && (m == owner || !m.Hidden || owner.AccessLevel >= m.AccessLevel || (m is PlayerMobile && ((PlayerMobile)m).VisibilityList.Contains(owner))))
+                if (m != null && (m == owner || !m.Hidden || owner.AccessLevel >= m.AccessLevel || m is PlayerMobile pm && pm.VisibilityList.Contains(owner)))
                 {
                     if (filter != null && (m.Name == null || m.Name.ToLower().IndexOf(filter) < 0))
                         continue;
@@ -221,7 +221,7 @@ namespace Server.Gumps
                                 from.SendMessage("That player is no longer online.");
                                 from.SendGump(new WhoGump(from, m_Mobiles, m_Page));
                             }
-                            else if (m == from || !m.Hidden || from.AccessLevel >= m.AccessLevel || (m is PlayerMobile && ((PlayerMobile)m).VisibilityList.Contains(from)))
+                            else if (m == from || !m.Hidden || from.AccessLevel >= m.AccessLevel || (m is PlayerMobile pm && pm.VisibilityList.Contains(from)))
                             {
                                 from.SendGump(new ClientGump(from, m.NetState));
                             }
@@ -266,7 +266,7 @@ namespace Server.Gumps
                     {
                         if (m.Murderer)
                             return EC ? 0x20 : 0x21;
-                        else if (m.Criminal)
+                        if (m.Criminal)
                             return EC ? 0x3AE : 0x3B1;
 
                         return EC ? 0x5C : 0x58;
@@ -281,14 +281,21 @@ namespace Server.Gumps
             public int Compare(Mobile x, Mobile y)
             {
                 if (x == null || y == null)
+                {
                     throw new ArgumentException();
+                }
 
                 if (x.AccessLevel > y.AccessLevel)
+                {
                     return -1;
-                else if (x.AccessLevel < y.AccessLevel)
+                }
+
+                if (x.AccessLevel < y.AccessLevel)
+                {
                     return 1;
-                else
-                    return Insensitive.Compare(x.Name, y.Name);
+                }
+
+                return Insensitive.Compare(x.Name, y.Name);
             }
         }
     }

@@ -5,7 +5,7 @@ namespace Server.Items
         public static BlackthornStep3 InstanceTram { get; set; }
         public static BlackthornStep3 InstanceFel { get; set; }
 
-        private static readonly int[,] m_AddOnSimpleComponents = new int[,]
+        private static readonly int[,] m_AddOnSimpleComponents =
         {
               {6093, 11, -4, 0}, {6093, 12, 0, 0}, {6093, 10, 1, 0}// 1	2	3	
 			, {6093, 10, -2, 0}, {6670, 10, -9, 0}, {6093, 12, -7, 0}// 4	55	67	
@@ -514,7 +514,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

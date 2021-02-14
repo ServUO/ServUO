@@ -31,8 +31,8 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
-                    from.SendGump(new SkillsGump(from, (Mobile)o));
+                if (o is Mobile mobile)
+                    from.SendGump(new SkillsGump(from, mobile));
             }
         }
     }

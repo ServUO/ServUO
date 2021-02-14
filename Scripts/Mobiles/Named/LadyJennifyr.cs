@@ -52,7 +52,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 3);
             AddLoot(LootPack.ArcanistScrolls);
             AddLoot(LootPack.LootItem<DisintegratingThesisNotes>(15.0));
-            AddLoot(LootPack.Parrot);
+            AddLoot(LootPack.LootItem<ParrotItem>(10.0));
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)

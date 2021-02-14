@@ -6,7 +6,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public ParoxysmusSwampDragon()
-            : base()
         {
             Name = "Chief Paroxysmus' Swamp Dragon";
 
@@ -40,7 +39,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

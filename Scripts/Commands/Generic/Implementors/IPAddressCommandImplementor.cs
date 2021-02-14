@@ -8,7 +8,7 @@ namespace Server.Commands.Generic
     {
         public IPAddressCommandImplementor()
         {
-            Accessors = new string[] { "IPAddress" };
+            Accessors = new[] { "IPAddress" };
             SupportRequirement = CommandSupport.IPAddress;
             SupportsConditionals = true;
             AccessLevel = AccessLevel.Administrator;

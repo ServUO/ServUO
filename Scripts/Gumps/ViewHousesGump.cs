@@ -44,7 +44,7 @@ namespace Server.Gumps
 
                 for (int i = 0; i < list.Count; ++i)
                 {
-                    if ((i % 15) == 0)
+                    if (i % 15 == 0)
                     {
                         if (page > 0)
                             AddButton(207, 17, 0x15E1, 0x15E5, 0, GumpButtonType.Page, page + 1);
@@ -59,10 +59,10 @@ namespace Server.Gumps
 
                     AddHtml(15, 40 + ((i % 15) * 20), 20, 20, Color(string.Format("{0}.", i + 1), White), false, false);
 
-                    if (name is int)
-                        AddHtmlLocalized(35, 40 + ((i % 15) * 20), 160, 20, (int)name, White16, false, false);
-                    else if (name is string)
-                        AddHtml(35, 40 + ((i % 15) * 20), 160, 20, Color((string)name, White), false, false);
+                    if (name is int iName)
+                        AddHtmlLocalized(35, 40 + ((i % 15) * 20), 160, 20, iName, White16, false, false);
+                    else if (name is string sName)
+                        AddHtml(35, 40 + ((i % 15) * 20), 160, 20, Color(sName, White), false, false);
 
                     AddButton(198, 39 + ((i % 15) * 20), 4005, 4007, i + 1, GumpButtonType.Reply, 0);
                 }
@@ -145,8 +145,8 @@ namespace Server.Gumps
 
         public static void ViewHouses_OnTarget(Mobile from, object targeted)
         {
-            if (targeted is Mobile)
-                from.SendGump(new ViewHousesGump(from, GetHouses((Mobile)targeted), null));
+            if (targeted is Mobile mobile)
+                from.SendGump(new ViewHousesGump(from, GetHouses(mobile), null));
         }
 
         public static List<BaseHouse> GetHouses(Mobile owner)

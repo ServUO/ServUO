@@ -51,12 +51,12 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.FilthyRich, 4);
-            AddLoot(LootPack.Parrot);
             AddLoot(LootPack.Gems);
             AddLoot(LootPack.HighScrolls, 2);
             AddLoot(LootPack.ArcanistScrolls, 0, 2);
             AddLoot(LootPack.LootItem<CrystallineFragments>(75.0));
             AddLoot(LootPack.LootItem<PiecesOfCrystal>(7.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(10.0));
         }
 
         public override void OnGaveMeleeAttack(Mobile defender)
@@ -148,7 +148,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

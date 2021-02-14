@@ -102,7 +102,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -116,7 +116,7 @@ namespace Server.Mobiles
                     if (m.ExploringTheDeepQuest == ExploringTheDeepQuestChain.HeplerPaulson)
                     {
                         dropped.Delete();
-                        BaseGump.SendGump(new HeplerPaulsonCompleteGump(m as PlayerMobile));
+                        BaseGump.SendGump(new HeplerPaulsonCompleteGump(m));
                         m.ExploringTheDeepQuest = ExploringTheDeepQuestChain.HeplerPaulsonComplete;
                     }
                     else if (m.ExploringTheDeepQuest >= ExploringTheDeepQuestChain.HeplerPaulsonComplete)
@@ -203,7 +203,7 @@ namespace Server.Mobiles
 
         private static readonly PageData[] GumpInfo =
         {
-            new PageData(1, 1154319),
+            new PageData(1, 1154319)
         };
 
         public HeplerPaulsonCollectCompleteGump(PlayerMobile pm)

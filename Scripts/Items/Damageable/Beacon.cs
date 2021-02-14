@@ -12,10 +12,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DoBlast
         {
-            get
-            {
-                return false;
-            }
+            get => false;
             set
             {
                 if (value && !Deleted)
@@ -26,10 +23,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DoArea
         {
-            get
-            {
-                return false;
-            }
+            get => false;
             set
             {
                 if (value)
@@ -223,7 +217,7 @@ namespace Server.Items
                 if (m.AccessLevel > AccessLevel.Player)
                     continue;
 
-                if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile))
+                if (m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile)
                     list.Add(m);
             }
 
@@ -262,7 +256,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Component = reader.ReadItem() as BeaconItem;
 
@@ -320,7 +314,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -365,7 +359,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Beacon = reader.ReadItem<Beacon>();
 

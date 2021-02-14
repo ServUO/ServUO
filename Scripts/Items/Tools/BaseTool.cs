@@ -25,7 +25,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
-            get { return _Resource; }
+            get => _Resource;
             set
             {
                 _Resource = value;
@@ -35,16 +35,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Crafter
-        {
-            get { return m_Crafter; }
-            set { m_Crafter = value; InvalidateProperties(); }
-        }
+        public Mobile Crafter { get => m_Crafter; set { m_Crafter = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get { return m_Quality; }
+            get => m_Quality;
             set
             {
                 UnscaleUses();
@@ -57,7 +53,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool PlayerConstructed
         {
-            get { return _PlayerConstructed; }
+            get => _PlayerConstructed;
             set
             {
                 _PlayerConstructed = value; InvalidateProperties();
@@ -65,28 +61,20 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual int UsesRemaining
-        {
-            get { return m_UsesRemaining; }
-            set { m_UsesRemaining = value; InvalidateProperties(); }
-        }
+        public virtual int UsesRemaining { get => m_UsesRemaining; set { m_UsesRemaining = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool RepairMode
-        {
-            get { return m_RepairMode; }
-            set { m_RepairMode = value; }
-        }
+        public bool RepairMode { get => m_RepairMode; set => m_RepairMode = value; }
 
         public void ScaleUses()
         {
-            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            m_UsesRemaining = m_UsesRemaining * GetUsesScalar() / 100;
             InvalidateProperties();
         }
 
         public void UnscaleUses()
         {
-            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
+            m_UsesRemaining = m_UsesRemaining * 100 / GetUsesScalar();
         }
 
         public int GetUsesScalar()
@@ -97,11 +85,7 @@ namespace Server.Items
             return 100;
         }
 
-        public bool ShowUsesRemaining
-        {
-            get { return true; }
-            set { }
-        }
+        public bool ShowUsesRemaining { get => true; set { } }
 
         public virtual bool BreakOnDepletion => true;
 
@@ -140,7 +124,7 @@ namespace Server.Items
 
         public virtual void DisplayDurabilityTo(Mobile m)
         {
-            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining.ToString()); // Durability
+            LabelToAffix(m, 1017323, AffixType.Append, ": " + m_UsesRemaining); // Durability
         }
 
         public virtual bool CheckAccessible(Mobile m, ref int num)
@@ -170,9 +154,9 @@ namespace Server.Items
 
             bool res;
 
-            if (tool is ITool)
+            if (tool is ITool iTool)
             {
-                res = ((ITool)tool).CheckAccessible(m, ref num);
+                res = iTool.CheckAccessible(m, ref num);
             }
             else
             {

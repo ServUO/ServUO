@@ -26,10 +26,10 @@ namespace Server
 		{
 			if ((m_Count + 1) > m_List.Length)
 			{
-				var old = m_List;
+				Point3D[] old = m_List;
 				m_List = new Point3D[old.Length * 2];
 
-				for (var i = 0; i < old.Length; ++i)
+				for (int i = 0; i < old.Length; ++i)
 				{
 					m_List[i] = old[i];
 				}
@@ -45,10 +45,10 @@ namespace Server
 		{
 			if ((m_Count + 1) > m_List.Length)
 			{
-				var old = m_List;
+				Point3D[] old = m_List;
 				m_List = new Point3D[old.Length * 2];
 
-				for (var i = 0; i < old.Length; ++i)
+				for (int i = 0; i < old.Length; ++i)
 				{
 					m_List[i] = old[i];
 				}
@@ -69,9 +69,9 @@ namespace Server
 				return m_EmptyList;
 			}
 
-			var list = new Point3D[m_Count];
+			Point3D[] list = new Point3D[m_Count];
 
-			for (var i = 0; i < m_Count; ++i)
+			for (int i = 0; i < m_Count; ++i)
 			{
 				list[i] = m_List[i];
 			}

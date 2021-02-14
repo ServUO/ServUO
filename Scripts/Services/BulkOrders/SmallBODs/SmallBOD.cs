@@ -50,10 +50,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public int AmountCur
         {
-            get
-            {
-                return m_AmountCur;
-            }
+            get => m_AmountCur;
             set
             {
                 m_AmountCur = value;
@@ -63,10 +60,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public int AmountMax
         {
-            get
-            {
-                return m_AmountMax;
-            }
+            get => m_AmountMax;
             set
             {
                 m_AmountMax = value;
@@ -76,22 +70,13 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual Type Type
         {
-            get
-            {
-                return m_Type;
-            }
-            set
-            {
-                m_Type = value;
-            }
+            get => m_Type;
+            set => m_Type = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public int Number
         {
-            get
-            {
-                return m_Number;
-            }
+            get => m_Number;
             set
             {
                 m_Number = value;
@@ -101,34 +86,19 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public int Graphic
         {
-            get
-            {
-                return m_Graphic;
-            }
-            set
-            {
-                m_Graphic = value;
-            }
+            get => m_Graphic;
+            set => m_Graphic = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public int GraphicHue
         {
-            get
-            {
-                return m_GraphicHue;
-            }
-            set
-            {
-                m_GraphicHue = value;
-            }
+            get => m_GraphicHue;
+            set => m_GraphicHue = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RequireExceptional
         {
-            get
-            {
-                return m_RequireExceptional;
-            }
+            get => m_RequireExceptional;
             set
             {
                 m_RequireExceptional = value;
@@ -138,10 +108,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public BulkMaterialType Material
         {
-            get
-            {
-                return m_Material;
-            }
+            get => m_Material;
             set
             {
                 m_Material = value;
@@ -297,16 +264,13 @@ namespace Server.Engines.BulkOrders
 
         public void EndCombine(Mobile from, object o)
         {
-            if (o is Item && ((Item)o).IsChildOf(from.Backpack))
+            if (o is Item item && item.IsChildOf(from.Backpack))
             {
-                Type objectType = o.GetType();
-                Item item = o as Item;
-
                 if (m_AmountCur >= m_AmountMax)
                 {
                     from.SendLocalizedMessage(1045166); // The maximum amount of requested items have already been combined to this deed.
                 }
-                else if (!CheckType((Item)o))
+                else if (!CheckType(item))
                 {
                     from.SendLocalizedMessage(1045169); // The item is not in the request.
                 }
@@ -314,8 +278,8 @@ namespace Server.Engines.BulkOrders
                 {
                     BulkMaterialType material = BulkMaterialType.None;
 
-                    if (o is IResource)
-                        material = GetMaterial(((IResource)o).Resource);
+                    if (item is IResource resource)
+                        material = GetMaterial(resource.Resource);
 
                     if (material != m_Material && m_Material != BulkMaterialType.None)
                     {
@@ -325,8 +289,8 @@ namespace Server.Engines.BulkOrders
                     {
                         bool isExceptional = false;
 
-                        if (o is IQuality)
-                            isExceptional = (((IQuality)o).Quality == ItemQuality.Exceptional);
+                        if (item is IQuality quality)
+                            isExceptional = (quality.Quality == ItemQuality.Exceptional);
 
                         if (m_RequireExceptional && !isExceptional)
                         {
@@ -341,11 +305,9 @@ namespace Server.Engines.BulkOrders
                                     from.SendLocalizedMessage(1157222); // You have provided more than which has been requested by this deed.
                                     return;
                                 }
-                                else
-                                {
-                                    AmountCur += item.Amount;
-                                    item.Delete();
-                                }
+
+                                AmountCur += item.Amount;
+                                item.Delete();
                             }
                             else
                             {

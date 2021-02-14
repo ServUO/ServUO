@@ -64,14 +64,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Harrower
         {
-            get
-            {
-                return m_Harrower;
-            }
-            set
-            {
-                m_Harrower = value;
-            }
+            get => m_Harrower;
+            set => m_Harrower = value;
         }
         public override bool AutoDispel => true;
 
@@ -132,7 +126,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Harrower = reader.ReadMobile();
             m_Timer = new DrainTimer(this);
@@ -175,10 +169,8 @@ namespace Server.Mobiles
                     if (m == m_Owner || m == m_Owner.Harrower || !m_Owner.CanBeHarmful(m))
                         continue;
 
-                    if (m is BaseCreature)
+                    if (m is BaseCreature bc)
                     {
-                        BaseCreature bc = m as BaseCreature;
-
                         if (bc.Controlled || bc.Summoned)
                             m_ToDrain.Add(m);
                     }
@@ -200,9 +192,8 @@ namespace Server.Mobiles
                     int drain = Utility.RandomMinMax(14, 30);
 
                     //Monster Stealables 
-                    if (m is PlayerMobile)
+                    if (m is PlayerMobile pm)
                     {
-                        PlayerMobile pm = m as PlayerMobile;
                         drain = (int)LifeShieldLotion.HandleLifeDrain(pm, drain);
                     }
                     //end 

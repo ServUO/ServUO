@@ -9,25 +9,25 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            if (item is BaseArmor)
+            if (item is BaseArmor armor)
             {
-                return ((BaseArmor)item).AbsorptionAttributes[Attribute];
+                return armor.AbsorptionAttributes[Attribute];
             }
 
-            if (item is BaseJewel)
+            if (item is BaseJewel jewel)
             {
-                return ((BaseJewel)item).AbsorptionAttributes[Attribute];
+                return jewel.AbsorptionAttributes[Attribute];
             }
 
 
-            if (item is BaseWeapon)
+            if (item is BaseWeapon weapon)
             {
-                return ((BaseWeapon)item).AbsorptionAttributes[Attribute];
+                return weapon.AbsorptionAttributes[Attribute];
             }
 
-            if (item is BaseClothing)
+            if (item is BaseClothing clothing)
             {
-                return ((BaseClothing)item).SAAbsorptionAttributes[Attribute];
+                return clothing.SAAbsorptionAttributes[Attribute];
             }
 
             return 0;

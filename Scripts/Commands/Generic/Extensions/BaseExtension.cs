@@ -27,7 +27,7 @@ namespace Server.Commands.Generic
         public int Order => m_Order;
         public string Name => m_Name;
         public int Size => m_Size;
-        public bool IsFixedSize => (m_Size >= 0);
+        public bool IsFixedSize => m_Size >= 0;
         public ExtensionConstructor Constructor => m_Constructor;
         public static void Register(ExtensionInfo ext)
         {
@@ -52,15 +52,15 @@ namespace Server.Commands.Generic
                 if (!ExtensionInfo.Table.TryGetValue(args[i], out extInfo))
                     continue;
 
-                if (extInfo.IsFixedSize && i != (size - extInfo.Size - 1))
+                if (extInfo.IsFixedSize && i != size - extInfo.Size - 1)
                     throw new Exception("Invalid extended argument count.");
 
                 BaseExtension ext = extInfo.Constructor();
 
                 ext.Parse(from, args, i + 1, size - i - 1);
 
-                if (ext is WhereExtension)
-                    baseType = (ext as WhereExtension).Conditional.Type;
+                if (ext is WhereExtension extension)
+                    baseType = extension.Conditional.Type;
 
                 parsed.Add(ext);
 
@@ -69,7 +69,7 @@ namespace Server.Commands.Generic
 
             parsed.Sort(delegate (BaseExtension a, BaseExtension b)
             {
-                return (a.Order - b.Order);
+                return a.Order - b.Order;
             });
 
             AssemblyEmitter emitter = null;

@@ -11,11 +11,11 @@ namespace Server.Items
         public override int KeyCount => 16;
         public override MasterKey MasterKey => new ParoxysmusKey();
 
-        public override Type[] Keys => new Type[]
-                {
-                    typeof( CoagulatedLegs ), typeof( PartiallyDigestedTorso ),
-                    typeof( GelatanousSkull ), typeof( SpleenOfThePutrefier )
-                };
+        public override Type[] Keys => new[]
+        {
+            typeof( CoagulatedLegs ), typeof( PartiallyDigestedTorso ),
+            typeof( GelatanousSkull ), typeof( SpleenOfThePutrefier )
+        };
 
         public override BasePeerless Boss => new ChiefParoxysmus();
 
@@ -31,9 +31,9 @@ namespace Server.Items
 
         public override Rectangle2D[] BossBounds => m_Bounds;
 
-        private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private readonly Rectangle2D[] m_Bounds =
         {
-            new Rectangle2D(6501, 351, 35, 48),
+            new Rectangle2D(6501, 351, 35, 48)
         };
 
         public static void AddProtection(Mobile m)
@@ -107,22 +107,6 @@ namespace Server.Items
                         break;
                     }
             }
-
-            if (version < 1)
-            {
-                IPooledEnumerable eable = Map.GetItemsInBounds(new Rectangle2D(6516, 492, 5, 1));
-
-                foreach (Item item in eable)
-                {
-                    if (item.Movable)
-                        item.Delete();
-                }
-
-                eable.Free();
-
-                Item gate = new ParoxysmusIronGate(this);
-                gate.MoveToWorld(new Point3D(6518, 492, -50), Map);
-            }
         }
     }
 
@@ -182,7 +166,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Altar = reader.ReadItem() as PeerlessAltar;
         }

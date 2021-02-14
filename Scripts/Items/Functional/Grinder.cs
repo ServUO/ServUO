@@ -21,38 +21,16 @@ namespace Server.Items
             LootType = LootType.Blessed;
         }
 
-        /*public bool CheckAccessible(Mobile from, Item item)
+        public Grinder(Serial serial)
+            : base(serial)
         {
-            if (from.AccessLevel >= AccessLevel.GameMaster)
-                return true; // Staff can access anything
-
-            BaseHouse house = BaseHouse.FindHouseAt(item);
-
-            if (house == null)
-                return false;
-
-            switch (Level)
-            {
-                case SecureLevel.Owner: return house.IsOwner(from);
-                case SecureLevel.CoOwners: return house.IsCoOwner(from);
-                case SecureLevel.Friends: return house.IsFriend(from);
-                case SecureLevel.Anyone: return true;
-                case SecureLevel.Guild: return house.IsGuildMember(from);
-            }
-
-            return false;
-        }*/
+        }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
 
             SetSecureLevelEntry.AddTo(from, this, list);
-        }
-
-        public Grinder(Serial serial)
-            : base(serial)
-        {
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -63,25 +41,23 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1114298); // This must be locked down in order to use it.
             }
-            else if (from.InRange(GetWorldLocation(), 2) /*&& CheckAccessible(from, this)*/)
+            else if (from.InRange(GetWorldLocation(), 2))
             {
-                from.Target = new InternalTarget(this);
+                from.Target = new InternalTarget();
             }
         }
 
         private class InternalTarget : Target
         {
-            public InternalTarget(Item item)
+            public InternalTarget()
                 : base(-1, true, TargetFlags.None)
             {
             }
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is CoffeePod)
+                if (targeted is CoffeePod pod)
                 {
-                    CoffeePod pod = (CoffeePod)targeted;
-
                     if (!pod.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
@@ -110,7 +86,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Level = (SecureLevel)reader.ReadInt();
         }

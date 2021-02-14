@@ -18,7 +18,7 @@ namespace Server.Engines.Quests.RitualQuest
             }
         }
 
-        public override Type[] Quests => new Type[] { typeof(ScalesOfADreamSerpentQuest) };
+        public override Type[] Quests => new[] { typeof(ScalesOfADreamSerpentQuest) };
 
         public Prugyilonus()
             : base("Prugyilonus", "the Advisor to the Queen")
@@ -63,7 +63,7 @@ namespace Server.Engines.Quests.RitualQuest
 
     public class Bexil : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(CatchMeIfYouCanQuest) };
+        public override Type[] Quests => new[] { typeof(CatchMeIfYouCanQuest) };
 
         public static Bexil Instance { get; set; }
 
@@ -146,8 +146,8 @@ namespace Server.Engines.Quests.RitualQuest
 
         public override IDamageable Combatant
         {
-            get { return _Combatant; }
-            set { _Combatant = value; }
+            get => _Combatant;
+            set => _Combatant = value;
         }
 
         public override void OnThink()
@@ -157,7 +157,6 @@ namespace Server.Engines.Quests.RitualQuest
             if (Combatant is Mobile && _NextTeleport < DateTime.UtcNow)
             {
                 Map map = Map;
-                Mobile c = (Mobile)Combatant;
 
                 Point3D p;
 
@@ -180,9 +179,9 @@ namespace Server.Engines.Quests.RitualQuest
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
-            if (from is PlayerMobile)
+            if (from is PlayerMobile mobile)
             {
-                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)from);
+                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>(mobile);
 
                 if (quest != null)
                 {
@@ -190,7 +189,7 @@ namespace Server.Engines.Quests.RitualQuest
 
                     if (quest.Completed)
                     {
-                        DreamSerpentCharm.CompleteQuest(from);
+                        DreamSerpentCharm.CompleteQuest(mobile);
                     }
                 }
             }
@@ -225,7 +224,7 @@ namespace Server.Engines.Quests.RitualQuest
 
     public class Grubbix : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(FilthyLifeStealersQuest) };
+        public override Type[] Quests => new[] { typeof(FilthyLifeStealersQuest) };
 
         public static Grubbix Instance { get; set; }
 

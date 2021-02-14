@@ -8,7 +8,6 @@ namespace Server.Items
 
         [Constructable]
         public MarinersBrassSextant()
-            : base()
         {
             LootType = LootType.Blessed;
             Hue = 483;
@@ -95,8 +94,8 @@ namespace Server.Items
             if (!ComputeMapDetails(map, 0, 0, out xCenter, out yCenter, out xWidth, out yHeight))
                 return Point3D.Zero;
 
-            double absLong = xLong + ((double)xMins / 60);
-            double absLat = yLat + ((double)yMins / 60);
+            double absLong = xLong + (double)xMins / 60;
+            double absLat = yLat + (double)yMins / 60;
 
             if (!xEast)
                 absLong = 360.0 - absLong;
@@ -106,8 +105,8 @@ namespace Server.Items
 
             int x, y, z;
 
-            x = xCenter + (int)((absLong * xWidth) / 360);
-            y = yCenter + (int)((absLat * yHeight) / 360);
+            x = xCenter + (int)(absLong * xWidth / 360);
+            y = yCenter + (int)(absLat * yHeight / 360);
 
             if (x < 0)
                 x += xWidth;
@@ -168,15 +167,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)

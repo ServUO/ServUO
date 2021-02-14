@@ -22,10 +22,7 @@ namespace Server.Items
         {
         }
 
-        public override Type[] Engraves => new Type[]
-                {
-                    typeof(BaseWeapon)
-                };
+        public override Type[] Engraves => new[] {typeof(BaseWeapon)};
 
         public override void Serialize(GenericWriter writer)
         {

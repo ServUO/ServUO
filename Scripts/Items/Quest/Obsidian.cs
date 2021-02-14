@@ -7,7 +7,7 @@ namespace Server.Engines.Quests.Collector
 {
     public class Obsidian : Item
     {
-        private static readonly string[] m_Names = new string[]
+        private static readonly string[] m_Names =
         {
             null,
             "an aggressive cavalier",
@@ -70,10 +70,14 @@ namespace Server.Engines.Quests.Collector
             "a valiant warrior",
             "a wayward fool"
         };
+
         private const int m_Partial = 2;
         private const int m_Completed = 10;
         private int m_Quantity;
         private string m_StatueName;
+
+        public override bool ForceShowProperties => true;
+
         [Constructable]
         public Obsidian()
             : base(0x1EA7)
@@ -92,10 +96,7 @@ namespace Server.Engines.Quests.Collector
         [CommandProperty(AccessLevel.GameMaster)]
         public int Quantity
         {
-            get
-            {
-                return m_Quantity;
-            }
+            get => m_Quantity;
             set
             {
                 if (value <= 1)
@@ -118,25 +119,24 @@ namespace Server.Engines.Quests.Collector
         [CommandProperty(AccessLevel.GameMaster)]
         public string StatueName
         {
-            get
-            {
-                return m_StatueName;
-            }
+            get => m_StatueName;
             set
             {
                 m_StatueName = value;
                 InvalidateProperties();
             }
         }
-        public override bool ForceShowProperties => true;
 
         public static string RandomName(Mobile from)
         {
             int index = Utility.Random(m_Names.Length);
+
             if (m_Names[index] == null)
+            {
                 return from.Name;
-            else
-                return m_Names[index];
+            }
+
+            return m_Names[index];
         }
 
         public override void AddNameProperty(ObjectPropertyList list)
@@ -171,7 +171,6 @@ namespace Server.Engines.Quests.Collector
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.WriteEncodedInt(m_Quantity);
@@ -181,8 +180,7 @@ namespace Server.Engines.Quests.Collector
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Quantity = reader.ReadEncodedInt();
             m_StatueName = Utility.Intern(reader.ReadString());
@@ -222,33 +220,31 @@ namespace Server.Engines.Quests.Collector
             protected override void OnTarget(Mobile from, object targeted)
             {
                 Item targ = targeted as Item;
+
                 if (m_Obsidian.Deleted || m_Obsidian.Quantity >= m_Completed || targ == null)
                     return;
 
-                if (m_Obsidian.IsChildOf(from.Backpack) && targ.IsChildOf(from.Backpack) && targ is Obsidian && targ != m_Obsidian)
+                if (m_Obsidian.IsChildOf(from.Backpack) && targ.IsChildOf(from.Backpack) && targ is Obsidian obsidian && targ != m_Obsidian && obsidian.Quantity < m_Completed)
                 {
-                    Obsidian targObsidian = (Obsidian)targ;
-                    if (targObsidian.Quantity < m_Completed)
+                    if (obsidian.Quantity + m_Obsidian.Quantity <= m_Completed)
                     {
-                        if (targObsidian.Quantity + m_Obsidian.Quantity <= m_Completed)
-                        {
-                            targObsidian.Quantity += m_Obsidian.Quantity;
-                            m_Obsidian.Delete();
-                        }
-                        else
-                        {
-                            int delta = m_Completed - targObsidian.Quantity;
-                            targObsidian.Quantity += delta;
-                            m_Obsidian.Quantity -= delta;
-                        }
-
-                        if (targObsidian.Quantity >= m_Completed)
-                            targObsidian.StatueName = RandomName(from);
-
-                        from.Send(new AsciiMessage(targObsidian.Serial, targObsidian.ItemID, MessageType.Regular, 0x59, 3, m_Obsidian.Name, "Something Happened."));
-
-                        return;
+                        obsidian.Quantity += m_Obsidian.Quantity;
+                        m_Obsidian.Delete();
                     }
+                    else
+                    {
+                        int delta = m_Completed - obsidian.Quantity;
+
+                        obsidian.Quantity += delta;
+                        m_Obsidian.Quantity -= delta;
+                    }
+
+                    if (obsidian.Quantity >= m_Completed)
+                        obsidian.StatueName = RandomName(from);
+
+                    from.Send(new AsciiMessage(obsidian.Serial, obsidian.ItemID, MessageType.Regular, 0x59, 3, m_Obsidian.Name, "Something Happened."));
+
+                    return;
                 }
 
                 from.Send(new MessageLocalized(m_Obsidian.Serial, m_Obsidian.ItemID, MessageType.Regular, 0x2C, 3, 500309, m_Obsidian.Name, "")); // Nothing Happens.

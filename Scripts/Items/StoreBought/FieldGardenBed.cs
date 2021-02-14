@@ -63,7 +63,7 @@ namespace Server.Items
         {
             foreach (AddonComponent comp in Components)
             {
-                if (comp is GardenAddonComponent && ((GardenAddonComponent)comp).Plant != null)
+                if (comp is GardenAddonComponent component && component.Plant != null)
                 {
                     from.SendLocalizedMessage(1150383); // You need to remove all plants through the plant menu before destroying this.
                     return;

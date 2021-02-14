@@ -15,14 +15,14 @@ namespace Server.Regions
 
         public override void OnLocationChanged(Mobile m, Point3D oldLocation)
         {
-            if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+            if (m is BaseCreature creature && (creature.Controlled || creature.Summoned))
             {
                 foreach (Rectangle2D rec in m_RoomRecs)
                 {
-                    if (rec.Contains(m.Location))
+                    if (rec.Contains(creature.Location))
                     {
-                        KickToEntrance(m);
-                        Mobile master = ((BaseCreature)m).GetMaster();
+                        KickToEntrance(creature);
+                        Mobile master = creature.GetMaster();
 
                         if (master != null && master.NetState != null)
                             master.SendLocalizedMessage(1113472); // Your pet has been kicked out of the room. This is not a stable!
@@ -70,11 +70,11 @@ namespace Server.Regions
             Effects.SendLocationParticles(EffectItem.Create(p, from.Map, EffectItem.DefaultDuration), 0x3728, 10, 10, 5023);
         }
 
-        private static readonly Rectangle2D[] m_RoomRecs = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_RoomRecs =
         {
             new Rectangle2D(977, 1104, 15, 10), //RoomOne
             new Rectangle2D(977, 1092, 15, 9), //RoomTwo
-            new Rectangle2D(977, 1074, 15, 10), //RoomThree
+            new Rectangle2D(977, 1074, 15, 10) //RoomThree
         };
     }
 }

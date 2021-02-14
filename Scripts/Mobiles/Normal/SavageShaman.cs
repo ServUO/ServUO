@@ -92,9 +92,9 @@ namespace Server.Mobiles
                 aggressor.PlaySound(0x307);
                 aggressor.SendLocalizedMessage(1040008); // Your skin is scorched as the tribal paint burns away!
 
-                if (aggressor is PlayerMobile)
+                if (aggressor is PlayerMobile mobile)
                 {
-                    ((PlayerMobile)aggressor).SavagePaintExpiration = TimeSpan.Zero;
+                    mobile.SavagePaintExpiration = TimeSpan.Zero;
                 }
             }
         }
@@ -186,7 +186,7 @@ namespace Server.Mobiles
                         {
                             foreach (Mobile m in list)
                             {
-                                bool isFriendly = (m is Savage || m is SavageRider || m is SavageShaman || m is SavageRidgeback);
+                                bool isFriendly = m is Savage || m is SavageRider || m is SavageShaman || m is SavageRidgeback;
 
                                 if (!isFriendly)
                                 {
@@ -217,7 +217,7 @@ namespace Server.Mobiles
                         {
                             foreach (Mobile m in list)
                             {
-                                bool isFriendly = (m is Savage || m is SavageRider || m is SavageShaman || m is SavageRidgeback);
+                                bool isFriendly = m is Savage || m is SavageRider || m is SavageShaman || m is SavageRidgeback;
 
                                 if (isFriendly)
                                 {
@@ -248,7 +248,7 @@ namespace Server.Mobiles
                         {
                             foreach (Mobile m in list)
                             {
-                                bool isFriendly = (m is Savage || m is SavageRider || m is SavageShaman || m is SavageRidgeback);
+                                bool isFriendly = m is Savage || m is SavageRider || m is SavageShaman || m is SavageRidgeback;
 
                                 if (isFriendly)
                                 {
@@ -318,7 +318,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

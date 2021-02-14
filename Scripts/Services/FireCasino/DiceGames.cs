@@ -69,7 +69,7 @@ namespace Server.Engines.ResortAndCasino
             if (Roll == null)
                 return 0;
 
-            return Roll.Where(i => i == BettingOn).Count();
+            return Roll.Count(i => i == BettingOn);
         }
 
         public virtual int GetTotal()

@@ -61,7 +61,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int TrainingPoints
         {
-            get { return _TrainingPoints; }
+            get => _TrainingPoints;
             set
             {
                 if (value <= 0)
@@ -78,8 +78,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int StartingTrainingPoints
         {
-            get { return _StartingTrainingPoints; }
-            set { _StartingTrainingPoints = value; }
+            get => _StartingTrainingPoints;
+            set => _StartingTrainingPoints = value;
         }
 
         public PlanningProfile PlanningProfile
@@ -194,24 +194,18 @@ namespace Server.Mobiles
                     return 21;
                 }
                 // subsequent trains of that level
-                else
-                {
-                    return 22;
-                }
+
+                return 22;
             }
-            else
+
+            // First train of that level (after level increase, so actually 2nd train)
+            if (TrainedThisLevel == 1)
             {
-                // First train of that level (after level increase, so actually 2nd train)
-                if (TrainedThisLevel == 1)
-                {
-                    return 3;
-                }
-                // subsequent trains of that level
-                else
-                {
-                    return 2;
-                }
+                return 3;
             }
+            // subsequent trains of that level
+
+            return 2;
         }
 
         public void EndTraining()
@@ -233,11 +227,9 @@ namespace Server.Mobiles
                 {
                     return false;
                 }
-                else
-                {
-                    _ProgressTable[bc]++;
-                    return true;
-                }
+
+                _ProgressTable[bc]++;
+                return true;
             }
 
             _ProgressTable[bc] = 1;
@@ -252,8 +244,8 @@ namespace Server.Mobiles
             {
                 case 1: gains = int.MaxValue; break;
                 case 2: gains = int.MaxValue; break;
-                case 3: gains = (int)((MaxTrainingProgress / toGain) / 2.0); break;
-                default: gains = (int)((MaxTrainingProgress / toGain) / 4.0); break;
+                case 3: gains = (int)(MaxTrainingProgress / toGain / 2.0); break;
+                default: gains = (int)(MaxTrainingProgress / toGain / 4.0); break;
             }
 
             if (gains < int.MaxValue)
@@ -295,7 +287,7 @@ namespace Server.Mobiles
 
                     TrainingProgress = Math.Min(TrainingProgressMax, TrainingProgress + toGain);
 
-                    if (!bc.Controlled && !bc.Summoned && master is PlayerMobile)
+                    if (!bc.Controlled && !bc.Summoned && master is PlayerMobile mobile)
                     {
                         int cliloc = 1157574; // *The pet's battle experience has greatly increased!*
 
@@ -304,25 +296,25 @@ namespace Server.Mobiles
                         else if (toGain < 2.5)
                             cliloc = 1157573; // *The pet's battle experience has fairly increased!*
 
-                        if (master.HasGump(typeof(PetTrainingProgressGump)))
+                        if (mobile.HasGump(typeof(PetTrainingProgressGump)))
                         {
-                            ResendProgressGump(master);
+                            ResendProgressGump(mobile);
                         }
                         else
                         {
-                            if (master.InRange(Creature.Location, 12))
+                            if (mobile.InRange(Creature.Location, 12))
                             {
-                                BaseGump.SendGump(new PetTrainingProgressGump((PlayerMobile)master, Creature));
+                                BaseGump.SendGump(new PetTrainingProgressGump(mobile, Creature));
                             }
                         }
 
-                        Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, cliloc, master.NetState);
+                        Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, cliloc, mobile.NetState);
 
                         if (TrainingProgress >= TrainingProgressMax)
                         {
-                            Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, 1157543, master.NetState); // *The creature surges with battle experience and is ready to train!*
+                            Creature.PrivateOverheadMessage(MessageType.Regular, 0x59, 1157543, mobile.NetState); // *The creature surges with battle experience and is ready to train!*
 
-                            Engines.Quests.LeadingIntoBattleQuest.CheckComplete((PlayerMobile)master);
+                            Engines.Quests.LeadingIntoBattleQuest.CheckComplete(mobile);
                         }
                     }
                     else

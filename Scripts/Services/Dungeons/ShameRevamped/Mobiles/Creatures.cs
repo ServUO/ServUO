@@ -70,7 +70,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -135,7 +135,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -228,7 +228,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -299,7 +299,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -352,7 +352,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -411,7 +411,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -464,7 +464,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -522,7 +522,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -599,7 +599,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -664,7 +664,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -705,7 +705,7 @@ namespace Server.Mobiles
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
+            if (from is BaseCreature creature && (creature.Summoned || creature.Controlled))
                 damage /= 2;
 
             base.AlterSpellDamageFrom(from, ref damage);
@@ -713,7 +713,7 @@ namespace Server.Mobiles
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
+            if (from is BaseCreature creature && (creature.Summoned || creature.Controlled))
                 damage /= 2;
 
             base.AlterMeleeDamageFrom(from, ref damage);
@@ -739,7 +739,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -881,7 +881,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1019,7 +1019,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1150,7 +1150,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1205,7 +1205,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1267,7 +1267,7 @@ namespace Server.Mobiles
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
+            if (from is BaseCreature creature && (creature.Summoned || creature.Controlled))
                 damage /= 2;
 
             if (NextTeleport < DateTime.UtcNow)
@@ -1278,7 +1278,7 @@ namespace Server.Mobiles
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
+            if (from is BaseCreature creature && (creature.Summoned || creature.Controlled))
                 damage /= 2;
 
             if (NextTeleport < DateTime.UtcNow)
@@ -1343,7 +1343,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1400,7 +1400,7 @@ namespace Server.Mobiles
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
+            if (from is BaseCreature creature && (creature.Summoned || creature.Controlled))
                 damage /= 2;
 
             if (NextTeleport < DateTime.UtcNow)
@@ -1411,7 +1411,7 @@ namespace Server.Mobiles
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature && (((BaseCreature)from).Summoned || ((BaseCreature)from).Controlled))
+            if (from is BaseCreature creature && (creature.Summoned || creature.Controlled))
                 damage /= 2;
 
             if (NextTeleport < DateTime.UtcNow)
@@ -1477,7 +1477,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1519,8 +1519,6 @@ namespace Server.Mobiles
             SetSkill(SkillName.DetectHidden, 80.0);
             SetSkill(SkillName.Parry, 90.0, 100.0);
 
-            int scrolls = Utility.RandomMinMax(4, 6);
-
             Fame = 8500;
             Karma = -8500;
 
@@ -1530,8 +1528,7 @@ namespace Server.Mobiles
 
         public override bool AutoDispel => true;
         public override double AutoDispelChance => 1.0;
-        public override int TreasureMapLevel => 5;
-        public override double TreasureMapChance => 1.0;
+        public override int TreasureMapLevel => 4;
         public override Poison HitPoison => Poison.Lethal;
         public override Poison PoisonImmune => Poison.Parasitic;
 
@@ -1557,7 +1554,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1614,7 +1611,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1673,7 +1670,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1729,7 +1726,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1777,7 +1774,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

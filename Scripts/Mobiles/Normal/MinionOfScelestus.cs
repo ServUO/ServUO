@@ -67,18 +67,18 @@ namespace Server.Mobiles
         {
             if (0.20 > Utility.RandomDouble() && (defender.Mounted || defender.Flying))
             {
-                if (defender is PlayerMobile)
+                if (defender is PlayerMobile mobile)
                 {
-                    if (Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+                    if (Spells.Ninjitsu.AnimalForm.UnderTransformation(mobile))
                     {
-                        defender.SendLocalizedMessage(1114066, Name); // ~1_NAME~ knocked you out of animal form!
+                        mobile.SendLocalizedMessage(1114066, Name); // ~1_NAME~ knocked you out of animal form!
                     }
-                    else if (defender.Mounted)
+                    else if (mobile.Mounted)
                     {
-                        defender.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
+                        mobile.SendLocalizedMessage(1040023); // You have been knocked off of your mount!
                     }
 
-                    ((PlayerMobile)defender).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
+                    mobile.SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
                 }
                 else if (defender.Mount != null)
                     defender.Mount.Rider = null;
@@ -122,7 +122,7 @@ namespace Server.Mobiles
             }
         }
 
-        private readonly Type[] m_Types = new Type[]
+        private readonly Type[] m_Types =
         {
             typeof(ChallengeRite),          typeof(AnthenaeumDecree),       typeof(LetterFromTheKing),
             typeof(OnTheVoid),              typeof(ShilaxrinarsMemorial),   typeof(ToTheHighScholar),
@@ -138,15 +138,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -32,36 +32,15 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int InactiveItemID
-        {
-            get
-            {
-                return m_InactiveItemID;
-            }
-            set
-            {
-                m_InactiveItemID = value;
-            }
-        }
+        public int InactiveItemID { get => m_InactiveItemID; set => m_InactiveItemID = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ActiveItemID
-        {
-            get
-            {
-                return m_ActiveItemID;
-            }
-            set
-            {
-                m_ActiveItemID = value;
-            }
-        }
+        public int ActiveItemID { get => m_ActiveItemID; set => m_ActiveItemID = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int RangeCheck
         {
-            get
-            {
-                return m_RangeCheck;
-            }
+            get => m_RangeCheck;
             set
             {
                 if (value > 18)
@@ -72,10 +51,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int OutRange
         {
-            get
-            {
-                return m_OutRange;
-            }
+            get => m_OutRange;
             set
             {
                 if (value > 18)
@@ -124,7 +100,7 @@ namespace Server.Items
             else
                 ItemID = InactiveItemID;
 
-            Visible = (ItemID != 0x1);
+            Visible = ItemID != 0x1;
         }
 
         public override void Serialize(GenericWriter writer)

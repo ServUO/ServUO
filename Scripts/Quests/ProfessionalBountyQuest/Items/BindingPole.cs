@@ -10,15 +10,15 @@ namespace Server.Items
 
         public BaseQuest Quest
         {
-            get { return m_Quest; }
-            set { m_Quest = value; }
+            get => m_Quest;
+            set => m_Quest = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public BaseGalleon Galleon
         {
-            get { return m_Galleon; }
-            set { m_Galleon = value; }
+            get => m_Galleon;
+            set => m_Galleon = value;
         }
 
         public override int LabelNumber => 1116718;
@@ -53,7 +53,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

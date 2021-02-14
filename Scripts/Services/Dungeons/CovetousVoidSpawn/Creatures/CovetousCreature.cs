@@ -125,8 +125,10 @@ namespace Server.Mobiles
 
         protected virtual bool CheckCanTeleport()
         {
-            if (CurrentWayPoint == null || Frozen || Paralyzed || (Combatant is Mobile && ((Mobile)Combatant).InLOS(this)))
+            if (CurrentWayPoint == null || Frozen || Paralyzed || Combatant is Mobile mobile && mobile.InLOS(this))
+            {
                 return false;
+            }
 
             bool canTeleport = true;
 
@@ -181,11 +183,11 @@ namespace Server.Mobiles
                 }
             }
 
-            SetResistance(ResistanceType.Physical, ((ResistMax / MaxStage) * Stage) + Utility.RandomMinMax(-5, 5));
-            SetResistance(ResistanceType.Fire, ((ResistMax / MaxStage) * Stage) + Utility.RandomMinMax(-5, 5));
-            SetResistance(ResistanceType.Cold, ((ResistMax / MaxStage) * Stage) + Utility.RandomMinMax(-5, 5));
-            SetResistance(ResistanceType.Poison, ((ResistMax / MaxStage) * Stage) + Utility.RandomMinMax(-5, 5));
-            SetResistance(ResistanceType.Energy, ((ResistMax / MaxStage) * Stage) + Utility.RandomMinMax(-5, 5));
+            SetResistance(ResistanceType.Physical, (ResistMax / MaxStage) * Stage + Utility.RandomMinMax(-5, 5));
+            SetResistance(ResistanceType.Fire, (ResistMax / MaxStage) * Stage + Utility.RandomMinMax(-5, 5));
+            SetResistance(ResistanceType.Cold, (ResistMax / MaxStage) * Stage + Utility.RandomMinMax(-5, 5));
+            SetResistance(ResistanceType.Poison, (ResistMax / MaxStage) * Stage + Utility.RandomMinMax(-5, 5));
+            SetResistance(ResistanceType.Energy, (ResistMax / MaxStage) * Stage + Utility.RandomMinMax(-5, 5));
 
             int strRaise = ((StrMax / MaxStage) * Stage) + Utility.RandomMinMax(-5, 5);
             int dexRaise = ((DexMax / MaxStage) * Stage) + Utility.RandomMinMax(-5, 5);
@@ -241,7 +243,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Level = reader.ReadInt();
             VoidSpawn = reader.ReadBool();

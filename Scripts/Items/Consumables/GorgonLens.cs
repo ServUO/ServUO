@@ -34,13 +34,13 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is GorgonLense && ((GorgonLense)dropped).LenseType == m_LenseType && base.WillStack(from, dropped);
+            return dropped is GorgonLense lense && lense.LenseType == m_LenseType && base.WillStack(from, lense);
         }
 
         public override void OnAfterDuped(Item newItem)
         {
-            if (newItem is GorgonLense)
-                ((GorgonLense)newItem).LenseType = LenseType;
+            if (newItem is GorgonLense lense)
+                lense.LenseType = LenseType;
 
             base.OnAfterDuped(newItem);
         }
@@ -56,15 +56,14 @@ namespace Server.Items
 
         public void OnTarget(Mobile from, object targeted)
         {
-            if (targeted is Item)
+            if (targeted is Item item)
             {
-                if (!IsChildOf(from.Backpack) || !((Item)targeted).IsChildOf(from.Backpack))
+                if (!IsChildOf(from.Backpack) || !item.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(1054107); // This item must be in your backpack.
                 }
-                else if (targeted is BaseArmor)
+                else if (item is BaseArmor armor)
                 {
-                    BaseArmor armor = (BaseArmor)targeted;
                     if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (Race.Gargoyle.ValidateEquipment(armor) && armor.Layer == Layer.Earrings))
                     {
                         if (armor.GorgonLenseCharges > 0 && armor.GorgonLenseType != LenseType)
@@ -80,9 +79,8 @@ namespace Server.Items
                     else
                         from.SendLocalizedMessage(1112594); //You cannot place gorgon lenses on this.
                 }
-                else if (targeted is BaseJewel)
+                else if (item is BaseJewel j)
                 {
-                    BaseJewel j = (BaseJewel)targeted;
                     if (j.Layer == Layer.Neck || j.Layer == Layer.Earrings)
                     {
                         if (j.GorgonLenseCharges > 0 && j.GorgonLenseType != LenseType)
@@ -98,9 +96,8 @@ namespace Server.Items
                     else
                         from.SendLocalizedMessage(1112594); //You cannot place gorgon lenses on this.
                 }
-                else if (targeted is BaseClothing)
+                else if (item is BaseClothing c)
                 {
-                    BaseClothing c = (BaseClothing)targeted;
                     if (c.Layer == Layer.Neck || c.Layer == Layer.Helm)
                     {
                         if (c.GorgonLenseCharges > 0 && c.GorgonLenseType != LenseType)
@@ -159,12 +156,12 @@ namespace Server.Items
             int charges = 0;
             m.Items.ForEach(i =>
             {
-                if (i is BaseArmor)
-                    charges += ((BaseArmor)i).GorgonLenseCharges;
-                else if (i is BaseJewel)
-                    charges += ((BaseJewel)i).GorgonLenseCharges;
-                else if (i is BaseClothing)
-                    charges += ((BaseClothing)i).GorgonLenseCharges;
+                if (i is BaseArmor armor)
+                    charges += armor.GorgonLenseCharges;
+                else if (i is BaseJewel jewel)
+                    charges += jewel.GorgonLenseCharges;
+                else if (i is BaseClothing clothing)
+                    charges += clothing.GorgonLenseCharges;
             });
 
             return charges;
@@ -219,24 +216,24 @@ namespace Server.Items
             }
             else if (m_Item is BaseShield || m_Item.Layer == Layer.Neck || m_Item.Layer == Layer.Earrings || m_Item.Layer == Layer.Helm)
             {
-                if (m_Item is BaseArmor)
+                if (m_Item is BaseArmor armor)
                 {
-                    ((BaseArmor)m_Item).GorgonLenseCharges = m_Lense.Amount;
-                    ((BaseArmor)m_Item).GorgonLenseType = m_Lense.LenseType;
+                    armor.GorgonLenseCharges = m_Lense.Amount;
+                    armor.GorgonLenseType = m_Lense.LenseType;
                     from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                     m_Lense.Delete();
                 }
-                else if (m_Item is BaseJewel)
+                else if (m_Item is BaseJewel jewel)
                 {
-                    ((BaseJewel)m_Item).GorgonLenseCharges = m_Lense.Amount;
-                    ((BaseJewel)m_Item).GorgonLenseType = m_Lense.LenseType;
+                    jewel.GorgonLenseCharges = m_Lense.Amount;
+                    jewel.GorgonLenseType = m_Lense.LenseType;
                     from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                     m_Lense.Delete();
                 }
-                else if (m_Item is BaseClothing)
+                else if (m_Item is BaseClothing clothing)
                 {
-                    ((BaseClothing)m_Item).GorgonLenseCharges = m_Lense.Amount;
-                    ((BaseClothing)m_Item).GorgonLenseType = m_Lense.LenseType;
+                    clothing.GorgonLenseCharges = m_Lense.Amount;
+                    clothing.GorgonLenseType = m_Lense.LenseType;
                     from.SendLocalizedMessage(1112595); //You enhance the item with Gorgon Lenses!
                     m_Lense.Delete();
                 }

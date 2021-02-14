@@ -64,10 +64,10 @@ namespace Server.Mobiles
 
             _Thrown++;
 
-            if (0.75 >= Utility.RandomDouble() && (_Thrown % 2) == 1) // 75% chance to quickly throw another bomb
+            if (0.75 >= Utility.RandomDouble() && _Thrown % 2 == 1) // 75% chance to quickly throw another bomb
                 _NextBanana = DateTime.UtcNow + TimeSpan.FromSeconds(3.0);
             else
-                _NextBanana = DateTime.UtcNow + TimeSpan.FromSeconds(5.0 + (10.0 * Utility.RandomDouble())); // 5-15 seconds
+                _NextBanana = DateTime.UtcNow + TimeSpan.FromSeconds(5.0 + 10.0 * Utility.RandomDouble()); // 5-15 seconds
         }
 
         public void ThrowBanana(Mobile m)
@@ -105,7 +105,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

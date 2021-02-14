@@ -29,9 +29,9 @@ namespace Server.Mobiles
         public override double TeleportProb => 1.0;
         public override bool TeleportsPets => true;
 
-        public override Type[] UniqueList => new Type[] { typeof(CorgulsEnchantedSash), typeof(CorgulsHandbookOnMysticism), typeof(CorgulsHandbookOnTheUndead) };
-        public override Type[] SharedList => new Type[] { typeof(HelmOfVengence), typeof(RingOfTheSoulbinder), typeof(RuneEngravedPegLeg), typeof(CullingBlade) };
-        public override Type[] DecorativeList => new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
+        public override Type[] UniqueList => new[] { typeof(CorgulsEnchantedSash), typeof(CorgulsHandbookOnMysticism), typeof(CorgulsHandbookOnTheUndead) };
+        public override Type[] SharedList => new[] { typeof(HelmOfVengence), typeof(RingOfTheSoulbinder), typeof(RuneEngravedPegLeg), typeof(CullingBlade) };
+        public override Type[] DecorativeList => new[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
 
         public override bool NoGoodies => true;
         public override bool RestrictedToFelucca => false;
@@ -44,7 +44,7 @@ namespace Server.Mobiles
             new Point3D(6424, 1279, 10),
             new Point3D(6406, 1250, 10),
             new Point3D(6423, 1220, 10),
-            new Point3D(6461, 1237, 10),
+            new Point3D(6461, 1237, 10)
         };
 
         [Constructable]
@@ -137,8 +137,9 @@ namespace Server.Mobiles
 
             if (SharedChance >= random)
                 return CreateArtifact(SharedList);
-            else if (DecorativeChance >= random)
+            if (DecorativeChance >= random)
                 return CreateArtifact(DecorativeList);
+
             return null;
         }
 
@@ -231,7 +232,7 @@ namespace Server.Mobiles
 
             if (!m_HasDone2ndSpawn && m_Helpers.Count > 0)
             {
-                if (m_Helpers.Where(bc => bc.Alive && !bc.Deleted).Count() == 0)
+                if (m_Helpers.Count(bc => bc.Alive && !bc.Deleted) == 0)
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(5), SpawnHelpers);
                     m_HasDone2ndSpawn = true;
@@ -248,8 +249,8 @@ namespace Server.Mobiles
             {
                 if (!CanBeHarmful(mob) || mob == this)
                     continue;
-                if (mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned || ((BaseCreature)mob).Team != Team))
-                    targets.Add(mob);
+                if (mob is BaseCreature bc && (bc.Controlled || bc.Summoned || bc.Team != Team))
+                    targets.Add(bc);
                 else if (mob is PlayerMobile && mob.Alive)
                     targets.Add(mob);
             }
@@ -260,14 +261,9 @@ namespace Server.Mobiles
             {
                 Mobile m = targets[i];
 
-                if (m != null && !m.Deleted && m is PlayerMobile)
+                if (m != null && !m.Deleted && m is PlayerMobile pm && (pm.Mounted || pm.Flying))
                 {
-                    PlayerMobile pm = m as PlayerMobile;
-
-                    if (pm.Mounted || pm.Flying)
-                    {
-                        pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
-                    }
+                    pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(10), true);
                 }
 
                 double damage = m.Hits * 0.6;
@@ -294,8 +290,10 @@ namespace Server.Mobiles
             IPooledEnumerable eable = GetMobilesInRange(range);
             foreach (Mobile m in eable)
             {
-                if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && CanBeHarmful(m))
+                if ((m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile) && CanBeHarmful(m))
+                {
                     Timer.DelayCall(TimeSpan.FromSeconds(1), new TimerStateCallback(DoDamage_Callback), m);
+                }
             }
             eable.Free();
 
@@ -321,11 +319,6 @@ namespace Server.Mobiles
 
         public void DoEffect(Point3D p, Map map)
         {
-            int[] effect =
-            {
-                14000, 14013
-            };
-
             Effects.PlaySound(p, map, 0x307);
             Effects.SendLocationEffect(p, map, Utility.RandomBool() ? 14000 : 14013, 20);
         }
@@ -404,14 +397,9 @@ namespace Server.Mobiles
                 killer = creature.GetMaster();
             }
 
-            if (killer is PlayerMobile && Utility.RandomDouble() < ChampionSystem.ScrollChance * 10)
+            if (killer is PlayerMobile pm && Utility.RandomDouble() < ChampionSystem.ScrollChance * 10 && Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
             {
-                PlayerMobile pm = (PlayerMobile)killer;
-
-                if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
-                {
-                    ChampionSpawn.GiveScrollTo(pm, ChampionSpawn.CreateRandomSoT(bc.Map != null && bc.Map.Rules == MapRules.FeluccaRules));
-                }
+                ChampionSpawn.GiveScrollTo(pm, ChampionSpawn.CreateRandomSoT(bc.Map != null && bc.Map.Rules == MapRules.FeluccaRules));
             }
         }
 

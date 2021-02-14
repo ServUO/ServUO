@@ -95,7 +95,7 @@ namespace Server.Mobiles
 
                 foreach (Mobile m in eable)
                 {
-                    if (m == this || (m is Paralithode) || !CanBeHarmful(m))
+                    if (m == this || m is Paralithode || !CanBeHarmful(m))
                         continue;
 
                     CantWalk = false;
@@ -181,7 +181,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

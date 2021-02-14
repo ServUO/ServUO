@@ -362,9 +362,8 @@ namespace Server.Engines.Quests.Hag
                         */
                         return 1055059;
                     }
-                    else
-                    {
-                        /* <I>Captain Blackheart looks up from polishing his cutlass, glaring at
+
+                    /* <I>Captain Blackheart looks up from polishing his cutlass, glaring at
                         * you with red-rimmed eyes.</I><BR><BR>
                         * 
                         * Well, well.  Lookit the wee little deck swabby.  Aren't ye a cute lil'
@@ -384,14 +383,12 @@ namespace Server.Engines.Quests.Hag
                         * <I>The drunken pirate captain leans back in his chair, taking another gulp of
                         * his drink before he starts in on another bawdy pirate song.</I>
                         */
-                        return 1055057;
-                    }
+                    return 1055057;
                 }
-                else
+
+                if (m_Drunken)
                 {
-                    if (m_Drunken)
-                    {
-                        /* <I>The inebriated pirate looks up at you with a wry grin.</I><BR><BR>
+                    /* <I>The inebriated pirate looks up at you with a wry grin.</I><BR><BR>
                         * 
                         * Well hello again, me little matey.  I see ye have a belly full of rotgut
                         * in ye.  I bet ye think you're a right hero, ready te face the world.  But
@@ -407,11 +404,10 @@ namespace Server.Engines.Quests.Hag
                         * <I>Captain Blackheart shoves you aside, banging his cutlass against the
                         * table as he calls to the waitress for another round.</I>
                         */
-                        return 1055056;
-                    }
-                    else
-                    {
-                        /* <I>Captain Blackheart looks up from his drink, almost tipping over
+                    return 1055056;
+                }
+
+                /* <I>Captain Blackheart looks up from his drink, almost tipping over
                         * his chair as he looks you up and down.</I><BR><BR>
                         * 
                         * You again?  I thought I told ye te get lost?  Go on with ye!  Ye ain't
@@ -424,9 +420,7 @@ namespace Server.Engines.Quests.Hag
                         * <I>The inebriated pirate bolts back another mug of ale and brushes you
                         * off with a wave of his hand.</I>
                         */
-                        return 1055058;
-                    }
-                }
+                return 1055058;
             }
         }
         public override bool Logged => false;
@@ -484,9 +478,8 @@ namespace Server.Engines.Quests.Hag
                     */
                     return 1055054;
                 }
-                else
-                {
-                    /* <I>The drunken pirate, Captain Blackheart, looks up from his bottle
+
+                /* <I>The drunken pirate, Captain Blackheart, looks up from his bottle
                     * of whiskey with a pleased expression.</I><BR><BR>
                     * 
                     * Well looky here!  I didn't think a landlubber like yourself had the pirate
@@ -506,8 +499,7 @@ namespace Server.Engines.Quests.Hag
                     * <I>Captain Blackheart hands you a jug of his famous Whiskey. You think it best
                     * to return it to the Hag, rather than drink any of the noxious swill.</I>
                     */
-                    return 1055011;
-                }
+                return 1055011;
             }
         }
         public override void OnRead()

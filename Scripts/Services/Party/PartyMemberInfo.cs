@@ -13,14 +13,8 @@ namespace Server.Engines.PartySystem
         public Mobile Mobile => m_Mobile;
         public bool CanLoot
         {
-            get
-            {
-                return m_CanLoot;
-            }
-            set
-            {
-                m_CanLoot = value;
-            }
+            get => m_CanLoot;
+            set => m_CanLoot = value;
         }
     }
 }

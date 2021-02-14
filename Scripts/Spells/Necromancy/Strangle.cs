@@ -134,7 +134,7 @@ namespace Server.Spells.Necromancy
                 }
 
                 TimeSpan t_Duration = TimeSpan.FromSeconds(i_Length * strength);
-                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Strangle, 1075794, 1075795, t_Duration, m, args.ToString()));
+                BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.Strangle, 1075794, 1075795, t_Duration, m, args));
             }
 
             HarmfulSpell(m);
@@ -243,8 +243,8 @@ namespace Server.Spells.Necromancy
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
-                    m_Owner.Target((Mobile)o);
+                if (o is Mobile mobile)
+                    m_Owner.Target(mobile);
             }
 
             protected override void OnTargetFinish(Mobile from)

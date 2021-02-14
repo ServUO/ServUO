@@ -36,9 +36,9 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (parent is Mobile && !Deleted)
+            if (parent is Mobile mobile && !Deleted)
             {
-                BestialSetHelper.OnAdded((Mobile)parent, this);
+                BestialSetHelper.OnAdded(mobile, this);
             }
         }
 
@@ -46,9 +46,9 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile && !Deleted)
+            if (parent is Mobile mobile && !Deleted)
             {
-                BestialSetHelper.OnRemoved((Mobile)parent, this);
+                BestialSetHelper.OnRemoved(mobile, this);
             }
         }
 

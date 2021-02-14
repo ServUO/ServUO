@@ -41,7 +41,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Allegiance = (Allegiance)reader.ReadInt();
         }
@@ -57,11 +57,12 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile from)
         {
-            if ((from is PlayerMobile && QuestHelper.GetQuest((PlayerMobile)from, typeof(InsecticideAndRegicideQuest)) != null) || from.AccessLevel > AccessLevel.Player)
+            if (from is PlayerMobile pm && QuestHelper.GetQuest(pm, typeof(InsecticideAndRegicideQuest)) != null || from.AccessLevel > AccessLevel.Player)
+            {
                 return base.OnMoveOver(from);
+            }
 
             from.SendLocalizedMessage(1156840); // You must be on the "Insecticide & Regicide" quest to enter.  Visit Professor Rafkin in Sir Geoffrey's camp to the East.
-
             return false;
         }
 
@@ -79,7 +80,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

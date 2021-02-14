@@ -25,17 +25,8 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public RaisableItem RaisableItem
-        {
-            get
-            {
-                return m_RaisableItem;
-            }
-            set
-            {
-                m_RaisableItem = value;
-            }
-        }
+        public RaisableItem RaisableItem { get => m_RaisableItem; set => m_RaisableItem = value; }
+
         public override void OnDoubleClick(Mobile m)
         {
             if (!m.InRange(this, 2))
@@ -66,7 +57,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_RaisableItem);
@@ -75,8 +65,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_RaisableItem = (RaisableItem)reader.ReadItem();
 
@@ -206,15 +195,13 @@ namespace Server.Items
                 RaisableItem = null;
 
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             Timer.DelayCall(TimeSpan.Zero, Refresh);
         }

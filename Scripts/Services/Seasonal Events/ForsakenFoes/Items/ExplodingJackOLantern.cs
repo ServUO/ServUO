@@ -45,9 +45,9 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is PlayerMobile)
+                if (targeted is PlayerMobile mobile)
                 {
-                    Mobile m = targeted as Mobile;
+                    Mobile m = mobile;
 
                     if (from == m)
                     {
@@ -77,7 +77,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

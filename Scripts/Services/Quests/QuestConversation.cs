@@ -15,13 +15,13 @@ namespace Server.Engines.Quests
 
         public QuestSystem System
         {
-            get { return m_System; }
-            set { m_System = value; }
+            get => m_System;
+            set => m_System = value;
         }
         public bool HasBeenRead
         {
-            get { return m_HasBeenRead; }
-            set { m_HasBeenRead = value; }
+            get => m_HasBeenRead;
+            set => m_HasBeenRead = value;
         }
 
         public virtual void BaseDeserialize(GenericReader reader)

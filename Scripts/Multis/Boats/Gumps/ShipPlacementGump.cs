@@ -58,15 +58,15 @@ namespace Server.Gumps
                     direction = Direction.East; break;
             }
 
-            if (m_Item is BaseBoatDeed)
+            if (m_Item is BaseBoatDeed deed)
             {
-                id = BaseBoat.GetID(((BaseBoatDeed)m_Item).MultiID, direction);
-                offset = ((BaseBoatDeed)m_Item).Offset;
+                id = BaseBoat.GetID(deed.MultiID, direction);
+                offset = deed.Offset;
             }
-            else if (m_Item is BaseDockedBoat)
+            else if (m_Item is BaseDockedBoat docked)
             {
-                id = BaseBoat.GetID(((BaseDockedBoat)m_Item).MultiID, direction);
-                offset = ((BaseDockedBoat)m_Item).Offset;
+                id = BaseBoat.GetID(docked.MultiID, direction);
+                offset = docked.Offset;
             }
 
             m_From.Target = new InternalTarget(id, offset, m_Item, direction);
@@ -92,8 +92,8 @@ namespace Server.Gumps
 
                 if (ip != null)
                 {
-                    if (ip is Item)
-                        ip = ((Item)ip).GetWorldTop();
+                    if (ip is Item item)
+                        ip = item.GetWorldTop();
 
                     Point3D p = new Point3D(ip);
 
@@ -105,10 +105,10 @@ namespace Server.Gumps
                         from.SendLocalizedMessage(1042549); // A boat may not be placed in this area.
                     else
                     {
-                        if (m_Item is BaseBoatDeed)
-                            ((BaseBoatDeed)m_Item).OnPlacement(from, p, m_ItemID, m_Facing);
-                        else if (m_Item is BaseDockedBoat)
-                            ((BaseDockedBoat)m_Item).OnPlacement(from, p, m_ItemID, m_Facing);
+                        if (m_Item is BaseBoatDeed deed)
+                            deed.OnPlacement(from, p, m_ItemID, m_Facing);
+                        else if (m_Item is BaseDockedBoat docked)
+                            docked.OnPlacement(from, p, m_ItemID, m_Facing);
                     }
                 }
             }

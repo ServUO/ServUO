@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Server.Mobiles;
 
 namespace Server.Commands
 {
@@ -228,7 +229,7 @@ namespace Server.Commands
                     bool bloodied = false;
 
                     for (int i = 0; !bloodied && i < m_Params.Length; ++i)
-                        bloodied = (m_Params[i] == "Bloodied");
+                        bloodied = m_Params[i] == "Bloodied";
 
                     if (m_Type == typeofAnkhWest)
                         item = new AnkhWest(bloodied);
@@ -448,7 +449,7 @@ namespace Server.Commands
                     }
 
                     if (fill)
-                        item = (Item)Activator.CreateInstance(m_Type, new object[] { content });
+                        item = (Item)Activator.CreateInstance(m_Type, content);
                     else
                         item = (Item)Activator.CreateInstance(m_Type);
                 }
@@ -470,7 +471,7 @@ namespace Server.Commands
                         }
                     }
 
-                    item = (Item)Activator.CreateInstance(m_Type, new object[] { facing });
+                    item = (Item)Activator.CreateInstance(m_Type, facing);
                 }
                 else
                 {
@@ -482,11 +483,11 @@ namespace Server.Commands
                 throw new Exception(string.Format("Bad type: {0}", m_Type), e);
             }
 
-            if (item is BaseAddon)
+            if (item is BaseAddon addon)
             {
                 if (m_ItemID > 0)
                 {
-                    List<AddonComponent> comps = ((BaseAddon)item).Components;
+                    List<AddonComponent> comps = addon.Components;
 
                     for (int i = 0; i < comps.Count; ++i)
                     {
@@ -497,7 +498,7 @@ namespace Server.Commands
                     }
                 }
             }
-            else if (item is BaseLight)
+            else if (item is BaseLight light)
             {
                 bool unlit = false, unprotected = false;
 
@@ -513,17 +514,15 @@ namespace Server.Commands
                 }
 
                 if (!unlit)
-                    ((BaseLight)item).Ignite();
+                    light.Ignite();
                 if (!unprotected)
-                    ((BaseLight)item).Protected = true;
+                    light.Protected = true;
 
                 if (m_ItemID > 0)
-                    item.ItemID = m_ItemID;
+                    light.ItemID = m_ItemID;
             }
-            else if (item is Mobiles.Spawner)
+            else if (item is Spawner sp)
             {
-                Mobiles.Spawner sp = (Mobiles.Spawner)item;
-
                 sp.NextSpawn = TimeSpan.Zero;
 
                 for (int i = 0; i < m_Params.Length; ++i)
@@ -533,7 +532,7 @@ namespace Server.Commands
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            sp.SpawnObjects.Add(new Mobiles.SpawnObject(m_Params[i].Substring(++indexOf)));
+                            sp.SpawnObjects.Add(new SpawnObject(m_Params[i].Substring(++indexOf)));
                     }
                     else if (m_Params[i].StartsWith("MinDelay"))
                     {
@@ -593,10 +592,8 @@ namespace Server.Commands
                     }
                 }
             }
-            else if (item is RecallRune)
+            else if (item is RecallRune rune)
             {
-                RecallRune rune = (RecallRune)item;
-
                 for (int i = 0; i < m_Params.Length; ++i)
                 {
                     if (m_Params[i].StartsWith("Description"))
@@ -629,10 +626,8 @@ namespace Server.Commands
                     }
                 }
             }
-            else if (item is SkillTeleporter)
+            else if (item is SkillTeleporter stp)
             {
-                SkillTeleporter tp = (SkillTeleporter)item;
-
                 for (int i = 0; i < m_Params.Length; ++i)
                 {
                     if (m_Params[i].StartsWith("Skill"))
@@ -640,94 +635,92 @@ namespace Server.Commands
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Skill = (SkillName)Enum.Parse(typeof(SkillName), m_Params[i].Substring(++indexOf), true);
+                            stp.Skill = (SkillName)Enum.Parse(typeof(SkillName), m_Params[i].Substring(++indexOf), true);
                     }
                     else if (m_Params[i].StartsWith("RequiredFixedPoint"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Required = Utility.ToInt32(m_Params[i].Substring(++indexOf)) * 0.01;
+                            stp.Required = Utility.ToInt32(m_Params[i].Substring(++indexOf)) * 0.01;
                     }
                     else if (m_Params[i].StartsWith("Required"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Required = Utility.ToDouble(m_Params[i].Substring(++indexOf));
+                            stp.Required = Utility.ToDouble(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("MessageString"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.MessageString = m_Params[i].Substring(++indexOf);
+                            stp.MessageString = m_Params[i].Substring(++indexOf);
                     }
                     else if (m_Params[i].StartsWith("MessageNumber"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.MessageNumber = Utility.ToInt32(m_Params[i].Substring(++indexOf));
+                            stp.MessageNumber = Utility.ToInt32(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("PointDest"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.PointDest = Point3D.Parse(m_Params[i].Substring(++indexOf));
+                            stp.PointDest = Point3D.Parse(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("MapDest"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.MapDest = Map.Parse(m_Params[i].Substring(++indexOf));
+                            stp.MapDest = Map.Parse(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("Creatures"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Creatures = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
+                            stp.Creatures = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("SourceEffect"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.SourceEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
+                            stp.SourceEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("DestEffect"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.DestEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
+                            stp.DestEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("SoundID"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.SoundID = Utility.ToInt32(m_Params[i].Substring(++indexOf));
+                            stp.SoundID = Utility.ToInt32(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("Delay"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Delay = TimeSpan.Parse(m_Params[i].Substring(++indexOf));
+                            stp.Delay = TimeSpan.Parse(m_Params[i].Substring(++indexOf));
                     }
                 }
 
                 if (m_ItemID > 0)
-                    item.ItemID = m_ItemID;
+                    stp.ItemID = m_ItemID;
             }
-            else if (item is KeywordTeleporter)
+            else if (item is KeywordTeleporter ktp)
             {
-                KeywordTeleporter tp = (KeywordTeleporter)item;
-
                 for (int i = 0; i < m_Params.Length; ++i)
                 {
                     if (m_Params[i].StartsWith("Substring"))
@@ -735,80 +728,78 @@ namespace Server.Commands
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Substring = m_Params[i].Substring(++indexOf);
+                            ktp.Substring = m_Params[i].Substring(++indexOf);
                     }
                     else if (m_Params[i].StartsWith("Keyword"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Keyword = Utility.ToInt32(m_Params[i].Substring(++indexOf));
+                            ktp.Keyword = Utility.ToInt32(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("Range"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Range = Utility.ToInt32(m_Params[i].Substring(++indexOf));
+                            ktp.Range = Utility.ToInt32(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("PointDest"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.PointDest = Point3D.Parse(m_Params[i].Substring(++indexOf));
+                            ktp.PointDest = Point3D.Parse(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("MapDest"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.MapDest = Map.Parse(m_Params[i].Substring(++indexOf));
+                            ktp.MapDest = Map.Parse(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("Creatures"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Creatures = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
+                            ktp.Creatures = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("SourceEffect"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.SourceEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
+                            ktp.SourceEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("DestEffect"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.DestEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
+                            ktp.DestEffect = Utility.ToBoolean(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("SoundID"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.SoundID = Utility.ToInt32(m_Params[i].Substring(++indexOf));
+                            ktp.SoundID = Utility.ToInt32(m_Params[i].Substring(++indexOf));
                     }
                     else if (m_Params[i].StartsWith("Delay"))
                     {
                         int indexOf = m_Params[i].IndexOf('=');
 
                         if (indexOf >= 0)
-                            tp.Delay = TimeSpan.Parse(m_Params[i].Substring(++indexOf));
+                            ktp.Delay = TimeSpan.Parse(m_Params[i].Substring(++indexOf));
                     }
                 }
 
                 if (m_ItemID > 0)
-                    item.ItemID = m_ItemID;
+                    ktp.ItemID = m_ItemID;
             }
-            else if (item is Teleporter)
+            else if (item is Teleporter tp)
             {
-                Teleporter tp = (Teleporter)item;
-
                 for (int i = 0; i < m_Params.Length; ++i)
                 {
                     if (m_Params[i].StartsWith("PointDest"))
@@ -863,12 +854,10 @@ namespace Server.Commands
                 }
 
                 if (m_ItemID > 0)
-                    item.ItemID = m_ItemID;
+                    tp.ItemID = m_ItemID;
             }
-            else if (item is FillableContainer)
+            else if (item is FillableContainer cont)
             {
-                FillableContainer cont = (FillableContainer)item;
-
                 for (int i = 0; i < m_Params.Length; ++i)
                 {
                     if (m_Params[i].StartsWith("ContentType"))
@@ -881,7 +870,7 @@ namespace Server.Commands
                 }
 
                 if (m_ItemID > 0)
-                    item.ItemID = m_ItemID;
+                    cont.ItemID = m_ItemID;
             }
             else if (m_ItemID > 0)
             {
@@ -907,8 +896,8 @@ namespace Server.Commands
                     {
                         int hue = Utility.ToInt32(m_Params[i].Substring(++indexOf));
 
-                        if (item is DyeTub)
-                            ((DyeTub)item).DyedHue = hue;
+                        if (item is DyeTub tub)
+                            tub.DyedHue = hue;
                         else
                             item.Hue = hue;
                     }
@@ -989,7 +978,6 @@ namespace Server.Commands
             {
                 eable = map.GetItemsInRange(new Point3D(x, y, z), 0);
 
-                LightType lt = srcItem.Light;
                 string srcName = srcItem.ItemData.Name;
 
                 foreach (Item item in eable)
@@ -998,9 +986,6 @@ namespace Server.Commands
                     {
                         if (item.ItemID == itemID)
                         {
-                            /*if ( item.Light != lt )
-                            m_DeleteQueue.Enqueue( item );
-                            else*/
                             res = true;
                             m_DeleteQueue.Enqueue(item);
                         }
@@ -1067,16 +1052,13 @@ namespace Server.Commands
             {
                 DecorationEntry entry = (DecorationEntry)m_Entries[i];
                 Point3D loc = entry.Location;
-                string extra = entry.Extra;
 
                 for (int j = 0; j < maps.Length; ++j)
                 {
                     if (item == null)
                         item = Construct();
 
-                    #region Mondain's Legacy
                     m_Constructed = item;
-                    #endregion
 
                     if (item == null)
                         continue;

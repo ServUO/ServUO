@@ -58,15 +58,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -146,15 +144,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -283,22 +279,20 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
 
     public class LegendaryCartographer : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(ToolsOfTheTradeQuest) };
+        public override Type[] Quests => new[] { typeof(ToolsOfTheTradeQuest) };
 
         public static LegendaryCartographer TramInstance { get; set; }
         public static LegendaryCartographer FelInstance { get; set; }
@@ -350,9 +344,9 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && !QuestHelper.CheckDoneOnce((PlayerMobile)m, typeof(ToolsOfTheTradeQuest), this, false))
+            if (m is PlayerMobile mobile && !QuestHelper.CheckDoneOnce(mobile, typeof(ToolsOfTheTradeQuest), this, false))
             {
-                m.SendLocalizedMessage(1080107); // I'm sorry, I have nothing for you at this time.
+                mobile.SendLocalizedMessage(1080107); // I'm sorry, I have nothing for you at this time.
             }
             else
             {
@@ -362,9 +356,9 @@ namespace Server.Engines.Quests
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5) && !InRange(oldLocation, 5))
+            if (m is PlayerMobile mobile && InRange(mobile.Location, 5) && !InRange(oldLocation, 5))
             {
-                BuriedRichesQuest quest = QuestHelper.GetQuest<BuriedRichesQuest>((PlayerMobile)m);
+                BuriedRichesQuest quest = QuestHelper.GetQuest<BuriedRichesQuest>(mobile);
 
                 if (quest != null)
                 {
@@ -381,15 +375,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {
@@ -405,7 +397,7 @@ namespace Server.Engines.Quests
 
     public class MasterProvisioner : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(TheTreasureChaseQuest) };
+        public override Type[] Quests => new[] { typeof(TheTreasureChaseQuest) };
 
         public static MasterProvisioner TramInstance { get; set; }
         public static MasterProvisioner FelInstance { get; set; }
@@ -456,9 +448,9 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && QuestHelper.CheckDoneOnce((PlayerMobile)m, typeof(TheTreasureChaseQuest), this, false))
+            if (m is PlayerMobile mobile && QuestHelper.CheckDoneOnce(mobile, typeof(TheTreasureChaseQuest), this, false))
             {
-                m.SendLocalizedMessage(1080107); // I'm sorry, I have nothing for you at this time.
+                mobile.SendLocalizedMessage(1080107); // I'm sorry, I have nothing for you at this time.
             }
             else
             {
@@ -468,9 +460,9 @@ namespace Server.Engines.Quests
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5) && !InRange(oldLocation, 5))
+            if (m is PlayerMobile mobile && InRange(mobile.Location, 5) && !InRange(oldLocation, 5))
             {
-                ToolsOfTheTradeQuest quest = QuestHelper.GetQuest<ToolsOfTheTradeQuest>((PlayerMobile)m);
+                ToolsOfTheTradeQuest quest = QuestHelper.GetQuest<ToolsOfTheTradeQuest>(mobile);
 
                 if (quest != null)
                 {
@@ -487,15 +479,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

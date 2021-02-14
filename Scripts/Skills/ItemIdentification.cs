@@ -65,9 +65,9 @@ namespace Server.Items
                     item.PrivateOverheadMessage(MessageType.Label, 0x3B2, item.LabelNumber, from.NetState);
                 }
 
-                if (item is Meteorite)
+                if (item is Meteorite meteorite)
                 {
-                    if (((Meteorite)item).Polished)
+                    if (meteorite.Polished)
                     {
                         from.SendLocalizedMessage(1158697); // The brilliance of the meteorite shimmers in the light as you rotate it in your hands! Brightly hued veins of exotic minerals reflect against the polished surface. You think to yourself you have never seen anything so full of splendor!
                     }

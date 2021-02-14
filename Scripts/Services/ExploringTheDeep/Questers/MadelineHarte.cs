@@ -47,7 +47,7 @@ namespace Server.Mobiles
             {
                 if (!from.HasGump(typeof(MadelineHarteGump)))
                 {
-                    from.SendGump(new MadelineHarteGump(from));
+                    from.SendGump(new MadelineHarteGump());
                 }
             }
             else
@@ -71,7 +71,7 @@ namespace Server.Mobiles
 
                         if (!m.HasGump(typeof(MadelineHarteCompleteGump)))
                         {
-                            m.SendGump(new MadelineHarteCompleteGump(m));
+                            m.SendGump(new MadelineHarteCompleteGump());
                         }
                     }
                     else
@@ -96,7 +96,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
@@ -113,10 +113,10 @@ namespace Server.Gumps
 
         private static void MadelineHarteCompleteGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new MadelineHarteCompleteGump(e.Mobile));
+            e.Mobile.SendGump(new MadelineHarteCompleteGump());
         }
 
-        public MadelineHarteCompleteGump(Mobile owner) : base(50, 50)
+        public MadelineHarteCompleteGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -174,10 +174,10 @@ namespace Server.Gumps
 
         private static void MadelineHarteGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new MadelineHarteGump(e.Mobile));
+            e.Mobile.SendGump(new MadelineHarteGump());
         }
 
-        public MadelineHarteGump(Mobile owner) : base(50, 50)
+        public MadelineHarteGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;

@@ -98,13 +98,13 @@ namespace Server.Gumps
                 }
             }
 
-            from.SendLocalizedMessage(1062436, totalItems.ToString() + "\t" + inventory.Gold.ToString()); // The vendor you selected had ~1_COUNT~ items in its inventory, and ~2_AMOUNT~ gold in its account.
+            from.SendLocalizedMessage(1062436, totalItems + "\t" + inventory.Gold); // The vendor you selected had ~1_COUNT~ items in its inventory, and ~2_AMOUNT~ gold in its account.
 
             int givenGold = Banker.DepositUpTo(from, inventory.Gold);
             inventory.Gold -= givenGold;
 
             from.SendLocalizedMessage(1060397, givenGold.ToString()); // ~1_AMOUNT~ gold has been deposited into your bank box.
-            from.SendLocalizedMessage(1062437, givenToBackpack.ToString() + "\t" + givenToBankBox.ToString()); // ~1_COUNT~ items have been removed from the shop inventory and placed in your backpack.  ~2_BANKCOUNT~ items were removed from the shop inventory and placed in your bank box.
+            from.SendLocalizedMessage(1062437, givenToBackpack + "\t" + givenToBankBox); // ~1_COUNT~ items have been removed from the shop inventory and placed in your backpack.  ~2_BANKCOUNT~ items were removed from the shop inventory and placed in your bank box.
 
             if (inventory.Gold > 0 || inventory.Items.Count > 0)
             {

@@ -25,7 +25,7 @@ namespace Server.Engines.Quests
         public BaseGalleon Galleon => m_Galleon;
         public BindingPole Pole => m_Pole;
         public BindingRope Rope => m_Rope;
-        public Mobile Captain { get { return m_Captain; } set { m_Captain = value; } }
+        public Mobile Captain { get => m_Captain; set => m_Captain = value; }
 
         public ProfessionalBountyQuest()
         {
@@ -62,10 +62,10 @@ namespace Server.Engines.Quests
 
                 foreach (BaseObjective obj in Objectives)
                 {
-                    if (obj is BountyQuestObjective)
+                    if (obj is BountyQuestObjective objective)
                     {
-                        ((BountyQuestObjective)obj).Captured = true;
-                        ((BountyQuestObjective)obj).CapturedCaptain = captain;
+                        objective.Captured = true;
+                        objective.CapturedCaptain = captain;
                     }
                 }
             }
@@ -78,10 +78,10 @@ namespace Server.Engines.Quests
 
             foreach (BaseObjective obj in Objectives)
             {
-                if (obj is BountyQuestObjective)
+                if (obj is BountyQuestObjective objective)
                 {
-                    ((BountyQuestObjective)obj).Captured = false;
-                    ((BountyQuestObjective)obj).CapturedCaptain = null;
+                    objective.Captured = false;
+                    objective.CapturedCaptain = null;
                 }
             }
         }
@@ -163,14 +163,12 @@ namespace Server.Engines.Quests
             bool captured = false;
             foreach (BaseObjective obj in Objectives)
             {
-                if (obj is BountyQuestObjective && ((BountyQuestObjective)obj).Captured)
+                if (obj is BountyQuestObjective o && o.Captured)
                 {
-                    BountyQuestObjective o = (BountyQuestObjective)obj;
                     captured = true;
 
-                    if (o.CapturedCaptain != null && o.CapturedCaptain is PirateCaptain)
+                    if (o.CapturedCaptain is PirateCaptain p)
                     {
-                        PirateCaptain p = o.CapturedCaptain as PirateCaptain;
                         p.Quest = null;
                     }
 
@@ -314,7 +312,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Pole = reader.ReadItem() as BindingPole;
             m_Rope = reader.ReadItem() as BindingRope;

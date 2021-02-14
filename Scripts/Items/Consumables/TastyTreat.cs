@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using Server.Targeting;
 using System;
 using System.Collections.Generic;
@@ -59,9 +59,9 @@ namespace Server.Items
             {
                 m.BeginTarget(2, false, TargetFlags.Beneficial, (from, targeted) =>
                     {
-                        if (targeted is Mobile)
+                        if (targeted is Mobile mobile)
                         {
-                            TryFeed(from, (Mobile)targeted);
+                            TryFeed(from, mobile);
                         }
                     });
             }
@@ -69,10 +69,8 @@ namespace Server.Items
 
         private void TryFeed(Mobile from, Mobile target)
         {
-            if (target is BaseCreature && !((BaseCreature)target).IsDeadBondedPet)
+            if (target is BaseCreature bc && !bc.IsDeadBondedPet)
             {
-                BaseCreature bc = (BaseCreature)target;
-
                 if (UnderInfluence(bc))
                 {
                     if (m_Table[bc] + (CoolDown + Duration) < DateTime.UtcNow)

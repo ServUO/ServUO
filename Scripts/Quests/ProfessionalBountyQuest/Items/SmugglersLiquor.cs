@@ -9,7 +9,7 @@ namespace Server.Items
         public override int MaxQuantity => 5;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SmugglersLiquorType LiquorType { get { return m_Type; } set { m_Type = value; ItemID = ComputeItemID(); } }
+        public SmugglersLiquorType LiquorType { get => m_Type; set { m_Type = value; ItemID = ComputeItemID(); } }
 
         public enum SmugglersLiquorType
         {
@@ -35,7 +35,7 @@ namespace Server.Items
             SummerSolsticeBrew,
             VesperAle,
             WaxingDarkBrew,
-            WhiteRoseZinfandel,
+            WhiteRoseZinfandel
         }
 
         [Constructable]

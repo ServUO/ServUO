@@ -20,8 +20,8 @@ namespace Server
 
         public static int StatsPerDay = 15;
 
-        public static Dictionary<PlayerMobile, Dictionary<SkillName, DateTime>> ROTTable { get; private set; }
-        public static Dictionary<PlayerMobile, int> StatsTable { get; private set; }
+        public static Dictionary<PlayerMobile, Dictionary<SkillName, DateTime>> ROTTable { get; }
+        public static Dictionary<PlayerMobile, int> StatsTable { get; }
 
         public static DateTime LastReset { get; private set; }
 
@@ -180,7 +180,7 @@ namespace Server
 
                                 string nextg = next < DateTime.Now
                                     ? "now"
-                                    : "in " + ((int)(next - DateTime.Now).TotalMinutes).ToString() + " minutes";
+                                    : "in " + (int)(next - DateTime.Now).TotalMinutes + " minutes";
 
                                 Console.WriteLine(
                                     "   {0}: last gained {1}, can gain {2} (every {3} minutes)",
@@ -196,7 +196,7 @@ namespace Server
                         Console.WriteLine("---");
                         Console.WriteLine(
                             "Next Reset: {0} minutes",
-                            ((LastReset + TimeSpan.FromHours(24) - DateTime.Now)).TotalMinutes.ToString());
+                            (LastReset + TimeSpan.FromHours(24) - DateTime.Now).TotalMinutes.ToString());
                     });
 
                 Utility.PushColor(ConsoleColor.Red);
@@ -236,12 +236,12 @@ namespace Server
 
             if (item != null)
             {
-                if (cont != from.Backpack && from is PlayerMobile && ((PlayerMobile)from).BlessedItem != null && ((PlayerMobile)from).BlessedItem == item)
+                if (cont != from.Backpack && from is PlayerMobile mobile && mobile.BlessedItem != null && mobile.BlessedItem == item)
                 {
-                    ((PlayerMobile)from).BlessedItem = null;
+                    mobile.BlessedItem = null;
                     item.LootType = LootType.Regular;
 
-                    from.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber.ToString()); // ~1_NAME~ has been unblessed.
+                    mobile.SendLocalizedMessage(1075292, item.Name != null ? item.Name : "#" + item.LabelNumber); // ~1_NAME~ has been unblessed.
                 }
             }
         }

@@ -1,7 +1,5 @@
 using Server.Items;
 
-using System;
-
 namespace Server.Mobiles
 {
     [CorpseName("an butcher corpse")]
@@ -78,7 +76,7 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.LootItem<PumpkinCarvingKit>(20.0));
-            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(ObsidianSkull), typeof(CrystalSkull), typeof(JadeSkull) }, 1.0, 1)); // 1% chance
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(ObsidianSkull), typeof(CrystalSkull), typeof(JadeSkull) }, 1.0, 1)); // 1% chance
         }
 
         public override void Serialize(GenericWriter writer)
@@ -90,7 +88,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Server.Mobiles
             {
                 if (!from.HasGump(typeof(CousteauPerronGump)))
                 {
-                    from.SendGump(new CousteauPerronGump(from));
+                    from.SendGump(new CousteauPerronGump());
                     pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CusteauPerron;
                 }
             }
@@ -68,14 +68,14 @@ namespace Server.Mobiles
             {
                 if (!from.HasGump(typeof(CousteauPerronCompleteGump)))
                 {
-                    from.SendGump(new CousteauPerronCompleteGump(from));
+                    from.SendGump(new CousteauPerronCompleteGump());
                 }
             }
             else if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
             {
                 if (!from.HasGump(typeof(CousteauPerronPlansGump)))
                 {
-                    from.SendGump(new CousteauPerronPlansGump(from));
+                    from.SendGump(new CousteauPerronPlansGump());
                 }
             }
             else
@@ -98,13 +98,13 @@ namespace Server.Mobiles
                 {
                     pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.Sorcerers;
                     dropped.Delete();
-                    pm.SendGump(new CousteauPerronCompleteGump(pm));
+                    pm.SendGump(new CousteauPerronCompleteGump());
                 }
                 else if (dropped is SalvagerSuitPlans && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.Sorcerers)
                 {
                     pm.ExploringTheDeepQuest = ExploringTheDeepQuestChain.CollectTheComponent;
                     dropped.Delete();
-                    pm.SendGump(new CousteauPerronPlansGump(pm));
+                    pm.SendGump(new CousteauPerronPlansGump());
                     pm.AddToBackpack(new CusteauPerronNote());
                 }
                 else
@@ -124,7 +124,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
@@ -140,10 +140,10 @@ namespace Server.Gumps
 
         private static void CousteauPerronGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new CousteauPerronGump(e.Mobile));
+            e.Mobile.SendGump(new CousteauPerronGump());
         }
 
-        public CousteauPerronGump(Mobile owner) : base(50, 50)
+        public CousteauPerronGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -218,10 +218,10 @@ namespace Server.Gumps
 
         private static void CousteauPerronCompleteGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new CousteauPerronCompleteGump(e.Mobile));
+            e.Mobile.SendGump(new CousteauPerronCompleteGump());
         }
 
-        public CousteauPerronCompleteGump(Mobile owner) : base(50, 50)
+        public CousteauPerronCompleteGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -279,10 +279,10 @@ namespace Server.Gumps
 
         private static void CousteauPerronPlansGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new CousteauPerronPlansGump(e.Mobile));
+            e.Mobile.SendGump(new CousteauPerronPlansGump());
         }
 
-        public CousteauPerronPlansGump(Mobile owner) : base(50, 50)
+        public CousteauPerronPlansGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;

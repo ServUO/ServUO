@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class DeceitBrazier : Item
     {
-        private static readonly Type[] m_Creatures = new Type[]
+        private static readonly Type[] m_Creatures =
         {
             #region Animals
             typeof(FireSteed), //Set the tents up people!
@@ -79,27 +79,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SpawnRange
         {
-            get
-            {
-                return m_SpawnRange;
-            }
-            set
-            {
-                m_SpawnRange = value;
-            }
+            get => m_SpawnRange;
+            set => m_SpawnRange = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan NextSpawnDelay
         {
-            get
-            {
-                return m_NextSpawnDelay;
-            }
-            set
-            {
-                m_NextSpawnDelay = value;
-            }
+            get => m_NextSpawnDelay;
+            set => m_NextSpawnDelay = value;
         }
 
         public override int LabelNumber => 1023633;// Brazier
@@ -182,7 +170,7 @@ namespace Server.Items
 
                 if (Map.CanSpawnMobile(new Point2D(x, y), Z))
                     return new Point3D(x, y, Z);
-                else if (Map.CanSpawnMobile(new Point2D(x, y), z))
+                if (Map.CanSpawnMobile(new Point2D(x, y), z))
                     return new Point3D(x, y, z);
             }
 
@@ -212,7 +200,7 @@ namespace Server.Items
 
                             DoEffect(spawnLoc, map);
 
-                            Timer.DelayCall(TimeSpan.FromSeconds(1), delegate ()
+                            Timer.DelayCall(TimeSpan.FromSeconds(1), delegate
                             {
                                 bc.Home = Location;
                                 bc.RangeHome = m_SpawnRange;

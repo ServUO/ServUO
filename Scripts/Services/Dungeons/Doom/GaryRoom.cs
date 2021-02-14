@@ -48,12 +48,14 @@ namespace Server.Engines.Doom
         private static Point3D _SpawnLoc = new Point3D(396, 8, 4);
         private static Point3D _DoorOneLoc = new Point3D(395, 15, -1);
         private static Point3D _DoorTwoLoc = new Point3D(396, 15, -1);
-        private static readonly Point3D[] _StatueLocs = new Point3D[]
+
+        private static readonly Point3D[] _StatueLocs =
         {
             new Point3D(393, 4, 5),
             new Point3D(395, 4 ,5),
             new Point3D(397, 4, 5)
         };
+
         private static readonly Rectangle2D[] _Bounds =
         {
             new Rectangle2D(388, 3, 16, 12)
@@ -95,7 +97,7 @@ namespace Server.Engines.Doom
 
         public void OnTick()
         {
-            if (NextRoll < DateTime.UtcNow /*&& (Spawn == null || !Spawn.Alive)*/ && GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => p.Alive).Count() > 0)
+            if (NextRoll < DateTime.UtcNow && GetEnumeratedMobiles().OfType<PlayerMobile>().Any(p => p.Alive))
             {
                 DoRoll();
                 NextRoll = DateTime.UtcNow + RollDelay;
@@ -280,9 +282,9 @@ namespace Server.Engines.Doom
 
                 foreach (Mobile m in eable)
                 {
-                    if (m is GaryTheDungeonMaster)
+                    if (m is GaryTheDungeonMaster master)
                     {
-                        gary = (GaryTheDungeonMaster)m;
+                        gary = master;
                         break;
                     }
                 }
@@ -477,10 +479,10 @@ namespace Server.Engines.Doom
 
             foreach (Item item in eable)
             {
-                if (item is BaseDoor)
+                if (item is BaseDoor door)
                 {
                     eable.Free();
-                    return (BaseDoor)item;
+                    return door;
                 }
             }
 
@@ -532,7 +534,7 @@ namespace Server.Engines.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -543,7 +545,7 @@ namespace Server.Engines.Doom
         [CommandProperty(AccessLevel.GameMaster)]
         public MonsterStatuetteInfo Info
         {
-            get { return _Info; }
+            get => _Info;
             set
             {
                 _Info = value;
@@ -603,7 +605,7 @@ namespace Server.Engines.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             AssignRandom();
         }
@@ -616,7 +618,7 @@ namespace Server.Engines.Doom
         [CommandProperty(AccessLevel.GameMaster)]
         public int Index
         {
-            get { return _Index; }
+            get => _Index;
             set
             {
                 _Index = value;
@@ -687,18 +689,14 @@ namespace Server.Engines.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class GaryTheDungeonMaster : BaseCreature
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public GaryRegion RegionProps
-        {
-            get { return Region as GaryRegion; }
-            set { }
-        }
+        public GaryRegion RegionProps { get => Region as GaryRegion; set { } }
 
         public GaryTheDungeonMaster()
             : base(AIType.AI_Vendor, FightMode.None, 10, 1, .2, .4)
@@ -783,7 +781,7 @@ namespace Server.Engines.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), Delete);
         }

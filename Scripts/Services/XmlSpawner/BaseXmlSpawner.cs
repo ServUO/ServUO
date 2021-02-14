@@ -30,7 +30,7 @@ namespace Server.Mobiles
 
         private static bool IsParsable(Type t)
         {
-            return (t == typeofTimeSpan || t.IsDefined(typeofParsable, false));
+            return t == typeofTimeSpan || t.IsDefined(typeofParsable, false);
         }
 
         private static readonly Type[] m_ParseTypes = { typeof(string) };
@@ -55,28 +55,28 @@ namespace Server.Mobiles
 
         public static bool IsNumeric(Type t)
         {
-            return (Array.IndexOf(m_NumericTypes, t) >= 0);
+            return Array.IndexOf(m_NumericTypes, t) >= 0;
         }
 
         private static readonly Type typeofType = typeof(Type);
 
         private static bool IsType(Type t)
         {
-            return (t == typeofType);
+            return t == typeofType;
         }
 
         private static readonly Type typeofChar = typeof(char);
 
         private static bool IsChar(Type t)
         {
-            return (t == typeofChar);
+            return t == typeofChar;
         }
 
         private static readonly Type typeofString = typeof(string);
 
         private static bool IsString(Type t)
         {
-            return (t == typeofString);
+            return t == typeofString;
         }
 
         private static bool IsEnum(Type t)
@@ -589,7 +589,7 @@ namespace Server.Mobiles
                     toSet = World.FindEntity(Convert.ToInt32(valstr, 16));
 
                     // now check to make sure the object returned is consistent with the type
-                    if (!((toSet is Mobile && IsMobile(type)) || (toSet is Item && IsItem(type))))
+                    if (!(toSet is Mobile && IsMobile(type) || toSet is Item && IsItem(type)))
                     {
                         return "Item/Mobile type mismatch. cannot assign.";
                     }
@@ -599,7 +599,7 @@ namespace Server.Mobiles
                     return "That is not properly formatted. not convertible.";
                 }
             }
-            else if ((type.GetInterface("IList") != null))
+            else if (type.GetInterface("IList") != null)
             {
                 try
                 {
@@ -652,7 +652,7 @@ namespace Server.Mobiles
                 {
                     p.SetValue(o, toSet, null);
                 }
-                else if ((ptype.GetInterface("IList") != null) && index >= 0)
+                else if (ptype.GetInterface("IList") != null && index >= 0)
                 {
                     try
                     {
@@ -698,11 +698,9 @@ namespace Server.Mobiles
             int index = 0;
             if (arraystring.Length > 1)
             {
-                // parse the property name from the indexing
-                propname = arraystring[0];
+                propname = arraystring[0]; // parse the property name from the indexing
 
-                // then parse to get the index value
-                string[] arrayvalue = arraystring[1].Split(']');
+                string[] arrayvalue = arraystring[1].Split(']'); // then parse to get the index value
 
                 if (arrayvalue.Length > 0)
                 {
@@ -719,19 +717,16 @@ namespace Server.Mobiles
                 {
                     po = plookup.GetValue(o, null);
 
-                    // now set the nested attribute using the new property list
-                    return (SetPropertyValue(spawner, po, arglist[1], value));
+                    return SetPropertyValue(spawner, po, arglist[1], value); // now set the nested attribute using the new property list
                 }
 
-                // is a nested property with attributes so first get the property
-                foreach (PropertyInfo p in props)
+                foreach (PropertyInfo p in props) // is a nested property with attributes so first get the property
                 {
                     if (Insensitive.Equals(p.Name, propname))
                     {
                         po = p.GetValue(o, null);
 
-                        // now set the nested attribute using the new property list
-                        return (SetPropertyValue(spawner, po, arglist[1], value));
+                        return SetPropertyValue(spawner, po, arglist[1], value); // now set the nested attribute using the new property list
                     }
                 }
             }
@@ -798,8 +793,7 @@ namespace Server.Mobiles
                 {
                     po = plookup.GetValue(o, null);
 
-                    // now set the nested attribute using the new property list
-                    return (SetPropertyObject(spawner, po, arglist[1], value));
+                    return SetPropertyObject(spawner, po, arglist[1], value); // now set the nested attribute using the new property list
                 }
 
                 foreach (PropertyInfo p in props)
@@ -808,8 +802,7 @@ namespace Server.Mobiles
                     {
                         po = p.GetValue(o, null);
 
-                        // now set the nested attribute using the new property list
-                        return (SetPropertyObject(spawner, po, arglist[1], value));
+                        return SetPropertyObject(spawner, po, arglist[1], value); // now set the nested attribute using the new property list
 
                     }
                 }
@@ -889,18 +882,18 @@ namespace Server.Mobiles
             {
                 try
                 {
-                    if (o is Mobile)
+                    if (o is Mobile mobile)
                     {
-                        ptype = ((Mobile)o).Serial.GetType();
+                        ptype = mobile.Serial.GetType();
 
-                        return string.Format("Serial = {0}", ((Mobile)o).Serial);
+                        return string.Format("Serial = {0}", mobile.Serial);
                     }
 
-                    if (o is Item)
+                    if (o is Item item)
                     {
-                        ptype = ((Item)o).Serial.GetType();
+                        ptype = item.Serial.GetType();
 
-                        return string.Format("Serial = {0}", ((Item)o).Serial);
+                        return string.Format("Serial = {0}", item.Serial);
                     }
 
                     return "Object is not item/mobile";
@@ -950,7 +943,7 @@ namespace Server.Mobiles
                     {
                         po = plookup.GetValue(o, null);
                     }
-                    else if ((ptype.GetInterface("IList") != null) && index >= 0)
+                    else if (ptype.GetInterface("IList") != null && index >= 0)
                     {
                         try
                         {
@@ -963,14 +956,12 @@ namespace Server.Mobiles
                     {
                         po = plookup.GetValue(o, null);
                     }
-                    // now set the nested attribute using the new property list
-                    return (GetPropertyValue(spawner, po, arglist[1], out ptype));
+                    
+                    return GetPropertyValue(spawner, po, arglist[1], out ptype); // now set the nested attribute using the new property list
                 }
 
-                // is a nested property with attributes so first get the property
-                foreach (PropertyInfo p in props)
+                foreach (PropertyInfo p in props) // now set the nested attribute using the new property list
                 {
-                    //if ( Insensitive.Equals( p.Name, arglist[0] ) )
                     if (Insensitive.Equals(p.Name, propname))
                     {
                         if (!p.CanRead)
@@ -981,7 +972,7 @@ namespace Server.Mobiles
                         {
                             po = p.GetValue(o, null);
                         }
-                        else if ((ptype.GetInterface("IList") != null) && index >= 0)
+                        else if (ptype.GetInterface("IList") != null && index >= 0)
                         {
                             try
                             {
@@ -994,8 +985,8 @@ namespace Server.Mobiles
                         {
                             po = p.GetValue(o, null);
                         }
-                        // now set the nested attribute using the new property list
-                        return (GetPropertyValue(spawner, po, arglist[1], out ptype));
+                        
+                        return GetPropertyValue(spawner, po, arglist[1], out ptype); // now set the nested attribute using the new property list
                     }
                 }
             }
@@ -1293,22 +1284,24 @@ namespace Server.Mobiles
                                 }
 
                                 // count nearby players
-                                if (refobject is Item)
+                                if (refobject is Item item)
                                 {
-                                    IPooledEnumerable ie = ((Item)refobject).GetMobilesInRange(range);
+                                    IPooledEnumerable ie = item.GetMobilesInRange(range);
                                     foreach (Mobile p in ie)
                                     {
                                         if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
                                     }
+
                                     ie.Free();
                                 }
-                                else if (refobject is Mobile)
+                                else if (refobject is Mobile mobile)
                                 {
-                                    IPooledEnumerable ie = ((Mobile)refobject).GetMobilesInRange(range);
+                                    IPooledEnumerable ie = mobile.GetMobilesInRange(range);
                                     foreach (Mobile p in ie)
                                     {
                                         if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
                                     }
+
                                     ie.Free();
                                 }
 
@@ -1367,7 +1360,8 @@ namespace Server.Mobiles
                     }
                 }
             }
-            return (no_error);
+
+            return no_error;
         }
         #endregion
 
@@ -1505,7 +1499,7 @@ namespace Server.Mobiles
             char startc = str[0];
 
             // first see whether it is a standard numeric value
-            if ((startc == '.') || (startc == '-') || (startc == '+') || (startc >= '0' && startc <= '9'))
+            if (startc == '.' || startc == '-' || startc == '+' || startc >= '0' && startc <= '9')
             {
                 // determine the type
                 ptype = str.IndexOf(".") >= 0 ? typeof(double) : typeof(int);
@@ -1526,7 +1520,7 @@ namespace Server.Mobiles
             }
             // or a bool
 
-            if ((str.ToLower()) == "true" || (str.ToLower() == "false"))
+            if (str.ToLower() == "true" || str.ToLower() == "false")
             {
                 ptype = typeof(bool);
                 return str;
@@ -1537,7 +1531,7 @@ namespace Server.Mobiles
             {
                 valueKeyword kw = valueKeywordHash[pname];
 
-                if ((kw == valueKeyword.PLAYERSINRANGE) && arglist.Length > 1)
+                if (kw == valueKeyword.PLAYERSINRANGE && arglist.Length > 1)
                 {
                     // syntax is PLAYERSINRANGE,range
 
@@ -1556,28 +1550,30 @@ namespace Server.Mobiles
                             if (p.AccessLevel <= spawner.TriggerAccessLevel) nplayers++;
                         }
                     }
-                    else if (o is Item)
+                    else if (o is Item item)
                     {
-                        IPooledEnumerable ie = ((Item)o).GetMobilesInRange(range);
+                        IPooledEnumerable ie = item.GetMobilesInRange(range);
                         foreach (Mobile p in ie)
                         {
                             if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
                         }
+
                         ie.Free();
                     }
-                    else if (o is Mobile)
+                    else if (o is Mobile mobile)
                     {
-                        IPooledEnumerable ie = ((Mobile)o).GetMobilesInRange(range);
+                        IPooledEnumerable ie = mobile.GetMobilesInRange(range);
                         foreach (Mobile p in ie)
                         {
                             if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
                         }
+
                         ie.Free();
                     }
 
                     return nplayers.ToString();
                 }
-                if ((kw == valueKeyword.RANDNAME) && arglist.Length > 1)
+                if (kw == valueKeyword.RANDNAME && arglist.Length > 1)
                 {
                     // syntax is RANDNAME,nametype
                     return NameList.RandomName(arglist[1]);
@@ -1663,16 +1659,14 @@ namespace Server.Mobiles
             int orposition = testString.IndexOf("|");
 
             // combine them based upon the operator
-            if ((andposition > 0 && orposition <= 0) || (andposition > 0 && andposition < orposition))
+            if (andposition > 0 && orposition <= 0 || andposition > 0 && andposition < orposition)
             {
-                // and operator
-                return (first && second);
+                return first && second; // and operator
             }
 
-            if ((orposition > 0 && andposition <= 0) || (orposition > 0 && orposition < andposition))
+            if (orposition > 0 && andposition <= 0 || orposition > 0 && orposition < andposition)
             {
-                // or operator
-                return (first || second);
+                return first || second; // or operator
             }
 
             // should never get here
@@ -1709,22 +1703,19 @@ namespace Server.Mobiles
             bool hasgreaterthan = false;
             bool haslessthan = false;
 
-            if (testString.IndexOf("=") > 0)
+            if (testString.Contains("="))
             {
                 hasequal = true;
             }
-            else
-                if (testString.IndexOf("!") > 0)
+            else if (testString.Contains("!"))
             {
                 hasnotequals = true;
             }
-            else
-                    if (testString.IndexOf(">") > 0)
+            else if (testString.Contains(">"))
             {
                 hasgreaterthan = true;
             }
-            else
-                        if (testString.IndexOf("<") > 0)
+            else if (testString.Contains("<"))
             {
                 haslessthan = true;
             }
@@ -1917,7 +1908,7 @@ namespace Server.Mobiles
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else if ((ptype2 == typeof(double)) && IsNumeric(ptype1))
+            else if (ptype2 == typeof(double) && IsNumeric(ptype1))
             {
                 if (hasequal)
                 {
@@ -1958,7 +1949,7 @@ namespace Server.Mobiles
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else if ((ptype1 == typeof(double)) && IsNumeric(ptype2))
+            else if (ptype1 == typeof(double) && IsNumeric(ptype2))
             {
                 if (hasequal)
                 {
@@ -1999,7 +1990,7 @@ namespace Server.Mobiles
                     catch { status_str = "invalid int comparison : {0}" + testString; }
                 }
             }
-            else if ((ptype1 == typeof(double)) && (ptype2 == typeof(double)))
+            else if (ptype1 == typeof(double) && ptype2 == typeof(double))
             {
                 double val1;
                 double val2;
@@ -2161,10 +2152,8 @@ namespace Server.Mobiles
 
             if (count == 1) // if a unique item is found then success
             {
-                // add this to the recent search list
-                AddToRecentItemSearchList(fromspawner, founditem);
-
-                return (founditem);
+                AddToRecentItemSearchList(fromspawner, founditem); // add this to the recent search list
+                return founditem;
             }
 
             return null;
@@ -2186,27 +2175,23 @@ namespace Server.Mobiles
                 targettype = SpawnerType.GetType(typestr);
             }
 
-            // search through all mobiles in the world and find one with a matching name
-            foreach (Mobile mobile in World.Mobiles.Values)
+            foreach (Mobile mobile in World.Mobiles.Values) // search through all mobiles in the world and find one with a matching name
             {
                 Type mobtype = mobile.GetType();
-                if (!mobile.Deleted && ((name.Length == 0 || string.Compare(mobile.Name, name, true) == 0)) && (typestr == null ||
+                if (!mobile.Deleted && (name.Length == 0 || string.Compare(mobile.Name, name, true) == 0) && (typestr == null ||
                     targettype != null && (mobtype.Equals(targettype) || mobtype.IsSubclassOf(targettype))))
                 {
                     foundmobile = mobile;
                     count++;
-                    // added the break in to return the first match instead of forcing uniqueness (overrides the count test)
-                    break;
+                    break; // added the break in to return the first match instead of forcing uniqueness (overrides the count test)
                 }
             }
 
-            // if a unique item is found then success
-            if (count == 1)
+            if (count == 1) // if a unique item is found then success
             {
-                // add this to the recent search list
-                AddToRecentMobileSearchList(fromspawner, foundmobile);
+                AddToRecentMobileSearchList(fromspawner, foundmobile); // add this to the recent search list
 
-                return (foundmobile);
+                return foundmobile;
             }
 
             return null;
@@ -2228,37 +2213,27 @@ namespace Server.Mobiles
                 return World.FindEntity(serial) as XmlSpawner;
             }
 
-            // do a quick search through the recent search list to see if it is there
-            XmlSpawner foundspawner = FindInRecentSpawnerSearchList(fromspawner, name);
+            XmlSpawner foundspawner = FindInRecentSpawnerSearchList(fromspawner, name); // do a quick search through the recent search list to see if it is there
 
             if (foundspawner != null) return foundspawner;
 
             int count = 0;
 
-            // search through all xmlspawners in the world and find one with a matching name
-            foreach (Item item in World.Items.Values)
+            foreach (Item item in World.Items.Values) // search through all xmlspawners in the world and find one with a matching name
             {
-                if (item is XmlSpawner)
+                if (item is XmlSpawner spawner && !spawner.Deleted && string.Compare(spawner.Name, name, true) == 0)
                 {
-                    XmlSpawner spawner = (XmlSpawner)item;
-                    if (!spawner.Deleted && (string.Compare(spawner.Name, name, true) == 0))
-                    {
-                        foundspawner = spawner;
-
-                        count++;
-                        // added the break in to return the first match instead of forcing uniqueness (overrides the count test)
-                        break;
-                    }
+                    foundspawner = spawner;
+                    count++;
+                    break; // added the break in to return the first match instead of forcing uniqueness (overrides the count test)
                 }
             }
 
-            // if a unique item is found then success
-            if (count == 1)
+            if (count == 1) // if a unique item is found then success
             {
-                // add this to the recent search list
-                AddToRecentSpawnerSearchList(fromspawner, foundspawner);
+                AddToRecentSpawnerSearchList(fromspawner, foundspawner); // add this to the recent search list
 
-                return (foundspawner);
+                return foundspawner;
             }
 
             return null;
@@ -2297,8 +2272,7 @@ namespace Server.Mobiles
                         deletelist = new List<XmlSpawner>();
                     deletelist.Add(s);
                 }
-                else
-                    if (string.Compare(s.Name, name, true) == 0)
+                else if (string.Compare(s.Name, name, true) == 0)
                 {
                     foundspawner = s;
                     break;
@@ -2311,7 +2285,7 @@ namespace Server.Mobiles
                     spawner.RecentSpawnerSearchList.Remove(i);
             }
 
-            return (foundspawner);
+            return foundspawner;
         }
 
         public static void AddToRecentItemSearchList(XmlSpawner spawner, Item target)
@@ -2372,7 +2346,7 @@ namespace Server.Mobiles
                     spawner.RecentItemSearchList.Remove(i);
             }
 
-            return (founditem);
+            return founditem;
         }
 
         public static void AddToRecentMobileSearchList(XmlSpawner spawner, Mobile target)
@@ -2434,7 +2408,7 @@ namespace Server.Mobiles
                     spawner.RecentMobileSearchList.Remove(i);
             }
 
-            return (foundmobile);
+            return foundmobile;
         }
         #endregion
 
@@ -2489,7 +2463,8 @@ namespace Server.Mobiles
                 sb.Append(value);
 
                 // continue processing the rest of the string
-                if (endindex + startindex + 2 >= remaining.Length) break;
+                if (endindex + startindex + 2 >= remaining.Length)
+                    break;
 
                 remaining = remaining.Substring(endindex + startindex + 2, remaining.Length - endindex - startindex - 2);
             }
@@ -2505,7 +2480,7 @@ namespace Server.Mobiles
                 string[] typeargs = ParseCommaArgs(arglist[0], 2);
                 if (typeargs.Length > 1)
                 {
-                    return (typeargs[0]);
+                    return typeargs[0];
                 }
                 return arglist[0];
             }
@@ -2530,8 +2505,8 @@ namespace Server.Mobiles
                 {
                     typeargs = ParseCommaArgs(itemtypestring.Substring(argstart), 15);
                 }
-                return (typeargs);
 
+                return typeargs;
             }
 
             return null;
@@ -2586,7 +2561,6 @@ namespace Server.Mobiles
             if (str == null) return null;
             str = str.Trim();
 
-
             string[] args;
             // this supports strings that may have special html formatting in them that use the /
             if (str.IndexOf("</") >= 0 || str.IndexOf("/>") >= 0)
@@ -2605,7 +2579,7 @@ namespace Server.Mobiles
                     if (index >= 0)
                     {
                         // check the char before it and after it to ignore </ and />
-                        if ((index > 0 && str[index - 1] == '<') || (index < length - 1 && str[index + 1] == '>'))
+                        if (index > 0 && str[index - 1] == '<' || index < length - 1 && str[index + 1] == '>')
                         {
                             // skip it
                             searchindex = index + 1;
@@ -2630,7 +2604,6 @@ namespace Server.Mobiles
                 }
 
                 // turn tmparray into a string[]
-
                 args = new string[tmparray.Count];
                 tmparray.CopyTo(args);
             }
@@ -2638,7 +2611,6 @@ namespace Server.Mobiles
             {
                 // just use split to do it with no context control
                 args = str.Split(slashdelim, nitems);
-
             }
 
             return args;
@@ -2673,7 +2645,8 @@ namespace Server.Mobiles
 
         public static string[] SplitString(string str, string separator)
         {
-            if (str == null || separator == null) return null;
+            if (str == null || separator == null)
+                return null;
 
             int lastindex = 0;
             List<string> strargs = new List<string>();
@@ -2743,10 +2716,8 @@ namespace Server.Mobiles
                         item.Amount = spawner.StackAmount;
                     }
                     // if this is in any container such as a pack then add to the container.
-                    if (spawner.Parent is Container)
+                    if (spawner.Parent is Container c)
                     {
-                        Container c = (Container)spawner.Parent;
-
                         Point3D loc = spawner.Location;
 
                         if (!smartspawn)
@@ -3094,29 +3065,5 @@ namespace Server.Mobiles
             return false;
         }
         #endregion
-
-        public static List<Item> GetItems(Region r)
-        {
-            List<Item> list = new List<Item>();
-            if (r == null) return list;
-
-            Sector[] sectors = r.Sectors;
-
-            if (sectors != null)
-            {
-                for (int i = 0; i < sectors.Length; i++)
-                {
-                    Sector sector = sectors[i];
-
-                    foreach (Item item in sector.Items)
-                    {
-                        if (Region.Find(item.Location, item.Map).IsPartOf(r))
-                            list.Add(item);
-                    }
-                }
-            }
-
-            return list;
-        }
     }
 }

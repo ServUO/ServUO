@@ -26,9 +26,8 @@ namespace Server.Engines.Points
 
         public override void ProcessKill(Mobile victim, Mobile damager)
         {
-            if (RisingTideEvent.Instance.Running && victim is BaseCreature && damager is PlayerMobile)
+            if (RisingTideEvent.Instance.Running && victim is BaseCreature bc && damager is PlayerMobile)
             {
-                BaseCreature bc = victim as BaseCreature;
                 PlunderBeaconAddon beacon = GetPlunderBeacon(bc);
 
                 if (beacon != null)
@@ -50,7 +49,7 @@ namespace Server.Engines.Points
 
                     if (chance > Utility.RandomDouble())
                     {
-                        Container corpse = victim.Corpse;
+                        Container corpse = bc.Corpse;
 
                         if (corpse != null)
                         {
@@ -72,7 +71,7 @@ namespace Server.Engines.Points
             {
                 foreach (System.Collections.Generic.List<PlunderBeaconAddon> list in PlunderBeaconSpawner.Spawner.PlunderBeacons.Values)
                 {
-                    PlunderBeaconAddon addon = list.FirstOrDefault(beacon => beacon.Crew.Contains(bc) || (beacon.Spawn.ContainsKey(bc) && beacon.Spawn[bc]));
+                    PlunderBeaconAddon addon = list.FirstOrDefault(beacon => beacon.Crew.Contains(bc) || beacon.Spawn.ContainsKey(bc) && beacon.Spawn[bc]);
 
                     if (addon != null)
                     {

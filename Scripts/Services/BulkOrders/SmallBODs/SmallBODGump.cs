@@ -78,9 +78,9 @@ namespace Server.Engines.BulkOrders
                 y += 24;
             }
 
-            if (from is PlayerMobile && BulkOrderSystem.NewSystemEnabled)
+            if (from is PlayerMobile mobile && BulkOrderSystem.NewSystemEnabled)
             {
-                BODContext c = BulkOrderSystem.GetContext((PlayerMobile)from);
+                BODContext c = BulkOrderSystem.GetContext(mobile);
 
                 int points = 0;
                 double banked = 0.0;
@@ -116,10 +116,16 @@ namespace Server.Engines.BulkOrders
         public static int GetMaterialNumberFor(BulkMaterialType material)
         {
             if (material >= BulkMaterialType.DullCopper && material <= BulkMaterialType.Valorite)
+            {
                 return 1045142 + (material - BulkMaterialType.DullCopper);
-            else if (material >= BulkMaterialType.Spined && material <= BulkMaterialType.Barbed)
+            }
+
+            if (material >= BulkMaterialType.Spined && material <= BulkMaterialType.Barbed)
+            {
                 return 1049348 + (material - BulkMaterialType.Spined);
-            else if (material >= BulkMaterialType.OakWood && material <= BulkMaterialType.Frostwood)
+            }
+
+            if (material >= BulkMaterialType.OakWood && material <= BulkMaterialType.Frostwood)
             {
                 switch (material)
                 {
@@ -131,6 +137,7 @@ namespace Server.Engines.BulkOrders
                     case BulkMaterialType.Frostwood: return 1071433;
                 }
             }
+
             return 0;
         }
 
@@ -168,9 +175,9 @@ namespace Server.Engines.BulkOrders
                     {
                         m_From.BeginTarget(-1, false, Targeting.TargetFlags.None, (m, targeted) =>
                             {
-                                if (!m_Deed.Deleted && targeted is Container)
+                                if (!m_Deed.Deleted && targeted is Container container)
                                 {
-                                    List<Item> list = new List<Item>(((Container)targeted).Items);
+                                    List<Item> list = new List<Item>(container.Items);
 
                                     foreach (Item item in list)
                                     {

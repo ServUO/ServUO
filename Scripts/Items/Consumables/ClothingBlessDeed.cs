@@ -16,13 +16,10 @@ namespace Server.Items
             if (m_Deed.Deleted || m_Deed.RootParent != from)
                 return;
 
-            if (target is BaseClothing)
+            if (target is BaseClothing item)
             {
-                BaseClothing item = (BaseClothing)target;
-
-                if (item is IArcaneEquip)
+                if (item is IArcaneEquip eq)
                 {
-                    IArcaneEquip eq = (IArcaneEquip)item;
                     if (eq.IsArcane)
                     {
                         from.SendLocalizedMessage(1005019); // This bless deed is for Clothes only.

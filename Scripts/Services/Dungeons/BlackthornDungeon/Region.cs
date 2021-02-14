@@ -21,7 +21,7 @@ namespace Server.Engines.Blackthorn
             new Point3D(6356, 2781, 0),
             new Point3D(6272, 2702, 0),
             new Point3D(6272, 2656, 0),
-            new Point3D(6456, 2623, 0),
+            new Point3D(6456, 2623, 0)
         };
 
         public BlackthornDungeon(XmlElement xml, Map map, Region parent)
@@ -67,12 +67,12 @@ namespace Server.Engines.Blackthorn
 
             foreach (Mobile mob in eable)
             {
-                if (mob.Combatant == null && mob is BaseCreature && ((BaseCreature)mob).GetMaster() == null && mob.CanBeHarmful(m))
+                if (mob.Combatant == null && mob is BaseCreature creature && creature.GetMaster() == null && creature.CanBeHarmful(m))
                 {
-                    if (mob.InLOS(m))
+                    if (creature.InLOS(m))
                         Timer.DelayCall(() => mob.Combatant = m);
                     else
-                        ((BaseCreature)mob).AIObject.MoveTo(mob, true, 1);
+                        creature.AIObject.MoveTo(mob, true, 1);
                 }
             }
 
@@ -91,17 +91,21 @@ namespace Server.Engines.Blackthorn
 
         public override void OnDeath(Mobile m)
         {
-            if (m is BaseCreature && Map == Map.Trammel && InvasionController.TramInstance != null)
-                InvasionController.TramInstance.OnDeath(m as BaseCreature);
+            if (m is BaseCreature creature && Map == Map.Trammel && InvasionController.TramInstance != null)
+            {
+                InvasionController.TramInstance.OnDeath(creature);
+            }
 
-            if (m is BaseCreature && Map == Map.Felucca && InvasionController.FelInstance != null)
-                InvasionController.FelInstance.OnDeath(m as BaseCreature);
+            if (m is BaseCreature baseCreature && Map == Map.Felucca && InvasionController.FelInstance != null)
+            {
+                InvasionController.FelInstance.OnDeath(baseCreature);
+            }
         }
     }
 
     public class BlackthornCastle : GuardedRegion
     {
-        public static readonly Point3D[] StableLocs = new Point3D[] { new Point3D(1510, 1543, 25),
+        public static readonly Point3D[] StableLocs = { new Point3D(1510, 1543, 25),
             new Point3D(1516, 1542, 25), new Point3D(1520, 1542, 25), new Point3D(1525, 1542, 25) };
 
         public BlackthornCastle(XmlElement xml, Map map, Region parent)
@@ -131,9 +135,9 @@ namespace Server.Engines.Blackthorn
         {
             base.OnLocationChanged(m, oldLocation);
 
-            if (m is PlayerMobile && m.X <= 1525 && m.X >= 1520 && m.Y <= 1485 && oldLocation.Y > 1485)
+            if (m is PlayerMobile pm && pm.X <= 1525 && pm.X >= 1520 && pm.Y <= 1485 && oldLocation.Y > 1485)
             {
-                Quests.AVisitToCastleBlackthornQuest.CheckLocation((PlayerMobile)m, oldLocation);
+                Quests.AVisitToCastleBlackthornQuest.CheckLocation(pm, oldLocation);
             }
 
             if (m.AccessLevel > AccessLevel.Player)
@@ -141,9 +145,9 @@ namespace Server.Engines.Blackthorn
 
             if (m.Mount != null)
             {
-                if (m is PlayerMobile)
+                if (m is PlayerMobile mobile)
                 {
-                    (m as PlayerMobile).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(30), true);
+                    mobile.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(30), true);
                 }
                 else
                 {
@@ -152,15 +156,16 @@ namespace Server.Engines.Blackthorn
 
                 m.SendLocalizedMessage(1153052); // Mounts and flying are not permitted in this area.
 
-                if (m.Mount is BaseCreature && ((BaseCreature)m.Mount).Controlled)
+                if (m.Mount is BaseCreature mount && mount.Controlled)
                 {
-                    BaseCreature mount = m.Mount as BaseCreature;
                     TryAutoStable(mount);
                 }
             }
 
-            if (m is BaseCreature && ((BaseCreature)m).Controlled)
-                TryAutoStable((BaseCreature)m);
+            if (m is BaseCreature creature && creature.Controlled)
+            {
+                TryAutoStable(creature);
+            }
         }
 
         public void TryAutoStable(BaseCreature pet)

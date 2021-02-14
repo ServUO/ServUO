@@ -1,9 +1,7 @@
-using Server.Engines.VvV;
 using System.Collections.Generic;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Engines.VvV.MorphEarrings")]
     public class MorphEarrings : GoldEarrings
     {
         public override int LabelNumber => 1094746; // Morph Earrings
@@ -17,9 +15,9 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile mobile)
             {
-                ValidateEquipment((Mobile)parent);
+                ValidateEquipment(mobile);
             }
         }
 
@@ -71,10 +69,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0 && ViceVsVirtueSystem.Enabled)
-                Timer.DelayCall(() => ViceVsVirtueSystem.Instance.AddVvVItem(this));
+            reader.ReadInt();
         }
     }
 }

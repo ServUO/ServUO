@@ -81,14 +81,14 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string Title
         {
-            get { return m_Title; }
+            get => m_Title;
             set { m_Title = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string Author
         {
-            get { return m_Author; }
+            get => m_Author;
             set { m_Author = value; InvalidateProperties(); }
         }
 

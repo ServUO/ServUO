@@ -16,10 +16,8 @@ namespace Server.Items
             if (m_Deed.Deleted || m_Deed.RootParent != from)
                 return;
 
-            if (target is Item)
+            if (target is Item item)
             {
-                Item item = (Item)target;
-
                 if (item.RootParent != from) // Make sure its in their pack or they are wearing it
                     from.SendLocalizedMessage(500508); // You may only bless objects that you are carrying.
                 else if (item.Stackable == true)

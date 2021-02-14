@@ -29,13 +29,8 @@ namespace Server.Engines.PartySystem
         public Mobile Leader => m_Leader;
         public List<PartyMemberInfo> Members => m_Members;
         public List<Mobile> Candidates => m_Candidates;
-        public PartyMemberInfo this[int index]
-        {
-            get
-            {
-                return m_Members[index];
-            }
-        }
+        public PartyMemberInfo this[int index] => m_Members[index];
+
         public PartyMemberInfo this[Mobile m]
         {
             get
@@ -64,9 +59,9 @@ namespace Server.Engines.PartySystem
 
         public static void ListenToParty_OnTarget(Mobile from, object obj)
         {
-            if (obj is Mobile)
+            if (obj is Mobile mobile)
             {
-                Party p = Get((Mobile)obj);
+                Party p = Get(mobile);
 
                 if (p == null)
                 {
@@ -257,17 +252,15 @@ namespace Server.Engines.PartySystem
 
                         break;
                     }
-                    else
-                    {
-                        if (mob != null && mob.NetState != null && mob.NetState.IsEnhancedClient)
-                        {
-                            Waypoints.Remove(mob, m);
-                        }
 
-                        if (m.NetState != null && m.NetState.IsEnhancedClient)
-                        {
-                            Waypoints.Remove(m, mob);
-                        }
+                    if (mob != null && mob.NetState != null && mob.NetState.IsEnhancedClient)
+                    {
+                        Waypoints.Remove(mob, m);
+                    }
+
+                    if (m.NetState != null && m.NetState.IsEnhancedClient)
+                    {
+                        Waypoints.Remove(m, mob);
                     }
                 }
 
@@ -283,7 +276,7 @@ namespace Server.Engines.PartySystem
 
         public bool Contains(Mobile m)
         {
-            return (this[m] != null);
+            return this[m] != null;
         }
 
         public void Disband()

@@ -145,11 +145,11 @@ namespace Server.Mobiles
         #region Blast Radius
         private static readonly int BlastRange = 16;
 
-        private static readonly double[] BlastChance = new[]
-            {
-                0.0, 0.0, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95,
-                0.95, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95
-            };
+        private static readonly double[] BlastChance =
+        {
+            0.0, 0.0, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95,
+            0.95, 0.05, 0.95, 0.95, 0.95, 0.05, 0.95, 0.95
+        };
 
         private void BlastRadius()
         {
@@ -248,7 +248,7 @@ namespace Server.Mobiles
         {
             private readonly Mobile m_Owner;
 
-            private static readonly int[] m_Offsets = new[]
+            private static readonly int[] m_Offsets =
             {
                 -1, -1,
                 -1,  0,
@@ -312,15 +312,13 @@ namespace Server.Mobiles
                             to = new Point3D(x, y, m_Owner.Z);
                             break;
                         }
-                        else
-                        {
-                            int z = map.GetAverageZ(x, y);
 
-                            if (map.CanSpawnMobile(x, y, z))
-                            {
-                                to = new Point3D(x, y, z);
-                                break;
-                            }
+                        int z = map.GetAverageZ(x, y);
+
+                        if (map.CanSpawnMobile(x, y, z))
+                        {
+                            to = new Point3D(x, y, z);
+                            break;
                         }
                     }
 
@@ -411,12 +409,12 @@ namespace Server.Mobiles
             {
                 object mod = mods[i];
 
-                if (mod is ResistanceMod)
-                    from.AddResistanceMod((ResistanceMod)mod);
-                else if (mod is StatMod)
-                    from.AddStatMod((StatMod)mod);
-                else if (mod is SkillMod)
-                    from.AddSkillMod((SkillMod)mod);
+                if (mod is ResistanceMod resistMod)
+                    from.AddResistanceMod(resistMod);
+                else if (mod is StatMod statMod)
+                    from.AddStatMod(statMod);
+                else if (mod is SkillMod skillMod)
+                    from.AddSkillMod(skillMod);
             }
         }
 
@@ -426,12 +424,12 @@ namespace Server.Mobiles
             {
                 object mod = mods[i];
 
-                if (mod is ResistanceMod)
-                    from.RemoveResistanceMod((ResistanceMod)mod);
-                else if (mod is StatMod)
-                    from.RemoveStatMod(((StatMod)mod).Name);
-                else if (mod is SkillMod)
-                    from.RemoveSkillMod((SkillMod)mod);
+                if (mod is ResistanceMod resistMod)
+                    from.RemoveResistanceMod(resistMod);
+                else if (mod is StatMod statMod)
+                    from.RemoveStatMod(statMod.Name);
+                else if (mod is SkillMod skillMod)
+                    from.RemoveSkillMod(skillMod);
             }
         }
         #endregion
@@ -482,7 +480,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Timer = new TeleportTimer(this);
             m_Timer.Start();

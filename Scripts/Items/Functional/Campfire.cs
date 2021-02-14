@@ -100,15 +100,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }
@@ -193,14 +191,8 @@ namespace Server.Items
         public bool Valid => !Fire.Deleted && Fire.Status != CampfireStatus.Off && Player.Map == Fire.Map && Player.InRange(Fire, Campfire.SecureRange);
         public bool Safe
         {
-            get
-            {
-                return Valid && m_Safe;
-            }
-            set
-            {
-                m_Safe = value;
-            }
+            get => Valid && m_Safe;
+            set => m_Safe = value;
         }
     }
 }

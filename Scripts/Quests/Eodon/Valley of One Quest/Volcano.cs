@@ -151,7 +151,7 @@ namespace Server.Items
 
                             foreach (Mobile m in eable)
                             {
-                                if (m.Alive && m.AccessLevel == AccessLevel.Player && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
+                                if (m.Alive && m.AccessLevel == AccessLevel.Player && (m is PlayerMobile || m is BaseCreature bc && bc.GetMaster() is PlayerMobile))
                                     DoLavaDamageDelayed(m);
                             }
 
@@ -176,7 +176,7 @@ namespace Server.Items
 
         public void CheckMovement(Mobile m)
         {
-            if (!m.Alive || m.AccessLevel > AccessLevel.Player || (m is BaseCreature && ((BaseCreature)m).GetMaster() == null))
+            if (!m.Alive || m.AccessLevel > AccessLevel.Player || m is BaseCreature bc && bc.GetMaster() == null)
                 return;
 
             if (_LavaTimer != null && m.AccessLevel == AccessLevel.Player && m.Alive && _CurrentLava.Contains(m) && !_SafeZone.Contains(m) && !InSafeZone(m))

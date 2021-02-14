@@ -29,9 +29,8 @@ namespace Server.Commands
         [Description("Shows the names of everyone in your visibility list.")]
         public static void VisList_OnCommand(CommandEventArgs e)
         {
-            if (e.Mobile is PlayerMobile)
+            if (e.Mobile is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)e.Mobile;
                 List<Mobile> list = pm.VisibilityList;
 
                 if (list.Count > 0)
@@ -52,9 +51,8 @@ namespace Server.Commands
         [Description("Removes everyone from your visibility list.")]
         public static void VisClear_OnCommand(CommandEventArgs e)
         {
-            if (e.Mobile is PlayerMobile)
+            if (e.Mobile is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)e.Mobile;
                 List<Mobile> list = new List<Mobile>(pm.VisibilityList);
 
                 pm.VisibilityList.Clear();
@@ -79,24 +77,21 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (from is PlayerMobile && targeted is Mobile)
+                if (from is PlayerMobile pm && targeted is Mobile targ)
                 {
-                    PlayerMobile pm = (PlayerMobile)from;
-                    Mobile targ = (Mobile)targeted;
-
-                    if (targ.AccessLevel <= from.AccessLevel)
+                    if (targ.AccessLevel <= pm.AccessLevel)
                     {
                         List<Mobile> list = pm.VisibilityList;
 
                         if (list.Contains(targ))
                         {
                             list.Remove(targ);
-                            from.SendMessage("{0} has been removed from your visibility list.", targ.Name);
+                            pm.SendMessage("{0} has been removed from your visibility list.", targ.Name);
                         }
                         else
                         {
                             list.Add(targ);
-                            from.SendMessage("{0} has been added to your visibility list.", targ.Name);
+                            pm.SendMessage("{0} has been added to your visibility list.", targ.Name);
                         }
 
                         if (Utility.InUpdateRange(targ, from))
@@ -105,25 +100,25 @@ namespace Server.Commands
 
                             if (ns != null)
                             {
-                                if (targ.CanSee(from))
+                                if (targ.CanSee(pm))
                                 {
-                                    ns.Send(new MobileIncoming(targ, from));
+                                    ns.Send(new MobileIncoming(targ, pm));
 
-                                    ns.Send(from.OPLPacket);
+                                    ns.Send(pm.OPLPacket);
 
-                                    foreach (Item item in from.Items)
+                                    foreach (Item item in pm.Items)
                                         ns.Send(item.OPLPacket);
                                 }
                                 else
                                 {
-                                    ns.Send(from.RemovePacket);
+                                    ns.Send(pm.RemovePacket);
                                 }
                             }
                         }
                     }
                     else
                     {
-                        from.SendMessage("They can already see you!");
+                        pm.SendMessage("They can already see you!");
                     }
                 }
                 else

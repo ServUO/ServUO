@@ -56,7 +56,7 @@ namespace Server.Regions
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Disabled { get { return m_Disabled; } set { m_Disabled = value; } }
+        public bool Disabled { get => m_Disabled; set => m_Disabled = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool AllowReds => true;
@@ -69,10 +69,8 @@ namespace Server.Regions
                 {
                     return typeof(ArcherGuard);
                 }
-                else
-                {
-                    return typeof(WarriorGuard);
-                }
+
+                return typeof(WarriorGuard);
             }
         }
 
@@ -127,15 +125,10 @@ namespace Server.Regions
 
             foreach (Mobile m in eable)
             {
-                if (m is BaseGuard)
+                if (m is BaseGuard g && g.Focus == null) // idling
                 {
-                    BaseGuard g = (BaseGuard)m;
-
-                    if (g.Focus == null) // idling
-                    {
-                        useGuard = g;
-                        break;
-                    }
+                    useGuard = g;
+                    break;
                 }
             }
 
@@ -202,7 +195,7 @@ namespace Server.Regions
 
             if (!IsDisabled() && aggressor != aggressed && criminal && Utility.InRange(aggressor.Location, aggressed.Location, 12))
             {
-                CheckGuardCandidate(aggressor, aggressor is BaseCreature && ((BaseCreature)aggressor).IsAggressiveMonster);
+                CheckGuardCandidate(aggressor, aggressor is BaseCreature creature && creature.IsAggressiveMonster);
             }
         }
 
@@ -280,8 +273,7 @@ namespace Server.Regions
 
                         foreach (Mobile v in eable)
                         {
-                            if (!v.Player && v != m && !IsGuardCandidate(v) &&
-                                ((v is BaseCreature) ? ((BaseCreature)v).IsHumanInTown() : (v.Body.IsHuman && v.Region.IsPartOf(this))))
+                            if (!v.Player && v != m && !IsGuardCandidate(v) && (v is BaseCreature bc ? bc.IsHumanInTown() : v.Body.IsHuman && v.Region.IsPartOf(this)))
                             {
                                 double dist = m.GetDistanceToSqrt(v);
 
@@ -326,7 +318,7 @@ namespace Server.Regions
             {
                 if (IsGuardCandidate(m))
                 {
-                    if (m_GuardCandidates.ContainsKey(m) || (!AllowReds && m.Murderer && m.Region.IsPartOf(this)))
+                    if (m_GuardCandidates.ContainsKey(m) || !AllowReds && m.Murderer && m.Region.IsPartOf(this))
                     {
                         GuardTimer timer = null;
                         m_GuardCandidates.TryGetValue(m, out timer);
@@ -340,9 +332,9 @@ namespace Server.Regions
                         MakeGuard(m);
                         m.SendLocalizedMessage(502276); // Guards can no longer be called on you.
                     }
-                    else if (m is BaseCreature && ((BaseCreature)m).IsAggressiveMonster && m.Region.IsPartOf(this))
+                    else if (m is BaseCreature creature && creature.IsAggressiveMonster && creature.Region.IsPartOf(this))
                     {
-                        MakeGuard(m);
+                        MakeGuard(creature);
                     }
 
                     break;
@@ -354,13 +346,12 @@ namespace Server.Regions
 
         public bool IsGuardCandidate(Mobile m)
         {
-            if (m is BaseGuard || m.GuardImmune || !m.Alive || m.IsStaff() || m.Blessed || (m is BaseCreature && ((BaseCreature)m).IsInvulnerable) ||
-                IsDisabled())
+            if (m is BaseGuard || m.GuardImmune || !m.Alive || m.IsStaff() || m.Blessed || m is BaseCreature bc && bc.IsInvulnerable || IsDisabled())
             {
                 return false;
             }
 
-            return (!AllowReds && m.Murderer) || m.Criminal || (m is BaseCreature && ((BaseCreature)m).IsAggressiveMonster);
+            return !AllowReds && m.Murderer || m.Criminal || m is BaseCreature creature && creature.IsAggressiveMonster;
         }
 
         [Usage("CheckGuarded")]

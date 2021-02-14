@@ -57,9 +57,9 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile mobile)
             {
-                Mobile m = (Mobile)parent as Mobile;
+                Mobile m = mobile;
 
                 if (SpiderWebbing.IsTrapped(m))
                 {
@@ -150,12 +150,9 @@ namespace Server.Items
                 case 4: item = new LavaRock(); break;
             }
 
-            if (item != null)
-            {
-                from.AddToBackpack(item);
-                from.SendMessage("You have split the lava rock!");
-                Delete();
-            }
+            from.AddToBackpack(item);
+            from.SendMessage("You have split the lava rock!");
+            Delete();
         }
 
         public CrackedLavaRockSouth(Serial serial) : base(serial) { }
@@ -169,7 +166,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -203,12 +200,9 @@ namespace Server.Items
                 case 4: item = new LavaRock(); break;
             }
 
-            if (item != null)
-            {
-                from.AddToBackpack(item);
-                from.SendMessage("You have split the lava rock!");
-                Delete();
-            }
+            from.AddToBackpack(item);
+            from.SendMessage("You have split the lava rock!");
+            Delete();
         }
 
         public CrackedLavaRockEast(Serial serial) : base(serial) { }
@@ -222,7 +216,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -253,7 +247,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -284,7 +278,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -315,7 +309,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -346,7 +340,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -371,7 +365,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -397,7 +391,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

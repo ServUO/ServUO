@@ -22,11 +22,11 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (IsChildOf(m.Backpack) && m is PlayerMobile)
+            if (IsChildOf(m.Backpack) && m is PlayerMobile mobile)
             {
-                if (!m.HasGump(typeof(InternalGump)))
+                if (!mobile.HasGump(typeof(InternalGump)))
                 {
-                    BaseGump.SendGump(new InternalGump((PlayerMobile)m, this));
+                    BaseGump.SendGump(new InternalGump(mobile, this));
                 }
             }
         }

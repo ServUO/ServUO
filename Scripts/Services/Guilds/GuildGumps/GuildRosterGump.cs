@@ -42,13 +42,21 @@ namespace Server.Guilds
                 NetState bState = y.NetState;
 
                 if (aState == null && bState == null)
+                {
                     return x.LastOnline.CompareTo(y.LastOnline);
+                }
+
                 if (aState == null)
+                {
                     return 1;
+                }
+
                 if (bState == null)
+                {
                     return -1;
-                else
-                    return 0;
+                }
+
+                return 0;
             }
         }
 

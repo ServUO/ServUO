@@ -115,8 +115,8 @@ namespace Server.Items
 
             public Mobile Attacker => m_Attacker;
             public Mobile Defender => m_Defender;
-            public ForceArrowTimer Timer { get { return m_Timer; } set { m_Timer = value; } }
-            public int DefenseChanceMalus { get { return m_DefenseChanceMalus; } set { m_DefenseChanceMalus = value; } }
+            public ForceArrowTimer Timer { get => m_Timer; set => m_Timer = value; }
+            public int DefenseChanceMalus { get => m_DefenseChanceMalus; set => m_DefenseChanceMalus = value; }
 
             public ForceArrowInfo(Mobile attacker, Mobile defender)
             {

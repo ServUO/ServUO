@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 
 namespace Server.Engines.TombOfKings
 {
@@ -9,7 +9,7 @@ namespace Server.Engines.TombOfKings
 
         public bool Active
         {
-            get { return Visible; }
+            get => Visible;
             set
             {
                 if (Visible != value)
@@ -73,7 +73,7 @@ namespace Server.Engines.TombOfKings
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (reader.ReadBool())
             {

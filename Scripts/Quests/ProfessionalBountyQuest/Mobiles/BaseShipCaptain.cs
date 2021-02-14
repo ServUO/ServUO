@@ -36,13 +36,13 @@ namespace Server.Mobiles
         public DateTime NextMoveCheck => m_NextMoveCheck;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextCrewCheck { get { return m_NextCrewCheck; } set { m_NextCrewCheck = value; } }
+        public DateTime NextCrewCheck { get => m_NextCrewCheck; set => m_NextCrewCheck = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SpawnZone Zone { get { return m_Zone; } set { m_Zone = value; } }
+        public SpawnZone Zone { get => m_Zone; set => m_Zone = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Blockade { get { return m_Blockade; } set { m_Blockade = value; } }
+        public bool Blockade { get => m_Blockade; set => m_Blockade = value; }
 
         public List<Mobile> Crew => m_Crew;
 
@@ -320,11 +320,11 @@ namespace Server.Mobiles
 
                 foreach (Mobile mob in m_Crew)
                 {
-                    if (mob.Alive && mob.Combatant is Mobile)
+                    if (mob.Alive && mob.Combatant is Mobile mobile)
                     {
                         if (focus == null || (int)focus.GetDistanceToSqrt(mob) < closest)
                         {
-                            focus = mob.Combatant as Mobile;
+                            focus = mobile;
                             closest = (int)focus.GetDistanceToSqrt(mob);
                         }
                     }
@@ -354,9 +354,7 @@ namespace Server.Mobiles
             int speed;
             int flee = Aggressive ? 1 : -1;
 
-            //Direction d = Utility.GetDirectionTo(p.X, p.Y);
             Direction dir = m_Galleon.GetMovementFor(x, y, out speed);
-            Direction f = m_Galleon.Facing;
 
             if (!Aggressive)
                 dir = (Direction)(((int)dir + -4) & 0x7);
@@ -488,7 +486,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public string AddHoldItem
         {
-            get { return null; }
+            get => null;
             set
             {
                 string str = value;
@@ -508,7 +506,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Item HoldItem
         {
-            get { return null; }
+            get => null;
             set
             {
                 Item item = value;
@@ -575,7 +573,7 @@ namespace Server.Mobiles
 
             BaseBoat check = BaseBoat.FindBoatAt(new Point3D(e), Map);
 
-            if ((check != null && check != m_Galleon) || e is BaseCreature)
+            if (check != null && check != m_Galleon || e is BaseCreature)
             {
                 Direction d = Utility.GetDirection(m_Galleon, e);
 
@@ -641,7 +639,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Blockade = reader.ReadBool();
             m_Zone = (SpawnZone)reader.ReadInt();

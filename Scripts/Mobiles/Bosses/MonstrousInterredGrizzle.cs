@@ -82,7 +82,7 @@ namespace Server.Mobiles
 
             AddLoot(LootPack.RandomLootItem(new[] { typeof(TombstoneOfTheDamned), typeof(GlobOfMonstreousInterredGrizzle), typeof(MonsterousInterredGrizzleMaggots), typeof(GrizzledSkullCollection) }));
 
-            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(25.0));
             AddLoot(LootPack.LootItem<GrizzledMareStatuette>(5.0));
 
             AddLoot(LootPack.RandomLootItem(new[] { typeof(GrizzleGauntlets), typeof(GrizzleGreaves), typeof(GrizzleHelm), typeof(GrizzleTunic), typeof(GrizzleVambraces) }, 5.0, 1));
@@ -116,15 +116,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
@@ -173,8 +171,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Corrosive
         {
-            get { return m_Corrosive; }
-            set { m_Corrosive = value; }
+            get => m_Corrosive;
+            set => m_Corrosive = value;
         }
 
         private void OnTick()
@@ -206,7 +204,7 @@ namespace Server.Mobiles
             if (Map == null)
                 return base.OnMoveOver(m);
 
-            if ((m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile) || m.Player)
+            if (m is BaseCreature creature && creature.GetMaster() is PlayerMobile || m.Player)
             {
                 Damage(m);
             }
@@ -235,9 +233,8 @@ namespace Server.Mobiles
             {
                 int dmg = m_Damage;
 
-                if (m is PlayerMobile)
+                if (m is PlayerMobile pm)
                 {
-                    PlayerMobile pm = m as PlayerMobile;
                     dmg = (int)BalmOfProtection.HandleDamage(pm, dmg);
                     AOS.Damage(m, m_Owner, dmg, 0, 0, 0, 100, 0);
                 }
@@ -267,15 +264,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }

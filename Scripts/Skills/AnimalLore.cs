@@ -61,10 +61,8 @@ namespace Server.SkillHandlers
                 {
                     from.SendLocalizedMessage(500331); // The spirits of the dead are not the province of animal lore.
                 }
-                else if (targeted is BaseCreature)
+                else if (targeted is BaseCreature c)
                 {
-                    BaseCreature c = (BaseCreature)targeted;
-
                     if (!c.IsDeadPet)
                     {
                         if (c.Body.IsAnimal || c.Body.IsMonster || c.Body.IsSea)

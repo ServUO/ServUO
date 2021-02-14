@@ -101,7 +101,7 @@ namespace Server.Mobiles
                 if (m == this || !CanBeHarmful(m))
                     continue;
 
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
+                if (m is BaseCreature creature && (creature.Controlled || creature.Summoned || creature.Team != Team))
                     targets.Add(m);
                 else if (m.Player)
                     targets.Add(m);
@@ -159,15 +159,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

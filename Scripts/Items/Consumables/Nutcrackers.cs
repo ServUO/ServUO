@@ -98,9 +98,9 @@ namespace Server.Items
 
         public override int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
-            if (craftItem != null && craftItem.Data is ChocolateType)
+            if (craftItem != null && craftItem.Data is ChocolateType type)
             {
-                Type = (ChocolateType)craftItem.Data;
+                Type = type;
             }
 
             return quality;

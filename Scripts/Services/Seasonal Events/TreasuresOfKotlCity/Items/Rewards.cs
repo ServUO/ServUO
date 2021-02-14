@@ -24,7 +24,7 @@ namespace Server.Items
             AddComponent(new InternalComponent(0x9D38), 0, 1, 0);
         }
 
-        public virtual void Flip(Mobile from, Direction direction)
+        public virtual void Flip(Direction direction)
         {
             switch (direction)
             {
@@ -75,7 +75,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
 
@@ -95,7 +95,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Clicker = reader.ReadMobile();
         }
@@ -134,7 +134,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -152,7 +152,7 @@ namespace Server.Items
             AddComponent(new AddonComponent(0x9D62), 1, 1, 0);
         }
 
-        public virtual void Flip(Mobile from, Direction direction)
+        public virtual void Flip(Direction direction)
         {
             switch (direction)
             {
@@ -185,7 +185,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -213,7 +213,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -244,7 +244,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Title = TextDefinition.Deserialize(reader);
         }
@@ -271,9 +271,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (IsChildOf(m.Backpack) && m is PlayerMobile && !HasSkillBonus)
+            if (IsChildOf(m.Backpack) && m is PlayerMobile mobile && !HasSkillBonus)
             {
-                BaseGump.SendGump(new ApplySkillBonusGump((PlayerMobile)m, SkillBonuses, Skills, 20, 2));
+                BaseGump.SendGump(new ApplySkillBonusGump(mobile, SkillBonuses, Skills, 20, 2));
             }
             else
             {
@@ -391,7 +391,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public EodonTribe Tribe
         {
-            get { return _Tribe; }
+            get => _Tribe;
             set
             {
                 _Tribe = value;
@@ -457,7 +457,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Tribe = (EodonTribe)reader.ReadInt();
         }

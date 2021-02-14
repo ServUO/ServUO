@@ -27,9 +27,8 @@ namespace Server.Engines.Quests.Matriarch
                     */
                     return 1054081;
                 }
-                else
-                {
-                    /* <I>The Solen Matriarch smiles as she eats the seed you offered.</I><BR><BR>
+
+                /* <I>The Solen Matriarch smiles as she eats the seed you offered.</I><BR><BR>
                     * 
                     * Thank you for that seed. It was quite delicious.  <BR><BR>
                     * 
@@ -37,8 +36,7 @@ namespace Server.Engines.Quests.Matriarch
                     * another task at the moment. Perhaps you should finish whatever is occupying
                     * your attention at the moment and return to me once you're done.
                     */
-                    return 1054079;
-                }
+                return 1054079;
             }
         }
         public override bool Logged => false;
@@ -154,9 +152,8 @@ namespace Server.Engines.Quests.Matriarch
                     */
                     return 1054097;
                 }
-                else
-                {
-                    /* <I>The Solen Matriarch listens as you report the completion of your
+
+                /* <I>The Solen Matriarch listens as you report the completion of your
                     * tasks to her.</I><BR><BR>
                     * 
                     * I give you my thanks for your help, and I will gladly make you a friend of my
@@ -170,8 +167,7 @@ namespace Server.Engines.Quests.Matriarch
                     * I will also give you some gold for assisting me and my colony, but first let's
                     * take care of your zoogi fungus.
                     */
-                    return 1054096;
-                }
+                return 1054096;
             }
         }
         public override void OnRead()

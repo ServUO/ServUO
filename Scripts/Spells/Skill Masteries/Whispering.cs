@@ -3,6 +3,7 @@ using Server.Mobiles;
 using Server.Network;
 using System;
 using System.Linq;
+using Server.Engines.Despise;
 
 /*The animal tamer attempts to guide their pet on the path of skill gain, increasing the pet's skill gains based on the tamer's 
   animal taming skill, animal lore skill, and mastery level.  This ability functions similarly to a scroll of alacrity.*/
@@ -42,7 +43,7 @@ namespace Server.Spells.SkillMasteries
                 return false;
             }
 
-            if (Caster is PlayerMobile && ((PlayerMobile)Caster).AllFollowers == null || ((PlayerMobile)Caster).AllFollowers.Where(m => !(m is Engines.Despise.DespiseCreature)).Count() == 0)
+            if (Caster is PlayerMobile pm && pm.AllFollowers == null || ((PlayerMobile)Caster).AllFollowers.Count(m => !(m is DespiseCreature)) == 0)
             {
                 Caster.SendLocalizedMessage(1156112); // This ability requires you to have pets.
                 return false;

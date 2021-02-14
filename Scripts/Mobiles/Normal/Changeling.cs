@@ -1,5 +1,4 @@
 using Server.Items;
-using Server.Spells;
 using System;
 
 namespace Server.Mobiles
@@ -7,19 +6,6 @@ namespace Server.Mobiles
     [CorpseName("a changeling corpse")]
     public class Changeling : BaseCreature
     {
-        private static readonly int[] m_FireNorth = new int[]
-        {
-            -1, -1,
-            1, -1,
-            -1, 2,
-            1, 2
-        };
-        private static readonly int[] m_FireEast = new int[]
-        {
-            -1, 0,
-            2, 0
-        };
-
         private Mobile m_MorphedInto;
         private DateTime m_LastMorph;
 
@@ -69,7 +55,7 @@ namespace Server.Mobiles
 
         public override bool IsEnemy(Mobile m)
         {
-            if (m is BaseCreature && ((BaseCreature)m).IsMonster && m.Karma > 0)
+            if (m is BaseCreature creature && creature.IsMonster && creature.Karma > 0)
             {
                 return true;
             }
@@ -83,7 +69,7 @@ namespace Server.Mobiles
         public override bool UseSmartAI => true;
 
         public override bool ShowFameTitle => false;
-        public override bool InitialInnocent => (m_MorphedInto != null);
+        public override bool InitialInnocent => m_MorphedInto != null;
 
         public override void GenerateLoot()
         {
@@ -99,10 +85,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile MorphedInto
         {
-            get
-            {
-                return m_MorphedInto;
-            }
+            get => m_MorphedInto;
             set
             {
                 if (value == this)
@@ -205,16 +188,15 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
-            writer.Write((m_MorphedInto != null));
+
+            writer.Write(m_MorphedInto != null);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (reader.ReadBool())
                 ValidationQueue<Changeling>.Add(this);
@@ -254,7 +236,7 @@ namespace Server.Mobiles
         protected virtual void Revert()
         {
             Body = 264;
-            Hue = (IsParagon && DefaultHue == 0) ? Paragon.Hue : DefaultHue;
+            Hue = IsParagon && DefaultHue == 0 ? Paragon.Hue : DefaultHue;
             Female = false;
             Name = DefaultName;
             NameHue = -1;
@@ -269,20 +251,6 @@ namespace Server.Mobiles
 
             PlaySound(0x511);
             FixedParticles(0x376A, 1, 14, 5045, EffectLayer.Waist);
-        }
-
-        private void FireEffects(int itemID, int[] offsets)
-        {
-            for (int i = 0; i < offsets.Length; i += 2)
-            {
-                Point3D p = Location;
-
-                p.X += offsets[i];
-                p.Y += offsets[i + 1];
-
-                if (SpellHelper.AdjustField(ref p, Map, 12, false))
-                    Effects.SendLocationEffect(p, Map, itemID, 50);
-            }
         }
 
         private class ClonedItem : Item
@@ -305,15 +273,13 @@ namespace Server.Mobiles
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

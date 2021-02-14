@@ -53,7 +53,7 @@ namespace Server.Engines.TombOfKings
 
         public static List<Chamber> Chambers => m_Chambers;
 
-        private static readonly ChamberInfo[] m_ChamberInfos = new ChamberInfo[]
+        private static readonly ChamberInfo[] m_ChamberInfos =
         {
 			// left side
 			new ChamberInfo( new Point3D( 15, 200, -5 ), new Point3D( 13, 195, 7 ), 0x1091 ),
@@ -69,30 +69,18 @@ namespace Server.Engines.TombOfKings
             new ChamberInfo( new Point3D( 55, 168, -5 ), new Point3D( 56, 165, 7 ), 0x1090 ),
             new ChamberInfo( new Point3D( 55, 152, -5 ), new Point3D( 56, 149, 7 ), 0x1090 ),
             new ChamberInfo( new Point3D( 55, 136, -5 ), new Point3D( 56, 133, 7 ), 0x1090 ),
-            new ChamberInfo( new Point3D( 55, 120, -5 ), new Point3D( 56, 117, 7 ), 0x1090 ),
+            new ChamberInfo( new Point3D( 55, 120, -5 ), new Point3D( 56, 117, 7 ), 0x1090 )
         };
 
         private ChamberSwitch m_Switch;
         private ChamberBarrier m_Barrier;
         private ChamberLever m_Lever;
 
-        public ChamberSwitch Switch
-        {
-            get { return m_Switch; }
-            set { m_Switch = value; }
-        }
+        public ChamberSwitch Switch { get => m_Switch; set => m_Switch = value; }
 
-        public ChamberBarrier Barrier
-        {
-            get { return m_Barrier; }
-            set { m_Barrier = value; }
-        }
+        public ChamberBarrier Barrier { get => m_Barrier; set => m_Barrier = value; }
 
-        public ChamberLever Lever
-        {
-            get { return m_Lever; }
-            set { m_Lever = value; }
-        }
+        public ChamberLever Lever { get => m_Lever; set => m_Lever = value; }
 
         public bool IsOpened()
         {

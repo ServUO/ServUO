@@ -40,9 +40,9 @@ namespace Server.Items
 
                 if (Layer != Layer.OuterTorso)
                 {
-                    if (Parent is Mobile)
+                    if (Parent is Mobile mobile)
                     {
-                        ((Mobile)Parent).AddToBackpack(this);
+                        mobile.AddToBackpack(this);
                     }
 
                     Layer = Layer.OuterTorso;

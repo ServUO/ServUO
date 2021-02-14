@@ -79,7 +79,7 @@ namespace Server.Spells
         {
             if (m.Skills[MoveSkill].Value < RequiredSkill)
             {
-                string args = string.Format("{0}\t{1}\t ", RequiredSkill.ToString("F1"), MoveSkill.ToString());
+                string args = string.Format("{0:F1}\t{1}\t ", RequiredSkill, MoveSkill.ToString());
                 m.SendLocalizedMessage(1063013, args); // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that ability.
                 return false;
             }

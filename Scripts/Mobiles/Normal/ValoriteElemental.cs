@@ -61,10 +61,8 @@ namespace Server.Mobiles
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature)
+            if (from is BaseCreature bc)
             {
-                BaseCreature bc = (BaseCreature)from;
-
                 if (bc.Controlled || bc.BardTarget == this)
                     damage = 0; // Immune to pets and provoked creatures
             }
@@ -88,8 +86,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != this && m.Alive && m.AccessLevel == AccessLevel.Player &&
-                    (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
+                if (m != this && m.Alive && m.AccessLevel == AccessLevel.Player && (m is PlayerMobile || m is BaseCreature bc && !bc.IsMonster))
                 {
                     list.Add(m);
                 }
@@ -124,7 +121,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

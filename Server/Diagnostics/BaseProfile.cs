@@ -11,11 +11,11 @@ namespace Server.Diagnostics
 	{
 		public static void WriteAll<T>(TextWriter op, IEnumerable<T> profiles) where T : BaseProfile
 		{
-			var list = new List<T>(profiles);
+			List<T> list = new List<T>(profiles);
 
 			list.Sort(delegate (T a, T b) { return -a.TotalTime.CompareTo(b.TotalTime); });
 
-			foreach (var prof in list)
+			foreach (T prof in list)
 			{
 				prof.WriteTo(op);
 				op.WriteLine();
@@ -60,7 +60,7 @@ namespace Server.Diagnostics
 
 		public virtual void Finish()
 		{
-			var elapsed = _stopwatch.Elapsed;
+			TimeSpan elapsed = _stopwatch.Elapsed;
 
 			_totalTime += elapsed;
 

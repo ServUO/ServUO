@@ -209,25 +209,23 @@ namespace Server.Items
                         }
                     }
                 }
-                else if (targeted is ReceiverCrystal)
+                else if (targeted is ReceiverCrystal receiver1)
                 {
-                    ReceiverCrystal receiver = (ReceiverCrystal)targeted;
-
                     if (m_Crystal.Receivers.Count >= 10)
                     {
                         from.SendLocalizedMessage(1010042); // This broadcast crystal is already linked to 10 receivers.
                     }
-                    else if (receiver.Sender == m_Crystal)
+                    else if (receiver1.Sender == m_Crystal)
                     {
                         from.SendLocalizedMessage(500674); // This crystal is already linked with that crystal.
                     }
-                    else if (receiver.Sender != null)
+                    else if (receiver1.Sender != null)
                     {
                         from.SendLocalizedMessage(1010043); // That receiver crystal is already linked to another broadcast crystal.
                     }
                     else
                     {
-                        receiver.Sender = m_Crystal;
+                        receiver1.Sender = m_Crystal;
                         from.SendLocalizedMessage(500675); // That crystal has been linked to this crystal.
                     }
                 }
@@ -348,13 +346,13 @@ namespace Server.Items
 
             string text = string.Format("{0} says {1}", from.Name, message);
 
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                ((Mobile)RootParent).SendMessage(0x2B2, "Crystal: " + text);
+                mobile.SendMessage(0x2B2, "Crystal: " + text);
             }
-            else if (RootParent is Item)
+            else if (RootParent is Item item)
             {
-                ((Item)RootParent).PublicOverheadMessage(MessageType.Regular, 0x2B2, false, "Crystal: " + text);
+                item.PublicOverheadMessage(MessageType.Regular, 0x2B2, false, "Crystal: " + text);
             }
             else
             {

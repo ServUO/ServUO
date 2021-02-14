@@ -22,8 +22,8 @@ namespace Server.Regions
 
                     foreach (BaseMulti multi in reg.GetEnumeratedMultis())
                     {
-                        if (multi is BaseBoat)
-                            reg.RemoveBoat((BaseBoat)multi);
+                        if (multi is BaseBoat boat)
+                            reg.RemoveBoat(boat);
                     }
                 }
             });
@@ -117,7 +117,7 @@ namespace Server.Regions
                 if (BaseBoat.FindBoatAt(m, m.Map) != null)
                     continue;
 
-                if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+                if (m is PlayerMobile || m is BaseCreature creature && creature.Controlled || ((BaseCreature)m).Summoned)
                 {
                     Point3D go = CorgulAltar.GetRandomPoint(CorgulAltar.LandKickLocation, Map);
                     BaseCreature.TeleportPets(m, go, Map);
@@ -134,8 +134,8 @@ namespace Server.Regions
 
         public void RemoveBoat_Callback(object o)
         {
-            if (o is BaseBoat)
-                RemoveBoat((BaseBoat)o);
+            if (o is BaseBoat boat)
+                RemoveBoat(boat);
         }
 
         public void RemoveBoat(BaseBoat boat)
@@ -205,9 +205,9 @@ namespace Server.Regions
 
             Region reg = Find(from.Location, from.Map);
 
-            if (reg is CorgulRegion)
+            if (reg is CorgulRegion region)
             {
-                CorgulAltar altar = ((CorgulRegion)reg).Altar;
+                CorgulAltar altar = region.Altar;
 
                 if (altar != null && !altar.Activated)
                 {

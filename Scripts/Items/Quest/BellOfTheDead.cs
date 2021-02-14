@@ -37,38 +37,20 @@ namespace Server.Engines.Quests.Doom
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
         public Chyloth Chyloth
         {
-            get
-            {
-                return m_Chyloth;
-            }
-            set
-            {
-                m_Chyloth = value;
-            }
+            get => m_Chyloth;
+            set => m_Chyloth = value;
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
         public SkeletalDragon Dragon
         {
-            get
-            {
-                return m_Dragon;
-            }
-            set
-            {
-                m_Dragon = value;
-            }
+            get => m_Dragon;
+            set => m_Dragon = value;
         }
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
         public bool Summoning
         {
-            get
-            {
-                return m_Summoning;
-            }
-            set
-            {
-                m_Summoning = value;
-            }
+            get => m_Summoning;
+            set => m_Summoning = value;
         }
 
         public static void TryRemoveDragon(SkeletalDragon dragon)
@@ -151,7 +133,6 @@ namespace Server.Engines.Quests.Doom
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Chyloth);
@@ -161,8 +142,7 @@ namespace Server.Engines.Quests.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Instances == null)
                 Instances = new List<BellOfTheDead>();

@@ -66,9 +66,9 @@ namespace Server.Spells.Second
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is TrapableContainer)
+                if (o is TrapableContainer container)
                 {
-                    m_Owner.Target((TrapableContainer)o);
+                    m_Owner.Target(container);
                 }
                 else
                 {

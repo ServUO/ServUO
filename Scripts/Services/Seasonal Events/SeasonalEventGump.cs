@@ -112,7 +112,7 @@ namespace Server.Engines.SeasonalEvents
 
     public class EditEventGump : BaseGump
     {
-        public SeasonalEvent Entry { get; set; }
+        public SeasonalEvent Entry { get; }
 
         private int _Month;
         private int _Day;

@@ -65,10 +65,8 @@ namespace Server.Spells.SkillMasteries
 
         protected override void OnTarget(object o)
         {
-            if (o is IPoint3D)
+            if (o is IPoint3D p)
             {
-                IPoint3D p = o as IPoint3D;
-
                 SpellHelper.Turn(Caster, p);
 
                 if (SpellHelper.CheckTown(Caster, Caster) && CheckSequence())
@@ -214,15 +212,13 @@ namespace Server.Spells.SkillMasteries
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 Delete();
             }

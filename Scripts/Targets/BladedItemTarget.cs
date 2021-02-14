@@ -19,9 +19,9 @@ namespace Server.Targets
 
         protected override void OnTargetOutOfRange(Mobile from, object targeted)
         {
-            if (targeted is UnholyBone && from.InRange(((UnholyBone)targeted), 12))
+            if (targeted is UnholyBone bone && from.InRange(bone, 12))
             {
-                if (((UnholyBone)targeted).Carve(from, m_Item) && Siege.SiegeShard)
+                if (bone.Carve(from, m_Item) && Siege.SiegeShard)
                 {
                     Siege.CheckUsesRemaining(from, m_Item);
                 }
@@ -35,28 +35,21 @@ namespace Server.Targets
             if (m_Item.Deleted)
                 return;
 
-            if (targeted is ICarvable)
+            if (targeted is ICarvable carvable)
             {
-                if (targeted is Item)
+                if (carvable is Item item && (item.IsLockedDown || item.RootParent is Container container && (!item.Movable || !container.LiftOverride)))
                 {
-                    Item item = targeted as Item;
-
-                    if (item.IsLockedDown || (item.RootParent is Container && (!item.Movable || !((Container)item.RootParent).LiftOverride)))
-                    {
-                        from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
-                        return;
-                    }
+                    from.SendLocalizedMessage(500494); // You can't use a bladed item on that!
+                    return;
                 }
 
-                if (((ICarvable)targeted).Carve(from, m_Item) && Siege.SiegeShard)
+                if (carvable.Carve(from, m_Item) && Siege.SiegeShard)
                 {
                     Siege.CheckUsesRemaining(from, m_Item);
                 }
             }
-            else if (targeted is SwampDragon && ((SwampDragon)targeted).HasBarding)
+            else if (targeted is SwampDragon pet && pet.HasBarding)
             {
-                SwampDragon pet = (SwampDragon)targeted;
-
                 if (!pet.Controlled || pet.ControlMaster != from)
                     from.SendLocalizedMessage(1053022); // You cannot remove barding from a swamp dragon you do not own.
                 else
@@ -71,14 +64,15 @@ namespace Server.Targets
             }
             else
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile mobile)
                 {
-                    ((Mobile)targeted).PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500450, from.NetState); // You can only skin dead creatures.
+                    mobile.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500450, from.NetState); // You can only skin dead creatures.
                     return;
                 }
-                else if (targeted is StaticTarget)
+
+                if (targeted is StaticTarget sTarget)
                 {
-                    int itemID = ((StaticTarget)targeted).ItemID;
+                    int itemID = sTarget.ItemID;
 
                     if (itemID == 0xD15 || itemID == 0xD16) // red mushroom
                     {

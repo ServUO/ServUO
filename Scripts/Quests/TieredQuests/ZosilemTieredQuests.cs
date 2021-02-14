@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class DabblingontheDarkSide : BaseQuest, ITierQuest
     {
         public DabblingontheDarkSide()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(BouraSkin), "BouraSkin", 5, 0x11f4));
             AddObjective(new ObtainObjective(typeof(FairyDragonWing), "Fairy Dragon Wings", 10, 0x1084));
@@ -23,25 +22,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1112964;
         public override object Uncomplete => 1112965;
         public override object Complete => 1112966;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TheBrainyAlchemist : BaseQuest, ITierQuest
     {
         public TheBrainyAlchemist()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(ArcaneGem), "Arcane Gem", 1, 0x1ea7));
             AddObjective(new ObtainObjective(typeof(UndeadGargHorn), "Undamaged Undead Gargoyle Horns", 10, 0x315C));
@@ -59,25 +56,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1112968;
         public override object Uncomplete => 1112969;
         public override object Complete => 1112970;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class ArmorUp : BaseQuest, ITierQuest
     {
         public ArmorUp()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(BouraSkin), "BouraSkin", 5, 0x11f4));
             AddObjective(new ObtainObjective(typeof(LeatherWolfSkin), "Leather Wolf Skin", 10, 0x3189));
@@ -94,25 +89,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1112972;
         public override object Uncomplete => 1112973;
         public override object Complete => 1112974;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class ToTurnBaseMetalIntoVerite : BaseQuest, ITierQuest
     {
         public ToTurnBaseMetalIntoVerite()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(UndeadGargoyleMedallions), "Undead Gargoyle Medallions", 5, 0x2AAA));
             AddObjective(new ObtainObjective(typeof(PileofInspectedVeriteIngots), "Pile of Inspected Verite Ingots", 1, 0x1BEA));
@@ -128,25 +121,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1112976;
         public override object Uncomplete => 1112977;
         public override object Complete => 1112978;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class PureValorite : BaseQuest, ITierQuest
     {
         public PureValorite()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(InfusedGlassStave), "Infused Glass Stave", 5, 0x2AAA));
             AddObjective(new ObtainObjective(typeof(PileofInspectedValoriteIngots), "Pile of Inspected Valorite Ingots", 1, 0x1BEA));
@@ -162,25 +153,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1112984;
         public override object Uncomplete => 1112985;
         public override object Complete => 1112986;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TheForbiddenFruit : BaseQuest, ITierQuest
     {
         public TheForbiddenFruit()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(BouraSkin), "BouraSkin", 5, 0x11f4));
             AddObjective(new ObtainObjective(typeof(TreefellowWood), "TreefellowWood", 10, 0x1BDD));
@@ -198,18 +187,17 @@ namespace Server.Engines.Quests
         public override object Refuse => 1112979;
         public override object Uncomplete => 1112980;
         public override object Complete => 1112982;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

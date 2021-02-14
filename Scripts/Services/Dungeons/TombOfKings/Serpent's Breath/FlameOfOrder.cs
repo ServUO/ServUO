@@ -117,22 +117,22 @@ namespace Server.Items
             }
         }
 
-        private static readonly Point3D[] m_BarrierLocations = new Point3D[]
+        private static readonly Point3D[] m_BarrierLocations =
         {
             new Point3D( 33, 205, 0 ),
             new Point3D( 34, 205, 0 ),
             new Point3D( 35, 205, 0 ),
             new Point3D( 36, 205, 0 ),
-            new Point3D( 37, 205, 0 ),
+            new Point3D( 37, 205, 0 )
         };
 
-        private static readonly Point3D[] m_MsgTriggerLocations = new Point3D[]
+        private static readonly Point3D[] m_MsgTriggerLocations =
         {
             new Point3D( 33, 203, 0 ),
             new Point3D( 34, 203, 0 ),
             new Point3D( 35, 203, 0 ),
             new Point3D( 36, 203, 0 ),
-            new Point3D( 37, 203, 0 ),
+            new Point3D( 37, 203, 0 )
         };
 
         public FlameOfOrder(Serial serial)
@@ -169,18 +169,16 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
-            // barrier
-            int amount = reader.ReadInt();
+            int amount = reader.ReadInt(); // barrier
 
             m_Barriers = new List<EnergyBarrier>(amount);
 
             for (int i = 0; i < amount; i++)
                 m_Barriers.Add(reader.ReadItem() as EnergyBarrier);
 
-            // blockers
-            amount = reader.ReadInt();
+            amount = reader.ReadInt(); // blockers
 
             m_Blockers = new List<Blocker>(amount);
 
@@ -194,8 +192,7 @@ namespace Server.Items
             for (int i = 0; i < amount; i++)
                 m_LOSBlockers.Add(reader.ReadItem() as LOSBlocker);
 
-            // msg triggers
-            amount = reader.ReadInt();
+            amount = reader.ReadInt(); // msg triggers
 
             m_MsgTriggers = new List<SBMessageTrigger>(amount);
 

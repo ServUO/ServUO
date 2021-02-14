@@ -33,11 +33,32 @@ namespace Server.Mobiles
             SetSkill(SkillName.Wrestling, 40.1, 50.0);
 
             Fame = 450;
-            Karma = 0;
+            Karma = 0;           
 
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 53.1;
+        }
+
+        protected override void OnMapChange(Map oldMap)
+        {
+            base.OnMapChange(oldMap);
+
+            if (!Controlled && Tamable)
+            {
+                if (Utility.RandomDouble() < 0.05 + TotemRareColorChance())
+                {
+                    switch (Utility.Random(2))
+                    {
+                        case 0: { Hue = 1150; break; }
+                        case 1: { Hue = 1154; break; }
+                    }
+                }
+                else if (Totem != null)
+                {
+                    Totem = null;
+                }
+            }
         }
 
         public SnowLeopard(Serial serial)
@@ -49,6 +70,7 @@ namespace Server.Mobiles
         public override int Hides => 8;
         public override FoodType FavoriteFood => FoodType.Meat | FoodType.Fish;
         public override PackInstinct PackInstinct => PackInstinct.Feline;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -58,7 +80,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

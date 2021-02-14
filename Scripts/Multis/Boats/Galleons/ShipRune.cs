@@ -9,7 +9,7 @@ namespace Server.Items
         private BaseGalleon m_Galleon;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseGalleon Galleon { get { return m_Galleon; } set { m_Galleon = value; } }
+        public BaseGalleon Galleon { get => m_Galleon; set => m_Galleon = value; }
 
         public BaseDockedBoat DockedBoat
         {
@@ -71,7 +71,7 @@ namespace Server.Items
                     list.Add(1149574, m_Galleon.Map != null ? m_Galleon.Map.ToString() : "Unknown"); //Location: ~1_FACET~
                 else
                 {
-                    string name = m_Galleon.ShipName != null && m_Galleon.ShipName != "" ? m_Galleon.ShipName : "Unnamed Ship";
+                    string name = !string.IsNullOrEmpty(m_Galleon.ShipName) ? m_Galleon.ShipName : "Unnamed Ship";
                     list.Add(1041644, name); //The ~1_VAL~ (Dry Docked)
                 }
 

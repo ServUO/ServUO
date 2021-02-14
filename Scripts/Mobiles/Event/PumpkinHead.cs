@@ -59,7 +59,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.LootItem<WrappedCandy>(true));
-            AddLoot(LootPack.RandomLootItem(new Type[] { typeof(CarvablePlainPumpkin), typeof(CarvablePumpkinTall), typeof(CarvableGordPumpkinTall) }, 20.0, 1));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(CarvablePlainPumpkin), typeof(CarvablePumpkinTall), typeof(CarvableGordPumpkinTall) }, 20.0, 1));
             AddLoot(LootPack.UltraRich, 2);
         }
 
@@ -91,7 +91,7 @@ namespace Server.Mobiles
             {
                 if (from != null && from.Map != null && Map != Map.Internal && Map == from.Map && from.InRange(this, 12))
                 {
-                    SpillAcid((willKill) ? this : from, (willKill) ? 3 : 1);
+                    SpillAcid(willKill ? this : from, willKill ? 3 : 1);
                 }
             }
 
@@ -107,7 +107,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

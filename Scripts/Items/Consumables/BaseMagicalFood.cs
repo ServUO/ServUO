@@ -63,10 +63,8 @@ namespace Server.Items
 
         public static void EndInfluence(object obj)
         {
-            if (obj is object[] && (((object[])obj).Length == 3))
+            if (obj is object[] args && (args.Length == 3))
             {
-                object[] args = (object[])obj;
-
                 if (args[0] is Mobile && args[1] is MagicalFood && args[2] is TimeSpan)
                     EndInfluence((Mobile)args[0], (MagicalFood)args[1], (TimeSpan)args[2]);
             }
@@ -92,10 +90,8 @@ namespace Server.Items
 
         public static void EndCooldown(object obj)
         {
-            if (obj is object[] && (((object[])obj).Length == 2))
+            if (obj is object[] args && (args.Length == 2))
             {
-                object[] args = (object[])obj;
-
                 if (args[0] is Mobile && args[1] is MagicalFood)
                     EndCooldown((Mobile)args[0], (MagicalFood)args[1]);
             }

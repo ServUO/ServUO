@@ -8,10 +8,7 @@ namespace Server.Items
         public override int KeyCount => 3;
         public override MasterKey MasterKey => new BedlamKey();
 
-        public override Type[] Keys => new Type[]
-{
-            typeof( LibrariansKey )
-};
+        public override Type[] Keys => new[] { typeof( LibrariansKey ) };
 
         public override BasePeerless Boss => new MonstrousInterredGrizzle();
 
@@ -25,9 +22,9 @@ namespace Server.Items
 
         public override Rectangle2D[] BossBounds => m_Bounds;
 
-        private readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private readonly Rectangle2D[] m_Bounds =
         {
-            new Rectangle2D(99, 1609, 14, 18),
+            new Rectangle2D(99, 1609, 14, 18)
         };
 
         public BedlamAltar(Serial serial) : base(serial)
@@ -37,15 +34,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

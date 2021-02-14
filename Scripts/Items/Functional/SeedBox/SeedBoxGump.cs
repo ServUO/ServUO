@@ -321,8 +321,10 @@ namespace Server.Engines.Plants
                     {
                         Box.Entries.Insert(index, null);
 
-                        if (Parent is SeedBoxGump)
-                            ((SeedBoxGump)Parent).CheckPage(Entry);
+                        if (Parent is SeedBoxGump gump)
+                        {
+                            gump.CheckPage(Entry);
+                        }
 
                         RefreshParent(false);
                     }
@@ -334,8 +336,10 @@ namespace Server.Engines.Plants
 
                         Box.TrimEntries();
 
-                        if (Parent is SeedBoxGump)
-                            ((SeedBoxGump)Parent).CheckPage(Entry);
+                        if (Parent is SeedBoxGump gump)
+                        {
+                            gump.CheckPage(Entry);
+                        }
 
                         RefreshParent(false);
                     }

@@ -60,12 +60,14 @@ namespace Server.Spells.Ninjitsu
                 Caster.SendLocalizedMessage(1061628); // You can't do that while polymorphed.
                 return false;
             }
-            else if (TransformationSpellHelper.UnderTransformation(Caster))
+
+            if (TransformationSpellHelper.UnderTransformation(Caster))
             {
                 Caster.SendLocalizedMessage(1063219); // You cannot mimic an animal while in that form.
                 return false;
             }
-            else if (DisguiseTimers.IsDisguised(Caster))
+
+            if (DisguiseTimers.IsDisguised(Caster))
             {
                 Caster.SendLocalizedMessage(1061631); // You can't do that while disguised.
                 return false;
@@ -205,7 +207,7 @@ namespace Server.Spells.Ninjitsu
 
             if (m.Skills.Ninjitsu.Value < entry.ReqSkill)
             {
-                string args = string.Format("{0}\t{1}\t ", entry.ReqSkill.ToString("F1"), SkillName.Ninjitsu);
+                string args = string.Format("{0:F1}\t{1}\t ", entry.ReqSkill, SkillName.Ninjitsu);
                 m.SendLocalizedMessage(1063013, args);
                 // You need at least ~1_SKILL_REQUIREMENT~ ~2_SKILL_NAME~ skill to use that ability.
                 return MorphResult.NoSkill;
@@ -432,7 +434,7 @@ namespace Server.Spells.Ninjitsu
             }
         }
 
-        private static readonly AnimalFormEntry[] m_Entries = new[]
+        private static readonly AnimalFormEntry[] m_Entries =
         {
             new AnimalFormEntry(typeof(Kirin), "kirin", 9632, 0, 1070811, 100.0, 0x84, 0, 0, false, true, false),
             new AnimalFormEntry(typeof(Unicorn), "unicorn", 9678, 0, 1070812, 100.0, 0x7A, 0, 0, false, true, false),
@@ -450,7 +452,7 @@ namespace Server.Spells.Ninjitsu
             new AnimalFormEntry(typeof(Ferret), "ferret", 11672, 0, 1075220, 40.0, 0x117, 0, 0, false, false, true),
             new AnimalFormEntry(typeof(CuSidhe), "cu sidhe", 11670, 0, 1075221, 60.0, 0x115, 0, 0, false, false, false),
             new AnimalFormEntry(typeof(Reptalon), "reptalon", 11669, 0, 1075222, 90.0, 0x114, 0, 0, false, false, false),
-            new AnimalFormEntry(typeof(WildWhiteTiger), "white tiger", 38980, 2500, 0, 0, 0x4E7, 0, 0, false, false, false),
+            new AnimalFormEntry(typeof(WildWhiteTiger), "white tiger", 38980, 2500, 0, 0, 0x4E7, 0, 0, false, false, false)
         };
 
         public static AnimalFormEntry[] Entries => m_Entries;
@@ -653,10 +655,10 @@ namespace Server.Spells.Ninjitsu
                 }
                 else if (m_Body == 0x114) // Reptalon
                 {
-                    if (m_Mobile.Combatant is Mobile && m_Mobile.Combatant != m_LastTarget)
+                    if (m_Mobile.Combatant is Mobile mobile && m_Mobile.Combatant != m_LastTarget)
                     {
                         m_Counter = 1;
-                        m_LastTarget = (Mobile)m_Mobile.Combatant;
+                        m_LastTarget = mobile;
                     }
 
                     if (m_Mobile.Warmode && m_LastTarget != null && m_LastTarget.Alive && !m_LastTarget.Deleted && m_Counter-- <= 0)

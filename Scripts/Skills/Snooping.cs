@@ -30,7 +30,7 @@ namespace Server.SkillHandlers
 
             BaseCreature cret = to as BaseCreature;
 
-            if (to.Body.IsHuman && (cret == null || (!cret.AlwaysAttackable && !cret.AlwaysMurderer)))
+            if (to.Body.IsHuman && (cret == null || !cret.AlwaysAttackable && !cret.AlwaysMurderer))
                 return false; // in town we cannot snoop blue human npcs
 
             return true;
@@ -77,7 +77,7 @@ namespace Server.SkillHandlers
 
                 if (from.IsStaff() || from.CheckTargetSkill(SkillName.Snooping, cont, 0.0, 100.0))
                 {
-                    if (cont is TrapableContainer && ((TrapableContainer)cont).ExecuteTrap(from))
+                    if (cont is TrapableContainer container && container.ExecuteTrap(from))
                         return;
 
                     cont.DisplayTo(from);

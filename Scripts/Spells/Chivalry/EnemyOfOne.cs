@@ -118,7 +118,7 @@ namespace Server.Spells.Chivalry
 
         public static string GetTypeName(Mobile defender)
         {
-            if (defender is PlayerMobile || (defender is BaseCreature && ((BaseCreature)defender).GetMaster() is PlayerMobile))
+            if (defender is PlayerMobile || (defender is BaseCreature bc && bc.GetMaster() is PlayerMobile))
             {
                 return defender.Name;
             }
@@ -196,7 +196,7 @@ namespace Server.Spells.Chivalry
 
         public bool IsEnemy(Mobile m)
         {
-            if (m is BaseCreature && ((BaseCreature)m).GetMaster() == Owner)
+            if (m is BaseCreature bc && bc.GetMaster() == Owner)
             {
                 return false;
             }
@@ -248,7 +248,7 @@ namespace Server.Spells.Chivalry
             {
                 m_TypeName = EnemyOfOneSpell.GetTypeName(defender);
 
-                if (defender is PlayerMobile || (defender is BaseCreature && ((BaseCreature)defender).GetMaster() is PlayerMobile))
+                if (defender is PlayerMobile || (defender is BaseCreature bc && bc.GetMaster() is PlayerMobile))
                 {
                     m_PlayerOrPet = defender;
                     TimeSpan duration = TimeSpan.FromSeconds(8);

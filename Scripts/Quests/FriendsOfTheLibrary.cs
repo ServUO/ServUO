@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class FriendsOfTheLibraryQuest : BaseQuest
     {
         public FriendsOfTheLibraryQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(LibraryApplication), "friends of the library application", 1, typeof(Sarakki), "Sarakki (Britain)"));
 
@@ -28,30 +27,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1072722;
         /* Greetings! */
         public override object Complete => 1073985;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.PublicDonations;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class BureaucraticDelayQuest : BaseQuest
     {
         public BureaucraticDelayQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(SealingWaxOrder), "sealing wax order", 1, typeof(Petrus), "Petrus (Ilshenar)"));
 
@@ -72,30 +64,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1072726;
         /* Hello, hello. */
         public override object Complete => 1073986;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.PublicDonations;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TheSecretIngredientQuest : BaseQuest
     {
         public TheSecretIngredientQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(SpeckledPoisonSac), "speckled poison sacs", 5, 0x23A, 3600));
 
@@ -117,30 +102,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1072729;
         /* Fine, fine.  Do you have them? */
         public override object Complete => 1073987;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.PublicDonations;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class SpecialDeliveryQuest : BaseQuest
     {
         public SpecialDeliveryQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(OfficialSealingWax), "sealing wax", 1, typeof(Sarakki), "Sarakki (Britain)"));
 
@@ -159,30 +137,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1072747;
         /* Oh welcome back!  Do you have my wax? */
         public override object Complete => 1073988;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.PublicDonations;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class AccessToTheStacksQuest : BaseQuest
     {
         public AccessToTheStacksQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(NotarizedApplication), "notarized application", 1, typeof(Verity), "Verity (Britain)"));
 
@@ -203,11 +174,7 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1072751;
         /* As an official friend of the library you can make contributions at a donation area. */
         public override object Complete => 1074811;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.PublicDonations;
-        }
-
+        
         public override void GiveRewards()
         {
             base.GiveRewards();
@@ -218,15 +185,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

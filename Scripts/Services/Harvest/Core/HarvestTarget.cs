@@ -24,9 +24,9 @@ namespace Server.Engines.Harvest
         {
             if (m_System is Mining)
             {
-                if (targeted is StaticTarget)
+                if (targeted is StaticTarget target)
                 {
-                    int itemID = ((StaticTarget)targeted).ItemID;
+                    int itemID = target.ItemID;
 
                     // grave
                     if (itemID == 0xED3 || itemID == 0xEDF || itemID == 0xEE0 || itemID == 0xEE1 || itemID == 0xEE2 || itemID == 0xEE8)
@@ -52,39 +52,38 @@ namespace Server.Engines.Harvest
                         }
                     }
                 }
-                else if (targeted is LandTarget && ((LandTarget)targeted).TileID >= 113 && ((LandTarget)targeted).TileID <= 120)
+                else if (targeted is LandTarget landTarget && landTarget.TileID >= 113 && landTarget.TileID <= 120)
                 {
                     if (TheGreatVolcanoQuest.OnHarvest(from, m_Tool))
                         return;
                 }
             }
 
-            if (m_System is Lumberjacking && targeted is IChopable)
-                ((IChopable)targeted).OnChop(from);
-            else if (m_System is Lumberjacking && targeted is IAxe && m_Tool is BaseAxe)
+            if (m_System is Lumberjacking && targeted is IChopable chopable)
             {
-                IAxe obj = (IAxe)targeted;
-                Item item = (Item)targeted;
+                chopable.OnChop(from);
+            }
+            else if (m_System is Lumberjacking && targeted is IAxe obj && m_Tool is BaseAxe axe)
+            {
+                Item item = (Item)obj;
 
                 if (!item.IsChildOf(from.Backpack))
                     from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
-                else if (obj.Axe(from, (BaseAxe)m_Tool))
+                else if (obj.Axe(from, axe))
                     from.PlaySound(0x13E);
             }
-            else if (m_System is Lumberjacking && targeted is ICarvable)
-                ((ICarvable)targeted).Carve(from, m_Tool);
+            else if (m_System is Lumberjacking && targeted is ICarvable carvable)
+                carvable.Carve(from, m_Tool);
             else if (m_System is Lumberjacking && FurnitureAttribute.Check(targeted as Item))
                 DestroyFurniture(from, (Item)targeted);
-            else if (m_System is Mining && targeted is TreasureMap)
-                ((TreasureMap)targeted).OnBeginDig(from);
-            #region High Seas
-            else if (m_System is Mining && targeted is NiterDeposit)
-                ((NiterDeposit)targeted).OnMine(from, m_Tool);
-            else if (m_System is Lumberjacking && targeted is CrackedLavaRockEast)
-                ((CrackedLavaRockEast)targeted).OnCrack(from);
-            else if (m_System is Lumberjacking && targeted is CrackedLavaRockSouth)
-                ((CrackedLavaRockSouth)targeted).OnCrack(from);
-            #endregion
+            else if (m_System is Mining && targeted is TreasureMap map)
+                map.OnBeginDig(from);
+            else if (m_System is Mining && targeted is NiterDeposit niter)
+                niter.OnMine(from, m_Tool);
+            else if (m_System is Lumberjacking && targeted is CrackedLavaRockEast lavaRockEast)
+                lavaRockEast.OnCrack(from);
+            else if (m_System is Lumberjacking && targeted is CrackedLavaRockSouth lavaRockSouth)
+                lavaRockSouth.OnCrack(from);
             else
             {
                 // If we got here and we're lumberjacking then we didn't target something that can be done from the pack
@@ -104,7 +103,8 @@ namespace Server.Engines.Harvest
                 from.SendLocalizedMessage(500446); // That is too far away.
                 return;
             }
-            else if (!item.IsChildOf(from.Backpack) && !item.Movable)
+
+            if (!item.IsChildOf(from.Backpack) && !item.Movable)
             {
                 from.SendLocalizedMessage(500462); // You can't destroy that while it is here.
                 return;
@@ -113,12 +113,12 @@ namespace Server.Engines.Harvest
             from.SendLocalizedMessage(500461); // You destroy the item.
             Effects.PlaySound(item.GetWorldLocation(), item.Map, 0x3B3);
 
-            if (item is Container)
+            if (item is Container container)
             {
-                if (item is TrapableContainer)
-                    (item as TrapableContainer).ExecuteTrap(from);
+                if (container is TrapableContainer trapableContainer)
+                    trapableContainer.ExecuteTrap(from);
 
-                ((Container)item).Destroy();
+                container.Destroy();
             }
             else
             {

@@ -18,10 +18,10 @@ namespace Server.SkillHandlers
             if (item is Spellbook || item is Runebook)
                 return true;
 
-            if (item is BaseWeapon && ((BaseWeapon)item).Attributes.SpellChanneling != 0)
+            if (item is BaseWeapon weapon && weapon.Attributes.SpellChanneling != 0)
                 return true;
 
-            if (item is BaseArmor && ((BaseArmor)item).Attributes.SpellChanneling != 0)
+            if (item is BaseArmor armor && armor.Attributes.SpellChanneling != 0)
                 return true;
 
             return false;
@@ -71,7 +71,7 @@ namespace Server.SkillHandlers
             }
 
             double skillVal = m.Skills[SkillName.Meditation].Value;
-            double chance = (50.0 + ((skillVal - (m.ManaMax - m.Mana)) * 2)) / 100;
+            double chance = (50.0 + (skillVal - (m.ManaMax - m.Mana)) * 2) / 100;
 
             // must bypass normal checks so passive skill checks aren't triggered
             CrystalBallOfKnowledge.TellSkillDifficultyActive(m, SkillName.Meditation, chance);

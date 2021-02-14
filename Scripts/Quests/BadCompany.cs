@@ -7,7 +7,6 @@ namespace Server.Engines.Quests
     public class BadCompany : BaseQuest
     {
         public BadCompany()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(GreenGoblin), "GreenGoblin", 10));
 
@@ -34,18 +33,17 @@ namespace Server.Engines.Quests
         /*Oh, have mercy on us!  Have you come to kill every one of us?  Take what you will and go!
         Your kind is more terrible than the master!  Woe are we, the green goblins, we serve the master's plan and yet he... *gasp**/
         public override object Complete => 1095030;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

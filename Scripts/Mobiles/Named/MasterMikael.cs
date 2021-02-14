@@ -51,26 +51,23 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 2);
             AddLoot(LootPack.MedScrolls, 2);
             AddLoot(LootPack.HighScrolls, 2);
+            AddLoot(LootPack.ArcanistScrolls, 0, 1);
             AddLoot(LootPack.MageryRegs, 3);
             AddLoot(LootPack.NecroRegs, 1, 10);
             AddLoot(LootPack.LootItem<DisintegratingThesisNotes>(15.0));
-            AddLoot(LootPack.Parrot);
-            AddLoot(LootPack.ArcanistScrolls, 0, 1);
+            AddLoot(LootPack.LootItem<ParrotItem>(10.0));
         }
 
-        // TODO: Special move?
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

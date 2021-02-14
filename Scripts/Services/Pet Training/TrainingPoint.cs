@@ -2,14 +2,14 @@ namespace Server.Mobiles
 {
     public class TrainingPoint
     {
-        public object TrainPoint { get; set; }
-        public double Weight { get; set; }
-        public int Start { get; set; }
-        public int Max { get; set; }
-        public TextDefinition Name { get; set; }
-        public TextDefinition Description { get; set; }
+        public object TrainPoint { get; }
+        public double Weight { get; }
+        public int Start { get; }
+        public int Max { get; }
+        public TextDefinition Name { get; }
+        public TextDefinition Description { get; }
 
-        public TrainingPointRequirement[] Requirements { get; set; }
+        public TrainingPointRequirement[] Requirements { get; }
 
         public TrainingPoint(object trainpoint, double weight, int start, int max, TextDefinition name, TextDefinition description, params TrainingPointRequirement[] requirements)
         {
@@ -26,7 +26,7 @@ namespace Server.Mobiles
 
         public int GetMax(BaseCreature bc)
         {
-            if (TrainPoint is PetStat && (PetStat)TrainPoint == PetStat.BaseDamage)
+            if (TrainPoint is PetStat stat && stat == PetStat.BaseDamage)
             {
                 return PetTrainingHelper.GetMaxDamagePerSecond(bc);
             }

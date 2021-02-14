@@ -25,8 +25,6 @@ namespace Server.Items
 
         public static void BeginWound(Mobile m, TimeSpan duration)
         {
-            Timer t;
-
             if (m_Table.ContainsKey(m))
             {
                 EndWound(m, true);
@@ -38,7 +36,7 @@ namespace Server.Items
                 duration = TimeSpan.FromSeconds(d / 2);
             }
 
-            t = new InternalTimer(m, duration);
+            Timer t = new InternalTimer(m, duration);
             m_Table[m] = t;
 
             t.Start();

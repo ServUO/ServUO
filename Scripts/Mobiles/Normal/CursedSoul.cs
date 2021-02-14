@@ -48,7 +48,7 @@ namespace Server.Engines.Quests.Samurai
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

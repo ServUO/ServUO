@@ -3,10 +3,10 @@ namespace Server.Items
     public class CrimsonMaceBelt : MaceBelt
     {
         public override int LabelNumber => 1159211;  // crimson mace belt
+        public override bool IsArtifact => true;
 
         [Constructable]
         public CrimsonMaceBelt()
-            : base()
         {
             Attributes.BonusDex = 5;
             Attributes.BonusHits = 10;
@@ -27,7 +27,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

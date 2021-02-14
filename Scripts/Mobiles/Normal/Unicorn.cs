@@ -79,13 +79,13 @@ namespace Server.Mobiles
             if (Rider == null || attacker == null)	//sanity
                 return false;
 
-            if (Rider.Poisoned && ((Rider.Hits - damage) < 40))
+            if (Rider.Poisoned && Rider.Hits - damage < 40)
             {
                 Poison p = Rider.Poison;
 
                 if (p != null)
                 {
-                    int chanceToCure = 10000 + (int)(Skills[SkillName.Magery].Value * 75) - ((p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100));
+                    int chanceToCure = 10000 + (int)(Skills[SkillName.Magery].Value * 75) - (p.RealLevel + 1) * (p.RealLevel < 4 ? 3300 : 3100);
                     chanceToCure /= 100;
 
                     if (chanceToCure > Utility.Random(100))
@@ -130,7 +130,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -8,7 +8,6 @@ namespace Server.Engines.Quests
     public class EscortToYewQuest : BaseQuest
     {
         public EscortToYewQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Yew"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -23,25 +22,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Yew.  Let's keep going. */
         public override object Uncomplete => 1072289;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToVesperQuest : BaseQuest
     {
         public EscortToVesperQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Vesper"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -56,25 +53,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Vesper.  Let's keep going. */
         public override object Uncomplete => 1072290;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToTrinsicQuest : BaseQuest
     {
         public EscortToTrinsicQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Trinsic"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -89,25 +84,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Trinsic.  Let's keep going. */
         public override object Uncomplete => 1072291;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToSkaraQuest : BaseQuest
     {
         public EscortToSkaraQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Skara Brae"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -122,25 +115,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Skara.  Let's keep going. */
         public override object Uncomplete => 1072292;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToSerpentsHoldQuest : BaseQuest
     {
         public EscortToSerpentsHoldQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Serpent's Hold"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -155,25 +146,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Serpent's Hold.  Let's keep going. */
         public override object Uncomplete => 1072293;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToNujelmQuest : BaseQuest
     {
         public EscortToNujelmQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Nujel'm"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -188,25 +177,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Nujel'm.  Let's keep going. */
         public override object Uncomplete => 1072294;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToMoonglowQuest : BaseQuest
     {
         public EscortToMoonglowQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Moonglow"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -221,25 +208,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Moonglow.  Let's keep going. */
         public override object Uncomplete => 1072295;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToMinocQuest : BaseQuest
     {
         public EscortToMinocQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Minoc"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -254,25 +239,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Minoc.  Let's keep going. */
         public override object Uncomplete => 1072296;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToMaginciaQuest : BaseQuest
     {
         public EscortToMaginciaQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Magincia"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -287,25 +270,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Magincia.  Let's keep going. */
         public override object Uncomplete => 1072297;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToJhelomQuest : BaseQuest
     {
         public EscortToJhelomQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Jhelom"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -320,25 +301,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Jhelom.  Let's keep going. */
         public override object Uncomplete => 1072298;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToCoveQuest : BaseQuest
     {
         public EscortToCoveQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Cove"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -353,25 +332,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Cove.  Let's keep going. */
         public override object Uncomplete => 1072299;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class EscortToBritainQuest : BaseQuest
     {
         public EscortToBritainQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Britain"));
             AddReward(new BaseReward(typeof(Gold), 500, 1062577));
@@ -386,18 +363,17 @@ namespace Server.Engines.Quests
         public override object Refuse => 1072288;
         /* We have not yet arrived in Britain.  Let's keep going. */
         public override object Uncomplete => 1072300;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -438,7 +414,6 @@ namespace Server.Engines.Quests
         private int m_Quest;
 
         public TownEscortable()
-            : base()
         {
             m_Quest = Utility.Random(m_Quests.Length);
         }
@@ -471,7 +446,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[] { m_Quests[m_Quest] };
+        public override Type[] Quests => new[] { m_Quests[m_Quest] };
+
         public override void Advertise()
         {
             Say(Utility.RandomMinMax(1072301, 1072303));
@@ -543,15 +519,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -595,15 +569,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -659,15 +631,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -714,15 +684,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -775,15 +743,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -833,15 +799,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -883,15 +847,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -901,7 +863,6 @@ namespace Server.Engines.Quests
         private DateTime m_NextResurrect;
         [Constructable]
         public EscortableHealer()
-            : base()
         {
             Title = "the wandering healer";
 
@@ -961,11 +922,7 @@ namespace Server.Engines.Quests
             if (!base.CheckTeach(skill, from))
                 return false;
 
-            return (skill == SkillName.Anatomy) ||
-                   (skill == SkillName.Camping) ||
-                   (skill == SkillName.Forensics) ||
-                   (skill == SkillName.Healing) ||
-                   (skill == SkillName.SpiritSpeak);
+            return skill == SkillName.Anatomy || skill == SkillName.Camping || skill == SkillName.Forensics || skill == SkillName.Healing || skill == SkillName.SpiritSpeak;
         }
 
         public override void InitOutfit()
@@ -1040,9 +997,9 @@ namespace Server.Engines.Quests
                         OfferResurrection(m);
                     }
                 }
-                else if (HealsYoungPlayers && m.Hits < m.HitsMax && m is PlayerMobile && ((PlayerMobile)m).Young)
+                else if (HealsYoungPlayers && m.Hits < m.HitsMax && m is PlayerMobile mobile && mobile.Young)
                 {
-                    OfferHeal((PlayerMobile)m);
+                    OfferHeal(mobile);
                 }
             }
         }
@@ -1050,15 +1007,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

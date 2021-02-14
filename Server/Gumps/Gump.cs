@@ -190,7 +190,7 @@ namespace Server.Gumps
 		public void AddTooltip(string text)
 		{
 			Add(new GumpTooltip(1042971, text));
-		}
+        }
 
 		public void AddHtml(int x, int y, int width, int height, string text, bool background, bool scrollbar)
 		{
@@ -404,7 +404,7 @@ namespace Server.Gumps
 		{
 			if (enforceUnique)
 			{
-				var indexOf = m_Strings.IndexOf(value);
+				int indexOf = m_Strings.IndexOf(value);
 
 				if (indexOf >= 0)
 					return indexOf;
@@ -462,10 +462,10 @@ namespace Server.Gumps
 				disp.AppendLayout(m_NoResize);
 			}
 
-			var count = m_Entries.Count;
+			int count = m_Entries.Count;
 			GumpEntry e;
 
-			for (var i = 0; i < count; ++i)
+			for (int i = 0; i < count; ++i)
 			{
 				e = m_Entries[i];
 

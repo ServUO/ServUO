@@ -36,21 +36,25 @@ namespace Server.Mobiles
             Tamable = true;
             ControlSlots = 1;
             MinTameSkill = 77.1;
+        }
 
-            if (Utility.RandomDouble() < 0.2)
+        protected override void OnMapChange(Map oldMap)
+        {
+            base.OnMapChange(oldMap);
+
+            if (!Controlled && Tamable)
             {
-                switch (Utility.Random(2))
+                if (Utility.RandomDouble() < 0.2 + TotemRareColorChance())
                 {
-                    case 0:
-                        {
-                            Hue = 191;
-                            break;
-                        }
-                    case 1:
-                        {
-                            Hue = 1166;
-                            break;
-                        }
+                    switch (Utility.Random(2))
+                    {
+                        case 0: { Hue = 191; break; }
+                        case 1: { Hue = 1166; break; }
+                    }
+                }
+                else if (Totem != null)
+                {
+                    Totem = null;
                 }
             }
         }
@@ -77,7 +81,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

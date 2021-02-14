@@ -30,15 +30,15 @@ namespace Server.Engines.Quests.TimeLord
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile)
+            if (from is PlayerMobile mobile)
             {
-                OnTalk((PlayerMobile)from, false);
+                OnTalk(mobile, false);
             }
         }
 
         public override void OnTalk(PlayerMobile player, bool contextMenu)
         {
-            if (player.Quest is TimeForLegendsQuest && ((TimeForLegendsQuest)player.Quest).Objectives.Count == 0)
+            if (player.Quest is TimeForLegendsQuest legendsQuest && legendsQuest.Objectives.Count == 0)
             {
                 player.CloseGump(typeof(ChooseMasteryGump));
                 player.SendGump(new ChooseMasteryGump(player, (TimeForLegendsQuest)player.Quest));
@@ -60,7 +60,7 @@ namespace Server.Engines.Quests.TimeLord
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public bool CanRecieveQuest(Mobile m)

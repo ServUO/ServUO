@@ -50,20 +50,16 @@ namespace Server.Items
                 return;
             }
 
-            if (obj is Item)
+            if (obj is Item item)
             {
-                Item item = (Item)obj;
-
                 if (!item.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                     return;
                 }
 
-                if (item is BaseWeapon)
+                if (item is BaseWeapon weapon)
                 {
-                    BaseWeapon weapon = (BaseWeapon)obj;
-
                     if (weapon.ExtendedWeaponAttributes.Focus == 0)
                     {
                         weapon.Hue = 2500;

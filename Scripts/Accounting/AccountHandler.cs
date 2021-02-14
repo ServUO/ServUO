@@ -30,7 +30,7 @@ namespace Server.Misc
         private static readonly bool RestrictDeletion = Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled);
         private static readonly TimeSpan DeleteDelay = Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0));
 
-        private static readonly CityInfo[] StartingCities = new CityInfo[]
+        private static readonly CityInfo[] StartingCities =
         {
             new CityInfo("New Haven",   "New Haven Bank",   1150168, 3503,  2574,   14),
             new CityInfo("Yew", "The Empath Abbey", 1075072, 633,   858,    0),
@@ -44,7 +44,7 @@ namespace Server.Misc
             new CityInfo("Royal City", "Royal City Inn", 1150169, 738, 3486, -19, Map.TerMur)
         };
 
-        private static readonly CityInfo[] SiegeStartingCities = new CityInfo[]
+        private static readonly CityInfo[] SiegeStartingCities =
         {
             new CityInfo("Britain", "The Wayfarer's Inn",   1075074, 1602,  1591,   20, Map.Felucca),
             new CityInfo("Royal City", "Royal City Inn", 1150169, 738, 3486, -19, Map.TerMur)
@@ -52,7 +52,7 @@ namespace Server.Misc
 
         private static readonly bool PasswordCommandEnabled = Config.Get("Accounts.PasswordCommandEnabled", false);
 
-        private static readonly char[] m_ForbiddenChars = new char[]
+        private static readonly char[] m_ForbiddenChars =
         {
             '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' '
         };
@@ -62,14 +62,8 @@ namespace Server.Misc
 
         public static AccessLevel LockdownLevel
         {
-            get
-            {
-                return m_LockdownLevel;
-            }
-            set
-            {
-                m_LockdownLevel = value;
-            }
+            get => m_LockdownLevel;
+            set => m_LockdownLevel = value;
         }
 
         public static Dictionary<IPAddress, int> IPTable
@@ -133,7 +127,8 @@ namespace Server.Misc
                 from.SendMessage("You must specify the new password.");
                 return;
             }
-            else if (e.Length == 1)
+
+            if (e.Length == 1)
             {
                 from.SendMessage("To prevent potential typing mistakes, you must type the password twice. Use the format:");
                 from.SendMessage("Password \"(newPassword)\" \"(repeated)\"");
@@ -152,7 +147,7 @@ namespace Server.Misc
             bool isSafe = true;
 
             for (int i = 0; isSafe && i < pass.Length; ++i)
-                isSafe = (pass[i] >= 0x20 && pass[i] < 0x7F);
+                isSafe = pass[i] >= 0x20 && pass[i] < 0x7F;
 
             if (!isSafe)
             {
@@ -203,7 +198,7 @@ namespace Server.Misc
             if (!IPTable.ContainsKey(ip) || IPLimiter.IsExempt(ip))
                 return true;
 
-            return (IPTable[ip] < MaxAccountsPerIP);
+            return IPTable[ip] < MaxAccountsPerIP;
         }
 
         public static void EventSink_AccountLogin(AccountLoginEventArgs e)
@@ -257,7 +252,7 @@ namespace Server.Misc
                 Utility.PushColor(ConsoleColor.Red);
                 Console.WriteLine("Login: {0}: Access denied for '{1}'", e.State, un);
                 Utility.PopColor();
-                e.RejectReason = (m_LockdownLevel > AccessLevel.VIP ? ALRReason.BadComm : ALRReason.BadPass);
+                e.RejectReason = m_LockdownLevel > AccessLevel.VIP ? ALRReason.BadComm : ALRReason.BadPass;
             }
             else if (!acct.CheckPassword(pw))
             {
@@ -408,7 +403,7 @@ namespace Server.Misc
                     state.Send(new DeleteResult(DeleteResultType.CharBeingPlayed));
                     state.Send(new CharacterListUpdate(acct));
                 }
-                else if (RestrictDeletion && DateTime.UtcNow < (m.CreationTime + DeleteDelay))
+                else if (RestrictDeletion && DateTime.UtcNow < m.CreationTime + DeleteDelay)
                 {
                     state.Send(new DeleteResult(DeleteResultType.CharTooYoung));
                     state.Send(new CharacterListUpdate(acct));
@@ -449,10 +444,10 @@ namespace Server.Misc
             bool isSafe = !(un.StartsWith(" ") || un.EndsWith(" ") || un.EndsWith("."));
 
             for (int i = 0; isSafe && i < un.Length; ++i)
-                isSafe = (un[i] >= 0x20 && un[i] < 0x7F && !IsForbiddenChar(un[i]));
+                isSafe = un[i] >= 0x20 && un[i] < 0x7F && !IsForbiddenChar(un[i]);
 
             for (int i = 0; isSafe && i < pw.Length; ++i)
-                isSafe = (pw[i] >= 0x20 && pw[i] < 0x7F);
+                isSafe = pw[i] >= 0x20 && pw[i] < 0x7F;
 
             if (!isSafe)
                 return null;

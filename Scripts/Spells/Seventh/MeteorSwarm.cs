@@ -57,21 +57,21 @@ namespace Server.Spells.Seventh
             {
                 if (item != null)
                 {
-                    if (item is MaskOfKhalAnkur)
+                    if (item is MaskOfKhalAnkur mask)
                     {
-                        ((MaskOfKhalAnkur)item).Charges--;
+                        mask.Charges--;
                     }
 
-                    if (item is PendantOfKhalAnkur)
+                    if (item is PendantOfKhalAnkur pendant)
                     {
-                        ((PendantOfKhalAnkur)item).Charges--;
+                        pendant.Charges--;
                     }
                 }
 
                 SpellHelper.Turn(Caster, p);
 
-                if (p is Item)
-                    p = ((Item)p).GetWorldLocation();
+                if (p is Item pItem)
+                    p = pItem.GetWorldLocation();
 
                 System.Collections.Generic.List<IDamageable> targets = AcquireIndirectTargets(p, 2).ToList();
                 int count = Math.Max(1, targets.Count);

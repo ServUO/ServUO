@@ -160,10 +160,10 @@ namespace Server.Spells.Bushido
                 {
                     object mod = m_Mods[i];
 
-                    if (mod is ResistanceMod)
-                        m_Mobile.AddResistanceMod((ResistanceMod)mod);
-                    else if (mod is SkillMod)
-                        m_Mobile.AddSkillMod((SkillMod)mod);
+                    if (mod is ResistanceMod resistMod)
+                        m_Mobile.AddResistanceMod(resistMod);
+                    else if (mod is SkillMod skillMod)
+                        m_Mobile.AddSkillMod(skillMod);
                 }
             }
 
@@ -176,10 +176,10 @@ namespace Server.Spells.Bushido
                 {
                     object mod = m_Mods[i];
 
-                    if (mod is ResistanceMod)
-                        m_Mobile.RemoveResistanceMod((ResistanceMod)mod);
-                    else if (mod is SkillMod)
-                        m_Mobile.RemoveSkillMod((SkillMod)mod);
+                    if (mod is ResistanceMod resistMod)
+                        m_Mobile.RemoveResistanceMod(resistMod);
+                    else if (mod is SkillMod skillMod)
+                        m_Mobile.RemoveSkillMod(skillMod);
                 }
             }
         }

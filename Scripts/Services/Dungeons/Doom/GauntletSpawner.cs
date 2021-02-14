@@ -63,56 +63,16 @@ namespace Server.Engines.Doom
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string TypeName
-        {
-            get
-            {
-                return m_TypeName;
-            }
-            set
-            {
-                m_TypeName = value;
-            }
-        }
+        public string TypeName { get => m_TypeName; set => m_TypeName = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseDoor Door
-        {
-            get
-            {
-                return m_Door;
-            }
-            set
-            {
-                m_Door = value;
-            }
-        }
+        public BaseDoor Door { get => m_Door; set => m_Door = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BaseAddon Addon
-        {
-            get
-            {
-                return m_Addon;
-            }
-            set
-            {
-                m_Addon = value;
-            }
-        }
+        public BaseAddon Addon { get => m_Addon; set => m_Addon = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public GauntletSpawner Sequence
-        {
-            get
-            {
-                return m_Sequence;
-            }
-            set
-            {
-                m_Sequence = value;
-            }
-        }
+        public GauntletSpawner Sequence { get => m_Sequence; set => m_Sequence = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasCompleted
@@ -135,25 +95,12 @@ namespace Server.Engines.Doom
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Rectangle2D RegionBounds
-        {
-            get
-            {
-                return m_RegionBounds;
-            }
-            set
-            {
-                m_RegionBounds = value;
-            }
-        }
+        public Rectangle2D RegionBounds { get => m_RegionBounds; set => m_RegionBounds = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public GauntletSpawnerState State
         {
-            get
-            {
-                return m_State;
-            }
+            get => m_State;
             set
             {
                 if (m_State == value)
@@ -162,7 +109,7 @@ namespace Server.Engines.Doom
                 m_State = value;
 
                 int hue = 0;
-                bool lockDoors = (m_State == GauntletSpawnerState.InProgress);
+                bool lockDoors = m_State == GauntletSpawnerState.InProgress;
 
                 switch (m_State)
                 {
@@ -225,41 +172,11 @@ namespace Server.Engines.Doom
             }
         }
 
-        public List<Mobile> Creatures
-        {
-            get
-            {
-                return m_Creatures;
-            }
-            set
-            {
-                m_Creatures = value;
-            }
-        }
+        public List<Mobile> Creatures { get => m_Creatures; set => m_Creatures = value; }
 
-        public List<BaseTrap> Traps
-        {
-            get
-            {
-                return m_Traps;
-            }
-            set
-            {
-                m_Traps = value;
-            }
-        }
+        public List<BaseTrap> Traps { get => m_Traps; set => m_Traps = value; }
 
-        public Region Region
-        {
-            get
-            {
-                return m_Region;
-            }
-            set
-            {
-                m_Region = value;
-            }
-        }
+        public Region Region { get => m_Region; set => m_Region = value; }
 
         public override string DefaultName => "doom spawner";
 
@@ -277,7 +194,7 @@ namespace Server.Engines.Doom
         private static bool FindObject<T>(Map map, Point3D p, int range, Func<T, bool> predicate, out T value)
             where T : IEntity
         {
-            value = default(T);
+            value = default;
 
             bool any = false;
 
@@ -706,9 +623,6 @@ namespace Server.Engines.Doom
             else
                 trap = new MushroomTrap();
 
-            if (trap == null)
-                return;
-
             if (trap is FireColumnTrap || trap is MushroomTrap)
                 trap.Hue = 0x451;
 
@@ -747,11 +661,15 @@ namespace Server.Engines.Doom
                 Region reg = Region.Find(loc, map).GetRegion("Doom Gauntlet");
 
                 if (reg != null)
-                    playerCount = reg.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player).Count();
+                {
+                    playerCount = reg.GetEnumeratedMobiles().Count(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player);
+                }
             }
 
             if (playerCount == 0 && m_Region != null)
-                playerCount = m_Region.GetEnumeratedMobiles().Where(m => m.AccessLevel == AccessLevel.Player).Count();
+            {
+                playerCount = m_Region.GetEnumeratedMobiles().Count(m => m.AccessLevel == AccessLevel.Player);
+            }
 
             int count = (playerCount + PlayersPerSpawn - 1) / PlayersPerSpawn;
 
@@ -803,14 +721,12 @@ namespace Server.Engines.Doom
                 if (obj == null)
                     return;
 
-                if (obj is Item)
+                if (obj is Item item)
                 {
-                    ((Item)obj).Delete();
+                    item.Delete();
                 }
-                else if (obj is Mobile)
+                else if (obj is Mobile mob)
                 {
-                    Mobile mob = (Mobile)obj;
-
                     mob.MoveToWorld(GetWorldLocation(), Map);
 
                     m_Creatures.Add(mob);

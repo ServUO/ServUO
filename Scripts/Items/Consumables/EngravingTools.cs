@@ -153,10 +153,8 @@ namespace Server.Items
 
         private bool IsValid(IEntity entity, Mobile m)
         {
-            if (entity is Item)
+            if (entity is Item item)
             {
-                Item item = entity as Item;
-
                 BaseHouse house = BaseHouse.FindHouseAt(item);
 
                 if (m.InRange(item.GetWorldLocation(), 3))
@@ -171,10 +169,8 @@ namespace Server.Items
                     }
                 }
             }
-            else if (entity is BaseCreature)
+            else if (entity is BaseCreature bc)
             {
-                BaseCreature bc = entity as BaseCreature;
-
                 if (bc.Controlled && bc.ControlMaster == m)
                     return true;
             }
@@ -318,10 +314,8 @@ namespace Server.Items
                 if (m_Tool == null || m_Tool.Deleted)
                     return;
 
-                if (targeted is IEntity)
+                if (targeted is IEntity entity)
                 {
-                    IEntity entity = (IEntity)targeted;
-
                     if (m_Tool.IsValid(entity, from))
                     {
                         if (entity is IEngravable && m_Tool.CheckType(entity))

@@ -41,7 +41,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -59,29 +59,27 @@ namespace Server.Items
             if (m_Potion == null || m_Potion.Deleted || !m_Potion.IsChildOf(from.Backpack))
                 return;
 
-            if (target is BaseCreature)
+            if (target is BaseCreature bc)
             {
-                BaseCreature t = (BaseCreature)target;
-
-                if (t.IsBonded == true)
+                if (bc.IsBonded)
                 {
                     from.SendLocalizedMessage(1152925); // That pet is already bonded to you.
                 }
-                else if (t.ControlMaster != from)
+                else if (bc.ControlMaster != from)
                 {
                     from.SendLocalizedMessage(1114368); // This is not your pet!
                 }
-                else if (t.Allured || t.Summoned)
+                else if (bc.Allured || bc.Summoned)
                 {
                     from.SendLocalizedMessage(1152924); // That is not a valid pet.
                 }
-                else if (target is BaseTalismanSummon)
+                else if (bc is BaseTalismanSummon)
                 {
                     from.SendLocalizedMessage(1152924); // That is not a valid pet.
                 }
                 else
                 {
-                    t.IsBonded = !t.IsBonded;
+                    bc.IsBonded = !bc.IsBonded;
                     from.SendLocalizedMessage(1049666); // Your pet has bonded with you!
                     m_Potion.Delete();
                 }

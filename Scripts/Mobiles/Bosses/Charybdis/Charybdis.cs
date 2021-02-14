@@ -26,9 +26,9 @@ namespace Server.Mobiles
         public override double TreasureMapChance => .50;
         public override int TreasureMapLevel => 7;
 
-        public override Type[] UniqueList => new Type[] { typeof(FishermansHat), typeof(FishermansVest), typeof(FishermansEelskinGloves), typeof(FishermansTrousers) };
-        public override Type[] SharedList => new Type[] { typeof(HelmOfVengence), typeof(RingOfTheSoulbinder), typeof(RuneEngravedPegLeg), typeof(CullingBlade) };
-        public override Type[] DecorativeList => new Type[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
+        public override Type[] UniqueList => new[] { typeof(FishermansHat), typeof(FishermansVest), typeof(FishermansEelskinGloves), typeof(FishermansTrousers) };
+        public override Type[] SharedList => new[] { typeof(HelmOfVengence), typeof(RingOfTheSoulbinder), typeof(RuneEngravedPegLeg), typeof(CullingBlade) };
+        public override Type[] DecorativeList => new[] { typeof(EnchantedBladeDeed), typeof(EnchantedVortexDeed) };
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Tentacles => m_Tentacles.Count;
@@ -325,11 +325,11 @@ namespace Server.Mobiles
                     Point3D ep = new Point3D(point.X + x, point.Y + y, point.Z);
                     Point3D ep2 = new Point3D(ep.X + x2, ep.Y + y2, ep.Z);
 
-                    if (diag && i >= ((2 * path.Count) / 3))
+                    if (diag && i >= (2 * path.Count) / 3)
                         return;
 
                     Point3D p;
-                    if (diag && rn < (o * 2))
+                    if (diag && rn < o * 2)
                         p = ep2;
                     else
                         p = ep;
@@ -423,7 +423,7 @@ namespace Server.Mobiles
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
 
@@ -479,8 +479,8 @@ namespace Server.Mobiles
                 if (m == this || !CanBeHarmful(m))
                     continue;
 
-                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
-                    list.Add(m);
+                if (m is BaseCreature bc && (bc.Controlled || bc.Summoned || bc.Team != Team))
+                    list.Add(bc);
                 else if (m.Player)
                     list.Add(m);
             }
@@ -533,7 +533,7 @@ namespace Server.Mobiles
 
         public bool IsSeaTile(LandTile t)
         {
-            return t.Z == -5 && ((t.ID >= 0xA8 && t.ID <= 0xAB) || (t.ID >= 0x136 && t.ID <= 0x137));
+            return t.Z == -5 && (t.ID >= 0xA8 && t.ID <= 0xAB || t.ID >= 0x136 && t.ID <= 0x137);
         }
 
         public override bool OnBeforeDeath()
@@ -620,7 +620,7 @@ namespace Server.Mobiles
             typeof(StoneCrabPie),
             typeof(SummerDragonfishPie),
             typeof(UnicornFishPie),
-            typeof(YellowtailBarracudaPie),
+            typeof(YellowtailBarracudaPie)
         };
 
         private readonly Type[] m_Steaks =
@@ -640,7 +640,7 @@ namespace Server.Mobiles
             typeof(StoneCrabMeat),
             typeof(SummerDragonfishSteak),
             typeof(UnicornFishSteak),
-            typeof(YellowtailBarracudaSteak),
+            typeof(YellowtailBarracudaSteak)
         };
 
         public override void GenerateLoot()
@@ -680,7 +680,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             int cnt = reader.ReadInt();
             for (int i = 0; i < cnt; i++)
@@ -700,10 +700,10 @@ namespace Server.Mobiles
 
         public GiantTentacle(Mobile master) : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
-            if (master is Charydbis)
+            if (master is Charydbis charydbis)
             {
-                m_Master = master;
-                ((Charydbis)master).AddTentacle(this);
+                m_Master = charydbis;
+                charydbis.AddTentacle(this);
             }
 
             Name = "a giant tentacle";
@@ -748,8 +748,10 @@ namespace Server.Mobiles
 
         public override void Delete()
         {
-            if (m_Master != null && m_Master is Charydbis)
-                ((Charydbis)m_Master).RemoveTentacle(this);
+            if (m_Master != null && m_Master is Charydbis charydbis)
+            {
+                charydbis.RemoveTentacle(this);
+            }
 
             base.Delete();
         }
@@ -770,7 +772,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Master = reader.ReadMobile();
         }

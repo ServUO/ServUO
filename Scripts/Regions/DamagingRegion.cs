@@ -175,9 +175,9 @@ namespace Server.Regions
 
             int dmg = Utility.Random(2, 3);
 
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                dmg = (int)BalmOfProtection.HandleDamage((PlayerMobile)m, dmg);
+                dmg = (int)BalmOfProtection.HandleDamage(pm, dmg);
             }
 
             AOS.Damage(m, dmg, 0, 0, 100, 0, 0);

@@ -127,9 +127,9 @@ namespace Server.Mobiles
                         OfferResurrection(m);
                     }
                 }
-                else if (HealsYoungPlayers && m.Hits < m.HitsMax && m is PlayerMobile && ((PlayerMobile)m).Young)
+                else if (HealsYoungPlayers && m.Hits < m.HitsMax && m is PlayerMobile mobile && mobile.Young)
                 {
-                    OfferHeal((PlayerMobile)m);
+                    OfferHeal(mobile);
                 }
             }
         }

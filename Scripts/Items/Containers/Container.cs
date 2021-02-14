@@ -132,7 +132,7 @@ namespace Server.Items
 
             if (house != null && house.IsLockedDown(this))
             {
-                if (dropped is VendorRentalContract || (dropped is Container && ((Container)dropped).FindItemByType(typeof(VendorRentalContract)) != null))
+                if (dropped is VendorRentalContract || (dropped is Container container && container.FindItemByType(typeof(VendorRentalContract)) != null))
                 {
                     from.SendLocalizedMessage(1062492); // You cannot place a rental contract in a locked down container.
                     return false;
@@ -179,7 +179,7 @@ namespace Server.Items
 
             if (house != null && house.IsLockedDown(this))
             {
-                if (item is VendorRentalContract || (item is Container && ((Container)item).FindItemByType(typeof(VendorRentalContract)) != null))
+                if (item is VendorRentalContract || (item is Container container && container.FindItemByType(typeof(VendorRentalContract)) != null))
                 {
                     from.SendLocalizedMessage(1062492); // You cannot place a rental contract in a locked down container.
                     return false;
@@ -209,9 +209,9 @@ namespace Server.Items
         {
             bool canDrop = base.OnDroppedInto(from, target, p);
 
-            if (canDrop && target is BankBox)
+            if (canDrop && target is BankBox box)
             {
-                CheckBank((BankBox)target, from);
+                CheckBank(box, from);
             }
 
             return canDrop;
@@ -221,8 +221,8 @@ namespace Server.Items
         {
             base.UpdateTotal(sender, type, delta);
 
-            if (type == TotalType.Weight && RootParent is Mobile)
-                ((Mobile)RootParent).InvalidateProperties();
+            if (type == TotalType.Weight && RootParent is Mobile mobile)
+               mobile.InvalidateProperties();
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -425,7 +425,7 @@ namespace Server.Items
         {
             object root = RootParent;
 
-            if (root is BaseCreature && ((BaseCreature)root).Controlled && ((BaseCreature)root).ControlMaster == from)
+            if (root is BaseCreature creature && creature.Controlled && creature.ControlMaster == from)
                 return true;
 
             return base.CheckContentDisplay(from);

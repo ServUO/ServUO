@@ -16,7 +16,7 @@ namespace Server.Mobiles
             SpeechHue = Utility.RandomDyedHue();
             Hue = Utility.RandomSkinHue();
             Name = "a ronin";
-            Body = ((Female = Utility.RandomBool()) ? Body = 0x191 : Body = 0x190);
+            Body = (Female = Utility.RandomBool()) ? Body = 0x191 : Body = 0x190;
 
             Hue = Utility.RandomSkinHue();
 
@@ -101,7 +101,7 @@ namespace Server.Mobiles
         {
             get
             {
-                if (Combatant is Mobile && ((Mobile)Combatant).Mounted)
+                if (Combatant is Mobile mobile && mobile.Mounted)
                     return 0.8;
 
                 return base.WeaponAbilityChance;
@@ -122,8 +122,8 @@ namespace Server.Mobiles
 
             foreach (Item i in Backpack.Items)
             {
-                if (i is BaseWeapon && i != item)
-                    weapons.Add((BaseWeapon)i);
+                if (i is BaseWeapon weapon && i != item)
+                    weapons.Add(weapon);
             }
 
             if (weapons.Count > 0)
@@ -152,15 +152,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextWeaponChange = DateTime.UtcNow;
         }

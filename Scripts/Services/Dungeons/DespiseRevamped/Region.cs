@@ -59,13 +59,13 @@ namespace Server.Engines.Despise
         {
             base.OnDeath(m);
 
-            if (m is DespiseBoss)
+            if (m is DespiseBoss boss)
             {
                 DespiseController controller = DespiseController.Instance;
 
                 if (controller != null && controller.Boss == m)
                 {
-                    Quests.WhisperingWithWispsQuest.OnBossSlain((DespiseBoss)m);
+                    Quests.WhisperingWithWispsQuest.OnBossSlain(boss);
 
                     controller.OnBossSlain();
                 }
@@ -78,97 +78,93 @@ namespace Server.Engines.Despise
 
         public override bool OnBeforeDeath(Mobile m)
         {
-            if (m is DespiseCreature && m.Region != null && m.Region.IsPartOf(GetType()))
+            if (m is DespiseCreature despiseCreature && despiseCreature.Region != null && despiseCreature.Region.IsPartOf(GetType()) && !despiseCreature.Controlled && despiseCreature.Orb == null)
             {
-                DespiseCreature dc = (DespiseCreature)m;
+                Dictionary<DespiseCreature, int> creatures = new Dictionary<DespiseCreature, int>();
 
-                if (!dc.Controlled && dc.Orb == null)
+                foreach (DamageEntry de in despiseCreature.DamageEntries)
                 {
-                    Dictionary<DespiseCreature, int> creatures = new Dictionary<DespiseCreature, int>();
-
-                    foreach (DamageEntry de in m.DamageEntries)
+                    if (de.Damager is DespiseCreature creat)
                     {
-                        if (de.Damager is DespiseCreature)
+                        if (!creat.Controlled || creat.Orb == null)
+                            continue;
+
+                        if (creatures.ContainsKey(creat))
+                            creatures[creat] += de.DamageGiven;
+                        else
+                            creatures[creat] = de.DamageGiven;
+                    }
+                }
+
+                if (creatures.Count > 0)
+                {
+                    DespiseCreature topdam = null;
+                    int highest = 0;
+
+                    foreach (KeyValuePair<DespiseCreature, int> kvp in creatures)
+                    {
+                        if (topdam == null || kvp.Value > highest)
                         {
-                            DespiseCreature creat = de.Damager as DespiseCreature;
-
-                            if (!creat.Controlled || creat.Orb == null)
-                                continue;
-
-                            if (creatures.ContainsKey(creat))
-                                creatures[creat] += de.DamageGiven;
-                            else
-                                creatures[creat] = de.DamageGiven;
+                            topdam = kvp.Key;
+                            highest = kvp.Value;
                         }
                     }
 
-                    if (creatures.Count > 0)
+                    if (topdam != null && highest > 0)
                     {
-                        DespiseCreature topdam = null;
-                        int highest = 0;
+                        int mobKarma = Math.Abs(despiseCreature.Karma);
+                        int karma = (int) (((double) mobKarma / 10) * highest / despiseCreature.HitsMax);
 
-                        foreach (KeyValuePair<DespiseCreature, int> kvp in creatures)
+                        if (karma < 1)
+                            karma = 1;
+
+                        if (despiseCreature.Karma > 0)
+                            karma *= -1;
+
+                        Mobile master = topdam.GetMaster();
+                        Alignment oldAlign = topdam.Alignment;
+                        int power = topdam.Power;
+                        topdam.Karma += karma;
+                        Alignment newAlign = topdam.Alignment;
+
+                        if (master != null && karma > 0)
+                            master.SendLocalizedMessage(1153281); // Your possessed creature has gained karma!
+                        else if (master != null && karma < 0)
+                            master.SendLocalizedMessage(1153282); // Your possessed creature has lost karma!
+
+                        if (power < topdam.MaxPower)
                         {
-                            if (topdam == null || kvp.Value > highest)
-                            {
-                                topdam = kvp.Key;
-                                highest = kvp.Value;
-                            }
+                            topdam.Progress += despiseCreature.Power;
+
+                            if (topdam.Power > power && master != null)
+                                master.SendLocalizedMessage(1153294,
+                                    topdam.Name); // ~1_NAME~ has achieved a new threshold in power!
+                        }
+                        else if (master != null)
+                            master.SendLocalizedMessage(1153309); // Your controlled creature cannot gain further power.
+
+                        if (oldAlign != newAlign && newAlign != Alignment.Neutral && topdam.MaxPower < 15)
+                        {
+                            topdam.MaxPower = 15;
+
+                            if (master != null)
+                                master.SendLocalizedMessage(1153293, topdam.Name); // ~1_NAME~ is growing in strength.
+
+                            topdam.Delta(MobileDelta.Noto);
+
+                            topdam.FixedEffect(0x373A, 10, 30);
+                            topdam.PlaySound(0x209);
                         }
 
-                        if (topdam != null && highest > 0)
+                        if (master != null && master.Map != null && master.Map != Map.Internal &&
+                            master.Backpack != null)
                         {
-                            int mobKarma = Math.Abs(dc.Karma);
-                            int karma = (int)(((double)mobKarma / 10) * highest / dc.HitsMax);
+                            PutridHeart heart = new PutridHeart(Utility.RandomMinMax(despiseCreature.Power * 8,
+                                despiseCreature.Power * 10));
 
-                            if (karma < 1)
-                                karma = 1;
-
-                            if (dc.Karma > 0)
-                                karma *= -1;
-
-                            Mobile master = topdam.GetMaster();
-                            Alignment oldAlign = topdam.Alignment;
-                            int power = topdam.Power;
-                            topdam.Karma += karma;
-                            Alignment newAlign = topdam.Alignment;
-
-                            if (master != null && karma > 0)
-                                master.SendLocalizedMessage(1153281); // Your possessed creature has gained karma!
-                            else if (master != null && karma < 0)
-                                master.SendLocalizedMessage(1153282); // Your possessed creature has lost karma!
-
-                            if (power < topdam.MaxPower)
+                            if (!master.Backpack.TryDropItem(master, heart, false))
                             {
-                                topdam.Progress += dc.Power;
-
-                                if (topdam.Power > power && master != null)
-                                    master.SendLocalizedMessage(1153294, topdam.Name); // ~1_NAME~ has achieved a new threshold in power!
-                            }
-                            else if (master != null)
-                                master.SendLocalizedMessage(1153309); // Your controlled creature cannot gain further power.
-
-                            if (oldAlign != newAlign && newAlign != Alignment.Neutral && topdam.MaxPower < 15)
-                            {
-                                topdam.MaxPower = 15;
-
-                                if (master != null)
-                                    master.SendLocalizedMessage(1153293, topdam.Name); // ~1_NAME~ is growing in strength.
-
-                                topdam.Delta(MobileDelta.Noto);
-
-                                topdam.FixedEffect(0x373A, 10, 30);
-                                topdam.PlaySound(0x209);
-                            }
-
-                            if (master != null && master.Map != null && master.Map != Map.Internal && master.Backpack != null)
-                            {
-                                PutridHeart heart = new PutridHeart(Utility.RandomMinMax(dc.Power * 8, dc.Power * 10));
-
-                                if (!master.Backpack.TryDropItem(master, heart, false))
-                                {
-                                    heart.MoveToWorld(master.Location, master.Map);
-                                }
+                                heart.MoveToWorld(master.Location, master.Map);
                             }
                         }
                     }
@@ -183,15 +179,10 @@ namespace Server.Engines.Despise
             if (o is BallOfSummoning || o is BraceletOfBinding)
                 return false;
 
-            if (o is Corpse && m.AccessLevel == AccessLevel.Player)
+            if (o is Corpse c && m.AccessLevel == AccessLevel.Player && (c.Owner == null || c.Owner is DespiseCreature))
             {
-                Corpse c = o as Corpse;
-
-                if (c.Owner == null || c.Owner is DespiseCreature)
-                {
-                    m.SendLocalizedMessage(1152684); // There is no loot on the corpse.
-                    return false;
-                }
+                m.SendLocalizedMessage(1152684); // There is no loot on the corpse.
+                return false;
             }
 
             return base.OnDoubleClick(m, o);
@@ -236,9 +227,9 @@ namespace Server.Engines.Despise
             if (m.AccessLevel > AccessLevel.Player)
                 return;
 
-            if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+            if (!IsInStartRegion(m.Location) && m is BaseCreature bc && !(bc is DespiseCreature) && !(bc is CorruptedWisp) && !(bc is EnsorcledWisp) && (bc.Controlled || bc.Summoned))
             {
-                KickPet(m);
+                KickPet(bc);
             }
 
             if (m is PlayerMobile && IsInLowerRegion(m.Location))
@@ -254,12 +245,12 @@ namespace Server.Engines.Despise
         {
             Timer.DelayCall(TimeSpan.FromSeconds(1.5), () =>
             {
-                if (!IsInStartRegion(m.Location) && m is BaseCreature && !(m is DespiseCreature) && !(m is CorruptedWisp) && !(m is EnsorcledWisp) && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+                if (!IsInStartRegion(m.Location) && m is BaseCreature bc && !(bc is DespiseCreature) && !(bc is CorruptedWisp) && !(bc is EnsorcledWisp) && (bc.Controlled || bc.Summoned))
                 {
-                    if (((BaseCreature)m).Summoned)
-                        m.Delete();
+                    if (bc.Summoned)
+                        bc.Delete();
                     else
-                        KickFromRegion(m, false);
+                        KickFromRegion(bc, false);
                 }
             });
 

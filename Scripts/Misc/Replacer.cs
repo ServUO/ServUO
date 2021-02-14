@@ -38,15 +38,15 @@ namespace Server
                 {
                     newItem.Movable = oldItem.Movable;
 
-                    if (parent is Container)
+                    if (parent is Container container)
                     {
                         oldItem.Delete();
-                        ((Container)parent).DropItem(newItem);
+                        container.DropItem(newItem);
                     }
-                    else if (parent is Mobile)
+                    else if (parent is Mobile mobile)
                     {
                         oldItem.Delete();
-                        ((Mobile)parent).AddItem(newItem);
+                        mobile.AddItem(newItem);
                     }
                     else
                     {

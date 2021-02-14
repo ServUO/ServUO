@@ -208,7 +208,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -219,7 +219,6 @@ namespace Server.Mobiles
 
         [Constructable]
         public InsaneDryad()
-            : base()
         {
             Name = "an insane dryad";
             Hue = 0x487;
@@ -252,7 +251,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

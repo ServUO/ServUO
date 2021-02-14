@@ -16,10 +16,10 @@ namespace Server.Services.Virtues
 {
     public static class HonestyVirtue
     {
-        public static bool Enabled { get; set; }
-        public static int MaxGeneration { get; set; }
-        public static bool TrammelGeneration { get; set; }
-        public static bool UseSpawnArea { get; set; }
+        public static bool Enabled { get; }
+        public static int MaxGeneration { get; }
+        public static bool TrammelGeneration { get; }
+        public static bool UseSpawnArea { get; }
 
         private static readonly string[] _Regions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
 

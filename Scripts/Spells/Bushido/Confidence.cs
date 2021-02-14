@@ -91,8 +91,8 @@ namespace Server.Spells.Bushido
 
             if (anticipateHitBonus >= Utility.Random(100) && m_RegenTable.TryGetValue(m, out t))
             {
-                if (t is RegenTimer)
-                    ((RegenTimer)t).Hits /= 2;
+                if (t is RegenTimer timer)
+                    timer.Hits /= 2;
 
                 return;
             }

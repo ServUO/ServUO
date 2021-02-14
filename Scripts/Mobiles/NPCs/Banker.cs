@@ -312,7 +312,7 @@ namespace Server.Mobiles
         {
             if (!e.Handled && e.Mobile.InRange(vendor, 12))
             {
-                if (e.Mobile.Map.Rules != MapRules.FeluccaRules && vendor is BaseVendor && !((BaseVendor)vendor).CheckVendorAccess(e.Mobile))
+                if (e.Mobile.Map.Rules != MapRules.FeluccaRules && vendor is BaseVendor baseVendor && !baseVendor.CheckVendorAccess(e.Mobile))
                 {
                     return;
                 }
@@ -387,13 +387,13 @@ namespace Server.Mobiles
                                     break;
                                 }
 
-                                if (AccountGold.Enabled && e.Mobile.Account is Account)
+                                if (AccountGold.Enabled && e.Mobile.Account is Account account)
                                 {
                                     vendor.Say(1155855, string.Format("{0:#,0}\t{1:#,0}",
-                                        e.Mobile.Account.TotalPlat,
-                                        e.Mobile.Account.TotalGold), 0x3BC);
+                                        account.TotalPlat,
+                                        account.TotalGold), 0x3BC);
 
-                                    vendor.Say(1155848, string.Format("{0:#,0}", ((Account)e.Mobile.Account).GetSecureAccountAmount(e.Mobile)), 0x3BC);
+                                    vendor.Say(1155848, string.Format("{0:#,0}", account.GetSecureAccountAmount(e.Mobile)), 0x3BC);
                                 }
                                 else
                                 {

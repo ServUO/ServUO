@@ -31,52 +31,50 @@ namespace Server.Mobiles
             if (defender == null)
                 return;
 
-            if (attacker is BaseCreature && !((BaseCreature)attacker).Summoned)
+            if (attacker is BaseCreature attackCreature && !attackCreature.Summoned)
             {
-                BaseCreature bc = attacker as BaseCreature;
-                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(attackCreature);
 
                 if (profile != null)
                 {
                     SpecialAbility ability = null;
 
                     SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m =>
-                        ((type == DamageType.Melee && m.TriggerOnDoMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnDoSpellDamage)) &&
+                        (type == DamageType.Melee && m.TriggerOnDoMeleeDamage || type >= DamageType.Spell && m.TriggerOnDoSpellDamage) &&
                         !m.IsInCooldown(attacker)).ToArray();
 
-                    if (abilties != null && abilties.Length > 0)
+                    if (abilties.Length > 0)
                     {
                         ability = abilties[Utility.Random(abilties.Length)];
                     }
 
                     if (ability != null)
                     {
-                        ability.Trigger(bc, defender, ref damage);
+                        ability.Trigger(attackCreature, defender, ref damage);
                     }
                 }
             }
 
-            if (defender is BaseCreature && !((BaseCreature)defender).Summoned)
+            if (defender is BaseCreature defendCreature && !defendCreature.Summoned)
             {
-                BaseCreature bc = defender as BaseCreature;
-                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
+                AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(defendCreature);
 
                 if (profile != null)
                 {
                     SpecialAbility ability = null;
 
                     SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m =>
-                        ((type == DamageType.Melee && m.TriggerOnGotMeleeDamage) || (type >= DamageType.Spell && m.TriggerOnGotSpellDamage)) &&
+                        (type == DamageType.Melee && m.TriggerOnGotMeleeDamage || type >= DamageType.Spell && m.TriggerOnGotSpellDamage) &&
                         !m.IsInCooldown(defender)).ToArray();
 
-                    if (abilties != null && abilties.Length > 0)
+                    if (abilties.Length > 0)
                     {
                         ability = abilties[Utility.Random(abilties.Length)];
                     }
 
                     if (ability != null)
                     {
-                        ability.Trigger(bc, attacker, ref damage);
+                        ability.Trigger(defendCreature, attacker, ref damage);
                     }
                 }
             }
@@ -87,7 +85,7 @@ namespace Server.Mobiles
             IDamageable combatant = bc.Combatant;
             AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(bc);
 
-            if (combatant is Mobile)
+            if (combatant is Mobile mobile)
             {
                 if (profile != null)
                 {
@@ -95,7 +93,7 @@ namespace Server.Mobiles
 
                     SpecialAbility[] abilties = profile.EnumerateSpecialAbilities().Where(m => m.TriggerOnThink && !m.IsInCooldown(bc)).ToArray();
 
-                    if (abilties != null && abilties.Length > 0)
+                    if (abilties.Length > 0)
                     {
                         ability = abilties[Utility.Random(abilties.Length)];
                     }
@@ -103,7 +101,7 @@ namespace Server.Mobiles
                     if (ability != null)
                     {
                         int d = 0;
-                        ability.Trigger(bc, (Mobile)combatant, ref d);
+                        ability.Trigger(bc, mobile, ref d);
                     }
                 }
             }
@@ -118,7 +116,7 @@ namespace Server.Mobiles
                         !m.IsInCooldown(bc) &&
                         !m.RequiresCombatant).ToArray();
 
-                if (abilties != null && abilties.Length > 0)
+                if (abilties.Length > 0)
                 {
                     ability = abilties[Utility.Random(abilties.Length)];
                 }
@@ -147,7 +145,7 @@ namespace Server.Mobiles
                     !bc.InRange(oldLocation, m.MaxRange) &&
                     !m.IsInCooldown(bc)).ToArray();
 
-                if (abilties != null && abilties.Length > 0)
+                if (abilties.Length > 0)
                 {
                     ability = abilties[Utility.Random(abilties.Length)];
                 }
@@ -586,7 +584,7 @@ namespace Server.Mobiles
 
         public void BreathDamage_Callback(BaseCreature creature, Mobile target, DragonBreathDefinition def)
         {
-            if (target is BaseCreature && ((BaseCreature)target).BreathImmune)
+            if (target is BaseCreature baseCreature && baseCreature.BreathImmune)
             {
                 return;
             }
@@ -716,7 +714,7 @@ namespace Server.Mobiles
                     0x227,
                     12,
                     false,
-                    new Type[] { typeof(SkeletalDragonRenowned), typeof(SkeletalDragon) }));
+                    new[] { typeof(SkeletalDragonRenowned), typeof(SkeletalDragon) }));
 
                 // Leviathan
                 Definitions.Add(new DragonBreathDefinition(
@@ -736,7 +734,7 @@ namespace Server.Mobiles
                     0x227,
                     12,
                     false,
-                    new Type[] { typeof(Leviathan) }));
+                    new[] { typeof(Leviathan) }));
 
                 // Red Death
                 Definitions.Add(new DragonBreathDefinition(
@@ -756,7 +754,7 @@ namespace Server.Mobiles
                     0x227,
                     12,
                     false,
-                    new Type[] { typeof(RedDeath) }));
+                    new[] { typeof(RedDeath) }));
 
                 // Frost Dragon/Drake
                 Definitions.Add(new DragonBreathDefinition(
@@ -776,7 +774,7 @@ namespace Server.Mobiles
                     0x227,
                     12,
                     false,
-                    new Type[] { typeof(FrostDragon), typeof(ColdDrake) }));
+                    new[] { typeof(FrostDragon), typeof(ColdDrake) }));
 
                 // Antlion
                 Definitions.Add(new DragonBreathDefinition(
@@ -796,7 +794,7 @@ namespace Server.Mobiles
                     0,
                     12,
                     false,
-                    new Type[] { typeof(AntLion) }));
+                    new[] { typeof(AntLion) }));
 
                 // Rend
                 Definitions.Add(new DragonBreathDefinition(
@@ -816,7 +814,7 @@ namespace Server.Mobiles
                     0x227,
                     12,
                     false,
-                    new Type[] { typeof(Rend) }));
+                    new[] { typeof(Rend) }));
 
                 // Crystal Sea Serpent
                 Definitions.Add(new DragonBreathDefinition(
@@ -836,7 +834,7 @@ namespace Server.Mobiles
                    0x227,
                    12,
                    false,
-                   new Type[] { typeof(CrystalSeaSerpent) }));
+                   new[] { typeof(CrystalSeaSerpent) }));
 
                 // Crystal Hydra
                 Definitions.Add(new DragonBreathDefinition(
@@ -856,7 +854,7 @@ namespace Server.Mobiles
                     0x56D,
                     12,
                     true,
-                    new Type[] { typeof(CrystalHydra) }));
+                    new[] { typeof(CrystalHydra) }));
             }
 
             public static DragonBreathDefinition GetDefinition(BaseCreature bc)
@@ -925,63 +923,63 @@ namespace Server.Mobiles
                 {
                     default:
                     case ElementType.Physical:
-                        if (bc is IElementalCreature)
+                        if (bc is IElementalCreature physical)
                         {
-                            return ((IElementalCreature)bc).ElementType == ElementType.Physical ? 100 : 0;
+                            return physical.ElementType == ElementType.Physical ? 100 : 0;
                         }
                         else
                         {
                             return PhysicalDamage;
                         }
                     case ElementType.Fire:
-                        if (bc is IElementalCreature)
+                        if (bc is IElementalCreature fire)
                         {
-                            return ((IElementalCreature)bc).ElementType == ElementType.Fire ? 100 : 0;
+                            return fire.ElementType == ElementType.Fire ? 100 : 0;
                         }
                         else
                         {
                             return FireDamage;
                         }
                     case ElementType.Cold:
-                        if (bc is IElementalCreature)
+                        if (bc is IElementalCreature cold)
                         {
-                            return ((IElementalCreature)bc).ElementType == ElementType.Cold ? 100 : 0;
+                            return cold.ElementType == ElementType.Cold ? 100 : 0;
                         }
                         else
                         {
                             return ColdDamage;
                         }
                     case ElementType.Poison:
-                        if (bc is IElementalCreature)
+                        if (bc is IElementalCreature poison)
                         {
-                            return ((IElementalCreature)bc).ElementType == ElementType.Poison ? 100 : 0;
+                            return poison.ElementType == ElementType.Poison ? 100 : 0;
                         }
                         else
                         {
                             return PoisonDamage;
                         }
                     case ElementType.Energy:
-                        if (bc is IElementalCreature)
+                        if (bc is IElementalCreature energy)
                         {
-                            return ((IElementalCreature)bc).ElementType == ElementType.Energy ? 100 : 0;
+                            return energy.ElementType == ElementType.Energy ? 100 : 0;
                         }
                         else
                         {
                             return EnergyDamage;
                         }
                     case ElementType.Chaos:
-                        if (bc is IElementalCreature)
+                        if (bc is IElementalCreature chaos)
                         {
-                            return ((IElementalCreature)bc).ElementType == ElementType.Chaos ? 100 : 0;
+                            return chaos.ElementType == ElementType.Chaos ? 100 : 0;
                         }
                         else
                         {
                             return ChaosDamage;
                         }
                     case ElementType.Direct:
-                        if (bc is IElementalCreature)
+                        if (bc is IElementalCreature direct)
                         {
-                            return ((IElementalCreature)bc).ElementType == ElementType.Direct ? 100 : 0;
+                            return direct.ElementType == ElementType.Direct ? 100 : 0;
                         }
                         else
                         {
@@ -1502,7 +1500,7 @@ namespace Server.Mobiles
             {
                 AbilityProfile profile = PetTrainingHelper.GetAbilityProfile(creature);
 
-                if ((profile != null && profile.HasAbility(MagicalAbility.Poisoning)) || 0.2 > Utility.RandomDouble())
+                if (profile != null && profile.HasAbility(MagicalAbility.Poisoning) || 0.2 > Utility.RandomDouble())
                     creature.CheckSkill(SkillName.Poisoning, 0, creature.Skills[SkillName.Poisoning].Cap);
             }
 
@@ -2202,9 +2200,9 @@ namespace Server.Mobiles
 
                 int toDrain = GetDrainAmount(creature, defender);
 
-                if (defender is PlayerMobile)
+                if (defender is PlayerMobile mobile)
                 {
-                    toDrain = (int)LifeShieldLotion.HandleLifeDrain((PlayerMobile)defender, toDrain);
+                    toDrain = (int)LifeShieldLotion.HandleLifeDrain(mobile, toDrain);
                 }
 
                 creature.Hits += toDrain;

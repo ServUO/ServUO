@@ -32,7 +32,6 @@ namespace Server.Engines.Quests
         public override object Complete => 1075384;
 
         public DoughtyWarriorsQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Mongbat), "Mongbats", 10));
 
@@ -42,15 +41,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -80,7 +77,6 @@ namespace Server.Engines.Quests
         public override object Complete => 1075409;
 
         public DoughtyWarriors2Quest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Imp), "Imps", 10));
 
@@ -90,15 +86,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -128,7 +122,6 @@ namespace Server.Engines.Quests
         public override object Complete => 1075415;
 
         public DoughtyWarriors3Quest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Daemon), "Daemons", 10));
 
@@ -138,24 +131,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class Kane : MondainQuester
     {
-        public override Type[] Quests => new Type[]
-        {
-            typeof( DoughtyWarriorsQuest )
-        };
+        public override Type[] Quests => new[] { typeof( DoughtyWarriorsQuest ) };
 
         public static Kane TramInstance { get; set; }
         public static Kane FelInstance { get; set; }

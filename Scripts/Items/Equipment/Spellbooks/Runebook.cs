@@ -365,7 +365,7 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is RecallRune)
+            if (dropped is RecallRune rune)
             {
                 if (IsLockedDown && from.AccessLevel < AccessLevel.GameMaster)
                 {
@@ -377,10 +377,8 @@ namespace Server.Items
                 }
                 else if (m_Entries.Count < MaxEntries)
                 {
-                    if (dropped is RecallRune)
+                    if (rune is RecallRune)
                     {
-                        RecallRune rune = (RecallRune)dropped;
-
                         if (rune.Marked)
                         {
                             if (rune.Type == RecallRuneType.Ship)
@@ -388,7 +386,7 @@ namespace Server.Items
                                 RunebookEntry entry = new RunebookEntry(Point3D.Zero, null, null, null, rune.Type, rune.Galleon);
                                 m_Entries.Add(entry);
 
-                                dropped.Delete();
+                                rune.Delete();
 
                                 from.Send(new PlaySound(0x42, GetWorldLocation()));
 
@@ -400,7 +398,7 @@ namespace Server.Items
                             {
                                 m_Entries.Add(new RunebookEntry(rune.Target, rune.TargetMap, rune.Description, rune.House, rune.Type));
 
-                                dropped.Delete();
+                                rune.Delete();
 
                                 from.Send(new PlaySound(0x42, GetWorldLocation()));
 

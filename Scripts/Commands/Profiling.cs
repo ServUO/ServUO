@@ -203,7 +203,7 @@ namespace Server.Commands
             {
                 using (StreamWriter op = new StreamWriter("expandedItems.log", true))
                 {
-                    string[] names = new string[]
+                    string[] names =
                     {
                         "Name",
                         "Items",
@@ -261,7 +261,7 @@ namespace Server.Commands
                 int[] parms = (int[])table[type];
 
                 if (parms == null)
-                    table[type] = parms = new int[] { 0, 0 };
+                    table[type] = parms = new[] { 0, 0 };
 
                 parms[0]++;
                 parms[1] += item.Amount;
@@ -384,13 +384,11 @@ namespace Server.Commands
 
             private int GetCount(object obj)
             {
-                if (obj is int)
-                    return (int)obj;
+                if (obj is int oI)
+                    return oI;
 
-                if (obj is int[])
+                if (obj is int[] list)
                 {
-                    int[] list = (int[])obj;
-
                     int total = 0;
 
                     for (int i = 0; i < list.Length; ++i)

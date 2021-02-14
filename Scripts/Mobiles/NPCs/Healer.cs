@@ -25,10 +25,7 @@ namespace Server.Mobiles
             if (!base.CheckTeach(skill, from))
                 return false;
 
-            return (skill == SkillName.Forensics) ||
-                   (skill == SkillName.Healing) ||
-                   (skill == SkillName.SpiritSpeak) ||
-                   (skill == SkillName.Swords);
+            return skill == SkillName.Forensics || skill == SkillName.Healing || skill == SkillName.SpiritSpeak || skill == SkillName.Swords;
         }
 
         public override void InitSBInfo()
@@ -43,12 +40,14 @@ namespace Server.Mobiles
                 Say(501222); // Thou art a criminal.  I shall not resurrect thee.
                 return false;
             }
-            else if (m.Murderer)
+
+            if (m.Murderer)
             {
                 Say(501223); // Thou'rt not a decent and good person. I shall not resurrect thee.
                 return false;
             }
-            else if (m.Karma < 0)
+
+            if (m.Karma < 0)
             {
                 Say(501224); // Thou hast strayed from the path of virtue, but thou still deservest a second chance.
             }
@@ -65,7 +64,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

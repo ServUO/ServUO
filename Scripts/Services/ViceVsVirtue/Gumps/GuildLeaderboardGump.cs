@@ -11,8 +11,8 @@ namespace Server.Engines.VvV
     {
         public static int PerPage = 10;
 
-        public PlayerMobile User { get; set; }
-        public Filter Filter { get; set; }
+        public PlayerMobile User { get; }
+        public Filter Filter { get; }
 
         public GuildLeaderboardGump(PlayerMobile pm, Filter filter = Filter.Score) : base(50, 50)
         {
@@ -74,7 +74,7 @@ namespace Server.Engines.VvV
             {
                 VvVGuildStats entry = list[i];
 
-                AddHtml(10, y, 65, 20, CenterGray((i + 1).ToString() + "."), false, false);
+                AddHtml(10, y, 65, 20, CenterGray((i + 1) + "."), false, false);
                 AddHtml(50, y, 180, 20, CenterGray(entry.Guild == null ? "" : entry.Guild.Name), false, false);
                 AddHtml(230, y, 100, 20, Filter == Filter.Score ? RightGreen(entry.Score.ToString()) : RightGray(entry.Score.ToString()), false, false);
                 AddHtml(330, y, 85, 20, Filter == Filter.Kills ? RightGreen(entry.Kills.ToString()) : RightGray(entry.Kills.ToString()), false, false);

@@ -57,7 +57,8 @@ namespace Server.Mobiles
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {
             base.GetContextMenuEntries(from, list);
-            list.Add(new ExodusArchZealotGumpEntry(from, this));
+
+            list.Add(new ExodusArchZealotGumpEntry(from));
         }
 
         public override void Serialize(GenericWriter writer)
@@ -69,14 +70,14 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public class ExodusArchZealotGumpEntry : ContextMenuEntry
         {
             private readonly Mobile m_Mobile;
 
-            public ExodusArchZealotGumpEntry(Mobile from, Mobile giver) : base(6146, 3)
+            public ExodusArchZealotGumpEntry(Mobile from) : base(6146, 3)
             {
                 m_Mobile = from;
             }
@@ -90,7 +91,7 @@ namespace Server.Mobiles
                 {
                     if (!mobile.HasGump(typeof(ExodusArchZealotGump)))
                     {
-                        mobile.SendGump(new ExodusArchZealotGump(mobile));
+                        mobile.SendGump(new ExodusArchZealotGump());
                     }
                 }
             }
@@ -108,10 +109,10 @@ namespace Server.Mobiles
 
         private static void ExodusArchZealotGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new ExodusArchZealotGump(e.Mobile));
+            e.Mobile.SendGump(new ExodusArchZealotGump());
         }
 
-        public ExodusArchZealotGump(Mobile owner) : base(50, 50)
+        public ExodusArchZealotGump() : base(50, 50)
         {
             //----------------------------------------------------------------------------------------------------
 

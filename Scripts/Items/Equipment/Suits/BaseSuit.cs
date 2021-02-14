@@ -61,7 +61,7 @@ namespace Server.Items
         {
             object root = RootParent;
 
-            if (root is Mobile && ((Mobile)root).AccessLevel < m_AccessLevel)
+            if (root is Mobile mobile && mobile.AccessLevel < m_AccessLevel)
             {
                 Delete();
                 return false;

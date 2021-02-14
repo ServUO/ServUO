@@ -50,20 +50,20 @@ namespace Server.ContextMenus
 			From = from;
 			Target = target;
 
-			var list = new List<ContextMenuEntry>();
+			List<ContextMenuEntry> list = new List<ContextMenuEntry>();
 
-			if (target is Mobile)
+			if (target is Mobile mobile)
 			{
-				((Mobile)target).GetContextMenuEntries(from, list);
+				mobile.GetContextMenuEntries(from, list);
 			}
-			else if (target is Item)
+			else if (target is Item item)
 			{
-				((Item)target).GetContextMenuEntries(from, list);
+				item.GetContextMenuEntries(from, list);
 			}
 
 			EventSink.InvokeContextMenu(new ContextMenuEventArgs(From, Target, list));
 
-			foreach (var e in list)
+			foreach (ContextMenuEntry e in list)
 			{
 				e.Owner = this;
 			}
@@ -95,7 +95,7 @@ namespace Server.ContextMenus
 
 			if (Entries != null)
 			{
-				foreach (var e in Entries.Where(e => e != null))
+				foreach (ContextMenuEntry e in Entries.Where(e => e != null))
 				{
 					e.Dispose();
 				}
@@ -128,7 +128,7 @@ namespace Server.ContextMenus
 				return false;
 			}
 
-			if (target is Item && !Utility.InUpdateRange(m, ((Item)target).GetWorldLocation()))
+			if (target is Item item && !Utility.InUpdateRange(m, item.GetWorldLocation()))
 			{
 				return false;
 			}
@@ -138,20 +138,20 @@ namespace Server.ContextMenus
 				return false;
 			}
 
-			var c = new ContextMenu(m, target);
+			ContextMenu c = new ContextMenu(m, target);
 
 			if (c.Entries.Length <= 0)
 			{
 				return false;
 			}
 
-			if (target is Item)
+			if (target is Item i)
 			{
-				var root = ((Item)target).RootParent;
+				object root = i.RootParent;
 
-				if (root is Mobile && root != m && ((Mobile)root).AccessLevel >= m.AccessLevel)
+				if (root is Mobile mobile && mobile != m && mobile.AccessLevel >= m.AccessLevel)
 				{
-					foreach (var e in c.Entries.Where(e => !e.NonLocalUse))
+					foreach (ContextMenuEntry e in c.Entries.Where(e => !e.NonLocalUse))
 					{
 						e.Enabled = false;
 					}
@@ -171,7 +171,7 @@ namespace Server.ContextMenus
 		/// <returns>actual index of pre-desribed index from client</returns>
 		public int GetIndexEC(int index)
 		{
-			var number = index;
+			int number = index;
 
 			switch (index)
 			{
@@ -260,7 +260,7 @@ namespace Server.ContextMenus
 
 			if (index >= 0x64)
 			{
-				for (var i = 0; i < Entries.Length; i++)
+				for (int i = 0; i < Entries.Length; i++)
 				{
 					if (Entries[i].Number == number)
 					{

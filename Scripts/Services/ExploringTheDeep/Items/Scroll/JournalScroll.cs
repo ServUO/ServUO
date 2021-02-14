@@ -18,7 +18,7 @@ namespace Server.Items
         {
             if (!from.HasGump(typeof(JournalGump)))
             {
-                from.SendGump(new JournalGump(from));
+                from.SendGump(new JournalGump());
             }
         }
 
@@ -36,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -49,10 +49,10 @@ namespace Server.Items
 
         private static void JournalGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new JournalGump(e.Mobile));
+            e.Mobile.SendGump(new JournalGump());
         }
 
-        public JournalGump(Mobile owner) : base(50, 50)
+        public JournalGump() : base(50, 50)
         {
             Closable = true;
             Disposable = true;
@@ -67,8 +67,6 @@ namespace Server.Items
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

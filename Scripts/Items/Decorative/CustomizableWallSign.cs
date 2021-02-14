@@ -23,8 +23,8 @@ namespace Server.Items
         {
             if (IsChildOf(from.Backpack))
             {
-                if (from is PlayerMobile)
-                    BaseGump.SendGump(new AddCustomizableMessageGump((PlayerMobile)from, this));
+                if (from is PlayerMobile mobile)
+                    BaseGump.SendGump(new AddCustomizableMessageGump(mobile, this));
             }
             else
             {
@@ -59,9 +59,9 @@ namespace Server.Items
 
             BaseHouse house = BaseHouse.FindHouseAt(from);
 
-            if (house != null && house.IsCoOwner(from) && from is PlayerMobile)
+            if (house != null && house.IsCoOwner(from) && from is PlayerMobile mobile)
             {
-                list.Add(new EditSign(this, (PlayerMobile)from));
+                list.Add(new EditSign(this, mobile));
             }
         }
 

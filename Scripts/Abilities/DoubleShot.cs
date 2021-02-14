@@ -30,7 +30,8 @@ namespace Server.Items
                 {
                     return 30.0;
                 }
-                else if (weapon.SecondaryAbility == this)
+
+                if (weapon.SecondaryAbility == this)
                 {
                     return 50.0;
                 }
@@ -55,11 +56,9 @@ namespace Server.Items
             {
                 if (from.Mounted)
                     return true;
-                else
-                {
-                    from.SendLocalizedMessage(1070770); // You can only execute this attack while mounted!
-                    ClearCurrentAbility(from);
-                }
+
+                from.SendLocalizedMessage(1070770); // You can only execute this attack while mounted!
+                ClearCurrentAbility(from);
             }
 
             return false;
@@ -79,8 +78,8 @@ namespace Server.Items
 
             attacker.Weapon.OnSwing(attacker, defender);
 
-            if (attacker.Weapon is BaseWeapon)
-                ((BaseWeapon)attacker.Weapon).ProcessingMultipleHits = false;
+            if (attacker.Weapon is BaseWeapon weapon)
+                weapon.ProcessingMultipleHits = false;
         }
     }
 }

@@ -31,28 +31,16 @@ namespace Server.Accounting
         /// </summary>
         public string Name
         {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
-            }
+            get => m_Name;
+            set => m_Name = value;
         }
         /// <summary>
         /// Gets or sets the value of this tag.
         /// </summary>
         public string Value
         {
-            get
-            {
-                return m_Value;
-            }
-            set
-            {
-                m_Value = value;
-            }
+            get => m_Value;
+            set => m_Value = value;
         }
         /// <summary>
         /// Serializes this AccountTag instance to an XmlTextWriter.

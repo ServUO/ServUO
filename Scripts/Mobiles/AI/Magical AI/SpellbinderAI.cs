@@ -310,7 +310,7 @@ namespace Server.Mobiles
             IDamageable c = m_Mobile.Combatant;
             m_Mobile.Warmode = true;
 
-            if (c == null || c.Deleted || !c.Alive || c is Mobile && ((Mobile)c).IsDeadBondedPet || !m_Mobile.CanSee(c) ||
+            if (c == null || c.Deleted || !c.Alive || c is Mobile mobile && mobile.IsDeadBondedPet || !m_Mobile.CanSee(c) ||
                 !m_Mobile.CanBeHarmful(c, false) || c.Map != m_Mobile.Map)
             {
                 // Our combatant is deleted, dead, hidden, or we cannot hurt them
@@ -388,8 +388,8 @@ namespace Server.Mobiles
 
                     spell = DoDispel(toDispel);
                 }
-                else if (c is Mobile && (((Mobile)c).Spell is HealSpell || ((Mobile)c).Spell is GreaterHealSpell) &&
-                         !((Mobile)c).Poisoned) // They have a heal spell out
+                else if (c is Mobile hMobile && (hMobile.Spell is HealSpell || hMobile.Spell is GreaterHealSpell) &&
+                         !hMobile.Poisoned) // They have a heal spell out
                 {
                     spell = new BloodOathSpell(m_Mobile, null);
                 }
@@ -408,9 +408,9 @@ namespace Server.Mobiles
                     else if (!m_Mobile.InRange(toDispel, 12))
                         RunTo(toDispel);
                 }
-                else if (c is Mobile)
+                else if (c is Mobile m)
                 {
-                    RunTo((Mobile)c);
+                    RunTo(m);
                 }
 
                 if (spell != null)
@@ -425,9 +425,9 @@ namespace Server.Mobiles
 
                 m_NextCastTime = DateTime.UtcNow + delay;
             }
-            else if (c is Mobile && (m_Mobile.Spell == null || !m_Mobile.Spell.IsCasting))
+            else if (c is Mobile mob && (m_Mobile.Spell == null || !m_Mobile.Spell.IsCasting))
             {
-                RunTo((Mobile)c);
+                RunTo(mob);
             }
 
             return true;
@@ -613,8 +613,7 @@ namespace Server.Mobiles
 
         public bool CanDispel(Mobile m)
         {
-            return m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful(m, false) &&
-                   !((BaseCreature)m).IsAnimatedDead;
+            return m is BaseCreature bc && bc.Summoned && m_Mobile.CanBeHarmful(m, false) && !bc.IsAnimatedDead;
         }
 
         private Spell CheckCastHealingSpell()

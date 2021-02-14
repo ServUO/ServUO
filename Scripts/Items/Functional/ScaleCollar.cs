@@ -33,10 +33,8 @@ namespace Server.Items
 
         public void OnTarget(Mobile from, object targeted)
         {
-            if (targeted is BattleChickenLizard && !((BattleChickenLizard)targeted).Controlled)
+            if (targeted is BattleChickenLizard bcl && !bcl.Controlled)
             {
-                BattleChickenLizard bcl = (BattleChickenLizard)targeted;
-
                 int chance = 50 / (int)Math.Max(1, from.GetDistanceToSqrt(bcl.Location));
 
                 if (chance > Utility.Random(100))
@@ -132,15 +130,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

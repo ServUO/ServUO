@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class IngenuityQuest : BaseQuest
     {
         public IngenuityQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(PowerCrystal), "power crystals", 10, 0x1F1C));
 
@@ -37,22 +36,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class HeaveHoQuest : BaseQuest
     {
         public HeaveHoQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(CrateForSledge), "crates for Sledge", 5, typeof(Sledge), "Sledge (Buc's Den)", 3600));
 
@@ -83,22 +79,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class ResponsibilityQuest : BaseQuest
     {
         public ResponsibilityQuest()
-            : base()
         {
             AddObjective(new EscortObjective("Sheep Farm"));
 
@@ -127,22 +120,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class AllSeasonAdventurerQuest : BaseQuest
     {
         public AllSeasonAdventurerQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Efreet), "efreets", 5, "Fire"));
             AddObjective(new SlayObjective(typeof(IceFiend), "ice fiends", 5, "Ice"));
@@ -173,15 +163,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

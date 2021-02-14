@@ -1,4 +1,4 @@
-﻿using Server.Engines.Quests;
+using Server.Engines.Quests;
 
 namespace Server.Items
 {
@@ -116,7 +116,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Ingredient = (SutekIngredient)reader.ReadInt();
             m_TextId = reader.ReadInt();

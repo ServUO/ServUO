@@ -54,21 +54,19 @@ namespace Server.Mobiles
             AddLoot(LootPack.ArcanistScrolls);
             AddLoot(LootPack.LootItem<GreymistChest>(2.5));
             AddLoot(LootPack.LootItem<LissithsSilk>(45.0));
-            AddLoot(LootPack.Parrot);
+            AddLoot(LootPack.LootItem<ParrotItem>(10.0));
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

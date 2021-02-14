@@ -9,7 +9,7 @@ namespace Server.Items
         private AosElementAttributes m_AosElementDamages;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosElementAttributes AosElementDamages { get { return m_AosElementDamages; } set { } }
+        public AosElementAttributes AosElementDamages { get => m_AosElementDamages; set { } }
 
         [Constructable]
         public GargishLeatherWingArmor()

@@ -47,7 +47,7 @@ namespace Server.Misc
 
         public static bool Enabled
         {
-            get { return _Enabled; }
+            get => _Enabled;
             set
             {
                 if (_Enabled == value)
@@ -61,11 +61,11 @@ namespace Server.Misc
             }
         }
 
-        public static bool Async { get; set; }
+        public static bool Async { get; }
 
-        public static TimeSpan ExpireAge { get; set; }
+        public static TimeSpan ExpireAge { get; }
 
-        public static MergeType Merge { get; set; }
+        public static MergeType Merge { get; }
 
         private static readonly List<IAsyncResult> _Tasks = new List<IAsyncResult>(0x40);
 

@@ -5,7 +5,7 @@ namespace Server.Mobiles
     public class HPKraken : Kraken
     {
         [Constructable]
-        public HPKraken() : base()
+        public HPKraken()
         {
             Timer.DelayCall(TimeSpan.FromMinutes(30), Delete);
         }
@@ -23,7 +23,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }
@@ -32,7 +32,7 @@ namespace Server.Mobiles
     public class HPDeepSeaSerpent : DeepSeaSerpent
     {
         [Constructable]
-        public HPDeepSeaSerpent() : base()
+        public HPDeepSeaSerpent()
         {
             Timer.DelayCall(TimeSpan.FromMinutes(30), Delete);
         }
@@ -50,7 +50,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }
@@ -59,7 +59,7 @@ namespace Server.Mobiles
     public class HPSeaSerpent : SeaSerpent
     {
         [Constructable]
-        public HPSeaSerpent() : base()
+        public HPSeaSerpent()
         {
             Timer.DelayCall(TimeSpan.FromMinutes(30), Delete);
         }
@@ -77,7 +77,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }
@@ -86,7 +86,7 @@ namespace Server.Mobiles
     public class HPWaterElemental : WaterElemental
     {
         [Constructable]
-        public HPWaterElemental() : base()
+        public HPWaterElemental()
         {
             Timer.DelayCall(TimeSpan.FromMinutes(30), Delete);
         }
@@ -104,7 +104,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }

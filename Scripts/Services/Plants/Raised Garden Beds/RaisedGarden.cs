@@ -73,7 +73,7 @@ namespace Server.Items
         {
             foreach (AddonComponent comp in Components)
             {
-                if (comp is GardenAddonComponent && ((GardenAddonComponent)comp).Plant != null)
+                if (comp is GardenAddonComponent component && component.Plant != null)
                 {
                     from.SendLocalizedMessage(1150383); // You need to remove all plants through the plant menu before destroying this.
                     return;
@@ -228,8 +228,10 @@ namespace Server.Items
 
             m_Plant = reader.ReadItem() as PlantItem;
 
-            if (m_Plant != null && m_Plant is GardenBedPlantItem && ((GardenBedPlantItem)m_Plant).Component == null)
-                ((GardenBedPlantItem)m_Plant).Component = this;
+            if (m_Plant != null && m_Plant is GardenBedPlantItem item && item.Component == null)
+            {
+                item.Component = this;
+            }
         }
     }
 }

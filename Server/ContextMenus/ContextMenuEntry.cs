@@ -123,7 +123,7 @@ namespace Server.ContextMenus
 
 			if (Owner != null && Owner.Entries != null)
 			{
-				for (var i = 0; i < Owner.Entries.Length; i++)
+				for (int i = 0; i < Owner.Entries.Length; i++)
 				{
 					if (Owner.Entries[i] == this)
 					{

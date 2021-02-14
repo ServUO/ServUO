@@ -32,47 +32,23 @@ namespace Server.Engines.BulkOrders
         public bool IsDefault => (m_Type == 0 && m_Quality == 0 && m_Material == 0 && m_Quantity == 0);
         public int Type
         {
-            get
-            {
-                return m_Type;
-            }
-            set
-            {
-                m_Type = value;
-            }
+            get => m_Type;
+            set => m_Type = value;
         }
         public int Quality
         {
-            get
-            {
-                return m_Quality;
-            }
-            set
-            {
-                m_Quality = value;
-            }
+            get => m_Quality;
+            set => m_Quality = value;
         }
         public int Material
         {
-            get
-            {
-                return m_Material;
-            }
-            set
-            {
-                m_Material = value;
-            }
+            get => m_Material;
+            set => m_Material = value;
         }
         public int Quantity
         {
-            get
-            {
-                return m_Quantity;
-            }
-            set
-            {
-                m_Quantity = value;
-            }
+            get => m_Quantity;
+            set => m_Quantity = value;
         }
         public void Clear()
         {

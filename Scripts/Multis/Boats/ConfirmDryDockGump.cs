@@ -22,11 +22,8 @@ namespace Server.Multis
             AddBackground(0, 0, 220, 170, 5054);
             AddBackground(10, 10, 200, 150, 3000);
 
-            bool needsWarning = boat is BaseGalleon && ((BaseGalleon)boat).HasPaint;
+            bool needsWarning = boat is BaseGalleon galleon && galleon.HasPaint;
 
-            //if (needsWarning)
-            //    AddHtml(20, 20, 180, 80, "Do you wish to dry dock this boat?<br>WARNING: You will lose any non-permanent boat paint applied to your galleon.", true, true);
-            //else
             AddHtmlLocalized(20, 20, 180, 80, 1018319, true, needsWarning); // Do you wish to dry dock this boat?
 
             AddHtmlLocalized(55, 100, 140, 25, 1011011, false, false); // CONTINUE

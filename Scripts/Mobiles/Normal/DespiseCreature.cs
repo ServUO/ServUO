@@ -36,15 +36,15 @@ namespace Server.Engines.Despise
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public WispOrb Orb { get { return m_Orb; } set { m_Orb = value; } }
+        public WispOrb Orb { get => m_Orb; set => m_Orb = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxPower { get { return m_MaxPower; } set { m_MaxPower = value; } }
+        public int MaxPower { get => m_MaxPower; set => m_MaxPower = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Power
         {
-            get { return m_Power; }
+            get => m_Power;
             set
             {
                 int oldPower = m_Power;
@@ -67,7 +67,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public int Progress
         {
-            get { return m_Progress; }
+            get => m_Progress;
             set
             {
                 m_Progress = value;
@@ -146,10 +146,8 @@ namespace Server.Engines.Despise
                 {
                     return TimeSpan.FromSeconds(10.0);
                 }
-                else
-                {
-                    return TimeSpan.FromSeconds(Utility.RandomMinMax(4, 6));
-                }
+
+                return TimeSpan.FromSeconds(Utility.RandomMinMax(4, 6));
             }
         }
 
@@ -205,9 +203,9 @@ namespace Server.Engines.Despise
                 if (m.Karma >= 1000 && Alignment == Alignment.Evil)
                     return true;
             }
-            else if (m is DespiseCreature)
+            else if (m is DespiseCreature creature)
             {
-                return ((DespiseCreature)m).Alignment != Alignment;
+                return creature.Alignment != Alignment;
             }
 
             return false;
@@ -245,7 +243,7 @@ namespace Server.Engines.Despise
 
         public override void OnKarmaChange(int oldValue)
         {
-            if ((oldValue < 0 && Karma > 0) || (oldValue > 0 && Karma < 0))
+            if (oldValue < 0 && Karma > 0 || oldValue > 0 && Karma < 0)
             {
                 switch (Alignment)
                 {
@@ -324,16 +322,16 @@ namespace Server.Engines.Despise
             {
                 if (skill != null && skill.Base > 0 && skill.Base < SkillMax)
                 {
-                    double toRaise = ((SkillMax / m_MaxPower) * m_Power) + Utility.RandomMinMax(-5, 5);
+                    double toRaise = SkillMax / m_MaxPower * m_Power + Utility.RandomMinMax(-5, 5);
 
                     if (toRaise > skill.Base)
                         skill.Base = Math.Min(SkillMax, toRaise);
                 }
             }
 
-            int strRaise = ((StrMax / 15) * m_Power) + Utility.RandomMinMax(-5, 5);
-            int dexRaise = ((DexMax / 15) * m_Power) + Utility.RandomMinMax(-5, 5);
-            int intRaise = ((IntMax / 15) * m_Power) + Utility.RandomMinMax(-5, 5);
+            int strRaise = StrMax / 15 * m_Power + Utility.RandomMinMax(-5, 5);
+            int dexRaise = DexMax / 15 * m_Power + Utility.RandomMinMax(-5, 5);
+            int intRaise = IntMax / 15 * m_Power + Utility.RandomMinMax(-5, 5);
 
             if (strRaise > RawStr)
                 SetStr(Math.Min(StrMax, strRaise));
@@ -344,9 +342,9 @@ namespace Server.Engines.Despise
             if (intRaise > RawInt)
                 SetInt(Math.Min(IntMax, intRaise));
 
-            int hitsRaise = ((MaxHits / 15) * m_Power) + Utility.RandomMinMax(-5, 5);
-            int stamRaise = ((MaxStam / 15) * m_Power) + Utility.RandomMinMax(-5, 5);
-            int manaRaise = ((MaxMana / 15) * m_Power) + Utility.RandomMinMax(-5, 5);
+            int hitsRaise = MaxHits / 15 * m_Power + Utility.RandomMinMax(-5, 5);
+            int stamRaise = MaxStam / 15 * m_Power + Utility.RandomMinMax(-5, 5);
+            int manaRaise = MaxMana / 15 * m_Power + Utility.RandomMinMax(-5, 5);
 
             if (hitsRaise > HitsMax)
                 SetHits(Math.Min(MaxHits, hitsRaise));
@@ -408,6 +406,7 @@ namespace Server.Engines.Despise
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Orb);
             writer.Write(m_Power);
             writer.Write(m_MaxPower);
@@ -417,7 +416,8 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
+
             m_Orb = reader.ReadItem() as WispOrb;
             m_Power = reader.ReadInt();
             m_MaxPower = reader.ReadInt();

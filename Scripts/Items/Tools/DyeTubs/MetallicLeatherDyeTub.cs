@@ -23,11 +23,7 @@ namespace Server.Items
         public override CustomHuePicker CustomHuePicker => CustomHuePicker.MetallicDyeTub;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsRewardItem
-        {
-            get { return m_IsRewardItem; }
-            set { m_IsRewardItem = value; }
-        }
+        public bool IsRewardItem { get => m_IsRewardItem; set => m_IsRewardItem = value; }
 
         public override void OnDoubleClick(Mobile from)
         {
@@ -56,7 +52,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_IsRewardItem = reader.ReadBool();
         }

@@ -23,16 +23,17 @@ namespace Server.Items
 
         public static bool CheckDamage(Mobile from, Server.DamageType type)
         {
-            if (from is BaseCreature)
+            if (from is BaseCreature creature)
             {
-                if (KhaldunTastyTreat.UnderInfluence((BaseCreature)from))
+                if (KhaldunTastyTreat.UnderInfluence(creature))
                 {
                     return true;
                 }
 
                 return false;
             }
-            else if (from.Player)
+
+            if (from.Player)
             {
                 Item damager;
 

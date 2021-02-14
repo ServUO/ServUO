@@ -97,8 +97,10 @@ namespace Server.Engines.VvV
                     if (dam == victim || dam == null)
                         continue;
 
-                    if (dam is BaseCreature && ((BaseCreature)dam).GetMaster() is PlayerMobile)
-                        dam = ((BaseCreature)dam).GetMaster();
+                    if (dam is BaseCreature creature && creature.GetMaster() is PlayerMobile)
+                    {
+                        dam = creature.GetMaster();
+                    }
 
                     bool isEnemy = IsEnemy(victim, dam);
 
@@ -119,7 +121,7 @@ namespace Server.Engines.VvV
                             handled.Add(dam);
                             kentry.TotalKills++;
 
-                            if (EnhancedRules && kentry != null)
+                            if (EnhancedRules)
                             {
                                 kentry.AwardSilver(victim);
                             }
@@ -386,16 +388,16 @@ namespace Server.Engines.VvV
 
         public void SendVvVMessageTo(Mobile m, int cliloc, string args = "")
         {
-            m.SendLocalizedMessage(cliloc, false, "[Guild][VvV] ", args, m is PlayerMobile ? ((PlayerMobile)m).GuildMessageHue : 0x34);
+            m.SendLocalizedMessage(cliloc, false, "[Guild][VvV] ", args, m is PlayerMobile pm ? pm.GuildMessageHue : 0x34);
         }
 
         private readonly List<Item> VvVItems = new List<Item>();
 
         public void AddVvVItem(Item item, bool initial = false)
         {
-            if (Enabled && item is IVvVItem)
+            if (Enabled && item is IVvVItem vItem)
             {
-                ((IVvVItem)item).IsVvVItem = true;
+                vItem.IsVvVItem = true;
 
                 if (!VvVItems.Contains(item))
                 {
@@ -439,9 +441,8 @@ namespace Server.Engines.VvV
                 e.Mobile.SendMessage("Target the person you'd like to remove from VvV.");
                 e.Mobile.BeginTarget(-1, false, Targeting.TargetFlags.None, (from, targeted) =>
                     {
-                        if (targeted is PlayerMobile)
+                        if (targeted is PlayerMobile pm)
                         {
-                            PlayerMobile pm = targeted as PlayerMobile;
                             VvVPlayerEntry entry = Instance.GetPlayerEntry<VvVPlayerEntry>(pm);
 
                             if (entry != null && entry.Active)
@@ -515,10 +516,9 @@ namespace Server.Engines.VvV
             if (!Enabled)
                 return false;
 
-            if (m is BaseCreature && checkpet)
+            if (m is BaseCreature creature && checkpet && creature.GetMaster() is PlayerMobile)
             {
-                if (((BaseCreature)m).GetMaster() is PlayerMobile)
-                    m = ((BaseCreature)m).GetMaster();
+                m = creature.GetMaster();
             }
 
             VvVPlayerEntry entry = Instance.GetPlayerEntry<VvVPlayerEntry>(m as PlayerMobile);
@@ -537,10 +537,9 @@ namespace Server.Engines.VvV
                 return false;
             }
 
-            if (m is BaseCreature && checkpet)
+            if (m is BaseCreature creature && checkpet && creature.GetMaster() is PlayerMobile)
             {
-                if (((BaseCreature)m).GetMaster() is PlayerMobile)
-                    m = ((BaseCreature)m).GetMaster();
+                m = creature.GetMaster();
             }
 
             entry = Instance.GetPlayerEntry<VvVPlayerEntry>(m as PlayerMobile);
@@ -553,8 +552,10 @@ namespace Server.Engines.VvV
 
         public static bool IsEnemy(IDamageable from, IDamageable to)
         {
-            if (from is Mobile && to is Mobile)
-                return IsEnemy((Mobile)to, (Mobile)from);
+            if (from is Mobile fromMobile && to is Mobile toMobile)
+            {
+                return IsEnemy(toMobile, fromMobile);
+            }
 
             //TODO: VvV items, such as traps, turrets, etc
             return false;
@@ -565,11 +566,11 @@ namespace Server.Engines.VvV
             if (!Enabled || from == to)
                 return false;
 
-            if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
-                from = ((BaseCreature)from).GetMaster();
+            if (from is BaseCreature creature && creature.GetMaster() is PlayerMobile)
+                from = creature.GetMaster();
 
-            if (to is BaseCreature && ((BaseCreature)to).GetMaster() is PlayerMobile)
-                to = ((BaseCreature)to).GetMaster();
+            if (to is BaseCreature bc && bc.GetMaster() is PlayerMobile)
+                to = bc.GetMaster();
 
             // one or the other is not a combatant
             if (!IsVvVCombatant(to) || !IsVvVCombatant(from))
@@ -596,12 +597,12 @@ namespace Server.Engines.VvV
             TemporaryCombatant tempA = TempCombatants.FirstOrDefault(c => c.From == a);
             TemporaryCombatant tempB = TempCombatants.FirstOrDefault(c => c.From == b);
 
-            if (tempA != null && (tempA.Friendly == b || (tempA.FriendlyGuild != null && tempA.FriendlyGuild == guildB)))
+            if (tempA != null && (tempA.Friendly == b || tempA.FriendlyGuild != null && tempA.FriendlyGuild == guildB))
             {
                 return true;
             }
 
-            if (tempB != null && (tempB.Friendly == a || (tempB.FriendlyGuild != null && tempB.FriendlyGuild == guildA)))
+            if (tempB != null && (tempB.Friendly == a || tempB.FriendlyGuild != null && tempB.FriendlyGuild == guildA))
             {
                 return true;
             }
@@ -613,7 +614,7 @@ namespace Server.Engines.VvV
         {
             CheckTempCombatants();
 
-            return IsVvV(mobile) || (TempCombatants != null && TempCombatants.Any(c => c.From == mobile));
+            return IsVvV(mobile) || TempCombatants != null && TempCombatants.Any(c => c.From == mobile);
         }
 
         public static void CheckHarmful(Mobile attacker, Mobile defender)
@@ -633,7 +634,7 @@ namespace Server.Engines.VvV
         {
             CheckTempCombatants();
 
-            if (from == null || target == null || (IsVvV(from) && IsAllied(from, target)))
+            if (from == null || target == null || IsVvV(from) && IsAllied(from, target))
                 return;
 
             if (!IsVvV(from) && IsVvV(target))
@@ -689,7 +690,7 @@ namespace Server.Engines.VvV
                 if (combatant.Friendly == null && to == null)
                     return combatant;
 
-                if (combatant.Friendly == to || (combatant.FriendlyGuild != null && combatant.FriendlyGuild == from.Guild as Guild))
+                if (combatant.Friendly == to || combatant.FriendlyGuild != null && combatant.FriendlyGuild == from.Guild as Guild)
                     return combatant;
             }
 
@@ -1035,10 +1036,7 @@ namespace Server.Engines.VvV
 
         public bool Active
         {
-            get
-            {
-                return _Active;
-            }
+            get => _Active;
             set
             {
                 if (!_Active && value)
@@ -1115,9 +1113,9 @@ namespace Server.Engines.VvV
             public static int MaxKillsForSilver = 5;
             public static TimeSpan ExpireTime = TimeSpan.FromHours(3);
 
-            public Mobile Killed { get; set; }
+            public Mobile Killed { get; }
             public int TimesKilled { get; set; }
-            public DateTime Expires { get; set; }
+            public DateTime Expires { get; }
 
             public bool Expired => Expires < DateTime.UtcNow;
 
@@ -1138,9 +1136,7 @@ namespace Server.Engines.VvV
 
             writer.Write(TotalDeaths);
             writer.Write(TotalKills);
-
             writer.Write(Active);
-
             writer.Write(Score);
             writer.Write(Kills);
             writer.Write(Deaths);
@@ -1154,41 +1150,21 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
-            switch (version)
-            {
-                case 4:
-                    OneTimePointsRetention = reader.ReadBool();
-                    goto case 3;
-                case 3:
-                    TotalDeaths = reader.ReadInt();
-                    TotalKills = reader.ReadInt();
-                    goto case 2;
-                case 2:
-                    Active = reader.ReadBool();
+            OneTimePointsRetention = reader.ReadBool();
 
-                    if (version == 0)
-                        reader.ReadBool();
-
-                    if (version < 2)
-                        reader.ReadGuild();
-
-                    Score = reader.ReadInt();
-                    Kills = reader.ReadInt();
-                    Deaths = reader.ReadInt();
-                    Assists = reader.ReadInt();
-                    ReturnedSigils = reader.ReadInt();
-                    DisarmedTraps = reader.ReadInt();
-                    StolenSigils = reader.ReadInt();
-                    ResignExpiration = reader.ReadDateTime();
-                    break;
-            }
-
-            if (version == 3)
-            {
-                OneTimePointsRetention = true;
-            }
+            TotalDeaths = reader.ReadInt();
+            TotalKills = reader.ReadInt();
+            Active = reader.ReadBool();
+            Score = reader.ReadInt();
+            Kills = reader.ReadInt();
+            Deaths = reader.ReadInt();
+            Assists = reader.ReadInt();
+            ReturnedSigils = reader.ReadInt();
+            DisarmedTraps = reader.ReadInt();
+            StolenSigils = reader.ReadInt();
+            ResignExpiration = reader.ReadDateTime();
         }
     }
 
@@ -1196,8 +1172,8 @@ namespace Server.Engines.VvV
     {
         public static TimeSpan TempCombatTime = TimeSpan.FromMinutes(10);
 
-        public Mobile From { get; private set; }
-        public Mobile Friendly { get; private set; }
+        public Mobile From { get; }
+        public Mobile Friendly { get; }
         public DateTime StartTime { get; private set; }
 
         public Guild FriendlyGuild

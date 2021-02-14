@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 
 namespace Server.Commands
 {
@@ -6,7 +6,7 @@ namespace Server.Commands
     {
         public static void Initialize()
         {
-            CommandSystem.Register("Mark", AccessLevel.GameMaster, new CommandEventHandler(Mark_OnCommand));
+            CommandSystem.Register("Mark", AccessLevel.GameMaster, Mark_OnCommand);
         }
 
         [Usage("Mark [name]")]

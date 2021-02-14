@@ -9,11 +9,7 @@ namespace Server.Items
         private Room m_Room;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Room Room
-        {
-            get { return m_Room; }
-            set { m_Room = value; }
-        }
+        public Room Room { get => m_Room; set => m_Room = value; }
 
         [Constructable]
         public ExperimentalRoomDoor(Room room, DoorFacing facing) : base(facing)
@@ -68,14 +64,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // ver
+            writer.Write(0); 
+
             writer.Write((int)m_Room);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Room = (Room)reader.ReadInt();
         }
     }
@@ -89,11 +87,7 @@ namespace Server.Items
         private Room m_Room;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Room Room
-        {
-            get { return m_Room; }
-            set { m_Room = value; }
-        }
+        public Room Room { get => m_Room; set => m_Room = value; }
 
         [Constructable]
         public ExperimentalRoomBlocker(Room room) : base(7107)
@@ -139,14 +133,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // ver
+            writer.Write(0); 
+
             writer.Write((int)m_Room);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Room = (Room)reader.ReadInt();
         }
     }

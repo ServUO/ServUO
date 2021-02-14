@@ -75,7 +75,7 @@ namespace Server.Items
             }
             else
             {
-                if (!m_Drying && age > (m_Duration - age))
+                if (!m_Drying && age > m_Duration - age)
                 {
                     m_Drying = true;
                     ItemID = 0x122B;

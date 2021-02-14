@@ -83,9 +83,8 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile targ)
                 {
-                    Mobile targ = (Mobile)targeted;
                     Server.Skills skills = targ.Skills;
 
                     for (int i = 0; i < skills.Length; ++i)
@@ -122,9 +121,8 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile targ)
                 {
-                    Mobile targ = (Mobile)targeted;
                     Skill skill = targ.Skills[m_Skill];
 
                     if (skill == null)

@@ -91,7 +91,7 @@ namespace Server.Items
                 if (!mob.Player || !mob.Alive || mob.IsStaff())
                     continue;
 
-                if (((Z + 8) >= mob.Z && (mob.Z + 16) > Z))
+                if (Z + 8 >= mob.Z && mob.Z + 16 > Z)
                 {
                     foundPlayer = true;
                     break;

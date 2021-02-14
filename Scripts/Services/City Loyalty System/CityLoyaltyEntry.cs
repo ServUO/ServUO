@@ -23,7 +23,7 @@ namespace Server.Engines.CityLoyalty
         public bool IsCitizen { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public City City { get; set; }
+        public City City { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public string CustomTitle { get; set; }
@@ -42,10 +42,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public bool UtilizingTradeDeal
         {
-            get
-            {
-                return _Utilizing;
-            }
+            get => _Utilizing;
             set
             {
                 if (Player == null)

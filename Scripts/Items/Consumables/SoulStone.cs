@@ -494,10 +494,10 @@ namespace Server.Items
                                 bc.ControlTarget = null;
                                 bc.ControlOrder = OrderType.None;
 
-                                if (bc is BaseMount && ((BaseMount)bc).Rider == from)
+                                if (bc is BaseMount mount && mount.Rider == from)
                                 {
                                     from.SendLocalizedMessage(1042317); // You may not ride at this time
-                                    ((BaseMount)bc).Rider = null;
+                                    mount.Rider = null;
                                 }
                             }
                         }
@@ -697,10 +697,8 @@ namespace Server.Items
 
                 Effects.SendTargetParticles(from, 0x375A, 35, 90, 0x00, 0x00, 9502, (EffectLayer)255, 0x100);
 
-                if (m_Stone is SoulstoneFragment)
+                if (m_Stone is SoulstoneFragment frag)
                 {
-                    SoulstoneFragment frag = m_Stone as SoulstoneFragment;
-
                     if (--frag.UsesRemaining <= 0)
                         from.SendLocalizedMessage(1070974); // You have used up your soulstone fragment.
                 }

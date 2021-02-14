@@ -21,12 +21,13 @@ namespace Server
 			{
 				return true;
 			}
-			else if (a == null || b == null || a.Length != b.Length)
-			{
-				return false;
-			}
 
-			return m_Comparer.Compare(a, b) == 0;
+            if (a == null || b == null || a.Length != b.Length)
+            {
+                return false;
+            }
+
+            return m_Comparer.Compare(a, b) == 0;
 		}
 
 		public static bool StartsWith(string a, string b)

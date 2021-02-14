@@ -19,7 +19,7 @@ namespace Server.Regions
             if (from.IsPlayer())
                 from.SendLocalizedMessage(1115999); // You may not do that in this area.
 
-            return (from.IsStaff());
+            return from.IsStaff();
         }
 
         public override bool AllowHarmful(Mobile from, IDamageable target)
@@ -27,7 +27,7 @@ namespace Server.Regions
             if (from.Player)
                 from.SendLocalizedMessage(1115999); // You may not do that in this area.
 
-            return (from.IsStaff());
+            return from.IsStaff();
         }
 
         public override bool AllowHousing(Mobile from, Point3D p)
@@ -56,12 +56,12 @@ namespace Server.Regions
             if (from.IsPlayer())
                 from.SendLocalizedMessage(1116000); // You may not use that skill in this area.
 
-            return (from.IsStaff());
+            return from.IsStaff();
         }
 
         public override bool OnCombatantChange(Mobile from, IDamageable Old, IDamageable New)
         {
-            return (from.IsStaff());
+            return from.IsStaff();
         }
     }
 }

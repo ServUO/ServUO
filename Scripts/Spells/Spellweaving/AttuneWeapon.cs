@@ -63,12 +63,14 @@ namespace Server.Spells.Spellweaving
                 Caster.SendLocalizedMessage(501775); // This spell is already in effect.
                 return false;
             }
-            else if (!Caster.CanBeginAction(typeof(AttuneWeaponSpell)))
+
+            if (!Caster.CanBeginAction(typeof(AttuneWeaponSpell)))
             {
                 Caster.SendLocalizedMessage(1075124); // You must wait before casting that spell again.
                 return false;
             }
-            else if (SpiritualityVirtue.IsEmbracee(Caster))
+
+            if (SpiritualityVirtue.IsEmbracee(Caster))
             {
                 Caster.SendLocalizedMessage(1156040); // You may not cast Attunement whilst a Spirituality Shield is active!
                 return false;
@@ -109,7 +111,7 @@ namespace Server.Spells.Spellweaving
         {
             private readonly Mobile m_Mobile;
 
-            public DateTime Expires { get; set; }
+            public DateTime Expires { get; }
 
             public ExpireTimer(Mobile m, TimeSpan delay)
                 : base(delay)

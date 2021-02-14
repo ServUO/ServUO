@@ -55,7 +55,7 @@ namespace Server.Engines.Plants
             if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.DecorativePlant || m_Plant.PlantStatus == PlantStatus.BowlOfDirt)
                 return;
 
-            if ((info.ButtonID >= 6 && info.ButtonID <= 8) && !from.InRange(m_Plant.GetWorldLocation(), 3))
+            if (info.ButtonID >= 6 && info.ButtonID <= 8 && !from.InRange(m_Plant.GetWorldLocation(), 3))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3E9, 500446); // That is too far away.
                 return;

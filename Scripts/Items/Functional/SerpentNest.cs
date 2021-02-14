@@ -102,11 +102,11 @@ namespace Server.Items
             Collapse(from);
         }
 
-        private static readonly Type[] m_SnakeTypes = new Type[]
-            {
-                typeof( LavaSnake ),    typeof( Snake ),
-                typeof( CoralSnake ),   typeof( GiantSerpent )
-            };
+        private static readonly Type[] m_SnakeTypes =
+        {
+            typeof(LavaSnake), typeof(Snake),
+            typeof(CoralSnake), typeof(GiantSerpent)
+        };
 
         public override bool OnMoveOver(Mobile m)
         {

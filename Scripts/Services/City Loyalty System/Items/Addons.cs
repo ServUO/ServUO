@@ -27,7 +27,7 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            public InterchangeableAddonDeed Deed { get; set; }
+            public InterchangeableAddonDeed Deed { get; }
 
             public InternalTarget(InterchangeableAddonDeed deed) : base(-1, true, TargetFlags.None)
             {
@@ -60,7 +60,7 @@ namespace Server.Items
                         if (!south && !east)
                             result = AddonFitResult.NoWall;
                         else if (south && east)
-                            from.SendGump(new AddonInterchangeableGump(from, Deed, p, map));
+                            from.SendGump(new AddonInterchangeableGump(Deed, p, map));
                         else
                         {
                             BaseAddon addon = Deed.DeployAddon(east, p, map);
@@ -89,8 +89,8 @@ namespace Server.Items
 
             if (addon != null)
             {
-                if (addon is InterchangeableAddon)
-                    ((InterchangeableAddon)addon).EastFacing = east;
+                if (addon is InterchangeableAddon interchangeableAddon)
+                    interchangeableAddon.EastFacing = east;
 
                 Spells.SpellHelper.GetSurfaceTop(ref p);
 
@@ -116,7 +116,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -127,10 +127,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool EastFacing
         {
-            get
-            {
-                return _EastFacing;
-            }
+            get => _EastFacing;
             set
             {
                 if (Components.Count == 1)
@@ -176,17 +173,17 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class AddonInterchangeableGump : Gump
     {
-        public InterchangeableAddonDeed Deed { get; private set; }
-        public IPoint3D Point { get; private set; }
-        public Map Map { get; private set; }
+        public InterchangeableAddonDeed Deed { get; }
+        public IPoint3D Point { get; }
+        public Map Map { get; }
 
-        public AddonInterchangeableGump(Mobile user, InterchangeableAddonDeed deed, IPoint3D p, Map map) : base(50, 50)
+        public AddonInterchangeableGump(InterchangeableAddonDeed deed, IPoint3D p, Map map) : base(50, 50)
         {
             Deed = deed;
             Point = p;

@@ -3,13 +3,14 @@ namespace Server.Mobiles
     [CorpseName("a horse corpse")]
     public class Horse : BaseMount
     {
-        private static readonly int[] m_IDs = new int[]
+        private static readonly int[] m_IDs =
         {
             0xC8, 0x3E9F,
             0xE2, 0x3EA0,
             0xE4, 0x3EA1,
             0xCC, 0x3EA2
         };
+
         [Constructable]
         public Horse()
             : this("a horse")
@@ -68,7 +69,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

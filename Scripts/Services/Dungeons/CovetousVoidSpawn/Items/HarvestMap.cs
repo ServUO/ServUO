@@ -16,7 +16,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
-            get { return _Resource; }
+            get => _Resource;
             set
             {
                 if (_Resource != value)
@@ -31,13 +31,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get { return _UsesRemaining; }
+            get => _UsesRemaining;
             set
             {
                 _UsesRemaining = value;
 
-                if (_UsesRemaining <= 0 && RootParent is Mobile)
-                    ((Mobile)RootParent).SendMessage("Your map's magic is exhausted.");
+                if (_UsesRemaining <= 0 && RootParent is Mobile mobile)
+                {
+                    mobile.SendMessage("Your map's magic is exhausted.");
+                }
 
                 InvalidateProperties();
             }
@@ -82,9 +84,9 @@ namespace Server.Items
 
         public void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -196,10 +198,8 @@ namespace Server.Items
         {
             Map map = from.Map;
 
-            if (harvested is IPoint3D && from.Backpack != null)
+            if (harvested is IPoint3D p && from.Backpack != null)
             {
-                IPoint3D p = harvested as IPoint3D;
-
                 Item[] items = from.Backpack.FindItemsByType(typeof(HarvestMap));
 
                 foreach (Item item in items)
@@ -228,7 +228,7 @@ namespace Server.Items
 
         public static List<Point2D> LoadLocsFor(Map map, HarvestMap hMap)
         {
-            string path = string.Format("Data/HarvestLocs/{0}_{1}.cfg", hMap.IsMinerMap ? "MinerLocs" : "LumberLocs", map.ToString());
+            string path = string.Format("Data/HarvestLocs/{0}_{1}.cfg", hMap.IsMinerMap ? "MinerLocs" : "LumberLocs", map);
 
             if (!File.Exists(path))
             {
@@ -282,7 +282,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Resource = (CraftResource)reader.ReadInt();
             Expires = reader.ReadDateTime();

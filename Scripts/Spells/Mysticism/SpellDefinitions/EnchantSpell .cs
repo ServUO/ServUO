@@ -71,22 +71,26 @@ namespace Server.Spells.Mysticism
 
                 return false;
             }
-            else if (IsUnderSpellEffects(Caster, Weapon))
+
+            if (IsUnderSpellEffects(Caster, Weapon))
             {
                 Caster.SendLocalizedMessage(501775); // This spell is already in effect.
                 return false;
             }
-            else if (ImmolatingWeaponSpell.IsImmolating(Caster, Weapon) || Weapon.ConsecratedContext != null)
+
+            if (ImmolatingWeaponSpell.IsImmolating(Caster, Weapon) || Weapon.ConsecratedContext != null)
             {
                 Caster.SendLocalizedMessage(1080128); //You cannot use this ability while your weapon is enchanted.
                 return false;
             }
-            else if (Weapon.FocusWeilder != null)
+
+            if (Weapon.FocusWeilder != null)
             {
                 Caster.SendLocalizedMessage(1080446); // You cannot enchant an item that is under the effects of the ninjitsu focus attack ability.
                 return false;
             }
-            else if (Weapon.WeaponAttributes.HitLightning > 0 || Weapon.WeaponAttributes.HitFireball > 0 || Weapon.WeaponAttributes.HitHarm > 0 || Weapon.WeaponAttributes.HitMagicArrow > 0 || Weapon.WeaponAttributes.HitDispel > 0)
+
+            if (Weapon.WeaponAttributes.HitLightning > 0 || Weapon.WeaponAttributes.HitFireball > 0 || Weapon.WeaponAttributes.HitHarm > 0 || Weapon.WeaponAttributes.HitMagicArrow > 0 || Weapon.WeaponAttributes.HitDispel > 0)
             {
                 Caster.SendLocalizedMessage(1080127); // This weapon already has a hit spell effect and cannot be enchanted.
                 return false;

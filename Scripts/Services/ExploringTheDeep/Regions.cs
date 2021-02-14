@@ -22,27 +22,25 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
-            if ((m is PlayerMobile) && m.Alive)
+            if (m is PlayerMobile pm && pm.Alive)
             {
-                PlayerMobile pm = m as PlayerMobile;
-
-                if (m.Region.Name == "Ice Wyrm" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
+                if (pm.Region.Name == "Ice Wyrm" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
                 {
                     creature = IceWyrm.Spawn(new Point3D(5805 + Utility.RandomMinMax(-5, 5), 240 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
                 }
-                else if (m.Region.Name == "Mercutio The Unsavory" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                else if (pm.Region.Name == "Mercutio The Unsavory" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {
                     creature = MercutioTheUnsavory.Spawn(new Point3D(2582 + Utility.RandomMinMax(-5, 5), 1118 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
                 }
-                else if (m.Region.Name == "Djinn" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                else if (pm.Region.Name == "Djinn" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {
                     creature = Djinn.Spawn(new Point3D(1732 + Utility.RandomMinMax(-5, 5), 520 + Utility.RandomMinMax(-5, 5), 8), Map.Ilshenar);
                 }
-                else if (m.Region.Name == "Obsidian Wyvern" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                else if (pm.Region.Name == "Obsidian Wyvern" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {
                     creature = ObsidianWyvern.Spawn(new Point3D(5136, 966, 0), Map.Trammel);
                 }
-                else if (m.Region.Name == "Orc Engineer" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                else if (pm.Region.Name == "Orc Engineer" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {
                     creature = OrcEngineer.Spawn(new Point3D(5311 + Utility.RandomMinMax(-5, 5), 1968 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
                 }
@@ -67,10 +65,8 @@ namespace Server.Regions
                 from.SendLocalizedMessage(500015); // You do not have that spell!
                 return false;
             }
-            else
-            {
-                return base.OnBeginSpellCast(from, s);
-            }
+
+            return base.OnBeginSpellCast(from, s);
         }
     }
 
@@ -99,22 +95,21 @@ namespace Server.Regions
             if (!base.OnMoveInto(m, d, newLocation, oldLocation))
                 return false;
 
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                int equipment = m.Items.Where(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant || i is GargishNictitatingLens) && (i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i)).Count();
+                int equipment = pm.Items.Count(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant || i is GargishNictitatingLens) && i.Parent is Mobile mobile && mobile.FindItemOnLayer(i.Layer) == i);
 
-                PlayerMobile pm = m as PlayerMobile;
-
-                if (m.AccessLevel == AccessLevel.Player)
+                if (pm.AccessLevel == AccessLevel.Player)
                 {
-                    if (m.Mounted || m.Flying)
+                    if (pm.Mounted || pm.Flying)
                     {
-                        m.SendLocalizedMessage(1154411); // You cannot proceed while mounted or flying!
+                        pm.SendLocalizedMessage(1154411); // You cannot proceed while mounted or flying!
                         return false;
                     }
-                    else if (pm.AllFollowers.Count != 0)
+
+                    if (pm.AllFollowers.Count != 0)
                     {
-                        if (pm.AllFollowers.Where(x => x is Paralithode).Count() == 0)
+                        if (pm.AllFollowers.Count(x => x is Paralithode) == 0)
                         {
                             pm.SendLocalizedMessage(1154412); // You cannot proceed while pets are under your control!
                             return false;
@@ -122,12 +117,12 @@ namespace Server.Regions
                     }
                     else if (pm.ExploringTheDeepQuest != ExploringTheDeepQuestChain.CollectTheComponentComplete)
                     {
-                        m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
+                        pm.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
                         return false;
                     }
                     else if (equipment < 4)
                     {
-                        m.SendLocalizedMessage(1154413); // You couldn't hope to survive proceeding without the proper equipment...
+                        pm.SendLocalizedMessage(1154413); // You couldn't hope to survive proceeding without the proper equipment...
                         return false;
                     }
                 }

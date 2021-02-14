@@ -26,7 +26,7 @@ namespace Server.Items
 
         public override void OnHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (!Validate(attacker) || (Contexts != null && Contexts.Any(c => c.Attacker == attacker)))
+            if (!Validate(attacker) || Contexts != null && Contexts.Any(c => c.Attacker == attacker))
                 return;
 
             ClearCurrentAbility(attacker);
@@ -119,9 +119,9 @@ namespace Server.Items
 
         public class WhirlwindAttackContext
         {
-            public Mobile Attacker { get; set; }
-            public List<Mobile> Victims { get; set; }
-            public int DamageBonus { get; set; }
+            public Mobile Attacker { get; }
+            public List<Mobile> Victims { get; }
+            public int DamageBonus { get; }
 
             public WhirlwindAttackContext(Mobile attacker, List<Mobile> list, int bonus)
             {

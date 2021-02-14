@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class StealableArtifactsSpawner : Item
     {
-        private static readonly StealableEntry[] m_Entries = new StealableEntry[]
+        private static readonly StealableEntry[] m_Entries =
         {            
             // Doom - Artifact rarity 1
             new StealableEntry(Map.Malas, new Point3D(317, 56, -1), 72, 108, typeof(RockArtifact)),
@@ -220,7 +220,7 @@ namespace Server.Items
             // Bedlam - Artifact Rarity 8
             new StealableEntry(Map.Malas, new Point3D(168, 1609, 0), 9216, 13824, typeof(AcademicBooksArtifact)),
             new StealableEntry(Map.Malas, new Point3D(165, 1650, 0), 9216, 13824, typeof(AcademicBooksArtifact)),
-            new StealableEntry(Map.Malas, new Point3D(85, 1644, 20), 9216, 13824, typeof(AcademicBooksArtifact)),
+            new StealableEntry(Map.Malas, new Point3D(85, 1644, 20), 9216, 13824, typeof(AcademicBooksArtifact))
         };
 
         private static Type[] m_TypesOfEntries = null;
@@ -344,7 +344,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt(m_Artifacts.Length);
@@ -361,8 +360,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Artifacts = new StealableInstance[m_Entries.Length];
             m_Table = new Hashtable(m_Entries.Length);
@@ -487,10 +485,7 @@ namespace Server.Items
             public StealableEntry Entry => m_Entry;
             public Item Item
             {
-                get
-                {
-                    return m_Item;
-                }
+                get => m_Item;
                 set
                 {
                     if (m_Item != null && value == null)
@@ -511,17 +506,13 @@ namespace Server.Items
                     m_Item = value;
                 }
             }
+
             public DateTime NextRespawn
             {
-                get
-                {
-                    return m_NextRespawn;
-                }
-                set
-                {
-                    m_NextRespawn = value;
-                }
+                get => m_NextRespawn;
+                set => m_NextRespawn = value;
             }
+
             public void CheckRespawn()
             {
                 if (Item != null && (Item.Deleted || Item.Movable || Item.Parent != null))
@@ -532,6 +523,7 @@ namespace Server.Items
                     Item = Entry.CreateInstance();
                 }
             }
+
             public void ForceRespawn()
             {
                 if (Item != null && (Item.Deleted || Item.Movable || Item.Parent != null))

@@ -36,11 +36,11 @@ namespace Server.Items
 
         public void OnRemoveTrap(Mobile m)
         {
-            if (m is PlayerMobile)
+            if (m is PlayerMobile mobile)
             {
                 if (Path == null || Path.Count == 0)
                 {
-                    double skill = m.Skills[SkillName.RemoveTrap].Base;
+                    double skill = mobile.Skills[SkillName.RemoveTrap].Base;
 
                     if (skill < 80.0)
                     {
@@ -56,7 +56,7 @@ namespace Server.Items
                     }
                 }
 
-                BaseGump.SendGump(new CircuitTrapGump((PlayerMobile)m, this));
+                BaseGump.SendGump(new CircuitTrapGump(mobile, this));
             }
         }
 

@@ -28,6 +28,7 @@ namespace Server.Items
         public override int InitMinHits => 60;
         public override int InitMaxHits => 65;
         public override WeaponAnimation DefAnimation => WeaponAnimation.Bash2H;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -37,7 +38,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

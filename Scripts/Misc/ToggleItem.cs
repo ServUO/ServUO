@@ -31,41 +31,14 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int InactiveItemID
-        {
-            get
-            {
-                return m_InactiveItemID;
-            }
-            set
-            {
-                m_InactiveItemID = value;
-            }
-        }
+        public int InactiveItemID { get => m_InactiveItemID; set => m_InactiveItemID = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ActiveItemID
-        {
-            get
-            {
-                return m_ActiveItemID;
-            }
-            set
-            {
-                m_ActiveItemID = value;
-            }
-        }
+        public int ActiveItemID { get => m_ActiveItemID; set => m_ActiveItemID = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayersCanToggle
-        {
-            get
-            {
-                return m_PlayersCanToggle;
-            }
-            set
-            {
-                m_PlayersCanToggle = value;
-            }
-        }
+        public bool PlayersCanToggle { get => m_PlayersCanToggle; set => m_PlayersCanToggle = value; }
+
         public static void Initialize()
         {
             TargetCommands.Register(new ToggleCommand());
@@ -88,8 +61,8 @@ namespace Server.Items
 
         public void Toggle()
         {
-            ItemID = (ItemID == m_ActiveItemID) ? m_InactiveItemID : m_ActiveItemID;
-            Visible = (ItemID != 0x1);
+            ItemID = ItemID == m_ActiveItemID ? m_InactiveItemID : m_ActiveItemID;
+            Visible = ItemID != 0x1;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -120,7 +93,7 @@ namespace Server.Items
             {
                 AccessLevel = AccessLevel.GameMaster;
                 Supports = CommandSupport.AllItems;
-                Commands = new string[] { "Toggle" };
+                Commands = new[] { "Toggle" };
                 ObjectTypes = ObjectTypes.Items;
                 Usage = "Toggle";
                 Description = "Toggles a targeted ToggleItem.";
@@ -128,9 +101,9 @@ namespace Server.Items
 
             public override void Execute(CommandEventArgs e, object obj)
             {
-                if (obj is ToggleItem)
+                if (obj is ToggleItem item)
                 {
-                    ((ToggleItem)obj).Toggle();
+                    item.Toggle();
                     AddResponse("The item has been toggled.");
                 }
                 else

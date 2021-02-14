@@ -6,18 +6,10 @@ namespace Server.Items
         private BedrollSpawner m_Spawner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D PointDest
-        {
-            get { return m_PointDest; }
-            set { m_PointDest = value; }
-        }
+        public Point3D PointDest { get => m_PointDest; set => m_PointDest = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public BedrollSpawner BedrollSpawner
-        {
-            get { return m_Spawner; }
-            set { m_Spawner = value; }
-        }
+        public BedrollSpawner BedrollSpawner { get => m_Spawner; set => m_Spawner = value; }
 
         [Constructable]
         public WrongBedrollBase(int id)
@@ -97,7 +89,7 @@ namespace Server.Items
                         if (Utility.RandomBool())
                         {
                             from.AddToBackpack(soap);
-                            from.SendLocalizedMessage(1152268, string.Format("soap"));
+                            from.SendLocalizedMessage(1152268, "soap");
                         }
                         else
                         {
@@ -143,7 +135,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Spawner = (BedrollSpawner)reader.ReadItem();
             m_PointDest = reader.ReadPoint3D();
@@ -174,7 +166,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -202,7 +194,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

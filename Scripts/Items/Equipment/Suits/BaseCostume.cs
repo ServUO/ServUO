@@ -105,9 +105,9 @@ namespace Server.Items
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile && Transformed)
+            if (parent is Mobile mobile && Transformed)
             {
-                DeMask((Mobile)parent);
+                DeMask(mobile);
             }
 
             base.OnRemoved(parent);
@@ -160,9 +160,9 @@ namespace Server.Items
                     break;
             }
 
-            if (RootParent is Mobile && ((Mobile)RootParent).Items.Contains(this))
+            if (RootParent is Mobile mobile && mobile.Items.Contains(this))
             {
-                EnMask((Mobile)RootParent);
+                EnMask(mobile);
             }
         }
     }

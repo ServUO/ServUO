@@ -16,28 +16,27 @@ namespace Server.Items
         }
 
         public override TimeSpan GetUseDelay => TimeSpan.Zero;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override bool OnWandTarget(Mobile from, object o)
         {
-            if (o is BaseWeapon)
-                ((BaseWeapon)o).Identified = true;
-            else if (o is BaseArmor)
-                ((BaseArmor)o).Identified = true;
+            if (o is BaseWeapon weapon)
+                weapon.Identified = true;
+            else if (o is BaseArmor armor)
+                armor.Identified = true;
 
-            return (o is Item);
+            return o is Item;
         }
     }
 }

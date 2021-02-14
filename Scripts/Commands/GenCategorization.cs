@@ -42,9 +42,9 @@ namespace Server.Commands
         [Description("Rebuilds the categorization data file used by the Add command.")]
         public static void RebuildCategorization_OnCommand(CommandEventArgs e)
         {
-            CategoryEntry root = new CategoryEntry(null, "Add Menu", new CategoryEntry[] { Items, Mobiles });
+            CategoryEntry root = new CategoryEntry(null, "Add Menu", new[] { Items, Mobiles });
 
-            Export(root, "Data/objects.xml", "Objects");
+            Export(root, "Data/objects.xml");
 
             e.Mobile.SendMessage("Categorization menu rebuilt.");
         }
@@ -57,7 +57,7 @@ namespace Server.Commands
                 RecurseFindCategories(ce.SubCategories[i], list);
         }
 
-        public static void Export(CategoryEntry ce, string fileName, string title)
+        public static void Export(CategoryEntry ce, string fileName)
         {
             XmlTextWriter xml = new XmlTextWriter(fileName, System.Text.Encoding.UTF8)
             {
@@ -99,13 +99,12 @@ namespace Server.Commands
 
                 object obj = cte.Object;
 
-                if (obj is Item)
+                if (obj is Item item)
                 {
-                    Item item = (Item)obj;
                     int itemID = item.ItemID;
 
-                    if (item is BaseAddon && ((BaseAddon)item).Components.Count == 1)
-                        itemID = ((BaseAddon)item).Components[0].ItemID;
+                    if (item is BaseAddon addon && addon.Components.Count == 1)
+                        itemID = addon.Components[0].ItemID;
 
                     if (itemID > TileData.MaxItemValue)
                         itemID = 1;
@@ -122,10 +121,8 @@ namespace Server.Commands
 
                     item.Delete();
                 }
-                else if (obj is Mobile)
+                else if (obj is Mobile mob)
                 {
-                    Mobile mob = (Mobile)obj;
-
                     int itemID = ShrinkTable.Lookup(mob, 1);
 
                     xml.WriteAttributeString("gfx", XmlConvert.ToString(itemID));
@@ -184,7 +181,7 @@ namespace Server.Commands
 
             ConstructorInfo ctor = type.GetConstructor(Type.EmptyTypes);
 
-            return (ctor != null && ctor.IsDefined(typeofConstructable, false));
+            return ctor != null && ctor.IsDefined(typeofConstructable, false);
         }
 
         private static void AddTypes(Assembly asm, ArrayList types)
@@ -247,15 +244,15 @@ namespace Server.Commands
         {
             string a = null, b = null;
 
-            if (x is CategoryEntry)
-                a = ((CategoryEntry)x).Title;
-            else if (x is CategoryTypeEntry)
-                a = ((CategoryTypeEntry)x).Type.Name;
+            if (x is CategoryEntry entry)
+                a = entry.Title;
+            else if (x is CategoryTypeEntry typeEntry)
+                a = typeEntry.Type.Name;
 
-            if (y is CategoryEntry)
-                b = ((CategoryEntry)y).Title;
-            else if (y is CategoryTypeEntry)
-                b = ((CategoryTypeEntry)y).Type.Name;
+            if (y is CategoryEntry categoryEntry)
+                b = categoryEntry.Title;
+            else if (y is CategoryTypeEntry categoryTypeEntry)
+                b = categoryTypeEntry.Type.Name;
 
             if (a == null && b == null)
                 return 0;
@@ -367,7 +364,7 @@ namespace Server.Commands
             bool isMatch = false;
 
             for (int i = 0; !isMatch && i < m_Matches.Length; ++i)
-                isMatch = (type == m_Matches[i] || type.IsSubclassOf(m_Matches[i]));
+                isMatch = type == m_Matches[i] || type.IsSubclassOf(m_Matches[i]);
 
             return isMatch;
         }

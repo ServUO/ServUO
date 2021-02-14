@@ -44,12 +44,12 @@ namespace Server.Commands
             from.SendMessage("Generating signs, please wait.");
             List<SignEntry> list = SignEntry.LoadConfig("Data/signs.cfg");
 
-            Map[] brit = new Map[] { Map.Felucca, Map.Trammel };
-            Map[] fel = new Map[] { Map.Felucca };
-            Map[] tram = new Map[] { Map.Trammel };
-            Map[] ilsh = new Map[] { Map.Ilshenar };
-            Map[] malas = new Map[] { Map.Malas };
-            Map[] tokuno = new Map[] { Map.Tokuno };
+            Map[] brit = { Map.Felucca, Map.Trammel };
+            Map[] fel = { Map.Felucca };
+            Map[] tram = { Map.Trammel };
+            Map[] ilsh = { Map.Ilshenar };
+            Map[] malas = { Map.Malas };
+            Map[] tokuno = { Map.Tokuno };
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -214,11 +214,7 @@ namespace Server.Commands
                 List<SignEntry> signs = SignEntry.LoadConfig("Data/signs.cfg");
                 foreach (SignEntry sign in signs)
                 {
-                    if (sign.m_Map == targetMap ||
-                        (sign.m_Map == 0 && (
-                            targetMap == 1 ||
-                            targetMap == 2
-                        )))
+                    if (sign.m_Map == targetMap || sign.m_Map == 0 && (targetMap == 1 || targetMap == 2))
                     {
                         if (sign.m_Location.CompareTo(target.Location) == 0)
                         {

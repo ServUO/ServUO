@@ -23,7 +23,7 @@ namespace Server
         }
 
         public static WorldLocationInfo[][] Locations => m_Locations;
-        private static readonly WorldLocationInfo[][] m_Locations = new[]
+        private static readonly WorldLocationInfo[][] m_Locations =
         {
             new[] // Felucca
 			{
@@ -162,7 +162,7 @@ namespace Server
             new[] // TerMur
 			{
                 new WorldLocationInfo("somewhere in TerMur", new Rectangle2D(270, 2754, 1000, 1339))
-            },
+            }
         };
 
         public static string GetLocationString(IEntity e)
@@ -174,13 +174,17 @@ namespace Server
         {
             Region r = Region.Find(p, map);
 
-            if (r.Name != null && r is TownRegion)
+            if (r != null)
             {
-                return string.Format("somewhere near {0}.", r.Name);
-            }
-            else if (r.Name != null && r is DungeonRegion)
-            {
-                return string.Format("somewhere in dungeon {0}.", r.Name);
+                if (r.Name != null && r is TownRegion)
+                {
+                    return string.Format("somewhere near {0}.", r.Name);
+                }
+
+                if (r.Name != null && r is DungeonRegion)
+                {
+                    return string.Format("somewhere in dungeon {0}.", r.Name);
+                }
             }
 
             int mapID = map.MapID;

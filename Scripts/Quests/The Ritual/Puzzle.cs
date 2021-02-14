@@ -84,9 +84,9 @@ namespace Server.Engines.Quests.RitualQuest
 
                         foreach (NetState ns in eable)
                         {
-                            if (ns.Mobile != null && ns.Mobile is PlayerMobile && QuestHelper.HasQuest<PristineCrystalLotusQuest>((PlayerMobile)ns.Mobile))
+                            if (ns.Mobile != null && ns.Mobile is PlayerMobile mobile && QuestHelper.HasQuest<PristineCrystalLotusQuest>(mobile))
                             {
-                                ns.Mobile.SendLocalizedMessage(1151300, "", White); // Complete the puzzle to obtain a Pristine Crystal Lotus.
+                                mobile.SendLocalizedMessage(1151300, "", White); // Complete the puzzle to obtain a Pristine Crystal Lotus.
                             }
                         }
 
@@ -105,18 +105,18 @@ namespace Server.Engines.Quests.RitualQuest
                 return;
             }
 
-            if (from is PlayerMobile)
+            if (from is PlayerMobile mobile)
             {
-                PristineCrystalLotusQuest quest = QuestHelper.GetQuest<PristineCrystalLotusQuest>((PlayerMobile)from);
+                PristineCrystalLotusQuest quest = QuestHelper.GetQuest<PristineCrystalLotusQuest>(mobile);
 
                 if (quest != null)
                 {
-                    if (!PlayerOrder.ContainsKey(from))
+                    if (!PlayerOrder.ContainsKey(mobile))
                     {
-                        PlayerOrder[from] = new PuzzleTile[Order.Length];
+                        PlayerOrder[mobile] = new PuzzleTile[Order.Length];
                     }
 
-                    PuzzleTile[] list = PlayerOrder[from];
+                    PuzzleTile[] list = PlayerOrder[mobile];
 
                     for (int i = 0; i < Order.Length; i++)
                     {
@@ -130,18 +130,18 @@ namespace Server.Engines.Quests.RitualQuest
                             {
                                 if (CheckMatch(list))
                                 {
-                                    from.SendLocalizedMessage(1151304); // You matched that pattern correctly.
+                                    mobile.SendLocalizedMessage(1151304); // You matched that pattern correctly.
 
                                     quest.PuzzlesComplete++;
 
                                     if (quest.PuzzlesComplete >= 5)
                                     {
-                                        from.SendLocalizedMessage(1151306); // You may now retrieve a Pristine Crystal Lotus.
+                                        mobile.SendLocalizedMessage(1151306); // You may now retrieve a Pristine Crystal Lotus.
                                     }
                                 }
                                 else
                                 {
-                                    from.SendLocalizedMessage(1151305); // You did not complete the pattern correctly.
+                                    mobile.SendLocalizedMessage(1151305); // You did not complete the pattern correctly.
                                 }
                             }
 

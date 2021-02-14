@@ -5,7 +5,7 @@ namespace Server.Commands.Generic
         private static RangeCommandImplementor m_Instance;
         public RangeCommandImplementor()
         {
-            Accessors = new string[] { "Range" };
+            Accessors = new[] { "Range" };
             SupportRequirement = CommandSupport.Area;
             SupportsConditionals = true;
             AccessLevel = AccessLevel.GameMaster;

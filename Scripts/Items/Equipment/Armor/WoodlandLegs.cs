@@ -24,6 +24,7 @@ namespace Server.Items
         public override int InitMaxHits => 65;
         public override int StrReq => 90;
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Wood;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -33,7 +34,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

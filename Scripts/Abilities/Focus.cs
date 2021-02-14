@@ -52,7 +52,7 @@ namespace Server.Items
                     BuffInfo.RemoveBuff(from, BuffIcon.RageFocusingBuff);
                 }
             }
-            else if (item is BaseWeapon && ((BaseWeapon)item).ExtendedWeaponAttributes.Focus > 0)
+            else if (item is BaseWeapon weapon && weapon.ExtendedWeaponAttributes.Focus > 0)
             {
                 if (m_Table.ContainsKey(from))
                 {

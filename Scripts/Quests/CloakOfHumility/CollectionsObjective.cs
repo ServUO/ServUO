@@ -8,8 +8,8 @@ namespace Server.Engines.Quests
 
         public bool HasObtained
         {
-            get { return m_HasObtained; }
-            set { m_HasObtained = true; }
+            get => m_HasObtained;
+            set => m_HasObtained = true;
         }
 
         public CollectionsObtainObjective(Type obtain, string name, int amount) : base(obtain, name, amount)
@@ -36,9 +36,9 @@ namespace Server.Engines.Quests
                 {
                     foreach (BaseObjective obj in q.Objectives)
                     {
-                        if (obj is CollectionsObtainObjective && ((CollectionsObtainObjective)obj).Obtain == item.GetType())
+                        if (obj is CollectionsObtainObjective objective && objective.Obtain == item.GetType())
                         {
-                            ((CollectionsObtainObjective)obj).HasObtained = true;
+                            objective.HasObtained = true;
                             pm.SendSound(q.UpdateSound);
                             return;
                         }
@@ -50,16 +50,16 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.Write(m_HasObtained);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             m_HasObtained = reader.ReadBool();
         }
     }

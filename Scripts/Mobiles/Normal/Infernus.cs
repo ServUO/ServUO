@@ -65,10 +65,10 @@ namespace Server.Mobiles
             {
                 for (int y = m.Y - 1; y <= m.Y + 1; y++)
                 {
-                    IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y)) as IPoint3D;
+                    IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y));
                     Spells.SpellHelper.GetSurfaceTop(ref p);
 
-                    if (((x == 0 && y == 0) || .5 > Utility.RandomDouble()) && Map.CanSpawnMobile(p.X, p.Y, p.Z))
+                    if ((x == 0 && y == 0 || .5 > Utility.RandomDouble()) && Map.CanSpawnMobile(p.X, p.Y, p.Z))
                     {
                         FireItem item = new FireItem(this);
                         item.MoveToWorld(new Point3D(p), Map);
@@ -164,7 +164,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

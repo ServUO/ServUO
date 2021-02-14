@@ -13,7 +13,7 @@ namespace Server.Engines.VvV
         Poison = 1028000, // Poison
         Cold = 1113466, // Freezing
         Energy = 1154942, // Shocking
-        Blade = 1154943, // Blades
+        Blade = 1154943 // Blades
     }
 
     public enum DeploymentType
@@ -205,7 +205,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Owner = reader.ReadMobile();
             DeploymentType = (DeploymentType)reader.ReadInt();
@@ -266,7 +266,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -310,7 +310,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -356,7 +356,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -399,7 +399,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -427,9 +427,10 @@ namespace Server.Engines.VvV
 
             TransformContext context = TransformationSpellHelper.GetContext(m);
 
-            if ((context != null && (context.Type == typeof(LichFormSpell) || context.Type == typeof(WraithFormSpell))) ||
-                (m is BaseCreature && ((BaseCreature)m).BleedImmune))
+            if (context != null && (context.Type == typeof(LichFormSpell) || context.Type == typeof(WraithFormSpell)) || m is BaseCreature bc && bc.BleedImmune)
+            {
                 return;
+            }
 
             m.SendLocalizedMessage(1060160); // You are bleeding!
             BleedAttack.BeginBleed(m, Owner, false);
@@ -450,7 +451,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

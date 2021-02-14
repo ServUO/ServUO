@@ -12,7 +12,8 @@ namespace Server.Spells.First
             Reagent.Garlic,
             Reagent.Ginseng,
             Reagent.MandrakeRoot);
-        private static readonly FoodInfo[] m_Food = new FoodInfo[]
+
+        private static readonly FoodInfo[] m_Food =
         {
             new FoodInfo(typeof(Grapes), "a grape bunch"),
             new FoodInfo(typeof(Ham), "a ham"),
@@ -25,6 +26,7 @@ namespace Server.Spells.First
             new FoodInfo(typeof(Apple), "an apple"),
             new FoodInfo(typeof(Peach), "a peach")
         };
+
         public CreateFoodSpell(Mobile caster, Item scroll)
             : base(caster, scroll, m_Info)
         {

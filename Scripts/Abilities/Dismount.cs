@@ -78,42 +78,35 @@ namespace Server.Items
         {
             attacker.SendLocalizedMessage(1060082); // The force of your attack has dislodged them from their mount!
 
-            if (defender is PlayerMobile)
+            if (defender is PlayerMobile dMobile)
             {
-                if (Spells.Ninjitsu.AnimalForm.UnderTransformation(defender))
+                if (Spells.Ninjitsu.AnimalForm.UnderTransformation(dMobile))
                 {
-                    defender.SendLocalizedMessage(1114066, attacker.Name); // ~1_NAME~ knocked you out of animal form!
+                    dMobile.SendLocalizedMessage(1114066, attacker.Name); // ~1_NAME~ knocked you out of animal form!
                 }
-                else if (defender.Flying)
+                else if (dMobile.Flying)
                 {
-                    defender.SendLocalizedMessage(1113590, attacker.Name); // You have been grounded by ~1_NAME~!
+                    dMobile.SendLocalizedMessage(1113590, attacker.Name); // You have been grounded by ~1_NAME~!
                 }
-                else if (defender.Mounted)
+                else if (dMobile.Mounted)
                 {
-                    defender.SendLocalizedMessage(1060083); // You fall off of your mount and take damage!
+                    dMobile.SendLocalizedMessage(1060083); // You fall off of your mount and take damage!
                 }
 
-                ((PlayerMobile)defender).SetMountBlock(type, TimeSpan.FromSeconds(delay), true);
+                dMobile.SetMountBlock(type, TimeSpan.FromSeconds(delay), true);
             }
             else if (mount != null)
             {
                 mount.Rider = null;
             }
 
-            if (attacker is PlayerMobile)
+            if (attacker is PlayerMobile aMobile)
             {
-                ((PlayerMobile)attacker).SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(attacker.Weapon is BaseRanged ? 8 : 10), false);
+                aMobile.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(aMobile.Weapon is BaseRanged ? 8 : 10), false);
             }
-            else if (attacker is BaseCreature)
+            else if (attacker is BaseCreature bc && bc.ControlMaster is PlayerMobile pm)
             {
-                BaseCreature bc = attacker as BaseCreature;
-
-                if (bc.ControlMaster is PlayerMobile)
-                {
-                    PlayerMobile pm = bc.ControlMaster as PlayerMobile;
-
-                    pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(delay), false);
-                }
+                pm.SetMountBlock(BlockMountType.DismountRecovery, TimeSpan.FromSeconds(delay), false);
             }
         }
 

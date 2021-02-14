@@ -49,7 +49,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Item);
@@ -59,8 +58,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Item = reader.ReadItem() as InternalItem;
             m_Item2 = reader.ReadItem() as InternalItem2;
@@ -106,7 +104,6 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
 
                 writer.Write(m_Item);
@@ -115,8 +112,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 m_Item = reader.ReadItem() as LargeForgeWest;
             }
@@ -162,7 +158,6 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
 
                 writer.Write(m_Item);
@@ -171,8 +166,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 m_Item = reader.ReadItem() as LargeForgeWest;
             }
@@ -228,7 +222,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Item);
@@ -238,8 +231,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Item = reader.ReadItem() as InternalItem;
             m_Item2 = reader.ReadItem() as InternalItem2;
@@ -285,7 +277,6 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
 
                 writer.Write(m_Item);
@@ -294,8 +285,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 m_Item = reader.ReadItem() as LargeForgeEast;
             }
@@ -341,7 +331,6 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
 
                 writer.Write(m_Item);
@@ -350,8 +339,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 m_Item = reader.ReadItem() as LargeForgeEast;
             }

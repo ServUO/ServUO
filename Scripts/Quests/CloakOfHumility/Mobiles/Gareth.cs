@@ -18,7 +18,7 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[] { typeof(TheQuestionsQuest) };
+        public override Type[] Quests => new[] { typeof(TheQuestionsQuest) };
 
         public override void OnOfferFailed()
         {
@@ -50,10 +50,8 @@ namespace Server.Engines.Quests
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m_NextTalk < DateTime.UtcNow && m is PlayerMobile && m.Backpack != null && m.InRange(Location, 8))
+            if (m_NextTalk < DateTime.UtcNow && m is PlayerMobile pm && pm.Backpack != null && pm.InRange(Location, 8))
             {
-                PlayerMobile pm = (PlayerMobile)m;
-
                 WhosMostHumbleQuest quest = QuestHelper.GetQuest(pm, typeof(WhosMostHumbleQuest)) as WhosMostHumbleQuest;
 
                 if (quest != null)
@@ -62,7 +60,7 @@ namespace Server.Engines.Quests
 
                     if (chain != null && chain.QuestItem)
                     {
-                        SayTo(m, 1075773);
+                        SayTo(pm, 1075773);
                         m_NextTalk = DateTime.UtcNow + TimeSpan.FromSeconds(10);
                     }
                 }
@@ -78,7 +76,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextTalk = DateTime.UtcNow;
         }

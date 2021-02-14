@@ -9,7 +9,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return Visible; }
+            get => Visible;
             set
             {
                 if (Active != value)
@@ -84,7 +84,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

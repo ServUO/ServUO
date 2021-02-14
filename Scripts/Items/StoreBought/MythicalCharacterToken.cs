@@ -1,4 +1,4 @@
-﻿using Server.Gumps;
+using Server.Gumps;
 using Server.Mobiles;
 using System;
 using System.Collections.Generic;
@@ -21,17 +21,17 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && IsChildOf(m.Backpack))
+            if (m is PlayerMobile mobile && IsChildOf(mobile.Backpack))
             {
-                if (m.Skills.Total > 2000)
+                if (mobile.Skills.Total > 2000)
                 {
-                    m.SendLocalizedMessage(1152368); // You cannot use this token on this character because you have over 200 skill points. If you 
+                    mobile.SendLocalizedMessage(1152368); // You cannot use this token on this character because you have over 200 skill points. If you 
                     // don’t have a way to lower your skill point total, you will have to use this Mythic Character
                     // Token on another character.
                 }
                 else
                 {
-                    BaseGump.SendGump(new InternalGump((PlayerMobile)m, this));
+                    BaseGump.SendGump(new InternalGump(mobile, this));
                 }
             }
         }

@@ -54,8 +54,8 @@ namespace Server.Engines.CityLoyalty
 
         private class TurnInEntry : ContextMenuEntry
         {
-            public SlimTheFence Slim { get; private set; }
-            public Mobile Player { get; private set; }
+            public SlimTheFence Slim { get; }
+            public Mobile Player { get; }
 
             public TurnInEntry(Mobile player, SlimTheFence slim) : base(1151729, 3) // Turn in a trade order
             {
@@ -76,7 +76,7 @@ namespace Server.Engines.CityLoyalty
 
             private class InternalTarget : Target
             {
-                public SlimTheFence Slim { get; private set; }
+                public SlimTheFence Slim { get; }
 
                 public InternalTarget(SlimTheFence slim) : base(-1, false, TargetFlags.None)
                 {
@@ -131,7 +131,7 @@ namespace Server.Engines.CityLoyalty
                     Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
 
                     int min, max;
-                    TreasureMapChest.GetRandomItemStat(out min, out max, 1.0);
+                    TreasureMapChest.GetRandomItemStat(out min, out max);
 
                     RunicReforging.GenerateRandomItem(item, 0, min, max, Map);
                     return item;
@@ -154,7 +154,7 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 			
 			Frozen = true;
         }

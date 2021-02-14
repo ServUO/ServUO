@@ -9,8 +9,8 @@ namespace Server.Items
         Flywheel,
         WireSpool,
         PowerCore,
-        BearingAssembly,
-    };
+        BearingAssembly
+    }
 
     [Furniture]
     [Flipable(0x285D, 0x285E)]
@@ -24,19 +24,12 @@ namespace Server.Items
         private Timer m_RestartTimer;
         private DateTime m_RestartTime;
 
-        public List<Item> Barrels
-        {
-            get { return m_Barrels; }
-            set { m_Barrels = value; }
-        }
+        public List<Item> Barrels { get => m_Barrels; set => m_Barrels = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get
-            {
-                return m_Active;
-            }
+            get => m_Active;
             set
             {
                 if (value)
@@ -56,10 +49,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Parts Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get => m_Type;
             set
             {
                 m_Type = value;
@@ -93,14 +83,14 @@ namespace Server.Items
 
         public static int[][] WoodenToMetalBarrelCoordinate =
         {
-            new int[] { 0, 1 },
-            new int[] { 1, 1 },
-            new int[] { 1, 0 },
-            new int[] { 1, -1 },
-            new int[] { 0, -1 },
-            new int[] { -1, -1 },
-            new int[] { -1, 0 },
-            new int[] { -1, 1 }
+            new[] { 0, 1 },
+            new[] { 1, 1 },
+            new[] { 1, 0 },
+            new[] { 1, -1 },
+            new[] { 0, -1 },
+            new[] { -1, -1 },
+            new[] { -1, 0 },
+            new[] { -1, 1 }
         };
 
         private Parts key;
@@ -146,7 +136,7 @@ namespace Server.Items
             {
                 for (int y = 4; y > -5; y--)
                 {
-                    if ((x >= -1 && x <= 1) && (y >= -1 && y <= 1))
+                    if (x >= -1 && x <= 1 && y >= -1 && y <= 1)
                         continue;
 
                     int itemx = Location.X + x;
@@ -248,7 +238,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Active = reader.ReadBool();
             m_Type = (Parts)reader.ReadInt();

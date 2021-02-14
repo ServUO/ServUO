@@ -29,9 +29,8 @@ namespace Server.Commands
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Mobile)
+                if (targeted is Mobile targ)
                 {
-                    Mobile targ = (Mobile)targeted;
                     if (from != targ)
                         from.SendMessage("You may only set your own body to GM style.");
 

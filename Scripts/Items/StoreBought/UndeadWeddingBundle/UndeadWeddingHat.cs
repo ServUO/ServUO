@@ -86,9 +86,9 @@ namespace Server.Items
             base.Deserialize(reader);
             reader.ReadInt();
 
-            if (RootParent is Mobile && ((Mobile)RootParent).Items.Contains(this))
+            if (RootParent is Mobile mobile && mobile.Items.Contains(this))
             {
-                EnMask((Mobile)RootParent);
+                EnMask(mobile);
             }
         }
     }

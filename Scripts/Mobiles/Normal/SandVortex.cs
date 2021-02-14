@@ -61,7 +61,7 @@ namespace Server.Mobiles
             if (DateTime.UtcNow >= m_NextAttack)
             {
                 SandAttack(combatant);
-                m_NextAttack = DateTime.UtcNow + TimeSpan.FromSeconds(10.0 + (10.0 * Utility.RandomDouble()));
+                m_NextAttack = DateTime.UtcNow + TimeSpan.FromSeconds(10.0 + 10.0 * Utility.RandomDouble());
             }
         }
 
@@ -83,7 +83,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class InternalTimer : Timer

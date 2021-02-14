@@ -11,7 +11,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public override int UsesRemaining
         {
-            get { return base.UsesRemaining; }
+            get => base.UsesRemaining;
             set
             {
                 var uses = value;

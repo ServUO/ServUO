@@ -39,7 +39,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -75,7 +75,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -91,7 +91,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantStatus PlantStatus
         {
-            get { return m_PlantStatus; }
+            get => m_PlantStatus;
             set
             {
                 switch (value)
@@ -209,8 +209,8 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.Write((int)PlantStatus);
             writer.Write((int)Level);
             writer.Write(NextGrowth);
@@ -219,8 +219,8 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             PlantStatus = (PlantStatus)reader.ReadInt();
             Level = (SecureLevel)reader.ReadInt();
             NextGrowth = reader.ReadDateTime();

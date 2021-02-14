@@ -171,7 +171,7 @@ namespace Server.Mobiles
             {
                 BaseCreature pet = m_Pets[i];
 
-                AddRadio(30, 102 + yOffset, 0x25FF, 0x2602, (i == 0), i);
+                AddRadio(30, 102 + yOffset, 0x25FF, 0x2602, i == 0, i);
                 AddLabel(70, 107 + yOffset, 0x47E, string.Format("{0}  {1}", pet.Name, Veterinarian.GetResurrectionFee(pet).ToString()));
             }
         }

@@ -1,11 +1,10 @@
-﻿namespace Server.Mobiles
+namespace Server.Mobiles
 {
     [CorpseName("a ship bat corpse")]
     public class ShipBat : VampireBat
     {
         [Constructable]
         public ShipBat()
-            : base()
         {
             Name = "a ship bat";
             Body = 317;
@@ -57,7 +56,7 @@
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

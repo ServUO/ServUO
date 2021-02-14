@@ -31,10 +31,10 @@ namespace Server.Commands
         private static readonly Type _TypeOfTimeSpan = typeof(TimeSpan);
         private static readonly Type _TypeOfParsable = typeof(ParsableAttribute);
 
-        private static readonly Type[] _ParseTypes = new[] { typeof(string) };
+        private static readonly Type[] _ParseTypes = { typeof(string) };
         private static readonly object[] _ParseParams = new object[1];
 
-        private static readonly Type[] _NumericTypes = new[]
+        private static readonly Type[] _NumericTypes =
         {
             typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long),
             typeof(ulong)
@@ -292,7 +292,7 @@ namespace Server.Commands
                 return "The properties have been changed.";
             }
 
-            return string.Format("The properties have been {0}.", positive ? "increased." : "decreased");
+            return string.Format("The properties have been {0}.", "decreased");
         }
 
         public static string SetValue(Mobile m, object o, string name, string value)
@@ -398,9 +398,8 @@ namespace Server.Commands
         {
             try
             {
-                if (toSet is AccessLevel)
+                if (toSet is AccessLevel newLevel)
                 {
-                    AccessLevel newLevel = (AccessLevel)toSet;
                     AccessLevel reqLevel = AccessLevel.Administrator;
 
                     if (newLevel == AccessLevel.Administrator)
@@ -703,7 +702,7 @@ namespace Server
 {
     public abstract class PropertyException : ApplicationException
     {
-        public Property Property { get; protected set; }
+        public Property Property { get; }
 
         public PropertyException(Property property, string message)
             : base(message)
@@ -722,14 +721,14 @@ namespace Server
     public sealed class NotYetBoundException : BindingException
     {
         public NotYetBoundException(Property property)
-            : base(property, string.Format("Property has not yet been bound."))
+            : base(property, "Property has not yet been bound.")
         { }
     }
 
     public sealed class AlreadyBoundException : BindingException
     {
         public AlreadyBoundException(Property property)
-            : base(property, string.Format("Property has already been bound."))
+            : base(property, "Property has already been bound.")
         { }
     }
 
@@ -803,7 +802,7 @@ namespace Server
         private PropertyInfo[] _Chain;
 
         public PropertyAccess Access { get; private set; }
-        public string Binding { get; private set; }
+        public string Binding { get; }
 
         public bool IsBound => _Chain != null;
 

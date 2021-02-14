@@ -120,38 +120,15 @@ namespace Server.Regions
         public virtual bool YoungProtected => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string RuneName
-        {
-            get
-            {
-                return m_RuneName;
-            }
-            set
-            {
-                m_RuneName = value;
-            }
-        }
+        public string RuneName { get => m_RuneName; set => m_RuneName = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool NoLogoutDelay
-        {
-            get
-            {
-                return m_NoLogoutDelay;
-            }
-            set
-            {
-                m_NoLogoutDelay = value;
-            }
-        }
+        public bool NoLogoutDelay { get => m_NoLogoutDelay; set => m_NoLogoutDelay = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SpawnEntry[] Spawns
         {
-            get
-            {
-                return m_Spawns;
-            }
+            get => m_Spawns;
             set
             {
                 if (m_Spawns != null)
@@ -165,30 +142,10 @@ namespace Server.Regions
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SpawnZLevel SpawnZLevel
-        {
-            get
-            {
-                return m_SpawnZLevel;
-            }
-            set
-            {
-                m_SpawnZLevel = value;
-            }
-        }
+        public SpawnZLevel SpawnZLevel { get => m_SpawnZLevel; set => m_SpawnZLevel = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool ExcludeFromParentSpawns
-        {
-            get
-            {
-                return m_ExcludeFromParentSpawns;
-            }
-            set
-            {
-                m_ExcludeFromParentSpawns = value;
-            }
-        }
+        public bool ExcludeFromParentSpawns { get => m_ExcludeFromParentSpawns; set => m_ExcludeFromParentSpawns = value; }
 
         public static void Configure()
         {
@@ -262,11 +219,11 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
-            if (m is PlayerMobile && ((PlayerMobile)m).Young)
+            if (m is PlayerMobile mobile && mobile.Young)
             {
                 if (!YoungProtected)
                 {
-                    m.SendGump(new YoungDungeonWarning());
+                    mobile.SendGump(new YoungDungeonWarning());
                 }
             }
         }
@@ -355,7 +312,7 @@ namespace Server.Regions
                 map.GetAverageZ(x, y, ref ltLowZ, ref ltAvgZ, ref ltTopZ);
 
                 TileFlag ltFlags = TileData.LandTable[lt.ID & TileData.MaxLandValue].Flags;
-                bool ltImpassable = ((ltFlags & TileFlag.Impassable) != 0);
+                bool ltImpassable = (ltFlags & TileFlag.Impassable) != 0;
 
                 if (!lt.Ignored && ltAvgZ >= minZ && ltAvgZ < maxZ)
                     if ((ltFlags & TileFlag.Wet) != 0)
@@ -526,11 +483,16 @@ namespace Server.Regions
         public override string ToString()
         {
             if (Name != null)
+            {
                 return Name;
-            else if (RuneName != null)
+            }
+
+            if (RuneName != null)
+            {
                 return RuneName;
-            else
-                return GetType().Name;
+            }
+
+            return GetType().Name;
         }
 
         private void InitRectangles()

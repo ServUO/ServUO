@@ -49,19 +49,19 @@ namespace Server.Items
                 page++;
                 AddPage(page);
 
-                if (book.Title is int)
-                    AddHtmlLocalized(Page1X, 60, Width, 48, (int)book.Title, false, false);
-                else if (book.Title is string)
-                    AddHtml(Page1X, 60, Width, 48, (string)book.Title, false, false);
+                if (book.Title is int iTitle)
+                    AddHtmlLocalized(Page1X, 60, Width, 48, iTitle, false, false);
+                else if (book.Title is string sTitle)
+                    AddHtml(Page1X, 60, Width, 48, sTitle, false, false);
                 else
                     AddLabel(Page1X, 60, 0, "A Book");
 
                 AddHtml(40, 130, 200, 16, "by", false, false);
 
-                if (book.Author is int)
-                    AddHtmlLocalized(Page1X, 155, Width, 16, (int)book.Author, false, false);
-                else if (book.Author is string)
-                    AddHtml(Page1X, 155, Width, 16, (string)book.Author, false, false);
+                if (book.Author is int iAuthor)
+                    AddHtmlLocalized(Page1X, 155, Width, 16, iAuthor, false, false);
+                else if (book.Author is string sAuthor)
+                    AddHtml(Page1X, 155, Width, 16, sAuthor, false, false);
                 else
                     AddLabel(Page1X, 155, 0, "unknown");
 

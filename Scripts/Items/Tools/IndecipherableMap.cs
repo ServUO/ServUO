@@ -17,6 +17,7 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1070799;// indecipherable map
+
         public override void OnDoubleClick(Mobile from)
         {
             from.SendLocalizedMessage(1070801); // You cannot decipher this ruined map.
@@ -25,15 +26,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

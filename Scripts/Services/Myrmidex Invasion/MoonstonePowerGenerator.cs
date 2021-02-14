@@ -20,10 +20,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SetActive
         {
-            get
-            {
-                return Activated;
-            }
+            get => Activated;
             set
             {
                 if (value)
@@ -146,28 +143,25 @@ namespace Server.Items
 
         public override void OnComponentUsed(AddonComponent component, Mobile from)
         {
-            if (!Activated && component != null && component is InternalComponent && from.InRange(component.Location, 2))
+            if (!Activated && component != null && component is InternalComponent comp && from.InRange(comp.Location, 2) && !comp.Active)
             {
-                InternalComponent comp = component as InternalComponent;
+                comp.Active = true;
+                comp.WhoActivated = from;
 
-                if (!comp.Active)
+                if (Activator1.Active && Activator2.Active && Activator1.WhoActivated != Activator2.WhoActivated)
                 {
-                    comp.Active = true;
-                    comp.WhoActivated = from;
-
-                    if (Activator1.Active && Activator2.Active && Activator1.WhoActivated != Activator2.WhoActivated)
+                    if (ActiveTimer != null)
                     {
-                        if (ActiveTimer != null)
-                        {
-                            ActiveTimer.Stop();
-                            ActiveTimer = null;
-                        }
-
-                        Activated = true;
-                        CheckNetwork();
+                        ActiveTimer.Stop();
+                        ActiveTimer = null;
                     }
-                    else if (ActiveTimer == null)
-                        ActiveTimer = Timer.DelayCall(TimeSpan.FromSeconds(1), Reset);
+
+                    Activated = true;
+                    CheckNetwork();
+                }
+                else if (ActiveTimer == null)
+                {
+                    ActiveTimer = Timer.DelayCall(TimeSpan.FromSeconds(1), Reset);
                 }
             }
         }
@@ -190,7 +184,7 @@ namespace Server.Items
             [CommandProperty(AccessLevel.GameMaster)]
             public bool Active
             {
-                get { return _Active; }
+                get => _Active;
                 set
                 {
                     if (!_Active && value)
@@ -244,7 +238,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int v = reader.ReadInt();
+                reader.ReadInt();
 
                 ActiveID = reader.ReadInt();
                 InactiveID = reader.ReadInt();
@@ -420,7 +414,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Activated = reader.ReadBool();
 
@@ -449,7 +443,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanSpawn
         {
-            get { return _CanSpawn; }
+            get => _CanSpawn;
             set
             {
                 _CanSpawn = value;
@@ -504,7 +498,7 @@ namespace Server.Items
 
             foreach (Mobile m in eable)
             {
-                if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile))
+                if (m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile)
                 {
                     DoSpawn();
                     break;
@@ -596,7 +590,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

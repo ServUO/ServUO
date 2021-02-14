@@ -67,7 +67,7 @@ namespace Server.Engines.Craft
             else
                 AddHtml(10, 12, 510, 20, craftSystem.GumpTitleString, false, false);
 
-            bool needsRecipe = (craftItem.Recipe != null && from is PlayerMobile && !((PlayerMobile)from).HasRecipe(craftItem.Recipe));
+            bool needsRecipe = craftItem.Recipe != null && from is PlayerMobile mobile && !mobile.HasRecipe(craftItem.Recipe);
 
             if (needsRecipe)
             {
@@ -140,8 +140,8 @@ namespace Server.Engines.Craft
 
                             if (context != null)
                             {
-                                CraftSubResCol res = (m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes);
-                                int resIndex = (m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex);
+                                CraftSubResCol res = m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes;
+                                int resIndex = m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex;
 
                                 if (resIndex > -1)
                                     type = res.GetAt(resIndex).ItemType;
@@ -197,13 +197,13 @@ namespace Server.Engines.Craft
                 AddLabel(430, 132 + (i * 20), LabelHue, string.Format("{0:F1}", minSkill));
             }
 
-            CraftSubResCol res = (m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes);
+            CraftSubResCol res = m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes;
             int resIndex = -1;
 
             CraftContext context = m_CraftSystem.GetContext(m_From);
 
             if (context != null)
-                resIndex = (m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex);
+                resIndex = m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex;
 
             bool allRequiredSkills = true;
             double chance = m_CraftItem.GetSuccessChance(m_From, resIndex > -1 ? res.GetAt(resIndex).ItemType : null, m_CraftSystem, false, ref allRequiredSkills);
@@ -235,13 +235,13 @@ namespace Server.Engines.Craft
 
             CraftContext context = m_CraftSystem.GetContext(m_From);
 
-            CraftSubResCol res = (m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes);
+            CraftSubResCol res = m_CraftItem.UseSubRes2 ? m_CraftSystem.CraftSubRes2 : m_CraftSystem.CraftSubRes;
             int resIndex = -1;
 
             if (context != null)
-                resIndex = (m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex);
+                resIndex = m_CraftItem.UseSubRes2 ? context.LastResourceIndex2 : context.LastResourceIndex;
 
-            bool cropScroll = (m_CraftItem.Resources.Count > 1) &&
+            bool cropScroll = m_CraftItem.Resources.Count > 1 &&
                               m_CraftItem.Resources.GetAt(m_CraftItem.Resources.Count - 1).ItemType == typeofBlankScroll &&
                               typeofSpellScroll.IsAssignableFrom(m_CraftItem.ItemType);
 

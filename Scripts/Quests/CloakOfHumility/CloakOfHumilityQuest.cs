@@ -8,7 +8,7 @@ namespace Server.Engines.Quests
 {
     public class TheQuestionsQuest : BaseQuest
     {
-        public TheQuestionsQuest() : base()
+        public TheQuestionsQuest()
         {
             AddObjective(new QuestionAndAnswerObjective(4, m_EntryTable));
         }
@@ -118,15 +118,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public static void Configure()
@@ -149,7 +147,7 @@ namespace Server.Engines.Quests
 
     public class CommunityServiceMuseumQuest : BaseQuest
     {
-        public CommunityServiceMuseumQuest() : base()
+        public CommunityServiceMuseumQuest()
         {
             AddObjective(new CollectionsObtainObjective(typeof(ShepherdsCrookOfHumility), "Shepherd's Crook of Humility", 1));
         }
@@ -177,22 +175,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class CommunityServiceZooQuest : BaseQuest
     {
         public CommunityServiceZooQuest()
-            : base()
         {
             AddObjective(new CollectionsObtainObjective(typeof(ForTheLifeOfBritanniaSash), "Life of Britannia Sash", 1));
         }
@@ -220,22 +215,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class CommunityServiceLibraryQuest : BaseQuest
     {
         public CommunityServiceLibraryQuest()
-            : base()
         {
             AddObjective(new CollectionsObtainObjective(typeof(SpecialPrintingOfVirtue), "Special Printing of 'Virtue' Book", 1));
         }
@@ -264,15 +256,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -287,7 +277,6 @@ namespace Server.Engines.Quests
         public override bool CanRefuseReward => true;
 
         public WhosMostHumbleQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(IronChain), "Iron Chain", 1));
             AddReward(new BaseReward(typeof(GoldShield), "A Gold Shield"));
@@ -396,8 +385,8 @@ namespace Server.Engines.Quests
         {
             foreach (Item item in m_QuestItems)
             {
-                if (item is GreyCloak)
-                    ((GreyCloak)item).Owner = Owner;
+                if (item is GreyCloak cloak)
+                    cloak.Owner = Owner;
                 else if (item != null && !item.Deleted)
                     item.Delete();
             }
@@ -434,7 +423,6 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_QuestItems.Count);
@@ -457,8 +445,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)

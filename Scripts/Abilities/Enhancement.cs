@@ -6,13 +6,13 @@ namespace Server
 {
     public class EnhancementAttributes
     {
-        public string Title { get; set; }
+        public string Title { get; }
 
-        public AosAttributes Attributes { get; private set; }
-        public AosWeaponAttributes WeaponAttributes { get; private set; }
-        public AosArmorAttributes ArmorAttributes { get; private set; }
-        public SAAbsorptionAttributes AbsorptionAttributes { get; private set; }
-        public ExtendedWeaponAttributes ExtendedWeaponAttributes { get; private set; }
+        public AosAttributes Attributes { get; }
+        public AosWeaponAttributes WeaponAttributes { get; }
+        public AosArmorAttributes ArmorAttributes { get; }
+        public SAAbsorptionAttributes AbsorptionAttributes { get; }
+        public ExtendedWeaponAttributes ExtendedWeaponAttributes { get; }
 
         public EnhancementAttributes(string title)
         {

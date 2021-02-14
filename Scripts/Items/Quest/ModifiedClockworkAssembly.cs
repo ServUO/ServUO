@@ -8,7 +8,7 @@ namespace Server.Items
     {
         Wolf = 0,
         Scorpion = 1,
-        Vollem = 2,
+        Vollem = 2
     }
 
     [Flipable(0x1EA8, 0x1EAC)]
@@ -39,19 +39,21 @@ namespace Server.Items
         {
             // Clockwork Leather Wolf
             new GolemInfo(1,
-                new Type[] { typeof(Leather), typeof(OilFlask) },
-                new int[] { 100, 1 },
-                new int[] { 1113058, 1113059 }),
+                new[] { typeof(Leather), typeof(OilFlask) },
+                new[] { 100, 1 },
+                new[] { 1113058, 1113059 }),
+
             // ClockWork Scorpion
             new GolemInfo(1,
-                new Type[] { typeof(BronzeIngot), typeof(Gears) },
-                new int[] { 100, 10 },
-                new int[] { 1113060, 1113061 }),
+                new[] { typeof(BronzeIngot), typeof(Gears) },
+                new[] { 100, 10 },
+                new[] { 1113060, 1113061 }),
+
             // Vollem
             new GolemInfo(2,
-                new Type[] { typeof(BronzeIngot), typeof(WhiteScales) },
-                new int[] { 50, 25 },
-                new int[] { 1113060, 1113062 })
+                new[] { typeof(BronzeIngot), typeof(WhiteScales) },
+                new[] { 50, 25 },
+                new[] { 1113060, 1113062 })
         };
 
         private ClockworkType m_Type;
@@ -59,10 +61,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ClockworkType Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get => m_Type;
             set
             {
                 m_Type = value;
@@ -70,7 +69,7 @@ namespace Server.Items
             }
         }
 
-        public override int LabelNumber => (1113031 + (int)m_Type);
+        public override int LabelNumber => 1113031 + (int)m_Type;
 
         [Constructable]
         public ModifiedClockworkAssembly()
@@ -121,7 +120,7 @@ namespace Server.Items
 
             GolemInfo ginfo = m_Info[(int)m_Type];
 
-            if ((from.Followers + ginfo.Slots) > from.FollowersMax)
+            if (from.Followers + ginfo.Slots > from.FollowersMax)
             {
                 from.SendLocalizedMessage(1049607); // You have too many followers to control that creature.
                 return;

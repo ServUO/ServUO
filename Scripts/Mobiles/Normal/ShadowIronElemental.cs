@@ -57,18 +57,15 @@ namespace Server.Mobiles
 
         public override void AlterMeleeDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature)
+            if (from is BaseCreature bc && (bc.Controlled || bc.BardTarget == this))
             {
-                BaseCreature bc = (BaseCreature)from;
-
-                if (bc.Controlled || bc.BardTarget == this)
-                    damage = 0; // Immune to pets and provoked creatures
+                damage = 0; // Immune to pets and provoked creatures
             }
         }
 
         public override void AlterDamageScalarFrom(Mobile caster, ref double scalar)
         {
-            if (caster is BaseCreature && ((BaseCreature)caster).GetMaster() is PlayerMobile)
+            if (caster is BaseCreature creature && creature.GetMaster() is PlayerMobile)
             {
                 scalar = 0.0; // Immune to magic
             }
@@ -76,7 +73,7 @@ namespace Server.Mobiles
 
         public override void AlterSpellDamageFrom(Mobile from, ref int damage)
         {
-            if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
+            if (from is BaseCreature creature && creature.GetMaster() is PlayerMobile)
             {
                 damage = 0;
             }
@@ -91,7 +88,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

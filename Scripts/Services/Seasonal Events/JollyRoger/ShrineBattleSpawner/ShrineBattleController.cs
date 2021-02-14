@@ -36,7 +36,7 @@ namespace Server.Engines.JollyRoger
 
     public class ShrineBattleRegion : BaseRegion
     {
-        public ShrineBattleController _Controller { get; set; }
+        public ShrineBattleController _Controller { get; }
 
         public ShrineBattleRegion(ShrineBattleController controller)
             : base(string.Format("{0} Fragment Region", controller.Shrine.ToString()), controller.Map, DefaultPriority, ShrineBattleController._FragmentRegionTable[(int)controller.Shrine])
@@ -52,10 +52,7 @@ namespace Server.Engines.JollyRoger
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get
-            {
-                return m_Active;
-            }
+            get => m_Active;
             set
             {
                 if (value)
@@ -70,10 +67,7 @@ namespace Server.Engines.JollyRoger
         [CommandProperty(AccessLevel.Administrator)]
         public bool ForceRespawn
         {
-            get
-            {
-                return false;
-            }
+            get => false;
             set
             {
                 if (!value)
@@ -162,16 +156,16 @@ namespace Server.Engines.JollyRoger
 
         private readonly Type[][] _SpawnTable =
         {
-            new Type[] { typeof(Dragon), typeof(Drake), typeof(GiantSerpent), typeof(Reptalon), typeof(Hydra) },
-            new Type[] { typeof(Mummy), typeof(Lich), typeof(Zombie), typeof(Shade), typeof(SkeletalKnight), typeof(Spectre) },
-            new Type[] { typeof(EnragedEarthElemental), typeof(WaterElemental), typeof(FireElemental), typeof(AirElemental), typeof(BloodElemental) },
-            new Type[] { typeof(Daemon), typeof(Succubus), typeof(Imp), typeof(ChaosDaemon), typeof(BoneDemon) },
-            new Type[] { typeof(OrcChopper), typeof(OrcBomber), typeof(OrcishMage), typeof(OrcishLord) },
-            new Type[] { typeof(RagingGrizzlyBear), typeof(GreaterMongbat), typeof(DireWolf), typeof(GiantRat), typeof(Troglodyte) },
-            new Type[] { typeof(IceElemental), typeof(SnowElemental), typeof(IceFiend), typeof(FrostTroll), typeof(IceSerpent) },
-            new Type[] { typeof(DreadSpider), typeof(GiantBlackWidow), typeof(Scorpion), typeof(TerathanWarrior), typeof(WolfSpider) },
-            new Type[] { typeof(MLDryad), typeof(CuSidhe), typeof(Wisp), typeof(Satyr), typeof(Centaur) },
-            new Type[] { typeof(SwampTentacle), typeof(PlagueBeast), typeof(Bogling), typeof(FeralTreefellow) },
+            new[] { typeof(Dragon), typeof(Drake), typeof(GiantSerpent), typeof(Reptalon), typeof(Hydra) },
+            new[] { typeof(Mummy), typeof(Lich), typeof(Zombie), typeof(Shade), typeof(SkeletalKnight), typeof(Spectre) },
+            new[] { typeof(EnragedEarthElemental), typeof(WaterElemental), typeof(FireElemental), typeof(AirElemental), typeof(BloodElemental) },
+            new[] { typeof(Daemon), typeof(Succubus), typeof(Imp), typeof(ChaosDaemon), typeof(BoneDemon) },
+            new[] { typeof(OrcChopper), typeof(OrcBomber), typeof(OrcishMage), typeof(OrcishLord) },
+            new[] { typeof(RagingGrizzlyBear), typeof(GreaterMongbat), typeof(DireWolf), typeof(GiantRat), typeof(Troglodyte) },
+            new[] { typeof(IceElemental), typeof(SnowElemental), typeof(IceFiend), typeof(FrostTroll), typeof(IceSerpent) },
+            new[] { typeof(DreadSpider), typeof(GiantBlackWidow), typeof(Scorpion), typeof(TerathanWarrior), typeof(WolfSpider) },
+            new[] { typeof(MLDryad), typeof(CuSidhe), typeof(Wisp), typeof(Satyr), typeof(Centaur) },
+            new[] { typeof(SwampTentacle), typeof(PlagueBeast), typeof(Bogling), typeof(FeralTreefellow) }
         };
 
         public static readonly Rectangle2D[] _FragmentRegionTable =
@@ -183,7 +177,7 @@ namespace Server.Engines.JollyRoger
             new Rectangle2D(4270, 3694, 7, 6), // Humility
             new Rectangle2D(1723, 3526, 5, 3), // Honor
             new Rectangle2D(4208, 561, 6, 6), // Honesty
-            new Rectangle2D(1856, 873, 4, 4), // Compassion
+            new Rectangle2D(1856, 873, 4, 4) // Compassion
         };
 
         public void BeginInvasion()
@@ -307,7 +301,7 @@ namespace Server.Engines.JollyRoger
 
             if (i != null)
             {
-                RunicReforging.GenerateRandomItem(i, damager, Utility.RandomMinMax(700, 800), damager is PlayerMobile ? ((PlayerMobile)damager).RealLuck : 0, ReforgedPrefix.None, ReforgedSuffix.Fellowship);
+                RunicReforging.GenerateRandomItem(i, damager, Utility.RandomMinMax(700, 800), damager is PlayerMobile pm ? pm.RealLuck : 0, ReforgedPrefix.None, ReforgedSuffix.Fellowship);
             }
 
             return i;
@@ -366,7 +360,7 @@ namespace Server.Engines.JollyRoger
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Spawn = new Dictionary<BaseCreature, List<BaseCreature>>();
 
@@ -407,28 +401,28 @@ namespace Server.Engines.JollyRoger
         {
             Defs = new Dictionary<Shrine, Rectangle2D[]>();
 
-            Defs[Shrine.Honesty] = new Rectangle2D[]
+            Defs[Shrine.Honesty] = new[]
                 {
                     new Rectangle2D(4211, 554, 11, 5),
                     new Rectangle2D(4210, 580, 11, 6),
                     new Rectangle2D(4223, 567, 7, 10)
                 };
 
-            Defs[Shrine.Honor] = new Rectangle2D[]
+            Defs[Shrine.Honor] = new[]
                 {
                     new Rectangle2D(1722, 3512, 13, 6),
                     new Rectangle2D(1708, 3523, 6, 10),
                     new Rectangle2D(1715, 3534, 11, 6)
                 };
 
-            Defs[Shrine.Humility] = new Rectangle2D[]
+            Defs[Shrine.Humility] = new[]
             {
                 new Rectangle2D(4268, 3687, 7, 4),
                 new Rectangle2D(4259, 3698, 5, 10),
                 new Rectangle2D(4268, 3707, 7, 3)
             };
 
-            Defs[Shrine.Justice] = new Rectangle2D[]
+            Defs[Shrine.Justice] = new[]
             {
                 new Rectangle2D(1287, 627, 6, 13),
                 new Rectangle2D(1287, 617, 23, 7),
@@ -436,7 +430,7 @@ namespace Server.Engines.JollyRoger
                 new Rectangle2D(1289, 643, 19, 7)
             };
 
-            Defs[Shrine.Sacrifice] = new Rectangle2D[]
+            Defs[Shrine.Sacrifice] = new[]
             {
                 new Rectangle2D(3334, 280, 10, 20),
                 new Rectangle2D(3334, 303, 43, 10),
@@ -444,7 +438,7 @@ namespace Server.Engines.JollyRoger
                 new Rectangle2D(3334, 266, 43, 10)
             };
 
-            Defs[Shrine.Spirituality] = new Rectangle2D[]
+            Defs[Shrine.Spirituality] = new[]
             {
                 new Rectangle2D(1586, 2477, 23, 6),
                 new Rectangle2D(1577, 2477, 8, 26),
@@ -452,7 +446,7 @@ namespace Server.Engines.JollyRoger
                 new Rectangle2D(1611, 2477, 6, 26)
             };
 
-            Defs[Shrine.Valor] = new Rectangle2D[]
+            Defs[Shrine.Valor] = new[]
             {
                 new Rectangle2D(2483, 3921, 19, 5),
                 new Rectangle2D(2498, 3927, 4, 14),
@@ -460,7 +454,7 @@ namespace Server.Engines.JollyRoger
                 new Rectangle2D(2483, 3942, 19, 5)
             };
 
-            Defs[Shrine.Compassion] = new Rectangle2D[]
+            Defs[Shrine.Compassion] = new[]
             {
                 new Rectangle2D(1845, 855, 25, 9),
                 new Rectangle2D(1839, 865, 6, 20),

@@ -67,7 +67,7 @@ namespace Server.Guilds
 
         public bool GetFlag(RankFlags flag)
         {
-            return ((Flags & flag) != 0);
+            return (Flags & flag) != 0;
         }
 
         public void SetFlag(RankFlags flag, bool value)
@@ -96,7 +96,7 @@ namespace Server.Guilds
 
         public void CalculateAllianceLeader()
         {
-            m_Leader = ((Members.Count >= 2) ? Members[Utility.Random(Members.Count)] : null);
+            m_Leader = Members.Count >= 2 ? Members[Utility.Random(Members.Count)] : null;
         }
 
         public void CheckLeader()
@@ -522,7 +522,7 @@ namespace Server.Guilds
                     return WarStatus.Win;
                 }
 
-                if (WarLength != TimeSpan.Zero && (WarBeginning + WarLength) < DateTime.UtcNow)
+                if (WarLength != TimeSpan.Zero && WarBeginning + WarLength < DateTime.UtcNow)
                 {
                     if (Kills > w.Kills)
                     {
@@ -624,9 +624,9 @@ namespace Server.Guilds
                 {
                     from.SendGump(new PropertiesGump(from, g));
 
-                    if (from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile)
+                    if (from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile pm)
                     {
-                        from.SendGump(new GuildInfoGump((PlayerMobile)from, g));
+                        pm.SendGump(new GuildInfoGump(pm, g));
                     }
                 }
             }
@@ -648,18 +648,18 @@ namespace Server.Guilds
 
                 Guild g = null;
 
-                if (o is Mobile)
+                if (o is Mobile mobile)
                 {
-                    g = ((Mobile)o).Guild as Guild;
+                    g = mobile.Guild as Guild;
                 }
 
                 if (g != null)
                 {
                     from.SendGump(new PropertiesGump(from, g));
 
-                    if (from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile)
+                    if (from.AccessLevel >= AccessLevel.GameMaster && from is PlayerMobile pm)
                     {
-                        from.SendGump(new GuildInfoGump((PlayerMobile)from, g));
+                        pm.SendGump(new GuildInfoGump(pm, g));
                     }
                 }
                 else
@@ -877,21 +877,19 @@ namespace Server.Guilds
                 if (status != WarStatus.InProgress)
                 {
                     AllianceInfo myAlliance = Alliance;
-                    bool inAlliance = (myAlliance != null && myAlliance.IsMember(this));
+                    bool inAlliance = myAlliance != null && myAlliance.IsMember(this);
 
                     AllianceInfo otherAlliance = g?.Alliance;
-                    bool otherInAlliance = (otherAlliance != null && otherAlliance.IsMember(this));
+                    bool otherInAlliance = otherAlliance != null && otherAlliance.IsMember(this);
 
                     if (inAlliance)
                     {
-                        myAlliance.AllianceMessage(
-                            1070739 + (int)status, (g == null) ? "a deleted opponent" : (otherInAlliance ? otherAlliance.Name : g.Name));
+                        myAlliance.AllianceMessage(1070739 + (int)status, g == null ? "a deleted opponent" : otherInAlliance ? otherAlliance.Name : g.Name);
                         myAlliance.InvalidateMemberProperties();
                     }
                     else
                     {
-                        GuildMessage(
-                            1070739 + (int)status, (g == null) ? "a deleted opponent" : (otherInAlliance ? otherAlliance.Name : g.Name));
+                        GuildMessage(1070739 + (int)status, g == null ? "a deleted opponent" : otherInAlliance ? otherAlliance.Name : g.Name);
                         InvalidateMemberProperties();
                     }
 
@@ -906,12 +904,12 @@ namespace Server.Guilds
 
                         if (otherInAlliance)
                         {
-                            otherAlliance.AllianceMessage(1070739 + (int)status, (inAlliance ? Alliance.Name : Name));
+                            otherAlliance.AllianceMessage(1070739 + (int)status, inAlliance ? Alliance.Name : Name);
                             otherAlliance.InvalidateMemberProperties();
                         }
                         else
                         {
-                            g.GuildMessage(1070739 + (int)status, (inAlliance ? Alliance.Name : Name));
+                            g.GuildMessage(1070739 + (int)status, inAlliance ? Alliance.Name : Name);
                             g.InvalidateMemberProperties();
                         }
 
@@ -1014,9 +1012,9 @@ namespace Server.Guilds
 
             AddMember(m_Leader);
 
-            if (m_Leader is PlayerMobile)
+            if (m_Leader is PlayerMobile mobile)
             {
-                ((PlayerMobile)m_Leader).GuildRank = RankDefinition.Leader;
+                mobile.GuildRank = RankDefinition.Leader;
             }
 
             AcceptedWars = new List<WarDeclaration>();
@@ -1113,21 +1111,21 @@ namespace Server.Guilds
                     AddMember(value); //Also removes from old guild.
                 }
 
-                if (m_Leader is PlayerMobile && m_Leader.Guild == this)
+                if (m_Leader is PlayerMobile mobile && mobile.Guild == this)
                 {
-                    ((PlayerMobile)m_Leader).GuildRank = RankDefinition.Member;
+                    mobile.GuildRank = RankDefinition.Member;
                 }
 
                 m_Leader = value;
 
-                if (m_Leader is PlayerMobile)
+                if (m_Leader is PlayerMobile pm)
                 {
-                    ((PlayerMobile)m_Leader).GuildRank = RankDefinition.Leader;
+                    pm.GuildRank = RankDefinition.Leader;
                 }
             }
         }
 
-        public override bool Disbanded => (m_Leader == null || m_Leader.Deleted);
+        public override bool Disbanded => m_Leader == null || m_Leader.Deleted;
 
         public override void OnDelete(Mobile mob)
         {
@@ -1144,9 +1142,9 @@ namespace Server.Guilds
             {
                 m.SendLocalizedMessage(502131); // Your guild has disbanded.
 
-                if (m is PlayerMobile)
+                if (m is PlayerMobile mobile)
                 {
-                    ((PlayerMobile)m).GuildRank = RankDefinition.Lowest;
+                    mobile.GuildRank = RankDefinition.Lowest;
                 }
 
                 m.Guild = null;
@@ -1189,7 +1187,7 @@ namespace Server.Guilds
                 return false;
             }
 
-            return (Alliance != null && Alliance.IsMember(this) && Alliance.IsMember(g));
+            return Alliance != null && Alliance.IsMember(this) && Alliance.IsMember(g);
         }
 
         public bool IsEnemy(Guild g)
@@ -1255,7 +1253,8 @@ namespace Server.Guilds
             #endregion
 
             #region Alliances
-            bool isAllianceLeader = (m_AllianceLeader == null && m_AllianceInfo != null);
+            bool isAllianceLeader = m_AllianceLeader == null && m_AllianceInfo != null;
+
             writer.Write(isAllianceLeader);
 
             if (isAllianceLeader)
@@ -1364,9 +1363,9 @@ namespace Server.Guilds
                     {
                         m_Leader = reader.ReadMobile();
 
-                        if (m_Leader is PlayerMobile)
+                        if (m_Leader is PlayerMobile mobile)
                         {
-                            ((PlayerMobile)m_Leader).GuildRank = RankDefinition.Leader;
+                            mobile.GuildRank = RankDefinition.Leader;
                         }
 
                         m_Name = reader.ReadString();
@@ -1461,9 +1460,9 @@ namespace Server.Guilds
 
                 m.GuildFealty = null;
 
-                if (m is PlayerMobile)
+                if (m is PlayerMobile mobile)
                 {
-                    ((PlayerMobile)m).GuildRank = RankDefinition.Lowest;
+                    mobile.GuildRank = RankDefinition.Lowest;
                 }
 
                 Guild guild = m.Guild as Guild;
@@ -1490,9 +1489,9 @@ namespace Server.Guilds
 
                 m.Guild = null;
 
-                if (m is PlayerMobile)
+                if (m is PlayerMobile mobile)
                 {
-                    ((PlayerMobile)m).GuildRank = RankDefinition.Lowest;
+                    mobile.GuildRank = RankDefinition.Lowest;
                 }
 
                 if (message > 0)
@@ -1743,11 +1742,10 @@ namespace Server.Guilds
         [CommandProperty(AccessLevel.GameMaster)]
         public override string Name
         {
-            get { return m_Name; }
+            get => m_Name;
             set
             {
                 m_Name = value;
-
                 InvalidateMemberProperties(true);
             }
         }
@@ -1758,11 +1756,10 @@ namespace Server.Guilds
         [CommandProperty(AccessLevel.GameMaster)]
         public override string Abbreviation
         {
-            get { return m_Abbreviation; }
+            get => m_Abbreviation;
             set
             {
                 m_Abbreviation = value;
-
                 InvalidateMemberProperties(true);
             }
         }

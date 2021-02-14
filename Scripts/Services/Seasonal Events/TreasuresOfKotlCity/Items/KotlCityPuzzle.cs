@@ -21,10 +21,10 @@ namespace Server.Engines.TreasuresOfKotlCity
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Complete
         {
-            get { return _Complete; }
+            get => _Complete;
             set
             {
-                foreach (KotlCityPuzzleComponent comp in Components.OfType<KotlCityPuzzleComponent>().Where(c => (value && c.Active) || (!value && !c.Active)))
+                foreach (KotlCityPuzzleComponent comp in Components.OfType<KotlCityPuzzleComponent>().Where(c => value && c.Active || !value && !c.Active))
                     comp.Active = !value;
 
                 if (_Complete && !value)
@@ -161,7 +161,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Puzzle = this;
 
@@ -194,7 +194,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return _Active; }
+            get => _Active;
             set
             {
                 _Active = value;
@@ -234,7 +234,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Active = reader.ReadBool();
         }

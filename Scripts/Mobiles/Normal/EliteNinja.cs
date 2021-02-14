@@ -140,8 +140,8 @@ namespace Server.Mobiles
 
             foreach (Item i in Backpack.Items)
             {
-                if (i is BaseWeapon && i != item)
-                    weapons.Add((BaseWeapon)i);
+                if (i is BaseWeapon weapon && i != item)
+                    weapons.Add(weapon);
             }
 
             if (weapons.Count > 0)
@@ -172,15 +172,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextWeaponChange = DateTime.UtcNow;
         }

@@ -34,7 +34,7 @@ namespace Server.Items
         YewWood,
         Heartwood,
         Bloodwood,
-        Frostwood,
+        Frostwood
     }
 
     public enum CraftResourceType
@@ -56,7 +56,6 @@ namespace Server.Items
         private int m_WeaponDirectDamage;
         private int m_WeaponDurability;
         private int m_WeaponLuck;
-        private int m_WeaponGoldIncrease;
         private int m_WeaponLowerRequirements;
         private int m_WeaponDamage;
         private int m_WeaponHitChance;
@@ -71,7 +70,6 @@ namespace Server.Items
         private int m_ArmorEnergyResist;
         private int m_ArmorDurability;
         private int m_ArmorLuck;
-        private int m_ArmorGoldIncrease;
         private int m_ArmorLowerRequirements;
         private int m_ArmorDamage;
         private int m_ArmorHitChance;
@@ -104,61 +102,59 @@ namespace Server.Items
         private int m_RunicMinIntensity;
         private int m_RunicMaxIntensity;
 
-        public int WeaponFireDamage { get { return m_WeaponFireDamage; } set { m_WeaponFireDamage = value; } }
-        public int WeaponColdDamage { get { return m_WeaponColdDamage; } set { m_WeaponColdDamage = value; } }
-        public int WeaponPoisonDamage { get { return m_WeaponPoisonDamage; } set { m_WeaponPoisonDamage = value; } }
-        public int WeaponEnergyDamage { get { return m_WeaponEnergyDamage; } set { m_WeaponEnergyDamage = value; } }
-        public int WeaponChaosDamage { get { return m_WeaponChaosDamage; } set { m_WeaponChaosDamage = value; } }
-        public int WeaponDirectDamage { get { return m_WeaponDirectDamage; } set { m_WeaponDirectDamage = value; } }
-        public int WeaponDurability { get { return m_WeaponDurability; } set { m_WeaponDurability = value; } }
-        public int WeaponLuck { get { return m_WeaponLuck; } set { m_WeaponLuck = value; } }
-        public int WeaponGoldIncrease { get { return m_WeaponGoldIncrease; } set { m_WeaponGoldIncrease = value; } }
-        public int WeaponLowerRequirements { get { return m_WeaponLowerRequirements; } set { m_WeaponLowerRequirements = value; } }
-        public int WeaponDamage { get { return m_WeaponDamage; } set { m_WeaponDamage = value; } }
-        public int WeaponHitChance { get { return m_WeaponHitChance; } set { m_WeaponHitChance = value; } }
-        public int WeaponHitLifeLeech { get { return m_WeaponHitLifeLeech; } set { m_WeaponHitLifeLeech = value; } }
-        public int WeaponRegenHits { get { return m_WeaponRegenHits; } set { m_WeaponRegenHits = value; } }
-        public int WeaponSwingSpeed { get { return m_WeaponSwingSpeed; } set { m_WeaponSwingSpeed = value; } }
+        public int WeaponFireDamage { get => m_WeaponFireDamage; set => m_WeaponFireDamage = value; }
+        public int WeaponColdDamage { get => m_WeaponColdDamage; set => m_WeaponColdDamage = value; }
+        public int WeaponPoisonDamage { get => m_WeaponPoisonDamage; set => m_WeaponPoisonDamage = value; }
+        public int WeaponEnergyDamage { get => m_WeaponEnergyDamage; set => m_WeaponEnergyDamage = value; }
+        public int WeaponChaosDamage { get => m_WeaponChaosDamage; set => m_WeaponChaosDamage = value; }
+        public int WeaponDirectDamage { get => m_WeaponDirectDamage; set => m_WeaponDirectDamage = value; }
+        public int WeaponDurability { get => m_WeaponDurability; set => m_WeaponDurability = value; }
+        public int WeaponLuck { get => m_WeaponLuck; set => m_WeaponLuck = value; }
+        public int WeaponLowerRequirements { get => m_WeaponLowerRequirements; set => m_WeaponLowerRequirements = value; }
+        public int WeaponDamage { get => m_WeaponDamage; set => m_WeaponDamage = value; }
+        public int WeaponHitChance { get => m_WeaponHitChance; set => m_WeaponHitChance = value; }
+        public int WeaponHitLifeLeech { get => m_WeaponHitLifeLeech; set => m_WeaponHitLifeLeech = value; }
+        public int WeaponRegenHits { get => m_WeaponRegenHits; set => m_WeaponRegenHits = value; }
+        public int WeaponSwingSpeed { get => m_WeaponSwingSpeed; set => m_WeaponSwingSpeed = value; }
 
-        public int ArmorPhysicalResist { get { return m_ArmorPhysicalResist; } set { m_ArmorPhysicalResist = value; } }
-        public int ArmorFireResist { get { return m_ArmorFireResist; } set { m_ArmorFireResist = value; } }
-        public int ArmorColdResist { get { return m_ArmorColdResist; } set { m_ArmorColdResist = value; } }
-        public int ArmorPoisonResist { get { return m_ArmorPoisonResist; } set { m_ArmorPoisonResist = value; } }
-        public int ArmorEnergyResist { get { return m_ArmorEnergyResist; } set { m_ArmorEnergyResist = value; } }
-        public int ArmorDurability { get { return m_ArmorDurability; } set { m_ArmorDurability = value; } }
-        public int ArmorLuck { get { return m_ArmorLuck; } set { m_ArmorLuck = value; } }
-        public int ArmorGoldIncrease { get { return m_ArmorGoldIncrease; } set { m_ArmorGoldIncrease = value; } }
-        public int ArmorLowerRequirements { get { return m_ArmorLowerRequirements; } set { m_ArmorLowerRequirements = value; } }
-        public int ArmorDamage { get { return m_ArmorDamage; } set { m_ArmorDamage = value; } }
-        public int ArmorHitChance { get { return m_ArmorHitChance; } set { m_ArmorHitChance = value; } }
-        public int ArmorRegenHits { get { return m_ArmorRegenHits; } set { m_ArmorRegenHits = value; } }
-        public int ArmorMage { get { return m_ArmorMage; } set { m_ArmorMage = value; } }
+        public int ArmorPhysicalResist { get => m_ArmorPhysicalResist; set => m_ArmorPhysicalResist = value; }
+        public int ArmorFireResist { get => m_ArmorFireResist; set => m_ArmorFireResist = value; }
+        public int ArmorColdResist { get => m_ArmorColdResist; set => m_ArmorColdResist = value; }
+        public int ArmorPoisonResist { get => m_ArmorPoisonResist; set => m_ArmorPoisonResist = value; }
+        public int ArmorEnergyResist { get => m_ArmorEnergyResist; set => m_ArmorEnergyResist = value; }
+        public int ArmorDurability { get => m_ArmorDurability; set => m_ArmorDurability = value; }
+        public int ArmorLuck { get => m_ArmorLuck; set => m_ArmorLuck = value; }
+        public int ArmorLowerRequirements { get => m_ArmorLowerRequirements; set => m_ArmorLowerRequirements = value; }
+        public int ArmorDamage { get => m_ArmorDamage; set => m_ArmorDamage = value; }
+        public int ArmorHitChance { get => m_ArmorHitChance; set => m_ArmorHitChance = value; }
+        public int ArmorRegenHits { get => m_ArmorRegenHits; set => m_ArmorRegenHits = value; }
+        public int ArmorMage { get => m_ArmorMage; set => m_ArmorMage = value; }
 
-        public int ShieldPhysicalResist { get { return m_ShieldPhysicalResist; } set { m_ShieldPhysicalResist = value; } }
-        public int ShieldFireResist { get { return m_ShieldFireResist; } set { m_ShieldFireResist = value; } }
-        public int ShieldColdResist { get { return m_ShieldColdResist; } set { m_ShieldColdResist = value; } }
-        public int ShieldPoisonResist { get { return m_ShieldPoisonResist; } set { m_ShieldPoisonResist = value; } }
-        public int ShieldEnergyResist { get { return m_ShieldEnergyResist; } set { m_ShieldEnergyResist = value; } }
-        public int ShieldPhysicalRandom { get { return m_ShieldPhysicalRandom; } set { m_ShieldPhysicalRandom = value; } }
-        public int ShieldColdRandom { get { return m_ShieldColdRandom; } set { m_ShieldColdRandom = value; } }
-        public int ShieldSpellChanneling { get { return m_ShieldSpellChanneling; } set { m_ShieldSpellChanneling = value; } }
-        public int ShieldLuck { get { return m_ShieldLuck; } set { m_ShieldLuck = value; } }
-        public int ShieldLowerRequirements { get { return m_ShieldLowerRequirements; } set { m_ShieldLowerRequirements = value; } }
-        public int ShieldRegenHits { get { return m_ShieldRegenHits; } set { m_ShieldRegenHits = value; } }
-        public int ShieldBonusDex { get { return m_ShieldBonusDex; } set { m_ShieldBonusDex = value; } }
-        public int ShieldBonusStr { get { return m_ShieldBonusStr; } set { m_ShieldBonusStr = value; } }
-        public int ShieldReflectPhys { get { return m_ShieldReflectPhys; } set { m_ShieldReflectPhys = value; } }
-        public int ShieldSelfRepair { get { return m_SelfRepair; } set { m_SelfRepair = value; } }
+        public int ShieldPhysicalResist { get => m_ShieldPhysicalResist; set => m_ShieldPhysicalResist = value; }
+        public int ShieldFireResist { get => m_ShieldFireResist; set => m_ShieldFireResist = value; }
+        public int ShieldColdResist { get => m_ShieldColdResist; set => m_ShieldColdResist = value; }
+        public int ShieldPoisonResist { get => m_ShieldPoisonResist; set => m_ShieldPoisonResist = value; }
+        public int ShieldEnergyResist { get => m_ShieldEnergyResist; set => m_ShieldEnergyResist = value; }
+        public int ShieldPhysicalRandom { get => m_ShieldPhysicalRandom; set => m_ShieldPhysicalRandom = value; }
+        public int ShieldColdRandom { get => m_ShieldColdRandom; set => m_ShieldColdRandom = value; }
+        public int ShieldSpellChanneling { get => m_ShieldSpellChanneling; set => m_ShieldSpellChanneling = value; }
+        public int ShieldLuck { get => m_ShieldLuck; set => m_ShieldLuck = value; }
+        public int ShieldLowerRequirements { get => m_ShieldLowerRequirements; set => m_ShieldLowerRequirements = value; }
+        public int ShieldRegenHits { get => m_ShieldRegenHits; set => m_ShieldRegenHits = value; }
+        public int ShieldBonusDex { get => m_ShieldBonusDex; set => m_ShieldBonusDex = value; }
+        public int ShieldBonusStr { get => m_ShieldBonusStr; set => m_ShieldBonusStr = value; }
+        public int ShieldReflectPhys { get => m_ShieldReflectPhys; set => m_ShieldReflectPhys = value; }
+        public int ShieldSelfRepair { get => m_SelfRepair; set => m_SelfRepair = value; }
 
-        public int OtherSpellChanneling { get { return m_OtherSpellChanneling; } set { m_OtherSpellChanneling = value; } }
-        public int OtherLuck { get { return m_OtherLuck; } set { m_OtherLuck = value; } }
-        public int OtherRegenHits { get { return m_OtherRegenHits; } set { m_OtherRegenHits = value; } }
-        public int OtherLowerRequirements { get { return m_OtherLowerRequirements; } set { m_OtherLowerRequirements = value; } }
+        public int OtherSpellChanneling { get => m_OtherSpellChanneling; set => m_OtherSpellChanneling = value; }
+        public int OtherLuck { get => m_OtherLuck; set => m_OtherLuck = value; }
+        public int OtherRegenHits { get => m_OtherRegenHits; set => m_OtherRegenHits = value; }
+        public int OtherLowerRequirements { get => m_OtherLowerRequirements; set => m_OtherLowerRequirements = value; }
 
-        public int RunicMinAttributes { get { return m_RunicMinAttributes; } set { m_RunicMinAttributes = value; } }
-        public int RunicMaxAttributes { get { return m_RunicMaxAttributes; } set { m_RunicMaxAttributes = value; } }
-        public int RunicMinIntensity { get { return m_RunicMinIntensity; } set { m_RunicMinIntensity = value; } }
-        public int RunicMaxIntensity { get { return m_RunicMaxIntensity; } set { m_RunicMaxIntensity = value; } }
+        public int RunicMinAttributes { get => m_RunicMinAttributes; set => m_RunicMinAttributes = value; }
+        public int RunicMaxAttributes { get => m_RunicMaxAttributes; set => m_RunicMaxAttributes = value; }
+        public int RunicMinIntensity { get => m_RunicMinIntensity; set => m_RunicMinIntensity = value; }
+        public int RunicMaxIntensity { get => m_RunicMaxIntensity; set => m_RunicMaxIntensity = value; }
 
         public static readonly CraftAttributeInfo Blank;
         public static readonly CraftAttributeInfo DullCopper, ShadowIron, Copper, Bronze, Golden, Agapite, Verite, Valorite;
@@ -544,7 +540,7 @@ namespace Server.Items
 
     public class CraftResources
     {
-        private static readonly CraftResourceInfo[] m_MetalInfo = new[]
+        private static readonly CraftResourceInfo[] m_MetalInfo =
         {
             new CraftResourceInfo(0x000, 1053109, "Iron", CraftAttributeInfo.Blank, CraftResource.Iron, typeof(IronIngot), typeof(IronOre), typeof(Granite)),
             new CraftResourceInfo(0x973, 1053108, "Dull Copper",    CraftAttributeInfo.DullCopper,  CraftResource.DullCopper, typeof(DullCopperIngot),  typeof(DullCopperOre),  typeof(DullCopperGranite)),
@@ -554,28 +550,28 @@ namespace Server.Items
             new CraftResourceInfo(0x8A5, 1053104, "Gold", CraftAttributeInfo.Golden, CraftResource.Gold, typeof(GoldIngot), typeof(GoldOre), typeof(GoldGranite)),
             new CraftResourceInfo(0x979, 1053103, "Agapite", CraftAttributeInfo.Agapite, CraftResource.Agapite, typeof(AgapiteIngot), typeof(AgapiteOre), typeof(AgapiteGranite)),
             new CraftResourceInfo(0x89F, 1053102, "Verite", CraftAttributeInfo.Verite, CraftResource.Verite, typeof(VeriteIngot), typeof(VeriteOre), typeof(VeriteGranite)),
-            new CraftResourceInfo(0x8AB, 1053101, "Valorite", CraftAttributeInfo.Valorite,  CraftResource.Valorite, typeof(ValoriteIngot),  typeof(ValoriteOre), typeof(ValoriteGranite)),
+            new CraftResourceInfo(0x8AB, 1053101, "Valorite", CraftAttributeInfo.Valorite,  CraftResource.Valorite, typeof(ValoriteIngot),  typeof(ValoriteOre), typeof(ValoriteGranite))
         };
 
-        private static readonly CraftResourceInfo[] m_ScaleInfo = new[]
+        private static readonly CraftResourceInfo[] m_ScaleInfo =
         {
             new CraftResourceInfo(0x66D, 1053129, "Red Scales", CraftAttributeInfo.RedScales, CraftResource.RedScales, typeof(RedScales)),
             new CraftResourceInfo(0x8A8, 1053130, "Yellow Scales",  CraftAttributeInfo.YellowScales,    CraftResource.YellowScales, typeof(YellowScales)),
             new CraftResourceInfo(0x455, 1053131, "Black Scales",   CraftAttributeInfo.BlackScales, CraftResource.BlackScales, typeof(BlackScales)),
             new CraftResourceInfo(0x851, 1053132, "Green Scales",   CraftAttributeInfo.GreenScales, CraftResource.GreenScales, typeof(GreenScales)),
             new CraftResourceInfo(0x8FD, 1053133, "White Scales",   CraftAttributeInfo.WhiteScales, CraftResource.WhiteScales, typeof(WhiteScales)),
-            new CraftResourceInfo(0x8B0, 1053134, "Blue Scales",    CraftAttributeInfo.BlueScales, CraftResource.BlueScales, typeof(BlueScales)),
+            new CraftResourceInfo(0x8B0, 1053134, "Blue Scales",    CraftAttributeInfo.BlueScales, CraftResource.BlueScales, typeof(BlueScales))
         };
 
-        private static readonly CraftResourceInfo[] m_AOSLeatherInfo = new[]
+        private static readonly CraftResourceInfo[] m_AOSLeatherInfo =
         {
             new CraftResourceInfo(0x000, 1049353, "Normal", CraftAttributeInfo.Blank, CraftResource.RegularLeather, typeof(Leather), typeof(Hides)),
             new CraftResourceInfo(0x8AC, 1049354, "Spined", CraftAttributeInfo.Spined, CraftResource.SpinedLeather, typeof(SpinedLeather),  typeof(SpinedHides)),
             new CraftResourceInfo(0x845, 1049355, "Horned", CraftAttributeInfo.Horned, CraftResource.HornedLeather, typeof(HornedLeather),  typeof(HornedHides)),
-            new CraftResourceInfo(0x851, 1049356, "Barbed", CraftAttributeInfo.Barbed, CraftResource.BarbedLeather, typeof(BarbedLeather),  typeof(BarbedHides)),
+            new CraftResourceInfo(0x851, 1049356, "Barbed", CraftAttributeInfo.Barbed, CraftResource.BarbedLeather, typeof(BarbedLeather),  typeof(BarbedHides))
         };
 
-        private static readonly CraftResourceInfo[] m_WoodInfo = new[]
+        private static readonly CraftResourceInfo[] m_WoodInfo =
         {
             new CraftResourceInfo(0x000, 1011542, "Normal", CraftAttributeInfo.Blank, CraftResource.RegularWood,    typeof(Log), typeof(Board)),
             new CraftResourceInfo(0x7DA, 1072533, "Oak", CraftAttributeInfo.OakWood, CraftResource.OakWood, typeof(OakLog), typeof(OakBoard)),
@@ -583,7 +579,7 @@ namespace Server.Items
             new CraftResourceInfo(0x4A8, 1072535, "Yew", CraftAttributeInfo.YewWood, CraftResource.YewWood, typeof(YewLog), typeof(YewBoard)),
             new CraftResourceInfo(0x4A9, 1072536, "Heartwood", CraftAttributeInfo.Heartwood,    CraftResource.Heartwood,    typeof(HeartwoodLog),   typeof(HeartwoodBoard)),
             new CraftResourceInfo(0x4AA, 1072538, "Bloodwood", CraftAttributeInfo.Bloodwood,    CraftResource.Bloodwood,    typeof(BloodwoodLog),   typeof(BloodwoodBoard)),
-            new CraftResourceInfo(0x47F, 1072539, "Frostwood", CraftAttributeInfo.Frostwood,    CraftResource.Frostwood,    typeof(FrostwoodLog),   typeof(FrostwoodBoard)),
+            new CraftResourceInfo(0x47F, 1072539, "Frostwood", CraftAttributeInfo.Frostwood,    CraftResource.Frostwood,    typeof(FrostwoodLog),   typeof(FrostwoodBoard))
         };
 
         /// <summary>
@@ -591,7 +587,7 @@ namespace Server.Items
         /// </summary>
         public static bool IsStandard(CraftResource resource)
         {
-            return (resource == CraftResource.None || resource == CraftResource.Iron || resource == CraftResource.RegularLeather || resource == CraftResource.RegularWood);
+            return resource == CraftResource.None || resource == CraftResource.Iron || resource == CraftResource.RegularLeather || resource == CraftResource.RegularWood;
         }
 
         private static Hashtable m_TypeTable;
@@ -717,7 +713,7 @@ namespace Server.Items
         {
             CraftResourceInfo info = GetInfo(resource);
 
-            return (info == null ? 0 : info.Number);
+            return info == null ? 0 : info.Number;
         }
 
         /// <summary>
@@ -727,7 +723,7 @@ namespace Server.Items
         {
             CraftResourceInfo info = GetInfo(resource);
 
-            return (info == null ? 0 : info.Hue);
+            return info == null ? 0 : info.Hue;
         }
 
         /// <summary>
@@ -737,7 +733,7 @@ namespace Server.Items
         {
             CraftResourceInfo info = GetInfo(resource);
 
-            return (info == null ? string.Empty : info.Name);
+            return info == null ? string.Empty : info.Name;
         }
 
         /// <summary>
@@ -747,30 +743,30 @@ namespace Server.Items
         {
             if (info.Name.IndexOf("Spined") >= 0)
                 return CraftResource.SpinedLeather;
-            else if (info.Name.IndexOf("Horned") >= 0)
+            if (info.Name.IndexOf("Horned") >= 0)
                 return CraftResource.HornedLeather;
-            else if (info.Name.IndexOf("Barbed") >= 0)
+            if (info.Name.IndexOf("Barbed") >= 0)
                 return CraftResource.BarbedLeather;
-            else if (info.Name.IndexOf("Leather") >= 0)
+            if (info.Name.IndexOf("Leather") >= 0)
                 return CraftResource.RegularLeather;
 
             if (info.Level == 0)
                 return CraftResource.Iron;
-            else if (info.Level == 1)
+            if (info.Level == 1)
                 return CraftResource.DullCopper;
-            else if (info.Level == 2)
+            if (info.Level == 2)
                 return CraftResource.ShadowIron;
-            else if (info.Level == 3)
+            if (info.Level == 3)
                 return CraftResource.Copper;
-            else if (info.Level == 4)
+            if (info.Level == 4)
                 return CraftResource.Bronze;
-            else if (info.Level == 5)
+            if (info.Level == 5)
                 return CraftResource.Gold;
-            else if (info.Level == 6)
+            if (info.Level == 6)
                 return CraftResource.Agapite;
-            else if (info.Level == 7)
+            if (info.Level == 7)
                 return CraftResource.Verite;
-            else if (info.Level == 8)
+            if (info.Level == 8)
                 return CraftResource.Valorite;
 
             return CraftResource.None;
@@ -786,11 +782,11 @@ namespace Server.Items
             {
                 if (info.Level == 0)
                     return CraftResource.RegularLeather;
-                else if (info.Level == 1)
+                if (info.Level == 1)
                     return CraftResource.SpinedLeather;
-                else if (info.Level == 2)
+                if (info.Level == 2)
                     return CraftResource.HornedLeather;
-                else if (info.Level == 3)
+                if (info.Level == 3)
                     return CraftResource.BarbedLeather;
 
                 return CraftResource.None;

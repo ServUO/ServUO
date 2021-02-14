@@ -133,8 +133,8 @@ namespace Server.Items
 
         private static void EndDelay_Callback(object obj)
         {
-            if (obj is Mobile)
-                EndDelay((Mobile)obj);
+            if (obj is Mobile mobile)
+                EndDelay(mobile);
         }
 
         public static void EndDelay(Mobile m)
@@ -184,8 +184,8 @@ namespace Server.Items
 
                 IEntity to;
 
-                if (p is Mobile)
-                    to = (Mobile)p;
+                if (p is Mobile mobile)
+                    to = mobile;
                 else
                     to = new Entity(Serial.Zero, new Point3D(p), from.Map);
 

@@ -34,7 +34,7 @@ namespace Server.SkillHandlers
 
         public static bool UnderEffects(Mobile m)
         {
-            return m is BaseCreature && ((BaseCreature)m).BardPacified;
+            return m is BaseCreature bc && bc.BardPacified;
         }
 
         public class InternalTarget : Target
@@ -74,8 +74,8 @@ namespace Server.SkillHandlers
 
                     int masteryBonus = 0;
 
-                    if (from is PlayerMobile)
-                        masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus((PlayerMobile)from, SkillName.Peacemaking);
+                    if (from is PlayerMobile mobile)
+                        masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus(mobile, SkillName.Peacemaking);
 
                     if (targeted == from)
                     {
@@ -86,7 +86,7 @@ namespace Server.SkillHandlers
                             m_Instrument.PlayInstrumentBadly(from);
                             m_Instrument.ConsumeUse(from);
 
-                            from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
+                            from.NextSkillTime = Core.TickCount + (10000 - masteryBonus / 5 * 1000);
                         }
                         else if (!from.CheckSkill(SkillName.Peacemaking, 0.0, 120.0))
                         {
@@ -94,7 +94,7 @@ namespace Server.SkillHandlers
                             m_Instrument.PlayInstrumentBadly(from);
                             m_Instrument.ConsumeUse(from);
 
-                            from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
+                            from.NextSkillTime = Core.TickCount + (10000 - masteryBonus / 5 * 1000);
                         }
                         else
                         {
@@ -113,8 +113,7 @@ namespace Server.SkillHandlers
 
                                 foreach (Mobile m in eable)
                                 {
-                                    if ((m is BaseCreature && ((BaseCreature)m).Uncalmable) ||
-                                        (m is BaseCreature && ((BaseCreature)m).AreaPeaceImmune) || m == from || !from.CanBeHarmful(m, false, false, true))
+                                    if (m is BaseCreature creature && creature.Uncalmable || m is BaseCreature bc && bc.AreaPeaceImmune || m == from || !from.CanBeHarmful(m, false, false, true))
                                     {
                                         continue;
                                     }
@@ -125,9 +124,9 @@ namespace Server.SkillHandlers
                                     m.Combatant = null;
                                     m.Warmode = false;
 
-                                    if (m is BaseCreature && !((BaseCreature)m).BardPacified)
+                                    if (m is BaseCreature baseCreature && !baseCreature.BardPacified)
                                     {
-                                        ((BaseCreature)m).Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(1.0));
+                                        baseCreature.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(1.0));
                                     }
                                 }
                                 eable.Free();
@@ -153,12 +152,12 @@ namespace Server.SkillHandlers
                             from.SendLocalizedMessage(1049528);
                             m_SetSkillTime = true;
                         }
-                        else if (targ is BaseCreature && ((BaseCreature)targ).Uncalmable)
+                        else if (targ is BaseCreature creature && creature.Uncalmable)
                         {
                             from.SendLocalizedMessage(1049526); // You have no chance of calming that creature.
                             m_SetSkillTime = true;
                         }
-                        else if (targ is BaseCreature && ((BaseCreature)targ).BardPacified)
+                        else if (targ is BaseCreature baseCreature && baseCreature.BardPacified)
                         {
                             from.SendLocalizedMessage(1049527); // That creature is already being calmed.
                             m_SetSkillTime = true;
@@ -181,7 +180,7 @@ namespace Server.SkillHandlers
                             }
 
                             if (masteryBonus > 0)
-                                diff -= (diff * ((double)masteryBonus / 100));
+                                diff -= diff * ((double)masteryBonus / 100);
 
                             if (!from.CheckTargetSkill(SkillName.Peacemaking, targ, diff - 25.0, diff + 25.0))
                             {
@@ -189,25 +188,23 @@ namespace Server.SkillHandlers
                                 m_Instrument.PlayInstrumentBadly(from);
                                 m_Instrument.ConsumeUse(from);
 
-                                from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
+                                from.NextSkillTime = Core.TickCount + (10000 - masteryBonus / 5 * 1000);
                             }
                             else
                             {
                                 m_Instrument.PlayInstrumentWell(from);
                                 m_Instrument.ConsumeUse(from);
 
-                                from.NextSkillTime = Core.TickCount + (5000 - ((masteryBonus / 5) * 1000));
+                                from.NextSkillTime = Core.TickCount + (5000 - masteryBonus / 5 * 1000);
 
-                                if (targ is BaseCreature)
+                                if (targ is BaseCreature bc)
                                 {
-                                    BaseCreature bc = (BaseCreature)targ;
-
                                     from.SendLocalizedMessage(1049532); // You play hypnotic music, calming your target.
 
-                                    targ.Combatant = null;
-                                    targ.Warmode = false;
+                                    bc.Combatant = null;
+                                    bc.Warmode = false;
 
-                                    double seconds = 100 - (diff / 1.5);
+                                    double seconds = 100 - diff / 1.5;
 
                                     if (seconds > 120)
                                     {
@@ -220,10 +217,9 @@ namespace Server.SkillHandlers
 
                                     bc.Pacify(from, DateTime.UtcNow + TimeSpan.FromSeconds(seconds));
 
-                                    #region Bard Mastery Quest
-                                    if (from is PlayerMobile)
+                                    if (from is PlayerMobile playerMobile)
                                     {
-                                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(TheBeaconOfHarmonyQuest));
+                                        BaseQuest quest = QuestHelper.GetQuest(playerMobile, typeof(TheBeaconOfHarmonyQuest));
 
                                         if (quest != null)
                                         {
@@ -231,7 +227,6 @@ namespace Server.SkillHandlers
                                                 objective.Update(bc);
                                         }
                                     }
-                                    #endregion
                                 }
                                 else
                                 {

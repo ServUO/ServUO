@@ -189,6 +189,7 @@ namespace Server.Engines.UOStore
 
             // decorations
             cat = StoreCategory.Decorations;
+            Register<DecorativeMagesSet>(1159521, 1159524, 0, 0x9D42, 0, 1200, cat);
             Register<DecorativeGardenSculpture>(1159464, 1159465, 0xA565, 0, 0, 400, cat);
             Register<WineRack>(1159462, 1159463, 0xA568, 0, 0, 400, cat);
             Register<SpiralStaircaseDeed>(1159480, 1159481, 0, 0x9D41, 0, 1000, cat);
@@ -336,8 +337,7 @@ namespace Server.Engines.UOStore
             Register<WeddingChest>(1157895, 1157896, 0, 0x9CCC, 0, 500, cat);
             Register<BagOfBulkOrderCovers>(1071116, 1157603, 0, 0x9CC6, 0, 200, cat, ConstructBOBCoverOne);
 
-            //TODO: TotemOfChromaticFortune, 
-
+            Register<TotemOfChromaticFortune>(1157606, 1157604, 0, 0x9CC9, 0, 300, cat);
             Register<PetBrandingIron>(1157314, 1157372, 0, 0x9CC3, 0, 600, cat);
             Register<WeddingPackageAddonToken>(1157342, 1157371, 0, 0x9CC5, 0, 900, cat);
             Register<WeddingPackageToken>(1157339, 1157370, 0, 0x9CC4, 0, 2900, cat);

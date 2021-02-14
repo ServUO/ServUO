@@ -72,7 +72,7 @@ namespace Server.Items
         public int Hue => m_Hue;
         public Type Type => m_Type;
         public object LabelNumber => m_Label;
-        public object Location { get { return m_Location; } set { m_Location = value; } }
+        public object Location { get => m_Location; set => m_Location = value; }
         public bool RequiresDeepWater => m_RequiresDeepWater;
         public double BaseChance => m_BaseChance;
         public double MinSkill => m_MinSkill;
@@ -102,10 +102,8 @@ namespace Server.Items
 
             foreach (FishInfo info in m_FishInfos)
             {
-                if (info.Location is string)
+                if (info.Location is string str)
                 {
-                    string str = info.Location as string;
-
                     if (str == "Trammel")
                     {
                         info.Location = Map.Trammel;
@@ -307,14 +305,12 @@ namespace Server.Items
             {
                 var info = m_FishInfos[i];
 
-                if (info.Location is string)
+                if (info.Location is string stringLoc)
                 {
-                    string loc = (string)info.Location;
-
-                    if (loc.ToLower() == "cannotfishup")
+                    if (stringLoc.ToLower() == "cannotfishup")
                         continue;
 
-                    switch (loc)
+                    switch (stringLoc)
                     {
                         case "T2A":
                             if (SpellHelper.IsAnyT2A(fisherMap, fisherLoc))
@@ -335,14 +331,14 @@ namespace Server.Items
                             }
                             break;
                         default:
-                            if (Region.Find(fisherLoc, fisherMap).IsPartOf(loc))
+                            if (Region.Find(fisherLoc, fisherMap).IsPartOf(stringLoc))
                             {
                                 list.Add(info);
                             }
                             break;
                     }
                 }
-                else if (info.Location is Map && fisherMap == (Map)info.Location)
+                else if (info.Location is Map map && fisherMap == map)
                 {
                     list.Add(info);
                 }
@@ -362,22 +358,22 @@ namespace Server.Items
             {
                 Item item = from.Items[i];
 
-                if (item is IFishingAttire)
+                if (item is IFishingAttire attire)
                 {
-                    if (item is ISetItem)
+                    if (attire is ISetItem setItem)
                     {
-                        if (((ISetItem)item).SetEquipped)
+                        if (setItem.SetEquipped)
                         {
-                            str += ((double)((IFishingAttire)item).SetBonus / 100) / ((ISetItem)item).Pieces;
+                            str += ((double)attire.SetBonus / 100) / setItem.Pieces;
                         }
                         else
                         {
-                            str += (double)((IFishingAttire)item).BaitBonus / 100;
+                            str += (double)attire.BaitBonus / 100;
                         }
                     }
                     else
                     {
-                        str += (double)((IFishingAttire)item).BaitBonus / 100;
+                        str += (double)attire.BaitBonus / 100;
                     }
                 }
             }
@@ -439,16 +435,15 @@ namespace Server.Items
 
         public static bool IsGravewaterLake(Point3D p, Map map)
         {
-            return map == Map.Malas && ((p.X >= 1440 && p.X <= 1863 && p.Y >= 1527 && p.Y <= 1746) || (p.X >= 1381 && p.X <= 1596 && p.Y >= 1565 && p.Y <= 1789));
+            return map == Map.Malas && (p.X >= 1440 && p.X <= 1863 && p.Y >= 1527 && p.Y <= 1746 || p.X >= 1381 && p.X <= 1596 && p.Y >= 1565 && p.Y <= 1789);
         }
 
         public static Type[] SOSArtifacts => m_SOSArtifacts;
-        private static readonly Type[] m_SOSArtifacts = new Type[]
+        private static readonly Type[] m_SOSArtifacts =
         {
             typeof(AntiqueWeddingDress), typeof(GrapeVine),
             typeof(KelpWovenLeggings),   typeof(LargeFishingNet),
             typeof(RunedDriftwoodBow),   typeof(ValkyrieArmor)
         };
-
     }
 }

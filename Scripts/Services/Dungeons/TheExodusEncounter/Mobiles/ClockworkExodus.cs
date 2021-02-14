@@ -7,18 +7,14 @@ namespace Server.Mobiles
     [CorpseName("a vile corpse")]
     public class ClockworkExodus : BaseCreature
     {
-        public static int m_MinHits;
+        public int m_MinHits;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MinHits
-        {
-            get { return m_MinHits; }
-            set { m_MinHits = value; }
-        }
+        public int MinHits { get => m_MinHits; set => m_MinHits = value; }
 
         public static List<ClockworkExodus> Instances { get; set; }
 
-        private static readonly Type[] m_Artifact = new Type[]
+        private static readonly Type[] m_Artifact =
         {
             typeof(ScrollofValiantCommendation),
             typeof(BracersofAlchemicalDevastation),
@@ -225,15 +221,15 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
+
             writer.Write(m_MinHits);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_MinHits = reader.ReadInt();
 

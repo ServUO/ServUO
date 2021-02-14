@@ -80,24 +80,26 @@ namespace Server.Items
                 return false;
 
             if (ItemID == 0x2375)
+            {
                 return BaseAddon.IsWall(p.X, p.Y - 1, p.Z, map); // North wall
-            else
-                return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
+            }
+
+            return BaseAddon.IsWall(p.X - 1, p.Y, p.Z, map); // West wall
         }
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(Location, 3))
+            if (m is PlayerMobile mobile && mobile.InRange(Location, 3))
             {
-                BaseHouse house = BaseHouse.FindHouseAt(m);
+                BaseHouse house = BaseHouse.FindHouseAt(mobile);
 
-                if (house != null && house.HasSecureAccess(m, Level))
+                if (house != null && house.HasSecureAccess(mobile, Level))
                 {
-                    m.CloseGump(typeof(WallSafeGump));
-                    m.SendGump(new WallSafeGump((PlayerMobile)m, this));
+                    mobile.CloseGump(typeof(WallSafeGump));
+                    mobile.SendGump(new WallSafeGump(mobile, this));
                 }
                 else
-                    m.SendLocalizedMessage(1061637); // You are not allowed to access this.
+                    mobile.SendLocalizedMessage(1061637); // You are not allowed to access this.
             }
         }
 
@@ -120,7 +122,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(Owner);
@@ -136,8 +137,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Owner = reader.ReadMobile();
             HoldAmount = reader.ReadInt();
@@ -173,9 +173,8 @@ namespace Server.Items
             {
                 m.BeginTarget(8, false, Targeting.TargetFlags.None, (from, targeted) =>
                     {
-                        if (targeted is IPoint3D)
+                        if (targeted is IPoint3D p)
                         {
-                            IPoint3D p = targeted as IPoint3D;
                             BaseHouse house = BaseHouse.FindHouseAt(new Point3D(p), m.Map, 16);
 
                             if (house != null && BaseHouse.FindHouseAt(m) == house && house.IsCoOwner(m))
@@ -236,15 +235,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 

@@ -1,4 +1,4 @@
-﻿namespace Server.Items
+namespace Server.Items
 {
     public class Skeletonkey : Lockpick
     {
@@ -10,7 +10,7 @@
         private int m_Uses;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Uses { get { return m_Uses; } set { m_Uses = value; InvalidateProperties(); if (m_Uses <= 0) Delete(); } }
+        public int Uses { get => m_Uses; set { m_Uses = value; InvalidateProperties(); if (m_Uses <= 0) Delete(); } }
 
         [Constructable]
         public Skeletonkey() : base(1)
@@ -41,13 +41,15 @@
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Uses);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Uses = reader.ReadInt();
         }
     }

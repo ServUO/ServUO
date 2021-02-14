@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using Server.Spells.Ninjitsu;
 using System;
 
@@ -33,11 +33,11 @@ namespace Server.Items
         {
             if (type == typeof(Squirrel))
                 return m.Talisman is SquirrelFormTalisman;
-            else if (type == typeof(Ferret))
+            if (type == typeof(Ferret))
                 return m.Talisman is FerretFormTalisman;
-            else if (type == typeof(CuSidhe))
+            if (type == typeof(CuSidhe))
                 return m.Talisman is CuSidheFormTalisman;
-            else if (type == typeof(Reptalon))
+            if (type == typeof(Reptalon))
                 return m.Talisman is ReptalonFormTalisman;
 
             return true;
@@ -57,17 +57,15 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
 
         public override void OnRemoved(object parent)
         {
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 AnimalForm.RemoveContext(m, true);
             }
         }
@@ -79,7 +77,6 @@ namespace Server.Items
 
         [Constructable]
         public FerretFormTalisman()
-            : base()
         {
         }
 
@@ -97,7 +94,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -107,7 +104,6 @@ namespace Server.Items
 
         [Constructable]
         public SquirrelFormTalisman()
-            : base()
         {
         }
 
@@ -125,7 +121,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -135,7 +131,6 @@ namespace Server.Items
 
         [Constructable]
         public CuSidheFormTalisman()
-            : base()
         {
         }
 
@@ -153,7 +148,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -163,7 +158,6 @@ namespace Server.Items
 
         [Constructable]
         public ReptalonFormTalisman()
-            : base()
         {
         }
 
@@ -181,7 +175,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

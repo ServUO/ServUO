@@ -94,8 +94,10 @@ namespace Server.Mobiles
 
         private void EndParalyze_Callback(object state)
         {
-            if (state is Mobile)
-                ParalyzeEnd((Mobile)state);
+            if (state is Mobile mobile)
+            {
+                ParalyzeEnd(mobile);
+            }
         }
 
         public virtual void ParalyzeEnd(Mobile from)
@@ -141,10 +143,8 @@ namespace Server.Mobiles
 
         private void Terrorize(object o)
         {
-            if (o is Mobile)
+            if (o is Mobile m)
             {
-                Mobile m = (Mobile)o;
-
                 m.Frozen = false;
                 m.SendLocalizedMessage(1005603); // You can move again!
 
@@ -177,7 +177,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

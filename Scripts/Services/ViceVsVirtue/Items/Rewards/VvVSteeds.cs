@@ -69,7 +69,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             SteedType = (SteedType)reader.ReadInt();
         }
@@ -82,7 +82,7 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public int BattleReadiness
         {
-            get { return _Readiness; }
+            get => _Readiness;
             set
             {
                 int old = _Readiness;
@@ -264,10 +264,8 @@ namespace Server.Engines.VvV
                 {
                     return FoodType.Meat | FoodType.Fish | FoodType.Eggs | FoodType.FruitsAndVegies;
                 }
-                else
-                {
-                    return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
-                }
+
+                return FoodType.FruitsAndVegies | FoodType.GrainsAndHay;
             }
         }
 
@@ -287,7 +285,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Readiness = reader.ReadInt();
             NextReadinessAtrophy = reader.ReadDateTime();
@@ -310,7 +308,7 @@ namespace Server.Engines.VvV
 
                 steeds.ForEach(s =>
                 {
-                    if ((s.Map != Map.Internal || (s.Rider != null && s.Rider.Map != Map.Internal)) && s.NextReadinessAtrophy < DateTime.UtcNow)
+                    if ((s.Map != Map.Internal || s.Rider != null && s.Rider.Map != Map.Internal) && s.NextReadinessAtrophy < DateTime.UtcNow)
                     {
                         s.BattleReadiness--;
 

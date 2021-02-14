@@ -52,7 +52,7 @@ namespace Server.Spells.SkillMasteries
         {
             BaseWeapon weapon = GetWeapon();
 
-            if (weapon is BaseRanged && !(weapon is BaseThrown))
+            if (weapon is BaseRanged ranged && !(ranged is BaseThrown))
             {
                 IPoint3D p = o as IPoint3D;
 
@@ -63,9 +63,9 @@ namespace Server.Spells.SkillMasteries
 
                     foreach (Mobile mob in targets)
                     {
-                        Caster.MovingEffect(mob, ((BaseRanged)weapon).EffectID, 18, 1, false, false);
+                        Caster.MovingEffect(mob, ranged.EffectID, 18, 1, false, false);
 
-                        if (weapon.CheckHit(Caster, mob))
+                        if (ranged.CheckHit(Caster, mob))
                         {
                             double damage = GetNewAosDamage(40, 1, 5, mob);
 
@@ -90,7 +90,7 @@ namespace Server.Spells.SkillMasteries
 
                     ColUtility.Free(targets);
 
-                    weapon.PlaySwingAnimation(Caster);
+                    ranged.PlaySwingAnimation(Caster);
                     Caster.PlaySound(0x101);
                 }
             }

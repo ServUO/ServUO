@@ -65,9 +65,9 @@ namespace Server.Mobiles
 
         public void AuraEffect(Mobile m)
         {
-            if (m is PlayerMobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
+            if (m is PlayerMobile mobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects(mobile, true))
             {
-                m.SayTo(m, 1158288, 1154); // *You resist Cora's attack!*
+                mobile.SayTo(mobile, 1158288, 1154); // *You resist Cora's attack!*
             }
             else
             {
@@ -185,7 +185,7 @@ namespace Server.Mobiles
             for (int i = 0; i < path.Directions.Length; ++i)
             {
                 Movement.Movement.Offset(path.Directions[i], ref x, ref y);
-                IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y)) as IPoint3D;
+                IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y));
 
                 Timer.DelayCall(TimeSpan.FromMilliseconds(time), new TimerStateCallback(ManaDrainEffects_Callback), new object[] { p, Map });
 
@@ -197,7 +197,6 @@ namespace Server.Mobiles
         {
             object[] objs = o as object[];
             IPoint3D p = objs[0] as IPoint3D;
-            Map map = objs[1] as Map;
 
             ManaDrainItem item = new ManaDrainItem(Utility.RandomList(6913, 6915, 6917, 6919), this);
             Spells.SpellHelper.GetSurfaceTop(ref p);
@@ -208,7 +207,7 @@ namespace Server.Mobiles
         private class ManaDrainItem : Item
         {
             public Item Static { get; private set; }
-            public Mobile Owner { get; private set; }
+            public Mobile Owner { get; }
 
             public ManaDrainItem(int id, Mobile owner) : base(id)
             {
@@ -252,11 +251,11 @@ namespace Server.Mobiles
 
             public override bool OnMoveOver(Mobile m)
             {
-                if ((m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)) && m.CanBeHarmful(Owner, false))
+                if ((m is PlayerMobile || m is BaseCreature bc && !bc.IsMonster) && m.CanBeHarmful(Owner, false))
                 {
-                    if (m is PlayerMobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects((PlayerMobile)m, true))
+                    if (m is PlayerMobile mobile && Services.TownCryer.TownCryerSystem.UnderMysteriousPotionEffects(mobile, true))
                     {
-                        m.SayTo(m, 1158288, 1154); // *You resist Cora's attack!*
+                        mobile.SayTo(mobile, 1158288, 1154); // *You resist Cora's attack!*
                     }
                     else
                     {
@@ -284,7 +283,7 @@ namespace Server.Mobiles
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 Static = reader.ReadItem();
 
@@ -324,9 +323,9 @@ namespace Server.Mobiles
         {
             base.OnKilledBy(mob);
 
-            if (Siege.SiegeShard && mob is PlayerMobile)
+            if (Siege.SiegeShard && mob is PlayerMobile mobile)
             {
-                int chance = Engines.Despise.DespiseBoss.ArtifactChance + Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+                int chance = Engines.Despise.DespiseBoss.ArtifactChance + Math.Min(10, mobile.Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {
@@ -338,15 +337,15 @@ namespace Server.Mobiles
 
                         if (arty != null)
                         {
-                            Container pack = mob.Backpack;
+                            Container pack = mobile.Backpack;
 
-                            if (pack == null || !pack.TryDropItem(mob, arty, false))
+                            if (pack == null || !pack.TryDropItem(mobile, arty, false))
                             {
-                                mob.BankBox.DropItem(arty);
-                                mob.SendMessage("An artifact has been placed in your bankbox!");
+                                mobile.BankBox.DropItem(arty);
+                                mobile.SendMessage("An artifact has been placed in your bankbox!");
                             }
                             else
-                                mob.SendLocalizedMessage(1153440); // An artifact has been placed in your backpack!
+                                mobile.SendLocalizedMessage(1153440); // An artifact has been placed in your backpack!
                         }
                     }
                 }
@@ -367,7 +366,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

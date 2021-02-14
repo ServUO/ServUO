@@ -29,38 +29,20 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int MinDamage
         {
-            get
-            {
-                return m_MinDamage;
-            }
-            set
-            {
-                m_MinDamage = value;
-            }
+            get => m_MinDamage;
+            set => m_MinDamage = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual int MaxDamage
         {
-            get
-            {
-                return m_MaxDamage;
-            }
-            set
-            {
-                m_MaxDamage = value;
-            }
+            get => m_MaxDamage;
+            set => m_MaxDamage = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual bool WarningFlame
         {
-            get
-            {
-                return m_WarningFlame;
-            }
-            set
-            {
-                m_WarningFlame = value;
-            }
+            get => m_WarningFlame;
+            set => m_WarningFlame = value;
         }
         public override void OnTrigger(Mobile from)
         {

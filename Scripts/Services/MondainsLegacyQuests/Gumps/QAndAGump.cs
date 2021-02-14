@@ -22,9 +22,9 @@ namespace Server.Gumps
 
             foreach (BaseObjective objective in quest.Objectives)
             {
-                if (objective is QuestionAndAnswerObjective)
+                if (objective is QuestionAndAnswerObjective answerObjective)
                 {
-                    m_Objective = (QuestionAndAnswerObjective)objective;
+                    m_Objective = answerObjective;
                     break;
                 }
             }
@@ -57,8 +57,8 @@ namespace Server.Gumps
 
                 AddButton(49, 104 + (i * 40), 2224, 2224, selection == answer ? 1 : 0, GumpButtonType.Reply, 0);
 
-                if (selection is int)
-                    AddHtmlLocalized(80, 102 + (i * 40), 200, 18, (int)selection, 0x0, false, false);
+                if (selection is int iSelection)
+                    AddHtmlLocalized(80, 102 + (i * 40), 200, 18, iSelection, 0x0, false, false);
                 else
                     AddHtml(80, 102 + (i * 40), 200, 18, string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", FontColor, selection), false, false);
             }

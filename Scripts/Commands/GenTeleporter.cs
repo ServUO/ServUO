@@ -7,10 +7,10 @@ namespace Server.Commands
 {
     class Location : IComparable
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
-        public Map Map { get; set; }
+        public int X { get; }
+        public int Y { get; }
+        public int Z { get; }
+        public Map Map { get; }
 
         public Location(int x, int y, int z, Map m)
         {
@@ -44,7 +44,7 @@ namespace Server.Commands
 
         public override bool Equals(object o)
         {
-            return o is Location && ((Location)o).X == X && ((Location)o).Y == Y && ((Location)o).Z == Z && ((Location)o).Map == Map;
+            return o is Location location && location.X == X && location.Y == Y && location.Z == Z && location.Map == Map;
         }
     }
     class TelDef

@@ -50,7 +50,7 @@ namespace Server.Items
                 from.SendLocalizedMessage(1149795); //You may not dock a ship while on another ship or inside a house.
             else if (Boat == boat && !MoveToNearestDockOrLand(from))
                 from.SendLocalizedMessage(1149796); //You can not dock a ship this far out to sea. You must be near land or shallow water.
-            else if (boat == null || boat != null && Boat != boat)
+            else if (boat == null || Boat != boat)
             {
                 if (Boat.HasAccess(from))
                     canMove = true;
@@ -79,7 +79,7 @@ namespace Server.Items
 
         public bool MoveToNearestDockOrLand(Mobile from)
         {
-            if ((Boat != null && !Boat.Contains(from)) || !ValidateDockOrLand())
+            if (Boat != null && !Boat.Contains(from) || !ValidateDockOrLand())
                 return false;
 
             Map map = Map;
@@ -165,11 +165,11 @@ namespace Server.Items
             //Gets highest tile, which will be used to determine if we can walk on it.
             foreach (StaticTile tile in staticTiles)
             {
-                if (highest == null || (highest is StaticTile && tile.Z + tile.Height > ((StaticTile)highest).Z + ((StaticTile)highest).Height))
+                if (highest == null || tile.Z + tile.Height > ((StaticTile)highest).Z + ((StaticTile)highest).Height)
                     highest = tile;
             }
 
-            if (highest != null && highest is StaticTile)
+            if (highest != null)
             {
                 StaticTile st = (StaticTile)highest;
 
@@ -207,7 +207,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Boat = reader.ReadItem() as BaseBoat;
         }

@@ -162,23 +162,25 @@ namespace Server.Spells.SkillMasteries
         {
             if (IsPassiveMastery(spellID) || spellID == 733)
                 return 1;
-            else if (spellID <= 715)
+            if (spellID <= 715)
             {
                 if (spellID % 2 == 0)
                     return 3;
 
                 return 2;
             }
-            else if (spellID <= 731 || (spellID >= 736 && spellID <= 743))
+
+            if (spellID <= 731 || (spellID >= 736 && spellID <= 743))
             {
                 if (spellID % 2 == 0)
                     return 2;
 
                 return 3;
             }
-            else if (spellID == 734)
+
+            if (spellID == 734)
                 return 2;
-            else if (spellID == 735)
+            if (spellID == 735)
                 return 3;
 
             return 1;
@@ -263,13 +265,13 @@ namespace Server.Spells.SkillMasteries
                     ColUtility.Free(list);
                 }
 
-                if (m is PlayerMobile && oldMastery == SkillName.Necromancy)
+                if (m is PlayerMobile pm && oldMastery == SkillName.Necromancy)
                 {
-                    ((PlayerMobile)m).AllFollowers.IterateReverse(mob =>
+                    pm.AllFollowers.IterateReverse(mob =>
                     {
-                        if (mob is BaseCreature && CommandUndeadSpell.ValidateTarget((BaseCreature)mob))
+                        if (mob is BaseCreature bc && CommandUndeadSpell.ValidateTarget(bc))
                         {
-                            ((BaseCreature)mob).SetControlMaster(null);
+                            bc.SetControlMaster(null);
                         }
                     });
                 }

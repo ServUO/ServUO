@@ -13,9 +13,9 @@ namespace Server.Engines.Plants
 
         protected override void OnTarget(Mobile from, object targeted)
         {
-            if (!m_Plant.Deleted && from.InRange(m_Plant.GetWorldLocation(), 3) && targeted is Item)
+            if (!m_Plant.Deleted && from.InRange(m_Plant.GetWorldLocation(), 3) && targeted is Item item)
             {
-                m_Plant.Pour(from, (Item)targeted);
+                m_Plant.Pour(from, item);
             }
         }
 

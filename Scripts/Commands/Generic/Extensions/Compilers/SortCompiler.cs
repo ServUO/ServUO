@@ -12,46 +12,25 @@ namespace Server.Commands.Generic
 
         public Property Property
         {
-            get
-            {
-                return m_Property;
-            }
-            set
-            {
-                m_Property = value;
-            }
+            get => m_Property;
+            set => m_Property = value;
         }
 
         public bool IsAscending
         {
-            get
-            {
-                return (m_Order > 0);
-            }
-            set
-            {
-                m_Order = (value ? +1 : -1);
-            }
+            get => m_Order > 0;
+            set => m_Order = value ? +1 : -1;
         }
 
         public bool IsDescending
         {
-            get
-            {
-                return (m_Order < 0);
-            }
-            set
-            {
-                m_Order = (value ? -1 : +1);
-            }
+            get => m_Order < 0;
+            set => m_Order = value ? -1 : +1;
         }
 
         public int Sign
         {
-            get
-            {
-                return Math.Sign(m_Order);
-            }
+            get => Math.Sign(m_Order);
             set
             {
                 m_Order = Math.Sign(value);
@@ -109,7 +88,7 @@ namespace Server.Commands.Generic
                     /*  name  */ "Compare",
                     /*  attr  */ MethodAttributes.Public | MethodAttributes.Virtual,
                     /* return */ typeof(int),
-                    /* params */ new Type[] { typeof(object), typeof(object) });
+                    /* params */ new[] { typeof(object), typeof(object) });
 
                 LocalBuilder a = emitter.CreateLocal(objectType);
                 LocalBuilder b = emitter.CreateLocal(objectType);
@@ -146,7 +125,7 @@ namespace Server.Commands.Generic
                     emitter.Chain(prop);
 
                     bool couldCompare =
-                        emitter.CompareTo(sign, delegate ()
+                        emitter.CompareTo(sign, delegate
                         {
                             emitter.LoadLocal(b);
                             emitter.Chain(prop);
@@ -167,7 +146,7 @@ namespace Server.Commands.Generic
                     emitter.Method,
                     typeof(IComparer).GetMethod(
                         "Compare",
-                        new Type[]
+                        new[]
                         {
                             typeof(object),
                             typeof(object)

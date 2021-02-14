@@ -58,7 +58,7 @@ namespace Server
 				return callback.Method.Name;
 			}
 
-			return String.Format("{0}.{1}", callback.Method.DeclaringType.FullName, callback.Method.Name);
+			return string.Format("{0}.{1}", callback.Method.DeclaringType.FullName, callback.Method.Name);
 		}
 
 		public static void DumpInfo(TextWriter tw)
@@ -135,70 +135,70 @@ namespace Server
 			private static readonly List<Timer>[] m_Timers =
 			{
 				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>(),
-				new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
+                new List<Timer>(), new List<Timer>(), new List<Timer>(), new List<Timer>()
 			};
 
-			private static readonly Dictionary<string, int>[] m_Dump = new Dictionary<string, int>[m_Timers.Length];
+            private static readonly Dictionary<string, int>[] m_Dump = new Dictionary<string, int>[m_Timers.Length];
 
-			private static DateTime m_Dumped;
+            private static DateTime m_Dumped;
 
-			public static void Dump(TextWriter tw)
-			{
-				var now = DateTime.UtcNow;
+            public static void Dump(TextWriter tw)
+            {
+                var now = DateTime.UtcNow;
 
-				tw.WriteLine($"Date: {now}");
+                tw.WriteLine($"Date: {now}");
 
-				if (m_Dumped > DateTime.MinValue)
-				{
-					tw.WriteLine($"Last: {m_Dumped}");
-					tw.WriteLine($"Span: {now - m_Dumped}");
-				}
+                if (m_Dumped > DateTime.MinValue)
+                {
+                    tw.WriteLine($"Last: {m_Dumped}");
+                    tw.WriteLine($"Span: {now - m_Dumped}");
+                }
 
-				tw.WriteLine();
-				tw.WriteLine();
+                tw.WriteLine();
+                tw.WriteLine();
 
-				for (var i = 0; i < m_Timers.Length; i++)
-				{
-					tw.WriteLine($"Priority: {(TimerPriority)i}");
-					tw.WriteLine();
+                for (var i = 0; i < m_Timers.Length; i++)
+                {
+                    tw.WriteLine($"Priority: {(TimerPriority)i}");
+                    tw.WriteLine();
 
-					var total = (double)m_Timers[i].Count;
+                    var total = (double)m_Timers[i].Count;
 
-					var timers = m_Timers[i].GroupBy(t => t.ToString()).ToDictionary(o => o.Key, o => o.Count());
+                    var timers = m_Timers[i].GroupBy(t => t.ToString()).ToDictionary(o => o.Key, o => o.Count());
 
-					foreach (var o in timers.OrderByDescending(o => o.Value))
-					{
-						var name = o.Key;
-						var count = o.Value;
-						var percent = count / total;
+                    foreach (var o in timers.OrderByDescending(o => o.Value))
+                    {
+                        var name = o.Key;
+                        var count = o.Value;
+                        var percent = count / total;
 
-						var line = $"{count:#,0} ({percent:P1})";
+                        var line = $"{count:#,0} ({percent:P1})";
 
-						if (m_Dump[i] != null && m_Dump[i].TryGetValue(o.Key, out var lastCount))
-						{
-							var diff = count - lastCount;
+                        if (m_Dump[i] != null && m_Dump[i].TryGetValue(o.Key, out var lastCount))
+                        {
+                            var diff = count - lastCount;
 
-							if (diff > 0)
-								line += $" [+{diff:#,0}]";
-							else if (diff < 0)
-								line += $" [{diff:#,0}]";
-						}
+                            if (diff > 0)
+                                line += $" [+{diff:#,0}]";
+                            else if (diff < 0)
+                                line += $" [{diff:#,0}]";
+                        }
 
-						var tabs = new string('\t', 6 - (line.Length / 8));
+                        var tabs = new string('\t', 6 - (line.Length / 8));
 
-						tw.WriteLine($"{line}{tabs}{name}");
-					}
+                        tw.WriteLine($"{line}{tabs}{name}");
+                    }
 
-					m_Dump[i] = timers;
+                    m_Dump[i] = timers;
 
-					tw.WriteLine();
-					tw.WriteLine();
-				}
+                    tw.WriteLine();
+                    tw.WriteLine();
+                }
 
-				m_Dumped = now;
-			}
+                m_Dumped = now;
+            }
 
-			private class TimerChangeEntry
+            private class TimerChangeEntry
 			{
 				public Timer m_Timer;
 
@@ -283,12 +283,12 @@ namespace Server
 			{
 				lock (m_Changed)
 				{
-					var curTicks = Core.TickCount;
+					long curTicks = Core.TickCount;
 
-					foreach (var tce in m_Changed.Values)
+					foreach (TimerChangeEntry tce in m_Changed.Values)
 					{
-						var timer = tce.m_Timer;
-						var newIndex = tce.m_NewIndex;
+						Timer timer = tce.m_Timer;
+						int newIndex = tce.m_NewIndex;
 
 						if (timer.m_List != null)
 						{
@@ -356,7 +356,7 @@ namespace Server
 
 						for (j = 0; j < m_Timers[i].Count; j++)
 						{
-							var t = m_Timers[i][j];
+							Timer t = m_Timers[i][j];
 
 							if (t.m_Queued || now <= t.m_Next)
 							{
@@ -404,12 +404,12 @@ namespace Server
 		{
 			lock (m_Queue)
 			{
-				var index = 0;
+				int index = 0;
 
 				while (index < m_BreakCount && m_Queue.Count != 0)
 				{
-					var t = m_Queue.Dequeue();
-					var prof = t.GetProfile();
+					Timer t = m_Queue.Dequeue();
+					TimerProfile prof = t.GetProfile();
 
 					if (prof != null)
 					{
@@ -440,7 +440,7 @@ namespace Server
 
 		public void RegCreation()
 		{
-			var prof = GetProfile();
+			TimerProfile prof = GetProfile();
 
 			if (prof != null)
 			{
@@ -477,12 +477,12 @@ namespace Server
 
 		public static TimerPriority ComputePriority(TimeSpan ts)
 		{
-			if (ts.TotalMinutes >= 10.0)
+            if (ts.TotalMinutes >= 10.0)
 			{
 				return TimerPriority.OneMinute;
 			}
 
-			if (ts.TotalSeconds >= 30.0)
+            if (ts.TotalSeconds >= 30.0)
 			{
 				return TimerPriority.FiveSeconds;
 			}
@@ -705,12 +705,12 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				m_Callback?.Invoke();
-			}
+                m_Callback?.Invoke();
+            }
 
 			public override string ToString()
 			{
-				return String.Format("DelayCallTimer[{0}]", FormatDelegate(m_Callback));
+				return string.Format("DelayCallTimer[{0}]", FormatDelegate(m_Callback));
 			}
 		}
 
@@ -734,12 +734,12 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				m_Callback?.Invoke(m_State);
-			}
+                m_Callback?.Invoke(m_State);
+            }
 
 			public override string ToString()
 			{
-				return String.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
+				return string.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
 			}
 		}
 
@@ -763,12 +763,12 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				m_Callback?.Invoke(m_State);
-			}
+                m_Callback?.Invoke(m_State);
+            }
 
 			public override string ToString()
 			{
-				return String.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
+				return string.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
 			}
 		}
 
@@ -794,12 +794,12 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				m_Callback?.Invoke(m_State1, m_State2);
-			}
+                m_Callback?.Invoke(m_State1, m_State2);
+            }
 
 			public override string ToString()
 			{
-				return String.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
+				return string.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
 			}
 		}
 
@@ -827,12 +827,12 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				m_Callback?.Invoke(m_State1, m_State2, m_State3);
-			}
+                m_Callback?.Invoke(m_State1, m_State2, m_State3);
+            }
 
 			public override string ToString()
 			{
-				return String.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
+				return string.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
 			}
 		}
 
@@ -862,12 +862,12 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				m_Callback?.Invoke(m_State1, m_State2, m_State3, m_State4);
-			}
+                m_Callback?.Invoke(m_State1, m_State2, m_State3, m_State4);
+            }
 
 			public override string ToString()
 			{
-				return String.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
+				return string.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
 			}
 		}
 		#endregion
@@ -883,7 +883,7 @@ namespace Server
 
 			TimerThread.AddTimer(this);
 
-			var prof = GetProfile();
+			TimerProfile prof = GetProfile();
 
 			if (prof != null)
 			{
@@ -902,7 +902,7 @@ namespace Server
 
 			TimerThread.RemoveTimer(this);
 
-			var prof = GetProfile();
+			TimerProfile prof = GetProfile();
 
 			if (prof != null)
 			{

@@ -207,9 +207,9 @@ namespace Server.Items
 
             foreach (Item item in Items)
             {
-                if (item is EnhancedBandage)
+                if (item is EnhancedBandage bandage)
                 {
-                    existing = item as EnhancedBandage;
+                    existing = bandage;
                     break;
                 }
             }

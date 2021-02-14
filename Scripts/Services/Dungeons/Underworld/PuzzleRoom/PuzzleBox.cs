@@ -15,7 +15,7 @@ namespace Server.Items
         private PuzzleType m_PuzzleType;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PuzzleType PuzzleType { get { return m_PuzzleType; } set { m_PuzzleType = value; } }
+        public PuzzleType PuzzleType { get => m_PuzzleType; set => m_PuzzleType = value; }
 
         public override int LabelNumber => 1113486;  // a puzzle box
 
@@ -71,12 +71,12 @@ namespace Server.Items
 
                 Item item = from.Backpack.FindItemByType(needed);
 
-                if (item != null && key is MagicKey)
+                if (item != null && key is MagicKey magicKey)
                 {
                     if (m_PuzzleType == PuzzleType.NorthBox)
-                        puzzle = new MastermindPuzzleItem((MagicKey)key);
+                        puzzle = new MastermindPuzzleItem(magicKey);
                     else
-                        puzzle = new MazePuzzleItem((MagicKey)key);
+                        puzzle = new MazePuzzleItem(magicKey);
                 }
 
                 if (puzzle != null)
@@ -98,14 +98,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // ver
+            writer.Write(0); 
+
             writer.Write((int)m_PuzzleType);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_PuzzleType = (PuzzleType)reader.ReadInt();
         }
     }

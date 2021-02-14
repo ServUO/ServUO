@@ -7,7 +7,6 @@ namespace Server.Engines.Quests
     public class FiendishFriendsQuest : BaseQuest
     {
         public FiendishFriendsQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(Imp), "imps", 50));
 
@@ -26,30 +25,23 @@ namespace Server.Engines.Quests
         public override object Refuse => 1074287;
         /* Surely you're not having difficulties swatting down those annoying pests? */
         public override object Uncomplete => 1074289;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Spellweaving;
-        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class CrackingTheWhipQuest : BaseQuest
     {
         public CrackingTheWhipQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(StoutWhip), "stout whip", 1, 0x166F));
 
@@ -69,30 +61,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1074317;
         /* That's a well-made whip.  No imp will ignore the sting of that lash. */
         public override object Complete => 1074321;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Spellweaving;
-        }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class IronWillQuest : BaseQuest
     {
         public IronWillQuest()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(ArcaneDaemon), "arcane daemon", 1));
 
@@ -110,10 +95,6 @@ namespace Server.Engines.Quests
         public override object Refuse => 1074314;
         /* You need to vanquish an arcane daemon before the imps will fear you properly. */
         public override object Uncomplete => 1074318;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Spellweaving;
-        }
 
         public override void GiveRewards()
         {
@@ -127,15 +108,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

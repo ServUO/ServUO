@@ -18,16 +18,12 @@ namespace Server.Items
         private int m_Charges;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecureLevel Level
-        {
-            get { return m_Level; }
-            set { m_Level = value; }
-        }
+        public SecureLevel Level { get => m_Level; set => m_Level = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
-            get { return m_Charges; }
+            get => m_Charges;
             set
             {
                 if (value > MaxCharges)

@@ -188,7 +188,7 @@ namespace Server
 		///     Secure Trade Layer
 		/// </summary>
 		SecureTrade = 0x1F
-	}
+    }
 
 	/// <summary>
 	///     Internal flags used to signal how the item should be updated and resent to nearby clients.
@@ -580,12 +580,12 @@ namespace Server
 		}
 
 		public static BounceInfo Deserialize(GenericReader reader)
-		{
-			if (reader.ReadBool())
+        {
+            if (reader.ReadBool())
 			{
-				var map = reader.ReadMap();
-				var loc = reader.ReadPoint3D();
-				var worldLoc = reader.ReadPoint3D();
+				Map map = reader.ReadMap();
+				Point3D loc = reader.ReadPoint3D();
+				Point3D worldLoc = reader.ReadPoint3D();
 
 				IEntity parent;
 
@@ -607,8 +607,8 @@ namespace Server
 				return new BounceInfo(map, loc, worldLoc, parent);
 			}
 
-			return null;
-		}
+            return null;
+        }
 
 		public static void Serialize(BounceInfo info, GenericWriter writer)
 		{
@@ -645,7 +645,7 @@ namespace Server
 		Gold,
 		Items,
 		Weight
-	}
+    }
 
 	[Flags]
 	public enum ExpandFlag
@@ -722,7 +722,7 @@ namespace Server
 		{
 			get
 			{
-				var info = LookupCompactInfo();
+				CompactInfo info = LookupCompactInfo();
 
 				if (info != null)
 				{
@@ -733,7 +733,7 @@ namespace Server
 			}
 			set
 			{
-				var info = AcquireCompactInfo();
+				CompactInfo info = AcquireCompactInfo();
 
 				info.m_TempFlags = value;
 
@@ -748,7 +748,7 @@ namespace Server
 		{
 			get
 			{
-				var info = LookupCompactInfo();
+				CompactInfo info = LookupCompactInfo();
 
 				if (info != null)
 				{
@@ -759,7 +759,7 @@ namespace Server
 			}
 			set
 			{
-				var info = AcquireCompactInfo();
+				CompactInfo info = AcquireCompactInfo();
 
 				info.m_SavedFlags = value;
 
@@ -777,7 +777,7 @@ namespace Server
 		{
 			get
 			{
-				var info = LookupCompactInfo();
+				CompactInfo info = LookupCompactInfo();
 
 				if (info != null)
 				{
@@ -788,7 +788,7 @@ namespace Server
 			}
 			set
 			{
-				var info = AcquireCompactInfo();
+				CompactInfo info = AcquireCompactInfo();
 
 				info.m_HeldBy = value;
 
@@ -807,11 +807,11 @@ namespace Server
 			get => m_GridLocation;
 			set
 			{
-				if (Parent is Container)
+				if (Parent is Container container)
 				{
-					if (value < 0 || value > 0x7C || !((Container)Parent).IsFreePosition(value))
+					if (value < 0 || value > 0x7C || !container.IsFreePosition(value))
 					{
-						m_GridLocation = ((Container)Parent).GetNewPosition(0);
+						m_GridLocation = container.GetNewPosition(0);
 					}
 					else
 					{
@@ -861,7 +861,7 @@ namespace Server
 
 		public ExpandFlag GetExpandFlags()
 		{
-			var info = LookupCompactInfo();
+			CompactInfo info = LookupCompactInfo();
 
 			ExpandFlag flags = 0;
 
@@ -938,15 +938,15 @@ namespace Server
 
 		private void VerifyCompactInfo()
 		{
-			var info = m_CompactInfo;
+			CompactInfo info = m_CompactInfo;
 
 			if (info == null)
 			{
 				return;
 			}
 
-			var isValid = info.m_Name != null || info.m_Items != null || info.m_Bounce != null || info.m_HeldBy != null || info.m_BlessedFor != null ||
-						   info.m_Spawner != null || info.m_TempFlags != 0 || info.m_SavedFlags != 0 || info.m_Weight != -1;
+			bool isValid = info.m_Name != null || info.m_Items != null || info.m_Bounce != null || info.m_HeldBy != null || info.m_BlessedFor != null ||
+                           info.m_Spawner != null || info.m_TempFlags != 0 || info.m_SavedFlags != 0 || info.m_Weight != -1;
 
 			if (!isValid)
 			{
@@ -961,7 +961,7 @@ namespace Server
 				return ((Container)this).m_Items;
 			}
 
-			var info = LookupCompactInfo();
+			CompactInfo info = LookupCompactInfo();
 
 			if (info != null)
 			{
@@ -975,7 +975,7 @@ namespace Server
 		{
 			if (this is Container)
 			{
-				var cont = (Container)this;
+				Container cont = (Container)this;
 
 				if (cont.m_Items == null)
 				{
@@ -985,7 +985,7 @@ namespace Server
 				return cont.m_Items;
 			}
 
-			var info = AcquireCompactInfo();
+			CompactInfo info = AcquireCompactInfo();
 
 			if (info.m_Items == null)
 			{
@@ -1003,7 +1003,7 @@ namespace Server
 			}
 			catch (Exception e)
 			{
-				Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
 			}
 
 			return null;
@@ -1016,13 +1016,13 @@ namespace Server
 
 		public static Rectangle MeasureBound(Bitmap bmp)
 		{
-			Measure(bmp, out var xMin, out var yMin, out var xMax, out var yMax);
+			Measure(bmp, out int xMin, out int yMin, out int xMax, out int yMax);
 			return new Rectangle(xMin, yMin, xMax - xMin, yMax - yMin);
 		}
 
 		public static Size MeasureSize(Bitmap bmp)
 		{
-			Measure(bmp, out var xMin, out var yMin, out var xMax, out var yMax);
+			Measure(bmp, out int xMin, out int yMin, out int xMax, out int yMax);
 			return new Size(xMax - xMin, yMax - yMin);
 		}
 
@@ -1045,7 +1045,7 @@ namespace Server
 
 		public BounceInfo GetBounce()
 		{
-			var info = LookupCompactInfo();
+			CompactInfo info = LookupCompactInfo();
 
 			if (info != null)
 			{
@@ -1057,7 +1057,7 @@ namespace Server
 
 		public void RecordBounce(Mobile from, Item parentstack = null)
 		{
-			var info = AcquireCompactInfo();
+			CompactInfo info = AcquireCompactInfo();
 
 			info.m_Bounce = new BounceInfo(from, this)
 			{
@@ -1067,11 +1067,11 @@ namespace Server
 
 		public void ClearBounce()
 		{
-			var info = LookupCompactInfo();
+			CompactInfo info = LookupCompactInfo();
 
 			if (info != null)
 			{
-				var bounce = info.m_Bounce;
+				BounceInfo bounce = info.m_Bounce;
 
 				if (bounce != null)
 				{
@@ -1079,14 +1079,14 @@ namespace Server
 
 					if (bounce.m_Parent is Item itemParent)
 					{
-						if (!itemParent.Deleted)
+                        if (!itemParent.Deleted)
 						{
 							itemParent.OnItemBounceCleared(this);
 						}
 					}
 					else if (bounce.m_Parent is Mobile mobileParent && !mobileParent.Deleted)
 					{
-						mobileParent.OnItemBounceCleared(this);
+                        mobileParent.OnItemBounceCleared(this);
 					}
 
 					VerifyCompactInfo();
@@ -1156,9 +1156,9 @@ namespace Server
 		/// </summary>
 		public virtual void AddNameProperty(ObjectPropertyList list)
 		{
-			var name = Name ?? String.Empty;
+			string name = Name ?? string.Empty;
 
-			if (String.IsNullOrWhiteSpace(name))
+			if (string.IsNullOrWhiteSpace(name))
 			{
 				if (m_Amount <= 1)
 				{
@@ -1209,7 +1209,7 @@ namespace Server
 		/// </summary>
 		public virtual void AddResistanceProperties(ObjectPropertyList list)
 		{
-			var v = PhysicalResistance;
+			int v = PhysicalResistance;
 
 			if (v != 0)
 			{
@@ -1319,7 +1319,7 @@ namespace Server
 		{
 			if (DisplayWeight && Weight > 0)
 			{
-				var weight = PileWeight + TotalWeight;
+				int weight = PileWeight + TotalWeight;
 
 				if (weight == 1)
 				{
@@ -1368,7 +1368,7 @@ namespace Server
 		{
 			if (Sockets != null)
 			{
-				foreach (var socket in Sockets)
+				foreach (ItemSocket socket in Sockets)
 				{
 					socket.GetProperties(list);
 				}
@@ -1465,7 +1465,7 @@ namespace Server
 
 			m_Parent = null;
 
-			var bounce = GetBounce();
+			BounceInfo bounce = GetBounce();
 
 			if (bounce != null)
 			{
@@ -1477,27 +1477,27 @@ namespace Server
 
 				if (bounce.m_Parent is Item ip)
 				{
-					var rpm = ip.RootParent as Mobile;
+					Mobile rpm = ip.RootParent as Mobile;
 
 					if (!ip.Deleted && ip.IsAccessibleTo(from) && (rpm == null || rpm.CheckNonlocalDrop(from, this, ip)))
 					{
 						if (!ip.Movable || rpm == from || ip.Map == bounce.m_Map && ip.GetWorldLocation() == bounce.m_WorldLoc)
 						{
-							if (from != null && ip is Container c && (c.TotalItems >= c.MaxItems || c.TotalWeight >= c.MaxWeight))
-							{
-								MoveToWorld(from.Location, from.Map);
-							}
-							else
-							{
-								Location = bounce.m_Location;
+                            if (from != null && !(ip is BankBox) && ip is Container c && (c.TotalItems >= c.MaxItems || c.IsDecoContainer && c.TotalWeight >= c.MaxWeight))
+                            {
+                                MoveToWorld(from.Location, from.Map);
+                            }
+                            else
+                            {
+                                Location = bounce.m_Location;
 
-								ip.AddItem(this);
-							}
-						}
-						else
-						{
-							MoveToWorld(from.Location, from.Map);
-						}
+                                ip.AddItem(this);
+                            }
+                        }
+					    else
+					    {
+						    MoveToWorld(from.Location, from.Map);
+					    }
 					}
 					else
 					{
@@ -1566,7 +1566,7 @@ namespace Server
 				return true;
 			}
 
-			var e = new CheckEquipItemEventArgs(m, this, message);
+			CheckEquipItemEventArgs e = new CheckEquipItemEventArgs(m, this, message);
 
 			EventSink.InvokeCheckEquipItem(e);
 
@@ -1636,64 +1636,64 @@ namespace Server
 		{ }
 
 		public virtual DeathMoveResult OnParentDeath(Mobile parent)
-		{
-			if (!Movable)
+        {
+            if (!Movable)
 			{
 				return DeathMoveResult.RemainEquiped;
 			}
 
-			if (parent.KeepsItemsOnDeath)
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (parent.KeepsItemsOnDeath)
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			if (CheckBlessed(parent))
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (CheckBlessed(parent))
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			if (CheckNewbied() && parent.Kills < 5)
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (CheckNewbied() && parent.Kills < 5)
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			if (parent.Player && Nontransferable)
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (parent.Player && Nontransferable)
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			return DeathMoveResult.MoveToCorpse;
-		}
+            return DeathMoveResult.MoveToCorpse;
+        }
 
 		public virtual DeathMoveResult OnInventoryDeath(Mobile parent)
-		{
-			if (!Movable)
+        {
+            if (!Movable)
 			{
 				return DeathMoveResult.MoveToBackpack;
 			}
 
-			if (parent.KeepsItemsOnDeath)
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (parent.KeepsItemsOnDeath)
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			if (CheckBlessed(parent))
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (CheckBlessed(parent))
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			if (CheckNewbied() && parent.Kills < 5)
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (CheckNewbied() && parent.Kills < 5)
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			if (parent.Player && Nontransferable)
-			{
-				return DeathMoveResult.MoveToBackpack;
-			}
+            if (parent.Player && Nontransferable)
+            {
+                return DeathMoveResult.MoveToBackpack;
+            }
 
-			return DeathMoveResult.MoveToCorpse;
-		}
+            return DeathMoveResult.MoveToCorpse;
+        }
 
 		/// <summary>
 		///     Moves the Item to <paramref name="location" />. The Item does not change maps.
@@ -1720,7 +1720,7 @@ namespace Server
 
 		public void LabelTo(Mobile to, string format, params object[] args)
 		{
-			LabelTo(to, String.Format(format, args));
+			LabelTo(to, string.Format(format, args));
 		}
 
 		public void LabelToAffix(Mobile to, int number, AffixType type, string affix)
@@ -1765,23 +1765,23 @@ namespace Server
 				return;
 			}
 
-			var oldLocation = GetWorldLocation();
-			var oldRealLocation = m_Location;
+			Point3D oldLocation = GetWorldLocation();
+			Point3D oldRealLocation = m_Location;
 
 			SetLastMoved();
 
-			if (Parent is Mobile)
+			if (Parent is Mobile mobile)
 			{
-				((Mobile)Parent).RemoveItem(this);
+				mobile.RemoveItem(this);
 			}
-			else if (Parent is Item)
+			else if (Parent is Item item)
 			{
-				((Item)Parent).RemoveItem(this);
+				item.RemoveItem(this);
 			}
 
 			if (m_Map != map)
 			{
-				var old = m_Map;
+				Map old = m_Map;
 
 				if (m_Map != null)
 				{
@@ -1789,11 +1789,11 @@ namespace Server
 
 					if (oldLocation.m_X != 0)
 					{
-						var eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalRadarRange - 4);
+						IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalRadarRange - 4);
 
-						foreach (var state in eable)
+						foreach (NetState state in eable)
 						{
-							var m = state.Mobile;
+							Mobile m = state.Mobile;
 
 							if (Utility.InRange(oldLocation, m.Location, GetUpdateRange(m)))
 							{
@@ -1810,11 +1810,11 @@ namespace Server
 
 				ReleaseWorldPackets();
 
-				var items = LookupItems();
+				List<Item> items = LookupItems();
 
 				if (items != null)
 				{
-					for (var i = 0; i < items.Count; ++i)
+					for (int i = 0; i < items.Count; ++i)
 					{
 						items[i].Map = map;
 					}
@@ -1831,11 +1831,11 @@ namespace Server
 
 				if (m_Map != null)
 				{
-					var eable = m_Map.GetClientsInRange(m_Location, Core.GlobalRadarRange);
+					IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location, Core.GlobalRadarRange);
 
-					foreach (var state in eable)
+					foreach (NetState state in eable)
 					{
-						var m = state.Mobile;
+						Mobile m = state.Mobile;
 
 						if (m.CanSee(this) && Utility.InRange(m_Location, m.Location, GetUpdateRange(m)))
 						{
@@ -1861,9 +1861,9 @@ namespace Server
 				{
 					eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
-					foreach (var state in eable)
+					foreach (NetState state in eable)
 					{
-						var m = state.Mobile;
+						Mobile m = state.Mobile;
 
 						if (!m.InUpdateRange(location))
 						{
@@ -1874,7 +1874,7 @@ namespace Server
 					eable.Free();
 				}
 
-				var oldInternalLocation = m_Location;
+				Point3D oldInternalLocation = m_Location;
 
 				m_Location = location;
 				OnLocationChange(oldRealLocation);
@@ -1883,9 +1883,9 @@ namespace Server
 
 				eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
-					var m = state.Mobile;
+					Mobile m = state.Mobile;
 
 					if (m.CanSee(this) && m.InUpdateRange(m_Location))
 					{
@@ -1992,7 +1992,7 @@ namespace Server
 
 				if (playSound && from != null)
 				{
-					var soundID = GetDropSound();
+					int soundID = GetDropSound();
 
 					if (soundID == -1)
 					{
@@ -2050,27 +2050,27 @@ namespace Server
 				return false;
 			}
 
-			if (Sockets != null && item.Sockets != null)
-			{
-				if (Sockets.Any(s => !item.HasSocket(s.GetType())))
-				{
-					return false;
-				}
+            if (Sockets != null && item.Sockets != null)
+            {
+                if (Sockets.Any(s => !item.HasSocket(s.GetType())))
+                {
+                    return false;
+                }
 
-				if (item.Sockets.Any(s => !HasSocket(s.GetType())))
-				{
-					return false;
-				}
-			}
+                if (item.Sockets.Any(s => !HasSocket(s.GetType())))
+                {
+                    return false;
+                }
+            }
 
-			return true;
+            return true;
 		}
 
 		public virtual bool OnDragDrop(Mobile from, Item dropped)
 		{
-			if (Parent is Container)
+			if (Parent is Container container)
 			{
-				return ((Container)Parent).OnStackAttempt(from, this, dropped);
+				return container.OnStackAttempt(from, this, dropped);
 			}
 
 			return StackWith(from, dropped);
@@ -2078,12 +2078,12 @@ namespace Server
 
 		public Rectangle2D GetGraphicBounds()
 		{
-			var itemID = m_ItemID;
-			var doubled = m_Amount > 1;
+			int itemID = m_ItemID;
+			bool doubled = m_Amount > 1;
 
 			if (itemID >= 0xEEA && itemID <= 0xEF2) // Are we coins?
 			{
-				var coinBase = (itemID - 0xEEA) / 3;
+				int coinBase = (itemID - 0xEEA) / 3;
 				coinBase *= 3;
 				coinBase += 0xEEA;
 
@@ -2106,7 +2106,7 @@ namespace Server
 				}
 			}
 
-			var bounds = ItemBounds.Table[itemID & 0x3FFF];
+			Rectangle2D bounds = ItemBounds.Table[itemID & 0x3FFF];
 
 			if (doubled)
 			{
@@ -2216,9 +2216,9 @@ namespace Server
 		{
 			if (m_Map != null && m_Map != Map.Internal && !World.Loading)
 			{
-				var oldList = m_PropertyList;
+				ObjectPropertyList oldList = m_PropertyList;
 				m_PropertyList = null;
-				var newList = PropertyList;
+				ObjectPropertyList newList = PropertyList;
 
 				if (oldList == null || oldList.Hash != newList.Hash)
 				{
@@ -2280,13 +2280,13 @@ namespace Server
 
 					if (m_Map != null && m_Map != Map.Internal)
 					{
-						var worldLoc = GetWorldLocation();
+						Point3D worldLoc = GetWorldLocation();
 
-						var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+						IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
-						foreach (var state in eable)
+						foreach (NetState state in eable)
 						{
-							var m = state.Mobile;
+							Mobile m = state.Mobile;
 
 							if (!m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
 							{
@@ -2321,7 +2321,7 @@ namespace Server
 
 		public virtual int GetPacketFlags()
 		{
-			var flags = 0;
+			int flags = 0;
 
 			if (!Visible)
 			{
@@ -2373,7 +2373,7 @@ namespace Server
 			{
 				if (m_Map != value)
 				{
-					var old = m_Map;
+					Map old = m_Map;
 
 					if (m_Map != null && m_Parent == null)
 					{
@@ -2381,11 +2381,11 @@ namespace Server
 						SendRemovePacket();
 					}
 
-					var items = LookupItems();
+					List<Item> items = LookupItems();
 
 					if (items != null)
 					{
-						for (var i = 0; i < items.Count; ++i)
+						for (int i = 0; i < items.Count; ++i)
 						{
 							items[i].Map = value;
 						}
@@ -2470,7 +2470,7 @@ namespace Server
 
 			if (Sockets != null)
 			{
-				foreach (var socket in Sockets)
+				foreach (ItemSocket socket in Sockets)
 				{
 					ItemSocket.Save(socket, writer);
 				}
@@ -2485,18 +2485,18 @@ namespace Server
 			// 10: Honesty moved to ItemSockets
 
 			// 9
-			var flags = SaveFlag.None;
+			SaveFlag flags = SaveFlag.None;
 
 			int x = m_Location.m_X, y = m_Location.m_Y, z = m_Location.m_Z;
 
 			if (x != 0 || y != 0 || z != 0)
 			{
-				if (x >= Int16.MinValue && x <= Int16.MaxValue && y >= Int16.MinValue && y <= Int16.MaxValue && z >= SByte.MinValue &&
-					z <= SByte.MaxValue)
+				if (x >= short.MinValue && x <= short.MaxValue && y >= short.MinValue && y <= short.MaxValue && z >= sbyte.MinValue &&
+					z <= sbyte.MaxValue)
 				{
 					if (x != 0 || y != 0)
 					{
-						if (x >= Byte.MinValue && x <= Byte.MaxValue && y >= Byte.MinValue && y <= Byte.MaxValue)
+						if (x >= byte.MinValue && x <= byte.MaxValue && y >= byte.MinValue && y <= byte.MaxValue)
 						{
 							flags |= SaveFlag.LocationByteXY;
 						}
@@ -2517,8 +2517,8 @@ namespace Server
 				}
 			}
 
-			var info = LookupCompactInfo();
-			var items = LookupItems();
+			CompactInfo info = LookupCompactInfo();
+			List<Item> items = LookupItems();
 
 			if (m_Direction != Direction.North)
 			{
@@ -2615,7 +2615,7 @@ namespace Server
 				}
 			}
 
-			var implFlags = m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
+			ImplFlag implFlags = m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
 										ImplFlag.PayedInsurance | ImplFlag.QuestItem);
 
 			if (implFlags != (ImplFlag.Visible | ImplFlag.Movable))
@@ -2626,8 +2626,8 @@ namespace Server
 			writer.Write((int)flags);
 
 			/* begin last moved time optimization */
-			var ticks = m_LastMovedTime.Ticks;
-			var now = DateTime.UtcNow.Ticks;
+			long ticks = m_LastMovedTime.Ticks;
+			long now = DateTime.UtcNow.Ticks;
 
 			TimeSpan d;
 
@@ -2647,15 +2647,15 @@ namespace Server
 				}
 			}
 
-			var minutes = -d.TotalMinutes;
+			double minutes = -d.TotalMinutes;
 
-			if (minutes < Int32.MinValue)
+			if (minutes < int.MinValue)
 			{
-				minutes = Int32.MinValue;
+				minutes = int.MinValue;
 			}
-			else if (minutes > Int32.MaxValue)
+			else if (minutes > int.MaxValue)
 			{
-				minutes = Int32.MaxValue;
+				minutes = int.MaxValue;
 			}
 
 			writer.WriteEncodedInt((int)minutes);
@@ -2795,7 +2795,7 @@ namespace Server
 
 		public IPooledEnumerable<IEntity> GetObjectsInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -2812,7 +2812,7 @@ namespace Server
 
 		public IPooledEnumerable<Item> GetItemsInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -2829,7 +2829,7 @@ namespace Server
 
 		public IPooledEnumerable<Mobile> GetMobilesInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -2846,7 +2846,7 @@ namespace Server
 
 		public IPooledEnumerable<NetState> GetClientsInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -2902,7 +2902,7 @@ namespace Server
 
 		public bool GetTempFlag(int flag)
 		{
-			var info = LookupCompactInfo();
+			CompactInfo info = LookupCompactInfo();
 
 			if (info == null)
 			{
@@ -2914,7 +2914,7 @@ namespace Server
 
 		public void SetTempFlag(int flag, bool value)
 		{
-			var info = AcquireCompactInfo();
+			CompactInfo info = AcquireCompactInfo();
 
 			if (value)
 			{
@@ -2933,7 +2933,7 @@ namespace Server
 
 		public bool GetSavedFlag(int flag)
 		{
-			var info = LookupCompactInfo();
+			CompactInfo info = LookupCompactInfo();
 
 			if (info == null)
 			{
@@ -2945,7 +2945,7 @@ namespace Server
 
 		public void SetSavedFlag(int flag, bool value)
 		{
-			var info = AcquireCompactInfo();
+			CompactInfo info = AcquireCompactInfo();
 
 			if (value)
 			{
@@ -2964,16 +2964,16 @@ namespace Server
 
 		public virtual void Deserialize(GenericReader reader)
 		{
-			var version = reader.ReadInt();
+			int version = reader.ReadInt();
 
 			SetLastMoved();
 
 			switch (version)
 			{
 				case 14:
-				var socketCount = reader.ReadInt();
+				int socketCount = reader.ReadInt();
 
-				for (var i = 0; i < socketCount; i++)
+				for (int i = 0; i < socketCount; i++)
 				{
 					ItemSocket.Load(this, reader);
 				}
@@ -2985,358 +2985,171 @@ namespace Server
 				m_GridLocation = reader.ReadByte();
 				goto case 10;
 				case 10:
+				{
+					// Honesty removed to ItemSockets
+					if (version < 14)
 					{
-						// Honesty removed to ItemSockets
-						if (version < 14)
-						{
-							reader.ReadDateTime();
-							reader.ReadBool();
-							reader.ReadMobile();
-							reader.ReadString();
+						reader.ReadDateTime();
+						reader.ReadBool();
+						reader.ReadMobile();
+						reader.ReadString();
 
-							HonestyItem = reader.ReadBool();
-						}
-
-						goto case 9;
+						HonestyItem = reader.ReadBool();
 					}
+
+					goto case 9;
+				}
 				case 9:
 				case 8:
 				case 7:
 				case 6:
+				{
+					SaveFlag flags = (SaveFlag)reader.ReadInt();
+
+					if (version < 7)
 					{
-						var flags = (SaveFlag)reader.ReadInt();
-
-						if (version < 7)
-						{
-							LastMoved = reader.ReadDeltaTime();
-						}
-						else
-						{
-							var minutes = reader.ReadEncodedInt();
-
-							try
-							{
-								LastMoved = DateTime.UtcNow - TimeSpan.FromMinutes(minutes);
-							}
-							catch
-							{
-								LastMoved = DateTime.UtcNow;
-							}
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Direction))
-						{
-							m_Direction = (Direction)reader.ReadByte();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Light))
-						{
-							m_Light = (LightType)reader.ReadByte();
-						}
-						else if (version < 12)
-						{
-							m_Light = (LightType)m_Direction;
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Bounce))
-						{
-							AcquireCompactInfo().m_Bounce = BounceInfo.Deserialize(reader);
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.LootType))
-						{
-							m_LootType = (LootType)reader.ReadByte();
-						}
-
-						int x = 0, y = 0, z = 0;
-
-						if (GetSaveFlag(flags, SaveFlag.LocationFull))
-						{
-							x = reader.ReadEncodedInt();
-							y = reader.ReadEncodedInt();
-							z = reader.ReadEncodedInt();
-						}
-						else
-						{
-							if (GetSaveFlag(flags, SaveFlag.LocationByteXY))
-							{
-								x = reader.ReadByte();
-								y = reader.ReadByte();
-							}
-							else if (GetSaveFlag(flags, SaveFlag.LocationShortXY))
-							{
-								x = reader.ReadShort();
-								y = reader.ReadShort();
-							}
-
-							if (GetSaveFlag(flags, SaveFlag.LocationSByteZ))
-							{
-								z = reader.ReadSByte();
-							}
-						}
-
-						m_Location = new Point3D(x, y, z);
-
-						if (GetSaveFlag(flags, SaveFlag.ItemID))
-						{
-							m_ItemID = reader.ReadEncodedInt();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Hue))
-						{
-							m_Hue = reader.ReadEncodedInt();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Amount))
-						{
-							m_Amount = reader.ReadEncodedInt();
-						}
-						else
-						{
-							m_Amount = 1;
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Layer))
-						{
-							m_Layer = (Layer)reader.ReadByte();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Name))
-						{
-							var name = reader.ReadString();
-
-							if (name != DefaultName)
-							{
-								AcquireCompactInfo().m_Name = name;
-							}
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Parent))
-						{
-							Serial parent = reader.ReadInt();
-
-							if (parent.IsMobile)
-							{
-								m_Parent = World.FindMobile(parent);
-							}
-							else if (parent.IsItem)
-							{
-								m_Parent = World.FindItem(parent);
-							}
-							else
-							{
-								m_Parent = null;
-							}
-
-							if (m_Parent == null && (parent.IsMobile || parent.IsItem))
-							{
-								Delete();
-							}
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Items))
-						{
-							var items = reader.ReadStrongItemList();
-
-							if (this is Container)
-							{
-								(this as Container).m_Items = items;
-							}
-							else
-							{
-								AcquireCompactInfo().m_Items = items;
-							}
-						}
-
-						if (version < 8 || !GetSaveFlag(flags, SaveFlag.NullWeight))
-						{
-							double weight;
-
-							if (GetSaveFlag(flags, SaveFlag.IntWeight))
-							{
-								weight = reader.ReadEncodedInt();
-							}
-							else if (GetSaveFlag(flags, SaveFlag.WeightNot1or0))
-							{
-								weight = reader.ReadDouble();
-							}
-							else if (GetSaveFlag(flags, SaveFlag.WeightIs0))
-							{
-								weight = 0.0;
-							}
-							else
-							{
-								weight = 1.0;
-							}
-
-							if (weight != DefaultWeight)
-							{
-								AcquireCompactInfo().m_Weight = weight;
-							}
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Map))
-						{
-							m_Map = reader.ReadMap();
-						}
-						else
-						{
-							m_Map = Map.Internal;
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Visible))
-						{
-							SetFlag(ImplFlag.Visible, reader.ReadBool());
-						}
-						else
-						{
-							SetFlag(ImplFlag.Visible, true);
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Movable))
-						{
-							SetFlag(ImplFlag.Movable, reader.ReadBool());
-						}
-						else
-						{
-							SetFlag(ImplFlag.Movable, true);
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Stackable))
-						{
-							SetFlag(ImplFlag.Stackable, reader.ReadBool());
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.ImplFlags))
-						{
-							m_Flags = (ImplFlag)reader.ReadEncodedInt();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.InsuredFor))
-						{
-							/*m_InsuredFor = */
-							reader.ReadMobile();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.BlessedFor))
-						{
-							AcquireCompactInfo().m_BlessedFor = reader.ReadMobile();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.HeldBy))
-						{
-							AcquireCompactInfo().m_HeldBy = reader.ReadMobile();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.SavedFlags))
-						{
-							AcquireCompactInfo().m_SavedFlags = reader.ReadEncodedInt();
-						}
-
-						if (m_Map != null && m_Parent == null)
-						{
-							m_Map.OnEnter(this);
-						}
-
-						break;
-					}
-				case 5:
-					{
-						var flags = (SaveFlag)reader.ReadInt();
-
 						LastMoved = reader.ReadDeltaTime();
+					}
+					else
+					{
+						int minutes = reader.ReadEncodedInt();
 
-						if (GetSaveFlag(flags, SaveFlag.Direction))
+						try
 						{
-							m_Direction = (Direction)reader.ReadByte();
+							LastMoved = DateTime.UtcNow - TimeSpan.FromMinutes(minutes);
+						}
+						catch
+						{
+							LastMoved = DateTime.UtcNow;
+						}
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Direction))
+					{
+						m_Direction = (Direction)reader.ReadByte();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Light))
+					{
+						m_Light = (LightType)reader.ReadByte();
+					}
+					else if (version < 12)
+					{
+						m_Light = (LightType)m_Direction;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Bounce))
+					{
+						AcquireCompactInfo().m_Bounce = BounceInfo.Deserialize(reader);
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.LootType))
+					{
+						m_LootType = (LootType)reader.ReadByte();
+					}
+
+					int x = 0, y = 0, z = 0;
+
+					if (GetSaveFlag(flags, SaveFlag.LocationFull))
+					{
+						x = reader.ReadEncodedInt();
+						y = reader.ReadEncodedInt();
+						z = reader.ReadEncodedInt();
+					}
+					else
+					{
+						if (GetSaveFlag(flags, SaveFlag.LocationByteXY))
+						{
+							x = reader.ReadByte();
+							y = reader.ReadByte();
+						}
+						else if (GetSaveFlag(flags, SaveFlag.LocationShortXY))
+						{
+							x = reader.ReadShort();
+							y = reader.ReadShort();
 						}
 
-						if (GetSaveFlag(flags, SaveFlag.Bounce))
+						if (GetSaveFlag(flags, SaveFlag.LocationSByteZ))
 						{
-							AcquireCompactInfo().m_Bounce = BounceInfo.Deserialize(reader);
+							z = reader.ReadSByte();
 						}
+					}
 
-						if (GetSaveFlag(flags, SaveFlag.LootType))
+					m_Location = new Point3D(x, y, z);
+
+					if (GetSaveFlag(flags, SaveFlag.ItemID))
+					{
+						m_ItemID = reader.ReadEncodedInt();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Hue))
+					{
+						m_Hue = reader.ReadEncodedInt();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Amount))
+					{
+						m_Amount = reader.ReadEncodedInt();
+					}
+					else
+					{
+						m_Amount = 1;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Layer))
+					{
+						m_Layer = (Layer)reader.ReadByte();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Name))
+					{
+						string name = reader.ReadString();
+
+						if (name != DefaultName)
 						{
-							m_LootType = (LootType)reader.ReadByte();
+							AcquireCompactInfo().m_Name = name;
 						}
+					}
 
-						if (GetSaveFlag(flags, SaveFlag.LocationFull))
+					if (GetSaveFlag(flags, SaveFlag.Parent))
+					{
+						Serial parent = reader.ReadInt();
+
+						if (parent.IsMobile)
 						{
-							m_Location = reader.ReadPoint3D();
+							m_Parent = World.FindMobile(parent);
 						}
-
-						if (GetSaveFlag(flags, SaveFlag.ItemID))
+						else if (parent.IsItem)
 						{
-							m_ItemID = reader.ReadInt();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Hue))
-						{
-							m_Hue = reader.ReadInt();
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Amount))
-						{
-							m_Amount = reader.ReadInt();
+							m_Parent = World.FindItem(parent);
 						}
 						else
 						{
-							m_Amount = 1;
+							m_Parent = null;
 						}
 
-						if (GetSaveFlag(flags, SaveFlag.Layer))
+						if (m_Parent == null && (parent.IsMobile || parent.IsItem))
 						{
-							m_Layer = (Layer)reader.ReadByte();
+							Delete();
 						}
+					}
 
-						if (GetSaveFlag(flags, SaveFlag.Name))
+					if (GetSaveFlag(flags, SaveFlag.Items))
+					{
+						List<Item> items = reader.ReadStrongItemList();
+
+						if (this is Container)
 						{
-							var name = reader.ReadString();
-
-							if (name != DefaultName)
-							{
-								AcquireCompactInfo().m_Name = name;
-							}
+							(this as Container).m_Items = items;
 						}
-
-						if (GetSaveFlag(flags, SaveFlag.Parent))
+						else
 						{
-							Serial parent = reader.ReadInt();
-
-							if (parent.IsMobile)
-							{
-								m_Parent = World.FindMobile(parent);
-							}
-							else if (parent.IsItem)
-							{
-								m_Parent = World.FindItem(parent);
-							}
-							else
-							{
-								m_Parent = null;
-							}
-
-							if (m_Parent == null && (parent.IsMobile || parent.IsItem))
-							{
-								Delete();
-							}
+							AcquireCompactInfo().m_Items = items;
 						}
+					}
 
-						if (GetSaveFlag(flags, SaveFlag.Items))
-						{
-							var items = reader.ReadStrongItemList();
-
-							if (this is Container)
-							{
-								(this as Container).m_Items = items;
-							}
-							else
-							{
-								AcquireCompactInfo().m_Items = items;
-							}
-						}
-
+					if (version < 8 || !GetSaveFlag(flags, SaveFlag.NullWeight))
+					{
 						double weight;
 
 						if (GetSaveFlag(flags, SaveFlag.IntWeight))
@@ -3360,81 +3173,135 @@ namespace Server
 						{
 							AcquireCompactInfo().m_Weight = weight;
 						}
-
-						if (GetSaveFlag(flags, SaveFlag.Map))
-						{
-							m_Map = reader.ReadMap();
-						}
-						else
-						{
-							m_Map = Map.Internal;
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Visible))
-						{
-							SetFlag(ImplFlag.Visible, reader.ReadBool());
-						}
-						else
-						{
-							SetFlag(ImplFlag.Visible, true);
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Movable))
-						{
-							SetFlag(ImplFlag.Movable, reader.ReadBool());
-						}
-						else
-						{
-							SetFlag(ImplFlag.Movable, true);
-						}
-
-						if (GetSaveFlag(flags, SaveFlag.Stackable))
-						{
-							SetFlag(ImplFlag.Stackable, reader.ReadBool());
-						}
-
-						if (m_Map != null && m_Parent == null)
-						{
-							m_Map.OnEnter(this);
-						}
-
-						break;
 					}
-				case 4: // Just removed variables
-				case 3:
+
+					if (GetSaveFlag(flags, SaveFlag.Map))
 					{
-						m_Direction = (Direction)reader.ReadInt();
-
-						goto case 2;
+						m_Map = reader.ReadMap();
 					}
-				case 2:
+					else
+					{
+						m_Map = Map.Internal;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Visible))
+					{
+						SetFlag(ImplFlag.Visible, reader.ReadBool());
+					}
+					else
+					{
+						SetFlag(ImplFlag.Visible, true);
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Movable))
+					{
+						SetFlag(ImplFlag.Movable, reader.ReadBool());
+					}
+					else
+					{
+						SetFlag(ImplFlag.Movable, true);
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Stackable))
+					{
+						SetFlag(ImplFlag.Stackable, reader.ReadBool());
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.ImplFlags))
+					{
+						m_Flags = (ImplFlag)reader.ReadEncodedInt();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.InsuredFor))
+					{
+						/*m_InsuredFor = */
+						reader.ReadMobile();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.BlessedFor))
+					{
+						AcquireCompactInfo().m_BlessedFor = reader.ReadMobile();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.HeldBy))
+					{
+						AcquireCompactInfo().m_HeldBy = reader.ReadMobile();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.SavedFlags))
+					{
+						AcquireCompactInfo().m_SavedFlags = reader.ReadEncodedInt();
+					}
+
+					if (m_Map != null && m_Parent == null)
+					{
+						m_Map.OnEnter(this);
+					}
+
+					break;
+				}
+				case 5:
+				{
+					SaveFlag flags = (SaveFlag)reader.ReadInt();
+
+					LastMoved = reader.ReadDeltaTime();
+
+					if (GetSaveFlag(flags, SaveFlag.Direction))
+					{
+						m_Direction = (Direction)reader.ReadByte();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Bounce))
 					{
 						AcquireCompactInfo().m_Bounce = BounceInfo.Deserialize(reader);
-						LastMoved = reader.ReadDeltaTime();
-
-						goto case 1;
 					}
-				case 1:
+
+					if (GetSaveFlag(flags, SaveFlag.LootType))
 					{
-						m_LootType = (LootType)reader.ReadByte(); //m_Newbied = reader.ReadBool();
-
-						goto case 0;
+						m_LootType = (LootType)reader.ReadByte();
 					}
-				case 0:
+
+					if (GetSaveFlag(flags, SaveFlag.LocationFull))
 					{
 						m_Location = reader.ReadPoint3D();
-						m_ItemID = reader.ReadInt();
-						m_Hue = reader.ReadInt();
-						m_Amount = reader.ReadInt();
-						m_Layer = (Layer)reader.ReadByte();
+					}
 
-						var name = reader.ReadString();
+					if (GetSaveFlag(flags, SaveFlag.ItemID))
+					{
+						m_ItemID = reader.ReadInt();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Hue))
+					{
+						m_Hue = reader.ReadInt();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Amount))
+					{
+						m_Amount = reader.ReadInt();
+					}
+					else
+					{
+						m_Amount = 1;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Layer))
+					{
+						m_Layer = (Layer)reader.ReadByte();
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Name))
+					{
+						string name = reader.ReadString();
 
 						if (name != DefaultName)
 						{
 							AcquireCompactInfo().m_Name = name;
 						}
+					}
 
+					if (GetSaveFlag(flags, SaveFlag.Parent))
+					{
 						Serial parent = reader.ReadInt();
 
 						if (parent.IsMobile)
@@ -3454,66 +3321,199 @@ namespace Server
 						{
 							Delete();
 						}
-
-						var count = reader.ReadInt();
-
-						if (count > 0)
-						{
-							var items = new List<Item>(count);
-
-							for (var i = 0; i < count; ++i)
-							{
-								var item = reader.ReadItem();
-
-								if (item != null)
-								{
-									items.Add(item);
-								}
-							}
-
-							if (this is Container)
-							{
-								(this as Container).m_Items = items;
-							}
-							else
-							{
-								AcquireCompactInfo().m_Items = items;
-							}
-						}
-
-						var weight = reader.ReadDouble();
-
-						if (weight != DefaultWeight)
-						{
-							AcquireCompactInfo().m_Weight = weight;
-						}
-
-						if (version <= 3)
-						{
-							reader.ReadInt();
-							reader.ReadInt();
-							reader.ReadInt();
-						}
-
-						m_Map = reader.ReadMap();
-						SetFlag(ImplFlag.Visible, reader.ReadBool());
-						SetFlag(ImplFlag.Movable, reader.ReadBool());
-
-						if (version <= 3)
-						{
-							/*m_Deleted =*/
-							reader.ReadBool();
-						}
-
-						Stackable = reader.ReadBool();
-
-						if (m_Map != null && m_Parent == null)
-						{
-							m_Map.OnEnter(this);
-						}
-
-						break;
 					}
+
+					if (GetSaveFlag(flags, SaveFlag.Items))
+					{
+						List<Item> items = reader.ReadStrongItemList();
+
+						if (this is Container)
+						{
+							(this as Container).m_Items = items;
+						}
+						else
+						{
+							AcquireCompactInfo().m_Items = items;
+						}
+					}
+
+					double weight;
+
+					if (GetSaveFlag(flags, SaveFlag.IntWeight))
+					{
+						weight = reader.ReadEncodedInt();
+					}
+					else if (GetSaveFlag(flags, SaveFlag.WeightNot1or0))
+					{
+						weight = reader.ReadDouble();
+					}
+					else if (GetSaveFlag(flags, SaveFlag.WeightIs0))
+					{
+						weight = 0.0;
+					}
+					else
+					{
+						weight = 1.0;
+					}
+
+					if (weight != DefaultWeight)
+					{
+						AcquireCompactInfo().m_Weight = weight;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Map))
+					{
+						m_Map = reader.ReadMap();
+					}
+					else
+					{
+						m_Map = Map.Internal;
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Visible))
+					{
+						SetFlag(ImplFlag.Visible, reader.ReadBool());
+					}
+					else
+					{
+						SetFlag(ImplFlag.Visible, true);
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Movable))
+					{
+						SetFlag(ImplFlag.Movable, reader.ReadBool());
+					}
+					else
+					{
+						SetFlag(ImplFlag.Movable, true);
+					}
+
+					if (GetSaveFlag(flags, SaveFlag.Stackable))
+					{
+						SetFlag(ImplFlag.Stackable, reader.ReadBool());
+					}
+
+					if (m_Map != null && m_Parent == null)
+					{
+						m_Map.OnEnter(this);
+					}
+
+					break;
+				}
+				case 4: // Just removed variables
+				case 3:
+				{
+					m_Direction = (Direction)reader.ReadInt();
+
+					goto case 2;
+				}
+				case 2:
+				{
+					AcquireCompactInfo().m_Bounce = BounceInfo.Deserialize(reader);
+					LastMoved = reader.ReadDeltaTime();
+
+					goto case 1;
+				}
+				case 1:
+				{
+					m_LootType = (LootType)reader.ReadByte(); //m_Newbied = reader.ReadBool();
+
+					goto case 0;
+				}
+				case 0:
+				{
+					m_Location = reader.ReadPoint3D();
+					m_ItemID = reader.ReadInt();
+					m_Hue = reader.ReadInt();
+					m_Amount = reader.ReadInt();
+					m_Layer = (Layer)reader.ReadByte();
+
+					string name = reader.ReadString();
+
+					if (name != DefaultName)
+					{
+						AcquireCompactInfo().m_Name = name;
+					}
+
+					Serial parent = reader.ReadInt();
+
+					if (parent.IsMobile)
+					{
+						m_Parent = World.FindMobile(parent);
+					}
+					else if (parent.IsItem)
+					{
+						m_Parent = World.FindItem(parent);
+					}
+					else
+					{
+						m_Parent = null;
+					}
+
+					if (m_Parent == null && (parent.IsMobile || parent.IsItem))
+					{
+						Delete();
+					}
+
+					int count = reader.ReadInt();
+
+					if (count > 0)
+					{
+						List<Item> items = new List<Item>(count);
+
+						for (int i = 0; i < count; ++i)
+						{
+							Item item = reader.ReadItem();
+
+							if (item != null)
+							{
+								items.Add(item);
+							}
+						}
+
+						if (this is Container)
+						{
+							(this as Container).m_Items = items;
+						}
+						else
+						{
+							AcquireCompactInfo().m_Items = items;
+						}
+					}
+
+					double weight = reader.ReadDouble();
+
+					if (weight != DefaultWeight)
+					{
+						AcquireCompactInfo().m_Weight = weight;
+					}
+
+					if (version <= 3)
+					{
+						reader.ReadInt();
+						reader.ReadInt();
+						reader.ReadInt();
+					}
+
+					m_Map = reader.ReadMap();
+					SetFlag(ImplFlag.Visible, reader.ReadBool());
+					SetFlag(ImplFlag.Movable, reader.ReadBool());
+
+					if (version <= 3)
+					{
+						/*m_Deleted =*/
+						reader.ReadBool();
+					}
+
+					Stackable = reader.ReadBool();
+
+					if (m_Map != null && m_Parent == null)
+					{
+						m_Map.OnEnter(this);
+					}
+
+					break;
+				}
 			}
 
 			if (HeldBy != null)
@@ -3528,7 +3528,7 @@ namespace Server
 
 		private void FixHolding_Sandbox()
 		{
-			var heldBy = HeldBy;
+			Mobile heldBy = HeldBy;
 
 			if (heldBy != null)
 			{
@@ -3607,14 +3607,14 @@ namespace Server
 		public virtual int LabelNumber
 		{
 			get
-			{
-				if (m_ItemID < 0x4000)
+            {
+                if (m_ItemID < 0x4000)
 				{
 					return 1020000 + m_ItemID;
 				}
 
-				return 1078872 + m_ItemID;
-			}
+                return 1078872 + m_ItemID;
+            }
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -3635,7 +3635,7 @@ namespace Server
 					return 0;
 				}
 
-				var weight = TileData.ItemTable[m_ItemID].Weight;
+				int weight = TileData.ItemTable[m_ItemID].Weight;
 
 				if (weight == 255 || weight == 0)
 				{
@@ -3651,7 +3651,7 @@ namespace Server
 		{
 			get
 			{
-				var info = LookupCompactInfo();
+				CompactInfo info = LookupCompactInfo();
 
 				if (info != null && info.m_Weight != -1)
 				{
@@ -3664,9 +3664,9 @@ namespace Server
 			{
 				if (Weight != value)
 				{
-					var info = AcquireCompactInfo();
+					CompactInfo info = AcquireCompactInfo();
 
-					var oldPileWeight = PileWeight;
+					int oldPileWeight = PileWeight;
 
 					info.m_Weight = value;
 
@@ -3675,7 +3675,7 @@ namespace Server
 						VerifyCompactInfo();
 					}
 
-					var newPileWeight = PileWeight;
+					int newPileWeight = PileWeight;
 
 					UpdateTotal(this, TotalType.Weight, newPileWeight - oldPileWeight);
 
@@ -3739,7 +3739,7 @@ namespace Server
 		{
 			get
 			{
-				var items = LookupItems();
+				List<Item> items = LookupItems();
 
 				if (items == null)
 				{
@@ -3755,17 +3755,17 @@ namespace Server
 		{
 			get
 			{
-				var p = m_Parent;
+				object p = m_Parent;
 
 				while (p is Item item)
-				{
-					if (item.m_Parent == null)
+                {
+                    if (item.m_Parent == null)
 					{
 						break;
 					}
 
-					p = item.m_Parent;
-				}
+                    p = item.m_Parent;
+                }
 
 				return p;
 			}
@@ -3773,7 +3773,7 @@ namespace Server
 
 		public bool ParentsContain<T>() where T : Item
 		{
-			var p = m_Parent;
+			object p = m_Parent;
 
 			while (p is Item item)
 			{
@@ -3782,13 +3782,13 @@ namespace Server
 					return true;
 				}
 
-				if (item.m_Parent == null)
+                if (item.m_Parent == null)
 				{
 					break;
 				}
 
-				p = item.m_Parent;
-			}
+                p = item.m_Parent;
+            }
 
 			return false;
 		}
@@ -3800,47 +3800,47 @@ namespace Server
 				return;
 			}
 
-			if (item == this)
-			{
-				Console.WriteLine(
-					"Warning: Adding item to itself: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] )",
-					Serial.Value,
-					GetType().Name,
-					item.Serial.Value,
-					item.GetType().Name);
-				Console.WriteLine(new StackTrace());
-				return;
-			}
+            if (item == this)
+            {
+                Console.WriteLine(
+                    "Warning: Adding item to itself: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] )",
+                    Serial.Value,
+                    GetType().Name,
+                    item.Serial.Value,
+                    item.GetType().Name);
+                Console.WriteLine(new StackTrace());
+                return;
+            }
 
-			if (IsChildOf(item))
-			{
-				Console.WriteLine(
-					"Warning: Adding parent item to child: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] )",
-					Serial.Value,
-					GetType().Name,
-					item.Serial.Value,
-					item.GetType().Name);
-				Console.WriteLine(new StackTrace());
-				return;
-			}
+            if (IsChildOf(item))
+            {
+                Console.WriteLine(
+                    "Warning: Adding parent item to child: [0x{0:X} {1}].AddItem( [0x{2:X} {3}] )",
+                    Serial.Value,
+                    GetType().Name,
+                    item.Serial.Value,
+                    item.GetType().Name);
+                Console.WriteLine(new StackTrace());
+                return;
+            }
 
-			if (item.m_Parent is Mobile mParent)
-			{
-				mParent.RemoveItem(item);
-			}
-			else if (item.m_Parent is Item iParent)
-			{
-				iParent.RemoveItem(item);
-			}
-			else
-			{
-				item.SendRemovePacket();
-			}
+            if (item.m_Parent is Mobile mParent)
+            {
+                mParent.RemoveItem(item);
+            }
+            else if (item.m_Parent is Item iParent)
+            {
+                iParent.RemoveItem(item);
+            }
+            else
+            {
+                item.SendRemovePacket();
+            }
 
-			item.Parent = this;
+            item.Parent = this;
 			item.Map = m_Map;
 
-			var items = AcquireItems();
+			List<Item> items = AcquireItems();
 
 			items.Add(item);
 
@@ -3896,31 +3896,31 @@ namespace Server
 
 		public void ProcessDelta()
 		{
-			var flags = m_DeltaFlags;
+			ItemDelta flags = m_DeltaFlags;
 
 			SetFlag(ImplFlag.InQueue, false);
 			m_DeltaFlags = ItemDelta.None;
 
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map != null && !Deleted)
 			{
-				var sendOPLUpdate = (flags & ItemDelta.Properties) != 0;
+				bool sendOPLUpdate = (flags & ItemDelta.Properties) != 0;
 
-				var contParent = m_Parent as Container;
+				Container contParent = m_Parent as Container;
 
 				if (contParent != null && !contParent.IsPublicContainer)
 				{
 					if ((flags & ItemDelta.Update) != 0)
 					{
-						var worldLoc = GetWorldLocation();
+						Point3D worldLoc = GetWorldLocation();
 
-						var rootParent = contParent.RootParent as Mobile;
+						Mobile rootParent = contParent.RootParent as Mobile;
 						Mobile tradeRecip = null;
 
 						if (rootParent != null)
 						{
-							var ns = rootParent.NetState;
+							NetState ns = rootParent.NetState;
 
 							if (ns != null)
 							{
@@ -3933,15 +3933,15 @@ namespace Server
 							}
 						}
 
-						var stc = GetSecureTradeCont();
+						SecureTradeContainer stc = GetSecureTradeCont();
 
 						if (stc != null)
 						{
-							var st = stc.Trade;
+							SecureTrade st = stc.Trade;
 
 							if (st != null)
 							{
-								var test = st.From.Mobile;
+								Mobile test = st.From.Mobile;
 
 								if (test != null && test != rootParent)
 								{
@@ -3957,7 +3957,7 @@ namespace Server
 
 								if (tradeRecip != null)
 								{
-									var ns = tradeRecip.NetState;
+									NetState ns = tradeRecip.NetState;
 
 									if (ns != null)
 									{
@@ -3972,17 +3972,17 @@ namespace Server
 							}
 						}
 
-						var openers = contParent.Openers;
+						List<Mobile> openers = contParent.Openers;
 
 						if (openers != null)
 						{
 							lock (openers)
 							{
-								for (var i = 0; i < openers.Count; ++i)
+								for (int i = 0; i < openers.Count; ++i)
 								{
-									var mob = openers[i];
+									Mobile mob = openers[i];
 
-									var range = GetUpdateRange(mob);
+									int range = GetUpdateRange(mob);
 
 									if (mob.Map != map || !mob.InRange(worldLoc, range))
 									{
@@ -3995,7 +3995,7 @@ namespace Server
 											continue;
 										}
 
-										var ns = mob.NetState;
+										NetState ns = mob.NetState;
 
 										if (ns != null && ns.Seeded)
 										{
@@ -4022,13 +4022,13 @@ namespace Server
 				if ((flags & ItemDelta.Update) != 0)
 				{
 					Packet p = null;
-					var worldLoc = GetWorldLocation();
+					Point3D worldLoc = GetWorldLocation();
 
-					var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+					IPooledEnumerable<NetState> eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
-					foreach (var state in eable)
+					foreach (NetState state in eable)
 					{
-						var m = state.Mobile;
+						Mobile m = state.Mobile;
 
 						if (m.CanSee(this) && m.InUpdateRange(worldLoc))
 						{
@@ -4075,17 +4075,17 @@ namespace Server
 					if (m_Parent is Mobile)
 					{
 						Packet p = null;
-						var worldLoc = GetWorldLocation();
+						Point3D worldLoc = GetWorldLocation();
 
-						var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+						IPooledEnumerable<NetState> eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
-						foreach (var state in eable)
+						foreach (NetState state in eable)
 						{
-							var m = state.Mobile;
+							Mobile m = state.Mobile;
 
 							if (m.CanSee(this) && m.InUpdateRange(worldLoc))
 							{
-								if (p == null)
+                                if (p == null)
 								{
 									p = Packet.Acquire(new EquipUpdate(this));
 								}
@@ -4105,12 +4105,12 @@ namespace Server
 
 				if (sendOPLUpdate)
 				{
-					var worldLoc = GetWorldLocation();
-					var eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
+					Point3D worldLoc = GetWorldLocation();
+					IPooledEnumerable<NetState> eable = map.GetClientsInRange(worldLoc, Core.GlobalMaxUpdateRange);
 
-					foreach (var state in eable)
+					foreach (NetState state in eable)
 					{
-						var m = state.Mobile;
+						Mobile m = state.Mobile;
 
 						if (m.CanSee(this) && m.InUpdateRange(worldLoc))
 						{
@@ -4134,7 +4134,7 @@ namespace Server
 
 			_Processing = true;
 
-			var i = m_DeltaQueue.Count;
+			int i = m_DeltaQueue.Count;
 
 			while (--i >= 0)
 			{
@@ -4156,7 +4156,7 @@ namespace Server
 				Spawner = null;
 			}
 
-			var region = Region.Find(GetWorldLocation(), Map);
+			Region region = Region.Find(GetWorldLocation(), Map);
 
 			if (region != null)
 			{
@@ -4184,18 +4184,18 @@ namespace Server
 				return;
 			}
 
-			if (!World.OnDelete(this))
-			{
-				return;
-			}
+            if (!World.OnDelete(this))
+            {
+                return;
+            }
 
-			OnDelete();
+            OnDelete();
 
-			var items = LookupItems();
+			List<Item> items = LookupItems();
 
 			if (items != null)
 			{
-				for (var i = items.Count - 1; i >= 0; --i)
+				for (int i = items.Count - 1; i >= 0; --i)
 				{
 					if (i < items.Count)
 					{
@@ -4208,13 +4208,13 @@ namespace Server
 
 			SetFlag(ImplFlag.Deleted, true);
 
-			if (Parent is Mobile)
+			if (Parent is Mobile mobile)
 			{
-				((Mobile)Parent).RemoveItem(this);
+				mobile.RemoveItem(this);
 			}
-			else if (Parent is Item)
+			else if (Parent is Item item)
 			{
-				((Item)Parent).RemoveItem(this);
+				item.RemoveItem(this);
 			}
 
 			ClearBounce();
@@ -4240,13 +4240,13 @@ namespace Server
 			if (m_Map != null)
 			{
 				Packet p = null;
-				var worldLoc = GetWorldLocation();
+				Point3D worldLoc = GetWorldLocation();
 
-				var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalUpdateRange);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalUpdateRange);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
-					var m = state.Mobile;
+					Mobile m = state.Mobile;
 
 					if (m.CanSee(this) && m.InUpdateRange(worldLoc))
 					{
@@ -4284,13 +4284,13 @@ namespace Server
 			if (m_Map != null)
 			{
 				Packet p = null;
-				var worldLoc = GetWorldLocation();
+				Point3D worldLoc = GetWorldLocation();
 
-				var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalUpdateRange);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalUpdateRange);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
-					var m = state.Mobile;
+					Mobile m = state.Mobile;
 
 					if (m.CanSee(this) && m.InUpdateRange(worldLoc))
 					{
@@ -4314,16 +4314,16 @@ namespace Server
 			if (Map != null && state != null)
 			{
 				Packet p = null;
-				var worldLoc = GetWorldLocation();
+				Point3D worldLoc = GetWorldLocation();
 
-				var m = state.Mobile;
+				Mobile m = state.Mobile;
 
 				if (m != null && m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
-				{
-					p = Packet.Acquire(new MessageLocalized(m_Serial, m_ItemID, type, hue, 3, number, Name, args));
+                {
+                    p = Packet.Acquire(new MessageLocalized(m_Serial, m_ItemID, type, hue, 3, number, Name, args));
 
-					state.Send(p);
-				}
+                    state.Send(p);
+                }
 
 				Packet.Release(p);
 			}
@@ -4333,8 +4333,8 @@ namespace Server
 		{
 			if (Map != null && state != null)
 			{
-				var worldLoc = GetWorldLocation();
-				var m = state.Mobile;
+				Point3D worldLoc = GetWorldLocation();
+				Mobile m = state.Mobile;
 
 				Packet asciip = null;
 				Packet p = null;
@@ -4342,17 +4342,17 @@ namespace Server
 				if (m != null && m.CanSee(this) && m.InRange(worldLoc, GetUpdateRange(m)))
 				{
 					if (ascii)
-					{
-						asciip = Packet.Acquire(new AsciiMessage(m_Serial, m_ItemID, type, hue, 3, Name, text));
+                    {
+                        asciip = Packet.Acquire(new AsciiMessage(m_Serial, m_ItemID, type, hue, 3, Name, text));
 
-						state.Send(asciip);
-					}
+                        state.Send(asciip);
+                    }
 					else
-					{
-						p = Packet.Acquire(new UnicodeMessage(m_Serial, m_ItemID, type, hue, 3, m.Language, Name, text));
+                    {
+                        p = Packet.Acquire(new UnicodeMessage(m_Serial, m_ItemID, type, hue, 3, m.Language, Name, text));
 
-						state.Send(p);
-					}
+                        state.Send(p);
+                    }
 				}
 
 				Packet.Release(asciip);
@@ -4367,17 +4367,17 @@ namespace Server
 
 		public double GetDistanceToSqrt(IPoint3D p)
 		{
-			var loc = GetWorldLocation();
+			Point3D loc = GetWorldLocation();
 
-			var xDelta = loc.X - p.X;
-			var yDelta = loc.Y - p.Y;
+			int xDelta = loc.X - p.X;
+			int yDelta = loc.Y - p.Y;
 
 			return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
 		}
 
 		public bool InRange(IPoint3D p, int range)
 		{
-			var loc = GetWorldLocation();
+			Point3D loc = GetWorldLocation();
 
 			return p.X >= (loc.X - range)
 				&& p.X <= (loc.X + range)
@@ -4408,7 +4408,7 @@ namespace Server
 
 		public virtual void RemoveItem(Item item)
 		{
-			var items = LookupItems();
+			List<Item> items = LookupItems();
 
 			if (items != null && items.Remove(item))
 			{
@@ -4432,7 +4432,7 @@ namespace Server
 		{
 			if (Sockets != null)
 			{
-				for (var i = 0; i < Sockets.Count; i++)
+				for (int i = 0; i < Sockets.Count; i++)
 				{
 					Sockets[i].OnOwnerDuped(newItem);
 				}
@@ -4453,7 +4453,7 @@ namespace Server
 		{
 			get
 			{
-				var info = LookupCompactInfo();
+				CompactInfo info = LookupCompactInfo();
 
 				if (info != null)
 				{
@@ -4464,7 +4464,7 @@ namespace Server
 			}
 			set
 			{
-				var info = AcquireCompactInfo();
+				CompactInfo info = AcquireCompactInfo();
 
 				info.m_Spawner = value;
 
@@ -4499,14 +4499,14 @@ namespace Server
 		#region Location Location Location!
 		public virtual void OnLocationChange(Point3D oldLocation)
 		{
-			var items = Items;
+			List<Item> items = Items;
 
 			if (items == null)
 			{
 				return;
 			}
 
-			var i = items.Count;
+			int i = items.Count;
 
 			while (--i >= 0)
 			{
@@ -4515,7 +4515,7 @@ namespace Server
 					continue;
 				}
 
-				var o = items[i];
+				Item o = items[i];
 
 				if (o != null)
 				{
@@ -4533,7 +4533,7 @@ namespace Server
 			get => m_Location;
 			set
 			{
-				var oldLocation = m_Location;
+				Point3D oldLocation = m_Location;
 
 				if (oldLocation != value)
 				{
@@ -4547,9 +4547,9 @@ namespace Server
 							{
 								eable = m_Map.GetClientsInRange(oldLocation, Core.GlobalMaxUpdateRange);
 
-								foreach (var state in eable)
+								foreach (NetState state in eable)
 								{
-									var m = state.Mobile;
+									Mobile m = state.Mobile;
 
 									if (!m.InUpdateRange(value))
 									{
@@ -4560,7 +4560,7 @@ namespace Server
 								eable.Free();
 							}
 
-							var oldLoc = m_Location;
+							Point3D oldLoc = m_Location;
 							m_Location = value;
 							ReleaseWorldPackets();
 
@@ -4568,9 +4568,9 @@ namespace Server
 
 							eable = m_Map.GetClientsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
-							foreach (var state in eable)
+							foreach (NetState state in eable)
 							{
-								var m = state.Mobile;
+								Mobile m = state.Mobile;
 
 								if (m.CanSee(this) && m.InUpdateRange(m_Location) &&
 									(!m_NoMoveHS || (m_DeltaFlags & ItemDelta.Update) != 0 ||
@@ -4631,13 +4631,13 @@ namespace Server
 			{
 				if (m_ItemID != value)
 				{
-					var oldPileWeight = PileWeight;
+					int oldPileWeight = PileWeight;
 
 					m_ItemID = value;
 
 					ReleaseWorldPackets();
 
-					var newPileWeight = PileWeight;
+					int newPileWeight = PileWeight;
 
 					UpdateTotal(this, TotalType.Weight, newPileWeight - oldPileWeight);
 
@@ -4656,7 +4656,7 @@ namespace Server
 		{
 			get
 			{
-				var info = LookupCompactInfo();
+				CompactInfo info = LookupCompactInfo();
 
 				if (info != null && info.m_Name != null)
 				{
@@ -4669,7 +4669,7 @@ namespace Server
 			{
 				if (value == null || value != DefaultName)
 				{
-					var info = AcquireCompactInfo();
+					CompactInfo info = AcquireCompactInfo();
 
 					info.m_Name = value;
 
@@ -4694,7 +4694,7 @@ namespace Server
 					return;
 				}
 
-				var oldParent = m_Parent;
+				object oldParent = m_Parent;
 
 				m_Parent = value;
 
@@ -4723,7 +4723,7 @@ namespace Server
 					oldParent = item.RootParent;
 				}
 
-				var root = RootParent as Mobile;
+				Mobile root = RootParent as Mobile;
 
 				if (root != null && oldParent != root)
 				{
@@ -4770,16 +4770,16 @@ namespace Server
 			get => m_Amount;
 			set
 			{
-				var oldValue = m_Amount;
+				int oldValue = m_Amount;
 
 				if (oldValue != value)
 				{
-					var oldPileWeight = PileWeight;
+					int oldPileWeight = PileWeight;
 
 					m_Amount = value;
 					ReleaseWorldPackets();
 
-					var newPileWeight = PileWeight;
+					int newPileWeight = PileWeight;
 
 					UpdateTotal(this, TotalType.Weight, newPileWeight - oldPileWeight);
 
@@ -4821,39 +4821,39 @@ namespace Server
 		}
 
 		public virtual bool DropToMobile(Mobile from, Mobile target, Point3D p)
-		{
-			if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
+        {
+            if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
 			{
 				return false;
 			}
 
-			if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.Location, 2))
-			{
-				return false;
-			}
+            if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.Location, 2))
+            {
+                return false;
+            }
 
-			if (!from.CanSee(target) || !from.InLOS(target))
-			{
-				return false;
-			}
+            if (!from.CanSee(target) || !from.InLOS(target))
+            {
+                return false;
+            }
 
-			if (!from.OnDroppedItemToMobile(this, target))
-			{
-				return false;
-			}
+            if (!from.OnDroppedItemToMobile(this, target))
+            {
+                return false;
+            }
 
-			if (!OnDroppedToMobile(from, target))
-			{
-				return false;
-			}
+            if (!OnDroppedToMobile(from, target))
+            {
+                return false;
+            }
 
-			if (!target.OnDragDrop(from, this))
-			{
-				return false;
-			}
+            if (!target.OnDragDrop(from, this))
+            {
+                return false;
+            }
 
-			return true;
-		}
+            return true;
+        }
 
 		public virtual bool OnDroppedInto(Mobile from, Container target, Point3D p)
 		{
@@ -4862,50 +4862,50 @@ namespace Server
 				return false;
 			}
 
-			if (Nontransferable && from.Player && target != from.Backpack)
-			{
-				HandleInvalidTransfer(from);
-				return false;
-			}
+            if (Nontransferable && from.Player && target != from.Backpack)
+            {
+                HandleInvalidTransfer(from);
+                return false;
+            }
 
-			return target.OnDragDropInto(from, this, p);
+            return target.OnDragDropInto(from, this, p);
 		}
 
 		public virtual bool OnDroppedOnto(Mobile from, Item target)
-		{
-			if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
+        {
+            if (Deleted || from.Deleted || target.Deleted || from.Map != target.Map || from.Map == null || target.Map == null)
 			{
 				return false;
 			}
 
-			if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.GetWorldLocation(), 2))
-			{
-				return false;
-			}
+            if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.GetWorldLocation(), 2))
+            {
+                return false;
+            }
 
-			if (!from.CanSee(target) || !from.InLOS(target))
-			{
-				return false;
-			}
+            if (!from.CanSee(target) || !from.InLOS(target))
+            {
+                return false;
+            }
 
-			if (!target.IsAccessibleTo(from))
-			{
-				return false;
-			}
+            if (!target.IsAccessibleTo(from))
+            {
+                return false;
+            }
 
-			if (!from.OnDroppedItemOnto(this, target))
-			{
-				return false;
-			}
+            if (!from.OnDroppedItemOnto(this, target))
+            {
+                return false;
+            }
 
-			if (Nontransferable && from.Player && target != from.Backpack && !from.IsStaff())
-			{
-				HandleInvalidTransfer(from);
-				return false;
-			}
+            if (Nontransferable && from.Player && target != from.Backpack && !from.IsStaff())
+            {
+                HandleInvalidTransfer(from);
+                return false;
+            }
 
-			return target.OnDragDrop(from, this);
-		}
+            return target.OnDragDrop(from, this);
+        }
 
 		public virtual bool DropToItem(Mobile from, Item target, Point3D p)
 		{
@@ -4914,40 +4914,40 @@ namespace Server
 				return false;
 			}
 
-			var root = target.RootParent;
+			object root = target.RootParent;
 
 			if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(target.GetWorldLocation(), 2))
 			{
 				return false;
 			}
 
-			if (!from.CanSee(target) || !from.InLOS(target))
-			{
-				return false;
-			}
+            if (!from.CanSee(target) || !from.InLOS(target))
+            {
+                return false;
+            }
 
-			if (!target.IsAccessibleTo(from))
-			{
-				return false;
-			}
+            if (!target.IsAccessibleTo(from))
+            {
+                return false;
+            }
 
-			if (root is Mobile mobile && (!mobile.CheckNonlocalDrop(from, this, target) || !mobile.CheckHasTradeDrop(from, this, target)))
-			{
-				return false;
-			}
+            if (root is Mobile mobile && (!mobile.CheckNonlocalDrop(from, this, target) || !mobile.CheckHasTradeDrop(from, this, target)))
+            {
+                return false;
+            }
 
-			if (!from.OnDroppedItemToItem(this, target, p))
-			{
-				return false;
-			}
+            if (!from.OnDroppedItemToItem(this, target, p))
+            {
+                return false;
+            }
 
-			if (target is Container container && p.m_X != -1 && p.m_Y != -1)
-			{
-				return OnDroppedInto(from, container, p);
-			}
+            if (target is Container container && p.m_X != -1 && p.m_Y != -1)
+            {
+                return OnDroppedInto(from, container, p);
+            }
 
-			return OnDroppedOnto(from, target);
-		}
+            return OnDroppedOnto(from, target);
+        }
 
 		public virtual bool OnDroppedToWorld(Mobile from, Point3D p)
 		{
@@ -4974,25 +4974,25 @@ namespace Server
 				return false;
 			}
 
-			if (!from.InRange(p, 2))
-			{
-				return false;
-			}
+            if (!from.InRange(p, 2))
+            {
+                return false;
+            }
 
-			if (QuestItem)
+            if (QuestItem)
 			{
 				from.SendLocalizedMessage(1074769); // An item must be in your backpack (and not in a container within) to be toggled as a quest item.
 				return false;
 			}
 
-			var map = from.Map;
+			Map map = from.Map;
 
 			if (map == null)
 			{
 				return false;
 			}
 
-			var dest = FindDropPoint(p, map, from.Z + 17);
+			Point3D dest = FindDropPoint(p, map, from.Z + 17);
 			if (dest == Point3D.Zero)
 				return false;
 
@@ -5001,17 +5001,17 @@ namespace Server
 				return false;
 			}
 
-			if (!from.OnDroppedItemToWorld(this, dest))
-			{
-				return false;
-			}
+            if (!from.OnDroppedItemToWorld(this, dest))
+            {
+                return false;
+            }
 
-			if (!OnDroppedToWorld(from, dest))
-			{
-				return false;
-			}
+            if (!OnDroppedToWorld(from, dest))
+            {
+                return false;
+            }
 
-			var soundID = GetDropSound();
+            int soundID = GetDropSound();
 
 			MoveToWorld(dest, from.Map);
 
@@ -5022,7 +5022,7 @@ namespace Server
 
 		public bool DropToWorld(Point3D p, Map map)
 		{
-			var dest = FindDropPoint(p, map, Int32.MaxValue);
+			Point3D dest = FindDropPoint(p, map, int.MaxValue);
 			if (dest == Point3D.Zero)
 				return false;
 			MoveToWorld(dest, map);
@@ -5035,10 +5035,10 @@ namespace Server
 				return Point3D.Zero;
 
 			int x = p.m_X, y = p.m_Y;
-			var z = Int32.MinValue;
+			int z = int.MinValue;
 
-			var landTile = map.Tiles.GetLandTile(x, y);
-			var landFlags = TileData.LandTable[landTile.ID & TileData.MaxLandValue].Flags;
+			LandTile landTile = map.Tiles.GetLandTile(x, y);
+			TileFlag landFlags = TileData.LandTable[landTile.ID & TileData.MaxLandValue].Flags;
 
 			int landZ = 0, landAvg = 0, landTop = 0;
 			map.GetAverageZ(x, y, ref landZ, ref landAvg, ref landTop);
@@ -5049,17 +5049,17 @@ namespace Server
 					z = landAvg;
 			}
 
-			var tiles = map.Tiles.GetStaticTiles(x, y, true);
+			StaticTile[] tiles = map.Tiles.GetStaticTiles(x, y, true);
 
-			for (var i = 0; i < tiles.Length; ++i)
+			for (int i = 0; i < tiles.Length; ++i)
 			{
-				var tile = tiles[i];
-				var id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+				StaticTile tile = tiles[i];
+				ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
 				if (!id.Surface)
 					continue;
 
-				var top = tile.Z + id.CalcHeight;
+				int top = tile.Z + id.CalcHeight;
 
 				if (top > maxZ || top < z)
 					continue;
@@ -5067,23 +5067,23 @@ namespace Server
 				z = top;
 			}
 
-			var items = new List<Item>();
+			List<Item> items = new List<Item>();
 
-			var eable = map.GetItemsInRange(p, 0);
+			IPooledEnumerable<Item> eable = map.GetItemsInRange(p, 0);
 
-			foreach (var item in eable)
+			foreach (Item item in eable)
 			{
 				if (item is BaseMulti || item.ItemID > TileData.MaxItemValue)
 					continue;
 
 				items.Add(item);
 
-				var id = item.ItemData;
+				ItemData id = item.ItemData;
 
 				if (!id.Surface)
 					continue;
 
-				var top = item.Z + id.CalcHeight;
+				int top = item.Z + id.CalcHeight;
 
 				if (top > maxZ || top < z)
 					continue;
@@ -5093,7 +5093,7 @@ namespace Server
 
 			eable.Free();
 
-			if (z == Int32.MinValue)
+			if (z == int.MinValue)
 				return Point3D.Zero;
 
 			if (z > maxZ)
@@ -5101,21 +5101,21 @@ namespace Server
 
 			m_OpenSlots = (1 << 20) - 1;
 
-			var surfaceZ = z;
+			int surfaceZ = z;
 
-			for (var i = 0; i < tiles.Length; ++i)
+			for (int i = 0; i < tiles.Length; ++i)
 			{
-				var tile = tiles[i];
-				var id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+				StaticTile tile = tiles[i];
+				ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
-				var checkZ = tile.Z;
-				var checkTop = checkZ + id.CalcHeight;
+				int checkZ = tile.Z;
+				int checkTop = checkZ + id.CalcHeight;
 
 				if (checkTop == checkZ && !id.Surface)
 					++checkTop;
 
-				var zStart = checkZ - z;
-				var zEnd = checkTop - z;
+				int zStart = checkZ - z;
+				int zEnd = checkTop - z;
 
 				if (zStart >= 20 || zEnd < 0)
 					continue;
@@ -5126,24 +5126,24 @@ namespace Server
 				if (zEnd > 19)
 					zEnd = 19;
 
-				var bitCount = zEnd - zStart;
+				int bitCount = zEnd - zStart;
 
 				m_OpenSlots &= ~(((1 << bitCount) - 1) << zStart);
 			}
 
-			for (var i = 0; i < items.Count; ++i)
+			for (int i = 0; i < items.Count; ++i)
 			{
-				var item = items[i];
-				var id = item.ItemData;
+				Item item = items[i];
+				ItemData id = item.ItemData;
 
-				var checkZ = item.Z;
-				var checkTop = checkZ + id.CalcHeight;
+				int checkZ = item.Z;
+				int checkTop = checkZ + id.CalcHeight;
 
 				if (checkTop == checkZ && !id.Surface)
 					++checkTop;
 
-				var zStart = checkZ - z;
-				var zEnd = checkTop - z;
+				int zStart = checkZ - z;
+				int zEnd = checkTop - z;
 
 				if (zStart >= 17 || zEnd < 0)
 					continue;
@@ -5154,12 +5154,12 @@ namespace Server
 				if (zEnd > 16)
 					zEnd = 16;
 
-				var bitCount = zEnd - zStart;
+				int bitCount = zEnd - zStart;
 
 				m_OpenSlots &= ~(((1 << bitCount) - 1) << zStart);
 			}
 
-			var height = ItemData.Height;
+			int height = ItemData.Height;
 
 			if (height == 0)
 				++height;
@@ -5167,10 +5167,10 @@ namespace Server
 			if (height > 30)
 				height = 30;
 
-			var match = (1 << height) - 1;
-			var okay = false;
+			int match = (1 << height) - 1;
+			bool okay = false;
 
-			for (var i = 0; i < 20; ++i)
+			for (int i = 0; i < 20; ++i)
 			{
 				if (i + height > 20)
 					match >>= 1;
@@ -5198,13 +5198,13 @@ namespace Server
 			if ((landFlags & TileFlag.Impassable) != 0 && landAvg > surfaceZ && (z + height) > landZ)
 				return Point3D.Zero;
 
-			for (var i = 0; i < tiles.Length; ++i)
+			for (int i = 0; i < tiles.Length; ++i)
 			{
-				var tile = tiles[i];
-				var id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
+				StaticTile tile = tiles[i];
+				ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
 
-				var checkZ = tile.Z;
-				var checkTop = checkZ + id.CalcHeight;
+				int checkZ = tile.Z;
+				int checkTop = checkZ + id.CalcHeight;
 
 				if (checkTop > z && (z + height) > checkZ)
 					return Point3D.Zero;
@@ -5213,10 +5213,10 @@ namespace Server
 					return Point3D.Zero;
 			}
 
-			for (var i = 0; i < items.Count; ++i)
+			for (int i = 0; i < items.Count; ++i)
 			{
-				var item = items[i];
-				var id = item.ItemData;
+				Item item = items[i];
+				ItemData id = item.ItemData;
 
 				if ((item.Z + id.CalcHeight) > z && (z + height) > item.Z)
 					return Point3D.Zero;
@@ -5229,13 +5229,13 @@ namespace Server
 		{
 			if (!Deleted && m_Map != null)
 			{
-				var worldLoc = GetWorldLocation();
+				Point3D worldLoc = GetWorldLocation();
 
-				var eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalRadarRange - 4);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(worldLoc, Core.GlobalRadarRange - 4);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
-					var m = state.Mobile;
+					Mobile m = state.Mobile;
 
 					if (Utility.InRange(worldLoc, m.Location, GetUpdateRange(m)))
 					{
@@ -5254,41 +5254,41 @@ namespace Server
 
 		public Point3D GetWorldLocation()
 		{
-			var root = RootParent;
+			object root = RootParent;
 
 			if (root == null)
 			{
 				return m_Location;
 			}
 
-			return ((IEntity)root).Location;
-		}
+            return ((IEntity)root).Location;
+        }
 
 		public virtual bool BlocksFit => false;
 
 		public Point3D GetSurfaceTop()
 		{
-			var root = RootParentEntity;
+			IEntity root = RootParentEntity;
 
 			if (root == null)
 			{
 				return new Point3D(m_Location.m_X, m_Location.m_Y, m_Location.m_Z + (ItemData.Surface ? ItemData.CalcHeight : 0));
 			}
 
-			return root.Location;
-		}
+            return root.Location;
+        }
 
 		public Point3D GetWorldTop()
 		{
-			var root = RootParentEntity;
+			IEntity root = RootParentEntity;
 
 			if (root == null)
 			{
 				return new Point3D(m_Location.m_X, m_Location.m_Y, m_Location.m_Z + ItemData.CalcHeight);
 			}
 
-			return root.Location;
-		}
+            return root.Location;
+        }
 
 		public void SendLocalizedMessageTo(Mobile to, int number)
 		{
@@ -5480,12 +5480,12 @@ namespace Server
 				return iParent.CheckTarget(from, targ, targeted);
 			}
 
-			if (m_Parent is Mobile mParent)
-			{
-				return mParent.CheckTarget(from, targ, targeted);
-			}
+            if (m_Parent is Mobile mParent)
+            {
+                return mParent.CheckTarget(from, targ, targeted);
+            }
 
-			return true;
+            return true;
 		}
 
 		public virtual void OnStatsQuery(Mobile m)
@@ -5503,7 +5503,7 @@ namespace Server
 
 		public virtual void SendStatusTo(NetState state)
 		{
-			var p = GetStatusPacketFor(state);
+			Packet p = GetStatusPacketFor(state);
 
 			if (p != null)
 			{
@@ -5533,7 +5533,7 @@ namespace Server
 				return item.IsAccessibleTo(check);
 			}
 
-			var reg = Region.Find(GetWorldLocation(), m_Map);
+			Region reg = Region.Find(GetWorldLocation(), m_Map);
 
 			return reg.CheckAccessibility(this, check);
 		}
@@ -5545,7 +5545,7 @@ namespace Server
 
 		public bool IsChildOf(object o, bool allowNull)
 		{
-			var p = m_Parent;
+			object p = m_Parent;
 
 			if ((p == null || o == null) && !allowNull)
 			{
@@ -5559,18 +5559,18 @@ namespace Server
 
 			while (p is Item item)
 			{
-				if (item.m_Parent == null)
+                if (item.m_Parent == null)
 				{
 					break;
 				}
 
-				p = item.m_Parent;
+                p = item.m_Parent;
 
-				if (p == o)
-				{
-					return true;
-				}
-			}
+                if (p == o)
+                {
+                    return true;
+                }
+            }
 
 			return false;
 		}
@@ -5595,19 +5595,19 @@ namespace Server
 		}
 
 		public virtual bool CheckItemUse(Mobile from, Item item)
-		{
-			if (m_Parent is Item iParent)
+        {
+            if (m_Parent is Item iParent)
 			{
 				return iParent.CheckItemUse(from, item);
 			}
 
-			if (m_Parent is Mobile mParent)
-			{
-				return mParent.CheckItemUse(from, item);
-			}
+            if (m_Parent is Mobile mParent)
+            {
+                return mParent.CheckItemUse(from, item);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
 		public virtual void OnItemLifted(Mobile from, Item item)
 		{
@@ -5623,32 +5623,32 @@ namespace Server
 
 		public bool CheckLift(Mobile from)
 		{
-			var reject = LRReason.Inspecific;
+			LRReason reject = LRReason.Inspecific;
 
 			return CheckLift(from, this, ref reject);
 		}
 
 		public virtual bool CheckLift(Mobile from, Item item, ref LRReason reject)
-		{
-			if (m_Parent is Item iParent)
+        {
+            if (m_Parent is Item iParent)
 			{
 				return iParent.CheckLift(from, item, ref reject);
 			}
 
-			if (m_Parent is Mobile mParent)
-			{
-				return mParent.CheckLift(from, item, ref reject);
-			}
+            if (m_Parent is Mobile mParent)
+            {
+                return mParent.CheckLift(from, item, ref reject);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
 		public virtual bool CanTarget => true;
 		public virtual bool DisplayLootType => true;
 
 		public virtual void OnAosSingleClick(Mobile from)
 		{
-			var opl = PropertyList;
+			ObjectPropertyList opl = PropertyList;
 
 			if (opl.Header > 0)
 			{
@@ -5667,7 +5667,7 @@ namespace Server
 
 		public virtual void ScissorHelper(Mobile from, Item newItem, int amountPerOldItem, bool carryHue)
 		{
-			var amount = Amount;
+			int amount = Amount;
 
 			if (amount > 60000 / amountPerOldItem) // let's not go over 60000
 			{
@@ -5676,11 +5676,11 @@ namespace Server
 
 			Amount -= amount;
 
-			var ourHue = Hue;
-			var thisMap = Map;
-			var thisParent = m_Parent;
-			var worldLoc = GetWorldLocation();
-			var type = LootType;
+			int ourHue = Hue;
+			Map thisMap = Map;
+			object thisParent = m_Parent;
+			Point3D worldLoc = GetWorldLocation();
+			LootType type = LootType;
 
 			if (Amount == 0)
 			{
@@ -5767,7 +5767,7 @@ namespace Server
 		{
 			get
 			{
-				var info = LookupCompactInfo();
+				CompactInfo info = LookupCompactInfo();
 
 				if (info != null)
 				{
@@ -5778,7 +5778,7 @@ namespace Server
 			}
 			set
 			{
-				var info = AcquireCompactInfo();
+				CompactInfo info = AcquireCompactInfo();
 
 				info.m_BlessedFor = value;
 
@@ -5828,7 +5828,7 @@ namespace Server
 
 		public override string ToString()
 		{
-			return String.Format("0x{0:X} \"{1}\"", m_Serial.Value, GetType().Name);
+			return string.Format("0x{0:X} \"{1}\"", m_Serial.Value, GetType().Name);
 		}
 
 		internal int m_TypeRef;
@@ -5849,7 +5849,7 @@ namespace Server
 
 			World.AddItem(this);
 
-			var ourType = GetType();
+			Type ourType = GetType();
 			m_TypeRef = World.m_ItemTypes.IndexOf(ourType);
 
 			if (m_TypeRef == -1)
@@ -5874,7 +5874,7 @@ namespace Server
 		{
 			m_Serial = serial;
 
-			var ourType = GetType();
+			Type ourType = GetType();
 			m_TypeRef = World.m_ItemTypes.IndexOf(ourType);
 
 			if (m_TypeRef == -1)
@@ -5886,7 +5886,7 @@ namespace Server
 
 		public virtual void UpdateLight()
 		{
-			var data = ItemData;
+			ItemData data = ItemData;
 
 			if (!data.Flags.HasFlag(TileFlag.LightSource))
 			{
@@ -5895,7 +5895,7 @@ namespace Server
 
 			if (m_Light == LightType.Empty)
 			{
-				var light = data.Quality;
+				int light = data.Quality;
 
 				if (light >= 0 && light <= 255)
 				{
@@ -5928,7 +5928,7 @@ namespace Server
 
 		public bool RemoveSocket<T>()
 		{
-			var socket = GetSocket(typeof(T));
+			ItemSocket socket = GetSocket(typeof(T));
 
 			if (socket != null)
 			{
@@ -6097,7 +6097,7 @@ namespace Server
 			}
 			catch (Exception e)
 			{
-				Diagnostics.ExceptionLogging.LogException(e);
+                Diagnostics.ExceptionLogging.LogException(e);
 			}
 
 			if (newSocket != null)
@@ -6141,8 +6141,8 @@ namespace Server
 
 		public static void Load(Item item, GenericReader reader)
 		{
-			var typeName = ScriptCompiler.FindTypeByName(reader.ReadString());
-			var socket = Activator.CreateInstance(typeName) as ItemSocket;
+			Type typeName = ScriptCompiler.FindTypeByName(reader.ReadString());
+			ItemSocket socket = Activator.CreateInstance(typeName) as ItemSocket;
 
 			socket.Deserialize(item, reader);
 		}
@@ -6158,8 +6158,8 @@ namespace Server
 				Instance = this;
 				Start();
 
-				Priority = TimerPriority.FiftyMS;
-			}
+                Priority = TimerPriority.FiftyMS;
+            }
 
 			public static bool HasTimer(ItemSocket socket)
 			{
@@ -6168,7 +6168,7 @@ namespace Server
 
 			public static void RegisterTimer(ItemSocket socket)
 			{
-				var timer = Instance;
+				SocketTimer timer = Instance;
 
 				if (timer == null)
 				{
@@ -6180,7 +6180,7 @@ namespace Server
 
 			public static void RemoveTimer(ItemSocket socket)
 			{
-				var timer = Instance;
+				SocketTimer timer = Instance;
 
 				if (timer != null)
 				{
@@ -6199,16 +6199,16 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				var list = new List<ItemSocket>();
+				List<ItemSocket> list = new List<ItemSocket>();
 
-				foreach (var socket in TimerRegistry.Keys.Where(s => TimerRegistry[s] < DateTime.UtcNow))
+				foreach (ItemSocket socket in TimerRegistry.Keys.Where(s => TimerRegistry[s] < DateTime.UtcNow))
 				{
 					list.Add(socket);
 				}
 
-				for (var i = 0; i < list.Count; i++)
+				for (int i = 0; i < list.Count; i++)
 				{
-					var socket = list[i];
+					ItemSocket socket = list[i];
 					socket.OnTick();
 
 					if (TimerRegistry.ContainsKey(socket))

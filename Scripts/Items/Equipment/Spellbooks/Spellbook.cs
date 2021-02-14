@@ -299,8 +299,8 @@ namespace Server.Items
                 {
                     MaxHitPoints--;
 
-                    if (Parent is Mobile)
-                        ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                    if (Parent is Mobile mobile)
+                        mobile.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
 
                     if (m_MaxHitPoints == 0)
                     {
@@ -527,9 +527,9 @@ namespace Server.Items
 
             Item item = from.FindItemOnLayer(Layer.OneHanded);
 
-            if (item is Spellbook)
+            if (item is Spellbook book)
             {
-                list.Add((Spellbook)item);
+                list.Add(book);
             }
 
             Container pack = from.Backpack;
@@ -543,9 +543,9 @@ namespace Server.Items
             {
                 item = pack.Items[i];
 
-                if (item is Spellbook)
+                if (item is Spellbook spellbook)
                 {
-                    list.Add((Spellbook)item);
+                    list.Add(spellbook);
                 }
             }
 
@@ -589,10 +589,8 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is SpellScroll && !(dropped is SpellStone))
+            if (dropped is SpellScroll scroll && !(scroll is SpellStone))
             {
-                SpellScroll scroll = (SpellScroll)dropped;
-
                 SpellbookType type = GetTypeForSpell(scroll.SpellID);
 
                 if (type != SpellbookType)
@@ -615,10 +613,10 @@ namespace Server.Items
                         m_Content |= (ulong)1 << val;
                         ++m_Count;
 
-                        if (dropped.Amount > 1)
+                        if (scroll.Amount > 1)
                         {
-                            dropped.Amount--;
-                            return base.OnDragDrop(from, dropped);
+                            scroll.Amount--;
+                            return base.OnDragDrop(from, scroll);
                         }
                         else
                         {
@@ -651,10 +649,8 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.AddTo(from);
 
                 int strBonus = m_AosAttributes.BonusStr;
@@ -692,10 +688,8 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.Remove();
 
                 if (HasSocket<Caddellite>())
@@ -1071,9 +1065,9 @@ namespace Server.Items
             int dexBonus = m_AosAttributes.BonusDex;
             int intBonus = m_AosAttributes.BonusInt;
 
-            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            if (Parent is Mobile mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
             {
-                Mobile m = (Mobile)Parent;
+                Mobile m = mobile;
 
                 string modName = Serial.ToString();
 
@@ -1093,9 +1087,9 @@ namespace Server.Items
                 }
             }
 
-            if (Parent is Mobile)
+            if (Parent is Mobile mob)
             {
-                ((Mobile)Parent).CheckStatTimers();
+                mob.CheckStatTimers();
             }
         }
 
@@ -1189,10 +1183,8 @@ namespace Server.Items
 
         private static void AllSpells_OnTarget(Mobile from, object obj)
         {
-            if (obj is Spellbook)
+            if (obj is Spellbook book)
             {
-                Spellbook book = (Spellbook)obj;
-
                 if (book.BookCount == 64)
                 {
                     book.Content = ulong.MaxValue;

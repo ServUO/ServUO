@@ -13,7 +13,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int PowerDecay
         {
-            get { return _PowerDecay; }
+            get => _PowerDecay;
             set
             {
                 _PowerDecay = value;

@@ -153,9 +153,9 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            if (obj is HouseSign)
+            if (obj is HouseSign sign)
             {
-                BaseHouse house = ((HouseSign)obj).Owner;
+                BaseHouse house = sign.Owner;
 
                 if (house == null)
                 {
@@ -445,10 +445,10 @@ namespace Server.Commands.Generic
                 object obj = list[i];
                 Container cont = null;
 
-                if (obj is Mobile)
-                    cont = ((Mobile)obj).Backpack;
-                else if (obj is Container)
-                    cont = (Container)obj;
+                if (obj is Mobile mobile)
+                    cont = mobile.Backpack;
+                else if (obj is Container container)
+                    cont = container;
 
                 if (cont != null)
                     packs.Add(cont);
@@ -473,7 +473,7 @@ namespace Server.Commands.Generic
                 "Adds an item or npc by name to a targeted location. Optional constructor parameters. Optional set property list. If no arguments are specified, this brings up a categorized add menu.";
         }
 
-        public override bool ValidateArgs(BaseCommandImplementor impl, CommandEventArgs e)
+        public override bool ValidateArgs(CommandEventArgs e)
         {
             if (e.Length >= 1)
             {
@@ -515,10 +515,10 @@ namespace Server.Commands.Generic
             if (p == null)
                 return;
 
-            if (p is Item)
-                p = ((Item)p).GetWorldTop();
-            else if (p is Mobile)
-                p = ((Mobile)p).Location;
+            if (p is Item item)
+                p = item.GetWorldTop();
+            else if (p is Mobile mobile)
+                p = mobile.Location;
 
             Add.Invoke(e.Mobile, new Point3D(p), new Point3D(p), e.Arguments);
         }
@@ -600,9 +600,9 @@ namespace Server.Commands.Generic
             {
                 Item item = mob.Items[i];
 
-                if (item is IMountItem)
+                if (item is IMountItem mountItem)
                 {
-                    IMount mount = ((IMountItem)item).Mount;
+                    IMount mount = mountItem.Mount;
 
                     if (mount != null)
                     {
@@ -649,16 +649,16 @@ namespace Server.Commands.Generic
 
         public override void Execute(CommandEventArgs e, object obj)
         {
-            if (obj is BaseVendor)
+            if (obj is BaseVendor vendor)
             {
                 CommandLogging.WriteLine(
                     e.Mobile,
                     "{0} {1} restocking {2}",
                     e.Mobile.AccessLevel,
                     CommandLogging.Format(e.Mobile),
-                    CommandLogging.Format(obj));
+                    CommandLogging.Format(vendor));
 
-                ((BaseVendor)obj).Restock();
+                vendor.Restock();
                 AddResponse("The vendor has been restocked.");
             }
             else
@@ -928,26 +928,26 @@ namespace Server.Commands.Generic
                 }
             }
 
-            if (obj is Item)
+            if (obj is Item item)
             {
                 CommandLogging.WriteLine(
                     e.Mobile,
                     "{0} {1} deleting {2}",
                     e.Mobile.AccessLevel,
                     CommandLogging.Format(e.Mobile),
-                    CommandLogging.Format(obj));
-                ((Item)obj).Delete();
+                    CommandLogging.Format(item));
+                item.Delete();
                 AddResponse("The item has been deleted.");
             }
-            else if (obj is Mobile && !((Mobile)obj).Player)
+            else if (obj is Mobile mobile && !mobile.Player)
             {
                 CommandLogging.WriteLine(
                     e.Mobile,
                     "{0} {1} deleting {2}",
                     e.Mobile.AccessLevel,
                     CommandLogging.Format(e.Mobile),
-                    CommandLogging.Format(obj));
-                ((Mobile)obj).Delete();
+                    CommandLogging.Format(mobile));
+                mobile.Delete();
                 AddResponse("The mobile has been deleted.");
             }
             else
@@ -1171,7 +1171,7 @@ namespace Server.Commands.Generic
         {
             m_Ban = ban;
 
-            AccessLevel = (ban ? AccessLevel.Administrator : AccessLevel.GameMaster);
+            AccessLevel = ban ? AccessLevel.Administrator : AccessLevel.GameMaster;
             Supports = CommandSupport.AllMobiles;
             Commands = new[] { ban ? "Ban" : "Kick" };
             ObjectTypes = ObjectTypes.Mobiles;

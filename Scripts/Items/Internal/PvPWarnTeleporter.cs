@@ -23,9 +23,14 @@ namespace Server.Items
             if (pm != null)
             {
                 if (pm.DisabledPvpWarning)
+                {
                     return base.OnMoveOver(m);
-                else if (!pm.HasGump(typeof(PvpWarningGump)))
+                }
+
+                if (!pm.HasGump(typeof(PvpWarningGump)))
+                {
                     pm.SendGump(new PvpWarningGump(m, this));
+                }
             }
 
             return true;
@@ -34,22 +39,20 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class PvpWarningGump : Gump
     {
-        public ITeleporter Teleporter { get; set; }
-        public Point3D Location { get; set; }
+        public ITeleporter Teleporter { get; }
+        public Point3D Location { get; }
 
         public PvpWarningGump(Mobile from, ITeleporter teleporter)
             : base(150, 50)

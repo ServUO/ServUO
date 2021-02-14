@@ -26,22 +26,20 @@ namespace Server.Engines.Quests
 
         private readonly Type[][] _Table =
         {
-            new Type[] { typeof(BritchesOfWarding), typeof(GargishBritchesOfWarding) },
-            new Type[] { typeof(GlovesOfFeudalGrip), typeof(GargishKiltOfFeudalVise) },
-            new Type[] { typeof(CuffsOfTheArchmage), typeof(GargishCuffsOfTheArchmage) },
-            new Type[] { typeof(BritchesOfWarding), typeof(GargishBritchesOfWarding) },
-            new Type[] { typeof(BowOfTheInfiniteSwarm), typeof(GlaiveOfTheInfiniteSwarm) }
+            new[] { typeof(BritchesOfWarding), typeof(GargishBritchesOfWarding) },
+            new[] { typeof(GlovesOfFeudalGrip), typeof(GargishKiltOfFeudalVise) },
+            new[] { typeof(CuffsOfTheArchmage), typeof(GargishCuffsOfTheArchmage) },
+            new[] { typeof(BritchesOfWarding), typeof(GargishBritchesOfWarding) },
+            new[] { typeof(BowOfTheInfiniteSwarm), typeof(GlaiveOfTheInfiniteSwarm) }
         };
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
             foreach (Type[] t in _Table)
             {
-                if (dropped is IDurability && t[0] == dropped.GetType())
+                if (dropped is IDurability dur && t[0] == dur.GetType())
                 {
-                    IDurability dur = dropped as IDurability;
-
-                    if (dur != null && dur.MaxHitPoints == 255 && dur.HitPoints == 255)
+                    if (dur.MaxHitPoints == 255 && dur.HitPoints == 255)
                     {
                         Item item = Loot.Construct(t[1]);
 
@@ -105,15 +103,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

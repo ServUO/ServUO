@@ -51,19 +51,20 @@ namespace Server.Items
         }
 
         public override bool HandlesOnMovement => !IsInCooldown;
+
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && m.Location != oldLocation && m.InRange(Location, 3) && (!FocusList.Contains(m) || 0.015 > Utility.RandomDouble()))
+            if (m is PlayerMobile pm && pm.Location != oldLocation && pm.InRange(Location, 3) && (!FocusList.Contains(pm) || 0.015 > Utility.RandomDouble()))
             {
-                EmptyNestQuest quest = QuestHelper.GetQuest((PlayerMobile)m, typeof(EmptyNestQuest)) as EmptyNestQuest;
+                EmptyNestQuest quest = QuestHelper.GetQuest(pm, typeof(EmptyNestQuest)) as EmptyNestQuest;
 
                 if (quest != null && !quest.Completed)
                 {
                     if (Focus == null)
                     {
-                        Focus = m;
-                        m.RevealingAction();
-                        SpawnPoachers(m);
+                        Focus = pm;
+                        pm.RevealingAction();
+                        SpawnPoachers(pm);
 
                         DeadlineTimer = Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), () =>
                         {
@@ -190,9 +191,9 @@ namespace Server.Items
                 Timer.DelayCall(TimeSpan.FromSeconds(1), hatchling.Delete);
             }
 
-            if (focus != null && focus is PlayerMobile)
+            if (focus is PlayerMobile mobile)
             {
-                EmptyNestQuest quest = QuestHelper.GetQuest((PlayerMobile)focus, typeof(EmptyNestQuest)) as EmptyNestQuest;
+                EmptyNestQuest quest = QuestHelper.GetQuest(mobile, typeof(EmptyNestQuest)) as EmptyNestQuest;
 
                 if (quest != null)
                 {
@@ -232,16 +233,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
+
             writer.Write(Hatchling);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             Hatchling = reader.ReadMobile() as BaseCreature;
 
             if (Hatchling != null)

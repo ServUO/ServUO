@@ -124,7 +124,7 @@ namespace Server.Mobiles
                 z = Map.GetAverageZ(x, y);
                 Point3D p = new Point3D(x, y, z);
 
-                if (Spells.SpellHelper.AdjustField(ref p, Map, 12, false))/*Map.CanFit(x, y, z, 16, false, false, true))/*Map.CanSpawnMobile(x, y, z)*/
+                if (Spells.SpellHelper.AdjustField(ref p, Map, 12, false))
                 {
                     MovementPath path = new MovementPath(this, p);
 
@@ -216,7 +216,7 @@ namespace Server.Mobiles
 
             public override bool OnMoveOver(Mobile m)
             {
-                if ((m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && m.CanBeHarmful(Owner, false))
+                if ((m is PlayerMobile || m is BaseCreature bc && bc.GetMaster() is PlayerMobile) && m.CanBeHarmful(Owner, false))
                 {
                     m.Freeze(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 10)));
 
@@ -245,7 +245,7 @@ namespace Server.Mobiles
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 Delete();
             }
@@ -264,15 +264,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -300,7 +298,7 @@ namespace Server.Mobiles
             new Point3D(858, 1412, 21),
             new Point3D(868, 1412, 20),
             new Point3D(869, 1409, 20),
-            new Point3D(869, 1404, 20),
+            new Point3D(869, 1404, 20)
         };
 
         private readonly Point3D[] _PlayerTeleList =
@@ -491,8 +489,8 @@ namespace Server.Mobiles
 
                 if (mount != null)
                 {
-                    if (m is PlayerMobile)
-                        ((PlayerMobile)m).SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
+                    if (m is PlayerMobile mobile)
+                        mobile.SetMountBlock(BlockMountType.Dazed, TimeSpan.FromSeconds(10), true);
                     else
                         mount.Rider = null;
                 }
@@ -533,16 +531,16 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.Write(Teleports);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             Teleports = reader.ReadBool();
 
             _NextSpecial = DateTime.UtcNow;
@@ -592,14 +590,14 @@ namespace Server.Mobiles
         {
             base.OnThink();
 
-            if (Protector != null && Protector is PlayerMobile && InRange(Home, 2))
+            if (Protector is PlayerMobile mobile && InRange(Home, 2))
             {
-                PrideOfTheAmbushQuest quest = QuestHelper.GetQuest((PlayerMobile)Protector, typeof(PrideOfTheAmbushQuest)) as PrideOfTheAmbushQuest;
+                PrideOfTheAmbushQuest quest = QuestHelper.GetQuest(mobile, typeof(PrideOfTheAmbushQuest)) as PrideOfTheAmbushQuest;
 
                 if (quest != null && !quest.Completed)
                     quest.Update(this);
 
-                Protector.PrivateOverheadMessage(Network.MessageType.Regular, 0x35, 1156501, Protector.NetState); // *You watch as the Tiger Cub safely returns to the Kurak Tribe*
+                mobile.PrivateOverheadMessage(Network.MessageType.Regular, 0x35, 1156501, mobile.NetState); // *You watch as the Tiger Cub safely returns to the Kurak Tribe*
 
                 Timer.DelayCall(TimeSpan.FromSeconds(.25), Delete);
                 Protector = null;
@@ -691,15 +689,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }
@@ -738,15 +734,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -833,7 +827,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

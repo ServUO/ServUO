@@ -11,7 +11,7 @@ namespace Server.Mobiles
 {
     public class VendorRentalDuration
     {
-        public static readonly VendorRentalDuration[] Instances = new VendorRentalDuration[]
+        public static readonly VendorRentalDuration[] Instances =
         {
             new VendorRentalDuration(TimeSpan.FromDays(7.0), 1062361), // 1 Week
             new VendorRentalDuration(TimeSpan.FromDays(14.0), 1062362), // 2 Weeks
@@ -77,76 +77,40 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int RentalPrice
         {
-            get
-            {
-                return m_RentalPrice;
-            }
-            set
-            {
-                m_RentalPrice = value;
-            }
+            get => m_RentalPrice;
+            set => m_RentalPrice = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public bool LandlordRenew
         {
-            get
-            {
-                return m_LandlordRenew;
-            }
-            set
-            {
-                m_LandlordRenew = value;
-            }
+            get => m_LandlordRenew;
+            set => m_LandlordRenew = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RenterRenew
         {
-            get
-            {
-                return m_RenterRenew;
-            }
-            set
-            {
-                m_RenterRenew = value;
-            }
+            get => m_RenterRenew;
+            set => m_RenterRenew = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Renew => LandlordRenew && RenterRenew && House != null && House.DecayType != DecayType.Condemned;
         [CommandProperty(AccessLevel.GameMaster)]
         public int RenewalPrice
         {
-            get
-            {
-                return m_RenewalPrice;
-            }
-            set
-            {
-                m_RenewalPrice = value;
-            }
+            get => m_RenewalPrice;
+            set => m_RenewalPrice = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public int RentalGold
         {
-            get
-            {
-                return m_RentalGold;
-            }
-            set
-            {
-                m_RentalGold = value;
-            }
+            get => m_RentalGold;
+            set => m_RentalGold = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime RentalExpireTime
         {
-            get
-            {
-                return m_RentalExpireTime;
-            }
-            set
-            {
-                m_RentalExpireTime = value;
-            }
+            get => m_RentalExpireTime;
+            set => m_RentalExpireTime = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Landlord
@@ -190,7 +154,7 @@ namespace Server.Mobiles
             int days, hours;
             ComputeRentalExpireDelay(out days, out hours);
 
-            to.SendLocalizedMessage(1062464, days.ToString() + "\t" + hours.ToString()); // The rental contract on this vendor will expire in ~1_DAY~ day(s) and ~2_HOUR~ hour(s).
+            to.SendLocalizedMessage(1062464, days + "\t" + hours); // The rental contract on this vendor will expire in ~1_DAY~ day(s) and ~2_HOUR~ hour(s).
         }
 
         public override void Destroy(bool toBackpack)
@@ -239,7 +203,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt(m_RentalDuration.ID);
@@ -257,8 +220,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             int durationID = reader.ReadEncodedInt();
             if (durationID < VendorRentalDuration.Instances.Length)

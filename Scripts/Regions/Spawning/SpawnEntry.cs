@@ -74,7 +74,7 @@ namespace Server.Regions
         public virtual void GetSpawnContextEntries(ISpawnable spawn, Mobile m, List<ContextMenuEntry> list)
         { }
 
-        public static void Remove(GenericReader reader, int version)
+        public static void Remove(GenericReader reader)
         {
             int count = reader.ReadInt();
 
@@ -205,7 +205,7 @@ namespace Server.Regions
             }
         }
 
-        public void Deserialize(GenericReader reader, int version)
+        public void Deserialize(GenericReader reader)
         {
             int count = reader.ReadInt();
 
@@ -391,8 +391,10 @@ namespace Server.Regions
 
             spawn.Spawner = this;
 
-            if (spawn is BaseCreature)
-                ((BaseCreature)spawn).RemoveIfUntamed = RemoveIfUntamed;
+            if (spawn is BaseCreature creature)
+            {
+                creature.RemoveIfUntamed = RemoveIfUntamed;
+            }
         }
 
         void ISpawner.Remove(ISpawnable spawn)

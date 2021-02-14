@@ -13,6 +13,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "white king";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -22,7 +23,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -39,6 +40,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "black king";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -48,7 +50,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -65,6 +67,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "white queen";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -74,7 +77,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -91,6 +94,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "black queen";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -100,7 +104,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -117,6 +121,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "white rook";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -126,7 +131,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -143,6 +148,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "black rook";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -152,7 +158,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -169,6 +175,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "white bishop";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -178,7 +185,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -195,6 +202,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "black bishop";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -204,7 +212,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -221,6 +229,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "white knight";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -230,7 +239,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -247,6 +256,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "black knight";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -256,7 +266,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -273,6 +283,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "white pawn";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -282,7 +293,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -299,6 +310,7 @@ namespace Server.Items
         }
 
         public override string DefaultName => "black pawn";
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -308,7 +320,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

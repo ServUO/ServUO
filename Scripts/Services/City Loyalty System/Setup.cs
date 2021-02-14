@@ -18,8 +18,6 @@ namespace Server.Engines.CityLoyalty
 
         public static void Delete(CommandEventArgs e)
         {
-            Mobile m = e.Mobile;
-
             CityLoyaltySystem.Cities.ForEach(city =>
                 {
                     if (city.Stone != null) city.Stone.Delete();

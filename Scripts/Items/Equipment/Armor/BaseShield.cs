@@ -25,9 +25,11 @@ namespace Server.Items
                 double ar = base.ArmorRating;
 
                 if (m != null)
+                {
                     return ((m.Skills[SkillName.Parry].Value * ar) / 200.0) + 1.0;
-                else
-                    return ar;
+                }
+
+                return ar;
             }
         }
 
@@ -94,7 +96,7 @@ namespace Server.Items
                 int wear;
 
                 if (weapon.Type == WeaponType.Bashing)
-                    wear = (absorbed / 2);
+                    wear = absorbed / 2;
                 else
                     wear = Utility.Random(2);
 
@@ -117,8 +119,10 @@ namespace Server.Items
                         {
                             MaxHitPoints -= wear;
 
-                            if (Parent is Mobile)
-                                ((Mobile)Parent).LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            if (Parent is Mobile mobile)
+                            {
+                                mobile.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1061121); // Your equipment is severely damaged.
+                            }
                         }
                         else
                         {
@@ -137,15 +141,13 @@ namespace Server.Items
             {
                 return base.GetLuckBonus();
             }
-            else
-            {
-                CraftAttributeInfo attrInfo = GetResourceAttrs(Resource);
 
-                if (attrInfo == null)
-                    return 0;
+            CraftAttributeInfo attrInfo = GetResourceAttrs(Resource);
 
-                return attrInfo.ShieldLuck;
-            }
+            if (attrInfo == null)
+                return 0;
+
+            return attrInfo.ShieldLuck;
         }
 
         public override void DistributeExceptionalBonuses(Mobile from, bool runic)

@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class EndingtheThreat : BaseQuest
     {
         public EndingtheThreat()
-            : base()
         {
             AddObjective(new SlayObjective(typeof(GrayGoblin), "gray goblin", 10, 1095190, "Abyss"));
 

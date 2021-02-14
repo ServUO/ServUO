@@ -26,9 +26,9 @@ namespace Server.Engines.CityLoyalty
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from is PlayerMobile && from.InRange(from.Location, 3))
+            if (CityLoyaltySystem.Enabled && CityLoyaltySystem.IsSetup() && from is PlayerMobile pm && pm.InRange(pm.Location, 3))
             {
-                BaseGump.SendGump(new CityStoneGump(from as PlayerMobile, City));
+                BaseGump.SendGump(new CityStoneGump(pm, City));
             }
         }
 
@@ -117,9 +117,9 @@ namespace Server.Engines.CityLoyalty
 
             list.Add(new SimpleContextMenuEntry(from, 1154277, m => // Open Inventory WTF is this?
             {
-                if (m is PlayerMobile && City.IsGovernor(m))
+                if (m is PlayerMobile mobile && City.IsGovernor(mobile))
                 {
-                    BaseGump.SendGump(new OpenInventoryGump((PlayerMobile)m, City));
+                    BaseGump.SendGump(new OpenInventoryGump(mobile, City));
                 }
             }, enabled: City.IsGovernor(from)));
 
@@ -136,9 +136,8 @@ namespace Server.Engines.CityLoyalty
                     m.SendMessage("Where would you like to place a ballot box?");
                     m.BeginTarget(3, true, TargetFlags.None, (mob, targeted) =>
                         {
-                            if (targeted is IPoint3D)
+                            if (targeted is IPoint3D p)
                             {
-                                IPoint3D p = targeted as IPoint3D;
                                 Spells.SpellHelper.GetSurfaceTop(ref p);
                                 BallotBox box = new BallotBox();
 
@@ -175,8 +174,8 @@ namespace Server.Engines.CityLoyalty
                 {
                     entry.CustomTitle = null;
 
-                    if (m is PlayerMobile)
-                        ((PlayerMobile)m).RemoveRewardTitle(1154017, true);
+                    if (m is PlayerMobile mobile)
+                        mobile.RemoveRewardTitle(1154017, true);
 
                     m.SendMessage("City Title removed.");
                 }
@@ -184,9 +183,9 @@ namespace Server.Engines.CityLoyalty
 
             list.Add(new SimpleContextMenuEntry(from, 1154068, m => // Accept Office
             {
-                if (m is PlayerMobile && m == City.GovernorElect && City.Governor == null)
+                if (m is PlayerMobile mobile && m == City.GovernorElect && City.Governor == null)
                 {
-                    BaseGump.SendGump(new AcceptOfficeGump(m as PlayerMobile, City));
+                    BaseGump.SendGump(new AcceptOfficeGump(mobile, City));
                 }
             }, enabled: City.GovernorElect == from && City.Governor == null && City.GetLoyaltyRating(from) >= LoyaltyRating.Unknown));
         }
@@ -231,7 +230,7 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             City = CityLoyaltySystem.GetCityInstance((City)reader.ReadInt());
 

@@ -31,7 +31,7 @@ namespace Server.PathAlgorithms.SlowAStar
             x *= 11;
             y *= 11;
 
-            return (x * x) + (y * y) + (z * z);
+            return x * x + y * y + z * z;
         }
 
         public override bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal)
@@ -80,7 +80,7 @@ namespace Server.PathAlgorithms.SlowAStar
 
                 for (int i = 1; i < openCount; ++i)
                 {
-                    if ((open[i].g + open[i].h) < curF)
+                    if (open[i].g + open[i].h < curF)
                     {
                         curNode = open[i];
                         curF = curNode.g + curNode.h;

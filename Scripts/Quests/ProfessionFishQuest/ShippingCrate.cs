@@ -76,8 +76,8 @@ namespace Server.Items
 
             object delivery = GetDeliveryInfo();
 
-            if (delivery is string)
-                list.Add((string)delivery);
+            if (delivery is string s)
+                list.Add(s);
             else
                 list.Add((int)delivery);
 
@@ -267,7 +267,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

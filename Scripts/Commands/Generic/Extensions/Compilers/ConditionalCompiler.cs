@@ -49,7 +49,7 @@ namespace Server.Commands.Generic
 
         public FieldInfo Field => m_Field;
 
-        public bool HasField => (m_Field != null);
+        public bool HasField => m_Field != null;
 
         public PropertyValue(Type type, object value)
         {
@@ -70,22 +70,22 @@ namespace Server.Commands.Generic
             }
             else
             {
-                if (m_Value is int)
-                    method.Load((int)m_Value);
-                else if (m_Value is long)
-                    method.Load((long)m_Value);
-                else if (m_Value is float)
-                    method.Load((float)m_Value);
-                else if (m_Value is double)
-                    method.Load((double)m_Value);
-                else if (m_Value is char)
-                    method.Load((char)m_Value);
-                else if (m_Value is bool)
-                    method.Load((bool)m_Value);
-                else if (m_Value is string)
-                    method.Load((string)m_Value);
-                else if (m_Value is Enum)
-                    method.Load((Enum)m_Value);
+                if (m_Value is int i)
+                    method.Load(i);
+                else if (m_Value is long lValue)
+                    method.Load(lValue);
+                else if (m_Value is float fValue)
+                    method.Load(fValue);
+                else if (m_Value is double dValue)
+                    method.Load(dValue);
+                else if (m_Value is char cValue)
+                    method.Load(cValue);
+                else if (m_Value is bool bValue)
+                    method.Load(bValue);
+                else if (m_Value is string sValue)
+                    method.Load(sValue);
+                else if (m_Value is Enum eValue)
+                    method.Load(eValue);
                 else
                     throw new InvalidOperationException("Unrecognized comparison value.");
             }
@@ -93,10 +93,8 @@ namespace Server.Commands.Generic
 
         public void Acquire(TypeBuilder typeBuilder, ILGenerator il, string fieldName)
         {
-            if (m_Value is string)
+            if (m_Value is string toParse)
             {
-                string toParse = (string)m_Value;
-
                 if (!m_Type.IsValueType && toParse == "null")
                 {
                     m_Value = null;
@@ -121,7 +119,7 @@ namespace Server.Commands.Generic
                         "Parse",
                         BindingFlags.Public | BindingFlags.Static,
                         null,
-                        new Type[] { typeof(string), typeof(NumberStyles) },
+                        new[] { typeof(string), typeof(NumberStyles) },
                         null);
 
                     if (parseNumber != null)
@@ -143,11 +141,11 @@ namespace Server.Commands.Generic
                             "Parse",
                             BindingFlags.Public | BindingFlags.Static,
                             null,
-                            new Type[] { typeof(string) },
+                            new[] { typeof(string) },
                             null);
 
                         parseMethod = parseGeneral;
-                        parseArgs = new object[] { toParse };
+                        parseArgs = new object[] {toParse};
                     }
 
                     if (parseMethod != null)
@@ -263,14 +261,14 @@ namespace Server.Commands.Generic
 
             if (m_IgnoreCase || methodName == "Equals")
             {
-                Type type = (m_IgnoreCase ? typeof(Insensitive) : typeof(string));
+                Type type = m_IgnoreCase ? typeof(Insensitive) : typeof(string);
 
                 emitter.BeginCall(
                     type.GetMethod(
                         methodName,
                         BindingFlags.Public | BindingFlags.Static,
                         null,
-                        new Type[]
+                        new[]
                         {
                             typeof(string),
                             typeof(string)
@@ -308,7 +306,7 @@ namespace Server.Commands.Generic
                         methodName,
                         BindingFlags.Public | BindingFlags.Instance,
                         null,
-                        new Type[]
+                        new[]
                         {
                             typeof(string)
                         },
@@ -360,7 +358,7 @@ namespace Server.Commands.Generic
             bool inverse = false;
 
             bool couldCompare =
-                emitter.CompareTo(1, delegate ()
+                emitter.CompareTo(1, delegate
                 {
                     m_Value.Load(emitter);
                 });
@@ -470,7 +468,7 @@ namespace Server.Commands.Generic
                     /*  name  */ "Verify",
                     /*  attr  */ MethodAttributes.Public | MethodAttributes.Virtual,
                     /* return */ typeof(bool),
-                    /* params */ new Type[] { typeof(object) });
+                    /* params */ new[] { typeof(object) });
 
                 LocalBuilder obj = emitter.CreateLocal(objectType);
                 LocalBuilder eq = emitter.CreateLocal(typeof(bool));
@@ -507,7 +505,7 @@ namespace Server.Commands.Generic
                     emitter.Method,
                     typeof(IConditional).GetMethod(
                         "Verify",
-                        new Type[]
+                        new[]
                         {
                             typeof(object)
                         }));

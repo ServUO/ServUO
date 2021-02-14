@@ -14,12 +14,14 @@ namespace Server.Mobiles
             if (weapon == null)
                 return null;
 
-            if (weapon is BaseWeapon)
+            if (weapon is BaseWeapon baseWeapon)
             {
                 if (Utility.RandomBool())
-                    return ((BaseWeapon)weapon).PrimaryAbility;
-                else
-                    return ((BaseWeapon)weapon).SecondaryAbility;
+                {
+                    return baseWeapon.PrimaryAbility;
+                }
+
+                return baseWeapon.SecondaryAbility;
             }
             return null;
         }
@@ -110,7 +112,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

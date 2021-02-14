@@ -40,10 +40,8 @@ namespace Server.Items
             {
                 Item obj = items[i];
 
-                if (obj is IArcaneEquip)
+                if (obj is IArcaneEquip eq)
                 {
-                    IArcaneEquip eq = (IArcaneEquip)obj;
-
                     if (eq.IsArcane)
                         avail += eq.CurArcaneCharges;
                 }
@@ -56,10 +54,8 @@ namespace Server.Items
             {
                 Item obj = items[i];
 
-                if (obj is IArcaneEquip)
+                if (obj is IArcaneEquip eq)
                 {
-                    IArcaneEquip eq = (IArcaneEquip)obj;
-
                     if (eq.IsArcane)
                     {
                         if (eq.CurArcaneCharges > amount)
@@ -111,19 +107,16 @@ namespace Server.Items
                 return;
             }
 
-            if (obj is IArcaneEquip && obj is Item)
+            if (obj is IArcaneEquip eq && eq is Item item)
             {
-                Item item = (Item)obj;
                 CraftResource resource = CraftResource.None;
 
-                if (item is BaseClothing)
-                    resource = ((BaseClothing)item).Resource;
-                else if (item is BaseArmor)
-                    resource = ((BaseArmor)item).Resource;
-                else if (item is BaseWeapon) // Sanity, weapons cannot recieve gems...
-                    resource = ((BaseWeapon)item).Resource;
-
-                IArcaneEquip eq = (IArcaneEquip)obj;
+                if (item is BaseClothing clothing)
+                    resource = clothing.Resource;
+                else if (item is BaseArmor armor)
+                    resource = armor.Resource;
+                else if (item is BaseWeapon weapon) // Sanity, weapons cannot recieve gems...
+                    resource = weapon.Resource;
 
                 if (!item.IsChildOf(from.Backpack))
                 {
@@ -162,26 +155,22 @@ namespace Server.Items
                 {
                     bool isExceptional = false;
 
-                    if (item is BaseClothing)
-                        isExceptional = ((BaseClothing)item).Quality == ItemQuality.Exceptional;
-                    else if (item is BaseArmor)
-                        isExceptional = ((BaseArmor)item).Quality == ItemQuality.Exceptional;
-                    else if (item is BaseWeapon)
-                        isExceptional = ((BaseWeapon)item).Quality == ItemQuality.Exceptional;
+                    if (item is BaseClothing bc)
+                        isExceptional = bc.Quality == ItemQuality.Exceptional;
+                    else if (item is BaseArmor ba)
+                        isExceptional = ba.Quality == ItemQuality.Exceptional;
+                    else if (item is BaseWeapon bw)
+                        isExceptional = bw.Quality == ItemQuality.Exceptional;
 
                     if (isExceptional)
                     {
-                        if (item is BaseClothing)
+                        if (item is BaseClothing cloth)
                         {
-                            BaseClothing cloth = item as BaseClothing;
-
                             cloth.Quality = ItemQuality.Normal;
                             cloth.Crafter = from;
                         }
-                        else if (item is BaseArmor)
+                        else if (item is BaseArmor armor)
                         {
-                            BaseArmor armor = item as BaseArmor;
-
                             if (armor.IsImbued || armor.IsArtifact || RunicReforging.GetArtifactRarity(armor) > 0)
                             {
                                 from.SendLocalizedMessage(1049690); // Arcane gems cannot be used on that type of leather.

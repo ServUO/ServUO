@@ -97,7 +97,7 @@ namespace Server.Engines.JollyRoger
 
             SetBody();
 
-            Title = "the " + specialty.ToString();
+            Title = "the " + specialty;
 
             SetStr(250);
             SetDex(SpellCaster ? 150 : 200);
@@ -525,7 +525,7 @@ namespace Server.Engines.JollyRoger
             }
             else if (_Specialty == MasterTitle.Sampire)
             {
-                if (0.1 > Utility.RandomDouble() && Weapon is BaseWeapon && !CurseWeaponSpell.IsCursed(this, (BaseWeapon)Weapon))
+                if (0.1 > Utility.RandomDouble() && Weapon is BaseWeapon weapon && !CurseWeaponSpell.IsCursed(this, weapon))
                 {
                     CurseWeaponSpell spell = new CurseWeaponSpell(this, null);
                     spell.Cast();
@@ -552,8 +552,10 @@ namespace Server.Engines.JollyRoger
 
             foreach (Item i in Backpack.Items)
             {
-                if (i is BaseWeapon && i != item)
-                    weapons.Add((BaseWeapon)i);
+                if (i is BaseWeapon weapon && i != item)
+                {
+                    weapons.Add(weapon);
+                }
             }
 
             if (weapons.Count > 0)
@@ -638,7 +640,7 @@ namespace Server.Engines.JollyRoger
 
             foreach (Mobile m in eable)
             {
-                if ((m is PlayerMobile || m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile) && CanBeHarmful(m))
+                if ((m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile) && CanBeHarmful(m))
                 {
                     Timer.DelayCall(TimeSpan.FromSeconds(1.75), new TimerStateCallback(DoDamage_Callback), m);
                 }

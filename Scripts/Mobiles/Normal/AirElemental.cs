@@ -60,7 +60,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Meager);
             AddLoot(LootPack.LowScrolls);
             AddLoot(LootPack.MedScrolls);
-            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(PainSpikeScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(VengefulSpiritScroll) }, 16.0, 1, false, true)); 
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(PainSpikeScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(VengefulSpiritScroll) }, 16.0, 1, false, true)); 
         }
 
         public override void Serialize(GenericWriter writer)
@@ -72,7 +72,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

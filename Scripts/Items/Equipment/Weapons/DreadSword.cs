@@ -7,7 +7,6 @@ namespace Server.Items
         public DreadSword()
             : base(0x90B)
         {
-            //Weight = 7.0;
         }
 
         public DreadSword(Serial serial)
@@ -36,7 +35,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return m_Active; }
+            get => m_Active;
             set
             {
                 m_Active = value;
@@ -179,8 +179,10 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Item && ((Item)targeted).IsChildOf(from.Backpack) && m_Altar.IsKey((Item)targeted, from))
-                    m_Altar.OnSacraficedItem((Item)targeted, from);
+                if (targeted is Item item && item.IsChildOf(from.Backpack) && m_Altar.IsKey(item, from))
+                {
+                    m_Altar.OnSacraficedItem(item, from);
+                }
             }
         }
 
@@ -250,14 +252,17 @@ namespace Server.Items
 
             if (m_KeyStage >= 0 && m_KeyStage < m_Keys.Length && type == m_Keys[m_KeyStage])
                 return true;
-            else if (m_KeyStage == 1 && item is PresetMap && item.LabelNumber == 1041204)
+
+            if (m_KeyStage == 1 && item is PresetMap && item.LabelNumber == 1041204)
                 return true;
-            else if (m_KeyStage == 1 && item is TreasureMap)
+
+            if (m_KeyStage == 1 && item is TreasureMap)
                 from.SendLocalizedMessage(1116360); // The island's location cannot be marked on a treasure map.
             else if (m_KeyStage == 1 && item is MapItem)
                 from.SendLocalizedMessage(1116358); // The island's location cannot be marked on this map.
             else
                 from.SendLocalizedMessage(1072682); // This is not the proper key.
+
             return false;
         }
 
@@ -388,7 +393,7 @@ namespace Server.Items
 
         public Rectangle2D GetRectangle(Point3D pnt)
         {
-            return new Rectangle2D(pnt.X - (m_RegionSize / 2), pnt.Y - (m_RegionSize / 2), m_RegionSize, m_RegionSize);
+            return new Rectangle2D(pnt.X - m_RegionSize / 2, pnt.Y - m_RegionSize / 2, m_RegionSize, m_RegionSize);
         }
 
         public CorgulAltar(Serial serial)
@@ -406,7 +411,6 @@ namespace Server.Items
             writer.Write(m_Activated);
             writer.Write(m_Active);
             writer.Write(m_WarpPoint);
-            //writer.Write(m_IslandMap); Old version 0
 
             writer.Write(m_IslandMaps.Count);
             foreach (Item item in m_IslandMaps)
@@ -433,10 +437,10 @@ namespace Server.Items
                         {
                             Item map = reader.ReadItem();
 
-                            if (map != null && !map.Deleted && map is CorgulIslandMap)
+                            if (map != null && !map.Deleted && map is CorgulIslandMap islandMap)
                             {
-                                m_IslandMaps.Add(map);
-                                ((CorgulIslandMap)map).Altar = this;
+                                m_IslandMaps.Add(islandMap);
+                                islandMap.Altar = this;
                             }
                         }
 
@@ -449,7 +453,7 @@ namespace Server.Items
                         m_Activated = reader.ReadBool();
                         m_Active = reader.ReadBool();
                         m_WarpPoint = reader.ReadPoint3D();
-                        //m_IslandMap = reader.ReadItem() as CorgulIslandMap;
+
                         Item item = reader.ReadItem();
                         break;
                     }

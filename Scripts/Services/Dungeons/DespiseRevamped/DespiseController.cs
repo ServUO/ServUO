@@ -19,7 +19,7 @@ namespace Server.Engines.Despise
         }
 
         private static DespiseController m_Instance;
-        public static DespiseController Instance { get { return m_Instance; } set { m_Instance = value; } }
+        public static DespiseController Instance { get => m_Instance; set => m_Instance = value; }
 
         private bool m_Enabled;
         private bool m_Sequencing;
@@ -46,7 +46,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Enabled
         {
-            get { return m_Enabled; }
+            get => m_Enabled;
             set
             {
                 if (m_Enabled != value)
@@ -65,11 +65,7 @@ namespace Server.Engines.Despise
         public bool Sequencing => m_Sequencing;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextBossEncounter
-        {
-            get { return m_NextBossEncounter; }
-            set { m_NextBossEncounter = value; }
-        }
+        public DateTime NextBossEncounter { get => m_NextBossEncounter; set => m_NextBossEncounter = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DespiseBoss Boss => m_Boss;
@@ -131,7 +127,7 @@ namespace Server.Engines.Despise
             m_LowerRegion = new DespiseRegion("Despise Lower", m_LowerLevelBounds, true);
             m_EvilRegion = new DespiseRegion("Despise Evil", m_EvilBounds);
             m_GoodRegion = new DespiseRegion("Despise Good", m_GoodBounds);
-            m_StartRegion = new DespiseRegion("Despise Start", new Rectangle2D[] { new Rectangle2D(5568, 623, 22, 20) });
+            m_StartRegion = new DespiseRegion("Despise Start", new[] { new Rectangle2D(5568, 623, 22, 20) });
         }
 
         private void EndTimer()
@@ -199,7 +195,7 @@ namespace Server.Engines.Despise
                     // The Call to Arms has sounded, but your forces are not yet strong enough to heed it.
                     // Your enemy forces are stronger, and they have been called to battle.
                 }
-                else if (orb != null && orb.Alignment == strongest)
+                else if (orb.Alignment == strongest)
                 {
                     m.SendLocalizedMessage(1153332); // The Call to Arms has sounded. The forces of your alignment are strong, and you have been called to battle!
 
@@ -254,7 +250,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ResetSpawns
         {
-            get { return true; }
+            get => true;
             set
             {
                 if (value)
@@ -269,24 +265,19 @@ namespace Server.Engines.Despise
 
         private void CreateSpawners()
         {
-            //Console.Write("Locating Despise Revamp Spawners...");
-
             m_GoodSpawners = new List<XmlSpawner>();
             m_EvilSpawners = new List<XmlSpawner>();
 
             foreach (Item item in m_LowerRegion.GetEnumeratedItems())
             {
-                if (item is XmlSpawner && item.Name != null && item.Name.ToLower().IndexOf("despiserevamped") >= 0)
+                if (item is XmlSpawner spawner && spawner.Name != null && spawner.Name.ToLower().IndexOf("despiserevamped") >= 0)
                 {
-                    if (item.Name.ToLower().IndexOf("despiserevamped good") >= 0)
-                        m_GoodSpawners.Add((XmlSpawner)item);
-                    if (item.Name.ToLower().IndexOf("despiserevamped evil") >= 0)
-                        m_EvilSpawners.Add((XmlSpawner)item);
+                    if (spawner.Name.ToLower().IndexOf("despiserevamped good") >= 0)
+                        m_GoodSpawners.Add(spawner);
+                    if (spawner.Name.ToLower().IndexOf("despiserevamped evil") >= 0)
+                        m_EvilSpawners.Add(spawner);
                 }
             }
-
-            //Console.Write("Done.");
-            //Console.WriteLine("Located {0} Evil spawners, and {1} Good Spawners", m_EvilSpawners.Count, m_GoodSpawners.Count);
         }
 
         private void ResetSpawners(bool reset)
@@ -534,9 +525,9 @@ namespace Server.Engines.Despise
 
             foreach (Mobile m in m_LowerRegion.GetMobiles())
             {
-                if (m is DespiseCreature && ((DespiseCreature)m).Orb != null)
+                if (m is DespiseCreature creature && creature.Orb != null)
                 {
-                    m.Delete();
+                    creature.Delete();
                 }
             }
         }
@@ -610,19 +601,19 @@ namespace Server.Engines.Despise
         #region Location Defs
 
         public static Rectangle2D[] EvilBounds => m_EvilBounds;
-        private static readonly Rectangle2D[] m_EvilBounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_EvilBounds =
         {
             new Rectangle2D(5381, 644, 149, 120)
         };
 
         public static Rectangle2D[] GoodBounds => m_GoodBounds;
-        private static readonly Rectangle2D[] m_GoodBounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_GoodBounds =
         {
             new Rectangle2D(5380, 515, 134, 121)
         };
 
         public static Rectangle2D[] LowerLevelBounds => m_LowerLevelBounds;
-        private static readonly Rectangle2D[] m_LowerLevelBounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_LowerLevelBounds =
         {
             new Rectangle2D(5379, 771, 247, 250)
         };
@@ -762,11 +753,9 @@ namespace Server.Engines.Despise
                         }
                     }
 
-                    if (Region.Find(spawner.Location, spawner.Map) == m_GoodRegion ||
-                        Region.Find(spawner.Location, spawner.Map) == m_EvilRegion)
+                    if ((Region.Find(spawner.Location, spawner.Map) == m_GoodRegion || Region.Find(spawner.Location, spawner.Map) == m_EvilRegion) && obj.TypeName.IndexOf(",{RND,1,5}") < 0) 
                     {
-                        if (obj.TypeName.IndexOf(@",{RND,1,5}") < 0)
-                            obj.TypeName = obj.TypeName + @",{RND,1,5}";
+                        obj.TypeName = obj.TypeName + ",{RND,1,5}";
                     }
                 }
             }

@@ -139,13 +139,13 @@ namespace Server.Items
                     return;
                 }
 
-                if (targeted is BaseCreature && ((BaseCreature)targeted).ControlMaster == from)
+                if (targeted is BaseCreature creature && creature.ControlMaster == from)
                 {
-                    if (((BaseCreature)targeted).IsBonded)
+                    if (creature.IsBonded)
                     {
                         if (_Item.IsUsable)
                         {
-                            _Item.PetLinked = (BaseCreature)targeted;
+                            _Item.PetLinked = creature;
                             _Item.NextLinkedTime = DateTime.UtcNow + TimeSpan.FromDays(7);
                             _Item.InvalidateProperties();
 

@@ -41,97 +41,25 @@ namespace Server.Misc
 
         public Map Facet => m_Facet;
 
-        public Rectangle2D[] Area
-        {
-            get
-            {
-                return m_Area;
-            }
-            set
-            {
-                m_Area = value;
-            }
-        }
-        public int Temperature
-        {
-            get
-            {
-                return m_Temperature;
-            }
-            set
-            {
-                m_Temperature = value;
-            }
-        }
-        public int ChanceOfPercipitation
-        {
-            get
-            {
-                return m_ChanceOfPercipitation;
-            }
-            set
-            {
-                m_ChanceOfPercipitation = value;
-            }
-        }
-        public int ChanceOfExtremeTemperature
-        {
-            get
-            {
-                return m_ChanceOfExtremeTemperature;
-            }
-            set
-            {
-                m_ChanceOfExtremeTemperature = value;
-            }
-        }
-        public Rectangle2D Bounds
-        {
-            get
-            {
-                return m_Bounds;
-            }
-            set
-            {
-                m_Bounds = value;
-            }
-        }
-        public int MoveSpeed
-        {
-            get
-            {
-                return m_MoveSpeed;
-            }
-            set
-            {
-                m_MoveSpeed = value;
-            }
-        }
-        public int MoveAngleX
-        {
-            get
-            {
-                return m_MoveAngleX;
-            }
-            set
-            {
-                m_MoveAngleX = value;
-            }
-        }
-        public int MoveAngleY
-        {
-            get
-            {
-                return m_MoveAngleY;
-            }
-            set
-            {
-                m_MoveAngleY = value;
-            }
-        }
+        public Rectangle2D[] Area { get => m_Area; set => m_Area = value; }
+
+        public int Temperature { get => m_Temperature; set => m_Temperature = value; }
+
+        public int ChanceOfPercipitation { get => m_ChanceOfPercipitation; set => m_ChanceOfPercipitation = value; }
+
+        public int ChanceOfExtremeTemperature { get => m_ChanceOfExtremeTemperature; set => m_ChanceOfExtremeTemperature = value; }
+
+        public Rectangle2D Bounds { get => m_Bounds; set => m_Bounds = value; }
+
+        public int MoveSpeed { get => m_MoveSpeed; set => m_MoveSpeed = value; }
+
+        public int MoveAngleX { get => m_MoveAngleX; set => m_MoveAngleX = value; }
+
+        public int MoveAngleY { get => m_MoveAngleY; set => m_MoveAngleY = value; }
+
         public static void Initialize()
         {
-            m_Facets = new Map[] { Map.Felucca, Map.Trammel };
+            m_Facets = new[] { Map.Felucca, Map.Trammel };
 
             /* Static weather:
             * 
@@ -193,7 +121,7 @@ namespace Server.Misc
                 if (!isValid)
                     continue;
 
-                _ = new Weather(m_Facets[i], new Rectangle2D[] { area }, temperature, chanceOfPercipitation, chanceOfExtremeTemperature, TimeSpan.FromSeconds(30.0))
+                _ = new Weather(m_Facets[i], new[] { area }, temperature, chanceOfPercipitation, chanceOfExtremeTemperature, TimeSpan.FromSeconds(30.0))
                 {
                     m_Bounds = bounds,
                     m_MoveSpeed = moveSpeed
@@ -227,16 +155,16 @@ namespace Server.Misc
 
         public static bool CheckIntersection(Rectangle2D r1, Rectangle2D r2)
         {
-            if (r1.X >= (r2.X + r2.Width))
+            if (r1.X >= r2.X + r2.Width)
                 return false;
 
-            if (r2.X >= (r1.X + r1.Width))
+            if (r2.X >= r1.X + r1.Width)
                 return false;
 
-            if (r1.Y >= (r2.Y + r2.Height))
+            if (r1.Y >= r2.Y + r2.Height)
                 return false;
 
-            if (r2.Y >= (r1.Y + r1.Height))
+            if (r2.Y >= r1.Y + r1.Height)
                 return false;
 
             return true;
@@ -250,10 +178,10 @@ namespace Server.Misc
             if (small.Y < big.Y)
                 return false;
 
-            if ((small.X + small.Width) > (big.X + big.Width))
+            if (small.X + small.Width > big.X + big.Width)
                 return false;
 
-            if ((small.Y + small.Height) > (big.Y + big.Height))
+            if (small.Y + small.Height > big.Y + big.Height)
                 return false;
 
             return true;
@@ -336,8 +264,8 @@ namespace Server.Misc
         {
             if (m_Stage == 0)
             {
-                m_Active = (m_ChanceOfPercipitation > Utility.Random(100));
-                m_ExtremeTemperature = (m_ChanceOfExtremeTemperature > Utility.Random(100));
+                m_Active = m_ChanceOfPercipitation > Utility.Random(100);
+                m_ExtremeTemperature = m_ChanceOfExtremeTemperature > Utility.Random(100);
 
                 if (m_MoveSpeed > 0)
                 {

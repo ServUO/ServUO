@@ -1,4 +1,4 @@
-﻿using Server.Engines.Quests;
+using Server.Engines.Quests;
 using Server.Mobiles;
 using Server.Targeting;
 using System;
@@ -13,14 +13,14 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BoundMobile
         {
-            get { return m_BoundMobile; }
-            set { m_BoundMobile = value; }
+            get => m_BoundMobile;
+            set => m_BoundMobile = value;
         }
 
         public ProfessionalBountyQuest Quest
         {
-            get { return m_Quest; }
-            set { m_Quest = value; }
+            get => m_Quest;
+            set => m_Quest = value;
         }
 
         public override int LabelNumber => 1116717;
@@ -67,10 +67,8 @@ namespace Server.Items
             {
                 if (targeted is Mobile)
                 {
-                    if (targeted is PirateCaptain)
+                    if (targeted is PirateCaptain cap)
                     {
-                        PirateCaptain cap = (PirateCaptain)targeted;
-
                         if (cap.Hits > cap.HitsMax / 10)
                         {
                             from.SendLocalizedMessage(1116756); //The pirate seems to have too much fight left to be bound.
@@ -106,13 +104,15 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_BoundMobile);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_BoundMobile = reader.ReadMobile();
         }
     }

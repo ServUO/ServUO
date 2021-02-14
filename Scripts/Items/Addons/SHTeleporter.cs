@@ -348,10 +348,10 @@ namespace Server.Items
 
                 foreach (Item item in eable)
                 {
-                    if (item is SHTeleporter && item.Z == p.Z)
+                    if (item is SHTeleporter teleporter && teleporter.Z == p.Z)
                     {
                         eable.Free();
-                        return (SHTeleporter)item;
+                        return teleporter;
                     }
                 }
 

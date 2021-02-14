@@ -29,8 +29,8 @@ namespace Server.Items
                     scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071899); // You begin cutting through the vein.
                     return true;
                 }
-                else
-                    scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071900); // // This vein has already been cut.
+
+                scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071900); // // This vein has already been cut.
             }
 
             return false;
@@ -39,13 +39,14 @@ namespace Server.Items
         public override void OnAfterDelete()
         {
             if (m_Timer != null && m_Timer.Running)
+            {
                 m_Timer.Stop();
+            }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Cut);
@@ -54,8 +55,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Cut = reader.ReadBool();
         }

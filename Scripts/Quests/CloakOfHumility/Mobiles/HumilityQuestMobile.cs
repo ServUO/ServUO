@@ -56,7 +56,7 @@ namespace Server.Engines.Quests
                 {
                     Item item = pm.FindItemOnLayer(Layer.Cloak);
 
-                    if (item is GreyCloak && ((GreyCloak)item).Owner == null && Greeting > 0)
+                    if (item is GreyCloak cloak && cloak.Owner == null && Greeting > 0)
                     {
                         SayTo(pm, Greeting);
 
@@ -79,7 +79,7 @@ namespace Server.Engines.Quests
             {
                 Item item = from.FindItemOnLayer(Layer.Cloak);
 
-                if (item is GreyCloak && ((GreyCloak)item).Owner == null)
+                if (item is GreyCloak cloak && cloak.Owner == null)
                 {
                     int idx = HumilityQuestMobileInfo.GetNPCIndex(GetType());
 
@@ -124,15 +124,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextGreet = DateTime.UtcNow;
         }

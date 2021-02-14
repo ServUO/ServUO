@@ -28,7 +28,7 @@ namespace Server.Network
 
 		private void SetCapacity(int capacity)
 		{
-			var newBuffer = new byte[capacity];
+			byte[] newBuffer = new byte[capacity];
 
 			if (m_Size > 0)
 			{
@@ -86,7 +86,7 @@ namespace Server.Network
 			}
 			else
 			{
-				var rightLength = m_Buffer.Length - m_Head;
+				int rightLength = m_Buffer.Length - m_Head;
 
 				if (rightLength >= size)
 				{
@@ -120,7 +120,7 @@ namespace Server.Network
 
 			if (m_Head < m_Tail)
 			{
-				var rightLength = m_Buffer.Length - m_Tail;
+				int rightLength = m_Buffer.Length - m_Tail;
 
 				if (rightLength >= size)
 				{

@@ -31,7 +31,7 @@ namespace Server.Engines.Quests.Collector
 
     public class ImageTypeInfo
     {
-        private static readonly ImageTypeInfo[] m_Table = new ImageTypeInfo[]
+        private static readonly ImageTypeInfo[] m_Table =
         {
             new ImageTypeInfo(9734, typeof(Betrayer), 75, 45),
             new ImageTypeInfo(9735, typeof(Bogling), 75, 45),
@@ -72,13 +72,17 @@ namespace Server.Engines.Quests.Collector
         public int Name => m_Figurine < 0x4000 ? 1020000 + m_Figurine : 1078872 + m_Figurine;
         public int X => m_X;
         public int Y => m_Y;
+
         public static ImageTypeInfo Get(ImageType image)
         {
             int index = (int)image;
+
             if (index >= 0 && index < m_Table.Length)
+            {
                 return m_Table[index];
-            else
-                return m_Table[0];
+            }
+
+            return m_Table[0];
         }
 
         public static ImageType[] RandomList(int count)

@@ -25,13 +25,11 @@ namespace Server.Mobiles
 
         public static bool CheckRedFriendship(Mobile m)
         {
-            if (m is BaseCreature)
+            if (m is BaseCreature bc)
             {
-                BaseCreature bc = (BaseCreature)m;
-
                 if (bc.Controlled && bc.ControlMaster is PlayerMobile)
                     return CheckRedFriendship(bc.ControlMaster);
-                else if (bc.Summoned && bc.SummonMaster is PlayerMobile)
+                if (bc.Summoned && bc.SummonMaster is PlayerMobile)
                     return CheckRedFriendship(bc.SummonMaster);
             }
 
@@ -42,13 +40,11 @@ namespace Server.Mobiles
 
         public static bool CheckBlackFriendship(Mobile m)
         {
-            if (m is BaseCreature)
+            if (m is BaseCreature bc)
             {
-                BaseCreature bc = (BaseCreature)m;
-
                 if (bc.Controlled && bc.ControlMaster is PlayerMobile)
                     return CheckBlackFriendship(bc.ControlMaster);
-                else if (bc.Summoned && bc.SummonMaster is PlayerMobile)
+                if (bc.Summoned && bc.SummonMaster is PlayerMobile)
                     return CheckBlackFriendship(bc.SummonMaster);
             }
 
@@ -59,10 +55,8 @@ namespace Server.Mobiles
 
         public static void OnRedDamage(Mobile from)
         {
-            if (from is BaseCreature)
+            if (from is BaseCreature bc)
             {
-                BaseCreature bc = (BaseCreature)from;
-
                 if (bc.Controlled && bc.ControlMaster is PlayerMobile)
                     OnRedDamage(bc.ControlMaster);
                 else if (bc.Summoned && bc.SummonMaster is PlayerMobile)
@@ -81,10 +75,8 @@ namespace Server.Mobiles
 
         public static void OnBlackDamage(Mobile from)
         {
-            if (from is BaseCreature)
+            if (from is BaseCreature bc)
             {
-                BaseCreature bc = (BaseCreature)from;
-
                 if (bc.Controlled && bc.ControlMaster is PlayerMobile)
                     OnBlackDamage(bc.ControlMaster);
                 else if (bc.Summoned && bc.SummonMaster is PlayerMobile)

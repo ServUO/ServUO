@@ -23,30 +23,10 @@ namespace Server.Regions
         public override bool YoungProtected => false;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D EntranceLocation
-        {
-            get
-            {
-                return m_EntranceLocation;
-            }
-            set
-            {
-                m_EntranceLocation = value;
-            }
-        }
+        public Point3D EntranceLocation { get => m_EntranceLocation; set => m_EntranceLocation = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map EntranceMap
-        {
-            get
-            {
-                return m_EntranceMap;
-            }
-            set
-            {
-                m_EntranceMap = value;
-            }
-        }
+        public Map EntranceMap { get => m_EntranceMap; set => m_EntranceMap = value; }
 
         public override bool AllowHousing(Mobile from, Point3D p)
         {

@@ -13,7 +13,7 @@ namespace Server.Engines.PartySystem
 
             if (p != null && p.Leader != from)
                 from.SendLocalizedMessage(1005453); // You may only add members to the party if you are the leader.
-            else if (p != null && (p.Members.Count + p.Candidates.Count) >= Party.Capacity)
+            else if (p != null && p.Members.Count + p.Candidates.Count >= Party.Capacity)
                 from.SendLocalizedMessage(1008095); // You may only have 10 in your party (this includes candidates).
             else
                 from.Target = new AddPartyTarget(from);
@@ -99,7 +99,7 @@ namespace Server.Engines.PartySystem
 
             if (leader == null || p == null || !p.Candidates.Contains(from))
                 from.SendLocalizedMessage(3000222); // No one has invited you to be in a party.
-            else if ((p.Members.Count + p.Candidates.Count) <= Party.Capacity)
+            else if (p.Members.Count + p.Candidates.Count <= Party.Capacity)
                 p.OnAccept(from);
         }
 

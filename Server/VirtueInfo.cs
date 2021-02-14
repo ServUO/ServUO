@@ -8,16 +8,14 @@ namespace Server
 		public int[] Values => m_Values;
 
 		public int GetValue(int index)
-		{
-			if (m_Values == null)
+        {
+            if (m_Values == null)
 			{
 				return 0;
 			}
-			else
-			{
-				return m_Values[index];
-			}
-		}
+
+            return m_Values[index];
+        }
 
 		public void SetValue(int index, int value)
 		{
@@ -69,24 +67,24 @@ namespace Server
 			{
 				case 1: //Changed the values throughout the virtue system
 				case 0:
+				{
+					int mask = reader.ReadByte();
+
+					if (mask != 0)
 					{
-						int mask = reader.ReadByte();
+						m_Values = new int[8];
 
-						if (mask != 0)
+						for (int i = 0; i < 8; ++i)
 						{
-							m_Values = new int[8];
-
-							for (var i = 0; i < 8; ++i)
+							if ((mask & (1 << i)) != 0)
 							{
-								if ((mask & (1 << i)) != 0)
-								{
-									m_Values[i] = reader.ReadInt();
-								}
+								m_Values[i] = reader.ReadInt();
 							}
 						}
-
-						break;
 					}
+
+					break;
+				}
 			}
 
 			if (version == 0)
@@ -111,9 +109,9 @@ namespace Server
 			}
 			else
 			{
-				var mask = 0;
+				int mask = 0;
 
-				for (var i = 0; i < 8; ++i)
+				for (int i = 0; i < 8; ++i)
 				{
 					if (info.m_Values[i] != 0)
 					{
@@ -123,7 +121,7 @@ namespace Server
 
 				writer.Write((byte)mask);
 
-				for (var i = 0; i < 8; ++i)
+				for (int i = 0; i < 8; ++i)
 				{
 					if (info.m_Values[i] != 0)
 					{

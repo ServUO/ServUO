@@ -61,30 +61,30 @@ namespace Server.Engines.Khaldun
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5))
+            if (m is PlayerMobile mobile && InRange(mobile.Location, 5))
             {
-                GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)m);
+                GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>(mobile);
 
                 if (quest != null)
                 {
                     if (!quest.FoundCipherBook)
                     {
-                        m.SendLocalizedMessage(1158620, null, 0x23); /*You've spoken to the Cryptologist who has agreed to help you if you acquire the Cipher Text.*/
-                        m.SendGump(new InternalGump(1158619));
+                        mobile.SendLocalizedMessage(1158620, null, 0x23); /*You've spoken to the Cryptologist who has agreed to help you if you acquire the Cipher Text.*/
+                        mobile.SendGump(new InternalGump(1158619));
                     }
                     else
                     {
-                        m.SendLocalizedMessage(1158621, null, 0x23); /*The Cytologist has successfully begun decrypting the copies of the books you found. He informs you he
+                        mobile.SendLocalizedMessage(1158621, null, 0x23); /*The Cytologist has successfully begun decrypting the copies of the books you found. He informs you he
                                                                       * will send them to Headquarters when he is finished. Return to Inspector Jasper to follow up on the case.*/
-                        m.SendGump(new InternalGump(1158624));
+                        mobile.SendGump(new InternalGump(1158624));
 
-                        m.PlaySound(quest.UpdateSound);
+                        mobile.PlaySound(quest.UpdateSound);
                         quest.BegunDecrypting = true;
                     }
                 }
                 else
                 {
-                    SayTo(m, 1073989, 1154);
+                    SayTo(mobile, 1073989, 1154);
                     Effects.PlaySound(Location, Map, 0x441);
                 }
             }
@@ -123,15 +123,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

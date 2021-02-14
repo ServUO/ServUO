@@ -71,9 +71,11 @@ namespace Server.Engines.Plants
             PlantHueInfo info = null;
 
             if (m_Table.TryGetValue(plantHue, out info))
+            {
                 return info;
-            else
-                return m_Table[PlantHue.Plain];
+            }
+
+            return m_Table[PlantHue.Plain];
         }
 
         public static PlantHueInfo GetInfo(int hue)

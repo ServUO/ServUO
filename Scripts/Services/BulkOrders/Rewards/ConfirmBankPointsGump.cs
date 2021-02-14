@@ -35,16 +35,18 @@ namespace Server.Engines.BulkOrders
             BulkOrderSystem.SetPoints(m, (BODType)ohs[2], (double)ohs[1]);
             BulkOrderSystem.RemovePending(m, (BODType)ohs[2]);
 
-            if (m is PlayerMobile)
-                m.SendGump(new RewardsGump((Mobile)ohs[3], (PlayerMobile)m, (BODType)ohs[2]));
+            if (m is PlayerMobile mobile)
+                mobile.SendGump(new RewardsGump((Mobile)ohs[3], mobile, (BODType)ohs[2]));
         }
 
         private static void OnClaim(Mobile m, object state)
         {
             object[] ohs = (object[])state;
 
-            if (m is PlayerMobile)
-                m.SendGump(new RewardsGump((Mobile)ohs[3], (PlayerMobile)m, (BODType)ohs[2], (int)ohs[0]));
+            if (m is PlayerMobile mobile)
+            {
+                mobile.SendGump(new RewardsGump((Mobile) ohs[3], mobile, (BODType) ohs[2], (int) ohs[0]));
+            }
         }
     }
 }

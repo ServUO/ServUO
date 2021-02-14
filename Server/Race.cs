@@ -46,7 +46,7 @@ namespace Server
 		{
 			CheckNamesAndValues();
 
-			for (var i = 0; i < m_RaceNames.Length; ++i)
+			for (int i = 0; i < m_RaceNames.Length; ++i)
 			{
 				if (Insensitive.Equals(m_RaceNames[i], value))
 				{
@@ -54,7 +54,7 @@ namespace Server
 				}
 			}
 
-			if (Int32.TryParse(value, out var index))
+			if (int.TryParse(value, out int index))
 			{
 				if (index >= 0 && index < m_Races.Length && m_Races[index] != null)
 				{
@@ -75,9 +75,9 @@ namespace Server
 			m_RaceNames = new string[m_AllRaces.Count];
 			m_RaceValues = new Race[m_AllRaces.Count];
 
-			for (var i = 0; i < m_AllRaces.Count; ++i)
+			for (int i = 0; i < m_AllRaces.Count; ++i)
 			{
-				var race = m_AllRaces[i];
+				Race race = m_AllRaces[i];
 
 				m_RaceNames[i] = race.Name;
 				m_RaceValues[i] = race;

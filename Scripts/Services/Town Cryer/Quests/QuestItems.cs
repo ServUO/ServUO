@@ -42,7 +42,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -87,11 +87,11 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(Location, 2))
+            if (from is PlayerMobile mobile && mobile.InRange(Location, 2))
             {
-                RightingWrongQuest4 quest = QuestHelper.GetQuest<RightingWrongQuest4>((PlayerMobile)from);
+                RightingWrongQuest4 quest = QuestHelper.GetQuest<RightingWrongQuest4>(mobile);
 
-                if (from is PlayerMobile && quest != null && !quest.Completed)
+                if (quest != null && !quest.Completed)
                 {
                     quest.Objectives[0].CurProgress++;
                     quest.OnCompleted();
@@ -116,7 +116,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {
@@ -140,10 +140,10 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && IsChildOf(m.Backpack))
+            if (m is PlayerMobile mobile && IsChildOf(mobile.Backpack))
             {
-                m.CloseGump(typeof(InternalGump));
-                BaseGump.SendGump(new InternalGump((PlayerMobile)m));
+                mobile.CloseGump(typeof(InternalGump));
+                BaseGump.SendGump(new InternalGump(mobile));
             }
         }
 
@@ -184,7 +184,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -223,35 +223,35 @@ namespace Server.Engines.Quests
             m.PlaySound(0x41A);
             m.PrivateOverheadMessage(MessageType.Regular, 1154, 1157722, "Cartography", m.NetState); // *Your proficiency in ~1_SKILL~ reveals more about the item*
 
-            if (m is PlayerMobile && Level == 0)
+            if (m is PlayerMobile mobile && Level == 0)
             {
-                m.CloseGump(typeof(InternalGump));
-                BaseGump.SendGump(new InternalGump((PlayerMobile)m, this));
+                mobile.CloseGump(typeof(InternalGump));
+                BaseGump.SendGump(new InternalGump(mobile, this));
             }
         }
 
         public override void OnChestOpened(Mobile from, TreasureMapChest chest)
         {
-            if (from is PlayerMobile)
+            if (from is PlayerMobile mobile)
             {
-                TheTreasureChaseQuest quest = QuestHelper.GetQuest<TheTreasureChaseQuest>((PlayerMobile)from);
+                TheTreasureChaseQuest quest = QuestHelper.GetQuest<TheTreasureChaseQuest>(mobile);
 
                 if (quest != null)
                 {
                     if (Level == 0)
                     {
-                        TownCryerSystem.CompleteQuest((PlayerMobile)from, 1158239, 1158251, 0x655);
+                        TownCryerSystem.CompleteQuest(mobile, 1158239, 1158251, 0x655);
                         /*Your eyes widen as you pry open the old chest and reveal the treasure within! Even this small cache
                          * excites you as the thought of bigger and better treasure looms on the horizon! The map is covered
                          * in ancient runes and marks the location of another treasure hoard. You carefully furl the map and
                          * set off on your next adventure!*/
 
-                        from.SendLocalizedMessage(1158245, "", 0x23); // You have found the first zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
+                        mobile.SendLocalizedMessage(1158245, "", 0x23); // You have found the first zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
                         chest.DropItem(new BuriedRichesTreasureMap(1));
                     }
                     else
                     {
-                        from.SendLocalizedMessage(1158246, "", 0x23); // You have found the second zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
+                        mobile.SendLocalizedMessage(1158246, "", 0x23); // You have found the second zealot treasure! As you dig up the chest a leather bound case appears to contain an additional map. You place it in your backpack for later examination. 
                         quest.CompleteQuest();
                     }
                 }
@@ -276,9 +276,9 @@ namespace Server.Engines.Quests
             {
                 from.SendLocalizedMessage(1010479); // You seem to be in the right place, but may be on the wrong facet!
             }
-            else if (from is PlayerMobile && !QuestHelper.HasQuest<TheTreasureChaseQuest>((PlayerMobile)from))
+            else if (from is PlayerMobile mobile && !QuestHelper.HasQuest<TheTreasureChaseQuest>(mobile))
             {
-                from.SendLocalizedMessage(1158257); // You must be on the "The Treasure Chase" quest offered via the Town Cryer to dig up this treasure.
+                mobile.SendLocalizedMessage(1158257); // You must be on the "The Treasure Chase" quest offered via the Town Cryer to dig up this treasure.
             }
             else
             {
@@ -351,7 +351,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Chest = reader.ReadItem() as TreasureMapChest;
         }
@@ -368,15 +368,9 @@ namespace Server.Engines.Quests
 
         protected override void BeginLockpick(Mobile from, ILockpickable item)
         {
-            if (from is PlayerMobile &&
-                item.Locked &&
-                QuestHelper.HasQuest<TheTreasureChaseQuest>((PlayerMobile)from) &&
-                item is TreasureMapChest &&
-                ((TreasureMapChest)item).TreasureMap is BuriedRichesTreasureMap)
+            if (from is PlayerMobile pm && item.Locked && QuestHelper.HasQuest<TheTreasureChaseQuest>(pm) && item is TreasureMapChest chest && chest.TreasureMap is BuriedRichesTreasureMap)
             {
-                TreasureMapChest chest = (TreasureMapChest)item;
-
-                from.PlaySound(0x241);
+                pm.PlaySound(0x241);
 
                 Timer.DelayCall(TimeSpan.FromMilliseconds(200), () =>
                     {
@@ -412,7 +406,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -427,15 +421,13 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                PlayerMobile pm = m as PlayerMobile;
-
                 if (QuestHelper.HasQuest<AForcedSacraficeQuest2>(pm))
                 {
                     if (!TownCryerSystem.UnderMysteriousPotionEffects(pm))
                     {
-                        pm.SendGump(new ConfirmCallbackGump(pm, 1158286, 1158287, null, null, confirm: (mob, o) =>
+                        pm.SendGump(new ConfirmCallbackGump(pm, 1158286, 1158287, null, null, (mob, o) =>
                             {
                                 TownCryerSystem.AddMysteriousPotionEffects(mob);
 
@@ -473,7 +465,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -529,7 +521,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {
@@ -549,7 +541,7 @@ namespace Server.Engines.Quests
         public override TextDefinition Title => null;
         public override TextDefinition Body => 1158138;
         /**the text is mostly a journal chronicling the adventures of a man who wished to join the Paladins of Trinsic.  
-         * Of particular note is the final entry...*<br><br>This is the most shameful entry I will write...for I have fallen
+         * Of particular note is the final entry...* This is the most shameful entry I will write...for I have fallen
          * short of my goal. My only hope is my failures will serve to assist those who come after me with the courage to 
          * pursue the truth, and with my notes they will find success. I have found strange crystals on the corpses of the 
          * creatures I slay here. When I touch the crystal, I can feel it absorbed into my being. A growing voice inside me 
@@ -584,7 +576,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

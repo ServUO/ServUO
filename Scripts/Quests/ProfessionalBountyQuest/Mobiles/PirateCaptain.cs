@@ -38,10 +38,10 @@ namespace Server.Mobiles
         private bool m_IsCaught;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsCaught { get { return m_IsCaught; } set { m_IsCaught = value; } }
+        public bool IsCaught { get => m_IsCaught; set => m_IsCaught = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ProfessionalBountyQuest Quest { get { return m_Quest; } set { m_Quest = value; } }
+        public ProfessionalBountyQuest Quest { get => m_Quest; set => m_Quest = value; }
         #endregion
 
         [Constructable]
@@ -262,8 +262,10 @@ namespace Server.Mobiles
                 Mobile mob = rights[i].m_Mobile;
 
                 //if they have the quest and looting rights, give them a certificate
-                if (mob is PlayerMobile && mob.NetState != null && QuestHelper.GetQuest((PlayerMobile)mob, typeof(ProfessionalBountyQuest)) != null)
-                    hasQuest.Add((PlayerMobile)mob);
+                if (mob is PlayerMobile mobile && mobile.NetState != null && QuestHelper.GetQuest(mobile, typeof(ProfessionalBountyQuest)) != null)
+                {
+                    hasQuest.Add(mobile);
+                }
             }
 
             if (hasQuest.Count > 0)
@@ -271,9 +273,9 @@ namespace Server.Mobiles
                 PlayerMobile questee = hasQuest[Utility.Random(hasQuest.Count)];
                 BaseQuest q = QuestHelper.GetQuest(questee, typeof(ProfessionalBountyQuest));
 
-                if (q != null && q is ProfessionalBountyQuest)
+                if (q is ProfessionalBountyQuest quest)
                 {
-                    ((ProfessionalBountyQuest)q).OnPirateDeath(this);
+                    quest.OnPirateDeath(this);
                     questee.AddToBackpack(new DeathCertificate(this));
                 }
             }
@@ -314,7 +316,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_IsCaught = reader.ReadBool();
             m_Adjective = reader.ReadInt();

@@ -6,7 +6,7 @@ namespace Server.Items
 {
     public class BedrollSpawner : Item
     {
-        public static Point3D[] m_RoomDestinations = new Point3D[]
+        public static Point3D[] m_RoomDestinations =
         {
             new Point3D(5651, 555, 20),
             new Point3D(5658, 562, 20),
@@ -25,7 +25,7 @@ namespace Server.Items
             new Point3D(5868, 554 ,15)
         };
 
-        public static Point3D[] m_OutsideTunnels = new Point3D[]
+        public static Point3D[] m_OutsideTunnels =
         {
             new Point3D(5670, 550, 22),
             new Point3D(5721, 550, 20),
@@ -34,7 +34,7 @@ namespace Server.Items
             new Point3D(5782, 536, 10)
         };
 
-        private static readonly BedrollEntry[] m_Entries = new BedrollEntry[]
+        private static readonly BedrollEntry[] m_Entries =
         {
             // Upper Floor Room 1
             new BedrollEntry(new Point3D(5653, 565, 20), typeof(WrongBedrollEast)),
@@ -142,7 +142,7 @@ namespace Server.Items
             new BedrollEntry(new Point3D(5864, 563, 15), typeof(WrongBedrollEast)),
             new BedrollEntry(new Point3D(5864, 561, 15), typeof(WrongBedrollEast)),
             new BedrollEntry(new Point3D(5866, 564, 15), typeof(WrongBedrollEast)),
-            new BedrollEntry(new Point3D(5867, 561, 15), typeof(WrongBedrollEast)),
+            new BedrollEntry(new Point3D(5867, 561, 15), typeof(WrongBedrollEast))
         };
 
         public readonly TimeSpan RestartDelay = TimeSpan.FromHours(2.0);
@@ -204,7 +204,7 @@ namespace Server.Items
                 else
                 {
                     mt.PointDest = m_RoomDestinations[Utility.Random(m_RoomDestinations.Length)];
-                    bedroll = Bedrolls.Where(x => x.InRange(mt.PointDest, 4) && x.PointDest == Point3D.Zero).FirstOrDefault();
+                    bedroll = Bedrolls.FirstOrDefault(x => x.InRange(mt.PointDest, 4) && x.PointDest == Point3D.Zero);
 
                     if (bedroll != null)
                     {

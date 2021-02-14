@@ -22,9 +22,9 @@ namespace Server.Engines.TreasuresOfDoom
 
         public void Remove(ISpawnable spawn)
         {
-            if (spawn is AncientClayVase)
+            if (spawn is AncientClayVase vase)
             {
-                RemoveVase((AncientClayVase)spawn);
+                RemoveVase(vase);
             }
         }
 

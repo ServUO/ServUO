@@ -81,10 +81,8 @@ namespace Server.Items
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 }
-                else if (targeted is TranslocationItem)
+                else if (targeted is TranslocationItem transItem)
                 {
-                    TranslocationItem transItem = (TranslocationItem)targeted;
-
                     if (transItem.Charges >= transItem.MaxCharges)
                     {
                         MessageHelper.SendLocalizedMessageTo(m_Powder, from, 1054137, 0x59); // This item cannot absorb any more powder of translocation.
@@ -110,10 +108,10 @@ namespace Server.Items
                             m_Powder.Delete();
                         }
 
-                        if (transItem is Item)
+                        if (transItem is Item item)
                         {
                             // The ~1_translocationItem~ glows with green energy and absorbs magical power from the powder.
-                            MessageHelper.SendLocalizedMessageTo((Item)transItem, from, 1054139, transItem.TranslocationItemName, 0x43);
+                            MessageHelper.SendLocalizedMessageTo(item, from, 1054139, transItem.TranslocationItemName, 0x43);
                         }
                     }
                 }

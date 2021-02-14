@@ -37,7 +37,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Type BaitType
         {
-            get { return m_BaitType; }
+            get => m_BaitType;
             set
             {
                 m_BaitType = value;
@@ -50,16 +50,12 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool EnhancedBait
-        {
-            get { return m_EnhancedBait; }
-            set { m_EnhancedBait = value; InvalidateProperties(); }
-        }
+        public bool EnhancedBait { get => m_EnhancedBait; set { m_EnhancedBait = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public HookType HookType
         {
-            get { return m_HookType; }
+            get => m_HookType;
             set
             {
                 m_HookType = value;
@@ -74,10 +70,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HookUses
         {
-            get
-            {
-                return m_HookUses;
-            }
+            get => m_HookUses;
             set
             {
                 m_HookUses = value;
@@ -95,10 +88,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int BaitUses
         {
-            get
-            {
-                return m_BaitUses;
-            }
+            get => m_BaitUses;
             set
             {
                 m_BaitUses = value;
@@ -114,51 +104,39 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes Attributes
-        {
-            get { return m_AosAttributes; }
-            set { }
-        }
+        public AosAttributes Attributes { get => m_AosAttributes; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SkillBonuses
-        {
-            get { return m_AosSkillBonuses; }
-            set { }
-        }
+        public AosSkillBonuses SkillBonuses { get => m_AosSkillBonuses; set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
-            get { return m_Resource; }
+            get => m_Resource;
             set { m_Resource = value; Hue = CraftResources.GetHue(m_Resource); InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool PlayerConstructed
         {
-            get { return m_PlayerConstructed; }
+            get => m_PlayerConstructed;
             set { m_PlayerConstructed = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int OriginalHue
-        {
-            get { return m_OriginalHue; }
-            set { m_OriginalHue = value; }
-        }
+        public int OriginalHue { get => m_OriginalHue; set => m_OriginalHue = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get { return m_Crafter; }
+            get => m_Crafter;
             set { m_Crafter = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get { return m_Quality; }
+            get => m_Quality;
             set
             {
                 UnscaleUses();
@@ -170,21 +148,21 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get { return m_UsesRemaining; }
+            get => m_UsesRemaining;
             set { m_UsesRemaining = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ShowUsesRemaining
         {
-            get { return m_ShowUsesRemaining; }
+            get => m_ShowUsesRemaining;
             set { m_ShowUsesRemaining = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int LowerStatReq
         {
-            get { return m_LowerStatReq; }
+            get => m_LowerStatReq;
             set { m_LowerStatReq = value; InvalidateProperties(); }
         }
 
@@ -207,13 +185,13 @@ namespace Server.Items
 
         public void ScaleUses()
         {
-            m_UsesRemaining = (m_UsesRemaining * GetUsesScalar()) / 100;
+            m_UsesRemaining = m_UsesRemaining * GetUsesScalar() / 100;
             InvalidateProperties();
         }
 
         public void UnscaleUses()
         {
-            m_UsesRemaining = (m_UsesRemaining * 100) / GetUsesScalar();
+            m_UsesRemaining = m_UsesRemaining * 100 / GetUsesScalar();
         }
 
         public int GetUsesScalar()
@@ -319,10 +297,8 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.AddTo(from);
 
                 from.CheckStatTimers();
@@ -331,10 +307,8 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent;
-
                 string modName = Serial.ToString();
 
                 m.RemoveStatMod(modName + "Str");
@@ -393,7 +367,7 @@ namespace Server.Items
             if ((prop = m_AosAttributes.CastSpeed) != 0)
                 list.Add(1060413, prop.ToString()); // faster casting ~1_val~
 
-            if ((prop = (m_AosAttributes.AttackChance)) != 0)
+            if ((prop = m_AosAttributes.AttackChance) != 0)
                 list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
 
             if ((prop = m_AosAttributes.BonusDex) != 0)
@@ -420,7 +394,7 @@ namespace Server.Items
             if (!CraftResources.IsStandard(m_Resource))
                 list.Add(CraftResources.GetName(m_Resource));
 
-            if ((prop = (GetLuckBonus() + m_AosAttributes.Luck)) != 0)
+            if ((prop = GetLuckBonus() + m_AosAttributes.Luck) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
 
             if ((prop = m_AosAttributes.BonusMana) != 0)
@@ -464,10 +438,10 @@ namespace Server.Items
             if (m_BaitType != null)
             {
                 object label = FishInfo.GetFishLabel(m_BaitType);
-                if (label is int)
-                    list.Add(1116468, string.Format("#{0}", (int)label)); //baited to attract: ~1_val~
-                else if (label is string)
-                    list.Add(1116468, (string)label);
+                if (label is int i)
+                    list.Add(1116468, string.Format("#{0}", i)); //baited to attract: ~1_val~
+                else if (label is string s)
+                    list.Add(1116468, s);
 
                 list.Add(1116466, m_BaitUses.ToString()); // amount: ~1_val~
             }
@@ -488,7 +462,7 @@ namespace Server.Items
 
         private static bool GetSaveFlag(SaveFlag flags, SaveFlag toGet)
         {
-            return ((flags & toGet) != 0);
+            return (flags & toGet) != 0;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -575,9 +549,9 @@ namespace Server.Items
             int dexBonus = m_AosAttributes.BonusDex;
             int intBonus = m_AosAttributes.BonusInt;
 
-            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            if (Parent is Mobile mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
             {
-                Mobile m = (Mobile)Parent;
+                Mobile m = mobile;
 
                 string modName = Serial.ToString();
 
@@ -591,8 +565,8 @@ namespace Server.Items
                     m.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
             }
 
-            if (Parent is Mobile)
-                ((Mobile)Parent).CheckStatTimers();
+            if (Parent is Mobile parent)
+                parent.CheckStatTimers();
 
             if (m_BaitType != null && m_BaitUses <= 0)
                 BaitType = null;

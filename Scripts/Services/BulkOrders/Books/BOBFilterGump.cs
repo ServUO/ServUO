@@ -5,31 +5,31 @@ namespace Server.Engines.BulkOrders
 {
     public class BOBFilterGump : Gump
     {
-        private static readonly int[,] m_MaterialFilters = new int[,]
-            {
-                { 1044067,  1 }, // Blacksmithy
-				{ 1062226,  3 }, // Iron
-				{ 1018332,  4 }, // Dull Copper
-				{ 1018333,  5 }, // Shadow Iron
-				{ 1018334,  6 }, // Copper
-				{ 1018335,  7 }, // Bronze
+        private static readonly int[,] m_MaterialFilters =
+        {
+            { 1044067,  1 }, // Blacksmithy
+            { 1062226,  3 }, // Iron
+            { 1018332,  4 }, // Dull Copper
+            { 1018333,  5 }, // Shadow Iron
+            { 1018334,  6 }, // Copper
+            { 1018335,  7 }, // Bronze
 
-				{       0,  0 }, // --Blank--
-				{ 1018336,  8 }, // Golden
-				{ 1018337,  9 }, // Agapite
-				{ 1018338, 10 }, // Verite
-				{ 1018339, 11 }, // Valorite
-				{       0,  0 }, // --Blank--
+            {       0,  0 }, // --Blank--
+            { 1018336,  8 }, // Golden
+            { 1018337,  9 }, // Agapite
+            { 1018338, 10 }, // Verite
+            { 1018339, 11 }, // Valorite
+            {       0,  0 }, // --Blank--
 
-				{ 1044094,  2 }, // Tailoring
-				{ 1044286, 12 }, // Cloth
-				{ 1062235, 13 }, // Leather
-				{ 1062236, 14 }, // Spined
-				{ 1062237, 15 }, // Horned
-				{ 1062238, 16 }  // Barbed
-			};
+            { 1044094,  2 }, // Tailoring
+            { 1044286, 12 }, // Cloth
+            { 1062235, 13 }, // Leather
+            { 1062236, 14 }, // Spined
+            { 1062237, 15 }, // Horned
+            { 1062238, 16 }  // Barbed
+        };
 
-        private static readonly int[,] m_MaterialFiltersNew = new int[,]
+        private static readonly int[,] m_MaterialFiltersNew =
         {
             { 1044067, 1 }, // Blacksmithy
             { 1062226, 9 }, // Iron
@@ -113,24 +113,24 @@ namespace Server.Engines.BulkOrders
             { 0, 0 }, // --Blank--
             { 0, 0 }, // --Blank--
             { 0, 0 }, // --Blank--
-            { 0, 0 }, // --Blank--
+            { 0, 0 } // --Blank--
         };
 
-        private static readonly int[,] m_TypeFilters = new int[,]
+        private static readonly int[,] m_TypeFilters =
         {
             { 1062229, 0 }, // All
             { 1062224, 1 }, // Small
             { 1062225, 2 }// Large
         };
 
-        private static readonly int[,] m_QualityFilters = new int[,]
+        private static readonly int[,] m_QualityFilters =
         {
             { 1062229, 0 }, // All
             { 1011542, 1 }, // Normal
             { 1060636, 2 }// Exceptional
         };
 
-        private static readonly int[,] m_AmountFilters = new int[,]
+        private static readonly int[,] m_AmountFilters =
         {
             { 1062229, 0 }, // All
             { 1049706, 1 }, // 10
@@ -138,7 +138,7 @@ namespace Server.Engines.BulkOrders
             { 1062239, 3 }// 20
         };
 
-        private static readonly int[][,] m_Filters = new int[][,]
+        private static readonly int[][,] m_Filters =
         {
             m_TypeFilters,
             m_QualityFilters,
@@ -146,7 +146,7 @@ namespace Server.Engines.BulkOrders
             m_AmountFilters
         };
 
-        private static readonly int[][,] m_FiltersNew = new int[][,]
+        private static readonly int[][,] m_FiltersNew =
         {
             m_TypeFilters,
             m_QualityFilters,
@@ -154,12 +154,12 @@ namespace Server.Engines.BulkOrders
             m_AmountFilters
         };
 
-        private static readonly int[] m_XOffsets_Type = new int[] { 0, 75, 170 };
-        private static readonly int[] m_XOffsets_Quality = new int[] { 0, 75, 170 };
-        private static readonly int[] m_XOffsets_Amount = new int[] { 0, 75, 180, 275 };
-        private static readonly int[] m_XOffsets_Material = new int[] { 0, 108, 212, 307, 392, 487 };
-        private static readonly int[] m_XWidths_Small = new int[] { 50, 50, 70, 50 };
-        private static readonly int[] m_XWidths_Large = new int[] { 80, 60, 60, 60, 60, 60 };
+        private static readonly int[] m_XOffsets_Type = { 0, 75, 170 };
+        private static readonly int[] m_XOffsets_Quality = { 0, 75, 170 };
+        private static readonly int[] m_XOffsets_Amount = { 0, 75, 180, 275 };
+        private static readonly int[] m_XOffsets_Material = { 0, 108, 212, 307, 392, 487 };
+        private static readonly int[] m_XWidths_Small = { 50, 50, 70, 50 };
+        private static readonly int[] m_XWidths_Large = { 80, 60, 60, 60, 60, 60 };
 
         private const int LabelColor = 0x7FFF;
         private readonly PlayerMobile m_From;

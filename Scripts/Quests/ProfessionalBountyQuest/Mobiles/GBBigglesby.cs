@@ -1,4 +1,4 @@
-﻿using Server.Items;
+using Server.Items;
 using System;
 using System.Collections.Generic;
 
@@ -80,7 +80,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextSay = DateTime.UtcNow;
         }

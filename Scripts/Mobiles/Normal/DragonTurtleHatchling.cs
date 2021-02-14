@@ -62,8 +62,8 @@ namespace Server.Mobiles
                 {
                     if (sk.Base > 0)
                     {
-                        sk.Cap = Math.Max(100, sk.Base - (sk.Base * 10));
-                        sk.Base = sk.Base - (sk.Base * .55);
+                        sk.Cap = Math.Max(100, sk.Base - sk.Base * 10);
+                        sk.Base = sk.Base - sk.Base * .55;
                     }
                 }
             }

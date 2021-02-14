@@ -613,7 +613,7 @@ namespace Server.Engines.VeteranRewards
                     new RewardEntry(etherealSteeds, 1154589, typeof(EtherealTiger)),
                     new RewardEntry(etherealSteeds, 1155723, typeof(EtherealAncientHellHound)),
                     new RewardEntry(etherealSteeds, 1157081, typeof(EtherealTarantula)),
-                    new RewardEntry(etherealSteeds, 1159423, typeof(EtherealWarBoar)),
+                    new RewardEntry(etherealSteeds, 1157081, typeof(EtherealWarBoar)),
 
                     new RewardEntry(houseAddOns,    1153491, typeof(GardenShedDeed))
                 }),

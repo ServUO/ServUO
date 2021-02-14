@@ -10,7 +10,6 @@ namespace Server.Items
 
         [Constructable]
         public ElegantCollarOfFortune()
-            : base()
         {
             Attributes.Luck = 300;
             Attributes.RegenMana = 1;
@@ -59,7 +58,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -101,7 +101,7 @@ namespace Server.Mobiles
 
             AddLoot(LootPack.RandomLootItem(new[] { typeof(TravestysSushiPreparations), typeof(TravestysFineTeakwoodTray), typeof(TravestysCollectionOfShells) }));
 
-            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(25.0));
             AddLoot(LootPack.LootItem<TragicRemainsOfTravesty>(10.0));
             AddLoot(LootPack.LootItem<ImprisonedDog>(5.0));
             AddLoot(LootPack.LootItem<MarkOfTravesty>(5.0));
@@ -139,7 +139,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void ClearHands()
@@ -377,7 +377,7 @@ namespace Server.Mobiles
             new Point3D(86, 1971, 0),
             new Point3D(103, 1972, 0),
             new Point3D(86, 1939, 0),
-            new Point3D(102, 1938, 0),
+            new Point3D(102, 1938, 0)
         };
 
         private class ClonedItem : Item
@@ -416,7 +416,7 @@ namespace Server.Mobiles
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

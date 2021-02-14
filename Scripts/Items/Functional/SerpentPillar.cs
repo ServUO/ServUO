@@ -36,38 +36,20 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get
-            {
-                return m_Active;
-            }
-            set
-            {
-                m_Active = value;
-            }
+            get => m_Active;
+            set => m_Active = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public string Word
         {
-            get
-            {
-                return m_Word;
-            }
-            set
-            {
-                m_Word = value;
-            }
+            get => m_Word;
+            set => m_Word = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public Rectangle2D Destination
         {
-            get
-            {
-                return m_Destination;
-            }
-            set
-            {
-                m_Destination = value;
-            }
+            get => m_Destination;
+            set => m_Destination = value;
         }
         public override bool HandlesOnSpeech => true;
         public override void OnSpeech(SpeechEventArgs e)
@@ -119,7 +101,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Active);
@@ -130,8 +111,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Active = reader.ReadBool();
             m_Word = reader.ReadString();

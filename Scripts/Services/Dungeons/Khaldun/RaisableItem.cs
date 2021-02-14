@@ -42,10 +42,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxElevation
         {
-            get
-            {
-                return m_MaxElevation;
-            }
+            get => m_MaxElevation;
             set
             {
                 if (value <= 0)
@@ -56,43 +53,18 @@ namespace Server.Items
                     m_MaxElevation = value;
             }
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MoveSound
-        {
-            get
-            {
-                return m_MoveSound;
-            }
-            set
-            {
-                m_MoveSound = value;
-            }
-        }
+        public int MoveSound { get => m_MoveSound; set => m_MoveSound = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public int StopSound
-        {
-            get
-            {
-                return m_StopSound;
-            }
-            set
-            {
-                m_StopSound = value;
-            }
-        }
+        public int StopSound { get => m_StopSound; set => m_StopSound = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan CloseDelay
-        {
-            get
-            {
-                return m_CloseDelay;
-            }
-            set
-            {
-                m_CloseDelay = value;
-            }
-        }
+        public TimeSpan CloseDelay { get => m_CloseDelay; set => m_CloseDelay = value; }
+
         public bool IsRaisable => m_RaiseTimer == null;
+
         public void Raise()
         {
             if (!IsRaisable)
@@ -105,7 +77,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt(m_MaxElevation);
@@ -119,8 +90,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_MaxElevation = reader.ReadEncodedInt();
             m_MoveSound = reader.ReadEncodedInt();

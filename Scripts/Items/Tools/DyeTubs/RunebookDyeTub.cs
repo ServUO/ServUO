@@ -20,18 +20,10 @@ namespace Server.Items
         public override int FailMessage => 1049775;// You can only dye runestones or runebooks with this tub.
         public override int LabelNumber => 1049740;// Runebook Dye Tub
         public override CustomHuePicker CustomHuePicker => CustomHuePicker.LeatherDyeTub;
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsRewardItem
-        {
-            get
-            {
-                return m_IsRewardItem;
-            }
-            set
-            {
-                m_IsRewardItem = value;
-            }
-        }
+        public bool IsRewardItem { get => m_IsRewardItem; set => m_IsRewardItem = value; }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (m_IsRewardItem && !Engines.VeteranRewards.RewardSystem.CheckIsUsableBy(from, this, null))

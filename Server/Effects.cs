@@ -50,9 +50,9 @@ namespace Server
 			{
 				Packet playSound = null;
 
-				var eable = map.GetClientsInRange(new Point3D(p));
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(new Point3D(p));
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -94,7 +94,7 @@ namespace Server
 
 		public static void SendBoltEffect(IEntity e, bool sound, int hue)
 		{
-			var map = e.Map;
+			Map map = e.Map;
 
 			if (map == null)
 			{
@@ -105,13 +105,13 @@ namespace Server
 
 			Packet preEffect = null, postEffect = null, boltEffect = null, playSound = null;
 
-			var eable = map.GetClientsInRange(e.Location);
+			IPooledEnumerable<NetState> eable = map.GetClientsInRange(e.Location);
 
-			foreach (var state in eable)
+			foreach (NetState state in eable)
 			{
 				if (state.Mobile.CanSee(e))
 				{
-					var sendParticles = SendParticlesTo(state);
+					bool sendParticles = SendParticlesTo(state);
 
 					if (sendParticles)
 					{
@@ -201,15 +201,15 @@ namespace Server
 		public static void SendLocationParticles(
 			IEntity e, int itemID, int speed, int duration, int hue, int renderMode, int effect, int unknown)
 		{
-			var map = e.Map;
+			Map map = e.Map;
 
 			if (map != null)
 			{
 				Packet particles = null, regular = null;
 
-				var eable = map.GetClientsInRange(e.Location);
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(e.Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -259,9 +259,9 @@ namespace Server
 
 		public static void SendTargetEffect(IEntity target, int itemID, int speed, int duration, int hue, int renderMode)
 		{
-			if (target is Mobile)
+			if (target is Mobile mobile)
 			{
-				((Mobile)target).ProcessDelta();
+				mobile.ProcessDelta();
 			}
 
 			SendPacket(target.Location, target.Map, new TargetEffect(target, itemID, speed, duration, hue, renderMode));
@@ -290,20 +290,20 @@ namespace Server
 			EffectLayer layer,
 			int unknown)
 		{
-			if (target is Mobile)
+			if (target is Mobile mobile)
 			{
-				((Mobile)target).ProcessDelta();
+				mobile.ProcessDelta();
 			}
 
-			var map = target.Map;
+			Map map = target.Map;
 
 			if (map != null)
 			{
 				Packet particles = null, regular = null;
 
-				var eable = map.GetClientsInRange(target.Location);
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(target.Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -334,9 +334,7 @@ namespace Server
 
 				eable.Free();
 			}
-
-			//SendPacket( target.Location, target.Map, new TargetParticleEffect( target, itemID, speed, duration, hue, renderMode, effect, (int)layer, unknown ) );
-		}
+        }
 
 		public static void SendMovingEffect(
 			IEntity from, IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes)
@@ -355,14 +353,14 @@ namespace Server
 			int hue,
 			int renderMode)
 		{
-			if (from is Mobile)
+			if (from is Mobile mobile)
 			{
-				((Mobile)from).ProcessDelta();
+				mobile.ProcessDelta();
 			}
 
-			if (to is Mobile)
+			if (to is Mobile mob)
 			{
-				((Mobile)to).ProcessDelta();
+				mob.ProcessDelta();
 			}
 
 			SendPacket(
@@ -452,25 +450,25 @@ namespace Server
 			EffectLayer layer,
 			int unknown)
 		{
-			if (from is Mobile)
+			if (from is Mobile mobile)
 			{
-				((Mobile)from).ProcessDelta();
+				mobile.ProcessDelta();
 			}
 
-			if (to is Mobile)
+			if (to is Mobile mob)
 			{
-				((Mobile)to).ProcessDelta();
+				mob.ProcessDelta();
 			}
 
-			var map = from.Map;
+			Map map = from.Map;
 
 			if (map != null)
 			{
 				Packet particles = null, regular = null;
 
-				var eable = map.GetClientsInRange(from.Location);
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(from.Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					state.Mobile.ProcessDelta();
 
@@ -524,11 +522,11 @@ namespace Server
 		{
 			if (map != null)
 			{
-				var eable = map.GetClientsInRange(origin);
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(origin);
 
 				p.Acquire();
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					state.Mobile.ProcessDelta();
 					state.Send(p);
@@ -544,11 +542,11 @@ namespace Server
 		{
 			if (map != null)
 			{
-				var eable = map.GetClientsInRange(new Point3D(origin));
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(new Point3D(origin));
 
 				p.Acquire();
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					state.Mobile.ProcessDelta();
 					state.Send(p);

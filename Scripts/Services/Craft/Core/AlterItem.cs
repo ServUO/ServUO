@@ -10,9 +10,9 @@ namespace Server.Engines.Craft
     [AttributeUsage(AttributeTargets.Class)]
     public class AlterableAttribute : Attribute
     {
-        public Type CraftSystem { get; private set; }
-        public Type AlteredType { get; private set; }
-        public bool Inherit { get; private set; }
+        public Type CraftSystem { get; }
+        public Type AlteredType { get; }
+        public bool Inherit { get; }
 
         public AlterableAttribute(Type craftSystem, Type alteredType, bool inherit = false)
         {
@@ -22,8 +22,7 @@ namespace Server.Engines.Craft
         }
 
         /// <summary>
-        /// this enables any craftable item where their parent class can be altered, can be altered too.
-        /// This is mainly for the ML craftable artifacts.
+        /// This enables any craftable item where their parent class can be altered, can be altered too.
         /// </summary>
         /// <returns></returns>
         public bool CheckInherit(Type original)
@@ -83,7 +82,7 @@ namespace Server.Engines.Craft
 
             object[] attrs = t.GetCustomAttributes(typeof(AlterableAttribute), inherit);
 
-            if (attrs != null && attrs.Length > 0)
+            if (attrs.Length > 0)
             {
                 AlterableAttribute attr = attrs[0] as AlterableAttribute;
 
@@ -179,7 +178,7 @@ namespace Server.Engines.Craft
             {
                 number = 1111870; // You must be at least grandmaster level to alter an item.
             }
-            else if (origItem is BaseWeapon && ((BaseWeapon)origItem).EnchantedWeilder != null)
+            else if (origItem is BaseWeapon weapon && weapon.EnchantedWeilder != null)
             {
                 number = 1111849; // You cannot alter an item that is currently enchanted.
             }
@@ -203,11 +202,8 @@ namespace Server.Engines.Craft
                 if (newitem == null)
                     return;
 
-                if (origItem is BaseWeapon && newitem is BaseWeapon)
+                if (origItem is BaseWeapon oldweapon && newitem is BaseWeapon newweapon)
                 {
-                    BaseWeapon oldweapon = (BaseWeapon)origItem;
-                    BaseWeapon newweapon = (BaseWeapon)newitem;
-
                     newweapon.Slayer = oldweapon.Slayer;
                     newweapon.Slayer2 = oldweapon.Slayer2;
                     newweapon.Slayer3 = oldweapon.Slayer3;
@@ -222,47 +218,38 @@ namespace Server.Engines.Craft
 
                     newweapon.Altered = true;
                 }
-                else if (origItem is BaseArmor && newitem is BaseArmor)
+                else if (origItem is BaseArmor oldarmor && newitem is BaseArmor newarm)
                 {
-                    BaseArmor oldarmor = (BaseArmor)origItem;
-                    BaseArmor newarmor = (BaseArmor)newitem;
-
                     if (oldarmor.PlayerConstructed)
                     {
-                        newarmor.PlayerConstructed = true;
-                        newarmor.Crafter = oldarmor.Crafter;
-                        newarmor.Quality = oldarmor.Quality;
+                        newarm.PlayerConstructed = true;
+                        newarm.Crafter = oldarmor.Crafter;
+                        newarm.Quality = oldarmor.Quality;
                     }
 
-                    newarmor.Resource = oldarmor.Resource;
+                    newarm.Resource = oldarmor.Resource;
 
-                    newarmor.PhysicalBonus = oldarmor.PhysicalBonus;
-                    newarmor.FireBonus = oldarmor.FireBonus;
-                    newarmor.ColdBonus = oldarmor.ColdBonus;
-                    newarmor.PoisonBonus = oldarmor.PoisonBonus;
-                    newarmor.EnergyBonus = oldarmor.EnergyBonus;
+                    newarm.PhysicalBonus = oldarmor.PhysicalBonus;
+                    newarm.FireBonus = oldarmor.FireBonus;
+                    newarm.ColdBonus = oldarmor.ColdBonus;
+                    newarm.PoisonBonus = oldarmor.PoisonBonus;
+                    newarm.EnergyBonus = oldarmor.EnergyBonus;
 
-                    newarmor.Altered = true;
+                    newarm.Altered = true;
                 }
-                else if (origItem is BaseClothing && newitem is BaseClothing)
+                else if (origItem is BaseClothing oldClothing && newitem is BaseClothing newcloth)
                 {
-                    BaseClothing oldcloth = (BaseClothing)origItem;
-                    BaseClothing newcloth = (BaseClothing)newitem;
-
-                    if (oldcloth.PlayerConstructed)
+                    if (oldClothing.PlayerConstructed)
                     {
                         newcloth.PlayerConstructed = true;
-                        newcloth.Crafter = oldcloth.Crafter;
-                        newcloth.Quality = oldcloth.Quality;
+                        newcloth.Crafter = oldClothing.Crafter;
+                        newcloth.Quality = oldClothing.Quality;
                     }
 
                     newcloth.Altered = true;
                 }
-                else if (origItem is BaseClothing && newitem is BaseArmor)
+                else if (origItem is BaseClothing oldcloth && newitem is BaseArmor newarmor)
                 {
-                    BaseClothing oldcloth = (BaseClothing)origItem;
-                    BaseArmor newarmor = (BaseArmor)newitem;
-
                     if (oldcloth.PlayerConstructed)
                     {
                         int qual = (int)oldcloth.Quality;
@@ -274,9 +261,9 @@ namespace Server.Engines.Craft
 
                     newarmor.Altered = true;
                 }
-                else if (origItem is BaseQuiver && newitem is BaseArmor)
+                else if (origItem is BaseQuiver && newitem is BaseArmor armor)
                 {
-                    ((BaseArmor)newitem).Altered = true;
+                    armor.Altered = true;
                 }
                 else
                 {
@@ -302,10 +289,10 @@ namespace Server.Engines.Craft
                 origItem.OnAfterDuped(newitem);
                 newitem.Parent = null;
 
-                if (origItem is IDurability && newitem is IDurability)
+                if (origItem is IDurability durability)
                 {
-                    ((IDurability)newitem).MaxHitPoints = ((IDurability)origItem).MaxHitPoints;
-                    ((IDurability)newitem).HitPoints = ((IDurability)origItem).HitPoints;
+                    ((IDurability)newitem).MaxHitPoints = durability.MaxHitPoints;
+                    ((IDurability)newitem).HitPoints = durability.HitPoints;
                 }
 
                 if (from.Backpack == null)
@@ -320,7 +307,7 @@ namespace Server.Engines.Craft
 
                 origItem.Delete();
 
-                EventSink.InvokeAlterItem(new AlterItemEventArgs(from, m_Tool is Item ? (Item)m_Tool : m_Contract, origItem, newitem));
+                EventSink.InvokeAlterItem(new AlterItemEventArgs(from, m_Tool is Item item ? item : m_Contract, origItem, newitem));
 
                 number = 1094727; // You have altered the item.
             }
@@ -353,10 +340,10 @@ namespace Server.Engines.Craft
             if (item is Glasses || item is ElvenGlasses || item.IsArtifact)
                 return true;
 
-            if (item is IArtifact && ((IArtifact)item).ArtifactRarity > 0)
+            if (item is IArtifact artifact && artifact.ArtifactRarity > 0)
                 return true;
 
-            return (item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552) || (item.LabelNumber >= 1073111 && item.LabelNumber <= 1075040);
+            return item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552 || item.LabelNumber >= 1073111 && item.LabelNumber <= 1075040;
         }
 
         private static readonly Type[] ArmorType =
@@ -367,51 +354,42 @@ namespace Server.Engines.Craft
 
         private static bool IsAlterable(Item item)
         {
-            if (item is BaseWeapon)
+            if (item is BaseWeapon weapon)
             {
-                BaseWeapon weapon = (BaseWeapon)item;
-
                 if (weapon.SetID != SetItem.None || !weapon.CanAlter || weapon.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((Race.Gargoyle.ValidateEquipment(weapon) && !weapon.IsArtifact))
+                if (Race.Gargoyle.ValidateEquipment(weapon) && !weapon.IsArtifact)
                     return false;
             }
 
-            if (item is BaseArmor)
+            if (item is BaseArmor armor)
             {
-                BaseArmor armor = (BaseArmor)item;
-
                 if (armor.SetID != SetItem.None || !armor.CanAlter || armor.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((Race.Gargoyle.ValidateEquipment(armor) && !armor.IsArtifact))
+                if (Race.Gargoyle.ValidateEquipment(armor) && !armor.IsArtifact)
                     return false;
 
                 if (ArmorType.Any(t => t == armor.GetType()) && armor.Resource > CraftResource.Iron)
                     return false;
             }
 
-            if (item is BaseClothing)
+            if (item is BaseClothing cloth)
             {
-                BaseClothing cloth = (BaseClothing)item;
-
                 if (cloth.SetID != SetItem.None || !cloth.CanAlter || cloth.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((Race.Gargoyle.ValidateEquipment(cloth) && !cloth.IsArtifact))
+                if (Race.Gargoyle.ValidateEquipment(cloth) && !cloth.IsArtifact)
                     return false;
             }
 
-            if (item is BaseQuiver)
+            if (item is BaseQuiver quiver && !quiver.CanAlter && quiver.SetID != SetItem.None)
             {
-                BaseQuiver quiver = (BaseQuiver)item;
-
-                if (quiver.SetID != SetItem.None || !quiver.CanAlter)
-                    return false;
+                return false;
             }
 
-            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
+            if (item is IVvVItem vItem && vItem.IsVvVItem)
                 return false;
 
             if (item is IRewardItem)

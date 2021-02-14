@@ -36,25 +36,13 @@ namespace Server.Items
         public List<PlagueBeastComponent> Components => m_Components;
         public int BrainHue
         {
-            get
-            {
-                return m_BrainHue;
-            }
-            set
-            {
-                m_BrainHue = value;
-            }
+            get => m_BrainHue;
+            set => m_BrainHue = value;
         }
         public bool Opened
         {
-            get
-            {
-                return m_Opened;
-            }
-            set
-            {
-                m_Opened = value;
-            }
+            get => m_Opened;
+            set => m_Opened = value;
         }
         public virtual void Initialize()
         {
@@ -84,8 +72,8 @@ namespace Server.Items
                     scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071897); // You carefully cut into the organ.
                     return true;
                 }
-                else
-                    scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071898); // You have already cut this organ open.
+
+                scissors.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1071898); // You have already cut this organ open.
             }
 
             return false;
@@ -118,7 +106,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteItemList(m_Components);
@@ -129,8 +116,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Components = reader.ReadStrongItemList<PlagueBeastComponent>();
             m_BrainHue = reader.ReadInt();
@@ -176,15 +162,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -239,27 +223,26 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
     public class PlagueBeastRubbleOrgan : PlagueBeastOrgan
     {
-        private static readonly int[] m_Hues = new int[]
+        private static readonly int[] m_Hues =
         {
             0xD, 0x17, 0x2B, 0x42, 0x54, 0x5D
         };
+
         private int m_Veins;
+
         public PlagueBeastRubbleOrgan()
-            : base()
         {
             m_Veins = 3;
         }
@@ -332,7 +315,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Veins);
@@ -341,8 +323,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Veins = reader.ReadInt();
         }
@@ -402,7 +383,8 @@ namespace Server.Items
                 AddComponent(new PlagueBeastBlood(), 47, 72);
                 return true;
             }
-            else if (c.IsGland)
+
+            if (c.IsGland)
             {
                 m_Gland = null;
                 return true;
@@ -460,7 +442,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Gland);
@@ -469,8 +450,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Gland = reader.ReadItem();
         }
@@ -480,7 +460,6 @@ namespace Server.Items
     {
         private int m_Brains;
         public PlagueBeastMainOrgan()
-            : base()
         {
             m_Brains = 0;
         }
@@ -576,7 +555,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Brains);
@@ -585,8 +563,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Brains = reader.ReadInt();
         }

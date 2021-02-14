@@ -59,7 +59,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SourceEffect
         {
-            get { return m_SourceEffect; }
+            get => m_SourceEffect;
             set
             {
                 m_SourceEffect = value;
@@ -70,7 +70,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DestEffect
         {
-            get { return m_DestEffect; }
+            get => m_DestEffect;
             set
             {
                 m_DestEffect = value;
@@ -81,7 +81,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SoundID
         {
-            get { return m_SoundID; }
+            get => m_SoundID;
             set
             {
                 m_SoundID = value;
@@ -92,7 +92,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan Delay
         {
-            get { return m_Delay; }
+            get => m_Delay;
             set
             {
                 m_Delay = value;
@@ -103,7 +103,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return m_Active; }
+            get => m_Active;
             set
             {
                 m_Active = value;
@@ -114,7 +114,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D PointDest
         {
-            get { return m_PointDest; }
+            get => m_PointDest;
             set
             {
                 m_PointDest = value;
@@ -125,7 +125,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Map MapDest
         {
-            get { return m_MapDest; }
+            get => m_MapDest;
             set
             {
                 m_MapDest = value;
@@ -136,7 +136,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Creatures
         {
-            get { return m_Creatures; }
+            get => m_Creatures;
             set
             {
                 m_Creatures = value;
@@ -147,7 +147,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CombatCheck
         {
-            get { return m_CombatCheck; }
+            get => m_CombatCheck;
             set
             {
                 m_CombatCheck = value;
@@ -158,7 +158,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CriminalCheck
         {
-            get { return m_CriminalCheck; }
+            get => m_CriminalCheck;
             set
             {
                 m_CriminalCheck = value;
@@ -223,7 +223,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (!CheckDestination(m) || (Siege.SiegeShard && m_MapDest == Map.Trammel))
+            if (!CheckDestination(m) || Siege.SiegeShard && m_MapDest == Map.Trammel)
             {
                 return false;
             }
@@ -305,7 +305,7 @@ namespace Server.Items
                 p = m.Location;
             }
 
-            bool sendEffect = (!m.Hidden || m.IsPlayer());
+            bool sendEffect = !m.Hidden || m.IsPlayer();
 
             if (m_SourceEffect && sendEffect)
             {
@@ -417,7 +417,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SkillName Skill
         {
-            get { return m_Skill; }
+            get => m_Skill;
             set
             {
                 m_Skill = value;
@@ -428,7 +428,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public double Required
         {
-            get { return m_Required; }
+            get => m_Required;
             set
             {
                 m_Required = value;
@@ -439,7 +439,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string MessageString
         {
-            get { return m_MessageString; }
+            get => m_MessageString;
             set
             {
                 m_MessageString = value;
@@ -450,7 +450,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MessageNumber
         {
-            get { return m_MessageNumber; }
+            get => m_MessageNumber;
             set
             {
                 m_MessageNumber = value;
@@ -575,7 +575,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string Substring
         {
-            get { return m_Substring; }
+            get => m_Substring;
             set
             {
                 m_Substring = value;
@@ -586,7 +586,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Keyword
         {
-            get { return m_Keyword; }
+            get => m_Keyword;
             set
             {
                 m_Keyword = value;
@@ -597,7 +597,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Range
         {
-            get { return m_Range; }
+            get => m_Range;
             set
             {
                 m_Range = value;
@@ -613,8 +613,14 @@ namespace Server.Items
             {
                 Mobile m = e.Mobile;
 
-                if (!m.InRange(GetWorldLocation(), m_Range) || CityTradeSystem.HasTrade(m))
+                if (!m.InRange(GetWorldLocation(), m_Range))
                 {
+                    return;
+                }
+
+                if (CityTradeSystem.HasTrade(m))
+                {
+                    m.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
                     return;
                 }
 
@@ -720,19 +726,19 @@ namespace Server.Items
         { }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int StartNumber { get { return m_StartNumber; } set { m_StartNumber = value; } }
+        public int StartNumber { get => m_StartNumber; set => m_StartNumber = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string StartMessage { get { return m_StartMessage; } set { m_StartMessage = value; } }
+        public string StartMessage { get => m_StartMessage; set => m_StartMessage = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ProgressNumber { get { return m_ProgressNumber; } set { m_ProgressNumber = value; } }
+        public int ProgressNumber { get => m_ProgressNumber; set => m_ProgressNumber = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string ProgressMessage { get { return m_ProgressMessage; } set { m_ProgressMessage = value; } }
+        public string ProgressMessage { get => m_ProgressMessage; set => m_ProgressMessage = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool ShowTimeRemaining { get { return m_ShowTimeRemaining; } set { m_ShowTimeRemaining = value; } }
+        public bool ShowTimeRemaining { get => m_ShowTimeRemaining; set => m_ShowTimeRemaining = value; }
 
         public static void Initialize()
         {
@@ -762,7 +768,8 @@ namespace Server.Items
                 int h = (int)Math.Round(ts.TotalHours);
                 return string.Format("{0} hour{1}", h, (h == 1) ? "" : "s");
             }
-            else if (ts.TotalMinutes >= 1)
+
+            if (ts.TotalMinutes >= 1)
             {
                 int m = (int)Math.Round(ts.TotalMinutes);
                 return string.Format("{0} minute{1}", m, (m == 1) ? "" : "s");
@@ -801,10 +808,8 @@ namespace Server.Items
 
                     return;
                 }
-                else
-                {
-                    info.Timer.Stop();
-                }
+
+                info.Timer.Stop();
             }
 
             if (m_StartMessage != null)
@@ -836,7 +841,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_StartNumber);
@@ -849,8 +853,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_StartNumber = reader.ReadInt();
             m_StartMessage = reader.ReadString();
@@ -907,7 +910,7 @@ namespace Server.Items
         { }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan TimeoutDelay { get { return m_TimeoutDelay; } set { m_TimeoutDelay = value; } }
+        public TimeSpan TimeoutDelay { get => m_TimeoutDelay; set => m_TimeoutDelay = value; }
 
         public void StartTimer(Mobile m)
         {
@@ -950,7 +953,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_TimeoutDelay);
@@ -966,8 +968,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_TimeoutDelay = reader.ReadTimeSpan();
             m_Teleporting = new Dictionary<Mobile, Timer>();
@@ -1015,7 +1016,7 @@ namespace Server.Items
         { }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeoutTeleporter Teleporter { get { return m_Teleporter; } set { m_Teleporter = value; } }
+        public TimeoutTeleporter Teleporter { get => m_Teleporter; set => m_Teleporter = value; }
 
         public override string DefaultName => "timeout teleporter goal";
 
@@ -1032,7 +1033,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.WriteItem(m_Teleporter);
@@ -1041,8 +1041,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Teleporter = reader.ReadItem<TimeoutTeleporter>();
         }
@@ -1092,7 +1091,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DenyMounted
         {
-            get { return GetFlag(ConditionFlag.DenyMounted); }
+            get => GetFlag(ConditionFlag.DenyMounted);
             set
             {
                 SetFlag(ConditionFlag.DenyMounted, value);
@@ -1103,7 +1102,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DenyFollowers
         {
-            get { return GetFlag(ConditionFlag.DenyFollowers); }
+            get => GetFlag(ConditionFlag.DenyFollowers);
             set
             {
                 SetFlag(ConditionFlag.DenyFollowers, value);
@@ -1114,7 +1113,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DenyPackContents
         {
-            get { return GetFlag(ConditionFlag.DenyPackContents); }
+            get => GetFlag(ConditionFlag.DenyPackContents);
             set
             {
                 SetFlag(ConditionFlag.DenyPackContents, value);
@@ -1125,7 +1124,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DenyHolding
         {
-            get { return GetFlag(ConditionFlag.DenyHolding); }
+            get => GetFlag(ConditionFlag.DenyHolding);
             set
             {
                 SetFlag(ConditionFlag.DenyHolding, value);
@@ -1136,7 +1135,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DenyEquipment
         {
-            get { return GetFlag(ConditionFlag.DenyEquipment); }
+            get => GetFlag(ConditionFlag.DenyEquipment);
             set
             {
                 SetFlag(ConditionFlag.DenyEquipment, value);
@@ -1147,7 +1146,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DenyTransformed
         {
-            get { return GetFlag(ConditionFlag.DenyTransformed); }
+            get => GetFlag(ConditionFlag.DenyTransformed);
             set
             {
                 SetFlag(ConditionFlag.DenyTransformed, value);
@@ -1158,7 +1157,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool StaffOnly
         {
-            get { return GetFlag(ConditionFlag.StaffOnly); }
+            get => GetFlag(ConditionFlag.StaffOnly);
             set
             {
                 SetFlag(ConditionFlag.StaffOnly, value);
@@ -1169,7 +1168,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DenyPackEthereals
         {
-            get { return GetFlag(ConditionFlag.DenyPackEthereals); }
+            get => GetFlag(ConditionFlag.DenyPackEthereals);
             set
             {
                 SetFlag(ConditionFlag.DenyPackEthereals, value);
@@ -1180,7 +1179,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DeadOnly
         {
-            get { return GetFlag(ConditionFlag.DeadOnly); }
+            get => GetFlag(ConditionFlag.DeadOnly);
             set
             {
                 SetFlag(ConditionFlag.DeadOnly, value);
@@ -1206,8 +1205,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (GetFlag(ConditionFlag.DenyFollowers) &&
-                (m.Followers != 0 || (m is PlayerMobile && ((PlayerMobile)m).AutoStabled.Count != 0)))
+            if (GetFlag(ConditionFlag.DenyFollowers) && (m.Followers != 0 || m is PlayerMobile pm && pm.AutoStabled.Count != 0))
             {
                 m.SendLocalizedMessage(1077250); // No pets permitted beyond this point.
                 return false;
@@ -1377,7 +1375,7 @@ namespace Server.Items
 
         protected bool GetFlag(ConditionFlag flag)
         {
-            return ((m_Flags & flag) != 0);
+            return (m_Flags & flag) != 0;
         }
 
         protected void SetFlag(ConditionFlag flag, bool value)
@@ -1439,7 +1437,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

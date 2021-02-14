@@ -125,14 +125,14 @@ namespace Server.Engines.Events
         {
             Point3D loc = new Point3D(x + Utility.Random(-1, 3), y + Utility.Random(-1, 3), 0);
 
-            loc.Z = (map.CanFit(loc, 0)) ? map.GetAverageZ(loc.X, loc.Y) : z;
+            loc.Z = map.CanFit(loc, 0) ? map.GetAverageZ(loc.X, loc.Y) : z;
 
             return loc;
         }
 
         public static bool CheckMobile(Mobile mobile)
         {
-            return (mobile != null && mobile.Map != null && !mobile.Deleted && mobile.Alive && mobile.Map != Map.Internal);
+            return mobile != null && mobile.Map != null && !mobile.Deleted && mobile.Alive && mobile.Map != Map.Internal;
         }
 
         private static void EventSink_Speech(SpeechEventArgs e)
@@ -250,7 +250,7 @@ namespace Server.Engines.Events
             new Point3D(2701, 692, 5), // Minoc
             new Point3D(1828, 2948,-20), // Trinsic
             new Point3D(643, 2067, 5), // Skara Brae
-            new Point3D(3563, 2139, Map.Trammel.GetAverageZ(3563, 2139)), // (New) Magincia
+            new Point3D(3563, 2139, Map.Trammel.GetAverageZ(3563, 2139)) // (New) Magincia
         };
         private static readonly Point3D[] Malas_Locations =
         {
@@ -377,7 +377,7 @@ namespace Server.Engines.Events
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

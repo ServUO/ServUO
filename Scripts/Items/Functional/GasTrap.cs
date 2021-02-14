@@ -46,14 +46,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Poison Poison
         {
-            get
-            {
-                return m_Poison;
-            }
-            set
-            {
-                m_Poison = value;
-            }
+            get => m_Poison;
+            set => m_Poison = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public GasTrapType Type
@@ -72,10 +66,7 @@ namespace Server.Items
 
                 return GasTrapType.WestWall;
             }
-            set
-            {
-                ItemID = GetBaseID(value);
-            }
+            set => ItemID = GetBaseID(value);
         }
         public override bool PassivelyTriggered => false;
         public override TimeSpan PassiveTriggerDelay => TimeSpan.Zero;

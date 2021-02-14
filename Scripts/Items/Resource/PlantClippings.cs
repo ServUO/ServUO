@@ -53,13 +53,13 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+            return dropped is IPlantHue hue && hue.PlantHue == m_PlantHue && base.WillStack(from, dropped);
         }
 
         public override void OnAfterDuped(Item newItem)
         {
-            if (newItem is IPlantHue)
-                ((IPlantHue)newItem).PlantHue = PlantHue;
+            if (newItem is IPlantHue hue)
+                hue.PlantHue = PlantHue;
 
             base.OnAfterDuped(newItem);
         }

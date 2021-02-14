@@ -1,7 +1,3 @@
-//////////////////////////
-/// Created by Mitty ////
-//////////////////////// 
-
 namespace Server.Items
 {
     public class NaxMarker : Item
@@ -32,7 +28,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

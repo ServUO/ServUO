@@ -30,10 +30,7 @@ namespace Server.Engines.CannedEvil
         [CommandProperty(AccessLevel.GameMaster)]
         public ChampionSkullType Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get => m_Type;
             set
             {
                 m_Type = value;
@@ -43,10 +40,7 @@ namespace Server.Engines.CannedEvil
         [CommandProperty(AccessLevel.GameMaster)]
         public Item Skull
         {
-            get
-            {
-                return m_Skull;
-            }
+            get => m_Skull;
             set
             {
                 m_Skull = value;

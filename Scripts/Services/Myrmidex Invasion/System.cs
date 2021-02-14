@@ -45,14 +45,15 @@ namespace Server.Engines.MyrmidexInvasion
 
         public static bool IsAlliedWith(Mobile a, Mobile b)
         {
-            return (IsAlliedWithMyrmidex(a) && IsAlliedWithMyrmidex(b)) || (IsAlliedWithEodonTribes(a) && IsAlliedWithEodonTribes(b));
+            return IsAlliedWithMyrmidex(a) && IsAlliedWithMyrmidex(b) || IsAlliedWithEodonTribes(a) && IsAlliedWithEodonTribes(b);
         }
 
         public static bool AreEnemies(Mobile a, Mobile b)
         {
-            if ((IsAlliedWithEodonTribes(a) && !IsAlliedWithMyrmidex(b)) || (IsAlliedWithEodonTribes(b) && !IsAlliedWithMyrmidex(a)) ||
-                (IsAlliedWithMyrmidex(a) && !IsAlliedWithEodonTribes(b)))
+            if (IsAlliedWithEodonTribes(a) && !IsAlliedWithMyrmidex(b) || IsAlliedWithEodonTribes(b) && !IsAlliedWithMyrmidex(a) || IsAlliedWithMyrmidex(a) && !IsAlliedWithEodonTribes(b))
+            {
                 return false;
+            }
 
             return !IsAlliedWith(a, b);
         }
@@ -64,14 +65,14 @@ namespace Server.Engines.MyrmidexInvasion
 
         public static bool IsAlliedWithMyrmidex(Mobile m)
         {
-            if (m is BaseCreature)
+            if (m is BaseCreature bc)
             {
-                BaseCreature bc = m as BaseCreature;
-
                 if (bc.GetMaster() != null)
+                {
                     return IsAlliedWithMyrmidex(bc.GetMaster());
+                }
 
-                return m is MyrmidexLarvae || m is MyrmidexWarrior || m is MyrmidexQueen || m is MyrmidexDrone || (m is BaseEodonTribesman && ((BaseEodonTribesman)m).TribeType == EodonTribe.Barrab);
+                return bc is MyrmidexLarvae || bc is MyrmidexWarrior || bc is MyrmidexQueen || bc is MyrmidexDrone || bc is BaseEodonTribesman man && man.TribeType == EodonTribe.Barrab;
             }
 
             AllianceEntry entry = GetEntry(m as PlayerMobile);
@@ -81,14 +82,14 @@ namespace Server.Engines.MyrmidexInvasion
 
         public static bool IsAlliedWithEodonTribes(Mobile m)
         {
-            if (m is BaseCreature)
+            if (m is BaseCreature bc)
             {
-                BaseCreature bc = m as BaseCreature;
-
                 if (bc.GetMaster() != null)
+                {
                     return IsAlliedWithEodonTribes(bc.GetMaster());
+                }
 
-                return (m is BaseEodonTribesman && ((BaseEodonTribesman)m).TribeType != EodonTribe.Barrab) || m is BritannianInfantry;
+                return bc is BaseEodonTribesman tribesman && tribesman.TribeType != EodonTribe.Barrab || bc is BritannianInfantry;
             }
 
             AllianceEntry entry = GetEntry(m as PlayerMobile);
@@ -122,13 +123,13 @@ namespace Server.Engines.MyrmidexInvasion
             {
                 e.Mobile.BeginTarget(10, false, TargetFlags.None, (from, targeted) =>
                     {
-                        if (targeted is PlayerMobile)
+                        if (targeted is PlayerMobile mobile)
                         {
-                            AllianceEntry entry = GetEntry((PlayerMobile)targeted);
+                            AllianceEntry entry = GetEntry(mobile);
 
                             if (entry != null)
                             {
-                                ((PlayerMobile)targeted).SendGump(new PropertiesGump((PlayerMobile)targeted, entry));
+                                mobile.SendGump(new PropertiesGump(mobile, entry));
                             }
                             else
                                 e.Mobile.SendMessage("They don't belong to an alliance.");
@@ -177,13 +178,13 @@ namespace Server.Engines.MyrmidexInvasion
     [PropertyObject]
     public class AllianceEntry
     {
-        public PlayerMobile Player { get; set; }
+        public PlayerMobile Player { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Allegiance Allegiance { get; set; }
+        public Allegiance Allegiance { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime JoinTime { get; set; }
+        public DateTime JoinTime { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CanRecieveQuest { get; set; }

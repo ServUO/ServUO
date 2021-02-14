@@ -4,15 +4,15 @@ namespace Server.Gumps
 {
     public class ApplySkillBonusGump : BaseGump
     {
-        public Item Item { get; set; }
-        public AosSkillBonuses Bonuses { get; set; }
-        public SkillName[] Skills { get; set; }
+        public Item Item { get; }
+        public AosSkillBonuses Bonuses { get; }
+        public SkillName[] Skills { get; }
         public SkillName Selection { get; set; }
-        public double Value { get; set; }
-        public int Index { get; set; }
+        public double Value { get; }
+        public int Index { get; }
 
         public ApplySkillBonusGump(PlayerMobile pm, AosSkillBonuses bonuses, SkillName[] skills, double value, int index)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             Item = bonuses.Owner;
             Bonuses = bonuses;

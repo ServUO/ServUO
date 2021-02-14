@@ -1,4 +1,4 @@
-﻿using Server.Gumps;
+using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
@@ -37,9 +37,9 @@ namespace Server.Engines.Quests
         private BaseBoat m_Boat;
         private ShippingCrate m_Crate;
 
-        public FishMonger TurnIn { get { return m_TurnIn; } set { m_TurnIn = value; } }
-        public BaseBoat Boat { get { return m_Boat; } set { m_Boat = value; } }
-        public ShippingCrate Crate { get { return m_Crate; } set { m_Crate = value; } }
+        public FishMonger TurnIn { get => m_TurnIn; set => m_TurnIn = value; }
+        public BaseBoat Boat { get => m_Boat; set => m_Boat = value; }
+        public ShippingCrate Crate { get => m_Crate; set => m_Crate = value; }
 
         public ProfessionalFisherQuest()
         {
@@ -96,8 +96,8 @@ namespace Server.Engines.Quests
 
             m_Crate = new ShippingCrate(this);
 
-            if (m_Boat is BaseGalleon)
-                ((BaseGalleon)m_Boat).GalleonHold.DropItem(m_Crate);
+            if (m_Boat is BaseGalleon galleon)
+                galleon.GalleonHold.DropItem(m_Crate);
             else
                 m_Boat.Hold.DropItem(m_Crate);
 
@@ -188,8 +188,8 @@ namespace Server.Engines.Quests
                 return;
 
             Container hold = null;
-            if (m_Crate.RootParent is Container)
-                hold = (Container)m_Crate.RootParent;
+            if (m_Crate.RootParent is Container parent)
+                hold = parent;
 
             //Deletes quest reqeust
             FishQuestObjective obj = GetObjective();
@@ -273,24 +273,22 @@ namespace Server.Engines.Quests
             writer.Write(m_Boat);
             writer.Write(m_Crate);
 
-            if (m_Title is string)
+            if (m_Title is string title)
             {
                 writer.Write(0);
-                writer.Write((string)m_Title);
+                writer.Write(title);
             }
             else
             {
                 writer.Write(1);
                 writer.Write((int)m_Title);
             }
-
-
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_TurnIn = reader.ReadMobile() as FishMonger;
             m_Boat = reader.ReadItem() as BaseBoat;

@@ -94,9 +94,9 @@ namespace Server.Items
 
             BaseHouse house = BaseHouse.FindHouseAt(from);
 
-            if (house != null && house.IsCoOwner(from) && from is PlayerMobile)
+            if (house != null && house.IsCoOwner(from) && from is PlayerMobile mobile)
             {
-                list.Add(new EditSign((CustomizableSquaredDoorMatAddon)Addon, (PlayerMobile)from));
+                list.Add(new EditSign((CustomizableSquaredDoorMatAddon)Addon, mobile));
             }
         }
 

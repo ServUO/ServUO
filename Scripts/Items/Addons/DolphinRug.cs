@@ -183,9 +183,9 @@ namespace Server.Items
             {
                 base.GetProperties(list);
 
-                if (Addon is DolphinRugAddon)
+                if (Addon is DolphinRugAddon addon)
                 {
-                    list.Add(1150103, ((DolphinRugAddon)Addon).ResourceCount.ToString()); // Messages in Bottles: ~1_val~
+                    list.Add(1150103, addon.ResourceCount.ToString()); // Messages in Bottles: ~1_val~
                 }
             }
 

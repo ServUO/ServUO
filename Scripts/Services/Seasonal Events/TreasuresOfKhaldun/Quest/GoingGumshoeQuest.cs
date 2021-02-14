@@ -39,15 +39,13 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override bool CanOffer()
@@ -69,15 +67,13 @@ namespace Server.Engines.Khaldun
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -156,7 +152,6 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(VisitedHeastone1);
@@ -184,8 +179,7 @@ namespace Server.Engines.Khaldun
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             VisitedHeastone1 = reader.ReadBool();
             VisitedHeastone2 = reader.ReadBool();
@@ -222,15 +216,13 @@ namespace Server.Engines.Khaldun
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -304,9 +296,9 @@ namespace Server.Engines.Khaldun
 
         public static bool CheckBookcase(Mobile from, Item item)
         {
-            if (from is PlayerMobile)
+            if (from is PlayerMobile mobile)
             {
-                GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)from);
+                GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>(mobile);
 
                 if (quest != null && !quest.FoundCipherBook)
                 {
@@ -319,14 +311,14 @@ namespace Server.Engines.Khaldun
                     {
                         quest.FoundCipherBook = true;
 
-                        from.PrivateOverheadMessage(Network.MessageType.Regular, 0x47E, 1158713, from.NetState);
+                        mobile.PrivateOverheadMessage(Network.MessageType.Regular, 0x47E, 1158713, mobile.NetState);
                         // *You find the cipher text hidden among the books! Return to the Cryptologist to tell him where it is!*
 
-                        Region region = Region.Find(from.Location, from.Map);
+                        Region region = Region.Find(mobile.Location, mobile.Map);
 
-                        if (region is QuestRegion)
+                        if (region is QuestRegion questRegion)
                         {
-                            ((QuestRegion)region).ClearFromMessageTable(from);
+                            questRegion.ClearFromMessageTable(mobile);
                         }
 
                         return true;
@@ -348,7 +340,6 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(BookCase);
@@ -359,8 +350,7 @@ namespace Server.Engines.Khaldun
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             BookCase = reader.ReadItem();
             FoundCipherBook = reader.ReadBool();
@@ -386,15 +376,13 @@ namespace Server.Engines.Khaldun
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
 
@@ -420,21 +408,19 @@ namespace Server.Engines.Khaldun
             {
                 base.OnLocationChanged(m, oldLocation);
 
-                if (m is PlayerMobile)
+                if (m is PlayerMobile mobile)
                 {
-                    GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>((PlayerMobile)m);
+                    GoingGumshoeQuest3 quest = QuestHelper.GetQuest<GoingGumshoeQuest3>(mobile);
 
                     if (quest != null && !quest.FoundCipherBook && 0.2 > Utility.RandomDouble())
                     {
                         Rectangle2D rec = Bounds.FirstOrDefault(b => b.Contains(m.Location));
 
-                        if (rec.Contains(quest.BookCase) && CanGiveMessage(m))
+                        if (rec.Contains(quest.BookCase) && CanGiveMessage(mobile))
                         {
-                            //m.PrivateOverheadMessage(Server.Network.MessageType.Regular, 0x47E, 1158714, m.NetState); 
-                            m.SendLocalizedMessage(1158714);
-                            // *Your keen senses detect the books in this library have been recently disturbed...*
+                            mobile.SendLocalizedMessage(1158714); // *Your keen senses detect the books in this library have been recently disturbed...*
 
-                            _MessageTable[m] = DateTime.UtcNow + TimeSpan.FromSeconds(15);
+                            _MessageTable[mobile] = DateTime.UtcNow + TimeSpan.FromSeconds(15);
                         }
                     }
                 }
@@ -528,7 +514,6 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(IsComplete);
@@ -537,8 +522,7 @@ namespace Server.Engines.Khaldun
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             IsComplete = reader.ReadBool();
         }
@@ -556,15 +540,13 @@ namespace Server.Engines.Khaldun
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

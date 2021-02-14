@@ -45,10 +45,8 @@ namespace Server.Items
 
                     return (baseRange - 3) + ((attacker.Str - StrengthReq) / ((140 - StrengthReq) / 3));
                 }
-                else
-                {
-                    return baseRange;
-                }
+
+                return baseRange;
             }
         }
 

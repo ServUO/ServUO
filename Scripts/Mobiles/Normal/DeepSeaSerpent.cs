@@ -47,7 +47,7 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.Meager);
-            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(SulfurousAsh), typeof(BlackPearl) }, 100.0, 4, false, true));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(SulfurousAsh), typeof(BlackPearl) }, 100.0, 4, false, true));
         }
 
         public DeepSeaSerpent(Serial serial)
@@ -71,7 +71,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

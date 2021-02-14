@@ -82,7 +82,7 @@ namespace Server.Mobiles
             public InternalSelfDeleteTimer(Mobile p) : base(TimeSpan.FromMinutes(10))
             {
                 Priority = TimerPriority.FiveSeconds;
-                Mare = ((ObsidianWyvern)p);
+                Mare = (ObsidianWyvern)p;
             }
             protected override void OnTick()
             {
@@ -107,26 +107,23 @@ namespace Server.Mobiles
 
             foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct())
             {
-                if (m is PlayerMobile)
+                if (m is PlayerMobile pm && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
                 {
-                    PlayerMobile pm = m as PlayerMobile;
+                    Item item = new WillemHartesHat();
 
-                    if (pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+                    if (pm.Backpack == null || !pm.Backpack.TryDropItem(pm, item, false))
                     {
-                        Item item = new WillemHartesHat();
-
-                        if (m.Backpack == null || !m.Backpack.TryDropItem(m, item, false))
-                        {
-                            m.BankBox.DropItem(item);
-                        }
-
-                        m.SendLocalizedMessage(1154489); // You received a Quest Item!
+                        pm.BankBox.DropItem(item);
                     }
+
+                    pm.SendLocalizedMessage(1154489); // You received a Quest Item!
                 }
             }
 
             if (Instances != null && Instances.Contains(this))
+            {
                 Instances.Remove(this);
+            }
 
             base.OnDeath(c);
         }
@@ -158,7 +155,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Instances = new List<ObsidianWyvern>();
             Instances.Add(this);

@@ -1,3 +1,5 @@
+using Server.Misc;
+
 namespace Server.Items
 {
     public class FeyLeggings : ChainLegs, ICanBeElfOrHuman

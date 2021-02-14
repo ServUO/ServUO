@@ -5,46 +5,6 @@ using System.Linq;
 
 namespace Server.Engines.Craft
 {
-    #region Mondain's Legacy
-    public enum CarpRecipes
-    {
-        // stuff
-        WarriorStatueSouth = 100,
-        WarriorStatueEast = 101,
-        SquirrelStatueSouth = 102,
-        SquirrelStatueEast = 103,
-        AcidProofRope = 104,
-        OrnateElvenChair = 105,
-        ArcaneBookshelfSouth = 106,
-        ArcaneBookshelfEast = 107,
-        OrnateElvenChestSouth = 108,
-        ElvenDresserSouth = 109,
-        ElvenDresserEast = 110,
-        FancyElvenArmoire = 111,
-        ArcanistsWildStaff = 112,
-        AncientWildStaff = 113,
-        ThornedWildStaff = 114,
-        HardenedWildStaff = 115,
-        TallElvenBedSouth = 116,
-        TallElvenBedEast = 117,
-        StoneAnvilSouth = 118,
-        StoneAnvilEast = 119,
-        OrnateElvenChestEast = 120,
-
-        // arties
-        PhantomStaff = 150,
-        IronwoodCrown = 151,
-        BrambleCoat = 152,
-
-        SmallElegantAquarium = 153,
-        WallMountedAquarium = 154,
-        LargeElegantAquarium = 155,
-
-        KotlBlackRod = 170,
-        KotlAutomaton = 171,
-    }
-    #endregion
-
     public class DefCarpentry : CraftSystem
     {
         public override SkillName MainSkill => SkillName.Carpentry;
@@ -82,13 +42,14 @@ namespace Server.Engines.Craft
 
             if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!tool.CheckAccessible(from, ref num))
+
+            if (!tool.CheckAccessible(from, ref num))
                 return num; // The tool must be on your person to use.
 
             return 0;
         }
 
-        private readonly Type[] _RetainsColor = new[]
+        private readonly Type[] _RetainsColor =
         {
             typeof(BasePlayerBB)
         };
@@ -118,21 +79,25 @@ namespace Server.Engines.Craft
             if (failed)
             {
                 if (lostMaterial)
+                {
                     return 1044043; // You failed to create the item, and some of your materials are lost.
-                else
-                    return 1044157; // You failed to create the item, but no materials were lost.
+                }
+
+                return 1044157; // You failed to create the item, but no materials were lost.
             }
-            else
+
+            if (quality == 0)
+                return 502785; // You were barely able to make this item.  It's quality is below average.
+
+            if (makersMark && quality == 2)
+                return 1044156; // You create an exceptional quality item and affix your maker's mark.
+
+            if (quality == 2)
             {
-                if (quality == 0)
-                    return 502785; // You were barely able to make this item.  It's quality is below average.
-                else if (makersMark && quality == 2)
-                    return 1044156; // You create an exceptional quality item and affix your maker's mark.
-                else if (quality == 2)
-                    return 1044155; // You create an exceptional quality item.
-                else
-                    return 1044154; // You create the item.
+                return 1044155; // You create an exceptional quality item.
             }
+
+            return 1044154; // You create the item.
         }
 
         public override void InitCraftList()
@@ -183,19 +148,19 @@ namespace Server.Engines.Craft
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(WarriorStatueSouthDeed), 1044294, 1072887, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            AddRecipe(index, (int)CarpRecipes.WarriorStatueSouth);
+            AddRecipe(index, (int)CraftRecipes.WarriorStatueSouth);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(WarriorStatueEastDeed), 1044294, 1072888, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            AddRecipe(index, (int)CarpRecipes.WarriorStatueEast);
+            AddRecipe(index, (int)CraftRecipes.WarriorStatueEast);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(SquirrelStatueSouthDeed), 1044294, 1072884, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            AddRecipe(index, (int)CarpRecipes.SquirrelStatueSouth);
+            AddRecipe(index, (int)CraftRecipes.SquirrelStatueSouth);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(SquirrelStatueEastDeed), 1044294, 1073398, 0.0, 35.0, typeof(Board), 1044041, 250, 1044351);
-            AddRecipe(index, (int)CarpRecipes.SquirrelStatueEast);
+            AddRecipe(index, (int)CraftRecipes.SquirrelStatueEast);
             ForceNonExceptional(index);
 
             AddCraft(typeof(GiantReplicaAcorn), 1044294, 1072889, 80.0, 105.0, typeof(Board), 1044041, 35, 1044351);
@@ -207,7 +172,7 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(AcidProofRope), 1044294, 1074886, 80, 130.0, typeof(GreaterStrengthPotion), 1073466, 2, 1044253);
             AddRes(index, typeof(ProtectionScroll), 1044395, 1, 1053098);
             AddRes(index, typeof(SwitchItem), 1032127, 1, 1053098);
-            AddRecipe(index, (int)CarpRecipes.AcidProofRope);
+            AddRecipe(index, (int)CraftRecipes.AcidProofRope);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(GargishBanner), 1044294, 1095312, 94.7, 115.0, typeof(Board), 1044041, 50, 1044351);
@@ -265,7 +230,7 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(ElvenPodium), 1044291, 1073399, 80.0, 105.0, typeof(Board), 1044041, 20, 1044351);
 
             index = AddCraft(typeof(OrnateElvenChair), 1044291, 1072870, 80.0, 105.0, typeof(Board), 1044041, 30, 1044351);
-            AddRecipe(index, (int)CarpRecipes.OrnateElvenChair);
+            AddRecipe(index, (int)CraftRecipes.OrnateElvenChair);
 
             AddCraft(typeof(BigElvenChair), 1044291, 1072872, 85.0, 110.0, typeof(Board), 1044041, 40, 1044351);
 
@@ -317,19 +282,19 @@ namespace Server.Engines.Craft
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(ArcaneBookShelfDeedSouth), 1044292, 1072871, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
-            AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfSouth);
+            AddRecipe(index, (int)CraftRecipes.ArcaneBookshelfSouth);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(ArcaneBookShelfDeedEast), 1044292, 1073371, 94.7, 119.7, typeof(Board), 1044041, 80, 1044351);
-            AddRecipe(index, (int)CarpRecipes.ArcaneBookshelfEast);
+            AddRecipe(index, (int)CraftRecipes.ArcaneBookshelfEast);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(OrnateElvenChestSouthDeed), 1044292, 1072862, 94.7, 119.7, typeof(Board), 1044041, 40, 1044351);
-            AddRecipe(index, (int)CarpRecipes.OrnateElvenChestSouth);
+            AddRecipe(index, (int)CraftRecipes.OrnateElvenChestSouth);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(OrnateElvenChestEastDeed), 1044292, 1073383, 94.7, 119.7, typeof(Board), 1044041, 40, 1044351);
-            AddRecipe(index, (int)CarpRecipes.OrnateElvenChestEast);
+            AddRecipe(index, (int)CraftRecipes.OrnateElvenChestEast);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(ElvenWashBasinSouthWithDrawerDeed), 1044292, 1072865, 70.0, 95.0, typeof(Board), 1044041, 40, 1044351);
@@ -339,15 +304,15 @@ namespace Server.Engines.Craft
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(ElvenDresserDeedSouth), 1044292, 1072864, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
-            AddRecipe(index, (int)CarpRecipes.ElvenDresserSouth);
+            AddRecipe(index, (int)CraftRecipes.ElvenDresserSouth);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(ElvenDresserDeedEast), 1044292, 1073388, 75.0, 100.0, typeof(Board), 1044041, 45, 1044351);
-            AddRecipe(index, (int)CarpRecipes.ElvenDresserEast);
+            AddRecipe(index, (int)CraftRecipes.ElvenDresserEast);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(FancyElvenArmoire), 1044292, 1072866, 80.0, 105.0, typeof(Board), 1044041, 60, 1044351);
-            AddRecipe(index, (int)CarpRecipes.FancyElvenArmoire);
+            AddRecipe(index, (int)CraftRecipes.FancyElvenArmoire);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(SimpleElvenArmoire), 1044292, 1073401, 80.0, 105.0, typeof(Board), 1044041, 60, 1044351);
@@ -379,24 +344,24 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(DiseasedBark), 1032683, 1, 1053098);
             AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
             AddRes(index, typeof(Taint), 1032679, 10, 1053098);
-            AddRecipe(index, (int)CarpRecipes.PhantomStaff);
+            AddRecipe(index, (int)CraftRecipes.PhantomStaff);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(ArcanistsWildStaff), 1044566, 1073549, 63.8, 113.8, typeof(Board), 1044041, 16, 1044351);
             AddRes(index, typeof(WhitePearl), 1026253, 1, 1053098);
-            AddRecipe(index, (int)CarpRecipes.ArcanistsWildStaff);
+            AddRecipe(index, (int)CraftRecipes.ArcanistsWildStaff);
 
             index = AddCraft(typeof(AncientWildStaff), 1044566, 1073550, 63.8, 113.8, typeof(Board), 1044041, 16, 1044351);
             AddRes(index, typeof(PerfectEmerald), 1026251, 1, 1053098);
-            AddRecipe(index, (int)CarpRecipes.AncientWildStaff);
+            AddRecipe(index, (int)CraftRecipes.AncientWildStaff);
 
             index = AddCraft(typeof(ThornedWildStaff), 1044566, 1073551, 63.8, 113.8, typeof(Board), 1044041, 16, 1044351);
             AddRes(index, typeof(FireRuby), 1026254, 1, 1053098);
-            AddRecipe(index, (int)CarpRecipes.ThornedWildStaff);
+            AddRecipe(index, (int)CraftRecipes.ThornedWildStaff);
 
             index = AddCraft(typeof(HardenedWildStaff), 1044566, 1073552, 63.8, 113.8, typeof(Board), 1044041, 16, 1044351);
             AddRes(index, typeof(Turquoise), 1026250, 1, 1053098);
-            AddRecipe(index, (int)CarpRecipes.HardenedWildStaff);
+            AddRecipe(index, (int)CraftRecipes.HardenedWildStaff);
 
             index = AddCraft(typeof(SerpentStoneStaff), 1044566, 1095367, 63.8, 113.8, typeof(Board), 1044041, 16, 1044351);
             AddRes(index, typeof(EcruCitrine), 1026252, 1, 1053098);
@@ -410,7 +375,7 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(KotlBlackRod), 1044566, 1156990, 100.0, 160.0, typeof(Board), 1044041, 20, 1044351);
             AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
             AddRes(index, typeof(StaffOfTheMagi), 1061600, 1, 1044253);
-            AddRecipe(index, (int)CarpRecipes.KotlBlackRod);
+            AddRecipe(index, (int)CraftRecipes.KotlBlackRod);
             ForceNonExceptional(index);
 
             // Armor
@@ -447,14 +412,14 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(DiseasedBark), 1032683, 1, 1053098);
             AddRes(index, typeof(Corruption), 1032676, 10, 1053098);
             AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
-            AddRecipe(index, (int)CarpRecipes.IronwoodCrown);
+            AddRecipe(index, (int)CraftRecipes.IronwoodCrown);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(BrambleCoat), 1062760, 1072925, 85.0, 120.0, typeof(Board), 1044041, 10, 1044351);
             AddRes(index, typeof(DiseasedBark), 1032683, 1, 1053098);
             AddRes(index, typeof(Taint), 1032679, 10, 1053098);
             AddRes(index, typeof(Scourge), 1032677, 10, 1053098);
-            AddRecipe(index, (int)CarpRecipes.BrambleCoat);
+            AddRecipe(index, (int)CraftRecipes.BrambleCoat);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(DarkwoodCrown), 1062760, 1073481, 85.0, 120.0, typeof(Board), 1044041, 10, 1044351);
@@ -567,13 +532,13 @@ namespace Server.Engines.Craft
             index = AddCraft(typeof(TallElvenBedSouthDeed), 1044290, 1072858, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
             AddSkill(index, SkillName.Tailoring, 75.0, 80.0);
             AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
-            AddRecipe(index, (int)CarpRecipes.TallElvenBedSouth);
+            AddRecipe(index, (int)CraftRecipes.TallElvenBedSouth);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(TallElvenBedEastDeed), 1044290, 1072859, 94.7, 119.7, typeof(Board), 1044041, 200, 1044351);
             AddSkill(index, SkillName.Tailoring, 75.0, 80.0);
             AddRes(index, typeof(Cloth), 1044286, 100, 1044287);
-            AddRecipe(index, (int)CarpRecipes.TallElvenBedEast);
+            AddRecipe(index, (int)CraftRecipes.TallElvenBedEast);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(ElvenBedSouthDeed), 1044290, 1072860, 94.7, 119.7, typeof(Board), 1044041, 100, 1044351);
@@ -736,19 +701,22 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(WorkableGlass), 1154170, 2, 1154171);
             AddRes(index, typeof(Sand), 1044625, 5, 1044627);
             AddRes(index, typeof(LiveRock), 1159133, 1, 1159132);
-            AddRecipe(index, (int)CarpRecipes.SmallElegantAquarium);
+            ForceNonExceptional(index);
+            AddRecipe(index, (int)CraftRecipes.SmallElegantAquarium);
 
             index = AddCraft(typeof(WallMountedAquariumDeed), 1044290, 1159135, 100.0, 160.0, typeof(Board), 1044041, 50, 1044351);
             AddRes(index, typeof(WorkableGlass), 1154170, 4, 1154171);
             AddRes(index, typeof(Sand), 1044625, 10, 1044627);
             AddRes(index, typeof(LiveRock), 1159133, 3, 1159132);
-            AddRecipe(index, (int)CarpRecipes.WallMountedAquarium);
+            ForceNonExceptional(index);
+            AddRecipe(index, (int)CraftRecipes.WallMountedAquarium);
 
             index = AddCraft(typeof(LargeElegantAquariumDeed), 1044290, 1159136, 100.0, 160.0, typeof(Board), 1044041, 100, 1044351);
             AddRes(index, typeof(WorkableGlass), 1154170, 8, 1154171);
             AddRes(index, typeof(Sand), 1044625, 20, 1044627);
             AddRes(index, typeof(LiveRock), 1159133, 5, 1159132);
-            AddRecipe(index, (int)CarpRecipes.LargeElegantAquarium);
+            ForceNonExceptional(index);
+            AddRecipe(index, (int)CraftRecipes.LargeElegantAquarium);
 
             // Tailoring and Cooking
             index = AddCraft(typeof(DressformFront), 1044298, 1044339, 63.1, 88.1, typeof(Board), 1044041, 25, 1044351);

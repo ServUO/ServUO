@@ -8,11 +8,7 @@ namespace Server.Items
         private Point3D m_PointDest;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D PointDest
-        {
-            get { return m_PointDest; }
-            set { m_PointDest = value; }
-        }
+        public Point3D PointDest { get => m_PointDest; set => m_PointDest = value; }
 
         [Constructable]
         public MysteriousTunnel()
@@ -51,7 +47,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_PointDest = reader.ReadPoint3D();
         }

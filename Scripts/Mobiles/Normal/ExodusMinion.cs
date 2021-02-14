@@ -43,7 +43,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.LootItem<PowerCrystal>());
             AddLoot(LootPack.LootItem<ArcaneGem>());
             AddLoot(LootPack.LootItem<ClockworkAssembly>());
-            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(PowerCrystal), typeof(ArcaneGem), typeof(ClockworkAssembly) }));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(PowerCrystal), typeof(ArcaneGem), typeof(ClockworkAssembly) }));
         }
 
         public ExodusMinion(Serial serial)
@@ -182,7 +182,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             FieldActive = CanUseField;
         }

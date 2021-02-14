@@ -6,7 +6,7 @@ namespace Server.Engines.BulkOrders
 {
     public class SmallCarpentryBOD : SmallBOD
     {
-        public static double[] m_CarpentryMaterialChances = new double[]
+        public static double[] m_CarpentryMaterialChances =
         {
             0.513718750, // None
             0.292968750, // Oak
@@ -36,7 +36,7 @@ namespace Server.Engines.BulkOrders
                 if (useMaterials)
                     material = GetRandomMaterial(BulkMaterialType.OakWood, m_CarpentryMaterialChances);
 
-                bool reqExceptional = Utility.RandomBool() || (material == BulkMaterialType.None);
+                bool reqExceptional = Utility.RandomBool() || material == BulkMaterialType.None;
 
                 SmallBulkEntry entry = entries[Utility.Random(entries.Length)];
 
@@ -176,15 +176,13 @@ namespace Server.Engines.BulkOrders
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

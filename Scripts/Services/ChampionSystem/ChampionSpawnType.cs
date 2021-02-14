@@ -132,7 +132,7 @@ namespace Server.Engines.CannedEvil
 				new[]{ typeof( SkelementalMage ), typeof( Viscera ) },											   
 				new[]{ typeof( CultistAmbusher  ), typeof( ShadowFiend ) },										
 				new[]{ typeof( KhalAnkurWarriors ) }											                    
-			} ),
+			} )
         };
 
         public static ChampionSpawnInfo GetInfo(ChampionSpawnType type)

@@ -189,9 +189,9 @@ namespace Server.Items
             {
                 base.GetProperties(list);
 
-                if (Addon is RoseRugAddon)
+                if (Addon is RoseRugAddon addon)
                 {
-                    list.Add(1150102, ((RoseRugAddon)Addon).ResourceCount.ToString()); // Seeds: ~1_val~
+                    list.Add(1150102, addon.ResourceCount.ToString()); // Seeds: ~1_val~
                 }
             }
 

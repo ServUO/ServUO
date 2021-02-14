@@ -101,9 +101,8 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(501928); // You can't target the same ticket!
                 }
-                else if (targeted is NewPlayerTicket)
+                else if (targeted is NewPlayerTicket theirTicket)
                 {
-                    NewPlayerTicket theirTicket = targeted as NewPlayerTicket;
                     Mobile them = theirTicket.m_Owner;
 
                     if (them == null || them.Deleted)
@@ -116,7 +115,7 @@ namespace Server.Items
                         them.SendGump(new InternalGump(them, theirTicket));
                     }
                 }
-                else if (targeted is Item && ((Item)targeted).ItemID == 0x14F0)
+                else if (targeted is Item item && item.ItemID == 0x14F0)
                 {
                     from.SendLocalizedMessage(501931); // You need to find another ticket marked NEW PLAYER.
                 }

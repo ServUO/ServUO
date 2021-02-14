@@ -108,9 +108,9 @@ namespace Server.Mobiles
 
                 foreach (Mobile m in eable)
                 {
-                    if (m is JukaLord && IsFriend(m) && m.Combatant != null && CanBeBeneficial(m) && m.CanBeginAction(typeof(JukaMage)) && InLOS(m))
+                    if (m is JukaLord lord && IsFriend(lord) && lord.Combatant != null && CanBeBeneficial(lord) && lord.CanBeginAction(typeof(JukaMage)) && InLOS(lord))
                     {
-                        toBuff = (JukaLord)m;
+                        toBuff = lord;
                         break;
                     }
                 }
@@ -127,7 +127,7 @@ namespace Server.Mobiles
 
                         DoBeneficial(toBuff);
 
-                        object[] state = new object[] { toBuff, toBuff.HitsMaxSeed, toBuff.RawStr, toBuff.RawDex };
+                        object[] state = { toBuff, toBuff.HitsMaxSeed, toBuff.RawStr, toBuff.RawDex };
 
                         SpellHelper.Turn(this, toBuff);
 
@@ -179,7 +179,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private void Unbuff(object state)

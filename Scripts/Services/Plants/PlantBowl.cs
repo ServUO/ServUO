@@ -50,11 +50,9 @@ namespace Server.Engines.Plants
                     return;
                 }
 
-                if (targeted is FertileDirt)
+                if (targeted is FertileDirt dirt)
                 {
                     int _dirtNeeded = 20;
-
-                    FertileDirt dirt = (FertileDirt)targeted;
 
                     if (!dirt.IsChildOf(from.Backpack))
                     {
@@ -115,40 +113,38 @@ namespace Server.Engines.Plants
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public static bool IsDirtPatch(object obj)
         {
             int tileID;
 
-            if (obj is Static && !((Static)obj).Movable)
-                tileID = (((Static)obj).ItemID & 0x3FFF) | 0x4000;
-            else if (obj is StaticTarget)
-                tileID = (((StaticTarget)obj).ItemID & 0x3FFF) | 0x4000;
-            else if (obj is LandTarget)
-                tileID = ((LandTarget)obj).TileID;
+            if (obj is Static staticObj && !staticObj.Movable)
+                tileID = (staticObj.ItemID & 0x3FFF) | 0x4000;
+            else if (obj is StaticTarget staticTarget)
+                tileID = (staticTarget.ItemID & 0x3FFF) | 0x4000;
+            else if (obj is LandTarget landTarget)
+                tileID = landTarget.TileID;
             else
                 return false;
 
             bool contains = false;
 
             for (int i = 0; !contains && i < m_DirtPatchTiles.Length; i += 2)
-                contains = (tileID >= m_DirtPatchTiles[i] && tileID <= m_DirtPatchTiles[i + 1]);
+                contains = tileID >= m_DirtPatchTiles[i] && tileID <= m_DirtPatchTiles[i + 1];
 
             return contains;
         }
 
-        private static readonly int[] m_DirtPatchTiles = new int[]
-            {
+        private static readonly int[] m_DirtPatchTiles =
+        {
                 0x9, 0x15,
                 0x71, 0x7C,
                 0x82, 0xA7,
@@ -185,7 +181,7 @@ namespace Server.Engines.Plants
                 0x9AC, 0x9BF,
                 0x5B27, 0x5B3E,
                 0x71F4, 0x71FB,
-                0x72C9, 0x72CA,
-            };
+                0x72C9, 0x72CA
+        };
     }
 }

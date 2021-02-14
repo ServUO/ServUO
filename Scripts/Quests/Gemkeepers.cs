@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class WarriorsOfTheGemkeeperQuest : BaseQuest
     {
         public WarriorsOfTheGemkeeperQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(MapFragment), "fragment of a map", 1));
 
@@ -29,11 +28,7 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1074540;
         /* What have you found? */
         public override object Complete => 1074542;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Labyrinth;
-        }
-
+        
         public override void OnCompleted()
         {
             Owner.SendLocalizedMessage(1074541, null, 0x23); // You have discovered an important clue!						
@@ -43,22 +38,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class CloseEnoughQuest : BaseQuest
     {
         public CloseEnoughQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(MapFragment), "fragment of a map", 1, typeof(Canir), "Canir (Sanctuary)"));
 
@@ -80,30 +72,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1074548;
         /* Yes?  What do you want?  I'm very busy. */
         public override object Complete => 1074549;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Labyrinth;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TakingTheBullByTheHornsQuest : BaseQuest
     {
         public TakingTheBullByTheHornsQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(GamanHorns), "gaman horns", 20, 0x1084));
 
@@ -126,30 +111,23 @@ namespace Server.Engines.Quests
         /* You've returned at last!  Give me just a moment to examine what you've brought and I can perform the 
         magic that will allow you enter the Labyrinth. */
         public override object Complete => 1074556;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Labyrinth;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class EmissaryToTheMinotaurQuest : BaseQuest
     {
         public EmissaryToTheMinotaurQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(MinotaurArtifact), "minotaur artifacts", 3));
 
@@ -172,23 +150,17 @@ namespace Server.Engines.Quests
         /* Oh! You've returned at last!  I can't wait to hear the tales ... but first, let me see those artifacts.  
         You've certainly earned this reward. */
         public override object Complete => 1074829;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.Labyrinth;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

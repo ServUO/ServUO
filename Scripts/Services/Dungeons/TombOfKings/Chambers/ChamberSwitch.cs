@@ -1,4 +1,4 @@
-﻿namespace Server.Engines.TombOfKings
+namespace Server.Engines.TombOfKings
 {
     public class ChamberSwitch : Item
     {
@@ -45,7 +45,7 @@
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }

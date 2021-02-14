@@ -160,12 +160,10 @@ namespace Server.Engines.Plants
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            if (dropped is Seed)
+            if (dropped is Seed other)
             {
-                Seed other = (Seed)dropped;
-
                 if (other.PlantType == m_PlantType && other.PlantHue == m_PlantHue && other.ShowType == m_ShowType)
-                    return base.WillStack(from, dropped);
+                    return base.WillStack(from, other);
             }
 
             return false;
@@ -236,9 +234,9 @@ namespace Server.Engines.Plants
                         }
                     }
                 }
-                else if (targeted is Item)
+                else if (targeted is Item item)
                 {
-                    ((Item)targeted).LabelTo(from, 1061919); // You must use a seed on a bowl of dirt!
+                    item.LabelTo(from, 1061919); // You must use a seed on a bowl of dirt!
                 }
                 else
                 {

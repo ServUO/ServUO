@@ -59,14 +59,14 @@ namespace Server.Engines.Quests
         private enum Buttons
         {
             Close,
-            Okay,
+            Okay
         }
 
         private enum Radios
         {
             Chain,
             Quest,
-            None,
+            None
         }
         public override void OnResponse(Network.NetState state, RelayInfo info)
         {

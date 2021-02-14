@@ -6,7 +6,6 @@ namespace Server.Items
 
         [Constructable]
         public PlainDressBearingTheCrestOfBlackthorn3()
-            : base()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             SkillBonuses.SetValues(0, SkillName.Stealth, 10.0);

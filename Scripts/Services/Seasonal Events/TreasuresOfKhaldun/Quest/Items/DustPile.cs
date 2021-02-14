@@ -41,7 +41,7 @@ namespace Server.Engines.Khaldun
                     m.SendSound(m.Female ? 0x30B : 0x41A);
 
                     m.CloseGump(typeof(GumshoeItemGump));
-                    m.SendGump(new GumshoeItemGump(m, ItemID, Hue, "a dust pile", 1158617, null));
+                    m.SendGump(new GumshoeItemGump(ItemID, Hue, "a dust pile", 1158617, null));
 
                     /*The dust seems to have have settled in a distinct pattern around whatever once was placed at this location.
                      * Whatever it was, it was certainly small enough to be taken away in a hurry.*/
@@ -93,16 +93,16 @@ namespace Server.Engines.Khaldun
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.Write(Door);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             Door = reader.ReadItem() as TrapDoor;
         }
     }

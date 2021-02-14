@@ -11,7 +11,7 @@ namespace Server.Mobiles
         public virtual bool IsInvulnerable => true;
 
         [Constructable]
-        public GipsyGemologist() : base()
+        public GipsyGemologist()
         {
             Name = "Zalia";
             Title = "The Gypsy Gemologist";
@@ -40,7 +40,7 @@ namespace Server.Mobiles
             {
                 if (!m.HasGump(typeof(ZaliaQuestGump)))
                 {
-                    m.SendGump(new ZaliaQuestGump(m));
+                    m.SendGump(new ZaliaQuestGump());
                 }
             }
             else
@@ -64,7 +64,7 @@ namespace Server.Mobiles
 
                         if (!m.HasGump(typeof(ZaliaQuestCompleteGump)))
                         {
-                            m.SendGump(new ZaliaQuestCompleteGump(m));
+                            m.SendGump(new ZaliaQuestCompleteGump());
                         }
                     }
                     else
@@ -93,7 +93,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
@@ -109,10 +109,10 @@ namespace Server.Gumps
 
         private static void ZaliaQuestGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new ZaliaQuestGump(e.Mobile));
+            e.Mobile.SendGump(new ZaliaQuestGump());
         }
 
-        public ZaliaQuestGump(Mobile owner) : base(50, 50)
+        public ZaliaQuestGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -174,8 +174,6 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
@@ -196,10 +194,10 @@ namespace Server.Gumps
 
         private static void ZaliaQuestCompleteGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new ZaliaQuestCompleteGump(e.Mobile));
+            e.Mobile.SendGump(new ZaliaQuestCompleteGump());
         }
 
-        public ZaliaQuestCompleteGump(Mobile owner) : base(50, 50)
+        public ZaliaQuestCompleteGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -237,8 +235,6 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

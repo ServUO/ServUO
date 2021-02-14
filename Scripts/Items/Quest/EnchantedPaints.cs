@@ -57,15 +57,13 @@ namespace Server.Engines.Quests.Collector
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class InternalTarget : Target
@@ -98,7 +96,7 @@ namespace Server.Engines.Quests.Collector
                             if (targeted is Mobile)
                             {
                                 ImageType image;
-                                CaptureResponse response = obj.CaptureImage((targeted.GetType().Name == "GreaterMongbat" ? new Mongbat().GetType() : targeted.GetType()), out image);
+                                CaptureResponse response = obj.CaptureImage(targeted.GetType().Name == "GreaterMongbat" ? new Mongbat().GetType() : targeted.GetType(), out image);
 
                                 switch (response)
                                 {

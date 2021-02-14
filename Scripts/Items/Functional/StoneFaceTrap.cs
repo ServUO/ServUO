@@ -50,15 +50,12 @@ namespace Server.Items
             {
                 bool breathing = Breathing;
 
-                ItemID = (breathing ? GetFireID(value) : GetBaseID(value));
+                ItemID = breathing ? GetFireID(value) : GetBaseID(value);
             }
         }
         public bool Breathing
         {
-            get
-            {
-                return (ItemID == GetFireID(Type));
-            }
+            get => (ItemID == GetFireID(Type));
             set
             {
                 if (value)
@@ -133,15 +130,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Breathing = false;
         }
@@ -167,15 +162,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

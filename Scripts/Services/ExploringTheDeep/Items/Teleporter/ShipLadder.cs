@@ -1,4 +1,4 @@
-﻿namespace Server.Items
+namespace Server.Items
 {
     public class ShipLadder : Item
     {
@@ -53,7 +53,7 @@
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_PointDest = reader.ReadPoint3D();
             m_Map = reader.ReadMap();

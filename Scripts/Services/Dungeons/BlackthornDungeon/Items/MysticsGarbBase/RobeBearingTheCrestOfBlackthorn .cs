@@ -6,7 +6,6 @@ namespace Server.Items
 
         [Constructable]
         public RobeBearingTheCrestOfBlackthorn2()
-            : base()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             Attributes.LowerManaCost = 1;

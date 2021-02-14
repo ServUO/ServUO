@@ -14,7 +14,7 @@ namespace Server.Mobiles
         public static readonly object Vendor = new object();
         public static readonly object Price = new object();
 
-        private static readonly HairstylistBuyInfo[] m_SellList = new[]
+        private static readonly HairstylistBuyInfo[] m_SellList =
         {
             new HairstylistBuyInfo(
                 1018357,
@@ -66,7 +66,7 @@ namespace Server.Mobiles
                 new[] {From, Vendor, Price, false, true, ChangeHairHueEntry.BrightEntries})
         };
 
-        private static readonly HairstylistBuyInfo[] m_SellListElf = new[]
+        private static readonly HairstylistBuyInfo[] m_SellListElf =
         {
             new HairstylistBuyInfo(
                 1018357,
@@ -148,15 +148,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -212,7 +210,7 @@ namespace Server.Mobiles
             from.CloseGump(typeof(ChangeHairHueGump));
             from.CloseGump(typeof(ChangeHairstyleGump));
 
-            bool isFemale = (from.Female || from.Body.IsFemale);
+            bool isFemale = from.Female || from.Body.IsFemale;
 
             int balance = Banker.GetBalance(from);
             int canAfford = 0;
@@ -227,7 +225,7 @@ namespace Server.Mobiles
 
             AddPage(0);
 
-            AddBackground(50, 10, 450, 100 + (canAfford * 25), 2600);
+            AddBackground(50, 10, 450, 100 + canAfford * 25, 2600);
 
             AddHtmlLocalized(100, 40, 350, 20, 1018356, false, false); // Choose your hairstyle change:
 
@@ -239,14 +237,14 @@ namespace Server.Mobiles
                 {
                     if (sellList[i].TitleString != null)
                     {
-                        AddHtml(140, 75 + (index * 25), 300, 20, sellList[i].TitleString, false, false);
+                        AddHtml(140, 75 + index * 25, 300, 20, sellList[i].TitleString, false, false);
                     }
                     else
                     {
-                        AddHtmlLocalized(140, 75 + (index * 25), 300, 20, sellList[i].Title, false, false);
+                        AddHtmlLocalized(140, 75 + index * 25, 300, 20, sellList[i].Title, false, false);
                     }
 
-                    AddButton(100, 75 + (index++ * 25), 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
+                    AddButton(100, 75 + index++ * 25, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 }
             }
         }
@@ -261,7 +259,7 @@ namespace Server.Mobiles
 
                 int balance = Banker.GetBalance(m_From);
 
-                bool isFemale = (m_From.Female || m_From.Body.IsFemale);
+                bool isFemale = m_From.Female || m_From.Body.IsFemale;
 
                 if (buyInfo.FacialHair && isFemale)
                 {
@@ -315,7 +313,7 @@ namespace Server.Mobiles
 
     public class ChangeHairHueEntry
     {
-        public static readonly ChangeHairHueEntry[] BrightEntries = new[]
+        public static readonly ChangeHairHueEntry[] BrightEntries =
         {
             new ChangeHairHueEntry("*****", 12, 10), new ChangeHairHueEntry("*****", 32, 5),
             new ChangeHairHueEntry("*****", 38, 8), new ChangeHairHueEntry("*****", 54, 3),
@@ -323,7 +321,7 @@ namespace Server.Mobiles
             new ChangeHairHueEntry("*****", 89, 2), new ChangeHairHueEntry("*****", 1153, 2)
         };
 
-        public static readonly ChangeHairHueEntry[] RegularEntries = new[]
+        public static readonly ChangeHairHueEntry[] RegularEntries =
         {
             new ChangeHairHueEntry("*****", 1602, 26), new ChangeHairHueEntry("*****", 1628, 27),
             new ChangeHairHueEntry("*****", 1502, 32), new ChangeHairHueEntry("*****", 1302, 32),
@@ -396,8 +394,8 @@ namespace Server.Mobiles
             {
                 ChangeHairHueEntry entry = entries[i];
 
-                AddLabel(130, 59 + (i * 22), entry.Hues[0] - 1, entry.Name);
-                AddButton(207, 60 + (i * 22), 5224, 5224, 0, GumpButtonType.Page, 1 + i);
+                AddLabel(130, 59 + i * 22, entry.Hues[0] - 1, entry.Name);
+                AddButton(207, 60 + i * 22, 5224, 5224, 0, GumpButtonType.Page, 1 + i);
             }
 
             for (int i = 0; i < entries.Length; ++i)
@@ -410,8 +408,8 @@ namespace Server.Mobiles
 
                 for (int j = 0; j < hues.Length; ++j)
                 {
-                    AddLabel(278 + ((j / 16) * 80), 52 + ((j % 16) * 17), hues[j] - 1, name);
-                    AddRadio(260 + ((j / 16) * 80), 52 + ((j % 16) * 17), 210, 211, false, (j * entries.Length) + i);
+                    AddLabel(278 + j / 16 * 80, 52 + j % 16 * 17, hues[j] - 1, name);
+                    AddRadio(260 + j / 16 * 80, 52 + j % 16 * 17, 210, 211, false, j * entries.Length + i);
                 }
             }
         }
@@ -490,7 +488,7 @@ namespace Server.Mobiles
 
     public class ChangeHairstyleEntry
     {
-        public static readonly ChangeHairstyleEntry[] HairEntries = new[]
+        public static readonly ChangeHairstyleEntry[] HairEntries =
         {
             new ChangeHairstyleEntry(50700, 70 - 137, 20 - 60, 0x203B),
             new ChangeHairstyleEntry(60710, 193 - 260, 18 - 60, 0x2045),
@@ -504,7 +502,7 @@ namespace Server.Mobiles
             new ChangeHairstyleEntry(0, 0, 0, 0)
         };
 
-        public static readonly ChangeHairstyleEntry[] BeardEntries = new[]
+        public static readonly ChangeHairstyleEntry[] BeardEntries =
         {
             new ChangeHairstyleEntry(50800, 120 - 187, 30 - 80, 0x2040),
             new ChangeHairstyleEntry(50904, 243 - 310, 33 - 80, 0x204B),
@@ -515,7 +513,7 @@ namespace Server.Mobiles
             new ChangeHairstyleEntry(50808, 120 - 187, 242 - 290, 0x2041), new ChangeHairstyleEntry(0, 0, 0, 0)
         };
 
-        public static readonly ChangeHairstyleEntry[] HairEntriesElf = new ChangeHairstyleEntry[]
+        public static readonly ChangeHairstyleEntry[] HairEntriesElf =
         {
             new ChangeHairstyleEntry( 0xEDF5, 0xC6E5, 70 - 137,   20 -  60,  0x2FC0, 0x2FC0 ),
             new ChangeHairstyleEntry( 0xEDF6, 0xC6E6, 198 - 260,  18 -  60,  0x2FC1, 0x2FC1 ),
@@ -529,7 +527,7 @@ namespace Server.Mobiles
             new ChangeHairstyleEntry( 0, 0, 0, 0 )
         };
 
-        public static readonly ChangeHairstyleEntry[] HairEntriesGargoyle = new ChangeHairstyleEntry[]
+        public static readonly ChangeHairstyleEntry[] HairEntriesGargoyle =
         {
             new ChangeHairstyleEntry( 0x7A0, 0x76C, 47 - 137,   12 -  60,  0x4261, 0x4258  ),
             new ChangeHairstyleEntry( 0x7A1, 0x76D, 170 - 260,  12 -  60,  0x4262, 0x4259 ),
@@ -543,7 +541,7 @@ namespace Server.Mobiles
             new ChangeHairstyleEntry( 0, 0, 0, 0 )
         };
 
-        public static readonly ChangeHairstyleEntry[] BeardEntriesGargoyle = new ChangeHairstyleEntry[]
+        public static readonly ChangeHairstyleEntry[] BeardEntriesGargoyle =
         {
             new ChangeHairstyleEntry( 0xC5E9, 120 - 187,  30 -  80, 0x42AD ),
             new ChangeHairstyleEntry( 0x770,  220 - 310,  23 -  80, 0x42AE ),
@@ -618,22 +616,22 @@ namespace Server.Mobiles
             from.CloseGump(typeof(ChangeHairHueGump));
             from.CloseGump(typeof(ChangeHairstyleGump));
 
-            int tableWidth = (m_FacialHair ? 2 : 3);
-            int tableHeight = ((entries.Length + tableWidth - (m_FacialHair ? 1 : 2)) / tableWidth);
+            int tableWidth = m_FacialHair ? 2 : 3;
+            int tableHeight = (entries.Length + tableWidth - (m_FacialHair ? 1 : 2)) / tableWidth;
             int offsetWidth = 123;
-            int offsetHeight = (m_FacialHair ? 70 : 65);
+            int offsetHeight = m_FacialHair ? 70 : 65;
 
             AddPage(0);
 
-            AddBackground(0, 0, 81 + (tableWidth * offsetWidth), 145 + (tableHeight * offsetHeight), 2600);
+            AddBackground(0, 0, 81 + tableWidth * offsetWidth, 145 + tableHeight * offsetHeight, 2600);
 
-            AddButton(45, 90 + (tableHeight * offsetHeight), 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(77, 90 + (tableHeight * offsetHeight), 90, 35, 1006044, false, false); // Ok
+            AddButton(45, 90 + tableHeight * offsetHeight, 4005, 4007, 1, GumpButtonType.Reply, 0);
+            AddHtmlLocalized(77, 90 + tableHeight * offsetHeight, 90, 35, 1006044, false, false); // Ok
 
             AddButton(
-                90 + (tableWidth * offsetWidth) - 180, 85 + (tableHeight * offsetHeight), 4005, 4007, 0, GumpButtonType.Reply, 0);
+                90 + tableWidth * offsetWidth - 180, 85 + tableHeight * offsetHeight, 4005, 4007, 0, GumpButtonType.Reply, 0);
             AddHtmlLocalized(
-                90 + (tableWidth * offsetWidth) - 148, 85 + (tableHeight * offsetHeight), 90, 35, 1006045, false, false); // Cancel
+                90 + tableWidth * offsetWidth - 148, 85 + tableHeight * offsetHeight, 90, 35, 1006045, false, false); // Cancel
 
             if (!facialHair)
             {
@@ -655,8 +653,8 @@ namespace Server.Mobiles
 
                 if (gumpID != 0)
                 {
-                    AddRadio(40 + (xTable * offsetWidth), 70 + (yTable * offsetHeight), 208, 209, false, i);
-                    AddBackground(87 + (xTable * offsetWidth), 50 + (yTable * offsetHeight), 50, 50, 2620);
+                    AddRadio(40 + xTable * offsetWidth, 70 + yTable * offsetHeight, 208, 209, false, i);
+                    AddBackground(87 + xTable * offsetWidth, 50 + yTable * offsetHeight, 50, 50, 2620);
 
                     int x = entries[i].X;
                     int y = entries[i].Y;
@@ -667,17 +665,16 @@ namespace Server.Mobiles
                         y -= 17;
                     }
 
-                    AddImage(87 + (xTable * offsetWidth) + x, 50 + (yTable * offsetHeight) + y, gumpID);
+                    AddImage(87 + xTable * offsetWidth + x, 50 + yTable * offsetHeight + y, gumpID);
                 }
                 else if (!facialHair)
                 {
-                    AddRadio(40 + ((xTable) * offsetWidth), 240, 208, 209, false, i);
-                    AddHtmlLocalized(60 + ((xTable) * offsetWidth), 240, 200, 40, 1011064, false, false); // Bald
+                    AddRadio(40 + xTable * offsetWidth, 240, 208, 209, false, i);
+                    AddHtmlLocalized(60 + xTable * offsetWidth, 240, 200, 40, 1011064, false, false); // Bald
                 }
                 else
                 {
-                    AddRadio(40 + (xTable * offsetWidth), 70 + (yTable * offsetHeight), 208, 209, false, i);
-                    //AddHtmlLocalized(60 + (xTable * offsetWidth), 70 + (yTable * offsetHeight), 85, 35, 1011064, false, false); // Bald
+                    AddRadio(40 + xTable * offsetWidth, 70 + yTable * offsetHeight, 208, 209, false, i);
                 }
             }
         }
@@ -699,9 +696,9 @@ namespace Server.Mobiles
                         {
                             ChangeHairstyleEntry entry = m_Entries[index];
 
-                            if (m_From is PlayerMobile)
+                            if (m_From is PlayerMobile mobile)
                             {
-                                ((PlayerMobile)m_From).SetHairMods(-1, -1);
+                                mobile.SetHairMods(-1, -1);
                             }
 
                             int hairID = m_From.HairItemID;
@@ -710,7 +707,7 @@ namespace Server.Mobiles
 
                             if (itemID == 0)
                             {
-                                bool invalid = m_FacialHair ? (facialHairID == 0) : (hairID == 0);
+                                bool invalid = m_FacialHair ? facialHairID == 0 : hairID == 0;
 
                                 if (!invalid)
                                 {
@@ -765,7 +762,7 @@ namespace Server.Mobiles
 
                                             m_From.FacialHairItemID = itemID;
 
-                                            if (itemID != 0 && old == 0)
+                                            if (old == 0)
                                             {
                                                 m_From.FacialHairHue = m_From.HairHue;
                                             }

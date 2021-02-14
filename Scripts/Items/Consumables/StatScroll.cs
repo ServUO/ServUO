@@ -64,10 +64,10 @@ namespace Server.Items
 
             int newValue = (int)Value;
 
-            if (from is PlayerMobile && ((PlayerMobile)from).HasStatReward)
+            if (from is PlayerMobile mobile && mobile.HasStatReward)
                 newValue += 5;
 
-            if (from is PlayerMobile && ((PlayerMobile)from).HasValiantStatReward)
+            if (from is PlayerMobile playerMobile && playerMobile.HasValiantStatReward)
                 newValue += 5;
 
             if (from.StatCap >= newValue)
@@ -88,12 +88,12 @@ namespace Server.Items
 
             int value = (int)Value;
 
-            if (from is PlayerMobile && ((PlayerMobile)from).HasStatReward)
+            if (from is PlayerMobile mobile && mobile.HasStatReward)
             {
                 value += 5;
             }
 
-            if (from is PlayerMobile && ((PlayerMobile)from).HasValiantStatReward)
+            if (from is PlayerMobile playerMobile && playerMobile.HasValiantStatReward)
             {
                 value += 5;
             }

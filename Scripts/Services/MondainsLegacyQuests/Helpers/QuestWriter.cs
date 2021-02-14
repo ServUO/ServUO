@@ -124,25 +124,25 @@ namespace Server.Engines.Quests
 
             Version(writer, 0);
 
-            if (obj is int)
+            if (obj is int i)
             {
                 writer.Write((byte)0x1);
-                writer.Write((int)obj);
+                writer.Write(i);
             }
-            else if (obj is string)
+            else if (obj is string s)
             {
                 writer.Write((byte)0x2);
-                writer.Write((string)obj);
+                writer.Write(s);
             }
-            else if (obj is Item)
+            else if (obj is Item item)
             {
                 writer.Write((byte)0x3);
-                writer.Write((Item)obj);
+                writer.Write(item);
             }
-            else if (obj is Mobile)
+            else if (obj is Mobile mobile)
             {
                 writer.Write((byte)0x4);
-                writer.Write((Mobile)obj);
+                writer.Write(mobile);
             }
             else
             {

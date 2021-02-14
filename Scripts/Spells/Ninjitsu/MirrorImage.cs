@@ -61,17 +61,20 @@ namespace Server.Spells.Ninjitsu
                 Caster.SendLocalizedMessage(1063132); // You cannot use this ability while mounted.
                 return false;
             }
-            else if ((Caster.Followers + 1) > Caster.FollowersMax)
+
+            if ((Caster.Followers + 1) > Caster.FollowersMax)
             {
                 Caster.SendLocalizedMessage(1063133); // You cannot summon a mirror image because you have too many followers.
                 return false;
             }
-            else if (TransformationSpellHelper.UnderTransformation(Caster, typeof(HorrificBeastSpell)))
+
+            if (TransformationSpellHelper.UnderTransformation(Caster, typeof(HorrificBeastSpell)))
             {
                 Caster.SendLocalizedMessage(1061091); // You cannot cast that spell in this form.
                 return false;
             }
-            else if (Caster.Flying)
+
+            if (Caster.Flying)
             {
                 Caster.SendLocalizedMessage(1113415); // You cannot use this ability while flying.
                 return false;
@@ -250,7 +253,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Caster);
@@ -259,8 +261,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Caster = reader.ReadMobile();
 

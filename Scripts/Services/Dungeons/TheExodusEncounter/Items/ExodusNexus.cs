@@ -44,10 +44,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SideLength
         {
-            get
-            {
-                return m_SideLength;
-            }
+            get => m_SideLength;
             set
             {
                 if (value < 3)
@@ -75,17 +72,8 @@ namespace Server.Items
                 m_Y = y;
             }
 
-            public int X
-            {
-                get { return m_X; }
-                set { m_X = value; }
-            }
-
-            public int Y
-            {
-                get { return m_Y; }
-                set { m_Y = value; }
-            }
+            public int X { get => m_X; set => m_X = value; }
+            public int Y { get => m_Y; set => m_Y = value; }
         }
 
         public enum PathDirection
@@ -311,7 +299,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_SideLength = reader.ReadInt();
             m_Path = new Node[reader.ReadInt()];

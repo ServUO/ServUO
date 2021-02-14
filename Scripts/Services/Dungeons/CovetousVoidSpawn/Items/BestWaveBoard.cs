@@ -16,8 +16,10 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(Location, 3))
-                m.SendGump(new ScoresGump(m.Map == Map.Felucca ? VoidPoolController.InstanceFel : VoidPoolController.InstanceTram, m as PlayerMobile, ScoreType.BestWave));
+            if (m is PlayerMobile pm && pm.InRange(Location, 3))
+            {
+                pm.SendGump(new ScoresGump(pm.Map == Map.Felucca ? VoidPoolController.InstanceFel : VoidPoolController.InstanceTram, pm, ScoreType.BestWave));
+            }
         }
 
         public BestWaveBoard(Serial serial)
@@ -34,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

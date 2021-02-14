@@ -10,10 +10,10 @@ namespace Server.Engines.CityLoyalty
     public class TradeEntry
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public City Origin { get; set; }
+        public City Origin { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public City Destination { get; set; }
+        public City Destination { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Kills { get; set; }
@@ -38,10 +38,10 @@ namespace Server.Engines.CityLoyalty
             }
         }
 
-        public List<TradeDetails> Details { get; set; }
+        public List<TradeDetails> Details { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TradeDetails Detail { get { return Details != null && Details.Count > 0 ? Details[0] : null; } set { } }
+        public TradeDetails Detail { get => Details != null && Details.Count > 0 ? Details[0] : null; set { } }
 
         public TradeEntry(City destination, City origin, int distance)
         {
@@ -76,16 +76,16 @@ namespace Server.Engines.CityLoyalty
         public class TradeDetails
         {
             [CommandProperty(AccessLevel.GameMaster)]
-            public Type ItemType { get; set; }
+            public Type ItemType { get; }
 
             [CommandProperty(AccessLevel.GameMaster)]
-            public int Amount { get; set; }
+            public int Amount { get; }
 
             [CommandProperty(AccessLevel.GameMaster)]
-            public int Worth { get; set; }
+            public int Worth { get; }
 
             [CommandProperty(AccessLevel.GameMaster)]
-            public string Name { get; set; }
+            public string Name { get; }
 
             public TradeDetails(Type type, int worth, int amount, string fallbackname)
             {
@@ -98,7 +98,7 @@ namespace Server.Engines.CityLoyalty
 
             public TradeDetails(GenericReader reader)
             {
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 ItemType = ScriptCompiler.FindTypeByName(reader.ReadString());
                 Worth = reader.ReadInt();
@@ -144,18 +144,18 @@ namespace Server.Engines.CityLoyalty
             }
 
             public static Type[][] Interchangeables => _Interchangeables;
-            private static Type[][] _Interchangeables = new Type[][]
+            private static Type[][] _Interchangeables =
             {
-                new Type[] { typeof(PewterBowlOfPeas), typeof(WoodenBowlOfPeas) },
-                new Type[] { typeof(PewterBowlOfCarrots), typeof(WoodenBowlOfCarrots) },
-                new Type[] { typeof(PewterBowlOfCorn), typeof(WoodenBowlOfCorn) },
-                new Type[] { typeof(PewterBowlOfLettuce), typeof(WoodenBowlOfLettuce) },
+                new[] { typeof(PewterBowlOfPeas), typeof(WoodenBowlOfPeas) },
+                new[] { typeof(PewterBowlOfCarrots), typeof(WoodenBowlOfCarrots) },
+                new[] { typeof(PewterBowlOfCorn), typeof(WoodenBowlOfCorn) },
+                new[] { typeof(PewterBowlOfLettuce), typeof(WoodenBowlOfLettuce) }
             };
         }
 
         public TradeEntry(GenericReader reader)
         {
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Origin = (City)reader.ReadInt();
             Destination = (City)reader.ReadInt();

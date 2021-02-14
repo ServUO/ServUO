@@ -7,11 +7,10 @@ namespace Server.Mobiles
     {
         public static double ChestChance = 0.10;// Chance that a paragon will carry a paragon chest
         public static double ChocolateIngredientChance = 0.20;// Chance that a paragon will drop a chocolatiering ingredient
-        public static Map[] Maps = new Map[]                   // Maps that paragons will spawn on
-        {
-            Map.Ilshenar
-        };
-        public static Type[] Artifacts = new Type[]
+
+        public static Map[] Maps = { Map.Ilshenar }; // Maps that paragons will spawn on
+
+        public static Type[] Artifacts =
         {
             typeof(GoldBricks), typeof(PhillipsWoodenSteed),
             typeof(AlchemistsBauble), typeof(ArcticDeathDealer),
@@ -26,6 +25,7 @@ namespace Server.Mobiles
             typeof(WrathOfTheDryad), typeof(PixieSwatter),
             typeof(GlovesOfThePugilist)
         };
+
         public static int Hue = 0x501;// Paragon hue
 
         // Buffs
@@ -149,7 +149,7 @@ namespace Server.Mobiles
 
             double chance = 1 / Math.Round(20.0 - (fame / 3200));
 
-            return (chance > Utility.RandomDouble());
+            return chance > Utility.RandomDouble();
         }
 
         public static bool CheckArtifactChance(Mobile m, BaseCreature bc)
@@ -159,7 +159,7 @@ namespace Server.Mobiles
             if (fame > 32000)
                 fame = 32000;
 
-            int luck = m is PlayerMobile ? ((PlayerMobile)m).RealLuck : m.Luck;
+            int luck = m is PlayerMobile mobile ? mobile.RealLuck : m.Luck;
 
             double chance = 1 / (Math.Max(10, 100 * (0.83 - Math.Round(Math.Log(Math.Round(fame / 6000, 3) + 0.001, 10), 3))) * (100 - Math.Sqrt(luck)) / 100.0);
 

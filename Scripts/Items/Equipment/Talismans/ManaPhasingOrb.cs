@@ -46,8 +46,8 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (parent is Mobile && IsInManaPhase((Mobile)parent))
-                RemoveFromTable((Mobile)parent);
+            if (parent is Mobile mobile && IsInManaPhase(mobile))
+                RemoveFromTable(mobile);
 
             base.OnRemoved(parent);
         }
@@ -114,7 +114,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 

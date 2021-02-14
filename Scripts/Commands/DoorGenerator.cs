@@ -5,7 +5,7 @@ namespace Server
 {
     public class DoorGenerator
     {
-        private static readonly Rectangle2D[] m_BritRegions = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_BritRegions =
         {
             new Rectangle2D(new Point2D(250, 750), new Point2D(775, 1330)),
             new Rectangle2D(new Point2D(525, 2095), new Point2D(925, 2430)),
@@ -24,15 +24,15 @@ namespace Server
             new Rectangle2D(new Point2D(1410, 1500), new Point2D(1745, 1795)),
             new Rectangle2D(new Point2D(5120, 2300), new Point2D(6143, 4095))
         };
-        private static readonly Rectangle2D[] m_IlshRegions = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_IlshRegions =
         {
             new Rectangle2D(new Point2D(0, 0), new Point2D(288 * 8, 200 * 8))
         };
-        private static readonly Rectangle2D[] m_MalasRegions = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_MalasRegions =
         {
             new Rectangle2D(new Point2D(0, 0), new Point2D(320 * 8, 256 * 8))
         };
-        private static readonly int[] m_SouthFrames = new int[]
+        private static readonly int[] m_SouthFrames =
         {
             0x0006,
             0x0008,
@@ -105,7 +105,7 @@ namespace Server
             0x0208,
             0x020A
         };
-        private static readonly int[] m_NorthFrames = new int[]
+        private static readonly int[] m_NorthFrames =
         {
             0x0006,
             0x0008,
@@ -177,7 +177,7 @@ namespace Server
             0x0208,
             0x020A
         };
-        private static readonly int[] m_EastFrames = new int[]
+        private static readonly int[] m_EastFrames =
         {
             0x0007,
             0x000A,
@@ -250,7 +250,7 @@ namespace Server
             0x0207,
             0x0209
         };
-        private static readonly int[] m_WestFrames = new int[]
+        private static readonly int[] m_WestFrames =
         {
             0x0007,
             0x000C,
@@ -391,7 +391,8 @@ namespace Server
 
                 if (delta < 0)
                     return false;
-                else if (delta == 0)
+
+                if (delta == 0)
                     return true;
             }
 

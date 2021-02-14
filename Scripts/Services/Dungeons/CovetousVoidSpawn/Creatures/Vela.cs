@@ -61,8 +61,10 @@ namespace Server.Engines.VoidPool
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(Location, 5))
-                from.SendGump(new VoidPoolRewardGump(this, from as PlayerMobile));
+            if (from is PlayerMobile mobile && mobile.InRange(Location, 5))
+            {
+                mobile.SendGump(new VoidPoolRewardGump(this, mobile));
+            }
         }
 
         public VelaTheSorceress(Serial serial)

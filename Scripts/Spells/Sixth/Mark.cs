@@ -78,9 +78,9 @@ namespace Server.Spells.Sixth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is RecallRune)
+                if (o is RecallRune rune)
                 {
-                    m_Owner.Target((RecallRune)o);
+                    m_Owner.Target(rune);
                 }
                 else
                 {

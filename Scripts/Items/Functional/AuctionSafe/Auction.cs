@@ -234,25 +234,23 @@ namespace Server.Engines.Auction
                     m.SendLocalizedMessage(1155867); // The amount entered is invalid. Verify that there are sufficient funds to complete this transaction.
                     return false;
                 }
-                else
+
+                VaultLogging.Buyout(this, m, Buyout);
+
+                if (HighestBid != null && HighestBid.Mobile != m)
                 {
-                    VaultLogging.Buyout(this, m, Buyout);
+                    DoOutBidMessage(HighestBid.Mobile);
 
-                    if (HighestBid != null && HighestBid.Mobile != m)
-                    {
-                        DoOutBidMessage(HighestBid.Mobile);
-
-                        HighestBid.Refund(this, HighestBid.CurrentBid);
-                    }
-
-                    HighestBid = GetBidEntry(m, true);
-                    HighestBid.CurrentBid = Buyout - (int)(Buyout * .05);
-                    CurrentBid = Buyout;
-
-                    EndAuction(true);
-                    ClaimPrize(m);
-                    return true;
+                    HighestBid.Refund(this, HighestBid.CurrentBid);
                 }
+
+                HighestBid = GetBidEntry(m, true);
+                HighestBid.CurrentBid = Buyout - (int)(Buyout * .05);
+                CurrentBid = Buyout;
+
+                EndAuction(true);
+                ClaimPrize(m);
+                return true;
             }
 
             return false;
@@ -288,9 +286,9 @@ namespace Server.Engines.Auction
         {
             BidEntry entry = Bids.FirstOrDefault(e => m == e.Mobile);
 
-            if (entry == null && create && m is PlayerMobile)
+            if (entry == null && create && m is PlayerMobile mobile)
             {
-                entry = new BidEntry((PlayerMobile)m);
+                entry = new BidEntry(mobile);
                 Bids.Add(entry);
             }
 

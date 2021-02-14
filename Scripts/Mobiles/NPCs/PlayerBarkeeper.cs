@@ -101,8 +101,8 @@ namespace Server.Mobiles
             m_Keyword = keyword;
         }
 
-        public string Message { get { return m_Message; } set { m_Message = value; } }
-        public string Keyword { get { return m_Keyword; } set { m_Keyword = value; } }
+        public string Message { get => m_Message; set => m_Message = value; }
+        public string Keyword { get => m_Keyword; set => m_Keyword = value; }
 
         public static BarkeeperRumor Deserialize(GenericReader reader)
         {
@@ -171,11 +171,11 @@ namespace Server.Mobiles
         { }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public Mobile Owner { get => m_Owner; set => m_Owner = value; }
 
         public BaseHouse House
         {
-            get { return m_House; }
+            get => m_House;
             set
             {
                 if (m_House != null)
@@ -193,10 +193,10 @@ namespace Server.Mobiles
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string TipMessage { get { return m_TipMessage; } set { m_TipMessage = value; } }
+        public string TipMessage { get => m_TipMessage; set => m_TipMessage = value; }
 
         public override bool IsActiveBuyer => false;
-        public override bool IsActiveSeller => (m_SBInfos.Count > 0);
+        public override bool IsActiveSeller => m_SBInfos.Count > 0;
         public override bool DisallowAllMoves => true;
         public override bool NoHouseRestrictions => true;
         public BarkeeperRumor[] Rumors => m_Rumors;
@@ -336,10 +336,8 @@ namespace Server.Mobiles
 
         public override bool CheckGold(Mobile from, Item dropped)
         {
-            if (dropped is Gold)
+            if (dropped is Gold g)
             {
-                Gold g = (Gold)dropped;
-
                 if (g.Amount > 50)
                 {
                     PrivateOverheadMessage(MessageType.Regular, 0x3B2, false, "I cannot accept so large a tip!", from.NetState);
@@ -383,7 +381,7 @@ namespace Server.Mobiles
                 return true;
             }
 
-            return (m_Owner == from);
+            return m_Owner == from;
         }
 
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
@@ -640,7 +638,7 @@ namespace Server.Mobiles
 
     public class BarkeeperTitleGump : Gump
     {
-        private static readonly Entry[] m_Entries = new[]
+        private static readonly Entry[] m_Entries =
         {
             new Entry("Alchemist"), new Entry("Animal Tamer"), new Entry("Apothecary"), new Entry("Artist"),
             new Entry("Baker", true), new Entry("Bard"), new Entry("Barkeep", "the barkeeper", true), new Entry("Beggar"),
@@ -693,7 +691,7 @@ namespace Server.Mobiles
                 {
                     --buttonID;
 
-                    if (buttonID >= 0 && buttonID < m_Entries.Length)
+                    if (buttonID < m_Entries.Length)
                     {
                         m_Barkeeper.EndChangeTitle(m_From, m_Entries[buttonID].m_Title, m_Entries[buttonID].m_Vendor);
                     }
@@ -759,14 +757,14 @@ namespace Server.Mobiles
 
             AddHtml(430, 70, 180, 25, string.Format("Page {0} of {1}", page + 1, (entries.Length + 19) / 20), false, false);
 
-            for (int count = 0, i = (page * 20); count < 20 && i < entries.Length; ++count, ++i)
+            for (int count = 0, i = page * 20; count < 20 && i < entries.Length; ++count, ++i)
             {
                 Entry entry = entries[i];
 
-                AddButton(80 + ((count / 10) * 260), 100 + ((count % 10) * 30), 4005, 4007, 2 + i, GumpButtonType.Reply, 0);
+                AddButton(80 + count / 10 * 260, 100 + count % 10 * 30, 4005, 4007, 2 + i, GumpButtonType.Reply, 0);
                 AddHtml(
-                    120 + ((count / 10) * 260),
-                    100 + ((count % 10) * 30),
+                    120 + count / 10 * 260,
+                    100 + count % 10 * 30,
                     entry.m_Vendor ? 148 : 180,
                     25,
                     entry.m_Description,
@@ -775,12 +773,12 @@ namespace Server.Mobiles
 
                 if (entry.m_Vendor)
                 {
-                    AddImage(270 + ((count / 10) * 260), 98 + ((count % 10) * 30), 2151);
-                    AddItem(262 + ((count / 10) * 260), 106 + ((count % 10) * 30), 2543);
+                    AddImage(270 + count / 10 * 260, 98 + count % 10 * 30, 2151);
+                    AddItem(262 + count / 10 * 260, 106 + count % 10 * 30, 2543);
                 }
             }
 
-            AddButton(340, 400, 4005, 4007, 0, GumpButtonType.Page, 1 + ((page + 1) % ((entries.Length + 19) / 20)));
+            AddButton(340, 400, 4005, 4007, 0, GumpButtonType.Page, 1 + (page + 1) % ((entries.Length + 19) / 20));
             AddHtml(380, 400, 180, 25, "More Job Titles", false, false);
 
             AddButton(338, 437, 4014, 4016, 1, GumpButtonType.Reply, 0);
@@ -924,7 +922,7 @@ namespace Server.Mobiles
             AddHtml(170, 160, 380, 20, "Are you sure you want to dismiss your barkeeper?", false, false);
 
             AddButton(205, 280, 4005, 4007, GetButtonID(0, 0), GumpButtonType.Reply, 0);
-            AddHtml(240, 280, 100, 20, @"Yes", false, false);
+            AddHtml(240, 280, 100, 20, "Yes", false, false);
 
             AddButton(395, 280, 4005, 4007, 0, GumpButtonType.Reply, 0);
             AddHtml(430, 280, 100, 20, "No", false, false);
@@ -948,12 +946,12 @@ namespace Server.Mobiles
             {
                 BarkeeperRumor rumor = rumors[i];
 
-                AddHtml(100, 70 + (i * 120), 50, 20, "Message", false, false);
-                AddHtml(100, 90 + (i * 120), 450, 40, rumor == null ? "No current message" : rumor.Message, true, false);
-                AddHtml(100, 130 + (i * 120), 50, 20, "Keyword", false, false);
-                AddHtml(100, 150 + (i * 120), 450, 40, rumor == null ? "None" : rumor.Keyword, true, false);
+                AddHtml(100, 70 + i * 120, 50, 20, "Message", false, false);
+                AddHtml(100, 90 + i * 120, 450, 40, rumor == null ? "No current message" : rumor.Message, true, false);
+                AddHtml(100, 130 + i * 120, 50, 20, "Keyword", false, false);
+                AddHtml(100, 150 + i * 120, 450, 40, rumor == null ? "None" : rumor.Keyword, true, false);
 
-                AddButton(60, 90 + (i * 120), 4005, 4007, GetButtonID(1, i), GumpButtonType.Reply, 0);
+                AddButton(60, 90 + i * 120, 4005, 4007, GetButtonID(1, i), GumpButtonType.Reply, 0);
             }
 
             AddButton(338, 437, 4014, 4016, 0, GumpButtonType.Page, 2);
@@ -974,12 +972,12 @@ namespace Server.Mobiles
             {
                 BarkeeperRumor rumor = rumors[i];
 
-                AddHtml(100, 70 + (i * 120), 50, 20, "Message", false, false);
-                AddHtml(100, 90 + (i * 120), 450, 40, rumor == null ? "No current message" : rumor.Message, true, false);
-                AddHtml(100, 130 + (i * 120), 50, 20, "Keyword", false, false);
-                AddHtml(100, 150 + (i * 120), 450, 40, rumor == null ? "None" : rumor.Keyword, true, false);
+                AddHtml(100, 70 + i * 120, 50, 20, "Message", false, false);
+                AddHtml(100, 90 + i * 120, 450, 40, rumor == null ? "No current message" : rumor.Message, true, false);
+                AddHtml(100, 130 + i * 120, 50, 20, "Keyword", false, false);
+                AddHtml(100, 150 + i * 120, 450, 40, rumor == null ? "None" : rumor.Keyword, true, false);
 
-                AddButton(60, 90 + (i * 120), 4005, 4007, GetButtonID(2, i), GumpButtonType.Reply, 0);
+                AddButton(60, 90 + i * 120, 4005, 4007, GetButtonID(2, i), GumpButtonType.Reply, 0);
             }
 
             AddButton(338, 437, 4014, 4016, 0, GumpButtonType.Page, 2);
@@ -1062,7 +1060,7 @@ namespace Server.Mobiles
 
         private int GetButtonID(int type, int index)
         {
-            return 1 + (index * 6) + type;
+            return 1 + index * 6 + type;
         }
 
         private void RenderMessageManagement_Tip_AddOrChange()

@@ -26,19 +26,23 @@ namespace Server.Items
             {
                 return true;
             }
-            else if (f.Bracelet && item is BaseBracelet)
+
+            if (f.Bracelet && item is BaseBracelet)
             {
                 return true;
             }
-            else if (f.Earrings && item is BaseEarrings)
+
+            if (f.Earrings && item is BaseEarrings)
             {
                 return true;
             }
-            else if (f.Necklace && item is BaseNecklace)
+
+            if (f.Necklace && item is BaseNecklace)
             {
                 return true;
             }
-            else if (f.Talisman && item is BaseTalisman)
+
+            if (f.Talisman && item is BaseTalisman)
             {
                 return true;
             }
@@ -195,7 +199,7 @@ namespace Server.Items
             private readonly JewelryBox m_Box;
             private readonly int m_Page;
 
-            public InternalTarget(Mobile from, JewelryBox box, int page)
+            public InternalTarget(JewelryBox box, int page)
                 : base(-1, false, TargetFlags.None)
             {
                 m_Box = box;
@@ -211,7 +215,6 @@ namespace Server.Items
                 else if (!dropped.IsChildOf(from.Backpack))
                 {
                     from.SendLocalizedMessage(1157726); // You must be carrying the item to add it to the jewelry box.
-                    return;
                 }
                 else if (m_Box.IsAccept(dropped))
                 {
@@ -222,13 +225,11 @@ namespace Server.Items
                     else
                     {
                         m_Box.DropItem(dropped);
-                        from.Target = new InternalTarget(from, m_Box, m_Page);
+                        from.Target = new InternalTarget(m_Box, m_Page);
                     }
                 }
-                else if (dropped is Container)
+                else if (dropped is Container c)
                 {
-                    Container c = dropped as Container;
-
                     int count = 0;
 
                     for (int i = c.Items.Count - 1; i >= 0; --i)
@@ -240,11 +241,9 @@ namespace Server.Items
                                 from.SendLocalizedMessage(1157723); // The jewelry box is full.
                                 break;
                             }
-                            else
-                            {
-                                m_Box.DropItem(c.Items[i]);
-                                count++;
-                            }
+
+                            m_Box.DropItem(c.Items[i]);
+                            count++;
                         }
                     }
 
@@ -268,9 +267,9 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Box != null && !m_Box.Deleted && targeted is Item)
+                if (m_Box != null && !m_Box.Deleted && targeted is Item item)
                 {
-                    TryDrop(from, (Item)targeted);
+                    TryDrop(from, item);
                 }
             }
 
@@ -328,7 +327,7 @@ namespace Server.Items
                     }
                 case 3: // ADD JEWELRY
                     {
-                        m_From.Target = new InternalTarget(m_From, m_Box, m_Page);
+                        m_From.Target = new InternalTarget(m_Box, m_Page);
                         m_From.SendLocalizedMessage(1157725); // Target rings, bracelets, necklaces, earrings, or talisman in your backpack. You may also target a sub-container to add contents to the the jewelry box. When done, press ESC.
                         m_From.SendGump(new JewelryBoxGump(m_From, m_Box));
                         break;

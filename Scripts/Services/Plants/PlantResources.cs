@@ -5,7 +5,7 @@ namespace Server.Engines.Plants
 {
     public class PlantResourceInfo
     {
-        private static readonly PlantResourceInfo[] m_ResourceList = new PlantResourceInfo[]
+        private static readonly PlantResourceInfo[] m_ResourceList =
         {
             new PlantResourceInfo(PlantType.ElephantEarPlant, PlantHue.BrightRed, typeof(RedLeaves)),
             new PlantResourceInfo(PlantType.PonytailPalm, PlantHue.BrightRed, typeof(RedLeaves)),

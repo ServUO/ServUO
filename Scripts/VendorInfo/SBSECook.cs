@@ -19,7 +19,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Wasabi), 2, 20, 0x24E9, 0));
                 Add(new GenericBuyInfo(typeof(SushiRolls), 3, 20, 0x283E, 0));
                 Add(new GenericBuyInfo(typeof(SushiPlatter), 3, 20, 0x2840, 0));
-                Add(new GenericBuyInfo(typeof(GreenTea), 3, 20, 0x284C, 0));
+                Add(new GenericBuyInfo(typeof(GreenTeaBasket), 3, 20, 0x284B, 0));
                 Add(new GenericBuyInfo(typeof(MisoSoup), 3, 20, 0x284D, 0));
                 Add(new GenericBuyInfo(typeof(WhiteMisoSoup), 3, 20, 0x284E, 0));
                 Add(new GenericBuyInfo(typeof(RedMisoSoup), 3, 20, 0x284F, 0));
@@ -35,7 +35,7 @@ namespace Server.Mobiles
             {
                 Add(typeof(Wasabi), 1);
                 Add(typeof(BentoBox), 3);
-                Add(typeof(GreenTea), 1);
+                Add(typeof(GreenTeaBasket), 1);
                 Add(typeof(SushiRolls), 1);
                 Add(typeof(SushiPlatter), 2);
                 Add(typeof(MisoSoup), 1);

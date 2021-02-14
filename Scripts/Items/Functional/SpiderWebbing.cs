@@ -79,14 +79,14 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m is BaseCreature && ((BaseCreature)m).IsMonster)
+            if (m is BaseCreature creature && creature.IsMonster)
                 return true;
 
             if (m.AccessLevel == AccessLevel.Player && m.Alive)

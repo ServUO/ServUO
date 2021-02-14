@@ -66,10 +66,7 @@ namespace Server.Items
         }
         public bool Extended
         {
-            get
-            {
-                return (ItemID == GetExtendedID(Type));
-            }
+            get => ItemID == GetExtendedID(Type);
             set
             {
                 if (value)
@@ -158,15 +155,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Extended = false;
         }

@@ -21,10 +21,10 @@ namespace Server.Items
 
         public override void OnRemoved()
         {
-            if (Owner is BaseWeapon)
+            if (Owner is BaseWeapon weapon)
             {
-                ((BaseWeapon)Owner).NegativeAttributes.Brittle = 0;
-                Owner.Hue = ((BaseWeapon)Owner).GetElementalDamageHue();
+                weapon.NegativeAttributes.Brittle = 0;
+                weapon.Hue = weapon.GetElementalDamageHue();
             }
         }
 
@@ -82,8 +82,8 @@ namespace Server.Items
 
         public class ToggleExtinguishEntry : ContextMenuEntry
         {
-            public BaseWeapon Weapon { get; set; }
-            public Mobile From { get; set; }
+            public BaseWeapon Weapon { get; }
+            public Mobile From { get; }
 
             public ToggleExtinguishEntry(Mobile from, BaseWeapon weapon)
                 : base(weapon.GetSocket<SearingWeapon>().Extinguished ? 1151173 : 1151174, -1)

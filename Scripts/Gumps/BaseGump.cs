@@ -21,17 +21,15 @@ namespace Server.Gumps
 
         public Gump Parent
         {
-            get { return _Parent; }
+            get => _Parent;
             set
             {
                 _Parent = value;
 
                 if (_Parent != null)
                 {
-                    if (_Parent is BaseGump)
+                    if (_Parent is BaseGump bGump)
                     {
-                        var bGump = (BaseGump)_Parent;
-
                         if (!bGump.Children.Contains(this))
                         {
                             bGump.Children.Add(this);
@@ -139,20 +137,14 @@ namespace Server.Gumps
                 AddGumpLayout();
             }
 
-            /*Children.ForEach(child => 
-                {
-                    if(child.Open)
-                        child.Refresh(recompile, close);
-                });*/
-
             User.SendGump(this);
             OnAfterRefresh();
         }
 
         public void RefreshParent(bool resend = false)
         {
-            if (Parent is BaseGump)
-                ((BaseGump)Parent).Refresh();
+            if (Parent is BaseGump gump)
+                gump.Refresh();
 
             if (resend)
                 Refresh();
@@ -175,8 +167,10 @@ namespace Server.Gumps
 
             if (Parent != null)
             {
-                if (Parent is BaseGump)
-                    ((BaseGump)Parent).OnChildClosed(this);
+                if (Parent is BaseGump gump)
+                {
+                    gump.OnChildClosed(this);
+                }
 
                 Parent = null;
             }
@@ -257,7 +251,7 @@ namespace Server.Gumps
             if (ns == null)
                 return list;
 
-            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => (!checkOpen || g.Open)))
+            foreach (BaseGump gump in ns.Gumps.OfType<BaseGump>().Where(g => !checkOpen || g.Open))
             {
                 list.Add(gump);
             }
@@ -581,7 +575,7 @@ namespace Server.Gumps
                 1042971, 1070722, // ~1_NOTHING~
 			    1114057, 1114778, 1114779, // ~1_val~
 			    1150541, // ~1_TOKEN~
-			    1153153, // ~1_year~
+			    1153153 // ~1_year~
             };
 
             private static readonly List<Spoof> _SpoofPool = new List<Spoof>();
@@ -592,13 +586,11 @@ namespace Server.Gumps
                 {
                     return new Spoof();
                 }
-                else
-                {
-                    Spoof spoof = _SpoofPool[0];
-                    _SpoofPool.Remove(spoof);
 
-                    return spoof;
-                }
+                Spoof spoof = _SpoofPool[0];
+                _SpoofPool.Remove(spoof);
+
+                return spoof;
             }
 
             public void Free()
@@ -672,7 +664,7 @@ namespace Server.Gumps
             private string _Text = string.Empty;
             public string Text
             {
-                get { return _Text ?? string.Empty; }
+                get => _Text ?? string.Empty;
                 set
                 {
                     if (_Text != value)
@@ -687,7 +679,7 @@ namespace Server.Gumps
             private Dictionary<int, string> _ClilocTable;
             public Dictionary<int, string> ClilocTable
             {
-                get { return _ClilocTable; }
+                get => _ClilocTable;
                 set
                 {
                     if (_ClilocTable != value)

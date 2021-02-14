@@ -49,7 +49,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Instance == null)
                 Instance = this;

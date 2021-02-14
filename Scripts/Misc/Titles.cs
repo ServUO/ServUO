@@ -37,9 +37,9 @@ namespace Server.Misc
                     offset = 0;
             }
 
-            if ((fame + offset) > MaxFame)
+            if (fame + offset > MaxFame)
                 offset = MaxFame - fame;
-            else if ((fame + offset) < MinFame)
+            else if (fame + offset < MinFame)
                 offset = MinFame - fame;
 
             m.Fame += offset;
@@ -72,14 +72,12 @@ namespace Server.Misc
         {
             int karma = m.Karma;
 
-            if (m.Talisman is BaseTalisman)
+            if (m.Talisman is BaseTalisman talisman)
             {
-                BaseTalisman talisman = (BaseTalisman)m.Talisman;
-
                 if (talisman.KarmaLoss > 0)
-                    offset *= (1 + (int)(((double)talisman.KarmaLoss) / 100));
+                    offset *= 1 + (int)((double)talisman.KarmaLoss / 100);
                 else if (talisman.KarmaLoss < 0)
-                    offset *= (1 - (int)(((double)-talisman.KarmaLoss) / 100));
+                    offset *= 1 - (int)((double)-talisman.KarmaLoss / 100);
             }
 
             int karmaLoss = AosAttributes.GetValue(m, AosAttribute.IncreasedKarmaLoss);
@@ -91,7 +89,7 @@ namespace Server.Misc
 
             if (offset > 0)
             {
-                if (m is PlayerMobile && ((PlayerMobile)m).KarmaLocked)
+                if (m is PlayerMobile mobile && mobile.KarmaLocked)
                     return;
 
                 if (karma >= MaxKarma)
@@ -113,9 +111,9 @@ namespace Server.Misc
                     offset = 0;
             }
 
-            if ((karma + offset) > MaxKarma)
+            if (karma + offset > MaxKarma)
                 offset = MaxKarma - karma;
-            else if ((karma + offset) < MinKarma)
+            else if (karma + offset < MinKarma)
                 offset = MinKarma - karma;
 
             m.Karma += offset;
@@ -171,7 +169,7 @@ namespace Server.Misc
             return list;
         }
 
-        public static string[] HarrowerTitles = new string[] { "Spite", "Opponent", "Hunter", "Venom", "Executioner", "Annihilator", "Champion", "Assailant", "Purifier", "Nullifier" };
+        public static string[] HarrowerTitles = { "Spite", "Opponent", "Hunter", "Venom", "Executioner", "Annihilator", "Champion", "Assailant", "Purifier", "Nullifier" };
 
         public static string ComputeFameTitle(Mobile beheld)
         {
@@ -182,7 +180,7 @@ namespace Server.Misc
             {
                 FameEntry fe = m_FameEntries[i];
 
-                if (fame <= fe.m_Fame || i == (m_FameEntries.Length - 1))
+                if (fame <= fe.m_Fame || i == m_FameEntries.Length - 1)
                 {
                     KarmaEntry[] karmaEntries = fe.m_Karma;
 
@@ -206,9 +204,9 @@ namespace Server.Misc
         {
             StringBuilder title = new StringBuilder();
 
-            if (beheld.ShowFameTitle && beheld is PlayerMobile && ((PlayerMobile)beheld).FameKarmaTitle != null)
+            if (beheld.ShowFameTitle && beheld is PlayerMobile mobile && mobile.FameKarmaTitle != null)
             {
-                title.AppendFormat(((PlayerMobile)beheld).FameKarmaTitle, beheld.Name, beheld.Female ? "Lady" : "Lord");
+                title.AppendFormat(mobile.FameKarmaTitle, mobile.Name, mobile.Female ? "Lady" : "Lord");
             }
             else if (beheld.ShowFameTitle || (beholder == beheld))
             {
@@ -219,17 +217,21 @@ namespace Server.Misc
                 title.Append(beheld.Name);
             }
 
-            if (beheld is PlayerMobile && (((PlayerMobile)beheld).CurrentChampTitle != null) && ((PlayerMobile)beheld).DisplayChampionTitle)
+            if (beheld is PlayerMobile playerMobile && (playerMobile.CurrentChampTitle != null) && playerMobile.DisplayChampionTitle)
             {
-                title.AppendFormat(((PlayerMobile)beheld).CurrentChampTitle);
+                title.AppendFormat(playerMobile.CurrentChampTitle);
             }
 
             string customTitle = beheld.Title;
 
-            if (beheld is PlayerMobile && ((PlayerMobile)beheld).PaperdollSkillTitle != null)
-                title.Append(", ").Append(((PlayerMobile)beheld).PaperdollSkillTitle);
+            if (beheld is PlayerMobile pm && pm.PaperdollSkillTitle != null)
+            {
+                title.Append(", ").Append(pm.PaperdollSkillTitle);
+            }
             else if (beheld is BaseVendor)
+            {
                 title.AppendFormat(" {0}", customTitle);
+            }
 
             return title.ToString();
         }
@@ -285,7 +287,7 @@ namespace Server.Misc
             return highest;
         }
 
-        private static readonly string[,] m_Levels = new string[,]
+        private static readonly string[,] m_Levels =
         {
             { "Neophyte", "Neophyte", "Neophyte" },
             { "Novice", "Novice", "Novice" },
@@ -326,9 +328,9 @@ namespace Server.Misc
             return (fp - 300) / 100;
         }
 
-        private static readonly FameEntry[] m_FameEntries = new FameEntry[]
+        private static readonly FameEntry[] m_FameEntries =
         {
-            new FameEntry(1249, new KarmaEntry[]
+            new FameEntry(1249, new[]
             {
                 new KarmaEntry(-10000, "The Outcast {0}"),
                 new KarmaEntry(-5000, "The Despicable {0}"),
@@ -342,7 +344,7 @@ namespace Server.Misc
                 new KarmaEntry(9999, "The Honest {0}"),
                 new KarmaEntry(10000, "The Trustworthy {0}")
             }),
-            new FameEntry(2499, new KarmaEntry[]
+            new FameEntry(2499, new[]
             {
                 new KarmaEntry(-10000, "The Wretched {0}"),
                 new KarmaEntry(-5000, "The Dastardly {0}"),
@@ -356,7 +358,7 @@ namespace Server.Misc
                 new KarmaEntry(9999, "The Commendable {0}"),
                 new KarmaEntry(10000, "The Estimable {0}")
             }),
-            new FameEntry(4999, new KarmaEntry[]
+            new FameEntry(4999, new[]
             {
                 new KarmaEntry(-10000, "The Nefarious {0}"),
                 new KarmaEntry(-5000, "The Wicked {0}"),
@@ -370,7 +372,7 @@ namespace Server.Misc
                 new KarmaEntry(9999, "The Famed {0}"),
                 new KarmaEntry(10000, "The Great {0}")
             }),
-            new FameEntry(9999, new KarmaEntry[]
+            new FameEntry(9999, new[]
             {
                 new KarmaEntry(-10000, "The Dread {0}"),
                 new KarmaEntry(-5000, "The Evil {0}"),
@@ -384,7 +386,7 @@ namespace Server.Misc
                 new KarmaEntry(9999, "The Illustrious {0}"),
                 new KarmaEntry(10000, "The Glorious {0}")
             }),
-            new FameEntry(10000, new KarmaEntry[]
+            new FameEntry(10000, new[]
             {
                 new KarmaEntry(-10000, "The Dread {1} {0}"),
                 new KarmaEntry(-5000, "The Evil {1} {0}"),
@@ -463,8 +465,8 @@ namespace Server.Misc
 
     public class VeteranTitle
     {
-        public int Title { get; set; }
-        public int Years { get; set; }
+        public int Title { get; }
+        public int Years { get; }
 
         public VeteranTitle(int title, int years)
         {

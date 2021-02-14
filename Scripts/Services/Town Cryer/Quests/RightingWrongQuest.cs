@@ -57,15 +57,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -231,22 +229,19 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(Orders);
@@ -255,8 +250,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Orders = reader.ReadItem() as RoyalBritannianGuardOrders;
         }
@@ -264,7 +258,7 @@ namespace Server.Engines.Quests
 
     public class Arnold : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(RightingWrongQuest2) };
+        public override Type[] Quests => new[] { typeof(RightingWrongQuest2) };
 
         public static Arnold TramInstance { get; set; }
         public static Arnold FelInstance { get; set; }
@@ -321,9 +315,9 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(Location, 5))
+            if (m is PlayerMobile mobile && mobile.InRange(Location, 5))
             {
-                RightingWrongQuest4 quest = QuestHelper.GetQuest<RightingWrongQuest4>((PlayerMobile)m);
+                RightingWrongQuest4 quest = QuestHelper.GetQuest<RightingWrongQuest4>(mobile);
 
                 if (quest != null && quest.Completed)
                 {
@@ -331,16 +325,16 @@ namespace Server.Engines.Quests
                 }
                 else
                 {
-                    base.OnDoubleClick(m);
+                    base.OnDoubleClick(mobile);
                 }
             }
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5) && !InRange(oldLocation, 5))
+            if (m is PlayerMobile mobile && InRange(mobile.Location, 5) && !InRange(oldLocation, 5))
             {
-                RightingWrongQuest quest = QuestHelper.GetQuest<RightingWrongQuest>((PlayerMobile)m);
+                RightingWrongQuest quest = QuestHelper.GetQuest<RightingWrongQuest>(mobile);
 
                 if (quest != null)
                 {
@@ -358,15 +352,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

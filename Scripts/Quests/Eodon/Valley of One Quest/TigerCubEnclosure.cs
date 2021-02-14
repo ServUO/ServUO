@@ -171,7 +171,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Door = reader.ReadItem() as EnclosureDoor;
             Cub = reader.ReadMobile() as TigerCub;
@@ -198,13 +198,13 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(GetWorldLocation(), 2) && from.InLOS(this))
+            if (from is PlayerMobile mobile && mobile.InRange(GetWorldLocation(), 2) && mobile.InLOS(this))
             {
-                PrideOfTheAmbushQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(PrideOfTheAmbushQuest)) as PrideOfTheAmbushQuest;
+                PrideOfTheAmbushQuest quest = QuestHelper.GetQuest(mobile, typeof(PrideOfTheAmbushQuest)) as PrideOfTheAmbushQuest;
 
                 if (quest != null)
                 {
-                    from.SendGump(new LockingMechanismGump((PlayerMobile)from, this));
+                    mobile.SendGump(new LockingMechanismGump(mobile, this));
                 }
             }
         }
@@ -219,20 +219,20 @@ namespace Server.Items
 
         private readonly int[][] _Paths =
         {
-            new int[] { 0, 1, 2, 3, 7, 11, 15 },
-            new int[] { 0, 4, 8, 12, 13, 9, 5, 1, 2, 6, 10, 14, 15 },
-            new int[] { 0, 4, 5, 1, 2, 3, 7, 6, 10, 14, 15 },
-            new int[] { 0, 4, 8, 12, 13, 14, 10, 6, 2, 3, 7, 11, 15 }, // 
-            new int[] { 0, 4, 5, 9, 13, 14, 10, 11, 15 },
-            new int[] { 0, 4, 5, 1, 2, 6, 10, 9, 13, 14, 15 },
-            new int[] { 0, 1, 5, 4, 8, 12, 13, 14, 10, 11, 15 },
-            new int[] { 0, 1, 2, 6, 5, 4, 8, 12, 13, 9, 10, 11, 15 },
-            new int[] { 0, 1, 5, 6, 7, 11, 10, 9, 13, 14, 15 },
-            new int[] { 0, 1, 5, 6, 7, 11, 15 },
-            new int[] { 0, 1, 5, 6, 10, 9, 13, 14, 15 },
-            new int[] { 0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 1, 11, 12, 13, 14, 15 },
-            new int[] { 0, 4, 8, 12, 13, 14, 15 },
-            new int[] { 0, 4, 5, 9, 8, 12, 13, 14, 10, 6, 2, 3, 7, 11, 15 }
+            new[] { 0, 1, 2, 3, 7, 11, 15 },
+            new[] { 0, 4, 8, 12, 13, 9, 5, 1, 2, 6, 10, 14, 15 },
+            new[] { 0, 4, 5, 1, 2, 3, 7, 6, 10, 14, 15 },
+            new[] { 0, 4, 8, 12, 13, 14, 10, 6, 2, 3, 7, 11, 15 }, // 
+            new[] { 0, 4, 5, 9, 13, 14, 10, 11, 15 },
+            new[] { 0, 4, 5, 1, 2, 6, 10, 9, 13, 14, 15 },
+            new[] { 0, 1, 5, 4, 8, 12, 13, 14, 10, 11, 15 },
+            new[] { 0, 1, 2, 6, 5, 4, 8, 12, 13, 9, 10, 11, 15 },
+            new[] { 0, 1, 5, 6, 7, 11, 10, 9, 13, 14, 15 },
+            new[] { 0, 1, 5, 6, 7, 11, 15 },
+            new[] { 0, 1, 5, 6, 10, 9, 13, 14, 15 },
+            new[] { 0, 1, 2, 3, 7, 6, 5, 4, 8, 9, 1, 11, 12, 13, 14, 15 },
+            new[] { 0, 4, 8, 12, 13, 14, 15 },
+            new[] { 0, 4, 5, 9, 8, 12, 13, 14, 10, 6, 2, 3, 7, 11, 15 }
         };
 
         public List<int> GetRandomPath()
@@ -449,7 +449,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Path = GetRandomPath();
         }

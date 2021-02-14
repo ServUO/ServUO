@@ -13,9 +13,6 @@ namespace Server.Mobiles
             Body = 20;
             BaseSoundID = 0x388;
 
-            if (Utility.RandomBool())
-                Hue = 1154;
-
             SetStr(76, 100);
             SetDex(126, 145);
             SetInt(36, 60);
@@ -46,6 +43,27 @@ namespace Server.Mobiles
             MinTameSkill = 74.7;
         }
 
+        protected override void OnMapChange(Map oldMap)
+        {
+            base.OnMapChange(oldMap);
+
+            if (!Controlled && Tamable)
+            {
+                if (Utility.RandomDouble() < 0.2 + TotemRareColorChance())
+                {
+                    switch (Utility.Random(2))
+                    {
+                        case 0: { Hue = 1154; break; }
+                        case 1: { Hue = 2729; break; }
+                    }
+                }
+                else if (Totem != null)
+                {
+                    Totem = null;
+                }
+            }
+        }
+
         public FrostSpider(Serial serial)
             : base(serial)
         {
@@ -69,7 +87,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

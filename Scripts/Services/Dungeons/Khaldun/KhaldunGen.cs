@@ -18,7 +18,7 @@ namespace Server.Commands
 
             foreach (Item item in eable)
             {
-                if (item is MorphItem && item.Z == z && ((MorphItem)item).InactiveItemID == inactiveItemID && ((MorphItem)item).ActiveItemID == activeItemID)
+                if (item is MorphItem mItem && mItem.Z == z && mItem.InactiveItemID == inactiveItemID && mItem.ActiveItemID == activeItemID)
                 {
                     eable.Free();
                     return true;

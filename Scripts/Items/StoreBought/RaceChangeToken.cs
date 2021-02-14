@@ -1,4 +1,4 @@
-﻿using Server.Engines.Quests;
+using Server.Engines.Quests;
 using Server.Gumps;
 using Server.Mobiles;
 using System;
@@ -25,10 +25,10 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
             }
-            else if (from is PlayerMobile)
+            else if (from is PlayerMobile mobile)
             {
-                from.CloseGump(typeof(RaceChangeConfirmGump));
-                BaseGump.SendGump(new RaceChangeConfirmGump((PlayerMobile)from, this));
+                mobile.CloseGump(typeof(RaceChangeConfirmGump));
+                BaseGump.SendGump(new RaceChangeConfirmGump(mobile, this));
             }
         }
 

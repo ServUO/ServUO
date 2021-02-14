@@ -17,7 +17,7 @@ namespace Server.Engines.VendorSearching
             Criteria = criteria;
         }
 
-        public static SearchCriteriaCategory[] AllCategories = new SearchCriteriaCategory[]
+        public static SearchCriteriaCategory[] AllCategories =
         {
             new SearchCriteriaCategory(Category.PriceRange, 2, 1154512, new SearchCriterionEntry[] { /* Price Range */
             }),
@@ -39,7 +39,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(Layer.Arms, 1154618),
                 new SearchCriterionEntry(Layer.Cloak, 1154619),
                 new SearchCriterionEntry(Layer.OuterTorso, 1154621),
-                new SearchCriterionEntry(Layer.OuterLegs, 1154622),
+                new SearchCriterionEntry(Layer.OuterLegs, 1154622)
             }),
             new SearchCriteriaCategory(Category.Combat, 4, 1154541, new[] // Combat
             { 
@@ -61,7 +61,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SAAbsorptionAttribute.EaterPoison, 1154664, 1113595),
                 new SearchCriterionEntry(SAAbsorptionAttribute.EaterEnergy, 1154665, 1113596),
                 new SearchCriterionEntry(SAAbsorptionAttribute.EaterKinetic, 1154666, 1113597),
-                new SearchCriterionEntry(SAAbsorptionAttribute.EaterDamage, 1154667, 1113598),
+                new SearchCriterionEntry(SAAbsorptionAttribute.EaterDamage, 1154667, 1113598)
             }),
             new SearchCriteriaCategory(Category.Casting, 5, 1154538, new[] // Casting
             { 
@@ -78,7 +78,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosAttribute.LowerRegCost, 1075625, 1060434),
                 new SearchCriterionEntry(AosWeaponAttribute.MageWeapon, 1079759, 1060438),
                 new SearchCriterionEntry(AosArmorAttribute.MageArmor, 1079758),
-                new SearchCriterionEntry(AosAttribute.SpellChanneling, 1079766),
+                new SearchCriterionEntry(AosAttribute.SpellChanneling, 1079766)
             }),
             new SearchCriteriaCategory(Category.Misc, 6, 1154647, new[] // Miscellaneous
             {
@@ -103,7 +103,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosAttribute.Luck, 1061153, 1060436),
                 new SearchCriterionEntry(AosAttribute.ReflectPhysical, 1075626, 1060442),
                 new SearchCriterionEntry(AosArmorAttribute.SelfRepair, 1079709, 1060450),
-                new SearchCriterionEntry("ArtifactRarity", 1154693, 1061078),
+                new SearchCriterionEntry("ArtifactRarity", 1154693, 1061078)
             }),
             new SearchCriteriaCategory(Category.DamageType, 9, 1154535, new[] // Damage Type
             {
@@ -111,7 +111,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosElementAttribute.Cold, 1151802, 1060404),
                 new SearchCriterionEntry(AosElementAttribute.Fire, 1151801, 1060405),
                 new SearchCriterionEntry(AosElementAttribute.Poison, 1151803, 1060406),
-                new SearchCriterionEntry(AosElementAttribute.Energy, 1151804, 1060407),
+                new SearchCriterionEntry(AosElementAttribute.Energy, 1151804, 1060407)
             }),
             new SearchCriteriaCategory(Category.HitSpell, 10, 1154536, new[] // Hit Spell
             {
@@ -130,7 +130,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosWeaponAttribute.HitFatigue, 1154668, 1113700),
                 new SearchCriterionEntry(AosWeaponAttribute.HitManaDrain, 1154669, 1113699),
                 new SearchCriterionEntry(AosWeaponAttribute.SplinteringWeapon, 1154670, 1112857),
-                new SearchCriterionEntry(ExtendedWeaponAttribute.Bane, 1154671),
+                new SearchCriterionEntry(ExtendedWeaponAttribute.Bane, 1154671)
             }),
             new SearchCriteriaCategory(Category.HitArea, 11, 1154537, new[] // Hit Area
             {
@@ -138,7 +138,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosWeaponAttribute.HitEnergyArea, 1079694, 1060418),
                 new SearchCriterionEntry(AosWeaponAttribute.HitFireArea, 1079695, 1060419),
                 new SearchCriterionEntry(AosWeaponAttribute.HitPhysicalArea, 1079696, 1060428),
-                new SearchCriterionEntry(AosWeaponAttribute.HitPoisonArea, 1079697, 1060429),
+                new SearchCriterionEntry(AosWeaponAttribute.HitPoisonArea, 1079697, 1060429)
             }),
             new SearchCriteriaCategory(Category.Resists, 12, 1154539, new[] // Resists
             {
@@ -146,7 +146,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosElementAttribute.Energy, 1079762, 1060446),
                 new SearchCriterionEntry(AosElementAttribute.Fire, 1079763, 1060447),
                 new SearchCriterionEntry(AosElementAttribute.Physical, 1079764, 1060448),
-                new SearchCriterionEntry(AosElementAttribute.Poison, 1079765, 1060449),
+                new SearchCriterionEntry(AosElementAttribute.Poison, 1079765, 1060449)
             }),
             new SearchCriteriaCategory(Category.Stats, 13, 1154540, new[] // Stats
             {
@@ -158,7 +158,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(AosAttribute.BonusMana, 1079406, 1060439),
                 new SearchCriterionEntry(AosAttribute.RegenHits, 1075627, 1060444),
                 new SearchCriterionEntry(AosAttribute.RegenStam, 1079411, 1060443),
-                new SearchCriterionEntry(AosAttribute.RegenMana, 1079410, 1060440),
+                new SearchCriterionEntry(AosAttribute.RegenMana, 1079410, 1060440)
             }),
             new SearchCriteriaCategory(Category.Slayer1, 15, 1154683, new[] // Arachnid/Reptile Slayers
             {
@@ -170,7 +170,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SlayerName.ArachnidDoom, 1079747),
                 new SearchCriterionEntry(SlayerName.ScorpionsBane, 1079743),
                 new SearchCriterionEntry(SlayerName.SpidersDeath, 1079746),
-                new SearchCriterionEntry(SlayerName.Terathan, 1079753),
+                new SearchCriterionEntry(SlayerName.Terathan, 1079753)
             }),
             new SearchCriteriaCategory(Category.Slayer2, 16, 1154684, new[] // Repond/Undead Slayers
             {
@@ -189,7 +189,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SlayerName.TrollSlaughter, 1079754),
                 new SearchCriterionEntry(TalismanSlayerName.Vermin, 1072505),
                 new SearchCriterionEntry(TalismanSlayerName.Undead, 1079752),
-                new SearchCriterionEntry(TalismanSlayerName.Wolf, 1075462),
+                new SearchCriterionEntry(TalismanSlayerName.Wolf, 1075462)
             }),
             new SearchCriteriaCategory(Category.Slayer3, 17, 1154685, new[] // Demon/Fey/Elemental Slayers
             {
@@ -203,7 +203,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SlayerName.FlameDousing, 1079736),
                 new SearchCriterionEntry(SlayerName.ElementalHealth, 1079742),
                 new SearchCriterionEntry(SlayerName.SummerWind, 1079745),
-                new SearchCriterionEntry(SlayerName.WaterDissipation, 1079755),
+                new SearchCriterionEntry(SlayerName.WaterDissipation, 1079755)
             }),
             new SearchCriteriaCategory(Category.RequiredSkill, 18, 1154543, new[] // Required Skill
             {
@@ -211,7 +211,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SkillName.Macing, 1044101),
                 new SearchCriterionEntry(SkillName.Fencing, 1044102),
                 new SearchCriterionEntry(SkillName.Archery, 1044091),
-                new SearchCriterionEntry(SkillName.Throwing, 1044117),
+                new SearchCriterionEntry(SkillName.Throwing, 1044117)
             }),
             new SearchCriteriaCategory(Category.Skill1, 19, 1114255, new[] // Skill Group 1
             {
@@ -219,7 +219,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SkillName.Fencing, 1044102),
                 new SearchCriterionEntry(SkillName.Macing, 1044101),
                 new SearchCriterionEntry(SkillName.Magery, 1044085),
-                new SearchCriterionEntry(SkillName.Musicianship, 1044089),
+                new SearchCriterionEntry(SkillName.Musicianship, 1044089)
             }),
             new SearchCriteriaCategory(Category.Skill2, 20, 1114256, new[] // Skill Group 2
             {
@@ -227,7 +227,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SkillName.Tactics, 1044087),
                 new SearchCriterionEntry(SkillName.AnimalTaming, 1044095),
                 new SearchCriterionEntry(SkillName.Provocation, 1044082),
-                new SearchCriterionEntry(SkillName.SpiritSpeak, 1044092),
+                new SearchCriterionEntry(SkillName.SpiritSpeak, 1044092)
             }),
             new SearchCriteriaCategory(Category.Skill3, 21, 1114257, new[] // Skill Group 3
             {
@@ -236,7 +236,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SkillName.Meditation, 1044106),
                 new SearchCriterionEntry(SkillName.AnimalLore, 1044062),
                 new SearchCriterionEntry(SkillName.Discordance, 1044075),
-                new SearchCriterionEntry(SkillName.Focus, 1044110),
+                new SearchCriterionEntry(SkillName.Focus, 1044110)
             }),
             new SearchCriteriaCategory(Category.Skill4, 22, 1114258, new[] // Skill Group 4
             {
@@ -246,7 +246,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SkillName.Veterinary, 1044099),
                 new SearchCriterionEntry(SkillName.Necromancy, 1044109),
                 new SearchCriterionEntry(SkillName.Bushido, 1044112),
-                new SearchCriterionEntry(SkillName.Mysticism, 1044115),
+                new SearchCriterionEntry(SkillName.Mysticism, 1044115)
             }),
             new SearchCriteriaCategory(Category.Skill5, 23, 1114259, new[] // Skill Group 5
             {
@@ -256,7 +256,7 @@ namespace Server.Engines.VendorSearching
                 new SearchCriterionEntry(SkillName.Archery, 1044091),
                 new SearchCriterionEntry(SkillName.Chivalry, 1044111),
                 new SearchCriterionEntry(SkillName.Ninjitsu, 1044113),
-                new SearchCriterionEntry(SkillName.Throwing, 1044117),
+                new SearchCriterionEntry(SkillName.Throwing, 1044117)
             }),
             new SearchCriteriaCategory(Category.Skill6, 24, 1114260, new[] // Skill Group 6
             {
@@ -267,7 +267,7 @@ namespace Server.Engines.VendorSearching
             new SearchCriteriaCategory(Category.Sort, 25, 1154695, new SearchCriterionEntry[] { /* Sort */
             }),
             new SearchCriteriaCategory(Category.Auction, 26, 1159353, new SearchCriterionEntry[] { /* Auction Item */
-            }),
+            })
         };
     }
 

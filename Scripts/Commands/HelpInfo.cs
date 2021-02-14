@@ -58,7 +58,7 @@ namespace Server.Commands
 
                 attrs = mi.GetCustomAttributes(typeof(AliasesAttribute), false);
 
-                AliasesAttribute aliases = (attrs.Length == 0 ? null : attrs[0] as AliasesAttribute);
+                AliasesAttribute aliases = attrs.Length == 0 ? null : attrs[0] as AliasesAttribute;
 
                 string descString = desc.Description.Replace("<", "(").Replace(">", ")");
 
@@ -214,8 +214,8 @@ namespace Server.Commands
 
                     return;
                 }
-                else
-                    e.Mobile.SendMessage(string.Format("Command '{0}' not found!", arg));
+
+                e.Mobile.SendMessage(string.Format("Command '{0}' not found!", arg));
             }
 
             e.Mobile.SendGump(new CommandListGump(0, e.Mobile, null));

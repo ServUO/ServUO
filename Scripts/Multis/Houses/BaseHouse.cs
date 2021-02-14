@@ -26,7 +26,6 @@ namespace Server.Multis
         public static int MaxFriends => 140;
         public static int MaxBans => 140;
 
-        #region Dynamic decay system
         private DecayLevel m_CurrentStage;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -47,10 +46,6 @@ namespace Server.Multis
             else
                 NextDecayStage = DateTime.MinValue;
         }
-
-        #endregion
-
-        public const bool DecayEnabled = true;
 
         public static void Decay_OnTick()
         {
@@ -160,13 +155,11 @@ namespace Server.Multis
 
                 if (!CanDecay)
                 {
-                    if (DynamicDecay.Enabled)
-                        ResetDynamicDecay();
-
+                    ResetDynamicDecay();
                     LastRefreshed = DateTime.UtcNow;
                     result = DecayLevel.Ageless;
                 }
-                else if (DynamicDecay.Enabled)
+                else
                 {
                     DecayLevel stage = m_CurrentStage;
 
@@ -177,10 +170,6 @@ namespace Server.Multis
                         result = DecayLevel.DemolitionPending;
                     else
                         result = stage;
-                }
-                else
-                {
-                    result = GetOldDecayLevel();
                 }
 
                 if (result != m_LastDecayLevel)
@@ -195,27 +184,6 @@ namespace Server.Multis
             }
         }
 
-        public DecayLevel GetOldDecayLevel()
-        {
-            TimeSpan timeAfterRefresh = DateTime.UtcNow - LastRefreshed;
-            int percent = (int)(timeAfterRefresh.Ticks * 1000 / DecayPeriod.Ticks);
-
-            if (percent >= 1000) // 100.0%
-                return (HasRentedVendors || VendorInventories.Count > 0) ? DecayLevel.DemolitionPending : DecayLevel.Collapsed;
-            else if (percent >= 950) // 95.0% - 99.9%
-                return DecayLevel.IDOC;
-            else if (percent >= 750) // 75.0% - 94.9%
-                return DecayLevel.Greatly;
-            else if (percent >= 500) // 50.0% - 74.9%
-                return DecayLevel.Fairly;
-            else if (percent >= 250) // 25.0% - 49.9%
-                return DecayLevel.Somewhat;
-            else if (percent >= 005) // 00.5% - 24.9%
-                return DecayLevel.Slightly;
-
-            return DecayLevel.LikeNew;
-        }
-
         public virtual bool RefreshDecay()
         {
             if (DecayType == DecayType.Condemned)
@@ -224,10 +192,8 @@ namespace Server.Multis
             DecayLevel oldLevel = DecayLevel;
 
             LastRefreshed = DateTime.UtcNow;
-
-            if (DynamicDecay.Enabled)
-                ResetDynamicDecay();
-
+            ResetDynamicDecay();
+            
             if (Sign != null)
                 Sign.InvalidateProperties();
 
@@ -411,7 +377,7 @@ namespace Server.Multis
                     }
                 }
 
-                fromLockdowns += list.Where(x => !LockDowns.ContainsKey(x.Item)).Count();
+                fromLockdowns += list.Count(x => !LockDowns.ContainsKey(x.Item));
             }
 
             fromLockdowns += GetLockdowns();
@@ -1010,7 +976,7 @@ namespace Server.Multis
             v += GetCommissionVendorLockdowns();
 
             if (Secures != null)
-                v += Secures.Where(x => !LockDowns.ContainsKey(x.Item)).Count();
+                v += Secures.Count(x => !LockDowns.ContainsKey(x.Item));
 
             return v;
         }
@@ -3040,15 +3006,8 @@ namespace Server.Multis
 
             writer.WriteItemList(Carpets, true);
 
-            if (!DynamicDecay.Enabled)
-            {
-                writer.Write(-1);
-            }
-            else
-            {
-                writer.Write((int)m_CurrentStage);
-                writer.Write(NextDecayStage);
-            }
+            writer.Write((int)m_CurrentStage);
+            writer.Write(NextDecayStage);
 
             writer.Write(m_RelativeBanLocation);
 
@@ -3153,7 +3112,6 @@ namespace Server.Multis
             int version = reader.ReadInt();
 
             int count;
-            bool loadedDynamicDecay = false;
 
             Visits = new Dictionary<Mobile, DateTime>();
 
@@ -3184,12 +3142,8 @@ namespace Server.Multis
                     {
                         int stage = reader.ReadInt();
 
-                        if (stage != -1)
-                        {
-                            m_CurrentStage = (DecayLevel)stage;
-                            NextDecayStage = reader.ReadDateTime();
-                            loadedDynamicDecay = true;
-                        }
+                        m_CurrentStage = (DecayLevel)stage;
+                        NextDecayStage = reader.ReadDateTime();
 
                         goto case 14;
                     }
@@ -3414,16 +3368,6 @@ namespace Server.Multis
 
             if (version < 11)
                 LastRefreshed = DateTime.UtcNow + TimeSpan.FromHours(24 * Utility.RandomDouble());
-
-            if (DynamicDecay.Enabled && !loadedDynamicDecay)
-            {
-                DecayLevel old = GetOldDecayLevel();
-
-                if (old == DecayLevel.DemolitionPending)
-                    old = DecayLevel.Collapsed;
-
-                SetDynamicDecay(old);
-            }
 
             if (!CheckDecay())
             {

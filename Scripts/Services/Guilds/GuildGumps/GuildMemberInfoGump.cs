@@ -42,7 +42,7 @@ namespace Server.Guilds
 
             AddBackground(20, 180, 150, 26, 0x2486);
             AddButton(25, 185, 0x845, 0x846, 1, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(50, 183, 110, 26, 1062993, (m_ToLeader) ? 0x990000 : 0, false, false); // Promote
+            AddHtmlLocalized(50, 183, 110, 26, 1062993, m_ToLeader ? 0x990000 : 0, false, false); // Promote
 
             AddBackground(180, 180, 150, 26, 0x2486);
             AddButton(185, 185, 0x845, 0x846, 3, GumpButtonType.Reply, 0);
@@ -54,7 +54,7 @@ namespace Server.Guilds
 
             AddBackground(180, 210, 150, 26, 0x2486);
             AddButton(185, 215, 0x845, 0x846, 5, GumpButtonType.Reply, 0);
-            AddHtmlLocalized(210, 213, 110, 26, 1062997, (m_toKick) ? 0x5000 : 0, false, false); // Kick
+            AddHtmlLocalized(210, 213, 110, 26, 1062997, m_toKick ? 0x5000 : 0, false, false); // Kick
         }
 
         public override void OnResponse(NetState sender, RelayInfo info)
@@ -71,7 +71,7 @@ namespace Server.Guilds
             {
                 case 1:	//Promote
                     {
-                        if (playerRank.GetFlag(RankFlags.CanPromoteDemote) && ((playerRank.Rank - 1) > targetRank.Rank || (playerRank == RankDefinition.Leader && playerRank.Rank > targetRank.Rank)))
+                        if (playerRank.GetFlag(RankFlags.CanPromoteDemote) && (playerRank.Rank - 1 > targetRank.Rank || playerRank == RankDefinition.Leader && playerRank.Rank > targetRank.Rank))
                         {
                             targetRank = RankDefinition.Ranks[targetRank.Rank + 1];
 
@@ -165,7 +165,7 @@ namespace Server.Guilds
                     }
                 case 5:	//Kick
                     {
-                        if ((playerRank.GetFlag(RankFlags.RemovePlayers) && playerRank.Rank > targetRank.Rank) || (playerRank.GetFlag(RankFlags.RemoveLowestRank) && targetRank == RankDefinition.Lowest))
+                        if (playerRank.GetFlag(RankFlags.RemovePlayers) && playerRank.Rank > targetRank.Rank || playerRank.GetFlag(RankFlags.RemoveLowestRank) && targetRank == RankDefinition.Lowest)
                         {
                             if (m_toKick)
                             {

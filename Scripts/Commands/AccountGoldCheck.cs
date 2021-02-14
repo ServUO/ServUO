@@ -26,8 +26,7 @@ namespace Server.Items
                     {
                         foreach (KeyValuePair<string, long> kvp in table.OrderBy(k => -k.Value))
                         {
-                            op.WriteLine(
-                                string.Format("{0} currency: {1}", kvp.Key, kvp.Value.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))));
+                            op.WriteLine("{0} currency: {1}", kvp.Key, kvp.Value.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US")));
                         }
 
                         op.WriteLine("");

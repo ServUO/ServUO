@@ -56,7 +56,7 @@ namespace Server.Mobiles
             {
                 if (!from.HasGump(typeof(JosefSkimmonsGump)))
                 {
-                    from.SendGump(new JosefSkimmonsGump(from));
+                    from.SendGump(new JosefSkimmonsGump());
                 }
             }
             else
@@ -88,7 +88,7 @@ namespace Server.Mobiles
 
                         if (!m.HasGump(typeof(JosefSkimmonsCompleteGump)))
                         {
-                            m.SendGump(new JosefSkimmonsCompleteGump(m));
+                            m.SendGump(new JosefSkimmonsCompleteGump());
                         }
                     }
                     else
@@ -114,7 +114,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
@@ -130,10 +130,10 @@ namespace Server.Gumps
 
         private static void JosefSkimmonsCompleteGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new JosefSkimmonsCompleteGump(e.Mobile));
+            e.Mobile.SendGump(new JosefSkimmonsCompleteGump());
         }
 
-        public JosefSkimmonsCompleteGump(Mobile owner) : base(50, 50)
+        public JosefSkimmonsCompleteGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -191,10 +191,10 @@ namespace Server.Gumps
 
         private static void JosefSkimmonsGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new JosefSkimmonsGump(e.Mobile));
+            e.Mobile.SendGump(new JosefSkimmonsGump());
         }
 
-        public JosefSkimmonsGump(Mobile owner) : base(50, 50)
+        public JosefSkimmonsGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;

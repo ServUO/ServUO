@@ -51,8 +51,8 @@ namespace Server.Items
             }
         }
 
-        private static readonly ArisenEntry[] m_Entries = new ArisenEntry[]
-            {
+        private static readonly ArisenEntry[] m_Entries =
+        {
                 new ArisenEntry( Map.TerMur, new Point3D( 996, 3862, -42 ), "EffeteUndeadGargoyle", 5, 20, 15, TimeSpan.FromSeconds( 15.0 ), TimeSpan.FromSeconds( 30.0 ) ),
                 new ArisenEntry( Map.TerMur, new Point3D( 996, 3863, -42 ), "EffetePutridGargoyle", 5, 20, 15, TimeSpan.FromSeconds( 30.0 ), TimeSpan.FromSeconds( 60.0 ) ),
                 new ArisenEntry( Map.TerMur, new Point3D( 996, 3864, -42 ), "GargoyleShade",        2, 15, 10, TimeSpan.FromSeconds( 60.0 ), TimeSpan.FromSeconds( 90.0 ) ),
@@ -132,11 +132,7 @@ namespace Server.Items
         private bool m_ForceDeactivate;
 
         [CommandProperty(AccessLevel.Seer)]
-        public bool ForceDeactivate
-        {
-            get { return m_ForceDeactivate; }
-            set { m_ForceDeactivate = value; }
-        }
+        public bool ForceDeactivate { get => m_ForceDeactivate; set => m_ForceDeactivate = value; }
 
         private ArisenController()
             : base(1)

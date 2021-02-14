@@ -31,10 +31,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Bonus
         {
-            get
-            {
-                return m_Bonus;
-            }
+            get => m_Bonus;
             set
             {
                 m_Bonus = value;
@@ -64,13 +61,13 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (m_Bonus != 0 && parent is Mobile)
+            if (m_Bonus != 0 && parent is Mobile mobile)
             {
                 if (m_SkillMod != null)
                     m_SkillMod.Remove();
 
                 m_SkillMod = new DefaultSkillMod(SkillName.Blacksmith, true, m_Bonus);
-                ((Mobile)parent).AddSkillMod(m_SkillMod);
+                mobile.AddSkillMod(m_SkillMod);
             }
         }
 

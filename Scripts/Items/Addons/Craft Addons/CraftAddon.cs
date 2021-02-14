@@ -190,10 +190,8 @@ namespace Server.Items
 
                 if (house != null && addon != null && house.HasSecureAccess(from, addon.Level))
                 {
-                    if (dropped is ITool && !(dropped is BaseRunicTool))
+                    if (dropped is ITool tool && !(tool is BaseRunicTool))
                     {
-                        ITool tool = dropped as ITool;
-
                         if (tool.CraftSystem == addon.CraftSystem)
                         {
                             AddonToolComponent comp = addon.Tools.FirstOrDefault(t => t != null);

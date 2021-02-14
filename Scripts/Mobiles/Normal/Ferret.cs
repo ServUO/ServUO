@@ -57,8 +57,8 @@ namespace Server.Mobiles
         public override FoodType FavoriteFood => FoodType.Fish;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is Ferret && m.InRange(this, 3) && m.Alive)
-                Talk((Ferret)m);
+            if (m is Ferret ferret && ferret.InRange(this, 3) && ferret.Alive)
+                Talk(ferret);
         }
 
         public void Talk()
@@ -76,26 +76,24 @@ namespace Server.Mobiles
                 Say(m_Vocabulary[Utility.Random(m_Vocabulary.Length)]);
 
                 if (to != null && Utility.RandomBool())
-                    Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 8)), delegate () { to.Talk(); });
+                    Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(5, 8)), delegate { to.Talk(); });
 
                 m_CanTalk = false;
 
-                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)), delegate () { m_CanTalk = true; });
+                Timer.DelayCall(TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30)), delegate { m_CanTalk = true; });
             }
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_CanTalk = true;
         }

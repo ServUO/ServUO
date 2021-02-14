@@ -24,7 +24,6 @@ namespace Server.Gumps
                 m_Galleon.SecurityEntry = m_Entry;
             }
 
-            bool isAccessed = m_Entry.Manifest.ContainsKey(player);
             bool inGuild = m_Entry.IsInGuild(player);
             bool inParty = m_Entry.IsInParty(player);
             bool isPublic = m_Entry.IsPublic;

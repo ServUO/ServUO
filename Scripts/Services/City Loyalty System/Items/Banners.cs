@@ -28,15 +28,15 @@ namespace Server.Engines.CityLoyalty
         {
             BannerInfo = new Dictionary<City, int[]>();
             //ID     Cliloc
-            BannerInfo[City.Moonglow] = new int[] { 0x4B63, 1098171 };
-            BannerInfo[City.Britain] = new int[] { 0x4B64, 1098172 };
-            BannerInfo[City.Jhelom] = new int[] { 0x4B65, 1098173 };
-            BannerInfo[City.Yew] = new int[] { 0x4B66, 1098174 };
-            BannerInfo[City.Minoc] = new int[] { 0x4B67, 1098175 };
-            BannerInfo[City.Trinsic] = new int[] { 0x4B62, 1098170 };
-            BannerInfo[City.SkaraBrae] = new int[] { 0x4B6A, 1098178 };
-            BannerInfo[City.NewMagincia] = new int[] { 0x4B69, 1098177 };
-            BannerInfo[City.Vesper] = new int[] { 0x4B68, 1098176 };
+            BannerInfo[City.Moonglow] = new[] { 0x4B63, 1098171 };
+            BannerInfo[City.Britain] = new[] { 0x4B64, 1098172 };
+            BannerInfo[City.Jhelom] = new[] { 0x4B65, 1098173 };
+            BannerInfo[City.Yew] = new[] { 0x4B66, 1098174 };
+            BannerInfo[City.Minoc] = new[] { 0x4B67, 1098175 };
+            BannerInfo[City.Trinsic] = new[] { 0x4B62, 1098170 };
+            BannerInfo[City.SkaraBrae] = new[] { 0x4B6A, 1098178 };
+            BannerInfo[City.NewMagincia] = new[] { 0x4B69, 1098177 };
+            BannerInfo[City.Vesper] = new[] { 0x4B68, 1098176 };
         }
 
         public CityBanner(Serial serial) : base(serial)
@@ -54,7 +54,7 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             City = (City)reader.ReadInt();
         }
@@ -111,7 +111,7 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             City = (City)reader.ReadInt();
         }

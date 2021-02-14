@@ -7,7 +7,6 @@ namespace Server.Engines.Quests
     public class ATangledWeb : BaseQuest
     {
         public ATangledWeb()
-            : base()
         {
             AddObjective(new BloodCreaturesObjective(typeof(IBloodCreature), "blood creatures", 12));
 
@@ -36,15 +35,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class BloodCreaturesObjective : SlayObjective
@@ -59,21 +56,19 @@ namespace Server.Engines.Quests
                 base.OnKill(killed);
 
                 if (!Completed)
-                    Quest.Owner.SendLocalizedMessage(1095037); // Blood from the creature goes into Jaacar’s barrel.
+                    Quest.Owner.SendLocalizedMessage(1095037); // Blood from the creature goes into Jaacarâ€™s barrel.
             }
 
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

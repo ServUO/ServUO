@@ -42,7 +42,7 @@ namespace Server.Services.Virtues
 
             try
             {
-                if ((pm.LastSacrificeLoss + LossDelay) < DateTime.UtcNow)
+                if (pm.LastSacrificeLoss + LossDelay < DateTime.UtcNow)
                 {
                     if (VirtueHelper.Atrophy(from, VirtueName.Sacrifice, LossAmount))
                         from.SendLocalizedMessage(1052041); // You have lost some Sacrifice.
@@ -127,7 +127,7 @@ namespace Server.Services.Virtues
             {
                 from.SendLocalizedMessage(1052017); // You do not have enough fame to sacrifice.
             }
-            else if (DateTime.UtcNow < (pm.LastSacrificeGain + GainDelay))
+            else if (DateTime.UtcNow < pm.LastSacrificeGain + GainDelay)
             {
                 from.SendLocalizedMessage(1052016); // You must wait approximately one day before sacrificing again.
             }
@@ -176,11 +176,10 @@ namespace Server.Services.Virtues
 
         public static bool ValidateCreature(Mobile m)
         {
-            if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+            if (m is BaseCreature creature && (creature.Controlled || creature.Summoned))
                 return false;
 
-            return (m is Lich || m is Succubus || m is Daemon || m is EvilMage || m is EnslavedGargoyle ||
-                    m is GargoyleEnforcer);
+            return m is Lich || m is Succubus || m is Daemon || m is EvilMage || m is EnslavedGargoyle || m is GargoyleEnforcer;
         }
 
         private class InternalTarget : Target

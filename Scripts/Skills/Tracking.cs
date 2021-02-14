@@ -30,7 +30,7 @@ namespace Server.SkillHandlers
 
         public static void AddInfo(Mobile tracker, Mobile target)
         {
-            TrackingInfo info = new TrackingInfo(tracker, target);
+            TrackingInfo info = new TrackingInfo(target);
             m_Table[tracker] = info;
         }
 
@@ -45,7 +45,7 @@ namespace Server.SkillHandlers
             int xDelta = info.m_Location.X - target.X;
             int yDelta = info.m_Location.Y - target.Y;
 
-            double bonus = Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
+            double bonus = Math.Sqrt(xDelta * xDelta + yDelta * yDelta);
 
             m_Table.Remove(tracker);
 
@@ -59,13 +59,11 @@ namespace Server.SkillHandlers
 
         public class TrackingInfo
         {
-            public Mobile m_Tracker;
             public Mobile m_Target;
             public Point2D m_Location;
             public Map m_Map;
-            public TrackingInfo(Mobile tracker, Mobile target)
+            public TrackingInfo(Mobile target)
             {
-                m_Tracker = tracker;
                 m_Target = target;
                 m_Location = new Point2D(target.X, target.Y);
                 m_Map = target.Map;
@@ -160,11 +158,11 @@ namespace Server.SkillHandlers
             {
                 Mobile m = list[i];
 
-                AddItem(20 + ((i % 4) * 100), 20 + ((i / 4) * 155), ShrinkTable.Lookup(m));
-                AddButton(20 + ((i % 4) * 100), 130 + ((i / 4) * 155), 4005, 4007, i + 1, GumpButtonType.Reply, 0);
+                AddItem(20 + i % 4 * 100, 20 + i / 4 * 155, ShrinkTable.Lookup(m));
+                AddButton(20 + i % 4 * 100, 130 + i / 4 * 155, 4005, 4007, i + 1, GumpButtonType.Reply, 0);
 
                 if (m.Name != null)
-                    AddHtml(20 + ((i % 4) * 100), 90 + ((i / 4) * 155), 90, 40, m.Name, false, false);
+                    AddHtml(20 + i % 4 * 100, 90 + i / 4 * 155, 90, 40, m.Name, false, false);
             }
         }
 
@@ -268,17 +266,17 @@ namespace Server.SkillHandlers
 
         private static bool IsAnimal(Mobile m)
         {
-            return (!m.Player && m.Body.IsAnimal);
+            return !m.Player && m.Body.IsAnimal;
         }
 
         private static bool IsMonster(Mobile m)
         {
-            return (!m.Player && m.Body.IsMonster);
+            return !m.Player && m.Body.IsMonster;
         }
 
         private static bool IsHumanNPC(Mobile m)
         {
-            return (!m.Player && m.Body.IsHuman);
+            return !m.Player && m.Body.IsHuman;
         }
 
         private static bool IsPlayer(Mobile m)
@@ -370,7 +368,7 @@ namespace Server.SkillHandlers
                 return;
             }
 
-            if (m_From.NetState == null || m_From.Deleted || m_Target.Deleted || m_From.Map != m_Target.Map || !m_From.InRange(m_Target, m_Range) || m_Target is Mobile && (((Mobile)m_Target).Hidden && ((Mobile)m_Target).AccessLevel > m_From.AccessLevel))
+            if (m_From.NetState == null || m_From.Deleted || m_Target.Deleted || m_From.Map != m_Target.Map || !m_From.InRange(m_Target, m_Range) || m_Target is Mobile m && m.Hidden && m.AccessLevel > m_From.AccessLevel)
             {
                 m_Arrow.Stop();
                 Stop();

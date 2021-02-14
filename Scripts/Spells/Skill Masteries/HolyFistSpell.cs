@@ -83,7 +83,7 @@ namespace Server.Spells.SkillMasteries
 
                     damage += Utility.RandomMinMax(0, 5);
 
-                    if (m is BaseCreature && IsUndead((BaseCreature)m))
+                    if (m is BaseCreature bc && IsUndead(bc))
                         damage *= 1.5;
                     else if (m is PlayerMobile)
                         damage = Math.Min(35, damage);
@@ -91,22 +91,20 @@ namespace Server.Spells.SkillMasteries
                     Caster.MovingParticles(m, 0x9BB5, 7, 0, false, true, 9502, 4019, 0x160);
                     Caster.PlaySound(0x5CE);
 
-                    if (m is Mobile)
+                    if (m is Mobile mobile)
                     {
-                        damage *= GetDamageScalar((Mobile)m);
+                        damage *= GetDamageScalar(mobile);
                     }
 
-                    int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is Mobile ? Caster.Player && ((Mobile)m).Player : false);
+                    int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, m, CastSkill, m is Mobile pm && Caster.Player && pm.Player);
 
                     damage *= (100 + sdiBonus);
                     damage /= 100;
 
                     SpellHelper.Damage(this, target, damage, 0, 0, 0, 0, 100);
 
-                    if (target is Mobile && !CheckResisted((Mobile)target) && ((Mobile)target).NetState != null)
+                    if (target is Mobile mob && !CheckResisted(mob) && mob.NetState != null)
                     {
-                        Mobile mob = target as Mobile;
-
                         if (!TransformationSpellHelper.UnderTransformation(mob, typeof(AnimalForm)))
                             mob.SendSpeedControl(SpeedControlType.WalkSpeed);
 

@@ -51,10 +51,10 @@ namespace Server.Engines.BulkOrders
 
                     if (vi != null && !vi.IsForSale)
                     {
-                        if (m_Object is BOBLargeEntry)
-                            price = ((BOBLargeEntry)m_Object).Price;
-                        else if (m_Object is BOBSmallEntry)
-                            price = ((BOBSmallEntry)m_Object).Price;
+                        if (m_Object is BOBLargeEntry largeEntry)
+                            price = largeEntry.Price;
+                        else if (m_Object is BOBSmallEntry smallEntry)
+                            price = smallEntry.Price;
                     }
 
                     if (price != m_Price)
@@ -69,10 +69,10 @@ namespace Server.Engines.BulkOrders
                     {
                         Item item = null;
 
-                        if (m_Object is BOBLargeEntry)
-                            item = ((BOBLargeEntry)m_Object).Reconstruct();
-                        else if (m_Object is BOBSmallEntry)
-                            item = ((BOBSmallEntry)m_Object).Reconstruct();
+                        if (m_Object is BOBLargeEntry largeEntry)
+                            item = largeEntry.Reconstruct();
+                        else if (m_Object is BOBSmallEntry smallEntry)
+                            item = smallEntry.Reconstruct();
 
                         if (item == null)
                         {
@@ -84,14 +84,14 @@ namespace Server.Engines.BulkOrders
 
                             Container pack = m_From.Backpack;
 
-                            if ((pack == null) || ((pack != null) && (!pack.CheckHold(m_From, item, true, true, 0, item.PileWeight + item.TotalWeight))))
+                            if (pack == null || !pack.CheckHold(m_From, item, true, true, 0, item.PileWeight + item.TotalWeight))
                             {
                                 pv.SayTo(m_From, 503204); // You do not have room in your backpack for this
                                 m_From.SendGump(new BOBGump(m_From, m_Book, m_Page, null));
                             }
                             else
                             {
-                                if ((pack != null && pack.ConsumeTotal(typeof(Gold), price)) || Banker.Withdraw(m_From, price))
+                                if (pack.ConsumeTotal(typeof(Gold), price) || Banker.Withdraw(m_From, price))
                                 {
                                     m_Book.Entries.Remove(m_Object);
                                     m_Book.InvalidateProperties();

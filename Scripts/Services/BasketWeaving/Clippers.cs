@@ -238,15 +238,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -264,7 +262,7 @@ namespace Server.Items
 
             AddBackground(50, 89, 508, 195, 2600);
 
-            AddLabel(103, 114, 0, @"Choose a Topiary:");
+            AddLabel(103, 114, 0, "Choose a Topiary:");
 
             AddButton(92, 155, 1209, 1210, 1, GumpButtonType.Reply, 0);
             AddItem(75, 178, 18713);

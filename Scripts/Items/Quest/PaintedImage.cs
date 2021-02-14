@@ -24,10 +24,7 @@ namespace Server.Engines.Quests.Collector
         [CommandProperty(AccessLevel.GameMaster)]
         public ImageType Image
         {
-            get
-            {
-                return m_Image;
-            }
+            get => m_Image;
             set
             {
                 m_Image = value;
@@ -54,7 +51,6 @@ namespace Server.Engines.Quests.Collector
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.WriteEncodedInt((int)m_Image);
@@ -63,8 +59,7 @@ namespace Server.Engines.Quests.Collector
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Image = (ImageType)reader.ReadEncodedInt();
         }

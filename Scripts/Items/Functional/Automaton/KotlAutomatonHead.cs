@@ -10,7 +10,7 @@ namespace Server.Items
         private CraftResource _Resource;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get => _Resource; set { _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [Constructable]
         public KotlAutomatonHead()
@@ -75,7 +75,6 @@ namespace Server.Items
             return automaton;
         }
 
-        #region ICraftable Members
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
         {
             if (typeRes == null)
@@ -85,7 +84,6 @@ namespace Server.Items
 
             return quality;
         }
-        #endregion
 
         public KotlAutomatonHead(Serial serial)
             : base(serial)
@@ -95,15 +93,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

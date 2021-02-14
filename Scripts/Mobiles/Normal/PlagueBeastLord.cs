@@ -52,14 +52,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile OpenedBy
         {
-            get
-            {
-                return m_OpenedBy;
-            }
-            set
-            {
-                m_OpenedBy = value;
-            }
+            get => m_OpenedBy;
+            set => m_OpenedBy = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsBleeding
@@ -255,7 +249,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_OpenedBy);
@@ -273,8 +266,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_OpenedBy = reader.ReadMobile();
 

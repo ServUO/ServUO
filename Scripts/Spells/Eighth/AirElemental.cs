@@ -37,7 +37,7 @@ namespace Server.Spells.Eighth
         {
             if (CheckSequence())
             {
-                TimeSpan duration = TimeSpan.FromSeconds((2 * Caster.Skills.Magery.Fixed) / 5);
+                TimeSpan duration = TimeSpan.FromSeconds(2 * Caster.Skills.Magery.Fixed / 5);
 
                 SpellHelper.Summon(new SummonedAirElemental(), Caster, 0x217, duration, false, false);
             }

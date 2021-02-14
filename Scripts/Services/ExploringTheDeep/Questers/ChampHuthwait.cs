@@ -12,7 +12,6 @@ namespace Server.Mobiles
 
         [Constructable]
         public ChampHuthwait()
-            : base()
         {
             Name = "Champ Huthwait";
             Title = "The Seedy Cobbler";
@@ -42,7 +41,7 @@ namespace Server.Mobiles
             {
                 if (!m.HasGump(typeof(ChampHuthwaitGump)))
                 {
-                    m.SendGump(new ChampHuthwaitGump(m));
+                    m.SendGump(new ChampHuthwaitGump());
                 }
             }
             else
@@ -66,7 +65,7 @@ namespace Server.Mobiles
 
                         if (!m.HasGump(typeof(ChampHuthwaitCompleteGump)))
                         {
-                            m.SendGump(new ChampHuthwaitCompleteGump(m));
+                            m.SendGump(new ChampHuthwaitCompleteGump());
                         }
                     }
                     else
@@ -95,7 +94,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }
@@ -111,10 +110,10 @@ namespace Server.Gumps
 
         private static void ChampHuthwaitGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new ChampHuthwaitGump(e.Mobile));
+            e.Mobile.SendGump(new ChampHuthwaitGump());
         }
 
-        public ChampHuthwaitGump(Mobile owner) : base(50, 50)
+        public ChampHuthwaitGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -176,8 +175,6 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:
@@ -198,10 +195,10 @@ namespace Server.Gumps
 
         private static void ChampHuthwaitCompleteGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new ChampHuthwaitCompleteGump(e.Mobile));
+            e.Mobile.SendGump(new ChampHuthwaitCompleteGump());
         }
 
-        public ChampHuthwaitCompleteGump(Mobile owner) : base(50, 50)
+        public ChampHuthwaitCompleteGump() : base(50, 50)
         {
             Closable = false;
             Disposable = true;
@@ -239,8 +236,6 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

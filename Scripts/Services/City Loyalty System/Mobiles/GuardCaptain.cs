@@ -21,7 +21,7 @@ namespace Server.Engines.CityLoyalty
         public DateTime NextShout { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
+        public CityLoyaltySystem CitySystem { get => CityLoyaltySystem.GetCityInstance(City); set { } }
 
         public override bool IsInvulnerable => true;
 
@@ -62,15 +62,15 @@ namespace Server.Engines.CityLoyalty
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (CitySystem != null && m is PlayerMobile && InRange(m.Location, 2))
+            if (CitySystem != null && m is PlayerMobile pm && InRange(pm.Location, 2))
             {
-                Raider raider = ((PlayerMobile)m).AllFollowers.FirstOrDefault(mob => mob is Raider && mob.InRange(Location, 2)) as Raider;
+                Raider raider = pm.AllFollowers.FirstOrDefault(mob => mob is Raider && mob.InRange(Location, 2)) as Raider;
 
                 if (raider != null)
                 {
-                    CitySystem.AwardLove(m, 1000);
+                    CitySystem.AwardLove(pm, 1000);
 
-                    SayTo(m, 1152250, m.Name); // Thank you, ~1_name~, for your assistance during these difficult times.
+                    SayTo(pm, 1152250, pm.Name); // Thank you, ~1_name~, for your assistance during these difficult times.
                     raider.Delete();
                 }
             }
@@ -82,14 +82,14 @@ namespace Server.Engines.CityLoyalty
         {
             base.GetContextMenuEntries(from, entries);
 
-            if (from is PlayerMobile)
-                entries.Add(new InternalEntry(from as PlayerMobile, this));
+            if (from is PlayerMobile pm)
+                entries.Add(new InternalEntry(pm, this));
         }
 
         public class InternalEntry : ContextMenuEntry
         {
-            public PlayerMobile Player { get; set; }
-            public GuardCaptain Guard { get; set; }
+            public PlayerMobile Player { get; }
+            public GuardCaptain Guard { get; }
 
             public InternalEntry(PlayerMobile from, GuardCaptain guard)
                 : base(1152366, 3) // City Banner
@@ -210,7 +210,8 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
 			Frozen = true;
 
             City = (City)reader.ReadInt();

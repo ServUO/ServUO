@@ -72,7 +72,7 @@ namespace Server.Engines.TreasuresOfDoom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Instance = this;
         }

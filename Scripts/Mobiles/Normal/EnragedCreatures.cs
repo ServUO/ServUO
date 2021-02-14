@@ -39,7 +39,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -82,7 +82,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -125,7 +125,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -154,7 +154,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -183,7 +183,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -246,11 +246,11 @@ namespace Server.Mobiles
             else if (!Combat(SummonMaster))
             {
                 BaseCreature bc = null;
-                if (Combatant is BaseCreature)
+                if (Combatant is BaseCreature creature)
                 {
-                    bc = (BaseCreature)Combatant;
+                    bc = creature;
                 }
-                if (Combatant is PlayerMobile || (bc != null && (bc.Controlled || bc.SummonMaster != null)))
+                if (Combatant is PlayerMobile || bc != null && (bc.Controlled || bc.SummonMaster != null))
                 {
                     SummonMaster.Combatant = Combatant;
                 }
@@ -276,7 +276,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private bool Combat(Mobile mobile)
@@ -287,7 +287,8 @@ namespace Server.Mobiles
             {
                 return false;
             }
-            else if (combatant.IsDeadBondedPet || !combatant.Alive)
+
+            if (combatant.IsDeadBondedPet || !combatant.Alive)
             {
                 return false;
             }

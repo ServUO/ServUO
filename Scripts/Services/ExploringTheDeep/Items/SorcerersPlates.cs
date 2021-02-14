@@ -128,7 +128,7 @@ namespace Server.Items
 
         public bool Validate(SorcerersPlate plate)
         {
-            return (plate != null && plate.Reg != null && !plate.Reg.Deleted);
+            return plate != null && plate.Reg != null && !plate.Reg.Deleted;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -177,7 +177,7 @@ namespace Server.Items
             BrightDaemonBlood,
             MightyMandrake,
             BurlyBone
-        };
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SorcerersPlateController Controller => m_Controller;
@@ -185,10 +185,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public RegsType Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get => m_Type;
             set
             {
                 m_Type = value;
@@ -199,10 +196,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Item Reg
         {
-            get
-            {
-                return m_Reg;
-            }
+            get => m_Reg;
             set
             {
                 m_Reg = value;
@@ -295,10 +289,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Item)
+                if (o is Item item)
                 {
-                    Item item = (Item)o;
-
                     if (!item.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1054107); // This item must be in your backpack.

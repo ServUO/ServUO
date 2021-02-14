@@ -197,9 +197,9 @@ namespace Server.Items
             {
                 base.GetProperties(list);
 
-                if (Addon is SkullRugAddon)
+                if (Addon is SkullRugAddon addon)
                 {
-                    list.Add(1150101, ((SkullRugAddon)Addon).ResourceCount.ToString()); // Treasure Maps: ~1_val~
+                    list.Add(1150101, addon.ResourceCount.ToString()); // Treasure Maps: ~1_val~
                 }
             }
 

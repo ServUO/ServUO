@@ -30,15 +30,18 @@ namespace Server.Engines.Quests
 
             while (j < player.DoneQuests.Count && player.DoneQuests[j].QuestType != m_Quest)
             {
-                //if(player.Murderer && this.m_Quest == typeof(ResponsibilityQuest)  && player.DoneQuests[j].QuestType.IsSubclassOf(typeof(
-
                 j += 1;
             }
 
             if (j == player.DoneQuests.Count)
+            {
                 return false;
-            else if (delete)
+            }
+
+            if (delete)
+            {
                 player.DoneQuests.RemoveAt(j);
+            }
 
             return true;
         }
@@ -186,8 +189,10 @@ namespace Server.Engines.Quests
 
         private void SayInstructions(object args)
         {
-            if (args is List<object>)
-                SayInstructions((List<object>)args);
+            if (args is List<object> list)
+            {
+                SayInstructions(list);
+            }
         }
 
         public void SayInstructions(List<object> incomplete)
@@ -202,8 +207,10 @@ namespace Server.Engines.Quests
 
         private void SayStory(object args)
         {
-            if (args is Mobile)
-                SayStory((Mobile)args);
+            if (args is Mobile mobile)
+            {
+                SayStory(mobile);
+            }
         }
 
         public void SayStory(Mobile m)
@@ -244,15 +251,15 @@ namespace Server.Engines.Quests
 
         public static HeritageQuester Pending(Mobile m)
         {
-            return m_Pending.ContainsKey(m) ? m_Pending[m] as HeritageQuester : null;
+            return m_Pending.ContainsKey(m) ? m_Pending[m] : null;
         }
 
         public static void Say(Mobile m, object message)
         {
-            if (message is int)
-                m.Say((int)message);
-            else if (message is string)
-                m.Say((string)message);
+            if (message is int i)
+                m.Say(i);
+            else if (message is string s)
+                m.Say(s);
         }
 
         public static bool Check(Mobile m)
@@ -294,15 +301,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Quests = new List<HeritageQuestInfo>();
             m_Objectives = new List<object>();

@@ -1,6 +1,7 @@
 #region References
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Threading;
 
 using Server.Diagnostics;
@@ -18,15 +19,15 @@ namespace Server.Network
 
 		public MessagePump()
 		{
-			var ipep = Listener.EndPoints;
+			System.Net.IPEndPoint[] ipep = Listener.EndPoints;
 
 			Listeners = new Listener[ipep.Length];
 
-			var success = false;
+			bool success = false;
 
 			do
 			{
-				for (var i = 0; i < ipep.Length; i++)
+				for (int i = 0; i < ipep.Length; i++)
 				{
 					Listeners[i] = new Listener(ipep[i]);
 
@@ -51,11 +52,11 @@ namespace Server.Network
 
 		public void AddListener(Listener l)
 		{
-			var old = Listeners;
+			Listener[] old = Listeners;
 
 			Listeners = new Listener[old.Length + 1];
 
-			for (var i = 0; i < old.Length; ++i)
+			for (int i = 0; i < old.Length; ++i)
 			{
 				Listeners[i] = old[i];
 			}
@@ -65,13 +66,13 @@ namespace Server.Network
 
 		private void CheckListener()
 		{
-			foreach (var l in Listeners)
+			foreach (Listener l in Listeners)
 			{
-				var accepted = l.Slice();
+				Socket[] accepted = l.Slice();
 
-				foreach (var s in accepted)
+				foreach (Socket s in accepted)
 				{
-					var ns = new NetState(s, this);
+					NetState ns = new NetState(s, this);
 
 					ns.Start();
 
@@ -90,9 +91,9 @@ namespace Server.Network
 			if (ns == null)
 				return false;
 
-			var state = ns.ToString();
+			string state = ns.ToString();
 
-			foreach (var str in _NoDisplay)
+			foreach (string str in _NoDisplay)
 			{
 				if (str == state)
 					return false;
@@ -104,8 +105,8 @@ namespace Server.Network
 		private static readonly string[] _NoDisplay =
 		{
 			"192.99.10.155",
-			"192.99.69.21",
-		};
+			"192.99.69.21"
+        };
 
 		public void OnReceive(NetState ns)
 		{
@@ -121,14 +122,14 @@ namespace Server.Network
 
 			lock (this)
 			{
-				var temp = m_WorkingQueue;
+				Queue<NetState> temp = m_WorkingQueue;
 				m_WorkingQueue = m_Queue;
 				m_Queue = temp;
 			}
 
 			while (m_WorkingQueue.Count > 0)
 			{
-				var ns = m_WorkingQueue.Dequeue();
+				NetState ns = m_WorkingQueue.Dequeue();
 
 				if (ns.Running)
 				{
@@ -160,11 +161,11 @@ namespace Server.Network
 
 			if (buffer.Length >= 4)
 			{
-				var m_Peek = new byte[4];
+				byte[] m_Peek = new byte[4];
 
 				buffer.Dequeue(m_Peek, 0, 4);
 
-				var seed = (uint)((m_Peek[0] << 24) | (m_Peek[1] << 16) | (m_Peek[2] << 8) | m_Peek[3]);
+				uint seed = (uint)((m_Peek[0] << 24) | (m_Peek[1] << 16) | (m_Peek[2] << 8) | m_Peek[3]);
 
 				if (seed == 0)
 				{
@@ -205,7 +206,7 @@ namespace Server.Network
 
 		public void HandleReceive(NetState ns)
 		{
-			var buffer = ns.Buffer;
+			ByteQueue buffer = ns.Buffer;
 
 			if (buffer == null || buffer.Length <= 0)
 			{
@@ -219,7 +220,7 @@ namespace Server.Network
 					return;
 				}
 
-				var length = buffer.Length;
+				int length = buffer.Length;
 
 				while (length > 0 && ns.Running)
 				{
@@ -230,17 +231,17 @@ namespace Server.Network
 						return;
 					}
 
-					var handler = ns.GetHandler(packetID);
+					PacketHandler handler = ns.GetHandler(packetID);
 
 					if (handler == null)
 					{
-						var data = new byte[length];
+						byte[] data = new byte[length];
 						length = buffer.Dequeue(data, 0, length);
 						new PacketReader(data, length, false).Trace(ns);
 						return;
 					}
 
-					var packetLength = handler.Length;
+					int packetLength = handler.Length;
 
 					if (packetLength <= 0)
 					{
@@ -288,12 +289,12 @@ namespace Server.Network
 						}
 					}
 
-					var throttler = handler.ThrottleCallback;
+					ThrottlePacketCallback throttler = handler.ThrottleCallback;
 
 					if (throttler != null)
 					{
 
-						if (!throttler(ns, out var drop))
+						if (!throttler(ns, out bool drop))
 						{
 							if (!drop)
 							{
@@ -335,7 +336,7 @@ namespace Server.Network
 
 					if (packetBuffer != null && packetBuffer.Length > 0 && packetLength > 0)
 					{
-						var r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
+						PacketReader r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
 
 						handler.OnReceive(ns, r);
 

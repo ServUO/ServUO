@@ -9,11 +9,7 @@ namespace Server.Items
         private int m_ClosedId;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ClosedId
-        {
-            get { return m_ClosedId; }
-            set { m_ClosedId = value; }
-        }
+        public int ClosedId { get => m_ClosedId; set => m_ClosedId = value; }
 
         [Constructable]
         public TombOfKingsSecretDoor(int closedId)
@@ -66,7 +62,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_ClosedId = reader.ReadInt();
 

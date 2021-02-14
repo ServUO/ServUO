@@ -15,9 +15,11 @@ namespace Server.Engines.Plants
             get
             {
                 if (PlantStatus <= PlantStatus.Stage3)
+                {
                     return 0xC7E;
-                else
-                    return 0xC62;
+                }
+
+                return 0xC62;
             }
         }
 
@@ -93,7 +95,7 @@ namespace Server.Engines.Plants
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ForceGrow
         {
-            get { return false; }
+            get => false;
             set
             {
                 if (value && PlantSystem != null)

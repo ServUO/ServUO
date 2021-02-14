@@ -14,7 +14,7 @@ namespace Server.Items
 
         public override void Serialize(GenericWriter writer)
         {
-            base.Serialize(writer);
+            base.Serialize(writer); 
         }
 
         public override void Deserialize(GenericReader reader)

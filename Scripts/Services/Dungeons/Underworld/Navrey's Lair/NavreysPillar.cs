@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Server.Items
 {
@@ -24,15 +24,11 @@ namespace Server.Items
         public PillarType m_Type;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PillarType Type
-        {
-            get { return m_Type; }
-            set { m_Type = value; }
-        }
+        public PillarType Type { get => m_Type; set => m_Type = value; }
 
         public NavreysPillarState State
         {
-            get { return m_State; }
+            get => m_State;
             set
             {
                 m_State = value;
@@ -86,7 +82,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write((int)m_State);
@@ -97,8 +92,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             State = (NavreysPillarState)reader.ReadInt();
             m_Controller = (NavreysController)reader.ReadItem();

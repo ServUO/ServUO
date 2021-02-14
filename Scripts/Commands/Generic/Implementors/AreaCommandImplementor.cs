@@ -8,7 +8,7 @@ namespace Server.Commands.Generic
         private static AreaCommandImplementor m_Instance;
         public AreaCommandImplementor()
         {
-            Accessors = new string[] { "Area", "Group" };
+            Accessors = new[] { "Area", "Group" };
             SupportRequirement = CommandSupport.Area;
             SupportsConditionals = true;
             AccessLevel = AccessLevel.GameMaster;

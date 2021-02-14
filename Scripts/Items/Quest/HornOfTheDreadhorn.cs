@@ -15,18 +15,17 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1072089;// Horn of the Dread
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

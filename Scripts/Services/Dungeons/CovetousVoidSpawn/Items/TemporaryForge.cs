@@ -45,9 +45,9 @@ namespace Server.Items
 
         public void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -114,7 +114,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
 
@@ -135,7 +135,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Expires = reader.ReadDateTime();
             Owner = reader.ReadMobile();
@@ -175,9 +175,9 @@ namespace Server.Items
 
         public void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -241,9 +241,9 @@ namespace Server.Items
                 {
                     from.BeginTarget(10, true, Targeting.TargetFlags.None, (m, targeted) =>
                     {
-                        if (targeted is IPoint3D)
+                        if (targeted is IPoint3D point)
                         {
-                            Point3D p = new Point3D((IPoint3D)targeted);
+                            Point3D p = new Point3D(point);
                             int dist = (int)from.GetDistanceToSqrt(p);
 
                             if (dist < 2 || dist > 5)
@@ -260,14 +260,13 @@ namespace Server.Items
                                     from.SendLocalizedMessage(500269); // You cannot build that there.
                                 else
                                 {
-                                    IPoint3D point = (IPoint3D)targeted;
                                     Spells.SpellHelper.GetSurfaceTop(ref point);
 
                                     BaseAddon addon = Addon;
                                     addon.MoveToWorld(new Point3D(point), m.Map);
 
-                                    if (addon is TemporaryForge)
-                                        ((TemporaryForge)addon).Owner = from;
+                                    if (addon is TemporaryForge forge)
+                                        forge.Owner = from;
 
                                     Delete();
                                 }
@@ -327,7 +326,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Expires = reader.ReadDateTime();
 

@@ -38,9 +38,9 @@ namespace Server.Items
             {
                 m.BeginTarget(2, false, TargetFlags.Beneficial, (from, targeted) =>
                 {
-                    if (targeted is Mobile)
+                    if (targeted is Mobile mobile)
                     {
-                        TryFeed(from, (Mobile)targeted);
+                        TryFeed(from, mobile);
                     }
                 });
             }
@@ -48,10 +48,8 @@ namespace Server.Items
 
         private void TryFeed(Mobile from, Mobile target)
         {
-            if (target is BaseCreature && !((BaseCreature)target).IsDeadBondedPet && ((BaseCreature)target).ControlMaster == from)
+            if (target is BaseCreature bc && !bc.IsDeadBondedPet && bc.ControlMaster == from)
             {
-                BaseCreature bc = (BaseCreature)target;
-
                 if (UnderInfluence(bc))
                 {
                     from.SendLocalizedMessage(1113051); //Your pet is still enjoying the last tasty treat!
@@ -120,10 +118,8 @@ namespace Server.Items
 
         public static BaseCreature GetPetUnderEffects(Mobile m)
         {
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                PlayerMobile pm = m as PlayerMobile;
-
                 foreach (BaseCreature pet in pm.AllFollowers.OfType<BaseCreature>())
                 {
                     if (UnderInfluence(pet))
@@ -193,15 +189,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

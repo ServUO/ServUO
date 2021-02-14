@@ -21,7 +21,7 @@ namespace Server.Prompts
 		}
 
 		public Prompt(IEntity sender)
-			: this(sender, System.String.Empty)
+			: this(sender, string.Empty)
 		{
 		}
 

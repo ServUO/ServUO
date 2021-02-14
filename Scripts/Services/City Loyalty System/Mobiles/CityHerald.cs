@@ -12,7 +12,7 @@ namespace Server.Engines.CityLoyalty
         public City City { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
+        public CityLoyaltySystem CitySystem { get => CityLoyaltySystem.GetCityInstance(City); set { } }
 
         public override bool IsInvulnerable => true;
 
@@ -21,10 +21,7 @@ namespace Server.Engines.CityLoyalty
         [CommandProperty(AccessLevel.GameMaster)]
         public string Announcement
         {
-            get
-            {
-                return _Announcement;
-            }
+            get => _Announcement;
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -107,8 +104,8 @@ namespace Server.Engines.CityLoyalty
 
         private class DonateGoldEntry : ContextMenuEntry
         {
-            public CityHerald Herald { get; private set; }
-            public Mobile Player { get; private set; }
+            public CityHerald Herald { get; }
+            public Mobile Player { get; }
 
             public DonateGoldEntry(Mobile player, CityHerald herald) : base(1156237, 3) // Donate Gold
             {
@@ -194,7 +191,8 @@ namespace Server.Engines.CityLoyalty
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
+
 			Frozen = true;
 			
             City = (City)reader.ReadInt();

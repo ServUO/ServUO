@@ -13,18 +13,19 @@ namespace Server.Engines.Harvest
             SuccessMessage = message;
         }
 
-        public Type[] Types { get; set; }
-        public double ReqSkill { get; set; }
-        public double MinSkill { get; set; }
-        public double MaxSkill { get; set; }
+        public Type[] Types { get; }
+        public double ReqSkill { get; }
+        public double MinSkill { get; }
+        public double MaxSkill { get; }
         public object SuccessMessage { get; }
 
         public void SendSuccessTo(Mobile m)
         {
-            if (SuccessMessage is int)
-                m.SendLocalizedMessage((int)SuccessMessage);
-            else if (SuccessMessage is string)
-                m.SendMessage((string)SuccessMessage);
+            if (SuccessMessage is int message)
+                m.SendLocalizedMessage(message);
+
+            else if (SuccessMessage is string stringMessage)
+                m.SendMessage(stringMessage);
         }
     }
 }

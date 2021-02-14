@@ -835,22 +835,18 @@ namespace Server.Items
                 int min = 20;
                 int max = 80;
 
-                if (item is BaseWeapon)
+                if (item is BaseWeapon weapon)
                 {
-                    BaseWeapon weapon = (BaseWeapon)item;
-
                     BaseRunicTool.ApplyAttributesTo(weapon, attributeCount, min, max);
                 }
-                else if (item is BaseArmor)
+                else if (item is BaseArmor armor)
                 {
-                    BaseArmor armor = (BaseArmor)item;
-
                     BaseRunicTool.ApplyAttributesTo(armor, attributeCount, min, max);
                 }
-                else if (item is BaseHat)
-                    BaseRunicTool.ApplyAttributesTo((BaseHat)item, attributeCount, min, max);
-                else if (item is BaseJewel)
-                    BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
+                else if (item is BaseHat hat)
+                    BaseRunicTool.ApplyAttributesTo(hat, attributeCount, min, max);
+                else if (item is BaseJewel jewel)
+                    BaseRunicTool.ApplyAttributesTo(jewel, attributeCount, min, max);
 
                 DropItem(item);
             }

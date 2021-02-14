@@ -46,18 +46,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            if (ItemID == 0x13E4 || ItemID == 0x13E3)
-                ItemID = 0xF9D;
+            reader.ReadInt();
         }
     }
 }

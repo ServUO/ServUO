@@ -34,19 +34,14 @@ namespace Server.Targets
 
         protected override void OnTarget(Mobile from, object o)
         {
-            if (o is IDamageable)
+            if (o is IDamageable damageable)
             {
-                IDamageable dam = o as IDamageable;
-
                 for (int i = 0; i < m_List.Count; ++i)
-                    m_List[i].EndPickTarget(from, dam, m_Order);
+                    m_List[i].EndPickTarget(from, damageable, m_Order);
             }
-            else if (o is MoonglowDonationBox && m_Order == OrderType.Transfer && from is PlayerMobile)
+            else if (o is MoonglowDonationBox box && m_Order == OrderType.Transfer && from is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)from;
-                MoonglowDonationBox box = (MoonglowDonationBox)o;
-
-                pm.SendGump(new ConfirmTransferPetGump(box, from.Location, m_Mobile));
+                pm.SendGump(new ConfirmTransferPetGump(box, pm.Location, m_Mobile));
             }
         }
     }

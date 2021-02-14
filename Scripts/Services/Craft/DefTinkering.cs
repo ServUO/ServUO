@@ -6,45 +6,9 @@ using Server.Services.BasketWeaving.Baskets;
 
 namespace Server.Engines.Craft
 {
-    public enum TinkerRecipes
-    {
-        InvisibilityPotion = 400,
-        DarkglowPotion = 401,
-        ParasiticPotion = 402,
-
-        EssenceOfBattle = 450,
-        PendantOfTheMagi = 451,
-        ResilientBracer = 452,
-        ScrappersCompendium = 453,
-        HoveringWisp = 454, // Removed at OSI Publish 103
-
-        KotlPowerCore = 455,
-
-        // doom
-        BraceletOfPrimalConsumption = 456,
-        DrSpectorLenses = 457,
-        KotlAutomatonHead = 458,
-
-        WeatheredBronzeArcherSculpture = 459,
-        WeatheredBronzeFairySculpture = 460,
-        WeatheredBronzeGlobeSculpture = 461,
-        WeatheredBronzeManOnABench = 462,
-
-        KrampusMinionEarrings = 463,
-        EnchantedPicnicBasket = 464,
-
-        Telescope = 465,
-
-        BarbedWhip = 466,
-        SpikedWhip = 467,
-        BladedWhip = 468,
-    }
-
     public class DefTinkering : CraftSystem
     {
-        #region Mondain's Legacy
         public override CraftECA ECA => CraftECA.ChanceMinusSixtyToFourtyFive;
-        #endregion
 
         public override SkillName MainSkill => SkillName.Tinkering;
 
@@ -82,15 +46,17 @@ namespace Server.Engines.Craft
 
             if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
                 return 1044038; // You have worn out your tool!
-            else if (!tool.CheckAccessible(from, ref num))
+
+            if (!tool.CheckAccessible(from, ref num))
                 return num; // The tool must be on your person to use.
-            else if (itemType == typeof(ModifiedClockworkAssembly) && !(from is PlayerMobile && ((PlayerMobile)from).MechanicalLife))
+
+            if (itemType == typeof(ModifiedClockworkAssembly) && !(from is PlayerMobile mobile && mobile.MechanicalLife))
                 return 1113034; // You haven't read the Mechanical Life Manual. Talking to Sutek might help!
 
             return 0;
         }
 
-        private static readonly Type[] m_TinkerColorables = new Type[]
+        private static readonly Type[] m_TinkerColorables =
         {
             typeof(ForkLeft), typeof(ForkRight),
             typeof(SpoonLeft), typeof(SpoonRight),
@@ -118,7 +84,7 @@ namespace Server.Engines.Craft
             type = item.ItemType;
 
             for (int i = 0; !contains && i < m_TinkerColorables.Length; ++i)
-                contains = (m_TinkerColorables[i] == type);
+                contains = m_TinkerColorables[i] == type;
 
             if (!contains && !type.IsSubclassOf(typeof(BaseIngot)))
                 return false;
@@ -139,21 +105,25 @@ namespace Server.Engines.Craft
             if (failed)
             {
                 if (lostMaterial)
+                {
                     return 1044043; // You failed to create the item, and some of your materials are lost.
-                else
-                    return 1044157; // You failed to create the item, but no materials were lost.
+                }
+
+                return 1044157; // You failed to create the item, but no materials were lost.
             }
-            else
+
+            if (quality == 0)
+                return 502785; // You were barely able to make this item.  It's quality is below average.
+
+            if (makersMark && quality == 2)
+                return 1044156; // You create an exceptional quality item and affix your maker's mark.
+
+            if (quality == 2)
             {
-                if (quality == 0)
-                    return 502785; // You were barely able to make this item.  It's quality is below average.
-                else if (makersMark && quality == 2)
-                    return 1044156; // You create an exceptional quality item and affix your maker's mark.
-                else if (quality == 2)
-                    return 1044155; // You create an exceptional quality item.
-                else
-                    return 1044154; // You create the item.
+                return 1044155; // You create an exceptional quality item.
             }
+
+            return 1044154; // You create the item.
         }
 
         public void AddJewelrySet(GemType gemType, Type itemType)
@@ -207,7 +177,7 @@ namespace Server.Engines.Craft
             AddJewelrySet(GemType.Diamond, typeof(Diamond));
 
             index = AddCraft(typeof(KrampusMinionEarrings), 1044049, 1125645, 100.0, 500.0, typeof(IronIngot), 1044036, 3, 1044037);
-            AddRecipe(index, (int)TinkerRecipes.KrampusMinionEarrings);
+            AddRecipe(index, (int)CraftRecipes.KrampusMinionEarrings);
             #endregion
 
             #region Wooden Items
@@ -288,7 +258,7 @@ namespace Server.Engines.Craft
 
             index = AddCraft(typeof(EnchantedPicnicBasket), 1044042, 1158333, 75.0, 100.0, typeof(SoftenedReeds), 1112249, 2, 1112251);
             AddRes(index, typeof(Shaft), 1027125, 3, 1044351);
-            AddRecipe(index, (int)TinkerRecipes.EnchantedPicnicBasket);
+            AddRecipe(index, (int)CraftRecipes.EnchantedPicnicBasket);
             SetRequireResTarget(index);
             SetRequiresBasketWeaving(index);
             #endregion
@@ -475,31 +445,31 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(CopperWire), 1026265, 5, 1150700);
             AddRes(index, typeof(IronIngot), 1044036, 100, 1044253);
             AddRes(index, typeof(MoonstoneCrystalShard), 1124142, 5, 1156701);
-            AddRecipe(index, (int)TinkerRecipes.KotlPowerCore);
+            AddRecipe(index, (int)CraftRecipes.KotlPowerCore);
 
             index = AddCraft(typeof(WeatheredBronzeGlobeSculptureDeed), 1044050, 1156881, 85.0, 135.0, typeof(BronzeIngot), 1038039, 200, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.WeatheredBronzeGlobeSculpture);
+            AddRecipe(index, (int)CraftRecipes.WeatheredBronzeGlobeSculpture);
 
             index = AddCraft(typeof(WeatheredBronzeManOnABenchDeed), 1044050, 1156882, 85.0, 135.0, typeof(IronIngot), 1038039, 200, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.WeatheredBronzeManOnABench);
+            AddRecipe(index, (int)CraftRecipes.WeatheredBronzeManOnABench);
 
             index = AddCraft(typeof(WeatheredBronzeFairySculptureDeed), 1044050, 1156883, 85.0, 135.0, typeof(IronIngot), 1038039, 200, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.WeatheredBronzeFairySculpture);
+            AddRecipe(index, (int)CraftRecipes.WeatheredBronzeFairySculpture);
 
             index = AddCraft(typeof(WeatheredBronzeArcherDeed), 1044050, 1156884, 85.0, 135.0, typeof(IronIngot), 1038039, 200, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.WeatheredBronzeArcherSculpture);
+            AddRecipe(index, (int)CraftRecipes.WeatheredBronzeArcherSculpture);
 
             index = AddCraft(typeof(BarbedWhip), 1044050, 1159281, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
             AddRes(index, typeof(Leather), 1044462, 10, 1044463);
-            AddRecipe(index, (int)TinkerRecipes.BarbedWhip);
+            AddRecipe(index, (int)CraftRecipes.BarbedWhip);
 
             index = AddCraft(typeof(SpikedWhip), 1044050, 1159282, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
             AddRes(index, typeof(Leather), 1044462, 10, 1044463);
-            AddRecipe(index, (int)TinkerRecipes.SpikedWhip);
+            AddRecipe(index, (int)CraftRecipes.SpikedWhip);
 
             index = AddCraft(typeof(BladedWhip), 1044050, 1159283, 75.0, 125.0, typeof(IronIngot), 1044036, 5, 1044037);
             AddRes(index, typeof(Leather), 1044462, 10, 1044463);
-            AddRecipe(index, (int)TinkerRecipes.BladedWhip);
+            AddRecipe(index, (int)CraftRecipes.BladedWhip);
 
             #endregion
 
@@ -590,12 +560,12 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(AutomatonActuator), 1156997, 1, 1156999);
             AddRes(index, typeof(StasisChamberPowerCore), 1156623, 1, 1157000);
             AddRes(index, typeof(InoperativeAutomatonHead), 1157002, 1, 1157001);
-            AddRecipe(index, (int)TinkerRecipes.KotlAutomatonHead);
+            AddRecipe(index, (int)CraftRecipes.KotlAutomatonHead);
 
             index = AddCraft(typeof(PersonalTelescope), 1044051, 1125284, 95.0, 196.0, typeof(IronIngot), 1044036, 25, 1044037);
             AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
             AddRes(index, typeof(SextantParts), 1044175, 1, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.Telescope);
+            AddRecipe(index, (int)CraftRecipes.Telescope);
 
             index = AddCraft(typeof(OracleOfTheSea), 1044051, 1150184, 100.0, 120, typeof(IronIngot), 1044036, 3, 1044037);
             AddRes(index, typeof(WorkableGlass), 1154170, 2, 1154171);
@@ -656,7 +626,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
             AddRes(index, typeof(BlueDiamond), 1032696, 10, 1044253);
             AddRes(index, typeof(Diamond), 1062608, 50, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.ResilientBracer);
+            AddRecipe(index, (int)CraftRecipes.ResilientBracer);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(EssenceOfBattle), 1073107, 1072935, 100.0, 125.0, typeof(IronIngot), 1044036, 2, 1044037);
@@ -664,7 +634,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(CapturedEssence), 1032686, 1, 1044253);
             AddRes(index, typeof(FireRuby), 1032695, 10, 1044253);
             AddRes(index, typeof(Ruby), 1062603, 50, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.EssenceOfBattle);
+            AddRecipe(index, (int)CraftRecipes.EssenceOfBattle);
             ForceNonExceptional(index);
 
 
@@ -673,14 +643,14 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(EyeOfTheTravesty), 1032685, 1, 1044253);
             AddRes(index, typeof(WhitePearl), 1032694, 5, 1044253);
             AddRes(index, typeof(StarSapphire), 1062600, 50, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.PendantOfTheMagi);
+            AddRecipe(index, (int)CraftRecipes.PendantOfTheMagi);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(DrSpectorsLenses), 1073107, 1156991, 100.0, 580.0, typeof(IronIngot), 1044036, 20, 1044037);
             SetMinSkillOffset(index, 25.0);
             AddRes(index, typeof(BlackrockMoonstone), 1156993, 1, 1156992);
             AddRes(index, typeof(HatOfTheMagi), 1061597, 1, 1044253);
-            AddRecipe(index, (int)TinkerRecipes.DrSpectorLenses);
+            AddRecipe(index, (int)CraftRecipes.DrSpectorLenses);
             ForceNonExceptional(index);
 
             index = AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 580.0, typeof(IronIngot), 1044036, 3, 1044037);
@@ -688,7 +658,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
             AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1044253);
             AddRes(index, typeof(WhitePearl), 1032694, 4, 1044240);
-            AddRecipe(index, (int)TinkerRecipes.BraceletOfPrimalConsumption);
+            AddRecipe(index, (int)CraftRecipes.BraceletOfPrimalConsumption);
             ForceNonExceptional(index);
             #endregion
 
@@ -755,11 +725,9 @@ namespace Server.Engines.Craft
             {
                 return false;
             }
-            else
-            {
-                m_Container = container;
-                return true;
-            }
+
+            m_Container = container;
+            return true;
         }
 
         public override void EndCraftAction()

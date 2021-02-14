@@ -63,7 +63,7 @@ namespace Server
 
         public static void OnAdded(Mobile m, Item item)
         {
-            if (_Table != null && _Table.ContainsKey(m) && _Table[m].Running && item is ISetItem && ((ISetItem)item).SetID == SetItem.Bestial)
+            if (_Table != null && _Table.ContainsKey(m) && _Table[m].Running && item is ISetItem setItem && setItem.SetID == SetItem.Bestial)
             {
                 item.Hue = BerserkHue + _Table[m].Level;
             }
@@ -77,13 +77,13 @@ namespace Server
                     _Table[m].EndBerserk();
             }
 
-            if (item is ISetItem && ((ISetItem)item).SetID == SetItem.Bestial)
+            if (item is ISetItem setItem && setItem.SetID == SetItem.Bestial)
                 item.Hue = 2010;
         }
 
         public static void DoHue(Mobile m, int hue)
         {
-            foreach (Item i in m.Items.Where(item => item is ISetItem && ((ISetItem)item).SetID == SetItem.Bestial && item.Hue != hue))
+            foreach (Item i in m.Items.Where(item => item is ISetItem setItem && setItem.SetID == SetItem.Bestial && item.Hue != hue))
             {
                 i.Hue = hue;
             }
@@ -93,7 +93,7 @@ namespace Server
 
         public static int TotalPieces(Mobile m)
         {
-            return m.Items.Where(i => i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial).Count();
+            return m.Items.Count(i => i is ISetItem item && item.SetID == SetItem.Bestial);
         }
 
         public static void AddBerserk(Mobile m)
@@ -201,7 +201,7 @@ namespace Server
                 Mobile.HueMod = StartHue;
                 Mobile.SendLocalizedMessage(1151535); //Your berserk rage has subsided. 
 
-                foreach (Item item in Mobile.Items.Where(i => i is ISetItem && ((ISetItem)i).SetID == SetItem.Bestial))
+                foreach (Item item in Mobile.Items.Where(i => i is ISetItem item && item.SetID == SetItem.Bestial))
                 {
                     item.Hue = 2010;
                 }

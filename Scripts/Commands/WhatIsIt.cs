@@ -26,7 +26,7 @@ namespace Server.Commands
                 string typename = targeted.GetType().Name;
                 string article = "a";
 
-                if (typename != null && typename.Length > 0)
+                if (typename.Length > 0)
                 {
                     if ("aeiouy".IndexOf(typename.ToLower()[0]) >= 0)
                     {
@@ -34,16 +34,15 @@ namespace Server.Commands
                     }
                 }
 
-                if (targeted is Item)
+                if (targeted is Item item)
                 {
-                    name = ((Item)targeted).Name;
+                    name = item.Name;
                 }
-                else
-                    if (targeted is Mobile)
+                else if (targeted is Mobile mobile)
                 {
-                    name = ((Mobile)targeted).Name;
+                    name = mobile.Name;
                 }
-                if (name != string.Empty && name != null)
+                if (!string.IsNullOrEmpty(name))
                 {
                     from.SendMessage("That is {0} {1} named '{2}'", article, typename, name);
                 }

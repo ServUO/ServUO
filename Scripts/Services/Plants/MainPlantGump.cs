@@ -85,14 +85,12 @@ namespace Server.Engines.Plants
             if (from.Backpack == null)
                 return null;
 
-            Item[] items = from.Backpack.FindItemsByType(new Type[] { typeof(BasePotion), typeof(PotionKeg) });
+            Item[] items = from.Backpack.FindItemsByType(new[] { typeof(BasePotion), typeof(PotionKeg) });
 
             foreach (Item item in items)
             {
-                if (item is BasePotion)
+                if (item is BasePotion potion)
                 {
-                    BasePotion potion = (BasePotion)item;
-
                     if (Array.IndexOf(effects, potion.PotionEffect) >= 0)
                         return potion;
                 }
@@ -115,7 +113,7 @@ namespace Server.Engines.Plants
             if (info.ButtonID == 0 || m_Plant.Deleted || m_Plant.PlantStatus >= PlantStatus.DecorativePlant)
                 return;
 
-            if (((info.ButtonID >= 6 && info.ButtonID <= 10) || info.ButtonID == 12) && !from.InRange(m_Plant.GetWorldLocation(), 3))
+            if ((info.ButtonID >= 6 && info.ButtonID <= 10 || info.ButtonID == 12) && !from.InRange(m_Plant.GetWorldLocation(), 3))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3E9, 500446); // That is too far away.
                 return;
@@ -200,7 +198,7 @@ namespace Server.Engines.Plants
                         if (!foundUsableWater)
                         {
                             from.Target = new PlantPourTarget(m_Plant);
-                            from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
+                            from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus()); // Target the container you wish to use to water the ~1_val~.
                         }
 
                         from.SendGump(new MainPlantGump(m_Plant));
@@ -431,19 +429,18 @@ namespace Server.Engines.Plants
             else
             {
                 int message;
+
                 if (m_Plant.ApplyPotion(effects[0], true, out message))
                 {
                     from.SendLocalizedMessage(1061884); // You don't have any strong potions of that type in your pack.
 
                     from.Target = new PlantPourTarget(m_Plant);
-                    from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus().ToString()); // Target the container you wish to use to water the ~1_val~.
+                    from.SendLocalizedMessage(1060808, "#" + m_Plant.GetLocalizedPlantStatus()); // Target the container you wish to use to water the ~1_val~.
 
                     return;
                 }
-                else
-                {
-                    m_Plant.LabelTo(from, message);
-                }
+
+                m_Plant.LabelTo(from, message);
             }
 
             from.SendGump(new MainPlantGump(m_Plant));

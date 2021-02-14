@@ -2,8 +2,8 @@ namespace Server
 {
     public class WorldLocation
     {
-        public Point3D Location { get; set; }
-        public Map Map { get; set; }
+        public Point3D Location { get; }
+        public Map Map { get; }
 
         public WorldLocation(int x, int y, int z, Map map)
             : this(new Point3D(x, y, z), map)

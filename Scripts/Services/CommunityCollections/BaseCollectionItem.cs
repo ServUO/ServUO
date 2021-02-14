@@ -148,12 +148,6 @@ namespace Server.Items
         {
             if (from.Alive)
             {
-                if (!MondainsLegacy.PublicDonations && (int)from.AccessLevel < (int)AccessLevel.GameMaster)
-                {
-                    from.SendLocalizedMessage(1042753, "Public donations"); // ~1_SOMETHING~ has been temporarily disabled.
-                    return;
-                }
-
                 if (from.InRange(Location, 2) && from is PlayerMobile && CanDonate((PlayerMobile)from))
                 {
                     from.CloseGump(typeof(CommunityCollectionGump));

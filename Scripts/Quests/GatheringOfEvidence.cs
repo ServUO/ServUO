@@ -7,7 +7,7 @@ namespace Server.Engines.Quests
     {
         public override bool DoneOnce => true;
 
-        public GatheringOfEvidence() : base()
+        public GatheringOfEvidence()
         {
             AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedArcaneEssence), "Void Crystal of Corrupted Arcane Essence", 1));
             AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedSpiritualEssence), "Void Crystal of Corrupted Spiritual Essence", 1));
@@ -37,18 +37,17 @@ namespace Server.Engines.Quests
         /*Well Done! This is just what we needed. We can ill afford these separatist encampments 
          * upsetting the delicate balance with the void consuming our world.*/
         public override object Complete => 1150320;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -57,7 +56,6 @@ namespace Server.Engines.Quests
         public override bool DoneOnce => true;
 
         public GatheringProof()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedArcaneEssence), "Void Crystal of Corrupted Arcane Essence", 1));
             AddObjective(new ObtainObjective(typeof(VoidCrystalOfCorruptedSpiritualEssence), "Void Crystal of Corrupted Spiritual Essence", 1));
@@ -87,18 +85,17 @@ namespace Server.Engines.Quests
         /*Well Done! This is just what we needed. We can ill afford these separatist encampments 
          * upsetting the delicate balance with the void consuming our world.*/
         public override object Complete => 1150320;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -115,10 +112,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[]
-                {
-                    typeof(GatheringOfEvidence)
-                };
+        public override Type[] Quests => new[] { typeof(GatheringOfEvidence) };
+
         public override void InitBody()
         {
             InitStats(100, 100, 25);
@@ -145,15 +140,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -161,7 +154,7 @@ namespace Server.Engines.Quests
     {
         [Constructable]
         public Prassel()
-            : base("Prassel", "the Security Liason")
+            : base("Prassel", "the Security Liaison")
         {
         }
 
@@ -170,10 +163,8 @@ namespace Server.Engines.Quests
         {
         }
 
-        public override Type[] Quests => new Type[]
-                {
-                    typeof(GatheringProof)
-                };
+        public override Type[] Quests => new[] { typeof(GatheringProof) };
+
         public override void InitBody()
         {
             InitStats(100, 100, 25);
@@ -204,15 +195,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

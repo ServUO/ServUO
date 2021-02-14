@@ -35,23 +35,14 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime IncubationStart
         {
-            get
-            {
-                return m_IncubationStart;
-            }
-            set
-            {
-                m_IncubationStart = value;
-            }
+            get => m_IncubationStart;
+            set => m_IncubationStart = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan TotalIncubationTime
         {
-            get
-            {
-                return m_TotalIncubationTime;
-            }
+            get => m_TotalIncubationTime;
             set
             {
                 m_TotalIncubationTime = value;
@@ -63,7 +54,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Incubating
         {
-            get { return m_Incubating; }
+            get => m_Incubating;
             set
             {
                 if (m_Incubating && !value)
@@ -77,7 +68,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public EggStage Stage { get { return m_Stage; } set { m_Stage = value; } }
+        public EggStage Stage { get => m_Stage; set => m_Stage = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Dryness Dryness
@@ -100,8 +91,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool IsBattleChicken
         {
-            get { return m_IsBattleChicken; }
-            set { m_IsBattleChicken = value; }
+            get => m_IsBattleChicken;
+            set => m_IsBattleChicken = value;
         }
 
         [Constructable]
@@ -406,7 +397,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_IncubationStart);
@@ -420,8 +410,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_IncubationStart = reader.ReadDateTime();
             m_TotalIncubationTime = reader.ReadTimeSpan();

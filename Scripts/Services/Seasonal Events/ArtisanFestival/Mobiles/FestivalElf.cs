@@ -17,7 +17,7 @@ namespace Server.Engines.ArtisanFestival
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ArtisanFestivalEvent Festival { get { return ArtisanFestivalEvent.Instance; } set { } }
+        public ArtisanFestivalEvent Festival { get => ArtisanFestivalEvent.Instance; set { } }
 
         private DateTime _NextTalk;
 

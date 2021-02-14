@@ -5,7 +5,6 @@ namespace Server.Engines.Quests
     public class EscortToWrongEntrance : BaseQuest
     {
         public EscortToWrongEntrance()
-            : base()
         {
             AddObjective(new EscortObjective("Wrong Entrance"));
 
@@ -30,15 +29,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int StrengthBonus
         {
-            get { return m_StrengthBonus; }
-            set { m_StrengthBonus = value; }
+            get => m_StrengthBonus;
+            set => m_StrengthBonus = value;
         }
 
         [Constructable]
@@ -58,7 +58,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_StrengthBonus = reader.ReadInt();
         }

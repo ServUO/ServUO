@@ -22,7 +22,7 @@ namespace Server.Items
 
             if (attacker.InRange(defender, 2))
             {
-                int total = (attacker.Skills.Poisoning.Fixed) / 2;
+                int total = attacker.Skills.Poisoning.Fixed / 2;
 
                 if (total >= 1000)
                     level = 3;

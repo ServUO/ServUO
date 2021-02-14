@@ -84,9 +84,9 @@ namespace Server.Spells.Eighth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
+                if (o is Mobile mobile)
                 {
-                    m_Owner.Target((Mobile)o);
+                    m_Owner.Target(mobile);
                 }
             }
 

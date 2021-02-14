@@ -10,7 +10,7 @@ namespace Server.Items
         private Mobile m_Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public Mobile Owner { get => m_Owner; set => m_Owner = value; }
 
         public override int LabelNumber => 1113296;  // Armed Floor Trap
         public bool CheckWhenHidden => true;
@@ -109,16 +109,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.Write(m_Owner);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             m_Owner = reader.ReadMobile();
         }
     }
@@ -146,7 +146,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1113319); // You cannot set the trap while riding or flying.
             }
-            else if (r is GuardedRegion && !((GuardedRegion)r).IsDisabled())
+            else if (r is GuardedRegion region && !region.IsDisabled())
             {
                 from.SendMessage("You cannot place a trap in a guard region.");
             }
@@ -167,9 +167,9 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is IPoint3D)
+                if (targeted is IPoint3D point3D)
                 {
-                    Point3D p = new Point3D((IPoint3D)targeted);
+                    Point3D p = new Point3D(point3D);
                     Region r = Region.Find(p, from.Map);
 
                     if (from.Skills[SkillName.Tinkering].Value < 80)
@@ -180,7 +180,7 @@ namespace Server.Items
                     {
                         from.SendLocalizedMessage(1113319); // You cannot set the trap while riding or flying.
                     }
-                    else if (r is GuardedRegion && !((GuardedRegion)r).IsDisabled())
+                    else if (r is GuardedRegion region && !region.IsDisabled())
                     {
                         from.SendMessage("You cannot place a trap in a guard region.");
                     }
@@ -207,15 +207,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

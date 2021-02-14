@@ -42,10 +42,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public int AmountMax
         {
-            get
-            {
-                return m_AmountMax;
-            }
+            get => m_AmountMax;
             set
             {
                 m_AmountMax = value;
@@ -55,10 +52,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public bool RequireExceptional
         {
-            get
-            {
-                return m_RequireExceptional;
-            }
+            get => m_RequireExceptional;
             set
             {
                 m_RequireExceptional = value;
@@ -68,10 +62,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public BulkMaterialType Material
         {
-            get
-            {
-                return m_Material;
-            }
+            get => m_Material;
             set
             {
                 m_Material = value;
@@ -80,10 +71,7 @@ namespace Server.Engines.BulkOrders
         }
         public LargeBulkEntry[] Entries
         {
-            get
-            {
-                return m_Entries;
-            }
+            get => m_Entries;
             set
             {
                 m_Entries = value;
@@ -210,12 +198,10 @@ namespace Server.Engines.BulkOrders
 
         public void EndCombine(Mobile from, object o)
         {
-            if (o is Item && ((Item)o).IsChildOf(from.Backpack))
+            if (o is Item item && item.IsChildOf(from.Backpack))
             {
-                if (o is SmallBOD)
+                if (item is SmallBOD small)
                 {
-                    SmallBOD small = (SmallBOD)o;
-
                     LargeBulkEntry entry = null;
 
                     for (int i = 0; entry == null && i < m_Entries.Length; ++i)

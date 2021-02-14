@@ -1,4 +1,4 @@
-﻿using Server.Multis;
+using Server.Multis;
 using Server.Targeting;
 
 namespace Server.Items
@@ -31,14 +31,13 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is IPoint3D)
+                if (targeted is IPoint3D point3D)
                 {
-                    IPoint3D pnt = (IPoint3D)targeted;
-                    BaseBoat boat = BaseBoat.FindBoatAt(pnt, from.Map);
+                    BaseBoat boat = BaseBoat.FindBoatAt(point3D, from.Map);
 
-                    if (boat is BaseGalleon && boat.Contains(from))
+                    if (boat is BaseGalleon galleon && galleon.Contains(from))
                     {
-                        if (((BaseGalleon)boat).RemovePaint())
+                        if (galleon.RemovePaint())
                             m_PaintRemover.Delete();
                     }
 
@@ -60,7 +59,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

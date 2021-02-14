@@ -400,10 +400,8 @@ namespace Server.Items
 
         public override void OnAdded(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile mob)
             {
-                Mobile mob = (Mobile)parent;
-
                 m_Attributes.AddStatBonuses(mob);
                 m_AosSkillBonuses.AddTo(mob);
 
@@ -427,10 +425,8 @@ namespace Server.Items
 
         public override void OnRemoved(object parent)
         {
-            if (parent is Mobile)
+            if (parent is Mobile mob)
             {
-                Mobile mob = (Mobile)parent;
-
                 m_Attributes.RemoveStatBonuses(mob);
                 m_AosSkillBonuses.Remove();
 
@@ -945,9 +941,9 @@ namespace Server.Items
             int dexBonus = ComputeStatBonus(StatType.Dex);
             int intBonus = ComputeStatBonus(StatType.Int);
 
-            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            if (Parent is Mobile mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
             {
-                Mobile m = (Mobile)Parent;
+                Mobile m = mobile;
 
                 string modName = Serial.ToString();
 
@@ -991,9 +987,9 @@ namespace Server.Items
 
         public void InvalidateWeight()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile m = (Mobile)RootParent;
+                Mobile m = mobile;
 
                 m.UpdateTotals();
             }
@@ -1224,9 +1220,9 @@ namespace Server.Items
                 {
                     if (owner is Mobile)
                         break;
-                    if (owner is Item)
+                    if (owner is Item item)
                     {
-                        owner = ((Item)owner).Parent;
+                        owner = item.Parent;
                         continue;
                     }
                     owner = null;

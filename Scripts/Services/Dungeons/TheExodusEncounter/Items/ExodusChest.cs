@@ -15,7 +15,7 @@ namespace Server.Items
 
         public bool CheckWhenHidden => true;
 
-        public static Type[] RituelItem { get; } = new Type[]
+        public static Type[] RituelItem { get; } =
         {
             typeof(ExodusSummoningRite), typeof(ExodusSacrificalDagger), typeof(RobeofRite), typeof(ExodusSummoningAlter), typeof(CapturedEssence)
         };
@@ -27,7 +27,6 @@ namespace Server.Items
 
         [Constructable]
         public ExodusChest()
-            : base()
         {
             Visible = false;
             Locked = true;
@@ -198,7 +197,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (!Locked)
                 Delete();

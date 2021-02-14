@@ -43,7 +43,7 @@ namespace Server.Mobiles
                 else
                     pm.NextTailorBulkOrder = TimeSpan.FromHours(1.0);
 
-                if (theirSkill >= 70.1 && ((theirSkill - 40.0) / 300.0) > Utility.RandomDouble())
+                if (theirSkill >= 70.1 && (theirSkill - 40.0) / 300.0 > Utility.RandomDouble())
                     return new LargeTailorBOD();
 
                 return SmallTailorBOD.CreateRandomFor(from);
@@ -54,26 +54,26 @@ namespace Server.Mobiles
 
         public override bool IsValidBulkOrder(Item item)
         {
-            return (item is SmallTailorBOD || item is LargeTailorBOD);
+            return item is SmallTailorBOD || item is LargeTailorBOD;
         }
 
         public override bool SupportsBulkOrders(Mobile from)
         {
-            return (from is PlayerMobile && from.Skills[SkillName.Tailoring].Base > 0);
+            return from is PlayerMobile && from.Skills[SkillName.Tailoring].Base > 0;
         }
 
         public override TimeSpan GetNextBulkOrder(Mobile from)
         {
-            if (from is PlayerMobile)
-                return ((PlayerMobile)from).NextTailorBulkOrder;
+            if (from is PlayerMobile mobile)
+                return mobile.NextTailorBulkOrder;
 
             return TimeSpan.Zero;
         }
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (from is PlayerMobile)
-                ((PlayerMobile)from).NextTailorBulkOrder = TimeSpan.Zero;
+            if (from is PlayerMobile mobile)
+                mobile.NextTailorBulkOrder = TimeSpan.Zero;
         }
 
         #endregion
@@ -86,15 +86,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

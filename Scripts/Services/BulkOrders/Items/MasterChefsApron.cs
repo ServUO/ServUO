@@ -5,7 +5,7 @@ namespace Server.Items
         private int _Bonus;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Bonus { get { return _Bonus; } set { _Bonus = value; InvalidateProperties(); } }
+        public int Bonus { get => _Bonus; set { _Bonus = value; InvalidateProperties(); } }
 
         public override int LabelNumber => 1157228;  // Master Chef's Apron
 
@@ -41,7 +41,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Bonus = reader.ReadInt();
         }

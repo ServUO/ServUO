@@ -8,7 +8,7 @@ namespace Server.Services.TownCryer
         public TownCrier Cryer { get; private set; }
 
         public BaseTownCryerGump(PlayerMobile pm, TownCrier cryer)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             Cryer = cryer;
         }

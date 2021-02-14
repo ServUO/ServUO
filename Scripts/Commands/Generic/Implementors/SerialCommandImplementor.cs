@@ -4,7 +4,7 @@ namespace Server.Commands.Generic
     {
         public SerialCommandImplementor()
         {
-            Accessors = new string[] { "Serial" };
+            Accessors = new[] { "Serial" };
             SupportRequirement = CommandSupport.Single;
             AccessLevel = AccessLevel.Counselor;
             Usage = "Serial <serial> <command>";
@@ -47,12 +47,6 @@ namespace Server.Commands.Generic
                         {
                             case ObjectTypes.Both:
                                 {
-                                    if (!(obj is Item) && !(obj is Mobile))
-                                    {
-                                        e.Mobile.SendMessage("This command does not work on that.");
-                                        return;
-                                    }
-
                                     break;
                                 }
                             case ObjectTypes.Items:

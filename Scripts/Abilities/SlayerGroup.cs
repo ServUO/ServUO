@@ -27,12 +27,12 @@ namespace Server.Items
             SlayerGroup dino = new SlayerGroup();
             SlayerGroup myrmidex = new SlayerGroup();
 
-            humanoid.Opposition = new SlayerGroup[]
+            humanoid.Opposition = new[]
                 {
                     undead
                 };
 
-            humanoid.FoundOn = new Type[]
+            humanoid.FoundOn = new[]
                 {
                     typeof(BoneKnight),     typeof(Lich),
                     typeof(LichLord)
@@ -78,7 +78,7 @@ namespace Server.Items
                     typeof(OgreBoneCrusher), typeof(TitanRockHunter)
                 );
 
-            humanoid.Entries = new SlayerEntry[]
+            humanoid.Entries = new[]
             {
                 new SlayerEntry
                     (
@@ -104,10 +104,10 @@ namespace Server.Items
                         SlayerName.TrollSlaughter,
 
                         typeof(Troll),  typeof(FrostTroll)
-                    ),
+                    )
             };
 
-            undead.Opposition = new SlayerGroup[]
+            undead.Opposition = new[]
                 {
                     humanoid
                 };
@@ -147,7 +147,7 @@ namespace Server.Items
 
             undead.Entries = new SlayerEntry[0];
 
-            fey.Opposition = new SlayerGroup[]
+            fey.Opposition = new[]
                 {
                     abyss
                 };
@@ -173,12 +173,12 @@ namespace Server.Items
 
             fey.Entries = new SlayerEntry[0];
 
-            elemental.Opposition = new SlayerGroup[]
+            elemental.Opposition = new[]
                 {
                     abyss
                 };
 
-            elemental.FoundOn = new Type[]
+            elemental.FoundOn = new[]
                 {
                     typeof(Balron),     typeof(Daemon),
                     typeof(Putrefier),  typeof(FireDaemonRenowned)
@@ -213,7 +213,7 @@ namespace Server.Items
                     typeof(CovetousWaterElemental)
                 );
 
-            elemental.Entries = new SlayerEntry[]
+            elemental.Entries = new[]
                 {
                     new SlayerEntry
                         (
@@ -280,13 +280,13 @@ namespace Server.Items
                         )
                 };
 
-            abyss.Opposition = new SlayerGroup[]
+            abyss.Opposition = new[]
                 {
                     elemental,
                     fey
                 };
 
-            abyss.FoundOn = new Type[]
+            abyss.FoundOn = new[]
                 {
                     typeof(BloodElemental)
                 };
@@ -323,10 +323,9 @@ namespace Server.Items
                     typeof(Lifestealer)
                 );
 
-            abyss.Entries = new SlayerEntry[]
+            abyss.Entries = new[]
             {
-                    // Daemon Dismissal & Balron Damnation have been removed and moved up to super slayer on OSI.
-                    new SlayerEntry
+                new SlayerEntry
                         (
                             SlayerName.GargoylesFoe,
 
@@ -337,15 +336,15 @@ namespace Server.Items
                             typeof(EffeteUndeadGargoyle),   typeof(DaemonMongbat),
                             typeof(CovetousDoppleganger),   typeof(CovetousFireDaemon),
                             typeof(GargoyleAssassin),       typeof(LesserOni)
-                        ),
+                        )
             };
 
-            arachnid.Opposition = new SlayerGroup[]
+            arachnid.Opposition = new[]
                 {
                     reptilian
                 };
 
-            arachnid.FoundOn = new Type[]
+            arachnid.FoundOn = new[]
                 {
                     typeof(AncientWyrm),    typeof(GreaterDragon),
                     typeof(Dragon),         typeof(OphidianMatriarch),
@@ -370,7 +369,7 @@ namespace Server.Items
                     typeof(Anlorlem)
                 );
 
-            arachnid.Entries = new SlayerEntry[]
+            arachnid.Entries = new[]
             {
                 new SlayerEntry
                     (
@@ -404,12 +403,12 @@ namespace Server.Items
                     )
             };
 
-            reptilian.Opposition = new SlayerGroup[]
+            reptilian.Opposition = new[]
                 {
                     arachnid
                 };
 
-            reptilian.FoundOn = new Type[]
+            reptilian.FoundOn = new[]
                 {
                     typeof(TerathanAvenger),    typeof(TerathanMatriarch)
                 };
@@ -450,7 +449,7 @@ namespace Server.Items
                     typeof(SkeletalDrake), typeof(CoralSnake)
                 );
 
-            reptilian.Entries = new SlayerEntry[]
+            reptilian.Entries = new[]
             {
                 new SlayerEntry
                     (
@@ -527,7 +526,7 @@ namespace Server.Items
             eodonTribe.Super = new SlayerEntry(SlayerName.EodonTribe, typeof(TribeWarrior), typeof(TribeShaman), typeof(TribeChieftan));
             eodonTribe.Entries = new SlayerEntry[] { };
 
-            dino.Opposition = new SlayerGroup[] { fey };
+            dino.Opposition = new[] { fey };
             dino.FoundOn = new Type[] { };
             dino.Super =
                 new SlayerEntry(
@@ -542,7 +541,7 @@ namespace Server.Items
 
             dino.Entries = new SlayerEntry[] { };
 
-            myrmidex.Opposition = new SlayerGroup[] { fey };
+            myrmidex.Opposition = new[] { fey };
             myrmidex.FoundOn = new Type[] { };
             myrmidex.Super = new SlayerEntry(
 
@@ -552,7 +551,7 @@ namespace Server.Items
                 typeof(MyrmidexWarrior));
             myrmidex.Entries = new SlayerEntry[] { };
 
-            m_Groups = new SlayerGroup[]
+            m_Groups = new[]
                 {
                     humanoid,
                     undead,
@@ -576,47 +575,23 @@ namespace Server.Items
 
         public SlayerGroup[] Opposition
         {
-            get
-            {
-                return m_Opposition;
-            }
-            set
-            {
-                m_Opposition = value;
-            }
+            get => m_Opposition;
+            set => m_Opposition = value;
         }
         public SlayerEntry Super
         {
-            get
-            {
-                return m_Super;
-            }
-            set
-            {
-                m_Super = value;
-            }
+            get => m_Super;
+            set => m_Super = value;
         }
         public SlayerEntry[] Entries
         {
-            get
-            {
-                return m_Entries;
-            }
-            set
-            {
-                m_Entries = value;
-            }
+            get => m_Entries;
+            set => m_Entries = value;
         }
         public Type[] FoundOn
         {
-            get
-            {
-                return m_FoundOn;
-            }
-            set
-            {
-                m_FoundOn = value;
-            }
+            get => m_FoundOn;
+            set => m_FoundOn = value;
         }
         public static SlayerEntry GetEntryByName(SlayerName name)
         {
@@ -638,7 +613,7 @@ namespace Server.Items
                 bool inGroup = false;
 
                 for (int j = 0; foundOn != null && !inGroup && j < foundOn.Length; ++j)
-                    inGroup = (foundOn[j] == type);
+                    inGroup = foundOn[j] == type;
 
                 if (inGroup)
                 {

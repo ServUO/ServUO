@@ -77,7 +77,7 @@ namespace Server.Mobiles
         {
             if (from != null && !willKill && amount > 5 && from.Player && 5 > Utility.Random(100))
             {
-                string[] toSay = new string[]
+                string[] toSay =
                 {
                     "{0}!!  You will have to do better than that!",
                     "{0}!!  Prepare to meet your doom!",
@@ -120,7 +120,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

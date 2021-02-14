@@ -118,9 +118,9 @@ namespace Server.Spells.Spellweaving
 
             protected override void OnTarget(Mobile m, object o)
             {
-                if (o is BaseCreature)
+                if (o is BaseCreature bc)
                 {
-                    m_Owner.Target((BaseCreature)o);
+                    m_Owner.Target(bc);
                 }
                 else
                 {

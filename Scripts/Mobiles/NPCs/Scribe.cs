@@ -40,7 +40,7 @@ namespace Server.Mobiles
 
         public override bool IsValidBulkOrder(Item item)
         {
-            return (item is SmallInscriptionBOD || item is LargeInscriptionBOD);
+            return item is SmallInscriptionBOD || item is LargeInscriptionBOD;
         }
 
         public override bool SupportsBulkOrders(Mobile from)
@@ -50,8 +50,8 @@ namespace Server.Mobiles
 
         public override void OnSuccessfulBulkOrderReceive(Mobile from)
         {
-            if (from is PlayerMobile)
-                ((PlayerMobile)from).NextInscriptionBulkOrder = TimeSpan.Zero;
+            if (from is PlayerMobile mobile)
+                mobile.NextInscriptionBulkOrder = TimeSpan.Zero;
         }
 
         #endregion
@@ -59,15 +59,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

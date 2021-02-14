@@ -18,7 +18,7 @@ namespace Server.Items
         {
             if (!from.HasGump(typeof(MTSchematicsGump)))
             {
-                from.SendGump(new MTSchematicsGump(from));
+                from.SendGump(new MTSchematicsGump());
             }
         }
 
@@ -37,7 +37,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -50,10 +50,10 @@ namespace Server.Items
 
         private static void MTSchematicsGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new MTSchematicsGump(e.Mobile));
+            e.Mobile.SendGump(new MTSchematicsGump());
         }
 
-        public MTSchematicsGump(Mobile owner) : base(50, 50)
+        public MTSchematicsGump() : base(50, 50)
         {
             Closable = true;
             Disposable = true;
@@ -69,8 +69,6 @@ namespace Server.Items
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

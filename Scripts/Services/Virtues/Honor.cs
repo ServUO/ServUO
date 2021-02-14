@@ -205,8 +205,8 @@ namespace Server.Services.Virtues
                 {
                     EmbraceHonor(pm);
                 }
-                else if (targeted is Mobile)
-                    Honor(pm, (Mobile)targeted);
+                else if (targeted is Mobile mobile)
+                    Honor(pm, mobile);
             }
 
             protected override void OnTargetOutOfRange(Mobile from, object targeted)
@@ -307,8 +307,7 @@ namespace Server.Services.Virtues
 
             if (from == m_Source)
             {
-                if (m_Target.CanSee(m_Source) && m_Target.InLOS(m_Source) &&
-                    (m_Source.InRange(m_Target, 1) || (m_Source.Location == m_InitialLocation && m_Source.Map == m_InitialMap)))
+                if (m_Target.CanSee(m_Source) && m_Target.InLOS(m_Source) && (m_Source.InRange(m_Target, 1) || m_Source.Location == m_InitialLocation && m_Source.Map == m_InitialMap))
                 {
                     m_HonorDamage += amount;
                 }
@@ -317,7 +316,7 @@ namespace Server.Services.Virtues
                     m_HonorDamage += amount * 0.8;
                 }
             }
-            else if (from is BaseCreature && ((BaseCreature)from).GetMaster() == m_Source)
+            else if (from is BaseCreature creature && creature.GetMaster() == m_Source)
             {
                 m_HonorDamage += amount * 0.8;
             }

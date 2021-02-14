@@ -10,7 +10,7 @@ namespace Server.Items
         private KotlAutomaton _Automaton;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public KotlAutomaton Automaton { get { return _Automaton; } set { _Automaton = value; } }
+        public KotlAutomaton Automaton { get => _Automaton; set => _Automaton = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public virtual Type RepairResource
@@ -130,7 +130,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(_Automaton);
@@ -139,8 +138,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Automaton = reader.ReadMobile() as KotlAutomaton;
         }

@@ -235,8 +235,8 @@ namespace Server.Items
 
                 IEntity to;
 
-                if (p is Mobile)
-                    to = (Mobile)p;
+                if (p is Mobile mobile)
+                    to = mobile;
                 else
                     to = new Entity(Serial.Zero, new Point3D(p), from.Map);
 

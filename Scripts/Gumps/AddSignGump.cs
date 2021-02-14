@@ -5,7 +5,7 @@ namespace Server.Gumps
 {
     public class AddSignGump : Gump
     {
-        public static SignInfo[] m_Types = new SignInfo[]
+        public static SignInfo[] m_Types =
         {
             new SignInfo(0xB95),
             new SignInfo(0xB96),

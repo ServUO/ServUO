@@ -9,7 +9,7 @@ namespace Server.Engines.VvV
 {
     public class BattleWarningGump : Gump
     {
-        public PlayerMobile User { get; set; }
+        public PlayerMobile User { get; }
         public Timer Timer { get; set; }
 
         public BattleWarningGump(PlayerMobile pm)

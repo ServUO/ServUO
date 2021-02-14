@@ -21,7 +21,7 @@ namespace Server.Spells.Mysticism
 
         public override bool DelayedDamage => true;
         public override bool DelayedDamageStacking => false;
-        public override Type[] DelayDamageFamily => new Type[] { typeof(First.MagicArrowSpell) };
+        public override Type[] DelayDamageFamily => new[] { typeof(First.MagicArrowSpell) };
 
         public override void OnCast()
         {
@@ -34,7 +34,8 @@ namespace Server.Spells.Mysticism
             {
                 return;
             }
-            else if (CheckHSequence(d))
+
+            if (CheckHSequence(d))
             {
                 IDamageable target = d;
                 IDamageable source = Caster;
@@ -89,10 +90,10 @@ namespace Server.Spells.Mysticism
 
                 if (!from.CanSee(o))
                     from.SendLocalizedMessage(500237); // Target can not be seen.
-                else if (o is IDamageable)
+                else if (o is IDamageable damageable)
                 {
-                    SpellHelper.Turn(from, o);
-                    Owner.OnTarget((IDamageable)o);
+                    SpellHelper.Turn(from, damageable);
+                    Owner.OnTarget(damageable);
                 }
             }
 

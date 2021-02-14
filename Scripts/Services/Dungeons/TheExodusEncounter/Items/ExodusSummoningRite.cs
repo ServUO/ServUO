@@ -59,10 +59,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is ExodusTomeAltar)
+                if (targeted is ExodusTomeAltar altar)
                 {
-                    ExodusTomeAltar altar = (ExodusTomeAltar)targeted;
-
                     if (altar.CheckParty(altar.Owner, from))
                     {
                         if (altar.Rituals.Count(s => s.RitualMobile == from) == 0)
@@ -106,7 +104,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

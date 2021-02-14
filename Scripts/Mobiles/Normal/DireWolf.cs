@@ -50,7 +50,7 @@ namespace Server.Mobiles
 
         public override bool IsEnemy(Mobile m)
         {
-            if (m is BaseCreature && ((BaseCreature)m).IsMonster && m.Karma > 0)
+            if (m is BaseCreature creature && creature.IsMonster && creature.Karma > 0)
             {
                 return true;
             }
@@ -72,7 +72,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

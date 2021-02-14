@@ -90,22 +90,22 @@ namespace Server.Items
                     _MessageItem.Lines[i] = s;
                 }
 
-                if (_MessageItem is BaseAddon)
+                if (_MessageItem is BaseAddon addon)
                 {
-                    foreach (AddonComponent comp in ((BaseAddon)_MessageItem).Components)
+                    foreach (AddonComponent comp in addon.Components)
                     {
                         comp.InvalidateProperties();
                     }
                 }
-                else if (_MessageItem is Item)
+                else if (_MessageItem is Item item)
                 {
-                    ((Item)_MessageItem).InvalidateProperties();
+                    item.InvalidateProperties();
                 }
             }
 
-            if (_MessageItem is ValentineBear)
+            if (_MessageItem is ValentineBear bear)
             {
-                ((ValentineBear)_MessageItem).EditEnd = DateTime.UtcNow + TimeSpan.FromMinutes(10.0);
+                bear.EditEnd = DateTime.UtcNow + TimeSpan.FromMinutes(10.0);
             }
         }
     }
@@ -124,9 +124,9 @@ namespace Server.Items
 
         public override void OnClick()
         {
-            if (_MessageItem is Item)
+            if (_MessageItem is Item item)
             {
-                if (_MessageItem is BaseAddon || ((Item)_MessageItem).IsChildOf(_From.Backpack))
+                if (item is BaseAddon || item.IsChildOf(_From.Backpack))
                 {
                     BaseGump.SendGump(new AddCustomizableMessageGump(_From, _MessageItem));
                 }

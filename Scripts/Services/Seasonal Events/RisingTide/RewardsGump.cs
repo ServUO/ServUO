@@ -48,13 +48,13 @@ namespace Server.Engines.RisingTide
 
         public override void OnItemCreated(Item item)
         {
-            if (item is DecorativeWoodCarving)
+            if (item is DecorativeWoodCarving carving)
             {
-                ((DecorativeWoodCarving)item).AssignRandomName();
+                carving.AssignRandomName();
             }
-            else if (item is ShoulderParrot)
+            else if (item is ShoulderParrot parrot)
             {
-                ((ShoulderParrot)item).MasterName = User.Name;
+                parrot.MasterName = User.Name;
             }
         }
 

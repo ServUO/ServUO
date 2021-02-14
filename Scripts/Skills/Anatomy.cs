@@ -34,23 +34,21 @@ namespace Server.SkillHandlers
                 {
                     from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500324); // You know yourself quite well enough already.
                 }
-                else if (targeted is TownCrier)
+                else if (targeted is TownCrier crier)
                 {
-                    ((TownCrier)targeted).PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500322, from.NetState); // This person looks fine to me, though he may have some news...
+                    crier.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500322, from.NetState); // This person looks fine to me, though he may have some news...
                 }
-                else if (targeted is BaseVendor && ((BaseVendor)targeted).IsInvulnerable)
+                else if (targeted is BaseVendor vendor && vendor.IsInvulnerable)
                 {
-                    ((BaseVendor)targeted).PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500326, from.NetState); // That can not be inspected.
+                    vendor.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500326, from.NetState); // That can not be inspected.
                 }
-                else if (targeted is Mobile)
+                else if (targeted is Mobile targ)
                 {
-                    Mobile targ = (Mobile)targeted;
-
                     int marginOfError = Math.Max(0, 25 - (int)(from.Skills[SkillName.Anatomy].Value / 4));
 
                     int str = targ.Str + Utility.RandomMinMax(-marginOfError, +marginOfError);
                     int dex = targ.Dex + Utility.RandomMinMax(-marginOfError, +marginOfError);
-                    int stm = ((targ.Stam * 100) / Math.Max(targ.StamMax, 1)) + Utility.RandomMinMax(-marginOfError, +marginOfError);
+                    int stm = targ.Stam * 100 / Math.Max(targ.StamMax, 1) + Utility.RandomMinMax(-marginOfError, +marginOfError);
 
                     int strMod = str / 10;
                     int dexMod = dex / 10;
@@ -73,7 +71,7 @@ namespace Server.SkillHandlers
 
                     if (from.CheckTargetSkill(SkillName.Anatomy, targ, 0, from.Skills[SkillName.Anatomy].Cap))
                     {
-                        targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1038045 + (strMod * 11) + dexMod, from.NetState); // That looks [strong] and [dexterous].
+                        targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1038045 + strMod * 11 + dexMod, from.NetState); // That looks [strong] and [dexterous].
 
                         if (from.Skills[SkillName.Anatomy].Base >= 65.0)
                             targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1038303 + stmMod, from.NetState); // That being is at [10,20,...] percent endurance.
@@ -83,9 +81,9 @@ namespace Server.SkillHandlers
                         targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1042666, from.NetState); // You can not quite get a sense of their physical characteristics.
                     }
                 }
-                else if (targeted is Item)
+                else if (targeted is Item item)
                 {
-                    ((Item)targeted).SendLocalizedMessageTo(from, 500323, ""); // Only living things have anatomies!
+                    item.SendLocalizedMessageTo(from, 500323, ""); // Only living things have anatomies!
                 }
             }
         }

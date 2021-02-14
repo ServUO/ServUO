@@ -15,47 +15,23 @@ namespace Server.Engines.Craft
 
         public bool Init
         {
-            get
-            {
-                return m_Init;
-            }
-            set
-            {
-                m_Init = value;
-            }
+            get => m_Init;
+            set => m_Init = value;
         }
         public Type ResType
         {
-            get
-            {
-                return m_Type;
-            }
-            set
-            {
-                m_Type = value;
-            }
+            get => m_Type;
+            set => m_Type = value;
         }
         public string NameString
         {
-            get
-            {
-                return m_NameString;
-            }
-            set
-            {
-                m_NameString = value;
-            }
+            get => m_NameString;
+            set => m_NameString = value;
         }
         public int NameNumber
         {
-            get
-            {
-                return m_NameNumber;
-            }
-            set
-            {
-                m_NameNumber = value;
-            }
+            get => m_NameNumber;
+            set => m_NameNumber = value;
         }
         public void Add(CraftSubRes craftSubRes)
         {

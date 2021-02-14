@@ -185,8 +185,8 @@ namespace Server.Spells.Sixth
                     m.PlaySound(0x204);
                     m.FixedEffect(0x376A, 10, 16);
 
-                    if (m is BaseCreature)
-                        ((BaseCreature)m).OnHarmfulSpell(m_Caster);
+                    if (m is BaseCreature bc)
+                        bc.OnHarmfulSpell(m_Caster);
                 }
 
                 return true;
@@ -220,8 +220,8 @@ namespace Server.Spells.Sixth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                if (o is IPoint3D point3D)
+                    m_Owner.Target(point3D);
             }
 
             protected override void OnTargetFinish(Mobile from)

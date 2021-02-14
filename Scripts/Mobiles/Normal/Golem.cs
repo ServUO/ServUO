@@ -53,9 +53,9 @@ namespace Server.Mobiles
                 SetResistance(ResistanceType.Fire, 50, 65);
                 SetResistance(ResistanceType.Poison, 75, 85);
 
-                SetSkill(SkillName.MagicResist, (150.1 * scalar), (190.0 * scalar));
-                SetSkill(SkillName.Tactics, (60.1 * scalar), (100.0 * scalar));
-                SetSkill(SkillName.Wrestling, (60.1 * scalar), (100.0 * scalar));
+                SetSkill(SkillName.MagicResist, 150.1 * scalar, 190.0 * scalar);
+                SetSkill(SkillName.Tactics, 60.1 * scalar, 100.0 * scalar);
+                SetSkill(SkillName.Wrestling, 60.1 * scalar, 100.0 * scalar);
 
                 Fame = 10;
                 Karma = 10;
@@ -108,15 +108,11 @@ namespace Server.Mobiles
                 {
                     return DawnsMusicGear.RandomCommon;
                 }
-                else
-                {
-                    return DawnsMusicGear.RandomUncommon;
-                }
+
+                return DawnsMusicGear.RandomUncommon;
             }
-            else
-            {
-                return DawnsMusicGear.RandomRare;
-            }
+
+            return DawnsMusicGear.RandomRare;
         }
 
         public Golem(Serial serial)
@@ -171,7 +167,7 @@ namespace Server.Mobiles
         {
             if (Controlled || Summoned)
             {
-                Mobile master = (ControlMaster);
+                Mobile master = ControlMaster;
 
                 if (master == null)
                     master = SummonMaster;
@@ -203,7 +199,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

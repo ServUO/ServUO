@@ -21,25 +21,13 @@ namespace Server.Engines.Quests
 
         public Type QuestType
         {
-            get
-            {
-                return m_QuestType;
-            }
-            set
-            {
-                m_QuestType = value;
-            }
+            get => m_QuestType;
+            set => m_QuestType = value;
         }
         public DateTime RestartTime
         {
-            get
-            {
-                return m_RestartTime;
-            }
-            set
-            {
-                m_RestartTime = value;
-            }
+            get => m_RestartTime;
+            set => m_RestartTime = value;
         }
         public void Reset(TimeSpan restartDelay)
         {

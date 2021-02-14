@@ -7,7 +7,7 @@ namespace Server.Mobiles
 {
     public class FishMonger : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(ProfessionalFisherQuest) };
+        public override Type[] Quests => new[] { typeof(ProfessionalFisherQuest) };
 
         [Constructable]
         public FishMonger()
@@ -81,7 +81,8 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             FishQuestHelper.AddMonger(this);
         }
     }

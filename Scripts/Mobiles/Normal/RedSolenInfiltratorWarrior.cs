@@ -79,9 +79,11 @@ namespace Server.Mobiles
         public override bool IsEnemy(Mobile m)
         {
             if (SolenHelper.CheckRedFriendship(m))
+            {
                 return false;
-            else
-                return base.IsEnemy(m);
+            }
+
+            return base.IsEnemy(m);
         }
 
         public override void OnDamage(int amount, Mobile from, bool willKill)
@@ -100,7 +102,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

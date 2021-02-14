@@ -65,7 +65,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         {
             AddonComponent ac;
             ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
+            if (!string.IsNullOrEmpty(name))
                 ac.Name = name;
             if (hue != 0)
                 ac.Hue = hue;
@@ -89,7 +89,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

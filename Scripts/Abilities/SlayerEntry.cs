@@ -4,7 +4,7 @@ namespace Server.Items
 {
     public class SlayerEntry
     {
-        private static readonly int[] m_AosTitles = new int[]
+        private static readonly int[] m_AosTitles =
         {
             1060479, // undead slayer
             1060470, // orc slayer
@@ -50,14 +50,8 @@ namespace Server.Items
 
         public SlayerGroup Group
         {
-            get
-            {
-                return m_Group;
-            }
-            set
-            {
-                m_Group = value;
-            }
+            get => m_Group;
+            set => m_Group = value;
         }
 
         public SlayerName Name => m_Name;
@@ -76,13 +70,14 @@ namespace Server.Items
 
         public bool Slays(Mobile m)
         {
-
             if (m.SpecialSlayerMechanics)
             {
                 if (m.SlayerVulnerabilities.Contains(m_Name.ToString()))
+                {
                     return true;
-                else
-                    return false;
+                }
+
+                return false;
             }
 
             Type t = m.GetType();

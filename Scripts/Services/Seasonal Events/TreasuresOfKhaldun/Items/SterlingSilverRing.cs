@@ -23,9 +23,9 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (IsChildOf(m.Backpack) && m is PlayerMobile && !HasSkillBonus)
+            if (IsChildOf(m.Backpack) && m is PlayerMobile mobile && !HasSkillBonus)
             {
-                BaseGump.SendGump(new ApplySkillBonusGump((PlayerMobile)m, SkillBonuses, Skills, 20, 0));
+                BaseGump.SendGump(new ApplySkillBonusGump(mobile, SkillBonuses, Skills, 20, 0));
             }
             else
             {

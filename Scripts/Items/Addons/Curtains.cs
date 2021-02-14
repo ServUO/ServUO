@@ -44,10 +44,8 @@ namespace Server.Items
                 {
                     foreach (AddonComponent c in Addon.Components)
                     {
-                        if (c is CurtainsComponent)
+                        if (c is CurtainsComponent curtain)
                         {
-                            CurtainsComponent curtain = (CurtainsComponent)c;
-
                             int temp = curtain.ItemID;
                             curtain.ItemID = curtain.ClosedID;
                             curtain.ClosedID = temp;

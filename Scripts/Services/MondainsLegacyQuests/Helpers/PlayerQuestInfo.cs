@@ -1,4 +1,3 @@
-
 using Server.Gumps;
 using Server.Commands;
 using Server.Targeting;
@@ -16,7 +15,24 @@ namespace Server.Engines.Quests
     {
         public static void Initialize()
         {
+            CommandSystem.Register("QuestMenu", AccessLevel.GameMaster, Quests_OnCommand);
             CommandSystem.Register("Quests", AccessLevel.GameMaster, CheckQuests);
+        }
+
+        [Usage("QuestMenu")]
+        [Description("Pops up the quest menu from targeted player.")]
+        private static void Quests_OnCommand(CommandEventArgs e)
+        {
+            Mobile m = e.Mobile;
+            m.SendMessage("Target a player to view their quests.");
+
+            m.BeginTarget(-1, false, TargetFlags.None, delegate (Mobile from, object targeted)
+            {
+                if (targeted is PlayerMobile mobile)
+                {
+                    m.SendGump(new MondainQuestGump(mobile));
+                }
+            });
         }
 
         [Usage("Quests")]
@@ -41,7 +57,7 @@ namespace Server.Engines.Quests
             }
         }
 
-        public PlayerMobile Subject { get; private set; }
+        public PlayerMobile Subject { get; }
         public QuestPage Page { get; private set; }
 
         public PlayerQuestInfoGump(PlayerMobile user, PlayerMobile subject)
@@ -97,13 +113,13 @@ namespace Server.Engines.Quests
                         continue;
                     }
 
-                    if (quest.Title is int)
+                    if (quest.Title is int iTitle)
                     {
-                        AddHtmlLocalized(10, y, 200, 20, (int)quest.Title, false, false);
+                        AddHtmlLocalized(10, y, 200, 20, iTitle, false, false);
                     }
-                    else if (quest.Title is string)
+                    else if (quest.Title is string sTitle)
                     {
-                        AddHtml(10, y, 200, 20, (string)quest.Title, false, false);
+                        AddHtml(10, y, 200, 20, sTitle, false, false);
                     }
 
                     AddLabel(210, y, 0, string.Format("{0}/{1}", ObjectivesComplete(quest).ToString(), quest.Objectives.Count));
@@ -138,13 +154,13 @@ namespace Server.Engines.Quests
 
                         if (quest != null)
                         {
-                            if (quest.Title is int)
+                            if (quest.Title is int iTitle)
                             {
-                                AddHtmlLocalized(10, y, 200, 20, (int)quest.Title, false, false);
+                                AddHtmlLocalized(10, y, 200, 20, iTitle, false, false);
                             }
-                            else if (quest.Title is string)
+                            else if (quest.Title is string sTitle)
                             {
-                                AddHtml(10, y, 200, 20, (string)quest.Title, false, false);
+                                AddHtml(10, y, 200, 20, sTitle, false, false);
                             }
                         }
                         else
@@ -198,7 +214,7 @@ namespace Server.Engines.Quests
                                 SendGump(new ConfirmCallbackGump(
                                     User,
                                     "Remove Delayed Restart",
-                                    string.Format("By selecting yes, you will remove restart delay or restart restriction for this quest. This player will be able to restart this quest immediately thereafter.", restart.RestartTime.ToString()),
+                                    "By selecting yes, you will remove restart delay or restart restriction for this quest. This player will be able to restart this quest immediately thereafter.",
                                     null,
                                     null,
                                     (m, o) =>
@@ -218,10 +234,7 @@ namespace Server.Engines.Quests
                         {
                             var quest = quests[id];
 
-                            if (quests != null)
-                            {
-                                User.SendGump(new MondainResignGump(quest));
-                            }
+                            User.SendGump(new MondainResignGump(quest));
                         }
                     }
 

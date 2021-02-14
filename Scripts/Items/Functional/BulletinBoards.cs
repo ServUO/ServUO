@@ -32,15 +32,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -68,14 +66,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public string BoardName
         {
-            get
-            {
-                return m_BoardName;
-            }
-            set
-            {
-                m_BoardName = value;
-            }
+            get => m_BoardName;
+            set => m_BoardName = value;
         }
         public static bool CheckTime(DateTime time, TimeSpan range)
         {
@@ -89,11 +81,16 @@ namespace Server.Items
             int minutes = totalSeconds / 60;
 
             if (minutes != 0 && seconds != 0)
+            {
                 return string.Format("{0} minute{1} and {2} second{3}", minutes, minutes == 1 ? "" : "s", seconds, seconds == 1 ? "" : "s");
-            else if (minutes != 0)
+            }
+
+            if (minutes != 0)
+            {
                 return string.Format("{0} minute{1}", minutes, minutes == 1 ? "" : "s");
-            else
-                return string.Format("{0} second{1}", seconds, seconds == 1 ? "" : "s");
+            }
+
+            return string.Format("{0} second{1}", seconds, seconds == 1 ? "" : "s");
         }
 
         public static void Initialize()
@@ -386,14 +383,8 @@ namespace Server.Items
         public DateTime Time => m_Time;
         public DateTime LastPostTime
         {
-            get
-            {
-                return m_LastPostTime;
-            }
-            set
-            {
-                m_LastPostTime = value;
-            }
+            get => m_LastPostTime;
+            set => m_LastPostTime = value;
         }
         public string PostedName => m_PostedName;
         public int PostedBody => m_PostedBody;
@@ -492,8 +483,10 @@ namespace Server.Items
 
         public void Validate()
         {
-            if (!(Parent is BulletinBoard && ((BulletinBoard)Parent).Items.Contains(this)))
+            if (!(Parent is BulletinBoard board && board.Items.Contains(this)))
+            {
                 Delete();
+            }
         }
     }
 

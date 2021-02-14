@@ -35,10 +35,8 @@ namespace Server.Services.Virtues
                     TargetFlags.None,
                     (mobile, targeted) =>
                     {
-                        if (targeted is Mobile)
+                        if (targeted is Mobile m)
                         {
-                            Mobile m = (Mobile)targeted;
-
                             if (VirtueHelper.GetLevel(from, VirtueName.Spirituality) < VirtueLevel.Seeker)
                             {
                                 from.SendLocalizedMessage(1155812); // You must be at least a Seeker of Humility to Invoke this ability.
@@ -47,7 +45,7 @@ namespace Server.Services.Virtues
                             {
                                 from.SendLocalizedMessage(1155828); // Thy target must be among the living.
                             }
-                            else if (m is BaseCreature && !((BaseCreature)m).Controlled && !((BaseCreature)m).Summoned)
+                            else if (m is BaseCreature creature && !creature.Controlled && !creature.Summoned)
                             {
                                 from.SendLocalizedMessage(1155837); // You can only embrace players and pets with Spirituality.
                             }
@@ -192,10 +190,10 @@ namespace Server.Services.Virtues
 
         public class SpiritualityContext
         {
-            public Mobile Mobile { get; set; }
-            public Mobile Protector { get; set; }
+            public Mobile Mobile { get; }
+            public Mobile Protector { get; }
             public int Pool { get; set; }
-            public int Reduction { get; set; }
+            public int Reduction { get; }
 
             public SpiritualityContext(Mobile protector, Mobile m)
             {

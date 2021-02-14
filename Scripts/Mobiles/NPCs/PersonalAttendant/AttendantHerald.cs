@@ -11,7 +11,7 @@ namespace Server.Mobiles
 {
     public class AttendantHerald : PersonalAttendant
     {
-        private static readonly HeraldEntry[] m_Announcements = new HeraldEntry[]
+        private static readonly HeraldEntry[] m_Announcements =
         {
             new HeraldEntry(1076044, "[OWNER TITLE]", "[OWNER NAME]"), // Attention, attention! All hail the arrival of the ~1_TITLE~ ~2_NAME~!
             new HeraldEntry(1076045, "[OWNER TITLE]", "[OWNER NAME]"), // Make way ye unwashed hordes! Clear the road! For ~1_TITLE~ ~2_NAME~ has business more important than yours!
@@ -20,7 +20,7 @@ namespace Server.Mobiles
             new HeraldEntry(1076048, "[OWNER TITLE]", "[OWNER NAME]"), // ~1_TITLE~ ~2_NAME~ has arrived! Let the drinks flow! Let the festivities commence! And you there, with the pig, get that beast on a skewer!
             new HeraldEntry(1076049, "[OWNER SEX P]", "[OWNER OPPOSITE SEX P]", "[OWNER TITLE]", "[OWNER NAME]")// Let the ~1_SAME_SEX~ cower and the ~2_OPPOSITE_SEX~ swoon, for now approaches the ~3_TITLE~ ~4_NAME~.
         };
-        private static readonly HeraldEntry[] m_Greetings = new HeraldEntry[]
+        private static readonly HeraldEntry[] m_Greetings =
         {
             new HeraldEntry(1076038, "[OWNER NAME]"), // Welcome to the home of ~1_OWNER_NAME~. Please keep your shoes off the furniture.
             new HeraldEntry(1076039, "[VISITOR TITLE]", "[VISITOR NAME]", "[OWNER SEX]"), // Announcing the arrival of the ~1_VISITOR_TITLE~ ~2_VISITOR_NAME~. The ~3_OWNER_SEX~ of the house bids you welcome.
@@ -32,11 +32,13 @@ namespace Server.Mobiles
             new HeraldEntry(1076075, "[OWNER TITLE]", "[OWNER NAME]"), // Come Friend! Enter ~1_OWNER_TITLE~ ~2_OWNER_NAME~'s wondrous shop of many things! If you can't find it here, I suggest you go somewhere else!
             new HeraldEntry(1076076, "[VISITOR NAME]")// *Looks ~1_VISITOR_NAME~ over with narrowed eyes, scowling, and points to the sign on the wall* "Reagents for spell casting only, Please do not eat!"
         };
+
         private HeraldEntry m_Announcement;
         private HeraldEntry m_Greeting;
         private DateTime m_NextYell;
         private BaseHouse m_House;
         private Point3D m_Location;
+
         public AttendantHerald()
             : base("the Herald")
         {
@@ -54,30 +56,21 @@ namespace Server.Mobiles
         }
 
         public virtual TimeSpan YellDelay => TimeSpan.FromSeconds(15);
+
         [CommandProperty(AccessLevel.GameMaster)]
         public HeraldEntry Announcement
         {
-            get
-            {
-                return m_Announcement;
-            }
-            set
-            {
-                m_Announcement = value;
-            }
+            get => m_Announcement;
+            set => m_Announcement = value;
         }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public HeraldEntry Greeting
         {
-            get
-            {
-                return m_Greeting;
-            }
-            set
-            {
-                m_Greeting = value;
-            }
+            get => m_Greeting;
+            set => m_Greeting = value;
         }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (from.Alive && IsOwner(from))
@@ -133,13 +126,12 @@ namespace Server.Mobiles
                 m_Location = Location;
             }
 
-            return (m_House != null && m_House.IsOwner(owner) && ControlOrder == OrderType.Stay);
+            return m_House != null && m_House.IsOwner(owner) && ControlOrder == OrderType.Stay;
         }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Announcement != null);
@@ -156,8 +148,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             if (reader.ReadBool())
             {
@@ -208,15 +199,10 @@ namespace Server.Mobiles
             [CommandProperty(AccessLevel.GameMaster)]
             public TextDefinition Message
             {
-                get
-                {
-                    return m_Message;
-                }
-                set
-                {
-                    m_Message = value;
-                }
+                get => m_Message;
+                set => m_Message = value;
             }
+
             [CommandProperty(AccessLevel.GameMaster)]
             public string Arguments
             {
@@ -265,7 +251,8 @@ namespace Server.Mobiles
 
                     return new GumpHtmlLocalized(x, y, width, height, m_Message.Number, args, color, false, false);
                 }
-                else if (m_Message.String != null)
+
+                if (m_Message.String != null)
                 {
                     string message = string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, ConstructString(herald, null));
 
@@ -518,8 +505,8 @@ namespace Server.Mobiles
                         }
                     }
 
-                    AddButton(19, 49 + (i % 5) * 48, 0x845, 0x846, 100 + i, GumpButtonType.Reply, 0);
-                    Add(entries[i].Construct(herald, 44, 47 + (i % 5) * 48, 460, 40, 0x7FFF));
+                    AddButton(19, 49 + i % 5 * 48, 0x845, 0x846, 100 + i, GumpButtonType.Reply, 0);
+                    Add(entries[i].Construct(herald, 44, 47 + i % 5 * 48, 460, 40, 0x7FFF));
                 }
             }
 
@@ -553,7 +540,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public AttendantMaleHerald()
-            : base()
         {
         }
 
@@ -588,15 +574,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -604,7 +588,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public AttendantFemaleHerald()
-            : base()
         {
         }
 
@@ -642,15 +625,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

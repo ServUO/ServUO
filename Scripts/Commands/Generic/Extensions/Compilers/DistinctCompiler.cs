@@ -46,7 +46,7 @@ namespace Server.Commands.Generic
                     /*  name  */ "Compare",
                     /*  attr  */ MethodAttributes.Public | MethodAttributes.Virtual,
                     /* return */ typeof(int),
-                    /* params */ new Type[] { typeof(object), typeof(object) });
+                    /* params */ new[] { typeof(object), typeof(object) });
 
                 LocalBuilder a = emitter.CreateLocal(objectType);
                 LocalBuilder b = emitter.CreateLocal(objectType);
@@ -80,7 +80,7 @@ namespace Server.Commands.Generic
                     emitter.Chain(prop);
 
                     bool couldCompare =
-                        emitter.CompareTo(1, delegate ()
+                        emitter.CompareTo(1, delegate
                         {
                             emitter.LoadLocal(b);
                             emitter.Chain(prop);
@@ -101,7 +101,7 @@ namespace Server.Commands.Generic
                     emitter.Method,
                     typeof(IComparer).GetMethod(
                         "Compare",
-                        new Type[]
+                        new[]
                         {
                             typeof(object),
                             typeof(object)
@@ -123,7 +123,7 @@ namespace Server.Commands.Generic
                     /*  name  */ "Equals",
                     /*  attr  */ MethodAttributes.Public | MethodAttributes.Virtual,
                     /* return */ typeof(bool),
-                    /* params */ new Type[] { typeof(object), typeof(object) });
+                    /* params */ new[] { typeof(object), typeof(object) });
 
                 emitter.Generator.Emit(OpCodes.Ldarg_0);
                 emitter.Generator.Emit(OpCodes.Ldarg_1);
@@ -141,7 +141,7 @@ namespace Server.Commands.Generic
                     emitter.Method,
                     typeof(IEqualityComparer<object>).GetMethod(
                         "Equals",
-                        new Type[]
+                        new[]
                         {
                             typeof(object),
                             typeof(object)
@@ -157,7 +157,7 @@ namespace Server.Commands.Generic
                     /*  name  */ "GetHashCode",
                     /*  attr  */ MethodAttributes.Public | MethodAttributes.Virtual,
                     /* return */ typeof(int),
-                    /* params */ new Type[] { typeof(object) });
+                    /* params */ new[] { typeof(object) });
 
                 LocalBuilder obj = emitter.CreateLocal(objectType);
 
@@ -223,7 +223,7 @@ namespace Server.Commands.Generic
                     emitter.Method,
                     typeof(IEqualityComparer<object>).GetMethod(
                         "GetHashCode",
-                        new Type[]
+                        new[]
                         {
                             typeof(object)
                         }));

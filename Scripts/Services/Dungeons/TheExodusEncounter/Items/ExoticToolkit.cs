@@ -36,6 +36,7 @@ namespace Server.Items
         public class InternalTarget : Target
         {
             public ExoticToolkit m_Toolkit;
+
             public InternalTarget(ExoticToolkit toolkit) : base(-1, true, TargetFlags.None)
             {
                 m_Toolkit = toolkit;
@@ -43,17 +44,9 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is NexusComponent)
+                if (targeted is NexusComponent addon && addon.Addon is ExodusNexus nexus && !nexus.Active)
                 {
-                    NexusComponent addon = ((NexusComponent)targeted) as NexusComponent;
-
-                    if (addon.Addon is ExodusNexus)
-                    {
-                        if (!((ExodusNexus)addon.Addon).Active)
-                        {
-                            ((ExodusNexus)addon.Addon).OpenGump(from);
-                        }
-                    }
+                    nexus.OpenGump(from);
                 }
             }
         }
@@ -67,7 +60,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

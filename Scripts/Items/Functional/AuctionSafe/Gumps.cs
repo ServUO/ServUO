@@ -82,8 +82,8 @@ namespace Server.Engines.Auction
             switch (info.ButtonID)
             {
                 case 0: break;
-                case 100: Refresh(); User.SendGump(new AuctionInfoGump(User)); break;
-                case 101: Refresh(); User.SendGump(new BidHistoryGump(User, Auction)); break;
+                case 100: Refresh(); User.SendGump(new AuctionInfoGump()); break;
+                case 101: Refresh(); User.SendGump(new BidHistoryGump(Auction)); break;
             }
 
             if (Auction != null)
@@ -279,7 +279,7 @@ namespace Server.Engines.Auction
                 gold = (int)amount;
             }
 
-            return new int[] { plat, gold };
+            return new[] { plat, gold };
         }
 
         private class InternalTarget : Target
@@ -296,7 +296,7 @@ namespace Server.Engines.Auction
 
             private bool IsBadItem(Item item)
             {
-                return item == null || item.Weight > 300 || (item is Container && !(item is BaseQuiver)) || item is Gold || item is BankCheck || !item.Movable || item.Items.Count > 0;
+                return item == null || item.Weight > 300 || item is Container && !(item is BaseQuiver) || item is Gold || item is BankCheck || !item.Movable || item.Items.Count > 0;
             }
 
             protected override void OnTarget(Mobile from, object targeted)
@@ -306,10 +306,8 @@ namespace Server.Engines.Auction
                     return;
                 }
 
-                if (targeted is Item)
+                if (targeted is Item item)
                 {
-                    Item item = targeted as Item;
-
                     if (!IsBadItem(item))
                     {
                         if (item.IsChildOf(from.Backpack))
@@ -685,7 +683,7 @@ namespace Server.Engines.Auction
 
     public class AuctionInfoGump : Gump
     {
-        public AuctionInfoGump(PlayerMobile pm)
+        public AuctionInfoGump()
             : base(100, 200)
         {
             AddPage(0);
@@ -721,7 +719,7 @@ namespace Server.Engines.Auction
 
         public Auction Auction { get; set; }
 
-        public BidHistoryGump(PlayerMobile pm, Auction auction)
+        public BidHistoryGump(Auction auction)
             : base(100, 200)
         {
             Auction = auction;

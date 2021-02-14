@@ -26,7 +26,6 @@ namespace Server.Regions
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(SpawnEntry.Table.Values.Count);
@@ -41,8 +40,7 @@ namespace Server.Regions
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
@@ -52,9 +50,9 @@ namespace Server.Regions
                 SpawnEntry entry = (SpawnEntry)SpawnEntry.Table[id];
 
                 if (entry != null)
-                    entry.Deserialize(reader, version);
+                    entry.Deserialize(reader);
                 else
-                    SpawnEntry.Remove(reader, version);
+                    SpawnEntry.Remove(reader);
             }
         }
     }

@@ -32,25 +32,13 @@ namespace Server.Engines.Craft
 
         public CraftSystem CraftSystem
         {
-            get
-            {
-                return m_System;
-            }
-            set
-            {
-                m_System = value;
-            }
+            get => m_System;
+            set => m_System = value;
         }
         public CraftItem CraftItem
         {
-            get
-            {
-                return m_CraftItem;
-            }
-            set
-            {
-                m_CraftItem = value;
-            }
+            get => m_CraftItem;
+            set => m_CraftItem = value;
         }
 
         public int ID => m_ID;
@@ -80,10 +68,10 @@ namespace Server.Engines.Craft
 
             m.BeginTarget(-1, false, Targeting.TargetFlags.None, delegate (Mobile from, object targeted)
             {
-                if (targeted is PlayerMobile)
+                if (targeted is PlayerMobile mobile)
                 {
                     foreach (KeyValuePair<int, Recipe> kvp in m_Recipes)
-                        ((PlayerMobile)targeted).AcquireRecipe(kvp.Key);
+                        mobile.AcquireRecipe(kvp.Key);
 
                     m.SendMessage("You teach them all of the recipies.");
                 }
@@ -103,9 +91,9 @@ namespace Server.Engines.Craft
 
             m.BeginTarget(-1, false, Targeting.TargetFlags.None, delegate (Mobile from, object targeted)
             {
-                if (targeted is PlayerMobile)
+                if (targeted is PlayerMobile mobile)
                 {
-                    ((PlayerMobile)targeted).ResetRecipes();
+                    mobile.ResetRecipes();
 
                     m.SendMessage("They forget all their recipies.");
                 }

@@ -61,7 +61,7 @@ namespace Server.Mobiles
                 ExportSpawners(spawners, filename);
             }
 
-            public override bool ValidateArgs(BaseCommandImplementor impl, CommandEventArgs e)
+            public override bool ValidateArgs(CommandEventArgs e)
             {
                 if (e.Arguments.Length >= 1)
                     return true;

@@ -64,10 +64,10 @@ namespace Server.Engines.Despise
             if (!CanBeHarmful(m, false) || SkillHandlers.Discordance.GetEffect(m, ref discordanceEffect))
                 return false;
 
-            if ((m is DespiseCreature && ((DespiseCreature)m).Alignment != Alignment.Neutral && ((DespiseCreature)m).Alignment != Alignment) || m is DespiseBoss)
+            if (m is DespiseCreature creature && creature.Alignment != Alignment.Neutral && creature.Alignment != Alignment || m is DespiseBoss)
                 return true;
 
-            return m is PlayerMobile && !Controlled && ((m.Karma < 0 && Alignment == Alignment.Good) || (m.Karma > 0 && Alignment == Alignment.Evil));
+            return m is PlayerMobile && !Controlled && (m.Karma < 0 && Alignment == Alignment.Good || m.Karma > 0 && Alignment == Alignment.Evil);
         }
 
         public Silenii(Serial serial) : base(serial)
@@ -83,7 +83,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -124,7 +124,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -228,7 +228,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -475,10 +475,10 @@ namespace Server.Engines.Despise
 
         private bool CanDoHeal(Mobile toHeal)
         {
-            if (toHeal is DespiseCreature && ((DespiseCreature)toHeal).Alignment == Alignment)
+            if (toHeal is DespiseCreature creature && creature.Alignment == Alignment)
                 return true;
 
-            return toHeal is PlayerMobile && ((toHeal.Karma < 0 && Alignment == Alignment.Evil) || (toHeal.Karma > 0 && Alignment == Alignment.Good));
+            return toHeal is PlayerMobile && (toHeal.Karma < 0 && Alignment == Alignment.Evil || toHeal.Karma > 0 && Alignment == Alignment.Good);
         }
 
         public Fairy(Serial serial) : base(serial)
@@ -494,7 +494,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextHeal = DateTime.UtcNow;
         }

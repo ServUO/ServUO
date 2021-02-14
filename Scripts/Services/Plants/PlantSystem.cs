@@ -56,7 +56,7 @@ namespace Server.Engines.Plants
         public bool IsFullWater => m_Water >= 4;
         public int Water
         {
-            get { return m_Water; }
+            get => m_Water;
             set
             {
                 if (value < 0)
@@ -72,7 +72,7 @@ namespace Server.Engines.Plants
 
         public int Hits
         {
-            get { return m_Hits; }
+            get => m_Hits;
             set
             {
                 if (m_Hits == value)
@@ -102,18 +102,18 @@ namespace Server.Engines.Plants
 
                 if (perc < 33)
                     return PlantHealth.Dying;
-                else if (perc < 66)
+                if (perc < 66)
                     return PlantHealth.Wilted;
-                else if (perc < 100)
+                if (perc < 100)
                     return PlantHealth.Healthy;
-                else
-                    return PlantHealth.Vibrant;
+
+                return PlantHealth.Vibrant;
             }
         }
 
         public int Infestation
         {
-            get { return m_Infestation; }
+            get => m_Infestation;
             set
             {
                 if (value < 0)
@@ -127,7 +127,7 @@ namespace Server.Engines.Plants
 
         public int Fungus
         {
-            get { return m_Fungus; }
+            get => m_Fungus;
             set
             {
                 if (value < 0)
@@ -141,7 +141,7 @@ namespace Server.Engines.Plants
 
         public int Poison
         {
-            get { return m_Poison; }
+            get => m_Poison;
             set
             {
                 if (value < 0)
@@ -155,7 +155,7 @@ namespace Server.Engines.Plants
 
         public int Disease
         {
-            get { return m_Disease; }
+            get => m_Disease;
             set
             {
                 if (value < 0)
@@ -170,7 +170,7 @@ namespace Server.Engines.Plants
         public bool IsFullPoisonPotion => m_PoisonPotion >= 2;
         public int PoisonPotion
         {
-            get { return m_PoisonPotion; }
+            get => m_PoisonPotion;
             set
             {
                 if (value < 0)
@@ -185,7 +185,7 @@ namespace Server.Engines.Plants
         public bool IsFullCurePotion => m_CurePotion >= 2;
         public int CurePotion
         {
-            get { return m_CurePotion; }
+            get => m_CurePotion;
             set
             {
                 if (value < 0)
@@ -200,7 +200,7 @@ namespace Server.Engines.Plants
         public bool IsFullHealPotion => m_HealPotion >= 2;
         public int HealPotion
         {
-            get { return m_HealPotion; }
+            get => m_HealPotion;
             set
             {
                 if (value < 0)
@@ -215,7 +215,7 @@ namespace Server.Engines.Plants
         public bool IsFullStrengthPotion => m_StrengthPotion >= 2;
         public int StrengthPotion
         {
-            get { return m_StrengthPotion; }
+            get => m_StrengthPotion;
             set
             {
                 if (value < 0)
@@ -238,11 +238,13 @@ namespace Server.Engines.Plants
             get
             {
                 if (Pollinated)
+                {
                     return m_SeedType;
-                else
-                    return Plant.PlantType;
+                }
+
+                return Plant.PlantType;
             }
-            set { m_SeedType = value; }
+            set => m_SeedType = value;
         }
 
         public PlantHue SeedHue
@@ -250,34 +252,36 @@ namespace Server.Engines.Plants
             get
             {
                 if (Pollinated)
+                {
                     return m_SeedHue;
-                else
-                    return Plant.PlantHue;
+                }
+
+                return Plant.PlantHue;
             }
-            set { m_SeedHue = value; }
+            set => m_SeedHue = value;
         }
 
         public int AvailableSeeds
         {
-            get { return m_AvailableSeeds; }
+            get => m_AvailableSeeds;
             set { if (value >= 0) m_AvailableSeeds = value; }
         }
 
         public int LeftSeeds
         {
-            get { return m_LeftSeeds; }
+            get => m_LeftSeeds;
             set { if (value >= 0) m_LeftSeeds = value; }
         }
 
         public int AvailableResources
         {
-            get { return m_AvailableResources; }
+            get => m_AvailableResources;
             set { if (value >= 0) m_AvailableResources = value; }
         }
 
         public int LeftResources
         {
-            get { return m_LeftResources; }
+            get => m_LeftResources;
             set { if (value >= 0) m_LeftResources = value; }
         }
 
@@ -327,12 +331,12 @@ namespace Server.Engines.Plants
 
             if (Water <= 1)
                 return 1060826; // hard
-            else if (Water <= 2)
+            if (Water <= 2)
                 return 1060827; // soft
-            else if (Water <= 3)
+            if (Water <= 3)
                 return 1060828; // squishy
-            else
-                return 1060829; // sopping wet
+
+            return 1060829; // sopping wet
         }
 
         public int GetLocalizedHealth()
@@ -394,7 +398,7 @@ namespace Server.Engines.Plants
             {
                 PlantItem plant = (PlantItem)plants[i];
 
-                if (plant.IsGrowable && (plant.RootParent as Mobile) == null && now >= plant.PlantSystem.NextGrowth)
+                if (plant.IsGrowable && plant.RootParent as Mobile == null && now >= plant.PlantSystem.NextGrowth)
                     plant.PlantSystem.DoGrowthCheck();
             }
         }

@@ -18,7 +18,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return m_Active; }
+            get => m_Active;
             set
             {
                 if (m_Active != value)
@@ -63,7 +63,7 @@ namespace Server.Items
 
         public static bool IsAllowed(SkillName skill)
         {
-            return !_ExcludedSkills.Any(sk => sk == skill);
+            return _ExcludedSkills.All(sk => sk != skill);
         }
 
         public static bool HasActiveBall(Mobile from)
@@ -143,7 +143,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Active);
@@ -152,8 +151,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Active = reader.ReadBool();
         }

@@ -23,19 +23,20 @@ namespace Server
 
 		public static void Register(Poison reg)
 		{
-			var regName = reg.Name.ToLower();
+			string regName = reg.Name.ToLower();
 
-			for (var i = 0; i < m_Poisons.Count; i++)
-			{
-				if (reg.Level == m_Poisons[i].Level)
+			for (int i = 0; i < m_Poisons.Count; i++)
+            {
+                if (reg.Level == m_Poisons[i].Level)
 				{
 					throw new Exception("A poison with that level already exists.");
 				}
-				else if (regName == m_Poisons[i].Name.ToLower())
-				{
-					throw new Exception("A poison with that name already exists.");
-				}
-			}
+
+                if (regName == m_Poisons[i].Name.ToLower())
+                {
+                    throw new Exception("A poison with that name already exists.");
+                }
+            }
 
 			m_Poisons.Add(reg);
 		}
@@ -55,7 +56,7 @@ namespace Server
 			Poison p = null;
 
 
-			if (Int32.TryParse(value, out var plevel))
+			if (int.TryParse(value, out int plevel))
 			{
 				p = GetPoison(plevel);
 			}
@@ -70,9 +71,9 @@ namespace Server
 
 		public static Poison GetPoison(int level)
 		{
-			for (var i = 0; i < m_Poisons.Count; ++i)
+			for (int i = 0; i < m_Poisons.Count; ++i)
 			{
-				var p = m_Poisons[i];
+				Poison p = m_Poisons[i];
 
 				if (p.Level == level)
 				{
@@ -85,9 +86,9 @@ namespace Server
 
 		public static Poison GetPoison(string name)
 		{
-			for (var i = 0; i < m_Poisons.Count; ++i)
+			for (int i = 0; i < m_Poisons.Count; ++i)
 			{
-				var p = m_Poisons[i];
+				Poison p = m_Poisons[i];
 
 				if (Utility.InsensitiveCompare(p.Name, name) == 0)
 				{

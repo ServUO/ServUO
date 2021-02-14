@@ -27,12 +27,12 @@ namespace Server.Guilds
 
         public static bool IsLeader(Mobile m, Guild g)
         {
-            return !(m.Deleted || g.Disbanded || !(m is PlayerMobile) || (m.AccessLevel < AccessLevel.GameMaster && g.Leader != m));
+            return !(m.Deleted || g.Disbanded || !(m is PlayerMobile) || m.AccessLevel < AccessLevel.GameMaster && g.Leader != m);
         }
 
         public static bool IsMember(Mobile m, Guild g)
         {
-            return !(m.Deleted || g.Disbanded || !(m is PlayerMobile) || (m.AccessLevel < AccessLevel.GameMaster && !g.IsMember(m)));
+            return !(m.Deleted || g.Disbanded || !(m is PlayerMobile) || m.AccessLevel < AccessLevel.GameMaster && !g.IsMember(m));
         }
 
         public static bool CheckProfanity(string s)

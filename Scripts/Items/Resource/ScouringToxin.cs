@@ -47,10 +47,8 @@ namespace Server.Items
 
         public void OnTarget(Mobile from, object targeted)
         {
-            if (targeted is Item)
+            if (targeted is Item item)
             {
-                Item item = (Item)targeted;
-
                 if (item.Parent is Mobile)
                 {
                     from.SendLocalizedMessage(1112350); // You cannot scour items that are being worn!
@@ -63,7 +61,7 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1151837); // You may not scour toggled quest items.
                 }
-                else if (item is DryReeds)
+                else if (item is DryReeds dryReeds)
                 {
                     if (!(from is PlayerMobile) || !((PlayerMobile)from).BasketWeaving)
                     {
@@ -71,12 +69,11 @@ namespace Server.Items
                     }
                     else
                     {
-                        DryReeds reed1 = (DryReeds)targeted;
                         Container cont = from.Backpack;
 
-                        Engines.Plants.PlantHue hue = reed1.PlantHue;
+                        Engines.Plants.PlantHue hue = dryReeds.PlantHue;
 
-                        if (!reed1.IsChildOf(from.Backpack))
+                        if (!dryReeds.IsChildOf(from.Backpack))
                             from.SendLocalizedMessage(1116249); //That must be in your backpack for you to use it.
                         else if (cont != null)
                         {
@@ -86,14 +83,12 @@ namespace Server.Items
 
                             foreach (Item it in items)
                             {
-                                if (it is DryReeds)
+                                if (it is DryReeds check)
                                 {
-                                    DryReeds check = (DryReeds)it;
-
-                                    if (reed1.PlantHue == check.PlantHue)
+                                    if (dryReeds.PlantHue == check.PlantHue)
                                     {
-                                        total += it.Amount;
-                                        list.Add(it);
+                                        total += check.Amount;
+                                        list.Add(check);
                                     }
                                 }
                             }
@@ -142,7 +137,7 @@ namespace Server.Items
                 {
                     from.PlaySound(0x23E);
 
-                    ((Item)targeted).Hue = 0;
+                    item.Hue = 0;
 
                     m_UsesRemaining--;
 

@@ -35,25 +35,14 @@ namespace Server.Items
         bool ICommodity.IsDeedable => true;
 
         public override int LabelNumber => 1062913;// Rose of Trinsic
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public SecureLevel Level
-        {
-            get
-            {
-                return m_Level;
-            }
-            set
-            {
-                m_Level = value;
-            }
-        }
+        public SecureLevel Level { get => m_Level; set => m_Level = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int Petals
         {
-            get
-            {
-                return m_Petals;
-            }
+            get => m_Petals;
             set
             {
                 if (value >= 10)
@@ -105,7 +94,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteEncodedInt(m_Petals);
@@ -116,8 +104,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Petals = reader.ReadEncodedInt();
             m_NextSpawnTime = reader.ReadDeltaTime();
@@ -215,15 +202,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

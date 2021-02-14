@@ -42,7 +42,7 @@ namespace Server.Engines.Plants
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int UniqueCount => Entries == null ? 0 : Entries.Where(e => e != null && e.Seed != null && e.Seed.Amount > 0).Count();
+        public int UniqueCount => Entries == null ? 0 : Entries.Count(e => e != null && e.Seed != null && e.Seed.Amount > 0);
 
         public override int DefaultMaxWeight => 0;
         public override double DefaultWeight => 10.0;
@@ -65,10 +65,10 @@ namespace Server.Engines.Plants
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (IsChildOf(m.Backpack) || (CheckAccessible(m) && m.InRange(GetWorldLocation(), 3)))
+            if (IsChildOf(m.Backpack) || CheckAccessible(m) && m.InRange(GetWorldLocation(), 3))
             {
-                if (m is PlayerMobile)
-                    BaseGump.SendGump(new SeedBoxGump((PlayerMobile)m, this));
+                if (m is PlayerMobile mobile)
+                    BaseGump.SendGump(new SeedBoxGump(mobile, this));
             }
 
             if (m.AccessLevel > AccessLevel.Player)
@@ -106,15 +106,13 @@ namespace Server.Engines.Plants
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (dropped is Seed)
+            if (dropped is Seed seed)
             {
-                return TryAddSeed(from, (Seed)dropped);
+                return TryAddSeed(from, seed);
             }
-            else
-            {
-                from.SendLocalizedMessage(1151838); // This item cannot be stored in the seed box.
-                return false;
-            }
+
+            from.SendLocalizedMessage(1151838); // This item cannot be stored in the seed box.
+            return false;
         }
 
         public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
@@ -128,11 +126,13 @@ namespace Server.Engines.Plants
             {
                 return false;
             }
-            else if (!from.InRange(GetWorldLocation(), 3) || from.Map != Map)
+
+            if (!from.InRange(GetWorldLocation(), 3) || from.Map != Map)
             {
                 return false;
             }
-            else if (TotalCount + seed.Amount <= MaxSeeds)
+
+            if (TotalCount + seed.Amount <= MaxSeeds)
             {
                 SeedEntry entry = GetExisting(seed);
                 int oldcount = UniqueCount;
@@ -178,9 +178,9 @@ namespace Server.Engines.Plants
 
                     from.SendLocalizedMessage(1151846); // You put the seed in the seedbox.
 
-                    if (from is PlayerMobile)
+                    if (from is PlayerMobile mobile)
                     {
-                        var gump = from.FindGump<SeedBoxGump>();
+                        var gump = mobile.FindGump<SeedBoxGump>();
 
                         if (gump != null)
                         {
@@ -189,7 +189,7 @@ namespace Server.Engines.Plants
                         }
                         else
                         {
-                            gump = new SeedBoxGump((PlayerMobile)from, this);
+                            gump = new SeedBoxGump(mobile, this);
                             gump.CheckPage(entry);
 
                             BaseGump.SendGump(gump);
@@ -376,7 +376,7 @@ namespace Server.Engines.Plants
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Entries = new List<SeedEntry>();
 

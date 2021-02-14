@@ -14,7 +14,7 @@ namespace Server.Items
             Weight = 1;
             Movable = false;
 
-            Timer.DelayCall(TimeSpan.FromMinutes(10.0), delegate ()
+            Timer.DelayCall(TimeSpan.FromMinutes(10.0), delegate
             {
                 Delete();
             });
@@ -77,7 +77,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
 
         protected virtual bool CheckUse(Mobile from)
@@ -86,15 +86,14 @@ namespace Server.Items
             {
                 return false;
             }
-            else if (from.Map != Map || !from.InRange(GetWorldLocation(), 1))
+
+            if (from.Map != Map || !from.InRange(GetWorldLocation(), 1))
             {
                 from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
     }
 }

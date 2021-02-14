@@ -12,13 +12,13 @@ namespace Server.Items
         private int m_Range;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Number { get { return m_Number; } set { m_Number = value; } }
+        public int Number { get => m_Number; set => m_Number = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string String { get { return m_String; } set { m_String = value; } }
+        public string String { get => m_String; set => m_String = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Range { get { return m_Range; } set { m_Range = value; } }
+        public int Range { get => m_Range; set => m_Range = value; }
 
         public virtual Type QuestType => null;
         public virtual Type QuestItemType => null;

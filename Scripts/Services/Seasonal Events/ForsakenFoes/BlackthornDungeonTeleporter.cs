@@ -83,7 +83,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Dest = reader.ReadPoint3D();
             Chain = (FellowshipChain)reader.ReadInt();

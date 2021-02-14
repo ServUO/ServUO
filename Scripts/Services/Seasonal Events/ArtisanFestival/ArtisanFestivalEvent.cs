@@ -23,11 +23,11 @@ namespace Server.Engines.ArtisanFestival
         public static readonly int _DefaultCityGold = 0; // Per EA, default is 1,000,000
         public static readonly int _StageDuration = 4;
         public static readonly int _ClaimDuration = 3;
-        public static readonly double[] _TreeGrowthPoints = new double[] { 1000, 2500, 7500, 15000 };
+        public static readonly double[] _TreeGrowthPoints = { 1000, 2500, 7500, 15000 };
 
         public static ArtisanFestivalEvent Instance { get; set; }
 
-        private static readonly City[] Cities = new[]
+        private static readonly City[] Cities =
         {
             City.Britain, City.Jhelom, City.Minoc, City.Moonglow, City.NewMagincia, City.SkaraBrae, City.Trinsic, City.Vesper, City.Yew
         };
@@ -38,7 +38,7 @@ namespace Server.Engines.ArtisanFestival
         [CommandProperty(AccessLevel.GameMaster)]
         public int Stage
         {
-            get { return _Stage; }
+            get => _Stage;
             set
             {
                 var old = _Stage;
@@ -54,7 +54,7 @@ namespace Server.Engines.ArtisanFestival
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ForceClaimPeriod
         {
-            get { return false; }
+            get => false;
             set
             {
                 if (value)
@@ -68,7 +68,7 @@ namespace Server.Engines.ArtisanFestival
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ForceNextStage
         {
-            get { return false; }
+            get => false;
             set
             {
                 if (value)
@@ -265,7 +265,7 @@ namespace Server.Engines.ArtisanFestival
             {
                 var cityInstance = CityLoyaltySystem.GetCityInstance(CityOrder[newStage]);
 
-                if (cityInstance != null && cityInstance.Treasury >= (long)_DefaultCityGold)
+                if (cityInstance != null && cityInstance.Treasury >= _DefaultCityGold)
                 {
                     Stage++;
                     AddCurrentTCMessage();
@@ -421,7 +421,7 @@ namespace Server.Engines.ArtisanFestival
                         case TreeStage.Four: perc = .5; break;
                     }
 
-                    int count = (int)Math.Max(1, (double)PointTable.Count * perc);
+                    int count = (int)Math.Max(1, PointTable.Count * perc);
 
                     for (int i = 0; i < count; i++)
                     {
@@ -731,7 +731,7 @@ namespace Server.Engines.ArtisanFestival
             }
         }
 
-        private static Point3D[] _CityLocations = new Point3D[]
+        private static Point3D[] _CityLocations =
         {
             new Point3D(1628, 1639, 35), // brit
             new Point3D(1454, 3991, 0), // Jhelom
@@ -741,7 +741,7 @@ namespace Server.Engines.ArtisanFestival
             new Point3D(625, 2231, 0), // Skara Brae
             new Point3D(1902, 2764, 0), // Trinsic
             new Point3D(2982, 819, 0), // Vesper
-            new Point3D(550, 966, 0), // Yew
+            new Point3D(550, 966, 0) // Yew
         };
     }
 }

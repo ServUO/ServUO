@@ -1,4 +1,4 @@
-﻿using Server.Mobiles;
+using Server.Mobiles;
 using Server.Targeting;
 
 namespace Server.Items
@@ -44,10 +44,8 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
                 }
-                else if (targeted is BaseCreature)
+                else if (targeted is BaseCreature petPatient)
                 {
-                    BaseCreature petPatient = targeted as BaseCreature;
-
                     if (!petPatient.IsDeadBondedPet)
                         from.SendLocalizedMessage(1112764); // This may only be used to resurrect dead pets.
                     else if (petPatient.Corpse != null && !petPatient.Corpse.Deleted)

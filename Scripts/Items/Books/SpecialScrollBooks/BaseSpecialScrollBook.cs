@@ -55,9 +55,9 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (m is PlayerMobile && m.InRange(GetWorldLocation(), 2) /*&& (house == null || house.HasSecureAccess(m, this))*/)
+            if (m is PlayerMobile mobile && mobile.InRange(GetWorldLocation(), 2) /*&& (house == null || house.HasSecureAccess(m, this))*/)
             {
-                BaseGump.SendGump(new SpecialScrollBookGump((PlayerMobile)m, this));
+                BaseGump.SendGump(new SpecialScrollBookGump(mobile, this));
             }
             else if (m.AccessLevel > AccessLevel.Player)
             {

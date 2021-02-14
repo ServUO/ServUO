@@ -105,7 +105,8 @@ namespace Server.Services.TownCryer
                 {
                     return -1;
                 }
-                else if (two.Created > Created)
+
+                if (two.Created > Created)
                 {
                     return 1;
                 }

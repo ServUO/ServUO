@@ -162,9 +162,9 @@ namespace Server.Items
             {
                 base.GetProperties(list);
 
-                if (Addon is TreeStump)
+                if (Addon is TreeStump stump)
                 {
-                    list.Add(1094719, ((TreeStump)Addon).Logs.ToString()); // Logs: ~1_COUNT~
+                    list.Add(1094719, stump.Logs.ToString()); // Logs: ~1_COUNT~
                 }
             }
 

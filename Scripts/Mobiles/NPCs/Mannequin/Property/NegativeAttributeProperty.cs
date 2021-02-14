@@ -8,7 +8,7 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            return item is BaseWeapon ? ((BaseWeapon)item).NegativeAttributes[Attribute] : 0;
+            return item is BaseWeapon weapon ? weapon.NegativeAttributes[Attribute] : 0;
         }
 
         public override bool Matches(Item item)

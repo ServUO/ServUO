@@ -6,7 +6,6 @@ namespace Server.Items
     {
         [Constructable]
         public EvilOrcHelm()
-            : base()
         {
             Hue = 0x96E;
             Attributes.BonusStr = 10;
@@ -63,7 +62,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

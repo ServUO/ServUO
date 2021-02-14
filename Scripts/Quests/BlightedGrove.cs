@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class VilePoisonQuest : BaseQuest
     {
         public VilePoisonQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(TaintedTreeSample), "tainted tree sample", 1, typeof(Ioseph), "Ioseph (Jhelom)"));
 
@@ -30,30 +29,23 @@ namespace Server.Engines.Quests
         /* Greetings.  What have you there?  Ah, a sample from a poisonous tree, you say?  My friend Jamal 
         sent you?  Well, let me see that then, and we'll get to work. */
         public override object Complete => 1074991;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.BlightedGrove;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class RockAndHardPlaceQuest : BaseQuest
     {
         public RockAndHardPlaceQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(Granite), "rocks", 4, 0x1779));
             AddObjective(new ObtainObjective(typeof(BlueDiamond), "blue diamonds", 2, 0x3198));
@@ -76,30 +68,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1074969;
         /* Have you got the granite and diamonds?  Great, let me see them and we'll see what effect this venom has upon them. */
         public override object Complete => 1074992;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.BlightedGrove;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class SympatheticMagicQuest : BaseQuest
     {
         public SympatheticMagicQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(BarkFragment), "bark", 10, 0x318F));
 
@@ -111,7 +96,7 @@ namespace Server.Engines.Quests
         /* Sympathetic Magic */
         public override object Title => 1074952;
         /* This is some nasty stuff, that's for certain.  I don't even want to think about what sort of blight 
-        caused this venomous reaction from that old tree.  Let's get to work … we'll need to try something really 
+        caused this venomous reaction from that old tree.  Let's get to work â€¦ we'll need to try something really 
         hard but still workable as our base material.  Nothing's harder than stone and diamond.  Let's try them first. */
         public override object Description => 1074957;
         /* Sure, no problem.  I thought you were interested in figuring this out. */
@@ -120,30 +105,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1074970;
         /* You're back with the bark already?  Terrific!  I bet this will do the trick. */
         public override object Complete => 1074993;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.BlightedGrove;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class AlreadyDeadQuest : BaseQuest
     {
         public AlreadyDeadQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(Bone), "workable samples", 10));
 
@@ -164,30 +142,23 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1074971;
         /* Great thought!  Bone might just do the trick. */
         public override object Complete => 1074994;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.BlightedGrove;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class EurekaQuest : BaseQuest
     {
         public EurekaQuest()
-            : base()
         {
             AddObjective(new DeliverObjective(typeof(SealedNotesForJamal), "sealed notes for jamal", 1, typeof(Jamal), "Jamal (near Blighted Grove)"));
 
@@ -208,16 +179,12 @@ namespace Server.Engines.Quests
         public override object Uncomplete => 1074972;
         /* Heya!  You're back.  Was Iosep able to help?  Let me see what he's sent. */
         public override object Complete => 1074995;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.BlightedGrove;
-        }
-
+        
         public override void OnCompleted()
         {
             if (Owner.Skills.Blacksmith.Value >= 45.0)
             {
-                Owner.AcquireRecipe((int)Craft.SmithRecipes.BoneMachete);
+                Owner.AcquireRecipe((int)Craft.CraftRecipes.BoneMachete);
                 Owner.SendLocalizedMessage(1075006); // You have learned how to smith a bone handled machete!
             }
             else
@@ -227,22 +194,19 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class SubContractingQuest : BaseQuest
     {
         public SubContractingQuest()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(SamplesOfCorruptedWater), "samples of corrupted water", 3));
 
@@ -254,7 +218,7 @@ namespace Server.Engines.Quests
         public override object Title => 1074955;
         /* Wonderful!  Now we can both get in there!  Let me show you these instructions for making this machete.  
         If you're not skilled in smithing, I'm not sure how much sense it will make though.  Listen, if you're 
-        heading in there anyway … maybe you'd do me one more favor?  I'm ah ... buried in work out here ... so if 
+        heading in there anyway â€¦ maybe you'd do me one more favor?  I'm ah ... buried in work out here ... so if 
         you'd go in and get me a few water samples, I'd be obliged. */
         public override object Description => 1074961;
         /* Oh.  Right, I guess you're really ... ah ... busy too. */
@@ -264,23 +228,17 @@ namespace Server.Engines.Quests
         /* I hear sloshing ... that must mean you've got my water samples.  Whew, I'm so glad you braved the 
         dangers in there ... I mean, I would have but I'm so busy out here.  Here's your reward! */
         public override object Complete => 1074996;
-        public override bool CanOffer()
-        {
-            return MondainsLegacy.BlightedGrove;
-        }
-
+        
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

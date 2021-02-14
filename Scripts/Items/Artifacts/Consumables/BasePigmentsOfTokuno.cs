@@ -114,12 +114,12 @@ namespace Server.Items
 
             CraftResource resource = CraftResource.None;
 
-            if (i is BaseWeapon)
-                resource = ((BaseWeapon)i).Resource;
-            else if (i is BaseArmor)
-                resource = ((BaseArmor)i).Resource;
-            else if (i is BaseClothing)
-                resource = ((BaseClothing)i).Resource;
+            if (i is BaseWeapon weapon)
+                resource = weapon.Resource;
+            else if (i is BaseArmor armor)
+                resource = armor.Resource;
+            else if (i is BaseClothing clothing)
+                resource = clothing.Resource;
 
             if (!CraftResources.IsStandard(resource))
                 return true;
@@ -130,7 +130,7 @@ namespace Server.Items
             if (i.IsArtifact)
                 return true;
 
-            if (i is BaseAddonDeed && ((BaseAddonDeed)i).UseCraftResource && !((BaseAddonDeed)i).IsReDeed && ((BaseAddonDeed)i).Resource != CraftResource.None)
+            if (i is BaseAddonDeed deed && deed.UseCraftResource && !deed.IsReDeed && deed.Resource != CraftResource.None)
                 return true;
 
             return false;

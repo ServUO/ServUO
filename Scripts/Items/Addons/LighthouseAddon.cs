@@ -68,7 +68,7 @@ namespace Server.Items
                 {
                     if (item is AddonComponent || item is BaseAddon)
                     {
-                        BaseAddon addon = item is AddonComponent ? ((AddonComponent)item).Addon : (BaseAddon)item;
+                        BaseAddon addon = item is AddonComponent component ? component.Addon : (BaseAddon)item;
                         Item deed = addon.Deed;
 
                         bool retainDeedHue = false;
@@ -103,8 +103,8 @@ namespace Server.Items
 
                 Container cont;
 
-                if (boat is BaseGalleon)
-                    cont = ((BaseGalleon)boat).GalleonHold;
+                if (boat is BaseGalleon galleon)
+                    cont = galleon.GalleonHold;
                 else
                     cont = boat.Hold;
 

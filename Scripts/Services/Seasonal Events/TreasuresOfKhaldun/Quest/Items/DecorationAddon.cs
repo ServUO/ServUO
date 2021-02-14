@@ -6,7 +6,8 @@ namespace Server.Items
 
         // Ritual Table needs to be hued 1362
         // 14031 = hue 1
-        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents =
+        {
               {27, 74, 9, 1}, {28, 74, 9, 1}, {28, 73, 9, 1}// 1	2	3	
 			, {28, 72, 9, 1}, {28, 74, -1, 1}, {28, 72, -1, 1}// 4	5	6	
 			, {28, 73, -1, 1}, {27, 74, 6, 1}, {27, 74, 4, 1}// 7	8	9	
@@ -276,7 +277,7 @@ namespace Server.Items
         {
             AddonComponent ac;
             ac = new AddonComponent(item);
-            if (name != null && name.Length > 0)
+            if (!string.IsNullOrEmpty(name))
                 ac.Name = name;
             if (hue != 0)
                 ac.Hue = hue;
@@ -299,7 +300,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Instance = this;
         }
@@ -307,7 +308,8 @@ namespace Server.Items
 
     public class KhaldunWorkshop : BaseAddon
     {
-        private static readonly int[,] m_AddOnSimpleComponents = new int[,] {
+        private static readonly int[,] m_AddOnSimpleComponents =
+        {
               {7864, 4, 0, 12} // 7	 8	9	
 			, {4179, 4, 1, 10}, {4130, -2, -3, 10}, {9932, -2, -2, 10}// 10	11	12	
 			, {7867, -2, 0, 12}, {7129, -2, 1, 10}, {4014, -1, 1, 4}// 13	14	15	
@@ -342,7 +344,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

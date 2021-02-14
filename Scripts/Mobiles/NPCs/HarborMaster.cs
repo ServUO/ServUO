@@ -81,7 +81,7 @@ namespace Server.Mobiles
                 m_Vendor = vendor;
             }
 
-            private static readonly Type[] m_ShipTypes = new Type[]
+            private static readonly Type[] m_ShipTypes =
             {
                 typeof(TokunoGalleon),  typeof(GargishGalleon),
                 typeof(OrcishGalleon),  typeof(BritannianShip)
@@ -249,7 +249,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

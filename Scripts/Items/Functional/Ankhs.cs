@@ -10,13 +10,15 @@ namespace Server.Items
         public const int ResurrectRange = 2;
         public const int TitheRange = 2;
         public const int LockRange = 2;
+
         public static void GetContextMenuEntries(Mobile from, Item item, List<ContextMenuEntry> list)
         {
-            if (from is PlayerMobile)
-                list.Add(new LockKarmaEntry((PlayerMobile)from));
+            if (from is PlayerMobile mobile)
+            {
+                list.Add(new LockKarmaEntry(mobile));
+            }
 
             list.Add(new ResurrectEntry(from, item));
-
             list.Add(new TitheEntry(from));
         }
 
@@ -121,10 +123,7 @@ namespace Server.Items
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
-            get
-            {
-                return base.Hue;
-            }
+            get => base.Hue;
             set
             {
                 base.Hue = value;
@@ -172,7 +171,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Item);
@@ -181,8 +179,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Item = reader.ReadItem() as InternalItem;
         }
@@ -207,10 +204,7 @@ namespace Server.Items
             [Hue, CommandProperty(AccessLevel.GameMaster)]
             public override int Hue
             {
-                get
-                {
-                    return base.Hue;
-                }
+                get => base.Hue;
                 set
                 {
                     base.Hue = value;
@@ -258,7 +252,6 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
 
                 writer.Write(m_Item);
@@ -267,18 +260,17 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 m_Item = reader.ReadItem() as AnkhWest;
             }
         }
     }
 
-    [TypeAlias("Server.Items.AnkhEast")]
     public class AnkhNorth : Item
     {
         private InternalItem m_Item;
+
         [Constructable]
         public AnkhNorth()
             : this(false)
@@ -299,14 +291,12 @@ namespace Server.Items
         {
         }
 
-        public override bool HandlesOnMovement => true;// Tell the core that we implement OnMovement
+        public override bool HandlesOnMovement => true;
+
         [Hue, CommandProperty(AccessLevel.GameMaster)]
         public override int Hue
         {
-            get
-            {
-                return base.Hue;
-            }
+            get => base.Hue;
             set
             {
                 base.Hue = value;
@@ -354,7 +344,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Item);
@@ -363,13 +352,11 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Item = reader.ReadItem() as InternalItem;
         }
 
-        [TypeAlias("Server.Items.AnkhEast+InternalItem")]
         private class InternalItem : Item
         {
             private AnkhNorth m_Item;
@@ -386,14 +373,12 @@ namespace Server.Items
             {
             }
 
-            public override bool HandlesOnMovement => true;// Tell the core that we implement OnMovement
+            public override bool HandlesOnMovement => true;
+
             [Hue, CommandProperty(AccessLevel.GameMaster)]
             public override int Hue
             {
-                get
-                {
-                    return base.Hue;
-                }
+                get => base.Hue;
                 set
                 {
                     base.Hue = value;
@@ -441,7 +426,6 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
 
                 writer.Write(m_Item);
@@ -450,8 +434,7 @@ namespace Server.Items
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 m_Item = reader.ReadItem() as AnkhNorth;
             }
@@ -495,15 +478,13 @@ namespace Server.Items
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

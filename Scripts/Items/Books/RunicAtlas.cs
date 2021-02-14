@@ -24,22 +24,22 @@ namespace Server.Items
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && (from.InRange(GetWorldLocation(), 2) || from.AccessLevel >= AccessLevel.Counselor))
+            if (from is PlayerMobile mobile && (mobile.InRange(GetWorldLocation(), 2) || mobile.AccessLevel >= AccessLevel.Counselor))
             {
-                if (CheckAccess(from) || from.AccessLevel >= AccessLevel.Counselor)
+                if (CheckAccess(mobile) || mobile.AccessLevel >= AccessLevel.Counselor)
                 {
                     if (DateTime.UtcNow < NextUse)
                     {
-                        from.SendLocalizedMessage(502406); // This book needs time to recharge.
+                        mobile.SendLocalizedMessage(502406); // This book needs time to recharge.
                         return;
                     }
 
-                    from.CloseGump(typeof(RunicAtlasGump));
-                    BaseGump.SendGump(new RunicAtlasGump((PlayerMobile)from, this));
-                    Openers.Add(from);
+                    mobile.CloseGump(typeof(RunicAtlasGump));
+                    BaseGump.SendGump(new RunicAtlasGump(mobile, this));
+                    Openers.Add(mobile);
                 }
                 else
-                    from.SendLocalizedMessage(502436); // That is not accessible.
+                    mobile.SendLocalizedMessage(502436); // That is not accessible.
             }
         }
 
@@ -65,11 +65,11 @@ namespace Server.Items
             int entries = Entries.Count;
             bool d = base.OnDragDrop(from, dropped);
 
-            if (from is PlayerMobile && d && Entries.Count > entries)
+            if (from is PlayerMobile mobile && d && Entries.Count > entries)
             {
                 int newPage = Math.Max(0, (Entries.Count - 1) / 16);
 
-                RunicAtlasGump g = from.FindGump(typeof(RunicAtlasGump)) as RunicAtlasGump;
+                RunicAtlasGump g = mobile.FindGump(typeof(RunicAtlasGump)) as RunicAtlasGump;
 
                 if (g != null && g.Atlas == this)
                 {
@@ -79,9 +79,9 @@ namespace Server.Items
                 else
                 {
                     if (g != null)
-                        from.CloseGump(typeof(RunicAtlasGump));
+                        mobile.CloseGump(typeof(RunicAtlasGump));
 
-                    g = new RunicAtlasGump((PlayerMobile)from, this)
+                    g = new RunicAtlasGump(mobile, this)
                     {
                         Page = newPage
                     };
@@ -558,10 +558,10 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(502415); // Request cancelled.
 
-                if (from is PlayerMobile && !Atlas.Deleted && from.InRange(Atlas.GetWorldLocation(), 3))
+                if (from is PlayerMobile mobile && !Atlas.Deleted && mobile.InRange(Atlas.GetWorldLocation(), 3))
                 {
-                    from.CloseGump(typeof(RunicAtlasGump));
-                    SendGump(new RunicAtlasGump((PlayerMobile)from, Atlas));
+                    mobile.CloseGump(typeof(RunicAtlasGump));
+                    SendGump(new RunicAtlasGump(mobile, Atlas));
                 }
             }
         }

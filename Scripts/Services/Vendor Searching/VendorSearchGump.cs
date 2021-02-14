@@ -225,9 +225,9 @@ namespace Server.Engines.VendorSearching
                         }
                         else
                         {
-                            Task<List<SearchItem>> resultsTask = FindVendorItemsAsync(User, Criteria);
+                            Task<List<SearchItem>> resultsTask = FindVendorItemsAsync(Criteria);
 
-                            TaskPollingTimer<List<SearchItem>> pollingTimer = new TaskPollingTimer<List<SearchItem>>(resultsTask, (results) =>
+                            TaskPollingTimer<List<SearchItem>> pollingTimer = new TaskPollingTimer<List<SearchItem>>(resultsTask, results =>
                             {
                                 User.CloseGump(typeof(SearchWaitGump));
 
@@ -337,7 +337,7 @@ namespace Server.Engines.VendorSearching
                         TextRelay valuetext = info.GetTextEntry(info.ButtonID - 40);
 
                         if (valuetext != null)
-                            value = Math.Max(o is AosAttribute && (AosAttribute)o == AosAttribute.CastSpeed ? -1 : 0, Utility.ToInt32(valuetext.Text));
+                            value = Math.Max(o is AosAttribute attribute && attribute == AosAttribute.CastSpeed ? -1 : 0, Utility.ToInt32(valuetext.Text));
 
                         Criteria.TryAddDetails(o, criteria.Cliloc, criteria.PropCliloc, value, criteria.Category);
                         Refresh();
@@ -346,11 +346,11 @@ namespace Server.Engines.VendorSearching
             }
         }
 
-        public Task<List<SearchItem>> FindVendorItemsAsync(Mobile m, SearchCriteria criteria)
+        public Task<List<SearchItem>> FindVendorItemsAsync(SearchCriteria criteria)
         {
             return new Task<List<SearchItem>>(() =>
             {
-                return criteria.Auction ? VendorSearch.DoSearchAuction(m, criteria) : VendorSearch.DoSearch(m, criteria);
+                return criteria.Auction ? VendorSearch.DoSearchAuction(criteria) : VendorSearch.DoSearch(criteria);
             });
         }
     }
@@ -421,8 +421,8 @@ namespace Server.Engines.VendorSearching
                 Rectangle2D bounds = ItemBounds.Table[item.ItemID];
                 int y = 101 + (index * 75);
 
-                if (map == null && item.RootParentEntity is Mobile)
-                    map = ((Mobile)item.RootParentEntity).Map;
+                if (map == null && item.RootParentEntity is Mobile mobile)
+                    map = mobile.Map;
 
                 AddImageTiledButton(50, y, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, item.ItemID, item.Hue, 40 - bounds.Width / 2 - bounds.X, 30 - bounds.Height / 2 - bounds.Y);
                 AddItemProperty(item);

@@ -107,12 +107,13 @@ namespace Server.Guilds
                                 if (war != null)
                                 {
                                     pm.SendLocalizedMessage(1070752); // The proposal has been updated.
-                                    //m_Other.GuildMessage( 1070782 ); // ~1_val~ has responded to your proposal.
                                 }
                                 else
-                                    m_Other.GuildMessage(1070781, ((guild.Alliance != null) ? guild.Alliance.Name : guild.Name)); // ~1_val~ has proposed a war.
+                                {
+                                    m_Other.GuildMessage(1070781, guild.Alliance != null ? guild.Alliance.Name : guild.Name); // ~1_val~ has proposed a war.
+                                }
 
-                                pm.SendLocalizedMessage(1070751, ((m_Other.Alliance != null) ? m_Other.Alliance.Name : m_Other.Name)); // War proposal has been sent to ~1_val~.
+                                pm.SendLocalizedMessage(1070751, m_Other.Alliance != null ? m_Other.Alliance.Name : m_Other.Name); // War proposal has been sent to ~1_val~.
                             }
                         }
                         break;

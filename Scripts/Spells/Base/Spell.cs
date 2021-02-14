@@ -31,7 +31,7 @@ namespace Server.Spells
 
         public int ID => SpellRegistry.GetRegistryNumber(this);
 
-        public SpellState State { get { return m_State; } set { m_State = value; } }
+        public SpellState State { get => m_State; set => m_State = value; }
 
         public Mobile Caster => m_Caster;
         public SpellInfo Info => m_Info;
@@ -41,11 +41,10 @@ namespace Server.Spells
         public Item Scroll => m_Scroll;
         public long CastTime => m_CastTime;
 
-        public IDamageable InstantTarget { get { return m_InstantTarget; } set { m_InstantTarget = value; } }
+        public IDamageable InstantTarget { get => m_InstantTarget; set => m_InstantTarget = value; }
 
         public bool Disturbed { get; set; }
 
-        private static readonly TimeSpan NextSpellDelay = TimeSpan.FromSeconds(0.75);
         private static TimeSpan AnimateDelay = TimeSpan.FromSeconds(1.5);
 
         public virtual SkillName CastSkill => SkillName.Magery;
@@ -172,23 +171,23 @@ namespace Server.Spells
 
         public void HarmfulSpell(IDamageable d)
         {
-            if (d is BaseCreature)
+            if (d is BaseCreature creature)
             {
-                ((BaseCreature)d).OnHarmfulSpell(m_Caster);
+                creature.OnHarmfulSpell(m_Caster);
             }
-            else if (d is IDamageableItem)
+            else if (d is IDamageableItem item)
             {
-                ((IDamageableItem)d).OnHarmfulSpell(m_Caster);
+                item.OnHarmfulSpell(m_Caster);
             }
 
             NegativeAttributes.OnCombatAction(Caster);
 
-            if (d is Mobile)
+            if (d is Mobile mobile)
             {
-                if ((Mobile)d != m_Caster)
-                    NegativeAttributes.OnCombatAction((Mobile)d);
+                if (mobile != m_Caster)
+                    NegativeAttributes.OnCombatAction(mobile);
 
-                EvilOmenSpell.TryEndEffect((Mobile)d);
+                EvilOmenSpell.TryEndEffect(mobile);
             }
         }
 
@@ -205,10 +204,8 @@ namespace Server.Spells
             {
                 return GetNewAosDamage(bonus, dice, sides, (Caster.Player && singleTarget is PlayerMobile), GetDamageScalar(singleTarget as Mobile), singleTarget);
             }
-            else
-            {
-                return GetNewAosDamage(bonus, dice, sides, false, null);
-            }
+
+            return GetNewAosDamage(bonus, dice, sides, false, null);
         }
 
         public virtual int GetNewAosDamage(int bonus, int dice, int sides, bool playerVsPlayer, IDamageable damageable)
@@ -258,12 +255,9 @@ namespace Server.Spells
                 object o = ProtectionSpell.Registry[m_Caster];
                 bool disturb = true;
 
-                if (o != null && o is double)
+                if (o is double d && d > Utility.RandomDouble() * 100.0)
                 {
-                    if (((double)o) > Utility.RandomDouble() * 100.0)
-                    {
-                        disturb = false;
-                    }
+                    disturb = false;
                 }
 
                 #region Stygian Abyss
@@ -448,14 +442,14 @@ namespace Server.Spells
             if (target == null)
                 return scalar;
 
-            if (target is BaseCreature)
+            if (target is BaseCreature targetCreature)
             {
-                ((BaseCreature)target).AlterDamageScalarFrom(m_Caster, ref scalar);
+                targetCreature.AlterDamageScalarFrom(m_Caster, ref scalar);
             }
 
-            if (m_Caster is BaseCreature)
+            if (m_Caster is BaseCreature creature)
             {
-                ((BaseCreature)m_Caster).AlterDamageScalarTo(target, ref scalar);
+                creature.AlterDamageScalarTo(target, ref scalar);
             }
 
             scalar *= GetSlayerDamageScalar(target);
@@ -643,7 +637,7 @@ namespace Server.Spells
                 return;
             }
 
-            if (m_Info.Mantra != null && m_Info.Mantra.Length > 0 && (m_Caster.Player || (m_Caster is BaseCreature && ((BaseCreature)m_Caster).ShowSpellMantra)))
+            if (!string.IsNullOrEmpty(m_Info.Mantra) && (m_Caster.Player || m_Caster is BaseCreature creature && creature.ShowSpellMantra))
             {
                 m_Caster.PublicOverheadMessage(MessageType.Spell, m_Caster.SpeechHue, true, m_Info.Mantra, false);
             }
@@ -668,18 +662,19 @@ namespace Server.Spells
 
         public virtual bool Cast()
         {
-            if (m_Caster.Spell is Spell && ((Spell)m_Caster.Spell).State == SpellState.Sequencing)
+            if (m_Caster.Spell is Spell spell && spell.State == SpellState.Sequencing)
             {
-                ((Spell)m_Caster.Spell).Disturb(DisturbType.NewCast);
+                spell.Disturb(DisturbType.NewCast);
             }
 
             if (!m_Caster.CheckAlive())
             {
                 return false;
             }
-            else if (m_Caster is PlayerMobile && ((PlayerMobile)m_Caster).Peaced)
+
+            if (m_Caster is PlayerMobile pm && pm.Peaced)
             {
-                m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
+                pm.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
             }
             else if (m_Scroll is BaseWand && m_Caster.Spell != null && m_Caster.Spell.IsCasting)
             {
@@ -714,10 +709,8 @@ namespace Server.Spells
                             m_Caster.SendLocalizedMessage(1113750); // You may not cast spells while flying over such precarious terrain.
                             return false;
                         }
-                        else
-                        {
-                            m_Caster.SendMessage("Your staff level allows you to cast while flying over precarious terrain.");
-                        }
+
+                        m_Caster.SendMessage("Your staff level allows you to cast while flying over precarious terrain.");
                     }
                 }
                 #endregion
@@ -773,10 +766,8 @@ namespace Server.Spells
 
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
             else
             {
@@ -825,28 +816,25 @@ namespace Server.Spells
 
             Type[] types = spellType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            if (types != null)
+            Type targetType = types.FirstOrDefault(t => t.IsSubclassOf(typeof(Target)));
+
+            if (targetType != null)
             {
-                Type targetType = types.FirstOrDefault(t => t.IsSubclassOf(typeof(Target)));
+                Target t = null;
 
-                if (targetType != null)
+                try
                 {
-                    Target t = null;
+                    t = Activator.CreateInstance(targetType, this) as Target;
+                }
+                catch
+                {
+                    LogBadConstructorForInstantTarget();
+                }
 
-                    try
-                    {
-                        t = Activator.CreateInstance(targetType, this) as Target;
-                    }
-                    catch
-                    {
-                        LogBadConstructorForInstantTarget();
-                    }
-
-                    if (t != null)
-                    {
-                        t.Invoke(Caster, InstantTarget);
-                        return true;
-                    }
+                if (t != null)
+                {
+                    t.Invoke(Caster, InstantTarget);
+                    return true;
                 }
             }
 
@@ -1046,7 +1034,7 @@ namespace Server.Spells
             }
             else if (m_Scroll != null && !(m_Scroll is Runebook) &&
                      (m_Scroll.Amount <= 0 || m_Scroll.Deleted || m_Scroll.RootParent != m_Caster ||
-                      (m_Scroll is BaseWand && (((BaseWand)m_Scroll).Charges <= 0 || m_Scroll.Parent != m_Caster))))
+                      m_Scroll is BaseWand wand && (wand.Charges <= 0 || wand.Parent != m_Caster)))
             {
                 DoFizzle();
             }
@@ -1063,18 +1051,18 @@ namespace Server.Spells
                 m_Caster.SendLocalizedMessage(502646); // You cannot cast a spell while frozen.
                 DoFizzle();
             }
-            else if (m_Caster is PlayerMobile && ((PlayerMobile)m_Caster).PeacedUntil > DateTime.UtcNow)
+            else if (m_Caster is PlayerMobile pm && pm.PeacedUntil > DateTime.UtcNow)
             {
-                m_Caster.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
+                pm.SendLocalizedMessage(1072060); // You cannot cast a spell while calmed.
                 DoFizzle();
             }
             else if (CheckFizzle())
             {
                 m_Caster.Mana -= mana;
 
-                if (m_Scroll is SpellStone)
+                if (m_Scroll is SpellStone stone)
                 {
-                    ((SpellStone)m_Scroll).Use(m_Caster);
+                    stone.Use(m_Caster);
                 }
 
                 if (m_Scroll is SpellScroll)
@@ -1082,9 +1070,9 @@ namespace Server.Spells
                     m_Scroll.Consume();
                 }
 
-                else if (m_Scroll is BaseWand)
+                else if (m_Scroll is BaseWand baseWand)
                 {
-                    ((BaseWand)m_Scroll).ConsumeCharge(m_Caster);
+                    baseWand.ConsumeCharge(m_Caster);
                     m_Caster.RevealingAction();
                 }
 
@@ -1154,7 +1142,8 @@ namespace Server.Spells
                 m_Caster.SendLocalizedMessage(501857); // This spell won't work on that!
                 return false;
             }
-            else if (Caster.CanBeBeneficial(target, true, allowDead) && CheckSequence())
+
+            if (Caster.CanBeBeneficial(target, true, allowDead) && CheckSequence())
             {
                 if (ValidateBeneficial(target))
                 {
@@ -1163,28 +1152,25 @@ namespace Server.Spells
 
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public bool CheckHSequence(IDamageable target)
         {
-            if (!target.Alive || (target is IDamageableItem && !((IDamageableItem)target).CanDamage))
+            if (!target.Alive || target is IDamageableItem item && !item.CanDamage)
             {
                 m_Caster.SendLocalizedMessage(501857); // This spell won't work on that!
                 return false;
             }
-            else if (Caster.CanBeHarmful(target) && CheckSequence())
+
+            if (Caster.CanBeHarmful(target) && CheckSequence())
             {
                 Caster.DoHarmful(target);
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public bool ValidateBeneficial(Mobile target)

@@ -7,7 +7,6 @@ namespace Server.Items
 
         [Constructable]
         public CultistsRitualTome()
-            : base()
         {
             Hue = 2745;
             LootType = LootType.Blessed;

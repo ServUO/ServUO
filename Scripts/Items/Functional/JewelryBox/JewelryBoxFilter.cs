@@ -17,10 +17,10 @@ namespace Server.Items
 
         public bool Ring
         {
-            get { return m_Ring; }
+            get => m_Ring;
             set
             {
-                if (value == true)
+                if (value)
                     Clear();
 
                 m_Ring = value;
@@ -30,10 +30,10 @@ namespace Server.Items
         private bool m_Bracelet;
         public bool Bracelet
         {
-            get { return m_Bracelet; }
+            get => m_Bracelet;
             set
             {
-                if (value == true)
+                if (value)
                     Clear();
 
                 m_Bracelet = value;
@@ -43,10 +43,10 @@ namespace Server.Items
         private bool m_Earrings;
         public bool Earrings
         {
-            get { return m_Earrings; }
+            get => m_Earrings;
             set
             {
-                if (value == true)
+                if (value)
                     Clear();
 
                 m_Earrings = value;
@@ -56,10 +56,10 @@ namespace Server.Items
         private bool m_Necklace;
         public bool Necklace
         {
-            get { return m_Necklace; }
+            get => m_Necklace;
             set
             {
-                if (value == true)
+                if (value)
                     Clear();
 
                 m_Necklace = value;
@@ -69,10 +69,10 @@ namespace Server.Items
         private bool m_Talisman;
         public bool Talisman
         {
-            get { return m_Talisman; }
+            get => m_Talisman;
             set
             {
-                if (value == true)
+                if (value)
                     Clear();
 
                 m_Talisman = value;

@@ -19,7 +19,7 @@ namespace Server.Items
         }
 
         private PlanType m_PlanType;
-        public PlanType Type { get { return m_PlanType; } set { m_PlanType = value; } }
+        public PlanType Type { get => m_PlanType; set => m_PlanType = value; }
 
         private readonly List<PlanType> m_Joined = new List<PlanType>();
         public List<PlanType> Joined => m_Joined;
@@ -112,12 +112,11 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is Item && !((Item)targeted).IsChildOf(from.Backpack))
+                if (targeted is Item item && !item.IsChildOf(from.Backpack))
                     from.SendMessage("That must be in your pack to combine.");
-                else if (targeted is RuinedShipPlans)
+                else if (targeted is RuinedShipPlans shipPlans)
                 {
-                    RuinedShipPlans toAttach = (RuinedShipPlans)targeted;
-                    m_Plans.TryCombine(from, toAttach);
+                    m_Plans.TryCombine(from, shipPlans);
                 }
                 else
                     from.SendLocalizedMessage(1116786); //These do not fit together.
@@ -132,6 +131,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write((int)m_PlanType);
 
             writer.Write(m_Joined.Count);
@@ -142,7 +142,8 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_PlanType = (PlanType)reader.ReadInt();
 
             int count = reader.ReadInt();

@@ -89,9 +89,9 @@ namespace Server.Spells.SkillMasteries
                                 }
                             }
 
-                            if (bc is SkeletalDragon)
+                            if (bc is SkeletalDragon dragon)
                             {
-                                Engines.Quests.Doom.BellOfTheDead.TryRemoveDragon((SkeletalDragon)bc);
+                                Engines.Quests.Doom.BellOfTheDead.TryRemoveDragon(dragon);
                             }
 
                             Caster.PlaySound(0x5C4);
@@ -105,9 +105,10 @@ namespace Server.Spells.SkillMasteries
                 }
             }
             else
+            {
                 Caster.SendLocalizedMessage(1156015); // You cannot command that!
+            }
 
-            //FinishSequence();
         }
 
         public static Type[] CommandTypes => _CommandTypes;
@@ -120,7 +121,6 @@ namespace Server.Spells.SkillMasteries
 
         private static readonly Type[] _NoCommandTypes =
         {
-
             typeof(UnfrozenMummy),
             typeof(RedDeath),
             typeof(SirPatrick),
@@ -129,7 +129,7 @@ namespace Server.Spells.SkillMasteries
             typeof(MasterJonath),
             typeof(LadyMarai),
             typeof(Niporailem),
-            typeof(PestilentBandage),
+            typeof(PestilentBandage)
         };
 
         public static bool ValidateTarget(BaseCreature bc)

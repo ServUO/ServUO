@@ -83,21 +83,12 @@ namespace Server.Engines.BulkOrders
         #endregion
         public LargeBOD Owner
         {
-            get
-            {
-                return m_Owner;
-            }
-            set
-            {
-                m_Owner = value;
-            }
+            get => m_Owner;
+            set => m_Owner = value;
         }
         public int Amount
         {
-            get
-            {
-                return m_Amount;
-            }
+            get => m_Amount;
             set
             {
                 m_Amount = value;

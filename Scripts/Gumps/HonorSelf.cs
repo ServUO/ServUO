@@ -23,10 +23,6 @@ namespace Server.Gumps
             {
                 HonorVirtue.ActivateEmbrace(m_from);
             }
-            else
-            {
-                return;
-            }
         }
     }
 }

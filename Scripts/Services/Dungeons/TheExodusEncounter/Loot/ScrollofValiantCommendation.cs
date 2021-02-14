@@ -40,9 +40,9 @@ namespace Server.Items
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             else
             {
-                if (from is PlayerMobile && ((PlayerMobile)from).HasValiantStatReward)
+                if (from is PlayerMobile mobile && mobile.HasValiantStatReward)
                 {
-                    from.SendLocalizedMessage(1049510); // Your stats are too high for this power scroll.
+                    mobile.SendLocalizedMessage(1049510); // Your stats are too high for this power scroll.
                 }
                 else if (string.IsNullOrEmpty(Owner))
                 {
@@ -76,7 +76,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Owner = reader.ReadString();
         }

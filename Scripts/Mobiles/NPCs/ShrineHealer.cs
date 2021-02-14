@@ -19,11 +19,11 @@ namespace Server.Mobiles
         {
             base.GetContextMenuEntries(from, list);
 
-            if (from is PlayerMobile)
+            if (from is PlayerMobile mobile)
             {
-                list.Add(new LockKarmaEntry((PlayerMobile)from));
-                list.Add(new ResurrectEntry(from, this));
-                list.Add(new TitheEntry(from));
+                list.Add(new LockKarmaEntry(mobile));
+                list.Add(new ResurrectEntry(mobile, this));
+                list.Add(new TitheEntry(mobile));
             }
         }
 
@@ -101,7 +101,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

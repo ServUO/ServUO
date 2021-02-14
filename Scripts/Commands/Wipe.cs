@@ -32,9 +32,9 @@ namespace Server.Commands
         {
             CommandLogging.WriteLine(from, "{0} {1} wiping from {2} to {3} in {5} ({4})", from.AccessLevel, CommandLogging.Format(from), start, end, type, map);
 
-            bool mobiles = ((type & WipeType.Mobiles) != 0);
-            bool multis = ((type & WipeType.Multis) != 0);
-            bool items = ((type & WipeType.Items) != 0);
+            bool mobiles = (type & WipeType.Mobiles) != 0;
+            bool multis = (type & WipeType.Multis) != 0;
+            bool items = (type & WipeType.Items) != 0;
 
             List<IEntity> toDelete = new List<IEntity>();
 
@@ -53,12 +53,12 @@ namespace Server.Commands
 
             foreach (IEntity obj in eable)
             {
-                if (items && (obj is Item) && !((obj is BaseMulti) || (obj is HouseSign)))
+                if (items && obj is Item && !(obj is BaseMulti || obj is HouseSign))
                     toDelete.Add(obj);
-                else if (multis && (obj is BaseMulti))
+                else if (multis && obj is BaseMulti)
                     toDelete.Add(obj);
-                else if (mobiles && (obj is Mobile) && !((Mobile)obj).Player)
-                    toDelete.Add(obj);
+                else if (mobiles && obj is Mobile mobile && !mobile.Player)
+                    toDelete.Add(mobile);
             }
 
             eable.Free();

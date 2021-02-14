@@ -64,7 +64,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Talisman, 5);
             AddLoot(LootPack.LootItem<DreadHornMane>());
             AddLoot(LootPack.LootItem<TaintedMushroom>(60.0));
-            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(25.0));
             AddLoot(LootPack.LootItem<MangledHeadOfDreadhorn>(50.0));
             AddLoot(LootPack.LootItem<HornOfTheDreadhorn>(50.0));
             AddLoot(LootPack.LootItem<PristineDreadHorn>(5.0));
@@ -108,15 +108,13 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Change = DateTime.UtcNow;
             m_Stomp = DateTime.UtcNow;
@@ -251,8 +249,8 @@ namespace Server.Mobiles
         {
             Mobile agro;
 
-            if (m is BaseCreature)
-                agro = ((BaseCreature)m).ControlMaster;
+            if (m is BaseCreature creature)
+                agro = creature.ControlMaster;
             else
                 agro = m;
 

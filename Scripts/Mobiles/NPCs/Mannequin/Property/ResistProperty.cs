@@ -50,66 +50,66 @@ namespace Server.Mobiles.MannequinProperty
             {
                 case ResistanceType.Physical:
                     {
-                        if (item is BaseWeapon)
-                            return ((BaseWeapon)item).PhysicalResistance;
+                        if (item is BaseWeapon weapon)
+                            return weapon.PhysicalResistance;
 
-                        if (item is BaseArmor)
-                            return ((BaseArmor)item).PhysicalResistance;
+                        if (item is BaseArmor armor)
+                            return armor.PhysicalResistance;
 
-                        if (item is BaseClothing)
-                            return ((BaseClothing)item).PhysicalResistance;
+                        if (item is BaseClothing clothing)
+                            return clothing.PhysicalResistance;
 
                         break;
                     }
                 case ResistanceType.Fire:
                     {
-                        if (item is BaseWeapon)
-                            return ((BaseWeapon)item).FireResistance;
+                        if (item is BaseWeapon weapon)
+                            return weapon.FireResistance;
 
-                        if (item is BaseArmor)
-                            return ((BaseArmor)item).FireResistance;
+                        if (item is BaseArmor armor)
+                            return armor.FireResistance;
 
-                        if (item is BaseClothing)
-                            return ((BaseClothing)item).FireResistance;
+                        if (item is BaseClothing clothing)
+                            return clothing.FireResistance;
 
                         break;
                     }
                 case ResistanceType.Cold:
                     {
-                        if (item is BaseWeapon)
-                            return ((BaseWeapon)item).ColdResistance;
+                        if (item is BaseWeapon weapon)
+                            return weapon.ColdResistance;
 
-                        if (item is BaseArmor)
-                            return ((BaseArmor)item).ColdResistance;
+                        if (item is BaseArmor armor)
+                            return armor.ColdResistance;
 
-                        if (item is BaseClothing)
-                            return ((BaseClothing)item).ColdResistance;
+                        if (item is BaseClothing clothing)
+                            return clothing.ColdResistance;
 
                         break;
                     }
                 case ResistanceType.Poison:
                     {
-                        if (item is BaseWeapon)
-                            return ((BaseWeapon)item).PoisonResistance;
+                        if (item is BaseWeapon weapon)
+                            return weapon.PoisonResistance;
 
-                        if (item is BaseArmor)
-                            return ((BaseArmor)item).PoisonResistance;
+                        if (item is BaseArmor armor)
+                            return armor.PoisonResistance;
 
-                        if (item is BaseClothing)
-                            return ((BaseClothing)item).PoisonResistance;
+                        if (item is BaseClothing clothing)
+                            return clothing.PoisonResistance;
 
                         break;
                     }
                 case ResistanceType.Energy:
                     {
-                        if (item is BaseWeapon)
-                            return ((BaseWeapon)item).EnergyResistance;
+                        if (item is BaseWeapon weapon)
+                            return weapon.EnergyResistance;
 
-                        if (item is BaseArmor)
-                            return ((BaseArmor)item).EnergyResistance;
+                        if (item is BaseArmor armor)
+                            return armor.EnergyResistance;
 
-                        if (item is BaseClothing)
-                            return ((BaseClothing)item).EnergyResistance;
+                        if (item is BaseClothing clothing)
+                            return clothing.EnergyResistance;
 
                         break;
                     }

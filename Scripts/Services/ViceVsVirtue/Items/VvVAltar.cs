@@ -118,7 +118,7 @@ namespace Server.Engines.VvV
 
         public bool Contains(IPoint3D p)
         {
-            if (p is IEntity && ((IEntity)p).Map != Map)
+            if (p is IEntity entity && entity.Map != Map)
                 return false;
 
             return p.X >= X - 2 && p.X <= X + 2 && p.Y >= Y - 2 && p.Y <= Y + 2;
@@ -242,7 +242,7 @@ namespace Server.Engines.VvV
                     {
                         Guild g = OccupationTimer.Occupier;
 
-                        if (g == null || (entry.Guild != g && !entry.Guild.IsAlly(g)))
+                        if (g == null || entry.Guild != g && !entry.Guild.IsAlly(g))
                         {
                             Clear();
                             break;
@@ -281,8 +281,8 @@ namespace Server.Engines.VvV
 
         public class OccupyTimer : Timer
         {
-            public Guild Occupier { get; set; }
-            public VvVAltar Altar { get; set; }
+            public Guild Occupier { get; }
+            public VvVAltar Altar { get; }
 
             private int _Tick;
 
@@ -343,7 +343,7 @@ namespace Server.Engines.VvV
                 new Point3D(-1, -2, 7), new Point3D(0, -2, 7), new Point3D(1, -2, 7), new Point3D(2, -2, 7),
                 new Point3D(2, -1, 7), new Point3D(2, 0, 7), new Point3D(2, 1, 7), new Point3D(2, 2, 7),
                 new Point3D(1, 2, 7), new Point3D(0, 2, 7), new Point3D(-1, 2, 7), new Point3D(-2, 2, 7),
-                new Point3D(-2, 1, 7), new Point3D(-2, 0, 7), new Point3D(-2, -1, 7), new Point3D(-2, -2, 7),
+                new Point3D(-2, 1, 7), new Point3D(-2, 0, 7), new Point3D(-2, -1, 7), new Point3D(-2, -2, 7)
             };
         }
 
@@ -388,7 +388,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Braziers = new List<Item>();
             Torches = new List<Item>();
@@ -420,15 +420,15 @@ namespace Server.Engines.VvV
 
         private readonly int[][] _Tiles =
         {
-            new int[] { 5283,  5291,  5299,  5307,  5315,  5323,  5331,  5390 },
-            new int[] { 39372, 39380, 39388, 39396, 39404, 39412, 39420, 39428 }
+            new[] { 5283,  5291,  5299,  5307,  5315,  5323,  5331,  5390 },
+            new[] { 39372, 39380, 39388, 39396, 39404, 39412, 39420, 39428 }
         };
     }
 
     public class AltarArrow : QuestArrow
     {
-        public Timer Timer { get; private set; }
-        public VvVAltar Altar { get; private set; }
+        public Timer Timer { get; }
+        public VvVAltar Altar { get; }
 
         public int LastX { get; private set; }
         public int LastY { get; private set; }
@@ -449,7 +449,8 @@ namespace Server.Engines.VvV
                 Timer.Stop();
                 return;
             }
-            else if (Mobile.NetState == null || Mobile.Deleted || Altar.Deleted || Mobile.Map != Altar.Map
+
+            if (Mobile.NetState == null || Mobile.Deleted || Altar.Deleted || Mobile.Map != Altar.Map
                 || ViceVsVirtueSystem.Instance.Battle == null || !ViceVsVirtueSystem.Instance.Battle.OnGoing || !Mobile.Region.IsPartOf(ViceVsVirtueSystem.Instance.Battle.Region)
                 || Altar.Contains(Mobile))
             {

@@ -60,15 +60,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -189,15 +187,13 @@ namespace Server.Engines.Quests
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }
@@ -260,7 +256,7 @@ namespace Server.Engines.Quests
 
     public class SheriffOfMinoc : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(ToolsOfTheTradeQuest) };
+        public override Type[] Quests => new[] { typeof(ToolsOfTheTradeQuest) };
 
         public static SheriffOfMinoc TramInstance { get; set; }
         public static SheriffOfMinoc FelInstance { get; set; }
@@ -317,10 +313,8 @@ namespace Server.Engines.Quests
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                PlayerMobile pm = m as PlayerMobile;
-
                 if (QuestHelper.CheckDoneOnce(pm, typeof(APleaFromMinocQuest), this, false))
                 {
                     if (CheckProgress(pm))
@@ -336,15 +330,15 @@ namespace Server.Engines.Quests
                         return;
                     }
 
-                    BaseQuest q = QuestHelper.RandomQuest(pm, new Type[] { typeof(ClearingCovetousQuest) }, this, false);
+                    BaseQuest q = QuestHelper.RandomQuest(pm, new[] { typeof(ClearingCovetousQuest) }, this, false);
 
                     if (q == null)
                     {
-                        q = QuestHelper.RandomQuest(pm, new Type[] { typeof(AForcedSacraficeQuest) }, this, false);
+                        q = QuestHelper.RandomQuest(pm, new[] { typeof(AForcedSacraficeQuest) }, this, false);
 
                         if (q == null)
                         {
-                            q = QuestHelper.RandomQuest(pm, new Type[] { typeof(AForcedSacraficeQuest2) }, this, false);
+                            q = QuestHelper.RandomQuest(pm, new[] { typeof(AForcedSacraficeQuest2) }, this, false);
                         }
                     }
 
@@ -355,21 +349,21 @@ namespace Server.Engines.Quests
                     }
                     else
                     {
-                        SayTo(m, 1080107, 0x3B2); // I'm sorry, I have nothing for you at this time.
+                        SayTo(pm, 1080107, 0x3B2); // I'm sorry, I have nothing for you at this time.
                     }
                 }
                 else
                 {
-                    SayTo(m, 1080107, 0x3B2); // I'm sorry, I have nothing for you at this time.
+                    SayTo(pm, 1080107, 0x3B2); // I'm sorry, I have nothing for you at this time.
                 }
             }
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is PlayerMobile && InRange(m.Location, 5) && !InRange(oldLocation, 5))
+            if (m is PlayerMobile mobile && InRange(mobile.Location, 5) && !InRange(oldLocation, 5))
             {
-                APleaFromMinocQuest quest = QuestHelper.GetQuest<APleaFromMinocQuest>((PlayerMobile)m);
+                APleaFromMinocQuest quest = QuestHelper.GetQuest<APleaFromMinocQuest>(mobile);
 
                 if (quest != null)
                 {
@@ -405,15 +399,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
             {

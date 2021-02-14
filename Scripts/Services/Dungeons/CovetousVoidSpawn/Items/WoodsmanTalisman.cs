@@ -14,7 +14,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
-            get { return _Resource; }
+            get => _Resource;
             set
             {
                 if (_Resource != value)
@@ -29,13 +29,15 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get { return _UsesRemaining; }
+            get => _UsesRemaining;
             set
             {
                 _UsesRemaining = value;
 
-                if (_UsesRemaining <= 0 && RootParent is Mobile)
-                    ((Mobile)RootParent).SendLocalizedMessage(1152621); // Your talisman's magic is exhausted.
+                if (_UsesRemaining <= 0 && RootParent is Mobile mobile)
+                {
+                    mobile.SendLocalizedMessage(1152621); // Your talisman's magic is exhausted.
+                }
 
                 InvalidateProperties();
             }
@@ -70,9 +72,9 @@ namespace Server.Items
 
         public void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -159,7 +161,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Resource = (CraftResource)reader.ReadInt();
             Expires = reader.ReadDateTime();

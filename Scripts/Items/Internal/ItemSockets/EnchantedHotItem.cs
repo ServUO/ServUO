@@ -47,9 +47,9 @@ namespace Server.Items
 
         public override void OnRemoved()
         {
-            if (Owner is BaseWeapon)
+            if (Owner is BaseWeapon weapon)
             {
-                Owner.Hue = ((BaseWeapon)Owner).GetElementalDamageHue();
+                weapon.Hue = weapon.GetElementalDamageHue();
             }
             else
             {
@@ -59,9 +59,9 @@ namespace Server.Items
 
         public override void OnAfterDuped(ItemSocket oldSocket)
         {
-            if (oldSocket is EnchantedHotItemSocket)
+            if (oldSocket is EnchantedHotItemSocket socket)
             {
-                Container = ((EnchantedHotItemSocket)oldSocket).Container;
+                Container = socket.Container;
             }
         }
 

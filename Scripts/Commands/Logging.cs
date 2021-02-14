@@ -6,19 +6,13 @@ namespace Server.Commands
 {
     public class CommandLogging
     {
-        private static readonly char[] m_NotSafe = new char[] { '\\', '/', ':', '*', '?', '"', '<', '>', '|' };
+        private static readonly char[] m_NotSafe = { '\\', '/', ':', '*', '?', '"', '<', '>', '|' };
         private static StreamWriter m_Output;
         private static bool m_Enabled = true;
         public static bool Enabled
         {
-            get
-            {
-                return m_Enabled;
-            }
-            set
-            {
-                m_Enabled = value;
-            }
+            get => m_Enabled;
+            set => m_Enabled = value;
         }
         public static StreamWriter Output => m_Output;
         public static void Initialize()
@@ -52,19 +46,18 @@ namespace Server.Commands
 
         public static object Format(object o)
         {
-            if (o is Mobile)
+            if (o is Mobile m)
             {
-                Mobile m = (Mobile)o;
-
                 if (m.Account == null)
+                {
                     return string.Format("{0} (no account)", m);
-                else
-                    return string.Format("{0} ('{1}')", m, m.Account.Username);
-            }
-            else if (o is Item)
-            {
-                Item item = (Item)o;
+                }
 
+                return string.Format("{0} ('{1}')", m, m.Account.Username);
+            }
+
+            if (o is Item item)
+            {
                 return string.Format("0x{0:X} ({1})", item.Serial.Value, item.GetType().Name);
             }
 
@@ -94,7 +87,7 @@ namespace Server.Commands
                 if (from != null)
                 {
                     Account acct = from.Account as Account;
-                    name = (acct == null ? from.Name : acct.Username);
+                    name = acct == null ? from.Name : acct.Username;
                 }
 
                 AppendPath(ref path, "Logs");
@@ -132,7 +125,7 @@ namespace Server.Commands
             bool isSafe = true;
 
             for (int i = 0; isSafe && i < m_NotSafe.Length; ++i)
-                isSafe = (ip.IndexOf(m_NotSafe[i]) == -1);
+                isSafe = ip.IndexOf(m_NotSafe[i]) == -1;
 
             if (isSafe)
                 return ip;

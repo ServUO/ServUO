@@ -57,20 +57,16 @@ namespace Server
 
         public static PathAlgorithm OverrideAlgorithm
         {
-            get
-            {
-                return m_OverrideAlgorithm;
-            }
-            set
-            {
-                m_OverrideAlgorithm = value;
-            }
+            get => m_OverrideAlgorithm;
+            set => m_OverrideAlgorithm = value;
         }
+
         public Map Map => m_Map;
         public Point3D Start => m_Start;
         public Point3D Goal => m_Goal;
         public Direction[] Directions => m_Directions;
-        public bool Success => (m_Directions != null && m_Directions.Length > 0);
+        public bool Success => m_Directions != null && m_Directions.Length > 0;
+
         public static void Initialize()
         {
             CommandSystem.Register("Path", AccessLevel.GameMaster, Path_OnCommand);

@@ -13,7 +13,7 @@ namespace Server.Gumps
         public MannequinCompareGump(Mannequin mann, Item item)
             : base(100, 100)
         {
-            _SameItem = mann.Items.Where(x => mann.LayerValidation(x, item)).FirstOrDefault();
+            _SameItem = mann.Items.FirstOrDefault(x => mann.LayerValidation(x, item));
 
             if (_SameItem == null)
                 return;
@@ -39,18 +39,18 @@ namespace Server.Gumps
 
                 if (EquipmentItem[i].IsSpriteGraph)
                 {
-                    AddSpriteImage(5 + (35 * si), 41, 0x9D3B, EquipmentItem[i].SpriteW, EquipmentItem[i].SpriteH, 30, 30);
+                    AddSpriteImage(5 + 35 * si, 41, 0x9D3B, EquipmentItem[i].SpriteW, EquipmentItem[i].SpriteH, 30, 30);
                     AddTooltip(EquipmentItem[i].LabelNumber);
 
                     si++;
                 }
                 else
                 {
-                    AddHtmlLocalized(45, 94 + (18 * i), 140, 18, EquipmentItem[i].LabelNumber, EquipmentItem[i].Hue, false, false);
+                    AddHtmlLocalized(45, 94 + 18 * i, 140, 18, EquipmentItem[i].LabelNumber, EquipmentItem[i].Hue, false, false);
                     AddTooltip(EquipmentItem[i].Description);
 
                     if (!EquipmentItem[i].IsBoolen)
-                        AddHtml(190, 94 + (18 * i), 100, 18, Color(EquipmentItem[i].Value, EquipmentItem[i].Cap), false, false);
+                        AddHtml(190, 94 + 18 * i, 100, 18, Color(EquipmentItem[i].Value, EquipmentItem[i].Cap), false, false);
                 }
             }
 
@@ -67,14 +67,14 @@ namespace Server.Gumps
 
                 if (SelectItem[i].IsSpriteGraph)
                 {
-                    AddSpriteImage(275 + (35 * si), 41, 0x9D3B, SelectItem[i].SpriteW, SelectItem[i].SpriteH, 30, 30);
+                    AddSpriteImage(275 + 35 * si, 41, 0x9D3B, SelectItem[i].SpriteW, SelectItem[i].SpriteH, 30, 30);
                     AddTooltip(SelectItem[i].LabelNumber);
 
                     si++;
                 }
                 else
                 {
-                    AddHtmlLocalized(315, 94 + (18 * i), 140, 18, SelectItem[i].LabelNumber, SelectItem[i].Hue, false, false);
+                    AddHtmlLocalized(315, 94 + 18 * i, 140, 18, SelectItem[i].LabelNumber, SelectItem[i].Hue, false, false);
                     AddTooltip(SelectItem[i].Description);
 
                     if (!SelectItem[i].IsBoolen)
@@ -86,7 +86,7 @@ namespace Server.Gumps
                             ev = EquipmentItem.Find(a => a.LabelNumber == SelectItem[i].LabelNumber).Value;
                         }
 
-                        AddHtml(460, 94 + (18 * i), 100, 18, Color(SelectItem[i].Value, SelectItem[i].Cap, ev), false, false);
+                        AddHtml(460, 94 + 18 * i, 100, 18, Color(SelectItem[i].Value, SelectItem[i].Cap, ev), false, false);
                     }
                 }
             }
@@ -139,20 +139,20 @@ namespace Server.Gumps
         private readonly Item _SameItem;
         private readonly Item _Item;
 
-        public LabelDefinition[] Page1 = new LabelDefinition[]
+        public LabelDefinition[] Page1 =
         {
             new LabelDefinition(1049593, Catalog.Attributes, 5),    // Attributes
             new LabelDefinition(1061645, Catalog.Resistances, 5),   // Resistances
-            new LabelDefinition(1077417, Catalog.Combat1, 8),       // Combat
+            new LabelDefinition(1077417, Catalog.Combat1, 8)        // Combat
         };
 
-        public LabelDefinition[] Page2 = new LabelDefinition[]
+        public LabelDefinition[] Page2 =
         {
-            new LabelDefinition(1077417, Catalog.Combat2, 3),       // Combat
+            new LabelDefinition(1077417, Catalog.Combat2, 3),    // Combat
             new LabelDefinition(1076209, Catalog.Casting),          // Casting
             new LabelDefinition(1044050, Catalog.Misc),             // Miscellaneous
             new LabelDefinition(1114251, Catalog.HitEffects),       // Hit Effects
-            new LabelDefinition(1155065, Catalog.SkillBonusGear),   // Skill Bonus Gear
+            new LabelDefinition(1155065, Catalog.SkillBonusGear)    // Skill Bonus Gear
         };
 
         public class ItemPropDefinition
@@ -302,10 +302,10 @@ namespace Server.Gumps
             double v2 = 0;
 
             if (l.EquipmentItem.Any(r => r.LabelNumber == label))
-                v1 = l.EquipmentItem.Where(r => r.LabelNumber == label).FirstOrDefault().Value;
+                v1 = l.EquipmentItem.FirstOrDefault(r => r.LabelNumber == label).Value;
 
             if (l.SelectItem.Any(r => r.LabelNumber == label))
-                v2 = l.SelectItem.Where(r => r.LabelNumber == label).FirstOrDefault().Value;
+                v2 = l.SelectItem.FirstOrDefault(r => r.LabelNumber == label).Value;
 
             return v2 - v1;
         }

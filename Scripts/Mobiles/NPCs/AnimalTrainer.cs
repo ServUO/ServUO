@@ -88,9 +88,9 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (m is PlayerMobile && m.InRange(Location, 5))
+            if (m is PlayerMobile mobile && mobile.InRange(Location, 5))
             {
-                CheckQuest((PlayerMobile)m);
+                CheckQuest(mobile);
             }
         }
 
@@ -141,7 +141,7 @@ namespace Server.Mobiles
             double vetern = from.Skills[SkillName.Veterinary].Value;
             double sklsum = taming + anlore + vetern;
 
-            int max = from is PlayerMobile ? ((PlayerMobile)from).RewardStableSlots : 0;
+            int max = from is PlayerMobile mobile ? mobile.RewardStableSlots : 0;
 
             if (sklsum >= 240.0)
             {
@@ -242,9 +242,9 @@ namespace Server.Mobiles
 
                 from.Stabled.Remove(pet);
 
-                if (from is PlayerMobile)
+                if (from is PlayerMobile mobile)
                 {
-                    ((PlayerMobile)from).AutoStabled.Remove(pet);
+                    mobile.AutoStabled.Remove(pet);
                 }
             }
             else
@@ -348,7 +348,7 @@ namespace Server.Mobiles
             bool claimed = false;
             int stabled = 0;
 
-            bool claimByName = (petName != null);
+            bool claimByName = petName != null;
 
             for (int i = 0; i < from.Stabled.Count; ++i)
             {
@@ -379,9 +379,9 @@ namespace Server.Mobiles
 
                     from.Stabled.RemoveAt(i);
 
-                    if (from is PlayerMobile)
+                    if (from is PlayerMobile mobile)
                     {
-                        ((PlayerMobile)from).AutoStabled.Remove(pet);
+                        mobile.AutoStabled.Remove(pet);
                     }
 
                     --i;
@@ -542,8 +542,8 @@ namespace Server.Mobiles
 
                 AddPage(0);
 
-                AddBackground(0, 0, 325, 50 + (list.Count * 20), 9250);
-                AddAlphaRegion(5, 5, 315, 40 + (list.Count * 20));
+                AddBackground(0, 0, 325, 50 + list.Count * 20, 9250);
+                AddAlphaRegion(5, 5, 315, 40 + list.Count * 20);
 
                 AddHtml(
                     15,
@@ -563,10 +563,10 @@ namespace Server.Mobiles
                         continue;
                     }
 
-                    AddButton(15, 39 + (i * 20), 10006, 10006, i + 1, GumpButtonType.Reply, 0);
+                    AddButton(15, 39 + i * 20, 10006, 10006, i + 1, GumpButtonType.Reply, 0);
                     AddHtml(
                         32,
-                        35 + (i * 20),
+                        35 + i * 20,
                         275,
                         18,
                         string.Format("<BASEFONT COLOR=#C6C6EF>{0}</BASEFONT>", pet.Name),
@@ -618,9 +618,9 @@ namespace Server.Mobiles
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is BaseCreature)
+                if (targeted is BaseCreature creature)
                 {
-                    m_Trainer.EndStable(from, (BaseCreature)targeted);
+                    m_Trainer.EndStable(from, creature);
                 }
                 else if (targeted == from)
                 {

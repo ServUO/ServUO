@@ -27,9 +27,9 @@ namespace Server.Engines.BulkOrders
             for (int i = 0; i < m_Entries.Length; ++i)
                 m_Entries[i] = new BOBLargeSubEntry(bod.Entries[i]);
 
-            if (bod is LargeTinkerBOD)
+            if (bod is LargeTinkerBOD tinkerBod)
             {
-                m_GemType = ((LargeTinkerBOD)bod).GemType;
+                m_GemType = tinkerBod.GemType;
             }
         }
 
@@ -68,29 +68,21 @@ namespace Server.Engines.BulkOrders
         public BODType DeedType => m_DeedType;
         public BulkMaterialType Material => m_Material;
         public int AmountMax => m_AmountMax;
+
         public int Price
         {
-            get
-            {
-                return m_Price;
-            }
-            set
-            {
-                m_Price = value;
-            }
+            get => m_Price;
+            set => m_Price = value;
         }
+
         public GemType GemType
         {
-            get
-            {
-                return m_GemType;
-            }
-            set
-            {
-                m_GemType = value;
-            }
+            get => m_GemType;
+            set => m_GemType = value;
         }
+
         public BOBLargeSubEntry[] Entries => m_Entries;
+
         public Item Reconstruct()
         {
             LargeBOD bod = null;

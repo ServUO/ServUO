@@ -44,10 +44,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
-            get
-            {
-                return m_Charges;
-            }
+            get => m_Charges;
             set
             {
                 if (value > MaxCharges)
@@ -63,10 +60,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Recharges
         {
-            get
-            {
-                return m_Recharges;
-            }
+            get => m_Recharges;
             set
             {
                 if (value > MaxRecharges)
@@ -88,10 +82,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public BagOfSendingHue BagOfSendingHue
         {
-            get
-            {
-                return m_BagOfSendingHue;
-            }
+            get => m_BagOfSendingHue;
             set
             {
                 m_BagOfSendingHue = value;
@@ -247,9 +238,8 @@ namespace Server.Items
                 {
                     MessageHelper.SendLocalizedMessageTo(m_Bag, from, 1042544, 0x59); // This item is out of charges.
                 }
-                else if (targeted is Item)
+                else if (targeted is Item item)
                 {
-                    Item item = (Item)targeted;
                     int reqCharges = 1; // (int)Math.Max(1, Math.Ceiling(item.TotalWeight / 10.0));
                                         // change was ML, however reverted during ML period so we can put it at 1
 

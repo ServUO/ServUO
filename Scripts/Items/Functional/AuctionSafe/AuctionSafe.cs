@@ -18,7 +18,7 @@ namespace Server.Engines.Auction
         [CommandProperty(AccessLevel.GameMaster)]
         public Auction Auction
         {
-            get { return _Auction; }
+            get => _Auction;
             set
             {
                 if (value == null && _Auction != null)
@@ -45,10 +45,8 @@ namespace Server.Engines.Auction
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public void OnAuctionTray()
@@ -98,49 +96,49 @@ namespace Server.Engines.Auction
             {
                 from.SendLocalizedMessage(500332); // I am too far away to do that.
             }
-            else if (house != null && from is PlayerMobile)
+            else if (house != null && from is PlayerMobile mobile)
             {
-                if (house.IsOwner(from))
+                if (house.IsOwner(mobile))
                 {
-                    if (!from.HasGump(typeof(AuctionBidGump)))
+                    if (!mobile.HasGump(typeof(AuctionBidGump)))
                     {
-                        from.SendGump(new AuctionOwnerGump((PlayerMobile)from, this));
+                        mobile.SendGump(new AuctionOwnerGump(mobile, this));
                     }
                 }
                 else if (Auction != null)
                 {
-                    if (house.HasSecureAccess(from, Level))
+                    if (house.HasSecureAccess(mobile, Level))
                     {
                         if (Auction.InClaimPeriod)
                         {
                             if (Auction.HighestBid != null && from == Auction.HighestBid.Mobile)
                             {
-                                Auction.ClaimPrize(from);
+                                Auction.ClaimPrize(mobile);
                             }
                             else
                             {
-                                if (!from.HasGump(typeof(AuctionBidGump)))
+                                if (!mobile.HasGump(typeof(AuctionBidGump)))
                                 {
-                                    from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                                    mobile.SendGump(new AuctionBidGump(mobile, this));
                                 }
                             }
                         }
                         else
                         {
-                            if (!from.HasGump(typeof(AuctionBidGump)))
+                            if (!mobile.HasGump(typeof(AuctionBidGump)))
                             {
-                                from.SendGump(new AuctionBidGump((PlayerMobile)from, this));
+                                mobile.SendGump(new AuctionBidGump(mobile, this));
                             }
                         }
                     }
                     else
                     {
-                        from.SendLocalizedMessage(1156447); // This auction is private.
+                        mobile.SendLocalizedMessage(1156447); // This auction is private.
                     }
                 }
                 else
                 {
-                    from.SendLocalizedMessage(1156432); // There is no active auction to complete this action.
+                    mobile.SendLocalizedMessage(1156432); // There is no active auction to complete this action.
                 }
             }
         }
@@ -194,7 +192,7 @@ namespace Server.Engines.Auction
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Level = (SecureLevel)reader.ReadInt();
 
@@ -234,7 +232,7 @@ namespace Server.Engines.Auction
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
     }

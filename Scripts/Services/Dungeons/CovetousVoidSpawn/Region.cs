@@ -9,13 +9,13 @@ namespace Server.Engines.VoidPool
 {
     public class VoidPoolRegion : BaseRegion
     {
-        private static readonly Rectangle2D[] Bounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] Bounds =
         {
             new Rectangle2D(5383, 1960, 236, 80),
-            new Rectangle2D(5429, 1948, 12, 10),
+            new Rectangle2D(5429, 1948, 12, 10)
         };
 
-        public VoidPoolController Controller { get; private set; }
+        public VoidPoolController Controller { get; }
 
         public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, DefaultPriority, Bounds)
         {
@@ -56,19 +56,19 @@ namespace Server.Engines.VoidPool
 
         public override void OnDeath(Mobile m)
         {
-            if (m is BaseCreature && !((BaseCreature)m).Controlled && !((BaseCreature)m).Summoned && Controller != null && Controller.OnGoing)
+            if (m is BaseCreature bc && !bc.Controlled && !bc.Summoned && Controller != null && Controller.OnGoing)
             {
-                Controller.OnCreatureKilled((BaseCreature)m);
+                Controller.OnCreatureKilled(bc);
 
-                if (m is CovetousCreature && ((CovetousCreature)m).VoidSpawn)
+                if (bc is CovetousCreature creature && creature.VoidSpawn)
                 {
-                    int wave = ((CovetousCreature)m).Level;
+                    int wave = creature.Level;
                     double bump = wave > 10 ? (Math.Min(60, wave - 10) / 1000.0) : 0;
                     double chance = 0.001 + bump;
 
                     if (chance > Utility.RandomDouble())
                     {
-                        Mobile mob = ((BaseCreature)m).RandomPlayerWithLootingRights();
+                        Mobile mob = creature.RandomPlayerWithLootingRights();
 
                         if (mob != null)
                         {
@@ -93,15 +93,10 @@ namespace Server.Engines.VoidPool
 
         public override bool OnDoubleClick(Mobile m, object o)
         {
-            if (o is Corpse && m.AccessLevel == AccessLevel.Player)
+            if (o is Corpse c && m.AccessLevel == AccessLevel.Player && (c.Owner == null || c.Owner is CovetousCreature creature && creature.VoidSpawn))
             {
-                Corpse c = o as Corpse;
-
-                if (c.Owner == null || (c.Owner is CovetousCreature && ((CovetousCreature)c.Owner).VoidSpawn))
-                {
-                    c.LabelTo(m, 1152684); // There is no loot on the corpse.
-                    return false;
-                }
+                c.LabelTo(m, 1152684); // There is no loot on the corpse.
+                return false;
             }
 
             return base.OnDoubleClick(m, o);

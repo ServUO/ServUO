@@ -24,7 +24,6 @@ namespace Server
                     Console.WriteLine("Client: {0}: Firewall blocked connection attempt.", ip);
                     Utility.PopColor();
                     e.AllowConnection = false;
-                    return;
                 }
                 else if (IPLimiter.SocketBlock && !IPLimiter.Verify(ip))
                 {
@@ -36,7 +35,6 @@ namespace Server
                         op.WriteLine("{0}\tPast IP limit threshold\t{1}", ip, DateTime.UtcNow);
 
                     e.AllowConnection = false;
-                    return;
                 }
             }
             catch (Exception ex)

@@ -110,14 +110,14 @@ namespace Server.Items
             {
                 m.SendLocalizedMessage(1151733); // You cannot do that while carrying a Trade Order.
             }
-            else if (TargetMap == Map.Felucca && m is PlayerMobile && ((PlayerMobile)m).Young)
+            else if (TargetMap == Map.Felucca && m is PlayerMobile mobile && mobile.Young)
             {
-                m.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
+                mobile.SendLocalizedMessage(1049543); // You decide against traveling to Felucca while you are still young.
             }
-            else if ((SpellHelper.RestrictRedTravel && m.Murderer && TargetMap != Map.Felucca && !Siege.SiegeShard) ||
-                     (TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0) ||
-                     (TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0) ||
-                     (TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0))
+            else if (SpellHelper.RestrictRedTravel && m.Murderer && TargetMap != Map.Felucca && !Siege.SiegeShard ||
+                     TargetMap == Map.Tokuno && (flags & ClientFlags.Tokuno) == 0 ||
+                     TargetMap == Map.Malas && (flags & ClientFlags.Malas) == 0 ||
+                     TargetMap == Map.Ilshenar && (flags & ClientFlags.Ilshenar) == 0)
             {
                 m.SendLocalizedMessage(1019004); // You are not allowed to travel there.
             }
@@ -152,7 +152,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Target = reader.ReadPoint3D();
             TargetMap = reader.ReadMap();
@@ -177,13 +177,14 @@ namespace Server.Items
 
         public virtual void BeginConfirmation(Mobile from)
         {
-            if (IsInTown(from.Location, from.Map) && !IsInTown(Target, TargetMap) ||
-                (from.Map != Map.Felucca && TargetMap == Map.Felucca && ShowFeluccaWarning))
+            if (IsInTown(from.Location, from.Map) && !IsInTown(Target, TargetMap) || from.Map != Map.Felucca && TargetMap == Map.Felucca && ShowFeluccaWarning)
             {
                 if (from.IsPlayer() || !from.Hidden)
+                {
                     from.Send(new PlaySound(0x20E, from.Location));
-                from.CloseGump(typeof(MoongateConfirmGump));
-                from.SendGump(new MoongateConfirmGump(from, this));
+                    from.CloseGump(typeof(MoongateConfirmGump));
+                    from.SendGump(new MoongateConfirmGump(from, this));
+                }
             }
             else
             {
@@ -217,7 +218,7 @@ namespace Server.Items
 
             GuardedRegion reg = (GuardedRegion)Region.Find(p, map).GetRegion(typeof(GuardedRegion));
 
-            return (reg != null && !reg.IsDisabled());
+            return reg != null && !reg.IsDisabled();
         }
 
         private class DelayTimer : Timer

@@ -44,6 +44,27 @@ namespace Server.Mobiles
             MinTameSkill = 96.3;
         }
 
+        protected override void OnMapChange(Map oldMap)
+        {
+            base.OnMapChange(oldMap);
+
+            if (!Controlled && Tamable)
+            {
+                if (Utility.RandomDouble() < 0.05 + TotemRareColorChance())
+                {
+                    switch (Utility.Random(2))
+                    {
+                        case 0: { Hue = 1150; break; }
+                        case 1: { Hue = 1154; break; }
+                    }
+                }
+                else if (Totem != null)
+                {
+                    Totem = null;
+                }
+            }
+        }
+
         public WhiteWyrm(Serial serial)
             : base(serial)
         {
@@ -76,7 +97,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

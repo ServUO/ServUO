@@ -36,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
 
         private class BestKillGump : Gump
@@ -88,7 +88,7 @@ namespace Server.Items
 
                     AddHtml(20, y, 150, 16, entry.Owner != null ? FormatFont(entry.Owner.Name, i) : FormatFont("Unknown", i), false, false);
                     AddHtml(170, y, 120, 16, FormatFont(GetHuntTypeString(info.HuntType), i), false, false);
-                    AddHtml(290, y, 100, 16, info.MeasuredBy == MeasuredBy.Weight ? FormatFont(entry.Measurement.ToString() + " stones", i) : FormatFont(entry.Measurement.ToString() + " feet", i), false, false);
+                    AddHtml(290, y, 100, 16, info.MeasuredBy == MeasuredBy.Weight ? FormatFont(entry.Measurement + " stones", i) : FormatFont(entry.Measurement + " feet", i), false, false);
                     AddHtml(390, y, 150, 16, FormatFont(entry.DateKilled.ToShortDateString(), i), false, false);
 
                     y += 20;
@@ -102,7 +102,7 @@ namespace Server.Items
 
             private string FormatFont(string str, int index)
             {
-                int hue = 080000 + (100000 * index);
+                int hue = 080000 + 100000 * index;
 
                 return string.Format("<BaseFont Color=#{0}>{1}</basefont>", hue.ToString(), str);
             }

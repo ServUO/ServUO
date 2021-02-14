@@ -84,26 +84,14 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Owner
         {
-            get
-            {
-                return m_Owner;
-            }
-            set
-            {
-                m_Owner = value;
-            }
+            get => m_Owner;
+            set => m_Owner = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime ExpireTime
         {
-            get
-            {
-                return m_ExpireTime;
-            }
-            set
-            {
-                m_ExpireTime = value;
-            }
+            get => m_ExpireTime;
+            set => m_ExpireTime = value;
         }
         public override bool AlwaysMurderer => true;
         public override void DisplayPaperdollTo(Mobile to)
@@ -149,7 +137,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

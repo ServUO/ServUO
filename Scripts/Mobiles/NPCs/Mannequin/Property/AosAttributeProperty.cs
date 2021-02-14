@@ -9,44 +9,44 @@ namespace Server.Mobiles.MannequinProperty
 
         public double GetPropertyValue(Item item)
         {
-            if (item is BaseWeapon)
+            if (item is BaseWeapon weapon)
             {
-                return ((BaseWeapon)item).Attributes[Attribute];
+                return weapon.Attributes[Attribute];
             }
 
-            if (item is BaseArmor)
+            if (item is BaseArmor armor)
             {
-                return ((BaseArmor)item).Attributes[Attribute];
+                return armor.Attributes[Attribute];
             }
 
-            if (item is BaseClothing)
+            if (item is BaseClothing clothing)
             {
-                return ((BaseClothing)item).Attributes[Attribute];
+                return clothing.Attributes[Attribute];
             }
 
-            if (item is BaseJewel)
+            if (item is BaseJewel jewel)
             {
-                return ((BaseJewel)item).Attributes[Attribute];
+                return jewel.Attributes[Attribute];
             }
 
-            if (item is BaseTalisman)
+            if (item is BaseTalisman talisman)
             {
-                return ((BaseTalisman)item).Attributes[Attribute];
+                return talisman.Attributes[Attribute];
             }
 
-            if (item is BaseQuiver)
+            if (item is BaseQuiver quiver)
             {
-                return ((BaseQuiver)item).Attributes[Attribute];
+                return quiver.Attributes[Attribute];
             }
 
-            if (item is Spellbook)
+            if (item is Spellbook spellbook)
             {
-                return ((Spellbook)item).Attributes[Attribute];
+                return spellbook.Attributes[Attribute];
             }
 
-            if (item is FishingPole)
+            if (item is FishingPole pole)
             {
-                return ((FishingPole)item).Attributes[Attribute];
+                return pole.Attributes[Attribute];
             }
 
             return 0;

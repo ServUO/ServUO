@@ -67,7 +67,7 @@ namespace Server.Misc
             }
 
             int maxWeight = from.MaxWeight + OverloadAllowance;
-            int overWeight = (Mobile.BodyWeight + from.TotalWeight) - maxWeight;
+            int overWeight = Mobile.BodyWeight + from.TotalWeight - maxWeight;
 
             if (overWeight > 0)
             {
@@ -94,7 +94,7 @@ namespace Server.Misc
             {
                 int amt = 10;
 
-                if ((++pm.StepsTaken % amt) == 0)
+                if (++pm.StepsTaken % amt == 0)
                     --from.Stam;
             }
         }
@@ -117,7 +117,7 @@ namespace Server.Misc
             if (!m.Player || !m.Alive || m.IsStaff())
                 return false;
 
-            return ((Mobile.BodyWeight + m.TotalWeight) > (m.MaxWeight + OverloadAllowance));
+            return Mobile.BodyWeight + m.TotalWeight > m.MaxWeight + OverloadAllowance;
         }
     }
 }

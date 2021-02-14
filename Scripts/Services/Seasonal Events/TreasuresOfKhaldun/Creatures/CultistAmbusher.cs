@@ -85,13 +85,13 @@ namespace Server.Mobiles
             {
                 case 0:
                     {
-                        SetWearable(Loot.Construct(new Type[] { typeof(Kryss), typeof(Spear), typeof(ShortSpear), typeof(Lance), typeof(Pike), typeof(WarMace), typeof(Mace), typeof(WarHammer), typeof(WarAxe) }));
+                        SetWearable(Loot.Construct(new[] { typeof(Kryss), typeof(Spear), typeof(ShortSpear), typeof(Lance), typeof(Pike), typeof(WarMace), typeof(Mace), typeof(WarHammer), typeof(WarAxe) }));
 
                         break;
                     }
                 case 1:
                     {
-                        SetWearable(Loot.Construct(new Type[] { typeof(Yumi), typeof(Crossbow), typeof(RepeatingCrossbow), typeof(HeavyCrossbow) }));
+                        SetWearable(Loot.Construct(new[] { typeof(Yumi), typeof(Crossbow), typeof(RepeatingCrossbow), typeof(HeavyCrossbow) }));
 
                         RangeFight = 7;
                         AI = AIType.AI_Archer;
@@ -194,7 +194,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

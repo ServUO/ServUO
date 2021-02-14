@@ -34,18 +34,14 @@ namespace Server.Mobiles
         public override bool Commandable => false;
         public override bool NoHouseRestrictions => true;
         public override bool CanOpenDoors => true;
+
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BindedToPlayer
         {
-            get
-            {
-                return m_BindedToPlayer;
-            }
-            set
-            {
-                m_BindedToPlayer = value;
-            }
+            get => m_BindedToPlayer;
+            set => m_BindedToPlayer = value;
         }
+
         public static bool CheckAttendant(Mobile owner)
         {
             if (owner != null)
@@ -117,7 +113,7 @@ namespace Server.Mobiles
 
         public virtual bool IsOwner(Mobile m)
         {
-            return (ControlMaster == null || ControlMaster == m);
+            return ControlMaster == null || ControlMaster == m;
         }
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)
@@ -146,7 +142,6 @@ namespace Server.Mobiles
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(1); // version
 
             writer.Write(m_BindedToPlayer);
@@ -155,20 +150,16 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadEncodedInt();
 
-            int version = reader.ReadEncodedInt();
-
-            switch (version)
-            {
-                case 1:
-                    m_BindedToPlayer = reader.ReadBool();
-                    break;
-            }
+            m_BindedToPlayer = reader.ReadBool();
 
             TimeSpan delay = TimeSpan.FromSeconds(2);
 
             if (ControlOrder == OrderType.Stay)
+            {
                 delay = TimeSpan.FromSeconds(5);
+            }
 
             m_Timer = new InternalTimer(this, delay);
             m_Timer.Start();
@@ -210,8 +201,10 @@ namespace Server.Mobiles
                     m_Attendant.ControlOrder = OrderType.Follow;
                     m_Attendant.ControlTarget = m_Attendant.ControlMaster;
 
-                    if (obj is Point3D && m_Attendant.ControlMaster != null)
-                        m_Attendant.MoveToWorld((Point3D)obj, m_Attendant.ControlMaster.Map);
+                    if (obj is Point3D point3D && m_Attendant.ControlMaster != null)
+                    {
+                        m_Attendant.MoveToWorld(point3D, m_Attendant.ControlMaster.Map);
+                    }
                 }
             }
         }

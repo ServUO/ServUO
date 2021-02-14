@@ -6,10 +6,10 @@ namespace Server.Multis
 {
     public class BritannianShip : BaseGalleon
     {
-        public override int NorthID => 0x40 + (DamageValue * 4);
-        public override int EastID => 0x41 + (DamageValue * 4);
-        public override int SouthID => 0x42 + (DamageValue * 4);
-        public override int WestID => 0x43 + (DamageValue * 4);
+        public override int NorthID => 0x40 + DamageValue * 4;
+        public override int EastID => 0x41 + DamageValue * 4;
+        public override int SouthID => 0x42 + DamageValue * 4;
+        public override int WestID => 0x43 + DamageValue * 4;
 
         public override int HoldDistance => 9;
         public override int TillerManDistance => 7;
@@ -53,7 +53,7 @@ namespace Server.Multis
         }
 
         public override int[] CannonTileIDs => m_CannonTileIDs;
-        private static readonly int[] m_CannonTileIDs = new int[]
+        private static readonly int[] m_CannonTileIDs =
         {
             23612, 23631, 23630, 23632, 23634, 23639, 23637, 23643, 23641, //SOUTH
             23666, 23684, 23685, 23686, 23688, 23691, 23693, 23695, 23697, //WEST
@@ -67,7 +67,7 @@ namespace Server.Multis
         };
 
         public override int[] HoldIDs => m_HoldIDs;
-        private static readonly int[] m_HoldIDs = new int[]
+        private static readonly int[] m_HoldIDs =
         {
             23649, 23650, 23652, 23653, 23654, 23655, 23656, 23651,  //SOUTH
             23703, 23704, 23706, 23707, 23708, 23709, 23710, 23705,  //WEST
@@ -81,14 +81,14 @@ namespace Server.Multis
         };
 
         public override int[] HoldItemIDs => m_HoldItemIDs;
-        private static readonly int[] m_HoldItemIDs = new int[]
+        private static readonly int[] m_HoldItemIDs =
         {
             23648, 23702, 23594, 23540,
-            23648, 23702, 23594, 23540,
+            23648, 23702, 23594, 23540
         };
 
         public override int[] WheelItemIDs => m_WheelItemIDs;
-        private static readonly int[] m_WheelItemIDs = new int[]
+        private static readonly int[] m_WheelItemIDs =
         {
 
             23618, 23672, 23564, 23510,
@@ -309,18 +309,16 @@ namespace Server.Multis
         {
         }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 
@@ -339,18 +337,16 @@ namespace Server.Multis
         {
         }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-        }
-
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 }

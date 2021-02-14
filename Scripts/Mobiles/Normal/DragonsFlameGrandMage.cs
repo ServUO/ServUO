@@ -7,7 +7,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public DragonsFlameGrandMage()
-            : base()
         {
             Name = "Black Order Grand Mage";
             Title = "of the Dragon's Flame Sect";
@@ -54,7 +53,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

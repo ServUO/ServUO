@@ -62,10 +62,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public WandEffect Effect
         {
-            get
-            {
-                return m_WandEffect;
-            }
+            get => m_WandEffect;
             set
             {
                 m_WandEffect = value;
@@ -75,10 +72,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
-            get
-            {
-                return m_Charges;
-            }
+            get => m_Charges;
             set
             {
                 m_Charges = value;
@@ -139,7 +133,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_WandEffect = (WandEffect)reader.ReadInt();
             m_Charges = reader.ReadInt();

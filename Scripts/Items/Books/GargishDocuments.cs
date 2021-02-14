@@ -30,10 +30,10 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (Title is int)
-                list.Add(1150928, string.Format("#{0}", (int)Title));  // Gargish Document - ~1_NAME~
-            else if (Title is string)
-                list.Add(1150928, (string)Title);
+            if (Title is int iTitle)
+                list.Add(1150928, string.Format("#{0}", iTitle));  // Gargish Document - ~1_NAME~
+            else if (Title is string sTitle)
+                list.Add(1150928, sTitle);
             else
                 base.AddNameProperty(list);
         }

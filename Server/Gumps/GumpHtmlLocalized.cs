@@ -158,13 +158,13 @@ namespace Server.Gumps
 			switch (m_Type)
 			{
 				case GumpHtmlLocalizedType.Plain:
-				return System.String.Format("{{ xmfhtmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0);
+				return string.Format("{{ xmfhtmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0);
 
 				case GumpHtmlLocalizedType.Color:
-				return System.String.Format("{{ xmfhtmlgumpcolor {0} {1} {2} {3} {4} {5} {6} {7} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0, m_Color);
+				return string.Format("{{ xmfhtmlgumpcolor {0} {1} {2} {3} {4} {5} {6} {7} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0, m_Color);
 
 				default: // GumpHtmlLocalizedType.Args
-				return System.String.Format("{{ xmfhtmltok {0} {1} {2} {3} {4} {5} {6} {7} @{8}@ }}", m_X, m_Y, m_Width, m_Height, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0, m_Color, m_Number, m_Args);
+				return string.Format("{{ xmfhtmltok {0} {1} {2} {3} {4} {5} {6} {7} @{8}@ }}", m_X, m_Y, m_Width, m_Height, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0, m_Color, m_Number, m_Args);
 			}
 		}
 
@@ -177,52 +177,52 @@ namespace Server.Gumps
 			switch (m_Type)
 			{
 				case GumpHtmlLocalizedType.Plain:
-					{
-						disp.AppendLayout(m_LayoutNamePlain);
+				{
+					disp.AppendLayout(m_LayoutNamePlain);
 
-						disp.AppendLayout(m_X);
-						disp.AppendLayout(m_Y);
-						disp.AppendLayout(m_Width);
-						disp.AppendLayout(m_Height);
-						disp.AppendLayout(m_Number);
-						disp.AppendLayout(m_Background);
-						disp.AppendLayout(m_Scrollbar);
+					disp.AppendLayout(m_X);
+					disp.AppendLayout(m_Y);
+					disp.AppendLayout(m_Width);
+					disp.AppendLayout(m_Height);
+					disp.AppendLayout(m_Number);
+					disp.AppendLayout(m_Background);
+					disp.AppendLayout(m_Scrollbar);
 
-						break;
-					}
+					break;
+				}
 
 				case GumpHtmlLocalizedType.Color:
-					{
-						disp.AppendLayout(m_LayoutNameColor);
+				{
+					disp.AppendLayout(m_LayoutNameColor);
 
-						disp.AppendLayout(m_X);
-						disp.AppendLayout(m_Y);
-						disp.AppendLayout(m_Width);
-						disp.AppendLayout(m_Height);
-						disp.AppendLayout(m_Number);
-						disp.AppendLayout(m_Background);
-						disp.AppendLayout(m_Scrollbar);
-						disp.AppendLayout(m_Color);
+					disp.AppendLayout(m_X);
+					disp.AppendLayout(m_Y);
+					disp.AppendLayout(m_Width);
+					disp.AppendLayout(m_Height);
+					disp.AppendLayout(m_Number);
+					disp.AppendLayout(m_Background);
+					disp.AppendLayout(m_Scrollbar);
+					disp.AppendLayout(m_Color);
 
-						break;
-					}
+					break;
+				}
 
 				case GumpHtmlLocalizedType.Args:
-					{
-						disp.AppendLayout(m_LayoutNameArgs);
+				{
+					disp.AppendLayout(m_LayoutNameArgs);
 
-						disp.AppendLayout(m_X);
-						disp.AppendLayout(m_Y);
-						disp.AppendLayout(m_Width);
-						disp.AppendLayout(m_Height);
-						disp.AppendLayout(m_Background);
-						disp.AppendLayout(m_Scrollbar);
-						disp.AppendLayout(m_Color);
-						disp.AppendLayout(m_Number);
-						disp.AppendLayout(m_Args ?? System.String.Empty);
+					disp.AppendLayout(m_X);
+					disp.AppendLayout(m_Y);
+					disp.AppendLayout(m_Width);
+					disp.AppendLayout(m_Height);
+					disp.AppendLayout(m_Background);
+					disp.AppendLayout(m_Scrollbar);
+					disp.AppendLayout(m_Color);
+					disp.AppendLayout(m_Number);
+					disp.AppendLayout(m_Args ?? string.Empty);
 
-						break;
-					}
+					break;
+				}
 			}
 		}
 	}

@@ -48,12 +48,12 @@ namespace Server.Engines.Fellowship
                 switch (index)
                 {
                     default:
-                    case 9: item = new RecipeScroll((int)TailorRecipe.CowlOfTheMaceAndShield); break;
-                    case 10: item = new RecipeScroll((int)TailorRecipe.MagesHoodOfScholarlyInsight); break;
-                    case 11: item = new RecipeScroll((int)TailorRecipe.ElegantCollarOfFortune); break;
-                    case 12: item = new RecipeScroll((int)TailorRecipe.CrimsonDaggerBelt); break;
-                    case 13: item = new RecipeScroll((int)TailorRecipe.CrimsonSwordBelt); break;
-                    case 14: item = new RecipeScroll((int)TailorRecipe.CrimsonMaceBelt); break;
+                    case 9: item = new RecipeScroll((int)CraftRecipes.CowlOfTheMaceAndShield); break;
+                    case 10: item = new RecipeScroll((int)CraftRecipes.MagesHoodOfScholarlyInsight); break;
+                    case 11: item = new RecipeScroll((int)CraftRecipes.ElegantCollarOfFortune); break;
+                    case 12: item = new RecipeScroll((int)CraftRecipes.CrimsonDaggerBelt); break;
+                    case 13: item = new RecipeScroll((int)CraftRecipes.CrimsonSwordBelt); break;
+                    case 14: item = new RecipeScroll((int)CraftRecipes.CrimsonMaceBelt); break;
                 }
             }
 

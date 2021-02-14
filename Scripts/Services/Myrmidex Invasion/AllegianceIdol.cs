@@ -11,7 +11,7 @@ namespace Server.Engines.MyrmidexInvasion
         [CommandProperty(AccessLevel.GameMaster)]
         public Allegiance AllegianceType
         {
-            get { return _AllegianceType; }
+            get => _AllegianceType;
             set
             {
                 _AllegianceType = value;
@@ -41,24 +41,24 @@ namespace Server.Engines.MyrmidexInvasion
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(GetWorldLocation(), 3))
+            if (from is PlayerMobile pm && pm.InRange(GetWorldLocation(), 3))
             {
-                AllianceEntry entry = MyrmidexInvasionSystem.GetEntry((PlayerMobile)from);
+                AllianceEntry entry = MyrmidexInvasionSystem.GetEntry(pm);
 
                 if (entry != null)
                 {
                     if (entry.Allegiance == _AllegianceType)
                     {
-                        from.SendLocalizedMessage(1156637, string.Format("#{0}", ((int)entry.Allegiance).ToString())); // You have already declared allegiance to the ~1_SIDE~!  You may only change your allegiance once every 2 hours.
+                        pm.SendLocalizedMessage(1156637, string.Format("#{0}", ((int)entry.Allegiance).ToString())); // You have already declared allegiance to the ~1_SIDE~!  You may only change your allegiance once every 2 hours.
                     }
                     else if (entry.JoinTime + TimeSpan.FromHours(2) > DateTime.UtcNow)
                     {
-                        from.SendLocalizedMessage(1156633); // You cannot declare allegiance to that side.
+                        pm.SendLocalizedMessage(1156633); // You cannot declare allegiance to that side.
                     }
                     else
                     {
-                        from.SendGump(
-                            new ConfirmCallbackGump((PlayerMobile)from,
+                        pm.SendGump(
+                            new ConfirmCallbackGump(pm,
                             (int)_AllegianceType,
                             string.Format("Your current allegiance is with the {0}.  Select yes to pledge your allegiance to the {1}.", entry.Allegiance == Allegiance.Tribes ? "Eodonians" : "Myrmidex", _AllegianceType == Allegiance.Tribes ? "Eodonians" : "Myrmidex"),
                             entry,
@@ -76,7 +76,7 @@ namespace Server.Engines.MyrmidexInvasion
                     }
                 }
                 else
-                    MyrmidexInvasionSystem.System.Join((PlayerMobile)from, _AllegianceType);
+                    MyrmidexInvasionSystem.System.Join(pm, _AllegianceType);
             }
             else
                 from.SendLocalizedMessage(1149687); //You are too far away.
@@ -109,7 +109,7 @@ namespace Server.Engines.MyrmidexInvasion
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             _AllegianceType = (Allegiance)reader.ReadInt();
         }

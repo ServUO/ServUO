@@ -1,4 +1,4 @@
-﻿using Server.Targeting;
+using Server.Targeting;
 
 namespace Server.Items
 {
@@ -31,10 +31,8 @@ namespace Server.Items
                     {
                         if (!IsChildOf(m.Backpack))
                             m.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
-                        else if (targeted is BaseWeapon)
+                        else if (targeted is BaseWeapon wep)
                         {
-                            BaseWeapon wep = targeted as BaseWeapon;
-
                             if (!wep.IsChildOf(m.Backpack))
                                 m.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
                             else if (wep.TimesImbued > 0 || wep.Quality != ItemQuality.Exceptional)
@@ -65,18 +63,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
-
-            if (ItemID != 0x1368)
-                ItemID = 0x1368;
+            reader.ReadInt();
         }
     }
 }

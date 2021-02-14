@@ -599,7 +599,7 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (m_Addon == null || m_Addon.Deleted || (targeted is Item && !from.InRange(((Item)targeted).GetWorldLocation(), 2)))
+                if (m_Addon == null || m_Addon.Deleted || (targeted is Item item && !from.InRange(item.GetWorldLocation(), 2)))
                 {
                     return;
                 }
@@ -611,36 +611,32 @@ namespace Server.Items
                     return;
                 }
 
-                if (targeted is RepairDeed)
+                if (targeted is RepairDeed repairDeed)
                 {
-                    RepairDeed deed = (RepairDeed)targeted;
-
-                    if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.Charges >= 500))
+                    if (m_Addon.Tools.Any(x => x.Skill == repairDeed.RepairSkill && x.Charges >= 500))
                     {
                         from.SendLocalizedMessage(1158778); // This would exceed the maximum charges allowed on this magic item.
                         from.Target = new InternalTarget(from, m_Gump, m_Addon);
                     }
-                    else if (m_Addon.Tools.Any(x => x.Skill == deed.RepairSkill && x.Charges != 0 && x.SkillValue != deed.SkillLevel))
+                    else if (m_Addon.Tools.Any(x => x.Skill == repairDeed.RepairSkill && x.Charges != 0 && x.SkillValue != repairDeed.SkillLevel))
                     {
                         from.SendLocalizedMessage(1158866); // The repair bench contains deeds that do not match the skill of the deed you are trying to add.
                         from.Target = new InternalTarget(from, m_Gump, m_Addon);
                     }
                     else
                     {
-                        RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == deed.RepairSkill);
+                        RepairBenchDefinition tool = m_Addon.Tools.Find(x => x.Skill == repairDeed.RepairSkill);
 
-                        tool.SkillValue = deed.SkillLevel;
+                        tool.SkillValue = repairDeed.SkillLevel;
                         tool.Charges++;
 
-                        deed.Delete();
+                        repairDeed.Delete();
 
                         from.Target = new InternalTarget(from, m_Gump, m_Addon);
                     }
                 }
-                else if (targeted is Container)
+                else if (targeted is Container c)
                 {
-                    Container c = targeted as Container;
-
                     for (int i = c.Items.Count - 1; i >= 0; --i)
                     {
                         if (i < c.Items.Count && c.Items[i] is RepairDeed)

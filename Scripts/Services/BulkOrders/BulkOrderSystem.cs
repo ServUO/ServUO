@@ -75,10 +75,8 @@ namespace Server.Engines.BulkOrders
         {
             BODContext context = null;
 
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                PlayerMobile pm = m as PlayerMobile;
-
                 if (Instance.BODPlayerData.ContainsKey(pm))
                 {
                     context = Instance.BODPlayerData[pm];
@@ -181,7 +179,8 @@ namespace Server.Engines.BulkOrders
 
                         return true;
                     }
-                    else if (entry.CachedDeeds > 0)
+
+                    if (entry.CachedDeeds > 0)
                     {
                         entry.CachedDeeds--;
 
@@ -205,7 +204,8 @@ namespace Server.Engines.BulkOrders
 
                     return (last + TimeSpan.FromHours(Delay)) - DateTime.UtcNow;
                 }
-                else if (context.Entries.ContainsKey(type))
+
+                if (context.Entries.ContainsKey(type))
                 {
                     DateTime dt = context.Entries[type].NextBulkOrder;
 
@@ -450,9 +450,7 @@ namespace Server.Engines.BulkOrders
                 return false;
             }
 
-            if ((bod is SmallBOD && ((SmallBOD)bod).AmountCur > 0) ||
-                     (bod is LargeBOD && ((LargeBOD)bod).Entries != null &&
-                     ((LargeBOD)bod).Entries.FirstOrDefault(e => e.Amount > 0) != null))
+            if (bod is SmallBOD sb && sb.AmountCur > 0 || bod is LargeBOD lb && lb.Entries != null && lb.Entries.FirstOrDefault(e => e.Amount > 0) != null)
             {
                 vendor.SayTo(from, 1152299, 0x3B2); // I am sorry to say I cannot work with a deed that is even partially filled.
                 return false;
@@ -481,13 +479,13 @@ namespace Server.Engines.BulkOrders
         {
             Type t = null;
 
-            if (bod is SmallBOD)
+            if (bod is SmallBOD smallBod)
             {
-                t = ((SmallBOD)bod).Type;
+                t = smallBod.Type;
             }
-            else if (bod is LargeBOD && ((LargeBOD)bod).Entries != null && ((LargeBOD)bod).Entries.Length > 0)
+            else if (bod is LargeBOD largeBod && largeBod.Entries != null && largeBod.Entries.Length > 0)
             {
-                t = ((LargeBOD)bod).Entries[0].Details.Type;
+                t = largeBod.Entries[0].Details.Type;
             }
 
             return t;
@@ -630,9 +628,9 @@ namespace Server.Engines.BulkOrders
                 case 20: worth += 250; break;
             }
 
-            if (bod is LargeBOD && ((LargeBOD)bod).Entries != null)
+            if (bod is LargeBOD largeBod && largeBod.Entries != null)
             {
-                worth *= Math.Min(4, ((LargeBOD)bod).Entries.Length);
+                worth *= Math.Min(4, largeBod.Entries.Length);
             }
 
             return worth;
@@ -813,11 +811,8 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public int CachedDeeds
         {
-            get { return _CachedDeeds; }
-            set
-            {
-                _CachedDeeds = Math.Max(0, Math.Min(BulkOrderSystem.MaxCachedDeeds, value));
-            }
+            get => _CachedDeeds;
+            set => _CachedDeeds = Math.Max(0, Math.Min(BulkOrderSystem.MaxCachedDeeds, value));
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -834,14 +829,8 @@ namespace Server.Engines.BulkOrders
 
         public DateTime NextBulkOrder
         {
-            get
-            {
-                return _NextBulkOrder;
-            }
-            set
-            {
-                _NextBulkOrder = value;
-            }
+            get => _NextBulkOrder;
+            set => _NextBulkOrder = value;
         }
 
         public override string ToString()

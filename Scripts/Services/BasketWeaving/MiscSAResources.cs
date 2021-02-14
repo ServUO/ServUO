@@ -9,7 +9,7 @@ namespace Server.Items
         private PlantHue m_PlantHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PlantHue PlantHue { get { return m_PlantHue; } set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
+        public PlantHue PlantHue { get => m_PlantHue; set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
 
         public override int LabelNumber => 1112248;  //dry reeds
 
@@ -60,13 +60,15 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+            return dropped is IPlantHue hue && hue.PlantHue == m_PlantHue && base.WillStack(from, dropped);
         }
 
         public override void OnAfterDuped(Item newItem)
         {
-            if (newItem is IPlantHue)
-                ((IPlantHue)newItem).PlantHue = PlantHue;
+            if (newItem is IPlantHue hue)
+            {
+                hue.PlantHue = PlantHue;
+            }
 
             base.OnAfterDuped(newItem);
         }
@@ -99,7 +101,7 @@ namespace Server.Items
         private PlantHue m_PlantHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public PlantHue PlantHue { get { return m_PlantHue; } set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
+        public PlantHue PlantHue { get => m_PlantHue; set { m_PlantHue = value; InvalidatePlantHue(); InvalidateProperties(); } }
 
         public override int LabelNumber => 1112249;  //Softened reeds
 
@@ -158,13 +160,15 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is IPlantHue && ((IPlantHue)dropped).PlantHue == m_PlantHue && base.WillStack(from, dropped);
+            return dropped is IPlantHue hue && hue.PlantHue == m_PlantHue && base.WillStack(from, dropped);
         }
 
         public override void OnAfterDuped(Item newItem)
         {
-            if (newItem is IPlantHue)
-                ((IPlantHue)newItem).PlantHue = PlantHue;
+            if (newItem is IPlantHue hue)
+            {
+                hue.PlantHue = PlantHue;
+            }
 
             base.OnAfterDuped(newItem);
         }
@@ -211,15 +215,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

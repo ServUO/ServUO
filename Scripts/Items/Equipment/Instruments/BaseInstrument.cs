@@ -22,36 +22,21 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SuccessSound
         {
-            get
-            {
-                return m_WellSound;
-            }
-            set
-            {
-                m_WellSound = value;
-            }
+            get => m_WellSound;
+            set => m_WellSound = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int FailureSound
         {
-            get
-            {
-                return m_BadlySound;
-            }
-            set
-            {
-                m_BadlySound = value;
-            }
+            get => m_BadlySound;
+            set => m_BadlySound = value;
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public SlayerName Slayer
         {
-            get
-            {
-                return m_Slayer;
-            }
+            get => m_Slayer;
             set
             {
                 m_Slayer = value;
@@ -62,10 +47,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SlayerName Slayer2
         {
-            get
-            {
-                return m_Slayer2;
-            }
+            get => m_Slayer2;
             set
             {
                 m_Slayer2 = value;
@@ -76,10 +58,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get
-            {
-                return m_Quality;
-            }
+            get => m_Quality;
             set
             {
                 UnscaleUses();
@@ -95,10 +74,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get
-            {
-                return m_Crafter;
-            }
+            get => m_Crafter;
             set
             {
                 m_Crafter = value;
@@ -109,7 +85,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
         {
-            get { return m_Resource; }
+            get => m_Resource;
             set
             {
                 m_Resource = value;
@@ -143,10 +119,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime LastReplenished
         {
-            get
-            {
-                return m_LastReplenished;
-            }
+            get => m_LastReplenished;
             set
             {
                 m_LastReplenished = value;
@@ -158,10 +131,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ReplenishesCharges
         {
-            get
-            {
-                return m_ReplenishesCharges;
-            }
+            get => m_ReplenishesCharges;
             set
             {
                 if (value != m_ReplenishesCharges && value)
@@ -223,13 +193,12 @@ namespace Server.Items
 
         public void ScaleUses()
         {
-            UsesRemaining = (UsesRemaining * GetUsesScalar()) / 100;
-            //InvalidateProperties();
+            UsesRemaining = UsesRemaining * GetUsesScalar() / 100;
         }
 
         public void UnscaleUses()
         {
-            UsesRemaining = (UsesRemaining * 100) / GetUsesScalar();
+            UsesRemaining = UsesRemaining * 100 / GetUsesScalar();
         }
 
         public int GetUsesScalar()
@@ -316,7 +285,7 @@ namespace Server.Items
 
         public static bool IsMageryCreature(BaseCreature bc)
         {
-            return (bc != null && bc.AI == AIType.AI_Mage && bc.Skills[SkillName.Magery].Base > 5.0);
+            return bc != null && bc.AI == AIType.AI_Mage && bc.Skills[SkillName.Magery].Base > 5.0;
         }
 
         public static bool IsFireBreathingCreature(BaseCreature bc)
@@ -336,7 +305,7 @@ namespace Server.Items
 
         public static bool IsPoisonImmune(BaseCreature bc)
         {
-            return (bc != null && bc.PoisonImmune != null);
+            return bc != null && bc.PoisonImmune != null;
         }
 
         public static int GetPoisonLevel(BaseCreature bc)
@@ -358,7 +327,7 @@ namespace Server.Items
             - Radiation or Aura Damage (Heat, Cold etc.)
             - Summoning Undead
             */
-            double val = (targ.HitsMax * 1.6) + targ.StamMax + targ.ManaMax;
+            double val = targ.HitsMax * 1.6 + targ.StamMax + targ.ManaMax;
 
             val += targ.SkillsTotal / 10;
 
@@ -522,7 +491,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(4); // version
 
             writer.Write((int)m_Resource);
@@ -532,13 +500,10 @@ namespace Server.Items
                 writer.Write(m_LastReplenished);
 
             writer.Write(m_Crafter);
-
             writer.WriteEncodedInt((int)m_Quality);
             writer.WriteEncodedInt((int)m_Slayer);
             writer.WriteEncodedInt((int)m_Slayer2);
-
             writer.WriteEncodedInt(UsesRemaining);
-
             writer.WriteEncodedInt(m_WellSound);
             writer.WriteEncodedInt(m_BadlySound);
         }
@@ -546,63 +511,21 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
+            m_Resource = (CraftResource)reader.ReadInt();
 
-            switch (version)
-            {
-                case 4:
-                    {
-                        m_Resource = (CraftResource)reader.ReadInt();
-                        goto case 3;
-                    }
-                case 3:
-                    {
-                        m_ReplenishesCharges = reader.ReadBool();
+            m_ReplenishesCharges = reader.ReadBool();
+            if (m_ReplenishesCharges)
+                m_LastReplenished = reader.ReadDateTime();
 
-                        if (m_ReplenishesCharges)
-                            m_LastReplenished = reader.ReadDateTime();
-
-                        goto case 2;
-                    }
-                case 2:
-                    {
-                        m_Crafter = reader.ReadMobile();
-
-                        m_Quality = (ItemQuality)reader.ReadEncodedInt();
-                        m_Slayer = (SlayerName)reader.ReadEncodedInt();
-                        m_Slayer2 = (SlayerName)reader.ReadEncodedInt();
-
-                        UsesRemaining = reader.ReadEncodedInt();
-
-                        m_WellSound = reader.ReadEncodedInt();
-                        m_BadlySound = reader.ReadEncodedInt();
-
-                        break;
-                    }
-                case 1:
-                    {
-                        m_Crafter = reader.ReadMobile();
-
-                        m_Quality = (ItemQuality)reader.ReadEncodedInt();
-                        m_Slayer = (SlayerName)reader.ReadEncodedInt();
-
-                        UsesRemaining = reader.ReadEncodedInt();
-
-                        m_WellSound = reader.ReadEncodedInt();
-                        m_BadlySound = reader.ReadEncodedInt();
-
-                        break;
-                    }
-                case 0:
-                    {
-                        m_WellSound = reader.ReadInt();
-                        m_BadlySound = reader.ReadInt();
-                        UsesRemaining = Utility.RandomMinMax(InitMinUses, InitMaxUses);
-
-                        break;
-                    }
-            }
+            m_Crafter = reader.ReadMobile();
+            m_Quality = (ItemQuality)reader.ReadEncodedInt();
+            m_Slayer = (SlayerName)reader.ReadEncodedInt();
+            m_Slayer2 = (SlayerName)reader.ReadEncodedInt();
+            UsesRemaining = reader.ReadEncodedInt();
+            m_WellSound = reader.ReadEncodedInt();
+            m_BadlySound = reader.ReadEncodedInt();
 
             CheckReplenishUses();
         }
@@ -637,7 +560,7 @@ namespace Server.Items
         {
             m.CheckSkill(SkillName.Musicianship, 0.0, 120.0);
 
-            return ((m.Skills[SkillName.Musicianship].Value / 100) > Utility.RandomDouble());
+            return m.Skills[SkillName.Musicianship].Value / 100 > Utility.RandomDouble();
         }
 
         public virtual void PlayInstrumentWell(Mobile from)

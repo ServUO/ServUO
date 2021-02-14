@@ -67,8 +67,8 @@ namespace Server.Mobiles
             if (mount != null)
                 mount.Rider = null;
 
-            if (mount is Mobile)
-                ((Mobile)mount).Delete();
+            if (mount is Mobile mobile)
+                mobile.Delete();
 
             return base.OnBeforeDeath();
         }
@@ -94,8 +94,8 @@ namespace Server.Mobiles
                 aggressor.PlaySound(0x307);
                 aggressor.SendLocalizedMessage(1040008); // Your skin is scorched as the tribal paint burns away!
 
-                if (aggressor is PlayerMobile)
-                    ((PlayerMobile)aggressor).SavagePaintExpiration = TimeSpan.Zero;
+                if (aggressor is PlayerMobile mobile)
+                    mobile.SavagePaintExpiration = TimeSpan.Zero;
             }
         }
 
@@ -114,7 +114,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

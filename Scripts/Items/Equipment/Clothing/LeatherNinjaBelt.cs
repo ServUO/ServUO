@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Server.Items
 {
     [Flipable(0x2790, 0x27DB)]
-    public class LeatherNinjaBelt : BaseWaist, IDyable, INinjaWeapon
+    public class LeatherNinjaBelt : BaseWaist, INinjaWeapon
     {
         private int m_UsesRemaining;
         private Poison m_Poison;
@@ -38,10 +38,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get
-            {
-                return m_UsesRemaining;
-            }
+            get => m_UsesRemaining;
             set
             {
                 m_UsesRemaining = value;
@@ -51,10 +48,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Poison Poison
         {
-            get
-            {
-                return m_Poison;
-            }
+            get => m_Poison;
             set
             {
                 m_Poison = value;
@@ -64,10 +58,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int PoisonCharges
         {
-            get
-            {
-                return m_PoisonCharges;
-            }
+            get => m_PoisonCharges;
             set
             {
                 m_PoisonCharges = value;
@@ -76,10 +67,7 @@ namespace Server.Items
         }
         public bool ShowUsesRemaining
         {
-            get
-            {
-                return true;
-            }
+            get => true;
             set
             {
             }

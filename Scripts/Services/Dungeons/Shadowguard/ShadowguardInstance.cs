@@ -10,18 +10,18 @@ namespace Server.Engines.Shadowguard
     public class ShadowguardInstance
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D Center { get; private set; }
+        public Point3D Center { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowguardEncounter Encounter { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Index { get; set; }
+        public int Index { get; }
 
-        public ShadowguardRegion Region { get; set; }
+        public ShadowguardRegion Region { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ShadowguardController Controller { get; set; }
+        public ShadowguardController Controller { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool InUse => Encounter != null;
@@ -104,18 +104,22 @@ namespace Server.Engines.Shadowguard
                     else
                         corpse.Delete();
                 }
-                else if (item is BaseAddon)
+                else if (item is BaseAddon addon)
                 {
-                    ((BaseAddon)item).Internalize();
+                    addon.Internalize();
                 }
                 else if (item.Movable || IsInDeleteList(item))
+                {
                     item.Delete();
+                }
             }
 
             foreach (Mobile m in Region.GetEnumeratedMobiles())
             {
-                if (m is BaseCreature && !(((BaseCreature)m).GetMaster() is PlayerMobile))
-                    m.Delete();
+                if (m is BaseCreature creature && !(creature.GetMaster() is PlayerMobile))
+                {
+                    creature.Delete();
+                }
             }
         }
 

@@ -9,7 +9,7 @@ namespace Server.Items
         public City City { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CityLoyaltySystem CitySystem { get { return CityLoyaltySystem.GetCityInstance(City); } set { } }
+        public CityLoyaltySystem CitySystem { get => CityLoyaltySystem.GetCityInstance(City); set { } }
 
         public override int LabelNumber => 1152262;  // a box of ropes
 
@@ -90,7 +90,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             City = (City)reader.ReadInt();
 

@@ -82,7 +82,8 @@ namespace Server.Regions
                     continue;
 
                 Item item = pm.Backpack.FindItemByType(typeof(CorgulIslandMap));
-                if (item != null && item is CorgulIslandMap && Contains(((CorgulIslandMap)item).DestinationPoint))
+
+                if (item is CorgulIslandMap islandMap && Contains(islandMap.DestinationPoint))
                 {
                     hasMap = true;
                     break;
@@ -143,7 +144,7 @@ namespace Server.Regions
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }

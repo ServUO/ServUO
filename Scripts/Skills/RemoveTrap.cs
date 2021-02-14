@@ -43,28 +43,24 @@ namespace Server.SkillHandlers
                 {
                     from.SendLocalizedMessage(502816); // You feel that such an action would be inappropriate
                 }
-                else if (targeted is IRemoveTrapTrainingKit)
+                else if (targeted is IRemoveTrapTrainingKit trainingKit)
                 {
-                    ((IRemoveTrapTrainingKit)targeted).OnRemoveTrap(from);
+                    trainingKit.OnRemoveTrap(from);
                 }
-                else if (targeted is LockableContainer && ((LockableContainer)targeted).Locked)
+                else if (targeted is LockableContainer container && container.Locked)
                 {
                     from.SendLocalizedMessage(501283); // That is locked.
                 }
-                else if (targeted is TrapableContainer)
+                else if (targeted is TrapableContainer trapContainer)
                 {
-                    TrapableContainer targ = (TrapableContainer)targeted;
+                    from.Direction = from.GetDirectionTo(trapContainer);
 
-                    from.Direction = from.GetDirectionTo(targ);
-
-                    if (targ.TrapType == TrapType.None)
+                    if (trapContainer.TrapType == TrapType.None)
                     {
                         from.SendLocalizedMessage(502373); // That doesn't appear to be trapped
                     }
-                    else if (targ is TreasureMapChest && TreasureMapInfo.NewSystem)
+                    else if (trapContainer is TreasureMapChest tChest && TreasureMapInfo.NewSystem)
                     {
-                        TreasureMapChest tChest = (TreasureMapChest)targ;
-
                         if (tChest.Owner != from)
                         {
                             from.SendLocalizedMessage(1159010); // That is not your chest!
@@ -94,12 +90,12 @@ namespace Server.SkillHandlers
                     {
                         from.PlaySound(0x241);
 
-                        if (from.CheckTargetSkill(SkillName.RemoveTrap, targ, targ.TrapPower - 10, targ.TrapPower + 10))
+                        if (from.CheckTargetSkill(SkillName.RemoveTrap, trapContainer, trapContainer.TrapPower - 10, trapContainer.TrapPower + 10))
                         {
-                            targ.TrapPower = 0;
-                            targ.TrapLevel = 0;
-                            targ.TrapType = TrapType.None;
-                            targ.InvalidateProperties();
+                            trapContainer.TrapPower = 0;
+                            trapContainer.TrapLevel = 0;
+                            trapContainer.TrapType = TrapType.None;
+                            trapContainer.InvalidateProperties();
                             from.SendLocalizedMessage(502377); // You successfully render the trap harmless
                         }
                         else
@@ -108,17 +104,15 @@ namespace Server.SkillHandlers
                         }
                     }
                 }
-                else if (targeted is VvVTrap)
+                else if (targeted is VvVTrap trap)
                 {
-                    VvVTrap trap = targeted as VvVTrap;
-
                     if (!ViceVsVirtueSystem.IsVvV(from))
                     {
                         from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
                     }
                     else
                     {
-                        if (from == trap.Owner || ((from.Skills[SkillName.RemoveTrap].Value - 80.0) / 20.0) > Utility.RandomDouble())
+                        if (from == trap.Owner || (from.Skills[SkillName.RemoveTrap].Value - 80.0) / 20.0 > Utility.RandomDouble())
                         {
                             VvVTrapKit kit = new VvVTrapKit(trap.TrapType);
                             trap.Delete();
@@ -146,15 +140,13 @@ namespace Server.SkillHandlers
                         }
                     }
                 }
-                else if (targeted is GoblinFloorTrap)
+                else if (targeted is GoblinFloorTrap floorTrap)
                 {
-                    GoblinFloorTrap targ = (GoblinFloorTrap)targeted;
-
-                    if (from.InRange(targ.Location, 3))
+                    if (from.InRange(floorTrap.Location, 3))
                     {
-                        from.Direction = from.GetDirectionTo(targ);
+                        from.Direction = from.GetDirectionTo(floorTrap);
 
-                        if (targ.Owner == null)
+                        if (floorTrap.Owner == null)
                         {
                             Item item = new FloorTrapComponent();
 
@@ -162,13 +154,13 @@ namespace Server.SkillHandlers
                                 item.MoveToWorld(from.Location, from.Map);
                         }
 
-                        targ.Delete();
+                        floorTrap.Delete();
                         from.SendLocalizedMessage(502377); // You successfully render the trap harmless
                     }
                 }
                 else
                 {
-                    from.SendLocalizedMessage(502373); // That does'nt appear to be trapped
+                    from.SendLocalizedMessage(502373); // That doesn't appear to be trapped
                 }
             }
 
@@ -242,13 +234,13 @@ namespace Server.SkillHandlers
 
     public class RemoveTrapTimer : Timer
     {
-        public Mobile From { get; set; }
-        public TreasureMapChest Chest { get; set; }
+        public Mobile From { get; }
+        public TreasureMapChest Chest { get; }
 
-        public DateTime SafetyEndTime { get; set; } // Used for 100 Remove Trap
+        public DateTime SafetyEndTime { get; } // Used for 100 Remove Trap
         public int Stage { get; set; } // Used for 99.9- Remove Trap
 
-        public bool GMRemover { get; set; }
+        public bool GMRemover { get; }
 
         public RemoveTrapTimer(Mobile from, TreasureMapChest chest, bool gmRemover)
             : base(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(10))
@@ -303,7 +295,7 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
-                    if (From.CheckTargetSkill(SkillName.RemoveTrap, Chest, 80, 120 + (Chest.Level * 10)))
+                    if (From.CheckTargetSkill(SkillName.RemoveTrap, Chest, 80, 120 + Chest.Level * 10))
                     {
                         DisarmTrap();
                     }

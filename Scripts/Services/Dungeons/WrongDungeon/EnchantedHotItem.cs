@@ -117,9 +117,9 @@ namespace Server.Items
                 {
                     item = Loot.RandomArmorOrShieldOrWeaponOrJewelry(false, false, true);
 
-                    if (item is BaseWeapon && 0.01 > Utility.RandomDouble())
+                    if (item is BaseWeapon weapon && 0.01 > Utility.RandomDouble())
                     {
-                        ((BaseWeapon)item).ExtendedWeaponAttributes.AssassinHoned = 1;
+                        weapon.ExtendedWeaponAttributes.AssassinHoned = 1;
                     }
 
                     int min = 400;
@@ -159,15 +159,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version 
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (!Locked)
             {

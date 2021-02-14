@@ -49,7 +49,7 @@ namespace Server.Network
 
 			public int Write(byte[] buffer, int offset, int length)
 			{
-				var write = Math.Min(length, Available);
+				int write = Math.Min(length, Available);
 
 				System.Buffer.BlockCopy(buffer, offset, _buffer, _length, write);
 
@@ -81,7 +81,7 @@ namespace Server.Network
 					return;
 				}
 
-				var old = m_UnusedBuffers;
+				BufferPool old = m_UnusedBuffers;
 
 				lock (old)
 				{
@@ -128,7 +128,7 @@ namespace Server.Network
 
 		public Gram CheckFlushReady()
 		{
-			var gram = _buffered;
+			Gram gram = _buffered;
 			_pending.Enqueue(_buffered);
 			_buffered = null;
 			return gram;
@@ -164,22 +164,25 @@ namespace Server.Network
 			{
 				throw new ArgumentNullException("buffer");
 			}
-			else if (!(offset >= 0 && offset < buffer.Length))
-			{
-				throw new ArgumentOutOfRangeException(
-					"offset", offset, "Offset must be greater than or equal to zero and less than the size of the buffer.");
-			}
-			else if (length < 0 || length > buffer.Length)
-			{
-				throw new ArgumentOutOfRangeException(
-					"length", length, "Length cannot be less than zero or greater than the size of the buffer.");
-			}
-			else if ((buffer.Length - offset) < length)
-			{
-				throw new ArgumentException("Offset and length do not point to a valid segment within the buffer.");
-			}
 
-			var existingBytes = (_pending.Count * m_CoalesceBufferSize) + (_buffered == null ? 0 : _buffered.Length);
+            if (!(offset >= 0 && offset < buffer.Length))
+            {
+                throw new ArgumentOutOfRangeException(
+                    "offset", offset, "Offset must be greater than or equal to zero and less than the size of the buffer.");
+            }
+
+            if (length < 0 || length > buffer.Length)
+            {
+                throw new ArgumentOutOfRangeException(
+                    "length", length, "Length cannot be less than zero or greater than the size of the buffer.");
+            }
+
+            if ((buffer.Length - offset) < length)
+            {
+                throw new ArgumentException("Offset and length do not point to a valid segment within the buffer.");
+            }
+
+            int existingBytes = (_pending.Count * m_CoalesceBufferSize) + (_buffered == null ? 0 : _buffered.Length);
 
 			if ((existingBytes + length) > PendingCap)
 			{
@@ -196,7 +199,7 @@ namespace Server.Network
 					_buffered = Gram.Acquire();
 				}
 
-				var bytesWritten = _buffered.Write(buffer, offset, length);
+				int bytesWritten = _buffered.Write(buffer, offset, length);
 
 				offset += bytesWritten;
 				length -= bytesWritten;

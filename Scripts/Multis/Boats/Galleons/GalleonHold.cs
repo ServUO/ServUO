@@ -16,13 +16,21 @@ namespace Server.Items
             get
             {
                 if (Galleon is BritannianShip)
+                {
                     return 28000;
-                else if (Galleon is GargishGalleon)
+                }
+
+                if (Galleon is GargishGalleon)
+                {
                     return 12000;
-                else if (Galleon is OrcishGalleon)
+                }
+
+                if (Galleon is OrcishGalleon)
+                {
                     return 14000;
-                else
-                    return 16000;
+                }
+
+                return 16000;
             }
         }
 

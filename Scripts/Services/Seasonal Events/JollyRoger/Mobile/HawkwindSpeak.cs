@@ -12,7 +12,6 @@ namespace Server.Engines.JollyRoger
 
         [Constructable]
         public HawkwindSpeak()
-            : base()
         {
             Name = "Hawkwind";
 
@@ -115,7 +114,7 @@ namespace Server.Engines.JollyRoger
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Instance = this;
         }

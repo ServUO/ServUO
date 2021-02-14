@@ -19,7 +19,7 @@ namespace Server.Items
         Munitions = 1157,
         Granite = 2498,
         Reagents = 1156,
-        Glassware = 1158,
+        Glassware = 1158
     }
 
     [Flipable(0xA2C4, 0xA2C5)]
@@ -32,7 +32,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CargoQuality CargoQuality
         {
-            get { return _CargoQuality; }
+            get => _CargoQuality;
             set
             {
                 _CargoQuality = value;
@@ -49,7 +49,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public CargoType CargoType
         {
-            get { return _CargoType; }
+            get => _CargoType;
             set
             {
                 _CargoType = value;
@@ -64,7 +64,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public City City { get { return _City; } set { _City = value; InvalidateProperties(); } }
+        public City City { get => _City; set { _City = value; InvalidateProperties(); } }
 
         [Constructable]
         public MaritimeCargo()
@@ -186,7 +186,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _CargoQuality = (CargoQuality)reader.ReadInt();
             _CargoType = (CargoType)reader.ReadInt();

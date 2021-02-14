@@ -18,7 +18,7 @@ namespace Server.Items
         {
             if (!from.HasGump(typeof(CalculationsGump)))
             {
-                from.SendGump(new CalculationsGump(from));
+                from.SendGump(new CalculationsGump());
             }
         }
 
@@ -36,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -49,10 +49,10 @@ namespace Server.Items
 
         private static void CalculationsGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new CalculationsGump(e.Mobile));
+            e.Mobile.SendGump(new CalculationsGump());
         }
 
-        public CalculationsGump(Mobile owner) : base(50, 50)
+        public CalculationsGump() : base(50, 50)
         {
             Closable = true;
             Disposable = true;
@@ -67,8 +67,6 @@ namespace Server.Items
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

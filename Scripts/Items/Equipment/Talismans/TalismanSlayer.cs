@@ -24,7 +24,7 @@ namespace Server.Items
         Demon,
         Arachnid,
         Reptile,
-        Fey,
+        Fey
     }
 
     public static class TalismanSlayer
@@ -32,7 +32,7 @@ namespace Server.Items
         private static readonly Dictionary<TalismanSlayerName, Type[]> m_Table = new Dictionary<TalismanSlayerName, Type[]>();
         public static void Initialize()
         {
-            m_Table[TalismanSlayerName.Bear] = new Type[]
+            m_Table[TalismanSlayerName.Bear] = new[]
                 {
                     typeof(GrizzlyBear),        typeof(BlackBear),
                     typeof(BrownBear),          typeof(PolarBear),
@@ -40,7 +40,7 @@ namespace Server.Items
                     typeof(RagingGrizzlyBear)
                 };
 
-            m_Table[TalismanSlayerName.Vermin] = new Type[]
+            m_Table[TalismanSlayerName.Vermin] = new[]
                 {
                     typeof(RatmanMage),     typeof(RatmanMage),
                     typeof(RatmanArcher),   typeof(Barracoon),
@@ -54,13 +54,13 @@ namespace Server.Items
                     typeof(TikitaviRenowned)
                 };
 
-            m_Table[TalismanSlayerName.Bat] = new Type[]
+            m_Table[TalismanSlayerName.Bat] = new[]
                 {
                     typeof(Mongbat),    typeof(StrongMongbat),
                     typeof(VampireBat)
                 };
 
-            m_Table[TalismanSlayerName.Mage] = new Type[]
+            m_Table[TalismanSlayerName.Mage] = new[]
                 {
                     typeof(EvilMage),           typeof(EvilMageLord),
                     typeof(AncientLich),        typeof(Lich),
@@ -71,14 +71,14 @@ namespace Server.Items
                     typeof(GrayGoblinMage),     typeof(MeerMage)
                 };
 
-            m_Table[TalismanSlayerName.Beetle] = new Type[]
+            m_Table[TalismanSlayerName.Beetle] = new[]
                 {
                     typeof(Beetle),                     typeof(RuneBeetle),
                     typeof(FireBeetle),                 typeof(DeathwatchBeetle),
                     typeof(DeathwatchBeetleHatchling),  typeof(IronBeetle)
                 };
 
-            m_Table[TalismanSlayerName.Bird] = new Type[]
+            m_Table[TalismanSlayerName.Bird] = new[]
                 {
                     typeof(Bird),           typeof(TropicalBird),
                     typeof(Chicken),        typeof(Crane),
@@ -88,7 +88,7 @@ namespace Server.Items
                     typeof(Swoop),          typeof(Saliva)
                 };
 
-            m_Table[TalismanSlayerName.Ice] = new Type[]
+            m_Table[TalismanSlayerName.Ice] = new[]
                 {
                     typeof(ArcticOgreLord),     typeof(IceElemental),
                     typeof(SnowElemental),      typeof(FrostOoze),
@@ -100,7 +100,7 @@ namespace Server.Items
                     typeof(IceHound),           typeof(Wight)
                 };
 
-            m_Table[TalismanSlayerName.Flame] = new Type[]
+            m_Table[TalismanSlayerName.Flame] = new[]
                 {
                     typeof(FireBeetle),         typeof(HellHound),
                     typeof(LavaSerpent),        typeof(FireElemental),
@@ -111,7 +111,7 @@ namespace Server.Items
                     typeof(FireRabbit)
                 };
 
-            m_Table[TalismanSlayerName.Bovine] = new Type[]
+            m_Table[TalismanSlayerName.Bovine] = new[]
                 {
                     typeof(Cow),                typeof(Bull),
                     typeof(Gaman),              typeof(MinotaurCaptain),
@@ -121,7 +121,7 @@ namespace Server.Items
                     typeof(Meraktus)
                 };
 
-            m_Table[TalismanSlayerName.Wolf] = new Type[]
+            m_Table[TalismanSlayerName.Wolf] = new[]
                 {
                     typeof(CuSidhe),        typeof(Gnaw),
                     typeof(TimberWolf),     typeof(DireWolf),
@@ -132,7 +132,7 @@ namespace Server.Items
                     typeof(CuSidhe)
                 };
 
-            m_Table[TalismanSlayerName.Goblin] = new Type[]
+            m_Table[TalismanSlayerName.Goblin] = new[]
                 {
                     typeof(EnslavedGoblinScout),    typeof(EnslavedGoblinKeeper),
                     typeof(EnslavedGreenGoblin),    typeof(EnslavedGreenGoblinAlchemist),
@@ -159,9 +159,11 @@ namespace Server.Items
             if (m.SpecialSlayerMechanics)
             {
                 if (m.SlayerVulnerabilities.Contains(name.ToString()))
+                {
                     return true;
-                else
-                    return false;
+                }
+
+                return false;
 
             }
 

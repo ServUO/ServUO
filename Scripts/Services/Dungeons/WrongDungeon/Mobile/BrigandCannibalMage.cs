@@ -7,7 +7,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public BrigandCannibalMage()
-            : base()
         {
             Title = "the brigand cannibal mage";
 
@@ -60,7 +59,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

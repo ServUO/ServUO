@@ -114,7 +114,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
 
             writer.Write(Addon);
@@ -126,8 +125,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Addon = reader.ReadItem() as MacawNest;
 
@@ -142,8 +140,10 @@ namespace Server.Items
                 {
                     Spawn.Add(bc);
 
-                    if (bc is Macaw)
-                        ((Macaw)bc).MacawSpawner = this;
+                    if (bc is Macaw macaw)
+                    {
+                        macaw.MacawSpawner = this;
+                    }
                 }
             }
 
@@ -184,7 +184,7 @@ namespace Server.Items
             new Point3D(472, 1871, 55),
             new Point3D(495, 1869, 65),
             new Point3D(490, 1871, 55),
-            new Point3D(478, 1865, 85),
+            new Point3D(478, 1865, 85)
         };
     }
 
@@ -222,15 +222,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

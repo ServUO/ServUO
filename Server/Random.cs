@@ -42,9 +42,9 @@ namespace Server
 				_Random = new CSPRandom();
 			}
 
-			if (_Random is IHardwareRNG)
+			if (_Random is IHardwareRNG rng)
 			{
-				if (!((IHardwareRNG)_Random).IsSupported())
+				if (!rng.IsSupported())
 				{
 					_Random = new CSPRandom();
 				}
@@ -156,7 +156,7 @@ namespace Server
 
 				lock (_syncB)
 				{
-					var b = _Working;
+					byte[] b = _Working;
 					_Working = _Buffer;
 					_Buffer = b;
 					_Index = 0;
@@ -174,7 +174,7 @@ namespace Server
 
 		private void _GetBytes(byte[] b)
 		{
-			var c = b.Length;
+			int c = b.Length;
 
 			CheckSwap(c);
 
@@ -216,7 +216,7 @@ namespace Server
 
 		public void NextBytes(byte[] b)
 		{
-			var c = b.Length;
+			int c = b.Length;
 
 			if (c >= LARGE_REQUEST)
 			{
@@ -229,7 +229,7 @@ namespace Server
 
 		public unsafe double NextDouble()
 		{
-			var b = new byte[8];
+			byte[] b = new byte[8];
 
 			if (BitConverter.IsLittleEndian)
 			{
@@ -262,10 +262,10 @@ namespace Server
 		internal class SafeNativeMethods
 		{
 			[DllImport("drng32")]
-			static internal extern RDRandError rdrand_32(ref uint rand, bool retry);
+			internal static extern RDRandError rdrand_32(ref uint rand, bool retry);
 
 			[DllImport("drng32")]
-			static internal extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
+			internal static extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
 		}
 
 		private static readonly int BUFFER_SIZE = 0x10000;
@@ -302,7 +302,7 @@ namespace Server
 
 				lock (_syncB)
 				{
-					var b = _Working;
+					byte[] b = _Working;
 					_Working = _Buffer;
 					_Buffer = b;
 					_Index = 0;
@@ -319,7 +319,7 @@ namespace Server
 
 		private void _GetBytes(byte[] b)
 		{
-			var c = b.Length;
+			int c = b.Length;
 
 			CheckSwap(c);
 
@@ -361,7 +361,7 @@ namespace Server
 
 		public void NextBytes(byte[] b)
 		{
-			var c = b.Length;
+			int c = b.Length;
 
 			if (c >= LARGE_REQUEST)
 			{
@@ -373,7 +373,7 @@ namespace Server
 
 		public unsafe double NextDouble()
 		{
-			var b = new byte[8];
+			byte[] b = new byte[8];
 
 			if (BitConverter.IsLittleEndian)
 			{
@@ -406,10 +406,10 @@ namespace Server
 		internal class SafeNativeMethods
 		{
 			[DllImport("drng64")]
-			static internal extern RDRandError rdrand_64(ref ulong rand, bool retry);
+			internal static extern RDRandError rdrand_64(ref ulong rand, bool retry);
 
 			[DllImport("drng64")]
-			static internal extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
+			internal static extern RDRandError rdrand_get_bytes(int n, byte[] buffer);
 		}
 
 		private static readonly int BUFFER_SIZE = 0x10000;
@@ -446,7 +446,7 @@ namespace Server
 
 				lock (_syncB)
 				{
-					var b = _Working;
+					byte[] b = _Working;
 					_Working = _Buffer;
 					_Buffer = b;
 					_Index = 0;
@@ -463,7 +463,7 @@ namespace Server
 
 		private void _GetBytes(byte[] b)
 		{
-			var c = b.Length;
+			int c = b.Length;
 
 			CheckSwap(c);
 
@@ -505,7 +505,7 @@ namespace Server
 
 		public void NextBytes(byte[] b)
 		{
-			var c = b.Length;
+			int c = b.Length;
 
 			if (c >= LARGE_REQUEST)
 			{
@@ -517,7 +517,7 @@ namespace Server
 
 		public unsafe double NextDouble()
 		{
-			var b = new byte[8];
+			byte[] b = new byte[8];
 
 			if (BitConverter.IsLittleEndian)
 			{

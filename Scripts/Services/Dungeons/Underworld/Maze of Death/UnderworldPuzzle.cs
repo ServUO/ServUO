@@ -70,11 +70,9 @@ namespace Server.Items
                 Delete();
                 return true;
             }
-            else
-            {
-                PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1150177, m.NetState); // Incorrect Code Sequence. Access Denied.
-                return false;
-            }
+
+            PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1150177, m.NetState); // Incorrect Code Sequence. Access Denied.
+            return false;
         }
 
         private readonly Type[] m_Rewards =
@@ -83,7 +81,7 @@ namespace Server.Items
             typeof(ToxicVenomSac),      typeof(MouldingBoard),      typeof(DoughBowl),
             typeof(HornedTotemPole),    typeof(LargeSquarePillow),  typeof(LargeDiamondPillow),
             typeof(DustyPillow),        typeof(StatuePedestal),		typeof(FlouredBreadBoard),
-            typeof(LuckyCoin),
+            typeof(LuckyCoin)
         };
 
         public override void OnDelete()
@@ -108,7 +106,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }
@@ -146,10 +144,10 @@ namespace Server.Items
         public int Index { get; private set; }
         public int MaxAttempts { get; private set; }
 
-        public PuzzlePiece First { get { return Rows[0]; } set { Rows[0] = value; } }
-        public PuzzlePiece Second { get { return Rows[1]; } set { Rows[1] = value; } }
-        public PuzzlePiece Third { get { return Rows[2]; } set { Rows[2] = value; } }
-        public PuzzlePiece Fourth { get { return Rows[3]; } set { Rows[3] = value; } }
+        public PuzzlePiece First { get => Rows[0]; set => Rows[0] = value; }
+        public PuzzlePiece Second { get => Rows[1]; set => Rows[1] = value; }
+        public PuzzlePiece Third { get => Rows[2]; set => Rows[2] = value; }
+        public PuzzlePiece Fourth { get => Rows[3]; set => Rows[3] = value; }
 
         public UnderworldPuzzleSolution()
         {
@@ -648,7 +646,7 @@ namespace Server.Items
 
             if (movingToPiece == PuzzlePiece.None)
             {
-                if ((movingAmount == 2 || movingAmount == 4))
+                if (movingAmount == 2 || movingAmount == 4)
                 {
                     switch (movingPiece)
                     {
@@ -704,7 +702,7 @@ namespace Server.Items
 
             if (movingToPiece == PuzzlePiece.None)
             {
-                if ((movingAmount == 2 || movingAmount == 4))
+                if (movingAmount == 2 || movingAmount == 4)
                 {
                     switch (movingPiece)
                     {

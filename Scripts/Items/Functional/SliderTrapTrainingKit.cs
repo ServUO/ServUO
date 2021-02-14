@@ -25,7 +25,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Test
         {
-            get { return false; }
+            get => false;
             set
             {
                 if (value)
@@ -38,7 +38,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Style
         {
-            get { return _Style; }
+            get => _Style;
             set
             {
                 if (_Style != value)
@@ -131,9 +131,9 @@ namespace Server.Items
 
         public void OnRemoveTrap(Mobile from)
         {
-            if (from is PlayerMobile)
+            if (from is PlayerMobile mobile)
             {
-                BaseGump.SendGump(new SliderTrapGump((PlayerMobile)from, this));
+                BaseGump.SendGump(new SliderTrapGump(mobile, this));
             }
         }
 
@@ -178,7 +178,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(_Style);
@@ -192,8 +191,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Style = reader.ReadInt();
 

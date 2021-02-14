@@ -38,7 +38,7 @@ namespace Server.Mobiles
             }
         }
 
-        public bool IsEmpty => (m_Entries == null || m_Entries.Count == 0);
+        public bool IsEmpty => m_Entries == null || m_Entries.Count == 0;
 
         public List<TownCrierEntry> Entries => m_Entries;
 
@@ -202,7 +202,7 @@ namespace Server.Mobiles
 
         public DateTime ExpireTime => m_ExpireTime;
 
-        public bool Expired => (DateTime.UtcNow >= m_ExpireTime);
+        public bool Expired => DateTime.UtcNow >= m_ExpireTime;
 
         public TownCrierEntry(GenericReader reader)
         {
@@ -343,8 +343,8 @@ namespace Server.Mobiles
             if (entries != null)
                 count = entries.Count;
 
-            AddImageTiled(0, 0, 300, 38 + (count == 0 ? 20 : (count * 85)), 0xA40);
-            AddAlphaRegion(1, 1, 298, 36 + (count == 0 ? 20 : (count * 85)));
+            AddImageTiled(0, 0, 300, 38 + (count == 0 ? 20 : count * 85), 0xA40);
+            AddAlphaRegion(1, 1, 298, 36 + (count == 0 ? 20 : count * 85));
 
             if (owner is GlobalTownCrierEntryList)
             {
@@ -406,9 +406,9 @@ namespace Server.Mobiles
                             }
                         }
 
-                        AddHtml(8, 35 + (i * 85), 254, 80, sb.ToString(), true, true);
+                        AddHtml(8, 35 + i * 85, 254, 80, sb.ToString(), true, true);
 
-                        AddButton(300 - 8 - 26, 35 + (i * 85), 0x15E1, 0x15E5, 2 + i, GumpButtonType.Reply, 0);
+                        AddButton(300 - 8 - 26, 35 + i * 85, 0x15E1, 0x15E5, 2 + i, GumpButtonType.Reply, 0);
                         AddTooltip(3005101); // Edit
                     }
                 }
@@ -597,9 +597,9 @@ namespace Server.Mobiles
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && TownCryerSystem.Enabled)
+            if (from is PlayerMobile mobile && TownCryerSystem.Enabled)
             {
-                BaseGump.SendGump(new TownCryerGump((PlayerMobile)from, this));
+                BaseGump.SendGump(new TownCryerGump(mobile, this));
             }
 
             if (from.AccessLevel >= AccessLevel.GameMaster)
@@ -624,7 +624,7 @@ namespace Server.Mobiles
 
         public override bool HandlesOnSpeech(Mobile from)
         {
-            return (m_NewsTimer == null && from.Alive && InRange(from, 12));
+            return m_NewsTimer == null && from.Alive && InRange(from, 12);
         }
 
         public override void OnSpeech(SpeechEventArgs e)
@@ -646,9 +646,9 @@ namespace Server.Mobiles
                     PublicOverheadMessage(MessageType.Regular, 0x3B2, 502978); // Some of the latest news!
                 }
 
-                if (e.Mobile is PlayerMobile && TownCryerSystem.Enabled)
+                if (e.Mobile is PlayerMobile mobile && TownCryerSystem.Enabled)
                 {
-                    BaseGump.SendGump(new TownCryerGump((PlayerMobile)e.Mobile, this));
+                    BaseGump.SendGump(new TownCryerGump(mobile, this));
                 }
             }
         }

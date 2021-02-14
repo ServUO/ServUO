@@ -40,8 +40,9 @@ namespace Server
 
                 if (p == null)
                     return;
-                else if (p is Item)
-                    p = ((Item)p).GetWorldTop();
+
+                if (p is Item item)
+                    p = item.GetWorldTop();
 
                 if (m_First)
                 {

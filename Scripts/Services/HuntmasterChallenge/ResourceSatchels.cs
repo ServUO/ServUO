@@ -9,7 +9,7 @@ namespace Server.Items
         private int _WeightReduction;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int WeightReduction { get { return _WeightReduction; } set { _WeightReduction = value; InvalidateProperties(); } }
+        public int WeightReduction { get => _WeightReduction; set { _WeightReduction = value; InvalidateProperties(); } }
 
         public abstract Type[] HoldTypes { get; }
 
@@ -67,9 +67,9 @@ namespace Server.Items
 
         public void InvalidateWeight()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile m = (Mobile)RootParent;
+                Mobile m = mobile;
 
                 m.UpdateTotals();
             }
@@ -105,7 +105,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _WeightReduction = reader.ReadInt();
         }
@@ -116,7 +116,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1158773;  // Miner's Satchel
 
-        public override Type[] HoldTypes => new Type[] { typeof(BaseOre), typeof(BaseIngot), typeof(BaseGranite), typeof(Saltpeter) };
+        public override Type[] HoldTypes => new[] { typeof(BaseOre), typeof(BaseIngot), typeof(BaseGranite), typeof(Saltpeter) };
 
         [Constructable]
         public MinersSatchel()
@@ -138,7 +138,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -147,7 +147,7 @@ namespace Server.Items
     {
         public override int LabelNumber => 1158772;  // Lumberjack's Satchel
 
-        public override Type[] HoldTypes => new Type[] { typeof(BaseLog), typeof(Board) };
+        public override Type[] HoldTypes => new[] { typeof(BaseLog), typeof(BaseWoodBoard) };
 
         [Constructable]
         public LumbjacksSatchel()
@@ -169,7 +169,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

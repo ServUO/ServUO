@@ -72,8 +72,8 @@ namespace Server.Items
                 m_Registry[from].Stop();
                 m_Registry.Remove(from);
 
-                if (from.Weapon is BaseWeapon)
-                    ((BaseWeapon)from.Weapon).ProcessingMultipleHits = false;
+                if (from.Weapon is BaseWeapon weapon)
+                    weapon.ProcessingMultipleHits = false;
             }
         }
 
@@ -82,10 +82,8 @@ namespace Server.Items
         /// </summary>
         public static void DoHit(Mobile attacker, Mobile defender, int damage)
         {
-            if (HasRegistry(attacker) && attacker.Weapon is BaseWeapon && m_Registry[attacker].DualHitChance > Utility.RandomDouble())
+            if (HasRegistry(attacker) && attacker.Weapon is BaseWeapon wep && m_Registry[attacker].DualHitChance > Utility.RandomDouble())
             {
-                BaseWeapon wep = (BaseWeapon)attacker.Weapon;
-
                 if (!m_Registry[attacker].SecondHit)
                 {
                     wep.ProcessingMultipleHits = true;
@@ -102,7 +100,7 @@ namespace Server.Items
 
         public class DualWieldTimer : Timer
         {
-            public Mobile Owner { get; set; }
+            public Mobile Owner { get; }
             public double DualHitChance { get; set; }
             public DateTime Expires { get; set; }
             public bool SecondHit { get; set; }

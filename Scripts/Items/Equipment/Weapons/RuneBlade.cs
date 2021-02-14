@@ -30,6 +30,7 @@ namespace Server.Items
         public override int DefMissSound => 0x239;
         public override int InitMinHits => 30;
         public override int InitMaxHits => 60;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -39,7 +40,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

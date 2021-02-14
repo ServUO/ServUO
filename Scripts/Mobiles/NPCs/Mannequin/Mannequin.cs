@@ -132,11 +132,11 @@ namespace Server.Mobiles
             }
         }
 
-        private readonly List<Layer> SameLayers = new List<Layer>()
+        private readonly List<Layer> SameLayers = new List<Layer>
         {
             Layer.FirstValid,
             Layer.OneHanded,
-            Layer.TwoHanded,
+            Layer.TwoHanded
         };
 
         public bool CheckSameLayer(Item i1, Item i2)
@@ -162,7 +162,7 @@ namespace Server.Mobiles
         public static List<ValuedProperty> FindItemsProperty(List<Item> item)
         {
             List<Type> ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
-              .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
+              .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass && !r.IsAbstract).ToList();
 
             List<ValuedProperty> cat = new List<ValuedProperty>();
 
@@ -170,12 +170,9 @@ namespace Server.Mobiles
             {
                 object CI = Activator.CreateInstance(Type.GetType(x.FullName));
 
-                if (CI is ValuedProperty)
+                if (CI is ValuedProperty p && (p.Matches(item) || p.AlwaysVisible))
                 {
-                    ValuedProperty p = CI as ValuedProperty;
-
-                    if (p.Matches(item) || p.AlwaysVisible)
-                        cat.Add(p);
+                    cat.Add(p);
                 }
             });
 
@@ -185,7 +182,7 @@ namespace Server.Mobiles
         public static List<ValuedProperty> FindItemProperty(Item item, bool visible = false)
         {
             List<Type> ll = System.Reflection.Assembly.GetExecutingAssembly().GetTypes()
-              .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass == true && r.IsAbstract == false).ToList();
+              .ToList().Where(r => r.FullName.Contains("MannequinProperty") && r.IsClass && !r.IsAbstract).ToList();
 
             List<ValuedProperty> cat = new List<ValuedProperty>();
 
@@ -193,12 +190,9 @@ namespace Server.Mobiles
             {
                 object CI = Activator.CreateInstance(Type.GetType(x.FullName));
 
-                if (CI is ValuedProperty)
+                if (CI is ValuedProperty p && (p.Matches(item) || visible && p.AlwaysVisible))
                 {
-                    ValuedProperty p = CI as ValuedProperty;
-
-                    if (p.Matches(item) || visible && p.AlwaysVisible)
-                        cat.Add(p);
+                    cat.Add(p);
                 }
             });
 
@@ -224,7 +218,7 @@ namespace Server.Mobiles
 
                 if (from.Alive && from.InRange(this, 2))
                 {
-                    if (from.Race == Race || (from.Race == Race.Elf && Race == Race.Human || from.Race == Race.Human && Race == Race.Elf))
+                    if (from.Race == Race || from.Race == Race.Elf && Race == Race.Human || from.Race == Race.Human && Race == Race.Elf)
                     {
                         list.Add(new SwitchClothesEntry(from, this));
                     }
@@ -317,8 +311,10 @@ namespace Server.Mobiles
 
                 protected override void OnTarget(Mobile from, object targeted)
                 {
-                    if (targeted is Item)
-                        from.SendGump(new MannequinCompareGump(_Mannequin, (Item)targeted));
+                    if (targeted is Item item)
+                    {
+                        from.SendGump(new MannequinCompareGump(_Mannequin, item));
+                    }
                     else
                     {
                         // TODO : Action
@@ -359,8 +355,8 @@ namespace Server.Mobiles
 
                 protected override void OnTarget(Mobile from, object targeted)
                 {
-                    if (targeted is Item)
-                        from.SendGump(new MannequinStatsGump(_Mannequin, (Item)targeted));
+                    if (targeted is Item item)
+                        from.SendGump(new MannequinStatsGump(_Mannequin, item));
                 }
             }
         }
@@ -467,7 +463,7 @@ namespace Server.Mobiles
 
         public static bool IsEquipped(Item item)
         {
-            return item != null && item.Parent is Mobile && ((Mobile)item.Parent).FindItemOnLayer(item.Layer) == item &&
+            return item != null && item.Parent is Mobile mobile && mobile.FindItemOnLayer(item.Layer) == item &&
                    item.Layer != Layer.Mount && item.Layer != Layer.Bank &&
                    item.Layer != Layer.Invalid && item.Layer != Layer.Backpack && !(item is Backpack);
         }
@@ -657,7 +653,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

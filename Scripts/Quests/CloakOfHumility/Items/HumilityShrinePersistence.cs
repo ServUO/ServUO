@@ -43,12 +43,12 @@ namespace Server.Engines.Quests
                 if (item == null)
                     item = m.FindItemOnLayer(Layer.Cloak);
 
-                if (item != null && item is GreyCloak && ((GreyCloak)item).Owner == m)
+                if (item != null && item is GreyCloak cloak && cloak.Owner == m)
                 {
                     m.SendLocalizedMessage(1075897); // As you near the shrine a strange energy envelops you. Suddenly, your cloak is transformed into the Cloak of Humility!
 
                     m.Backpack.DropItem(new HumilityCloak());
-                    item.Delete();
+                    cloak.Delete();
                 }
             }
         }
@@ -61,15 +61,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             if (Map == Map.Trammel)
                 m_TramInstance = this;

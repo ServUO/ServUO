@@ -7,7 +7,7 @@ namespace Server.Engines.VvV
 {
     public class VvVGuildStats
     {
-        public Guild Guild { get; set; }
+        public Guild Guild { get; }
         public int Score { get; set; }
         public int Kills { get; set; }
         public int ReturnedSigils { get; set; }
@@ -28,7 +28,7 @@ namespace Server.Engines.VvV
 
         public VvVGuildStats(Guild g, GenericReader reader)
         {
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Guild = g;
 
@@ -40,7 +40,7 @@ namespace Server.Engines.VvV
 
     public class BattleTeam : IComparable<BattleTeam>
     {
-        public Guild Guild { get; set; }
+        public Guild Guild { get; }
         public int Score { get; set; }
         public int Silver { get; set; }
 
@@ -56,7 +56,7 @@ namespace Server.Engines.VvV
 
         public int Disarmed { get; set; }
 
-        public List<VvVPlayerBattleStats> PlayerStats { get; set; }
+        public List<VvVPlayerBattleStats> PlayerStats { get; }
 
         public int CompareTo(BattleTeam team)
         {
@@ -78,7 +78,7 @@ namespace Server.Engines.VvV
 
         public BattleTeam(GenericReader reader)
         {
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             PlayerStats = new List<VvVPlayerBattleStats>();
 
@@ -134,8 +134,8 @@ namespace Server.Engines.VvV
 
     public class VvVPlayerBattleStats
     {
-        public PlayerMobile Player { get; set; }
-        public double Points { get; set; }
+        public PlayerMobile Player { get; }
+        public double Points { get; }
 
         public int Kills { get; set; }
         public int Assists { get; set; }
@@ -194,21 +194,21 @@ namespace Server.Engines.VvV
     /// </summary>
     public class VvVGuildBattleStats : IComparable<VvVGuildBattleStats>
     {
-        public Guild Guild { get; set; }
-        public double Points { get; set; }
+        public Guild Guild { get; }
+        public double Points { get; }
 
-        public int Silver { get; set; }
-        public int Kills { get; set; }
-        public int Assists { get; set; }
-        public int Deaths { get; set; }
-        public int Stolen { get; set; }
+        public int Silver { get; }
+        public int Kills { get; }
+        public int Assists { get; }
+        public int Deaths { get; }
+        public int Stolen { get; }
 
         public int ReturnedSigils => ViceReturned + VirtueReturned;
 
-        public int ViceReturned { get; set; }
-        public int VirtueReturned { get; set; }
+        public int ViceReturned { get; }
+        public int VirtueReturned { get; }
 
-        public int Disarmed { get; set; }
+        public int Disarmed { get; }
 
         public VvVGuildBattleStats(Guild g)
         {
@@ -244,7 +244,7 @@ namespace Server.Engines.VvV
 
         public VvVGuildBattleStats(GenericReader reader, Guild g)
         {
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Guild = g;
             Points = reader.ReadDouble();

@@ -98,7 +98,7 @@ namespace Server.Spells.Spellweaving
 
                 if (t.Z + id.CalcHeight != location.Z)
                     continue;
-                else if (IsValidTile(tand))
+                if (IsValidTile(tand))
                     return true;
             }
 
@@ -110,7 +110,7 @@ namespace Server.Spells.Spellweaving
 
                 if (item == null || item.Z + id.CalcHeight != location.Z)
                     continue;
-                else if (IsValidTile(item.ItemID))
+                if (IsValidTile(item.ItemID))
                 {
                     eable.Free();
                     return true;

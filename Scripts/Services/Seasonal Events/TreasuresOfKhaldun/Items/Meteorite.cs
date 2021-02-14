@@ -7,10 +7,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Polished
         {
-            get
-            {
-                return _Polished;
-            }
+            get => _Polished;
             set
             {
                 _Polished = value;
@@ -71,7 +68,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(_Polished);
@@ -80,8 +76,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             _Polished = reader.ReadBool();
         }

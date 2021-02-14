@@ -6,7 +6,6 @@ namespace Server.Items
 
         [Constructable]
         public GargishSashBearingTheCrestOfBlackthorn()
-            : base()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             Attributes.BonusInt = 5;
@@ -33,7 +32,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

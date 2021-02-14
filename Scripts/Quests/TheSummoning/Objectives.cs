@@ -83,14 +83,8 @@ namespace Server.Engines.Quests.Doom
 
         public Corpse CorpseWithSkull
         {
-            get
-            {
-                return m_CorpseWithSkull;
-            }
-            set
-            {
-                m_CorpseWithSkull = value;
-            }
+            get => m_CorpseWithSkull;
+            set => m_CorpseWithSkull = value;
         }
         public override object Message =>
                 /* Go forth and vanquish the devourer that has been summoned!

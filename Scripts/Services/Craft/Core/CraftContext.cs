@@ -21,8 +21,8 @@ namespace Server.Engines.Craft
 
     public class CraftContext
     {
-        public Mobile Owner { get; private set; }
-        public CraftSystem System { get; private set; }
+        public Mobile Owner { get; }
+        public CraftSystem System { get; }
 
         public int LastResourceIndex { get; set; }
         public int LastResourceIndex2 { get; set; }
@@ -31,7 +31,7 @@ namespace Server.Engines.Craft
         public CraftMarkOption MarkOption { get; set; }
         public CraftQuestOption QuestOption { get; set; }
 
-        public List<CraftItem> Items { get; set; }
+        public List<CraftItem> Items { get; }
 
         public int MakeTotal { get; set; }
 
@@ -94,7 +94,7 @@ namespace Server.Engines.Craft
 
         public CraftContext(GenericReader reader)
         {
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Items = new List<CraftItem>();
 
@@ -263,11 +263,11 @@ namespace Server.Engines.Craft
     {
         private AnvilofArtifactsAddon _Anvil;
 
-        public Dictionary<ResistanceType, int> Exceptional { get; set; }
-        public Dictionary<ResistanceType, int> Runic { get; set; }
+        public Dictionary<ResistanceType, int> Exceptional { get; }
+        public Dictionary<ResistanceType, int> Runic { get; }
         public AnvilofArtifactsAddon Anvil
         {
-            get { return _Anvil; }
+            get => _Anvil;
             set
             {
                 _Anvil = value;
@@ -359,7 +359,7 @@ namespace Server.Engines.Craft
                     { ResistanceType.Fire, 0 },
                     { ResistanceType.Cold, 0 },
                     { ResistanceType.Poison, 0 },
-                    { ResistanceType.Energy, 0 },
+                    { ResistanceType.Energy, 0 }
                 };
         }
     }

@@ -5,6 +5,7 @@ namespace Server.Mobiles
     public class CommissionPlayerVendor : PlayerVendor
     {
         public override bool IsCommission => true;
+        public override double CommissionPerc => 5.25;
 
         public CommissionPlayerVendor(Mobile owner, BaseHouse house)
            : base(owner, house)
@@ -25,7 +26,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

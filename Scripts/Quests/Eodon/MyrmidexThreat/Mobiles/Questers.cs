@@ -7,7 +7,7 @@ namespace Server.Mobiles
 {
     public class Yar : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(TheZealotryOfZipactriotlQuest) };
+        public override Type[] Quests => new[] { typeof(TheZealotryOfZipactriotlQuest) };
 
         public override bool ChangeRace => false;
 
@@ -53,13 +53,13 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class Carroll : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(HiddenTreasuresQuest) };
+        public override Type[] Quests => new[] { typeof(HiddenTreasuresQuest) };
 
         public override bool ChangeRace => false;
 
@@ -102,13 +102,13 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class Bront : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(TheSaltySeaQuest) };
+        public override Type[] Quests => new[] { typeof(TheSaltySeaQuest) };
 
         public override bool ChangeRace => false;
 
@@ -151,13 +151,13 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class Eriathwen : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(ATinkersTaskQuest) };
+        public override Type[] Quests => new[] { typeof(ATinkersTaskQuest) };
 
         public override bool ChangeRace => false;
 
@@ -197,7 +197,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -272,13 +272,13 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class EllieRafkin : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(ExterminatingTheInfestationQuest) };
+        public override Type[] Quests => new[] { typeof(ExterminatingTheInfestationQuest) };
 
         public override bool ChangeRace => false;
         public override bool IsActiveVendor => true;
@@ -362,13 +362,13 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class Foxx : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(PestControlQuest) };
+        public override Type[] Quests => new[] { typeof(PestControlQuest) };
 
         public override bool ChangeRace => false;
 
@@ -414,13 +414,13 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class Yero : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(GettingEvenQuest) };
+        public override Type[] Quests => new[] { typeof(GettingEvenQuest) };
 
         public override bool ChangeRace => false;
 
@@ -458,13 +458,13 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class Alida : MondainQuester
     {
-        public override Type[] Quests => new Type[] { typeof(OfVorpalsAndLettacesTheGardnerQuest) };
+        public override Type[] Quests => new[] { typeof(OfVorpalsAndLettacesTheGardnerQuest) };
 
         public override bool ChangeRace => false;
 
@@ -505,7 +505,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

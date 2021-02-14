@@ -5,7 +5,6 @@ namespace Server.Engines.Quests
     public class EscortToDugan : BaseQuest
     {
         public EscortToDugan()
-            : base()
         {
             AddObjective(new EscortObjective(1113623, "NPC Encampment")); // Human settler camp entrance
 

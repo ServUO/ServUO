@@ -20,7 +20,7 @@ namespace Server.Gumps
 
         public int ItemID { get; }
 
-        public override string Caption => (m_Type == null ? "bad type" : m_Type.Name);
+        public override string Caption => m_Type == null ? "bad type" : m_Type.Name;
 
         public override void OnClick(Mobile from, int page, int index, Gump gump)
         {

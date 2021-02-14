@@ -116,11 +116,14 @@ namespace Server.Mobiles
 
         public override WeaponAbility GetWeaponAbility()
         {
-            if (Weapon is BaseWeapon)
+            if (Weapon is BaseWeapon weapon)
             {
                 if (Utility.RandomBool())
-                    return ((BaseWeapon)Weapon).PrimaryAbility;
-                return ((BaseWeapon)Weapon).SecondaryAbility;
+                {
+                    return weapon.PrimaryAbility;
+                }
+
+                return weapon.SecondaryAbility;
             }
 
             return WeaponAbility.WhirlwindAttack;
@@ -148,8 +151,8 @@ namespace Server.Mobiles
                 {
                     IDamageable m = Combatant;
 
-                    if (m is BaseCreature && (((BaseCreature)m).Summoned || ((BaseCreature)m).Controlled))
-                        m = ((BaseCreature)m).GetMaster();
+                    if (m is BaseCreature creature && (creature.Summoned || creature.Controlled))
+                        m = creature.GetMaster();
 
                     FixedParticles(0x3709, 1, 30, 9904, 1108, 6, EffectLayer.RightFoot);
                     BaseCreature vm = new VoidManifestation(m_Type);
@@ -176,8 +179,8 @@ namespace Server.Mobiles
             if (m_ManifestChance > Utility.RandomDouble())
             {
                 Mobile m = LastKiller;
-                if (m is BaseCreature && (((BaseCreature)m).Summoned || ((BaseCreature)m).Controlled))
-                    m = ((BaseCreature)m).GetMaster();
+                if (m is BaseCreature creature && (creature.Summoned || creature.Controlled))
+                    m = creature.GetMaster();
 
                 FixedParticles(0x3709, 1, 30, 9904, 1108, 6, EffectLayer.RightFoot);
                 BaseCreature vm = new VoidManifestation(m_Type);
@@ -207,7 +210,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Type = reader.ReadInt();
             m_Manifested = reader.ReadBool();

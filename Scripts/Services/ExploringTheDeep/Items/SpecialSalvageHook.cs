@@ -10,7 +10,7 @@ namespace Server.Items
 {
     public class SpecialSalvageHook : Item
     {
-        private static readonly int[] m_Hues = new int[]
+        private static readonly int[] m_Hues =
         {
             0x09B,
             0x0CD,
@@ -28,13 +28,13 @@ namespace Server.Items
             0x8AA
         };
 
-        private static readonly int[] m_WaterTiles = new int[]
+        private static readonly int[] m_WaterTiles =
         {
             0x00A8, 0x00AB,
             0x0136, 0x0137
         };
 
-        private static readonly int[] m_UndeepWaterTiles = new int[]
+        private static readonly int[] m_UndeepWaterTiles =
         {
             0x1797, 0x179C
         };
@@ -59,11 +59,7 @@ namespace Server.Items
         public override int LabelNumber => 1154215;  // A Special Salvage Hook
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool InUse
-        {
-            get { return m_InUse; }
-            set { m_InUse = value; }
-        }
+        public bool InUse { get => m_InUse; set => m_InUse = value; }
 
         public virtual bool RequireDeepWater => true;
 
@@ -138,7 +134,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(500979); // You cannot see that location.
             }
-            else if (RequireDeepWater ? SpecialFishingNet.FullValidation(map, x, y) : (SpecialFishingNet.ValidateDeepWater(map, x, y) || SpecialFishingNet.ValidateUndeepWater(map, obj, ref z)))
+            else if (RequireDeepWater ? SpecialFishingNet.FullValidation(map, x, y) : SpecialFishingNet.ValidateDeepWater(map, x, y) || SpecialFishingNet.ValidateUndeepWater(map, obj, ref z))
             {
                 Point3D p = new Point3D(x, y, z);
 
@@ -198,7 +194,7 @@ namespace Server.Items
 
                 LandTile t = map.Tiles.GetLandTile(tx, ty);
 
-                if (t.Z == p.Z && ((t.ID >= 0xA8 && t.ID <= 0xAB) || (t.ID >= 0x136 && t.ID <= 0x137)) && !SpellHelper.CheckMulti(new Point3D(tx, ty, p.Z), map))
+                if (t.Z == p.Z && (t.ID >= 0xA8 && t.ID <= 0xAB || t.ID >= 0x136 && t.ID <= 0x137) && !SpellHelper.CheckMulti(new Point3D(tx, ty, p.Z), map))
                 {
                     x = tx;
                     y = ty;

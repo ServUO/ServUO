@@ -47,9 +47,8 @@ namespace Server.Engines.VvV
 
             VvVPlayerEntry entry = ViceVsVirtueSystem.Instance.GetPlayerEntry<VvVPlayerEntry>(from);
 
-            if (from.InRange(Location, 2) && entry != null && ViceVsVirtueSystem.IsVvV(from) && dropped is VvVSigil)
+            if (from.InRange(Location, 2) && entry != null && ViceVsVirtueSystem.IsVvV(from) && dropped is VvVSigil sigil)
             {
-                VvVSigil sigil = dropped as VvVSigil;
                 Battle.Update(null, entry, VvVType == VvVType.Vice ? UpdateType.TurnInVice : UpdateType.TurnInVirtue);
 
                 sigil.Delete();
@@ -91,7 +90,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             VvVType = (VvVType)reader.ReadInt();
         }

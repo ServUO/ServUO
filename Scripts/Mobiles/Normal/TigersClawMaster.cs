@@ -7,7 +7,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public TigersClawMaster()
-            : base()
         {
             Name = "Black Order Master";
             Title = "of the Serpent's Fang Sect";
@@ -55,7 +54,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

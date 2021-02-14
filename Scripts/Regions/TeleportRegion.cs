@@ -13,7 +13,7 @@ namespace Server.Regions
     {
         public static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(400);
 
-        public Dictionary<WorldLocation, WorldLocation> TeleLocs { get; set; }
+        public Dictionary<WorldLocation, WorldLocation> TeleLocs { get; }
 
         public TeleportRegion(string name, Map map, Rectangle3D[] recs, Dictionary<WorldLocation, WorldLocation> points)
             : base(name, map, GetParent(recs, map), recs)

@@ -5,6 +5,11 @@ using Server.Items;
 
 namespace Server.Misc
 {
+    public interface ICanBeElfOrHuman
+    {
+        bool ElfOnly { get; set; }
+    }
+
     public class RaceDefinitions
     {
         public static void Configure()

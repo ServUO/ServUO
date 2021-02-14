@@ -91,11 +91,11 @@ namespace Server.Mobiles
                 int rand = Utility.Random(1, 100);
                 if (willKill)
                 {
-                    amt = (((rand % 5) >> 2) + 3);
+                    amt = ((rand % 5) >> 2) + 3;
                 }
-                if ((Hits < 100) && (rand < 21))
+                if (Hits < 100 && rand < 21)
                 {
-                    target = (rand % 2) < 1 ? this : from;
+                    target = rand % 2 < 1 ? this : from;
                     amt++;
                 }
                 if (amt > 0)
@@ -124,7 +124,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

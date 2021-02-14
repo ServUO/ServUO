@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    public class DaggerBelt : BaseWaist, IDyable
+    public class DaggerBelt : BaseWaist
     {
         public override int LabelNumber => 1159210;  // dagger belt
 
@@ -26,7 +26,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

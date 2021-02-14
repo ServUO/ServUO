@@ -40,10 +40,10 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(from);
 
-            return (house != null && house.IsCoOwner(from));
+            return house != null && house.IsCoOwner(from);
         }
 
-        public static bool CheckUse(InteriorDecorator tool, Mobile from)
+        public static bool CheckUse(Mobile from)
         {
             if (!InHouse(from))
                 from.SendLocalizedMessage(502092); // You must be in your house to do this.
@@ -62,7 +62,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -174,7 +174,7 @@ namespace Server.Items
                 OnTarget(from, targeted);
             }
 
-            private static readonly Type[] _IsSpecialTypes = new Type[]
+            private static readonly Type[] _IsSpecialTypes =
             {
                 typeof(BirdLamp),  typeof(DragonLantern),  typeof(KoiLamp),
                 typeof(TallLamp)
@@ -191,10 +191,10 @@ namespace Server.Items
                 {
                     int hue = 0;
 
-                    if (targeted is Item)
-                        hue = ((Item)targeted).Hue;
-                    else if (targeted is Mobile)
-                        hue = ((Mobile)targeted).Hue;
+                    if (targeted is Item item)
+                        hue = item.Hue;
+                    else if (targeted is Mobile mobile)
+                        hue = mobile.Hue;
                     else
                     {
                         from.Target = new InternalTarget(m_Decorator);
@@ -203,10 +203,9 @@ namespace Server.Items
 
                     from.SendLocalizedMessage(1158862, string.Format("{0}", hue)); // That object is hue ~1_HUE~
                 }
-                else if (targeted is Item && CheckUse(m_Decorator, from))
+                else if (targeted is Item item && CheckUse(from))
                 {
                     BaseHouse house = BaseHouse.FindHouseAt(from);
-                    Item item = (Item)targeted;
 
                     bool isDecorableComponent = false;
 
@@ -219,21 +218,18 @@ namespace Server.Items
                         object addon = null;
                         int count = 0;
 
-                        if (item is AddonComponent)
+                        if (item is AddonComponent aComponent)
                         {
-                            AddonComponent component = (AddonComponent)item;
+                            count = aComponent.Addon.Components.Count;
+                            addon = aComponent.Addon;
+                        }
+                        else if (item is AddonContainerComponent component)
+                        {
                             count = component.Addon.Components.Count;
                             addon = component.Addon;
                         }
-                        else if (item is AddonContainerComponent)
+                        else if (item is BaseAddonContainer container)
                         {
-                            AddonContainerComponent component = (AddonContainerComponent)item;
-                            count = component.Addon.Components.Count;
-                            addon = component.Addon;
-                        }
-                        else if (item is BaseAddonContainer)
-                        {
-                            BaseAddonContainer container = (BaseAddonContainer)item;
                             count = container.Components.Count;
                             addon = container;
                         }
@@ -322,9 +318,9 @@ namespace Server.Items
 
             private static void Turn(Item item, Mobile from)
             {
-                if (item is IFlipable)
+                if (item is IFlipable flipable)
                 {
-                    ((IFlipable)item).OnFlip(from);
+                    flipable.OnFlip(from);
                     return;
                 }
 
@@ -332,10 +328,10 @@ namespace Server.Items
                 {
                     object addon = null;
 
-                    if (item is AddonComponent)
-                        addon = ((AddonComponent)item).Addon;
-                    else if (item is AddonContainerComponent)
-                        addon = ((AddonContainerComponent)item).Addon;
+                    if (item is AddonComponent addonComponent)
+                        addon = addonComponent.Addon;
+                    else if (item is AddonContainerComponent component)
+                        addon = component.Addon;
                     else if (item is BaseAddonContainer)
                         addon = (BaseAddonContainer)item;
 

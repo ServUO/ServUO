@@ -1,4 +1,4 @@
-﻿using Server.Prompts;
+using Server.Prompts;
 using Server.Targeting;
 using System;
 
@@ -18,12 +18,13 @@ namespace Server.Items
         public Type BaitType => m_BaitType;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int UsesRemaining { get { return m_UsesRemaining; } set { m_UsesRemaining = value; InvalidateProperties(); } }
+        public int UsesRemaining { get => m_UsesRemaining;
+            set { m_UsesRemaining = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Index
         {
-            get { return m_Index; }
+            get => m_Index;
             set
             {
                 m_Index = value;
@@ -41,7 +42,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Enhanced { get { return m_Enhanced; } set { m_Enhanced = value; InvalidateProperties(); } }
+        public bool Enhanced { get => m_Enhanced; set { m_Enhanced = value; InvalidateProperties(); } }
 
         [Constructable]
         public Bait(int index) : base(2454)
@@ -89,15 +90,15 @@ namespace Server.Items
             if (m_Enhanced)
             {
                 //~1_token~ ~2_token~ bait
-                if (label is int)
-                    list.Add(1116464, "#{0}\t#{1}", 1116470, (int)label);
-                else if (label is string)
-                    list.Add(1116464, "#{0}\t{1}", 1116470, (string)label);
+                if (label is int i)
+                    list.Add(1116464, "#{0}\t#{1}", 1116470, i);
+                else if (label is string s)
+                    list.Add(1116464, "#{0}\t{1}", 1116470, s);
             }
-            else if (label is int)
-                list.Add(1116465, string.Format("#{0}", (int)label)); //~1_token~ bait
-            else if (label is string)
-                list.Add(1116465, (string)label);
+            else if (label is int i)
+                list.Add(1116465, string.Format("#{0}", i)); //~1_token~ bait
+            else if (label is string s)
+                list.Add(1116465, s);
         }
 
         public override void GetProperties(ObjectPropertyList list)
@@ -145,15 +146,13 @@ namespace Server.Items
                 if (targeted == m_Bait)
                     return;
 
-                if (targeted is FishingPole)
+                if (targeted is FishingPole pole)
                 {
                     if (!m_Bait.IsFishBait())
                     {
                         from.SendMessage("Think again before applying lobster or crab bait to a fishing pole!");
                         return;
                     }
-
-                    FishingPole pole = (FishingPole)targeted;
 
                     bool hasBait = pole.BaitType != null;
 
@@ -174,15 +173,13 @@ namespace Server.Items
                     from.SendLocalizedMessage(1149759);  //You bait the hook.
                     m_Bait.UsesRemaining -= m_Amount;
                 }
-                else if (targeted is LobsterTrap)
+                else if (targeted is LobsterTrap trap)
                 {
                     if (m_Bait.IsFishBait())
                     {
                         from.SendMessage("Think again before applying fish bait to a lobster trap!");
                         return;
                     }
-
-                    LobsterTrap trap = (LobsterTrap)targeted;
 
                     bool hasBait = trap.BaitType != null;
 
@@ -206,10 +203,8 @@ namespace Server.Items
                     from.SendLocalizedMessage(1149760); //You bait the trap.
                     m_Bait.UsesRemaining -= m_Amount;
                 }
-                else if (targeted is Bait && ((Bait)targeted).IsChildOf(from.Backpack) && ((Bait)targeted).BaitType == m_Bait.BaitType)
+                else if (targeted is Bait bait && bait.IsChildOf(from.Backpack) && bait.BaitType == m_Bait.BaitType)
                 {
-                    Bait bait = (Bait)targeted;
-
                     bait.UsesRemaining += m_Amount;
                     m_Bait.UsesRemaining -= m_Amount;
 
@@ -255,7 +250,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_UsesRemaining = reader.ReadInt();
             m_Index = reader.ReadInt();

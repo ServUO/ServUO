@@ -1,6 +1,5 @@
 using Server.Items;
 using Server.Network;
-using System;
 
 namespace Server.Gumps
 {
@@ -22,8 +21,6 @@ namespace Server.Gumps
             m_From = from;
 
             AddBackground(0, 0, 300, 200, 2620);
-
-            Type charge = cannon is LightShipCannon ? typeof(LightPowderCharge) : typeof(HeavyPowderCharge);
 
             bool cleaned = cannon.Cleaned;
             bool charged = cannon.Charged;

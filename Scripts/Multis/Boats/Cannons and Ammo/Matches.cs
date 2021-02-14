@@ -12,7 +12,7 @@ namespace Server.Items
 
         private bool m_IsLight;
 
-        public bool IsLight { get { return m_IsLight; } set { m_IsLight = value; } }
+        public bool IsLight { get => m_IsLight; set => m_IsLight = value; }
 
         [Constructable]
         public Matches() : this(1)
@@ -69,11 +69,12 @@ namespace Server.Items
             }
         }
 
-
         public void BurnOut()
         {
-            if (RootParent is PlayerMobile)
-                ((PlayerMobile)RootParent).SendLocalizedMessage(1116115); //Your match splutters and dies.
+            if (RootParent is PlayerMobile mobile)
+            {
+                mobile.SendLocalizedMessage(1116115); //Your match splutters and dies.
+            }
 
             Delete();
         }
@@ -106,10 +107,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object obj)
             {
-                if (obj is IShipCannon)
+                if (obj is IShipCannon cannon)
                 {
-                    IShipCannon cannon = (IShipCannon)obj;
-
                     if (cannon.CanLight)
                     {
                         cannon.LightFuse(from);
@@ -131,13 +130,15 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_IsLight);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             if (reader.ReadBool())
                 Delete();
         }

@@ -29,7 +29,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Transparent
         {
-            get { return m_Transparent; }
+            get => m_Transparent;
             set
             {
                 if (Rider != null)
@@ -53,7 +53,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int TransparentMountedID
         {
-            get { return m_TransparentMountedID; }
+            get => m_TransparentMountedID;
             set
             {
                 if (m_TransparentMountedID != value)
@@ -73,7 +73,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int NonTransparentMountedID
         {
-            get { return m_NonTransparentMountedID; }
+            get => m_NonTransparentMountedID;
             set
             {
                 if (m_NonTransparentMountedID != value)
@@ -93,7 +93,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int TransparentMountedHue
         {
-            get { return m_TransparentMountedHue; }
+            get => m_TransparentMountedHue;
             set
             {
                 if (m_TransparentMountedHue != value)
@@ -113,7 +113,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int NonTransparentMountedHue
         {
-            get { return m_NonTransparentMountedHue; }
+            get => m_NonTransparentMountedHue;
             set
             {
                 if (m_NonTransparentMountedHue != value)
@@ -133,7 +133,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int StatueID
         {
-            get { return m_StatueID; }
+            get => m_StatueID;
             set
             {
                 if (m_StatueID != value)
@@ -151,7 +151,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int StatueHue
         {
-            get { return m_StatueHue; }
+            get => m_StatueHue;
             set
             {
                 if (m_StatueHue != value)
@@ -170,7 +170,7 @@ namespace Server.Mobiles
         public int MountedHue => Transparent ? TransparentMountedHue : NonTransparentMountedHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsRewardItem { get { return m_IsRewardItem; } set { m_IsRewardItem = value; } }
+        public bool IsRewardItem { get => m_IsRewardItem; set => m_IsRewardItem = value; }
 
         public override double DefaultWeight => 1.0;
 
@@ -180,7 +180,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Rider
         {
-            get { return m_Rider; }
+            get => m_Rider;
             set
             {
                 if (value == m_Rider)
@@ -251,9 +251,9 @@ namespace Server.Mobiles
 
         public static void StopMounting(Mobile mob)
         {
-            if (mob.Spell is EtherealSpell)
+            if (mob.Spell is EtherealSpell spell)
             {
-                ((EtherealSpell)mob.Spell).Stop();
+                spell.Stop();
             }
         }
 
@@ -340,7 +340,7 @@ namespace Server.Mobiles
                 return false;
             }
 
-            if ((from.Followers + FollowerSlots) > from.FollowersMax)
+            if (from.Followers + FollowerSlots > from.FollowersMax)
             {
                 from.SendLocalizedMessage(1049679); // You have too many followers to summon your mount.
                 return false;
@@ -383,7 +383,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Transparent = reader.ReadBool();
             m_TransparentMountedID = reader.ReadInt();
@@ -575,7 +575,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -603,7 +603,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -631,7 +631,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -659,7 +659,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -687,7 +687,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -715,7 +715,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -743,7 +743,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -771,7 +771,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -800,7 +800,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -829,7 +829,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -858,7 +858,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -887,7 +887,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -916,7 +916,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -945,7 +945,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -974,7 +974,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1009,7 +1009,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1038,7 +1038,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1067,7 +1067,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1096,7 +1096,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1125,7 +1125,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

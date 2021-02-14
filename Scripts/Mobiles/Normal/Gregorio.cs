@@ -48,18 +48,16 @@ namespace Server.Mobiles
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
-            if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
-                from = ((BaseCreature)from).GetMaster();
+            if (from is BaseCreature creature && creature.GetMaster() is PlayerMobile)
+                from = creature.GetMaster();
 
-            if (from is PlayerMobile)
+            if (from is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)from;
-
                 BaseQuest quest = QuestHelper.GetQuest(pm, typeof(GuiltyQuest));
 
                 if (quest != null && !quest.Completed)
                 {
-                    return base.Damage(amount, from, informMount, checkDisrupt);
+                    return base.Damage(amount, pm, informMount, checkDisrupt);
                 }
             }
 
@@ -69,18 +67,16 @@ namespace Server.Mobiles
 
         public override bool CanBeHarmedBy(Mobile from, bool message)
         {
-            if (from is BaseCreature && ((BaseCreature)from).GetMaster() is PlayerMobile)
-                from = ((BaseCreature)from).GetMaster();
+            if (from is BaseCreature creature && creature.GetMaster() is PlayerMobile)
+                from = creature.GetMaster();
 
-            if (from is PlayerMobile)
+            if (from is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)from;
-
                 BaseQuest quest = QuestHelper.GetQuest(pm, typeof(GuiltyQuest));
 
                 if (quest != null && !quest.Completed)
                 {
-                    return base.CanBeHarmedBy(from, message);
+                    return base.CanBeHarmedBy(pm, message);
                 }
             }
 
@@ -119,7 +115,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

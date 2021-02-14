@@ -37,7 +37,7 @@ namespace Server.Engines.VoidPool
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return _Active; }
+            get => _Active;
             set
             {
                 if (!value)
@@ -225,10 +225,14 @@ namespace Server.Engines.VoidPool
                 foreach (Mobile m in eable)
                 {
                     if (!OnGoing)
+                    {
                         break;
+                    }
 
-                    if (m is BaseCreature && !((BaseCreature)m).Controlled && !((BaseCreature)m).Summoned && Utility.RandomDouble() > 0.25)
-                        OnVoidWallDamaged(m);
+                    if (m is BaseCreature bc && !bc.Controlled && !bc.Summoned && Utility.RandomDouble() > 0.25)
+                    {
+                        OnVoidWallDamaged(bc);
+                    }
                 }
                 eable.Free();
             }
@@ -333,13 +337,13 @@ namespace Server.Engines.VoidPool
             foreach (Item item in eable)
             {
                 int dist = 0;
-                if (item is WayPoint)
+                if (item is WayPoint point)
                 {
                     dist = (int)m.GetDistanceToSqrt(item);
 
                     if (dist < closestRange || closest == null)
                     {
-                        closest = item as WayPoint;
+                        closest = point;
                         closestRange = dist;
                     }
                 }
@@ -427,9 +431,9 @@ namespace Server.Engines.VoidPool
                 m.SendLocalizedMessage(1152650, string.Format("{0}\t{1}\t{2}\t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m]));
                 // During the battle, you helped fight back ~1_COUNT~ out of ~2_TOTAL~ waves of enemy forces. Your final wave was ~3_MAX~. Your total score for the battle was ~4_SCORE~ points.
 
-                if (m is PlayerMobile)
+                if (m is PlayerMobile mobile)
                 {
-                    AForcedSacraficeQuest quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
+                    AForcedSacraficeQuest quest = QuestHelper.GetQuest<AForcedSacraficeQuest>(mobile);
 
                     if (quest != null)
                     {
@@ -459,16 +463,24 @@ namespace Server.Engines.VoidPool
                         DamageStore ds = list[i];
                         Mobile m = ds.m_Mobile;
 
-                        if (ds.m_Mobile is BaseCreature && ((BaseCreature)ds.m_Mobile).GetMaster() is PlayerMobile)
-                            m = ((BaseCreature)ds.m_Mobile).GetMaster();
+                        if (ds.m_Mobile is BaseCreature creature && creature.GetMaster() is PlayerMobile)
+                        {
+                            m = creature.GetMaster();
+                        }
 
                         if (!info.Credit.Contains(m))
+                        {
                             info.Credit.Add(m);
+                        }
 
                         if (!CurrentScore.ContainsKey(m))
+                        {
                             CurrentScore[m] = killed.Fame / 998;
+                        }
                         else
+                        {
                             CurrentScore[m] += killed.Fame / 998;
+                        }
                     }
 
                     list.Clear();
@@ -506,14 +518,14 @@ namespace Server.Engines.VoidPool
 
             foreach (Item item in Region.GetEnumeratedItems().Where(i => i is ISpawner))
             {
-                if (item is XmlSpawner)
+                if (item is XmlSpawner xmlSpawner)
                 {
-                    ((XmlSpawner)item).DoReset = true;
+                    xmlSpawner.DoReset = true;
                 }
-                else if (item is Spawner)
+                else if (item is Spawner spawner)
                 {
-                    ((Spawner)item).RemoveSpawned();
-                    ((Spawner)item).Running = false;
+                    spawner.RemoveSpawned();
+                    spawner.Running = false;
                 }
             }
         }
@@ -531,14 +543,14 @@ namespace Server.Engines.VoidPool
             foreach (Item item in r.GetEnumeratedItems().Where(i => i is ISpawner
                 && i.X >= 5501 && i.X <= 5627 && i.Y >= 1799 && i.Y <= 1927))
             {
-                if (item is XmlSpawner)
+                if (item is XmlSpawner xmlSpawner)
                 {
-                    ((XmlSpawner)item).DoReset = true;
+                    xmlSpawner.DoReset = true;
                 }
-                else if (item is Spawner)
+                else if (item is Spawner spawner)
                 {
-                    ((Spawner)item).RemoveSpawned();
-                    ((Spawner)item).Running = false;
+                    spawner.RemoveSpawned();
+                    spawner.Running = false;
                 }
             }
         }
@@ -579,7 +591,7 @@ namespace Server.Engines.VoidPool
 
         public int GetTotalWaves(Mobile from)
         {
-            return Waves.Where(i => i.Wave > 2 && i.Credit.Contains(from)).Count();
+            return Waves.Count(i => i.Wave > 2 && i.Credit.Contains(from));
         }
 
         public static int GetPlayerScore(Dictionary<Mobile, long> score, Mobile m)
@@ -590,13 +602,13 @@ namespace Server.Engines.VoidPool
             return (int)score[m];
         }
 
-        public static Type[][] SpawnTable = new Type[][]
+        public static Type[][] SpawnTable =
         {
-            new Type[] { typeof(DaemonMongbat),         typeof(GargoyleAssassin),   typeof(CovetousDoppleganger),   typeof(LesserOni),       typeof(CovetousFireDaemon) },
-            new Type[] { typeof(LizardmanWitchdoctor),  typeof(OrcFootSoldier),     typeof(RatmanAssassin),         typeof(OgreBoneCrusher), typeof(TitanRockHunter) },
-            new Type[] { typeof(AngeredSpirit),         typeof(BoneSwordSlinger),   typeof(VileCadaver),            typeof(DiseasedLich),    typeof(CovetousRevenant) },
-            new Type[] { typeof(WarAlligator),          typeof(MagmaLizard),        typeof(ViciousDrake),           typeof(CorruptedWyvern), typeof(CovetousWyrm) },
-            new Type[] { typeof(CovetousEarthElemental),typeof(CovetousWaterElemental), typeof(VortexElemental),    typeof(SearingElemental),typeof(VenomElemental) },
+            new[] { typeof(DaemonMongbat),         typeof(GargoyleAssassin),   typeof(CovetousDoppleganger),   typeof(LesserOni),       typeof(CovetousFireDaemon) },
+            new[] { typeof(LizardmanWitchdoctor),  typeof(OrcFootSoldier),     typeof(RatmanAssassin),         typeof(OgreBoneCrusher), typeof(TitanRockHunter) },
+            new[] { typeof(AngeredSpirit),         typeof(BoneSwordSlinger),   typeof(VileCadaver),            typeof(DiseasedLich),    typeof(CovetousRevenant) },
+            new[] { typeof(WarAlligator),          typeof(MagmaLizard),        typeof(ViciousDrake),           typeof(CorruptedWyvern), typeof(CovetousWyrm) },
+            new[] { typeof(CovetousEarthElemental),typeof(CovetousWaterElemental), typeof(VortexElemental),    typeof(SearingElemental),typeof(VenomElemental) }
         };
 
         public override void Delete()

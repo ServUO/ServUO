@@ -48,7 +48,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SourceEffect
         {
-            get { return m_SourceEffect; }
+            get => m_SourceEffect;
             set
             {
                 m_SourceEffect = value;
@@ -59,7 +59,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DestEffect
         {
-            get { return m_DestEffect; }
+            get => m_DestEffect;
             set
             {
                 m_DestEffect = value;
@@ -70,7 +70,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int SoundID
         {
-            get { return m_SoundID; }
+            get => m_SoundID;
             set
             {
                 m_SoundID = value;
@@ -81,7 +81,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public TimeSpan Delay
         {
-            get { return m_Delay; }
+            get => m_Delay;
             set
             {
                 m_Delay = value;
@@ -92,7 +92,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get { return m_Active; }
+            get => m_Active;
             set
             {
                 m_Active = value;
@@ -103,7 +103,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D PointDest
         {
-            get { return m_PointDest; }
+            get => m_PointDest;
             set
             {
                 m_PointDest = value;
@@ -114,7 +114,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Map MapDest
         {
-            get { return m_MapDest; }
+            get => m_MapDest;
             set
             {
                 m_MapDest = value;
@@ -125,7 +125,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Creatures
         {
-            get { return m_Creatures; }
+            get => m_Creatures;
             set
             {
                 m_Creatures = value;
@@ -136,7 +136,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CombatCheck
         {
-            get { return m_CombatCheck; }
+            get => m_CombatCheck;
             set
             {
                 m_CombatCheck = value;
@@ -147,7 +147,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool CriminalCheck
         {
-            get { return m_CriminalCheck; }
+            get => m_CriminalCheck;
             set
             {
                 m_CriminalCheck = value;
@@ -174,22 +174,21 @@ namespace Server.Items
             }
 
             if (!mobile.Alive || !mobile.IsPlayer())
-                return;
-
-            else if (m_Active && CanTeleport(from))
             {
-                int equipment = mobile.Items.Where(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant || i is GargishNictitatingLens) && (i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i)).Count();
+                return;
+            }
+
+            if (m_Active && CanTeleport(from))
+            {
+                int equipment = mobile.Items.Count(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant || i is GargishNictitatingLens) && i.Parent is Mobile parent && parent.FindItemOnLayer(i.Layer) == i);
 
                 if (equipment < 4)
                 {
                     mobile.Kill();
                     return;
                 }
-                else
-                {
-                    StartTeleport(from);
-                    return;
-                }
+
+                StartTeleport(from);
             }
         }
 
@@ -199,12 +198,14 @@ namespace Server.Items
             {
                 return false;
             }
-            else if (m_CriminalCheck && m.Criminal)
+
+            if (m_CriminalCheck && m.Criminal)
             {
                 m.SendLocalizedMessage(1005561, "", 0x22); // Thou'rt a criminal and cannot escape so easily.
                 return false;
             }
-            else if (m_CombatCheck && SpellHelper.CheckCombat(m))
+
+            if (m_CombatCheck && SpellHelper.CheckCombat(m))
             {
                 m.SendLocalizedMessage(1005564, "", 0x22); // Wouldst thou flee during the heat of battle??
                 return false;
@@ -220,7 +221,8 @@ namespace Server.Items
                 m.SendLocalizedMessage(1071955); // You cannot teleport while dragging an object.
                 return;
             }
-            else if (m_Delay == TimeSpan.Zero)
+
+            if (m_Delay == TimeSpan.Zero)
             {
                 DoTeleport(m);
             }
@@ -265,7 +267,7 @@ namespace Server.Items
                     });
             }
 
-            bool sendEffect = (!m.Hidden || m.IsPlayer());
+            bool sendEffect = !m.Hidden || m.IsPlayer();
 
             if (m_SourceEffect && sendEffect)
             {

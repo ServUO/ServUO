@@ -47,7 +47,7 @@ namespace Server.Mobiles
             if (!base.OnBeforeDeath())
                 return false;
 
-            new TreasureSand().MoveToWorld(this.Location, this.Map);
+            new TreasureSand().MoveToWorld(Location, Map);
 
             return true;
         }

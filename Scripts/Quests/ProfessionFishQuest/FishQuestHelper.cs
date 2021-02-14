@@ -74,36 +74,36 @@ namespace Server.Engines.Quests
 
         private static readonly Type[][][] m_RewardTable =
         {
-            new Type[][]
+            new[]
             {
-                new Type[] { typeof(Bait) },
-                new Type[] { typeof(LavaLobsterTrap) },
-                new Type[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2) },
-                new Type[] { typeof(PowerScroll), typeof(FishingPole) },
+                new[] { typeof(Bait) },
+                new[] { typeof(LavaLobsterTrap) },
+                new[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2) },
+                new[] { typeof(PowerScroll), typeof(FishingPole) }
             },
 
-            new Type[][]
+            new[]
             {
-                new Type[] { typeof(Bait) },
-                new Type[] { typeof(LavaHook), typeof(LavaLobsterTrap), typeof(JunkProofHook) },
-                new Type[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2), typeof(FishingGuideBook3), typeof(FishingPole) },
-                new Type[] { typeof(PowerScroll), typeof(OracleOfTheSea), typeof(DredgingHook) },
+                new[] { typeof(Bait) },
+                new[] { typeof(LavaHook), typeof(LavaLobsterTrap), typeof(JunkProofHook) },
+                new[] { typeof(FishingGuideBook1), typeof(FishingGuideBook2), typeof(FishingGuideBook3), typeof(FishingPole) },
+                new[] { typeof(PowerScroll), typeof(OracleOfTheSea), typeof(DredgingHook) }
             },
 
-            new Type[][]
+            new[]
             {
-                new Type[] { typeof(Bait) },
-                new Type[] { typeof(LavaHook), typeof(DredgingHook), typeof(JunkProofHook), typeof(FishingPole) },
-                new Type[] { typeof(FishingGuideBook3), typeof(FishingGuideBook4), typeof(FishingGuideBook5), },
-                new Type[] { typeof(PowerScroll), typeof(OracleOfTheSea) },
+                new[] { typeof(Bait) },
+                new[] { typeof(LavaHook), typeof(DredgingHook), typeof(JunkProofHook), typeof(FishingPole) },
+                new[] { typeof(FishingGuideBook3), typeof(FishingGuideBook4), typeof(FishingGuideBook5)},
+                new[] { typeof(PowerScroll), typeof(OracleOfTheSea) }
             },
 
-            new Type[][]
+            new[]
             {
-                new Type[] { typeof(Bait),  typeof(JunkProofHook) },
-                new Type[] { typeof(OracleOfTheSea), typeof(LavaHook), typeof(FishingPole) },
-                new Type[] { typeof(FishingGuideBook4), typeof(FishingGuideBook5), typeof(FishingGuideBook6) },
-                new Type[] { typeof(PowerScroll), typeof(PermanentBoatPaint) },
+                new[] { typeof(Bait),  typeof(JunkProofHook) },
+                new[] { typeof(OracleOfTheSea), typeof(LavaHook), typeof(FishingPole) },
+                new[] { typeof(FishingGuideBook4), typeof(FishingGuideBook5), typeof(FishingGuideBook6) },
+                new[] { typeof(PowerScroll), typeof(PermanentBoatPaint) }
             }
         };
 
@@ -139,7 +139,7 @@ namespace Server.Engines.Quests
 
             if (item != null)
             {
-                if (item is PowerScroll)
+                if (item is PowerScroll scroll)
                 {
                     int value;
                     double chance = Utility.RandomDouble();
@@ -175,16 +175,14 @@ namespace Server.Engines.Quests
                             break;
                     }
 
-                    ((PowerScroll)item).Skill = SkillName.Fishing;
-                    ((PowerScroll)item).Value = value;
+                    scroll.Skill = SkillName.Fishing;
+                    scroll.Value = value;
                     from.SendLocalizedMessage(1149591); //
                 }
                 else if (item is BaseBook)
                     from.SendLocalizedMessage(1149590); //You receive a rare book.
-                else if (item is Bait)
+                else if (item is Bait bait)
                 {
-                    Bait bait = (Bait)item;
-
                     switch (tier)
                     {
                         case 1:
@@ -224,8 +222,8 @@ namespace Server.Engines.Quests
                     {
                         object label = FishInfo.GetFishLabel(bait.Index);
 
-                        if (label is int)
-                            from.SendLocalizedMessage(1149588, string.Format("#{0}\t", (int)label)); //You receive bait to catch ~1_val~
+                        if (label is int i)
+                            from.SendLocalizedMessage(1149588, string.Format("#{0}\t", i)); //You receive bait to catch ~1_val~
                         else
                             from.SendLocalizedMessage(1149588, (string)label);      //You receive bait to catch ~1_val~
 
@@ -238,8 +236,8 @@ namespace Server.Engines.Quests
                 }
                 else
                 {
-                    if (item is FishingPole)
-                        BaseRunicTool.ApplyAttributesTo((FishingPole)item, false, 0, Utility.RandomMinMax(1, tier + 1), 25, 100);
+                    if (item is FishingPole pole)
+                        BaseRunicTool.ApplyAttributesTo(pole, false, 0, Utility.RandomMinMax(1, tier + 1), 25, 100);
 
                     from.SendLocalizedMessage(1149589); //You receive some rare fishing equipment.
                 }
@@ -266,7 +264,6 @@ namespace Server.Engines.Quests
         {
             bool NOGO = true;
             FishMonger mob = null;
-            Map map = player.Map;
 
             List<FishMonger> mongers = new List<FishMonger>(m_Mongers);
 
@@ -361,14 +358,14 @@ namespace Server.Engines.Quests
             {
                 ProfessionalFisherQuest quest = quests[i];
 
-                if (quest.Quester is Mobile && (Mobile)quest.Quester == quester)
+                if (quest.Quester is Mobile mobile && mobile == quester)
                 {
                     player.SendGump(new MondainQuestGump(quest, MondainQuestGump.Section.InProgress, false));
                     quest.InProgress();
                     return true;
                 }
 
-                if (quest.TurnIn == quester || (quest.TurnIn != null && quest.TurnIn.Region != null && quester.Region != null && quest.TurnIn.Region.Name == quester.Region.Name))
+                if (quest.TurnIn == quester || quest.TurnIn != null && quest.TurnIn.Region != null && quester.Region != null && quest.TurnIn.Region.Name == quester.Region.Name)
                 {
                     if (!inRange)
                     {
@@ -407,11 +404,16 @@ namespace Server.Engines.Quests
             double skill = from.Skills[SkillName.Fishing].Base;
 
             if (skill < 80.0)
+            {
                 return 11;
+            }
+
             if (skill < 106.0)
+            {
                 return 41;
-            else
-                return m_Fish.Length; //TODO CHECK
+            }
+
+            return m_Fish.Length; //TODO CHECK
         }
 
         public static int GetIndexForType(Type type)

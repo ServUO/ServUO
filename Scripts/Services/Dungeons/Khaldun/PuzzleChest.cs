@@ -73,61 +73,17 @@ namespace Server.Items
         }
 
         public PuzzleChestCylinder[] Cylinders => m_Cylinders;
-        public PuzzleChestCylinder First
-        {
-            get
-            {
-                return m_Cylinders[0];
-            }
-            set
-            {
-                m_Cylinders[0] = value;
-            }
-        }
-        public PuzzleChestCylinder Second
-        {
-            get
-            {
-                return m_Cylinders[1];
-            }
-            set
-            {
-                m_Cylinders[1] = value;
-            }
-        }
-        public PuzzleChestCylinder Third
-        {
-            get
-            {
-                return m_Cylinders[2];
-            }
-            set
-            {
-                m_Cylinders[2] = value;
-            }
-        }
-        public PuzzleChestCylinder Fourth
-        {
-            get
-            {
-                return m_Cylinders[3];
-            }
-            set
-            {
-                m_Cylinders[3] = value;
-            }
-        }
-        public PuzzleChestCylinder Fifth
-        {
-            get
-            {
-                return m_Cylinders[4];
-            }
-            set
-            {
-                m_Cylinders[4] = value;
-            }
-        }
+
+        public PuzzleChestCylinder First { get => m_Cylinders[0]; set => m_Cylinders[0] = value; }
+
+        public PuzzleChestCylinder Second { get => m_Cylinders[1]; set => m_Cylinders[1] = value; }
+
+        public PuzzleChestCylinder Third { get => m_Cylinders[2]; set => m_Cylinders[2] = value; }
+
+        public PuzzleChestCylinder Fourth { get => m_Cylinders[3]; set => m_Cylinders[3] = value; }
+
+        public PuzzleChestCylinder Fifth { get => m_Cylinders[4]; set => m_Cylinders[4] = value; }
+
         public static PuzzleChestCylinder RandomCylinder()
         {
             switch (Utility.Random(8))
@@ -251,50 +207,19 @@ namespace Server.Items
 
         public PuzzleChestSolution Solution
         {
-            get
-            {
-                return m_Solution;
-            }
+            get => m_Solution;
             set
             {
                 m_Solution = value;
                 InitHints();
             }
         }
+
         public PuzzleChestCylinder[] Hints => m_Hints;
-        public PuzzleChestCylinder FirstHint
-        {
-            get
-            {
-                return m_Hints[0];
-            }
-            set
-            {
-                m_Hints[0] = value;
-            }
-        }
-        public PuzzleChestCylinder SecondHint
-        {
-            get
-            {
-                return m_Hints[1];
-            }
-            set
-            {
-                m_Hints[1] = value;
-            }
-        }
-        public PuzzleChestCylinder ThirdHint
-        {
-            get
-            {
-                return m_Hints[2];
-            }
-            set
-            {
-                m_Hints[2] = value;
-            }
-        }
+        public PuzzleChestCylinder FirstHint { get => m_Hints[0]; set => m_Hints[0] = value; }
+        public PuzzleChestCylinder SecondHint { get => m_Hints[1]; set => m_Hints[1] = value; }
+        public PuzzleChestCylinder ThirdHint { get => m_Hints[2]; set => m_Hints[2] = value; }
+
         public override string DefaultName => null;
         public override bool CheckLocked(Mobile from)
         {
@@ -312,10 +237,8 @@ namespace Server.Items
 
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public PuzzleChestSolutionAndTime GetLastGuess(Mobile m)
@@ -416,7 +339,6 @@ namespace Server.Items
             CleanupGuesses();
 
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             m_Solution.Serialize(writer);
@@ -438,8 +360,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Solution = new PuzzleChestSolution(reader);
 
@@ -503,10 +424,8 @@ namespace Server.Items
             {
                 Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
 
-                if (item is BaseWeapon)
+                if (item is BaseWeapon weapon)
                 {
-                    BaseWeapon weapon = (BaseWeapon)item;
-
                     int attributeCount;
                     int min, max;
 
@@ -514,12 +433,10 @@ namespace Server.Items
 
                     BaseRunicTool.ApplyAttributesTo(weapon, attributeCount, min, max);
 
-                    DropItem(item);
+                    DropItem(weapon);
                 }
-                else if (item is BaseArmor)
+                else if (item is BaseArmor armor)
                 {
-                    BaseArmor armor = (BaseArmor)item;
-
                     int attributeCount;
                     int min, max;
 
@@ -527,12 +444,10 @@ namespace Server.Items
 
                     BaseRunicTool.ApplyAttributesTo(armor, attributeCount, min, max);
 
-                    DropItem(item);
+                    DropItem(armor);
                 }
-                else if (item is BaseHat)
+                else if (item is BaseHat hat)
                 {
-                    BaseHat hat = (BaseHat)item;
-
                     int attributeCount;
                     int min, max;
 
@@ -540,18 +455,18 @@ namespace Server.Items
 
                     BaseRunicTool.ApplyAttributesTo(hat, attributeCount, min, max);
 
-                    DropItem(item);
+                    DropItem(hat);
                 }
-                else if (item is BaseJewel)
+                else if (item is BaseJewel jewel)
                 {
                     int attributeCount;
                     int min, max;
 
                     GetRandomAOSStats(out attributeCount, out min, out max);
 
-                    BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
+                    BaseRunicTool.ApplyAttributesTo(jewel, attributeCount, min, max);
 
-                    DropItem(item);
+                    DropItem(jewel);
                 }
             }
 
@@ -841,15 +756,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -870,15 +783,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

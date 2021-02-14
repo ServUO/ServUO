@@ -6,7 +6,6 @@ namespace Server.Items
 
         [Constructable]
         public FancyDressBearingTheCrestOfBlackthorn1()
-            : base()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
 
@@ -29,13 +28,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                MaxHitPoints = 0;
-                HitPoints = 0;
-            }
+            reader.ReadInt();
         }
     }
 }

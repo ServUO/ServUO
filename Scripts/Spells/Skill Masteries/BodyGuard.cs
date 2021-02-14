@@ -53,9 +53,9 @@ namespace Server.Spells.SkillMasteries
 
         public override void OnCast()
         {
-            if (Caster is BaseCreature && ((BaseCreature)Caster).ControlMaster != null)
+            if (Caster is BaseCreature bc && bc.ControlMaster != null)
             {
-                Mobile master = ((BaseCreature)Caster).ControlMaster;
+                Mobile master = bc.ControlMaster;
 
                 if (Caster.CanSee(master) && Caster.InRange(master.Location, 8))
                 {
@@ -88,8 +88,10 @@ namespace Server.Spells.SkillMasteries
             Mobile protectee = o as Mobile;
             Mobile master = null;
 
-            if (protectee is BaseCreature && !((BaseCreature)protectee).Summoned && ((BaseCreature)protectee).GetMaster() is PlayerMobile)
-                master = ((BaseCreature)protectee).GetMaster();
+            if (protectee is BaseCreature bc && !bc.Summoned && bc.GetMaster() is PlayerMobile)
+            {
+                master = bc.GetMaster();
+            }
 
             if (protectee != null)
             {

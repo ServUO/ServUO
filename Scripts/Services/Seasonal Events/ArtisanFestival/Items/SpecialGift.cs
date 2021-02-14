@@ -8,7 +8,7 @@ namespace Server.Engines.ArtisanFestival
         private Mobile _Owner;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return _Owner; } set { _Owner = value; InvalidateProperties(); } }
+        public Mobile Owner { get => _Owner; set { _Owner = value; InvalidateProperties(); } }
 
         public SpecialGift(Mobile m)
             : base(0x9E1A)

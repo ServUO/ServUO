@@ -6,7 +6,7 @@ namespace Server.Commands.Generic
     {
         public MultiCommandImplementor()
         {
-            Accessors = new string[] { "Multi", "m" };
+            Accessors = new[] { "Multi", "m" };
             SupportRequirement = CommandSupport.Multi;
             AccessLevel = AccessLevel.Counselor;
             Usage = "Multi <command>";
@@ -15,7 +15,7 @@ namespace Server.Commands.Generic
 
         public override void Process(Mobile from, BaseCommand command, string[] args)
         {
-            if (command.ValidateArgs(this, new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args)))
+            if (command.ValidateArgs(new CommandEventArgs(from, command.Commands[0], GenerateArgString(args), args)))
                 from.BeginTarget(-1, command.ObjectTypes == ObjectTypes.All, TargetFlags.None, new TargetStateCallback(OnTarget), new object[] { command, args });
         }
 

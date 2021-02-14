@@ -14,25 +14,13 @@ namespace Server.Engines.Quests
 
         public object Name
         {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
-            }
+            get => m_Name;
+            set => m_Name = value;
         }
         public int ItemID
         {
-            get
-            {
-                return m_ItemID;
-            }
-            set
-            {
-                m_ItemID = value;
-            }
+            get => m_ItemID;
+            set => m_ItemID = value;
         }
     }
 

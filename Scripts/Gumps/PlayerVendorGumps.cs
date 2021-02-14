@@ -23,8 +23,10 @@ namespace Server.Gumps
 
             AddHtmlLocalized(125, 20, 250, 24, 1019070, false, false); // You have agreed to purchase:
 
-            if (!string.IsNullOrEmpty(vi.Description))
-                AddLabel(125, 45, 0, vi.Description);
+            var desc = vi.Description;
+
+            if (!string.IsNullOrEmpty(desc))
+                AddLabel(125, 45, 0, desc.Length > 27 ? string.Format("{0}...", desc.Substring(0, 24)) : desc);
             else
                 AddHtmlLocalized(125, 45, 250, 24, 1019072, false, false); // an item without a description
 
@@ -226,10 +228,10 @@ namespace Server.Gumps
             AddHtmlLocalized(40, 128, 260, 20, 1062509, 0x7FFF, false, false); // Shop Name:
             AddLabel(140, 128, 0x66D, vendor.ShopName);
 
-            if (vendor is RentedVendor)
+            if (vendor is RentedVendor rentedVendor)
             {
                 int days, hours;
-                ((RentedVendor)vendor).ComputeRentalExpireDelay(out days, out hours);
+                rentedVendor.ComputeRentalExpireDelay(out days, out hours);
 
                 AddLabel(40, 154, 0x480, string.Format("Location rental will expire in {0} day{1} and {2} hour{3}.", days, days != 1 ? "s" : "", hours, hours != 1 ? "s" : ""));
             }
@@ -423,9 +425,9 @@ namespace Server.Gumps
             public int LocNumber { get; }
         }
 
-        private static readonly CustomCategory[] Categories = new CustomCategory[]
+        private static readonly CustomCategory[] Categories =
         {
-            new CustomCategory(Layer.InnerTorso, 1011357, true, new CustomItem[]
+            new CustomCategory(Layer.InnerTorso, 1011357, true, new[]
             { // Upper Torso
                 new CustomItem(typeof(Shirt), 1011359, 5399),
                 new CustomItem(typeof(FancyShirt),  1011360, 7933),
@@ -433,7 +435,7 @@ namespace Server.Gumps
                 new CustomItem(typeof(FancyDress),  1011364, 7935),
                 new CustomItem(typeof(Robe), 1011365, 7939)
             }),
-            new CustomCategory(Layer.MiddleTorso, 1011371, true, new CustomItem[]
+            new CustomCategory(Layer.MiddleTorso, 1011371, true, new[]
             { //Over chest
                 new CustomItem(typeof(Doublet), 1011358, 8059),
                 new CustomItem(typeof(Tunic), 1011361, 8097),
@@ -441,16 +443,16 @@ namespace Server.Gumps
                 new CustomItem(typeof(BodySash), 1011372, 5441),
                 new CustomItem(typeof(Surcoat), 1011362, 8189),
                 new CustomItem(typeof(HalfApron),   1011373, 5435),
-                new CustomItem(typeof(FullApron),   1011374, 5437),
+                new CustomItem(typeof(FullApron),   1011374, 5437)
             }),
-            new CustomCategory(Layer.Shoes, 1011388, true, new CustomItem[]
+            new CustomCategory(Layer.Shoes, 1011388, true, new[]
             { //Footwear
                 new CustomItem(typeof(Sandals), 1011389, 5901),
                 new CustomItem(typeof(Shoes), 1011390, 5904),
                 new CustomItem(typeof(Boots), 1011391, 5899),
-                new CustomItem(typeof(ThighBoots),  1011392, 5906),
+                new CustomItem(typeof(ThighBoots),  1011392, 5906)
             }),
-            new CustomCategory(Layer.Helm, 1011375, true, new CustomItem[]
+            new CustomCategory(Layer.Helm, 1011375, true, new[]
             { //Hats
                 new CustomItem(typeof(SkullCap), 1011376, 5444),
                 new CustomItem(typeof(Bandana), 1011377, 5440),
@@ -459,7 +461,7 @@ namespace Server.Gumps
                 new CustomItem(typeof(Cap), 1011380, 5909),
                 new CustomItem(typeof(TallStrawHat),    1011382, 5910)
             }),
-            new CustomCategory(Layer.Helm, 1015319, true, new CustomItem[]
+            new CustomCategory(Layer.Helm, 1015319, true, new[]
             { //More Hats
                 new CustomItem(typeof(StrawHat), 1011382, 5911),
                 new CustomItem(typeof(WizardsHat), 1011383, 5912),
@@ -468,17 +470,17 @@ namespace Server.Gumps
                 new CustomItem(typeof(TricorneHat), 1011386, 5915),
                 new CustomItem(typeof(JesterHat),   1011387, 5916)
             }),
-            new CustomCategory(Layer.Pants, 1011367, true, new CustomItem[]
+            new CustomCategory(Layer.Pants, 1011367, true, new[]
             { //Lower Torso
                 new CustomItem(typeof(LongPants),   1011368, 5433),
                 new CustomItem(typeof(Kilt), 1011369, 5431),
-                new CustomItem(typeof(Skirt), 1011370, 5398),
+                new CustomItem(typeof(Skirt), 1011370, 5398)
             }),
-            new CustomCategory(Layer.Cloak, 1011393, true, new CustomItem[]
+            new CustomCategory(Layer.Cloak, 1011393, true, new[]
             { // Back
                 new CustomItem(typeof(Cloak), 1011394, 5397)
             }),
-            new CustomCategory(Layer.Hair, 1011395, true, new CustomItem[]
+            new CustomCategory(Layer.Hair, 1011395, true, new[]
             { // Hair
                 new CustomItem(0x203B, 1011052),
                 new CustomItem(0x203C, 1011053),
@@ -488,9 +490,9 @@ namespace Server.Gumps
                 new CustomItem(0x204A, 1011050),
                 new CustomItem(0x2047, 1011396),
                 new CustomItem(0x2048, 1011048),
-                new CustomItem(0x2049, 1011049),
+                new CustomItem(0x2049, 1011049)
             }),
-            new CustomCategory(Layer.FacialHair, 1015320, true, new CustomItem[]
+            new CustomCategory(Layer.FacialHair, 1015320, true, new[]
             { //Facial Hair
                 new CustomItem(0x2041, 1011062),
                 new CustomItem(0x203F, 1011060),
@@ -498,9 +500,9 @@ namespace Server.Gumps
                 new CustomItem(0x203E, 1011061),
                 new CustomItem(0x204C, 1015322, true),
                 new CustomItem(0x2040, 1015323),
-                new CustomItem(0x204D, 1011401),
+                new CustomItem(0x204D, 1011401)
             }),
-            new CustomCategory(Layer.FirstValid, 1011397, false, new CustomItem[]
+            new CustomCategory(Layer.FirstValid, 1011397, false, new[]
             { //Held items
                 new CustomItem(typeof(FishingPole), 1011406, 3520),
                 new CustomItem(typeof(Pickaxe), 1011407, 3717),
@@ -512,7 +514,7 @@ namespace Server.Gumps
                 new CustomItem(typeof(Longsword),   1011412, 3936),
                 new CustomItem(typeof(GnarledStaff), 1011413, 5113)
             }),
-            new CustomCategory(Layer.FirstValid, 1015325, false, new CustomItem[]
+            new CustomCategory(Layer.FirstValid, 1015325, false, new[]
             { //More held items
                 new CustomItem(typeof(Crossbow), 1011414, 3920),
                 new CustomItem(typeof(WarMace), 1011415, 5126),
@@ -586,10 +588,10 @@ namespace Server.Gumps
 
             Mobile from = state.Mobile;
 
-            if (m_Vendor is PlayerVendor && !((PlayerVendor)m_Vendor).CanInteractWith(from, true))
+            if (m_Vendor is PlayerVendor vendor && !vendor.CanInteractWith(from, true))
                 return;
 
-            if (m_Vendor is PlayerBarkeeper && !((PlayerBarkeeper)m_Vendor).IsOwner(from))
+            if (m_Vendor is PlayerBarkeeper barkeeper && !barkeeper.IsOwner(from))
                 return;
 
             if (info.ButtonID == 0)
@@ -781,10 +783,10 @@ namespace Server.Gumps
                 if (m_Item.Deleted)
                     return;
 
-                if (m_Vendor is PlayerVendor && !((PlayerVendor)m_Vendor).CanInteractWith(m_Mob, true))
+                if (m_Vendor is PlayerVendor vendor && !vendor.CanInteractWith(m_Mob, true))
                     return;
 
-                if (m_Vendor is PlayerBarkeeper && !((PlayerBarkeeper)m_Vendor).IsOwner(m_Mob))
+                if (m_Vendor is PlayerBarkeeper barkeeper && !barkeeper.IsOwner(m_Mob))
                     return;
 
                 m_Item.Hue = hue;
@@ -811,10 +813,10 @@ namespace Server.Gumps
                 if (m_Vendor.Deleted)
                     return;
 
-                if (m_Vendor is PlayerVendor && !((PlayerVendor)m_Vendor).CanInteractWith(m_Mob, true))
+                if (m_Vendor is PlayerVendor vendor && !vendor.CanInteractWith(m_Mob, true))
                     return;
 
-                if (m_Vendor is PlayerBarkeeper && !((PlayerBarkeeper)m_Vendor).IsOwner(m_Mob))
+                if (m_Vendor is PlayerBarkeeper barkeeper && !barkeeper.IsOwner(m_Mob))
                     return;
 
                 if (m_FacialHair)
@@ -843,8 +845,7 @@ namespace Server.Gumps
             }
         }
 
-        #region Mondain's Legacy
-        private static readonly HairOrBeard[] m_FemaleElfHairStyles = new HairOrBeard[]
+        private static readonly HairOrBeard[] m_FemaleElfHairStyles =
         {
             new HairOrBeard(0x2FCC, 1074389), // Flower
             new HairOrBeard(0x2FC0, 1074386), // Long Feather
@@ -856,7 +857,7 @@ namespace Server.Gumps
             new HairOrBeard(0x2FD1, 1074394)// Spiked
         };
 
-        private static readonly HairOrBeard[] m_MaleElfHairStyles = new HairOrBeard[]
+        private static readonly HairOrBeard[] m_MaleElfHairStyles =
         {
             new HairOrBeard(0x2FBF, 1074385), // Mid Long
             new HairOrBeard(0x2FC0, 1074386), // Long Feather
@@ -867,9 +868,8 @@ namespace Server.Gumps
             new HairOrBeard(0x2FCD, 1074390), // Long
             new HairOrBeard(0x2FD1, 1074394)// Spiked
         };
-        #endregion
 
-        private static readonly HairOrBeard[] m_HairStyles = new HairOrBeard[]
+        private static readonly HairOrBeard[] m_HairStyles =
         {
             new HairOrBeard(0x203B, 1011052), // Short
             new HairOrBeard(0x203C, 1011053), // Long
@@ -882,7 +882,7 @@ namespace Server.Gumps
             new HairOrBeard(0x2049, 1011049)// 2-tails
         };
 
-        private static readonly HairOrBeard[] m_BeardStyles = new HairOrBeard[]
+        private static readonly HairOrBeard[] m_BeardStyles =
         {
             new HairOrBeard(0x2041, 1011062), // Mustache
             new HairOrBeard(0x203F, 1011060), // Short beard
@@ -1126,7 +1126,7 @@ namespace Server.Gumps
 
                             if (index >= m_HairStyles.Length && m_Vendor.Race == Race.Human)
                                 return;
-                            else if (index >= m_FemaleElfHairStyles.Length && m_Vendor.Race == Race.Elf)
+                            if (index >= m_FemaleElfHairStyles.Length && m_Vendor.Race == Race.Elf)
                                 return;
 
                             HairOrBeard hairStyle = m_HairStyles[index];

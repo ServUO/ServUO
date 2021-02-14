@@ -5,10 +5,10 @@ namespace Server.Engines.VoidPool
 {
     public class WaveInfo
     {
-        public int Wave { get; set; }
+        public int Wave { get; }
         public bool Cleared { get; set; }
-        public List<BaseCreature> Creatures { get; private set; }
-        public List<Mobile> Credit { get; set; }
+        public List<BaseCreature> Creatures { get; }
+        public List<Mobile> Credit { get; }
 
         public WaveInfo(int index, List<BaseCreature> list)
         {

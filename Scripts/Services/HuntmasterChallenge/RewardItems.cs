@@ -123,19 +123,19 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get { return m_UsesRemaining; }
+            get => m_UsesRemaining;
             set { m_UsesRemaining = value; InvalidateProperties(); }
         }
 
-        public bool ShowUsesRemaining { get { return true; } set { } }
+        public bool ShowUsesRemaining { get => true; set { } }
 
         private DateTime _NextRecharge;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime NextRecharge
         {
-            get { return _NextRecharge; }
-            set { _NextRecharge = value; }
+            get => _NextRecharge;
+            set => _NextRecharge = value;
         }
 
         [Constructable]
@@ -267,7 +267,7 @@ namespace Server.Items
         private int _Charges;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Charges { get { return _Charges; } set { _Charges = value; InvalidateProperties(); } }
+        public int Charges { get => _Charges; set { _Charges = value; InvalidateProperties(); } }
 
         [Constructable]
         public HarvestersAxe()
@@ -311,7 +311,7 @@ namespace Server.Items
         private int _Charges;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Charges { get { return _Charges; } set { _Charges = value; InvalidateProperties(); } }
+        public int Charges { get => _Charges; set { _Charges = value; InvalidateProperties(); } }
 
         [Constructable]
         public GargishHarvestersAxe()

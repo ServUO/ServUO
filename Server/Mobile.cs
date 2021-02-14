@@ -109,7 +109,7 @@ namespace Server
 
 				if (m_Owner != null)
 				{
-					var sk = m_Owner.Skills[m_Skill];
+					Skill sk = m_Owner.Skills[m_Skill];
 
 					if (sk != null)
 					{
@@ -153,13 +153,13 @@ namespace Server
 			{
 				if (m_Skill != value)
 				{
-					var oldUpdate = m_Owner != null ? m_Owner.Skills[m_Skill] : null;
+					Skill oldUpdate = m_Owner != null ? m_Owner.Skills[m_Skill] : null;
 
 					m_Skill = value;
 
 					if (m_Owner != null)
 					{
-						var sk = m_Owner.Skills[m_Skill];
+						Skill sk = m_Owner.Skills[m_Skill];
 
 						if (sk != null)
 						{
@@ -186,7 +186,7 @@ namespace Server
 
 					if (m_Owner != null)
 					{
-						var sk = m_Owner.Skills[m_Skill];
+						Skill sk = m_Owner.Skills[m_Skill];
 
 						if (sk != null)
 						{
@@ -208,7 +208,7 @@ namespace Server
 
 					if (m_Owner != null)
 					{
-						var sk = m_Owner.Skills[m_Skill];
+						Skill sk = m_Owner.Skills[m_Skill];
 
 						if (sk != null)
 						{
@@ -230,7 +230,7 @@ namespace Server
 
 					if (m_Owner != null)
 					{
-						var sk = m_Owner.Skills[m_Skill];
+						Skill sk = m_Owner.Skills[m_Skill];
 
 						if (sk != null)
 						{
@@ -520,1344 +520,1344 @@ namespace Server
 		Mobile from, HairInfo hair, FacialHairInfo facialhair, List<Item> initialContent, List<Item> equipedItems);
 
 	public delegate int AOSStatusHandler(Mobile from, int index);
-	#endregion
+    #endregion
 
-	/// <summary>
-	///     Base class representing players, npcs, and creatures.
-	/// </summary>
-	[System.Runtime.InteropServices.ComVisible(true)]
-	public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
-	{
-		#region CompareTo(...)
-		public int CompareTo(IEntity other)
-		{
-			if (other == null)
-			{
-				return -1;
-			}
+    /// <summary>
+    ///     Base class representing players, npcs, and creatures.
+    /// </summary>
+    [System.Runtime.InteropServices.ComVisible(true)]
+    public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
+    {
+        #region CompareTo(...)
+        public int CompareTo(IEntity other)
+        {
+            if (other == null)
+            {
+                return -1;
+            }
 
-			return m_Serial.CompareTo(other.Serial);
-		}
+            return m_Serial.CompareTo(other.Serial);
+        }
 
-		public int CompareTo(Mobile other)
-		{
-			return CompareTo((IEntity)other);
-		}
+        public int CompareTo(Mobile other)
+        {
+            return CompareTo((IEntity)other);
+        }
 
-		public int CompareTo(object other)
-		{
-			if (other == null || other is IEntity)
-			{
-				return CompareTo((IEntity)other);
-			}
+        public int CompareTo(object other)
+        {
+            if (other == null || other is IEntity)
+            {
+                return CompareTo((IEntity)other);
+            }
 
-			throw new ArgumentException();
-		}
-		#endregion
+            throw new ArgumentException();
+        }
+        #endregion
 
-		private static bool m_DragEffects = true;
+        private static bool m_DragEffects = true;
 
-		public static bool DragEffects { get => m_DragEffects; set => m_DragEffects = value; }
+        public static bool DragEffects { get => m_DragEffects; set => m_DragEffects = value; }
 
-		#region Handlers
-		public static AllowBeneficialHandler AllowBeneficialHandler { get; set; }
-		public static AllowHarmfulHandler AllowHarmfulHandler { get; set; }
+        #region Handlers
+        public static AllowBeneficialHandler AllowBeneficialHandler { get; set; }
+        public static AllowHarmfulHandler AllowHarmfulHandler { get; set; }
 
-		public static FatigueHandler FatigueHandler { get; set; }
+        public static FatigueHandler FatigueHandler { get; set; }
 
-		private static SkillCheckTargetHandler m_SkillCheckTargetHandler;
-		private static SkillCheckLocationHandler m_SkillCheckLocationHandler;
-		private static SkillCheckDirectTargetHandler m_SkillCheckDirectTargetHandler;
-		private static SkillCheckDirectLocationHandler m_SkillCheckDirectLocationHandler;
+        private static SkillCheckTargetHandler m_SkillCheckTargetHandler;
+        private static SkillCheckLocationHandler m_SkillCheckLocationHandler;
+        private static SkillCheckDirectTargetHandler m_SkillCheckDirectTargetHandler;
+        private static SkillCheckDirectLocationHandler m_SkillCheckDirectLocationHandler;
 
-		public static SkillCheckTargetHandler SkillCheckTargetHandler { get => m_SkillCheckTargetHandler; set => m_SkillCheckTargetHandler = value; }
+        public static SkillCheckTargetHandler SkillCheckTargetHandler { get => m_SkillCheckTargetHandler; set => m_SkillCheckTargetHandler = value; }
 
-		public static SkillCheckLocationHandler SkillCheckLocationHandler { get => m_SkillCheckLocationHandler; set => m_SkillCheckLocationHandler = value; }
+        public static SkillCheckLocationHandler SkillCheckLocationHandler { get => m_SkillCheckLocationHandler; set => m_SkillCheckLocationHandler = value; }
 
-		public static SkillCheckDirectTargetHandler SkillCheckDirectTargetHandler { get => m_SkillCheckDirectTargetHandler; set => m_SkillCheckDirectTargetHandler = value; }
+        public static SkillCheckDirectTargetHandler SkillCheckDirectTargetHandler { get => m_SkillCheckDirectTargetHandler; set => m_SkillCheckDirectTargetHandler = value; }
 
-		public static SkillCheckDirectLocationHandler SkillCheckDirectLocationHandler { get => m_SkillCheckDirectLocationHandler; set => m_SkillCheckDirectLocationHandler = value; }
+        public static SkillCheckDirectLocationHandler SkillCheckDirectLocationHandler { get => m_SkillCheckDirectLocationHandler; set => m_SkillCheckDirectLocationHandler = value; }
 
-		private static AOSStatusHandler m_AOSStatusHandler;
+        private static AOSStatusHandler m_AOSStatusHandler;
 
-		public static AOSStatusHandler AOSStatusHandler { get => m_AOSStatusHandler; set => m_AOSStatusHandler = value; }
-		#endregion
-
-		#region Regeneration
-		private static RegenRateHandler m_HitsRegenRate, m_StamRegenRate, m_ManaRegenRate;
-		private static TimeSpan m_DefaultHitsRate, m_DefaultStamRate, m_DefaultManaRate;
-
-		public static RegenRateHandler HitsRegenRateHandler { get => m_HitsRegenRate; set => m_HitsRegenRate = value; }
-
-		public static TimeSpan DefaultHitsRate { get => m_DefaultHitsRate; set => m_DefaultHitsRate = value; }
-
-		public static RegenRateHandler StamRegenRateHandler { get => m_StamRegenRate; set => m_StamRegenRate = value; }
-
-		public static TimeSpan DefaultStamRate { get => m_DefaultStamRate; set => m_DefaultStamRate = value; }
-
-		public static RegenRateHandler ManaRegenRateHandler { get => m_ManaRegenRate; set => m_ManaRegenRate = value; }
-
-		public static TimeSpan DefaultManaRate { get => m_DefaultManaRate; set => m_DefaultManaRate = value; }
-
-		public static TimeSpan GetHitsRegenRate(Mobile m)
-		{
-			if (m_HitsRegenRate == null)
-			{
-				return m_DefaultHitsRate;
-			}
-
-			return m_HitsRegenRate(m);
-		}
-
-		public static TimeSpan GetStamRegenRate(Mobile m)
-		{
-			if (m_StamRegenRate == null)
-			{
-				return m_DefaultStamRate;
-			}
-
-			return m_StamRegenRate(m);
-		}
-
-		public static TimeSpan GetManaRegenRate(Mobile m)
-		{
-			if (m_ManaRegenRate == null)
-			{
-				return m_DefaultManaRate;
-			}
-
-			return m_ManaRegenRate(m);
-		}
-		#endregion
-
-		private class MovementRecord
-		{
-			public long m_End;
-
-			private static readonly Queue<MovementRecord> m_InstancePool = new Queue<MovementRecord>();
-
-			public static MovementRecord NewInstance(long end)
-			{
-				MovementRecord r;
-
-				if (m_InstancePool.Count > 0)
-				{
-					r = m_InstancePool.Dequeue();
-
-					r.m_End = end;
-				}
-				else
-				{
-					r = new MovementRecord(end);
-				}
-
-				return r;
-			}
-
-			private MovementRecord(long end)
-			{
-				m_End = end;
-			}
-
-			public bool Expired()
-			{
-				var v = Core.TickCount - m_End >= 0;
-
-				if (v)
-				{
-					m_InstancePool.Enqueue(this);
-				}
-
-				return v;
-			}
-		}
-
-		#region Var declarations
-		private readonly Serial m_Serial;
-		private Map m_Map;
-		private Point3D m_Location;
-		private Direction m_Direction;
-		private Body m_Body;
-		private int m_Hue;
-		private Poison m_Poison;
-		private Timer m_PoisonTimer;
-		private BaseGuild m_Guild;
-		private string m_GuildTitle;
-		private bool m_Criminal;
-		private string m_Name;
-		private int m_Deaths, m_Kills, m_ShortTermMurders;
-		private int m_SpeechHue, m_EmoteHue, m_WhisperHue, m_YellHue;
-		private string m_Language;
-		private NetState m_NetState;
-		private bool m_Female, m_Warmode, m_Hidden, m_Blessed, m_Flying;
-		private int m_StatCap;
-		private int m_StrCap;
-		private int m_DexCap;
-		private int m_IntCap;
-		private int m_StrMaxCap;
-		private int m_DexMaxCap;
-		private int m_IntMaxCap;
-		private int m_Str, m_Dex, m_Int;
-		private int m_Hits, m_Stam, m_Mana;
-		private int m_Fame, m_Karma;
-		private AccessLevel m_AccessLevel;
-		private Skills m_Skills;
-		private List<Item> m_Items;
-		private bool m_Player;
-		private string m_Title;
-		private string m_Profile;
-		private bool m_ProfileLocked;
-		private int m_LightLevel;
-		private int m_TotalGold, m_TotalItems, m_TotalWeight;
-		private List<StatMod> m_StatMods;
-		private ISpell m_Spell;
-		private Target m_Target;
-		private Prompt m_Prompt;
-		private ContextMenu m_ContextMenu;
-		private List<AggressorInfo> m_Aggressors, m_Aggressed;
-		private IDamageable m_Combatant;
-		private List<Mobile> m_Stabled;
-		private bool m_AutoPageNotify;
-		private bool m_CanHearGhosts;
-		private bool m_CanSwim, m_CantWalk;
-		private int m_TithingPoints;
-		private bool m_DisplayGuildTitle;
-		private bool m_DisplayGuildAbbr;
-		private Mobile m_GuildFealty;
-		private DateTime[] m_StuckMenuUses;
-		private long m_NextSkillTime;
-		private long m_NextActionMessage;
-		private bool m_Paralyzed;
-		private bool m_Frozen;
-		private int m_AllowedStealthSteps;
-		private int m_Hunger;
-		private int m_NameHue = -1;
-		private Region m_Region;
-		private int m_BaseSoundID;
-		private int m_VirtualArmor;
-		private bool m_Squelched;
-		private int m_MagicDamageAbsorb;
-		private int m_Followers, m_FollowersMax;
-		private List<object> _actions; // prefer List<object> over ArrayList for more specific profiling information
-		private Queue<MovementRecord> m_MoveRecords;
-		private int m_WarmodeChanges;
-		private DateTime m_NextWarmodeChange;
-		private WarmodeTimer m_WarmodeTimer;
-		private int m_Thirst, m_BAC;
-		private VirtueInfo m_Virtues;
-		private object m_Party;
-		private List<SkillMod> m_SkillMods;
-		private Body m_BodyMod;
-		private DateTime m_LastStrGain;
-		private DateTime m_LastIntGain;
-		private DateTime m_LastDexGain;
-		private Race m_Race;
-		#endregion
-
-		private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds(1.0);
-		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds(4.0);
-
-		private const int WarmodeCatchCount = 4;
-		// Allow four warmode changes in 0.5 seconds, any more will be delay for two seconds
-
-		[CommandProperty(AccessLevel.Decorator)]
-		public Race Race
-		{
-			get
-			{
-				if (m_Race == null)
-				{
-					m_Race = Race.DefaultRace;
-				}
-
-				return m_Race;
-			}
-			set
-			{
-				var oldRace = Race;
-
-				m_Race = value;
-
-				if (m_Race == null)
-				{
-					m_Race = Race.DefaultRace;
-				}
-
-				Body = m_Race.Body(this);
-				UpdateResistances();
-
-				Delta(MobileDelta.Race);
-
-				OnRaceChange(oldRace);
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool CharacterOut { get; set; }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool PublicHouseContent { get; set; }
-
-		public DFAlgorithm DFA { get; set; }
-
-		protected virtual void OnRaceChange(Race oldRace)
-		{ }
-
-		public virtual double RacialSkillBonus => 0;
-
-		public virtual double GetRacialSkillBonus(SkillName skill)
-		{
-			return RacialSkillBonus;
-		}
-
-		public virtual void MutateSkill(SkillName skill, ref double value)
-		{ }
-
-		private List<ResistanceMod> m_ResistMods;
-
-		private int[] m_Resistances;
-
-		protected List<string> m_SlayerVulnerabilities = new List<string>();
-		protected bool m_SpecialSlayerMechanics; // false
-
-		public List<string> SlayerVulnerabilities => m_SlayerVulnerabilities;
-
-		[CommandProperty(AccessLevel.Decorator)]
-		public bool SpecialSlayerMechanics => m_SpecialSlayerMechanics;
-
-		public int[] Resistances => m_Resistances;
-
-		public virtual int BasePhysicalResistance => 0;
-		public virtual int BaseFireResistance => 0;
-		public virtual int BaseColdResistance => 0;
-		public virtual int BasePoisonResistance => 0;
-		public virtual int BaseEnergyResistance => 0;
-
-		public virtual void ComputeLightLevels(out int global, out int personal)
-		{
-			ComputeBaseLightLevels(out global, out personal);
-
-			if (m_Region != null)
-			{
-				m_Region.AlterLightLevel(this, ref global, ref personal);
-			}
-		}
-
-		public virtual void ComputeBaseLightLevels(out int global, out int personal)
-		{
-			global = 0;
-			personal = m_LightLevel;
-		}
-
-		public virtual void CheckLightLevels(bool forceResend)
-		{ }
-
-		[CommandProperty(AccessLevel.Counselor)]
-		public virtual int PhysicalResistance => GetResistance(ResistanceType.Physical);
-
-		[CommandProperty(AccessLevel.Counselor)]
-		public virtual int FireResistance => GetResistance(ResistanceType.Fire);
-
-		[CommandProperty(AccessLevel.Counselor)]
-		public virtual int ColdResistance => GetResistance(ResistanceType.Cold);
-
-		[CommandProperty(AccessLevel.Counselor)]
-		public virtual int PoisonResistance => GetResistance(ResistanceType.Poison);
-
-		[CommandProperty(AccessLevel.Counselor)]
-		public virtual int EnergyResistance => GetResistance(ResistanceType.Energy);
-
-		public virtual void UpdateResistances()
-		{
-			if (m_Resistances == null)
-			{
-				m_Resistances = new[] { Int32.MinValue, Int32.MinValue, Int32.MinValue, Int32.MinValue, Int32.MinValue };
-			}
-
-			var delta = false;
-
-			for (var i = 0; i < m_Resistances.Length; ++i)
-			{
-				if (m_Resistances[i] != Int32.MinValue)
-				{
-					m_Resistances[i] = Int32.MinValue;
-					delta = true;
-				}
-			}
-
-			if (delta)
-			{
-				Delta(MobileDelta.Resistances);
-				ProcessDelta();
-			}
-		}
-
-		public virtual int GetResistance(ResistanceType type)
-		{
-			if (m_Resistances == null)
-			{
-				m_Resistances = new[] { Int32.MinValue, Int32.MinValue, Int32.MinValue, Int32.MinValue, Int32.MinValue };
-			}
-
-			var v = (int)type;
-
-			if (v < 0 || v >= m_Resistances.Length)
-			{
-				return 0;
-			}
-
-			var res = m_Resistances[v];
-
-			if (res == Int32.MinValue)
-			{
-				ComputeResistances();
-				res = m_Resistances[v];
-			}
-
-			return res;
-		}
-
-		public List<ResistanceMod> ResistanceMods { get => m_ResistMods; set => m_ResistMods = value; }
-
-		public virtual void AddResistanceMod(ResistanceMod toAdd)
-		{
-			if (m_ResistMods == null)
-			{
-				m_ResistMods = new List<ResistanceMod>();
-			}
-
-			m_ResistMods.Add(toAdd);
-			UpdateResistances();
-		}
-
-		public virtual void RemoveResistanceMod(ResistanceMod toRemove)
-		{
-			if (m_ResistMods != null)
-			{
-				m_ResistMods.Remove(toRemove);
-
-				if (m_ResistMods.Count == 0)
-				{
-					m_ResistMods = null;
-				}
-			}
-
-			UpdateResistances();
-		}
-
-		private static int m_MinPlayerResistance = -70;
-
-		public static int MinPlayerResistance { get => m_MinPlayerResistance; set => m_MinPlayerResistance = value; }
-
-		private static int m_MaxPlayerResistance = 70;
-
-		public static int MaxPlayerResistance { get => m_MaxPlayerResistance; set => m_MaxPlayerResistance = value; }
-
-		public virtual void ComputeResistances()
-		{
-			if (m_Resistances == null)
-			{
-				m_Resistances = new[] { Int32.MinValue, Int32.MinValue, Int32.MinValue, Int32.MinValue, Int32.MinValue };
-			}
-
-			for (var i = 0; i < m_Resistances.Length; ++i)
-			{
-				m_Resistances[i] = 0;
-			}
-
-			m_Resistances[0] += BasePhysicalResistance;
-			m_Resistances[1] += BaseFireResistance;
-			m_Resistances[2] += BaseColdResistance;
-			m_Resistances[3] += BasePoisonResistance;
-			m_Resistances[4] += BaseEnergyResistance;
-
-			for (var i = 0; m_ResistMods != null && i < m_ResistMods.Count; ++i)
-			{
-				var mod = m_ResistMods[i];
-				var v = (int)mod.Type;
-
-				if (v >= 0 && v < m_Resistances.Length)
-				{
-					m_Resistances[v] += mod.Offset;
-				}
-			}
-
-			for (var i = 0; i < m_Items.Count; ++i)
-			{
-				var item = m_Items[i];
-
-				if (item.CheckPropertyConfliction(this))
-				{
-					continue;
-				}
-
-				m_Resistances[0] += item.PhysicalResistance;
-				m_Resistances[1] += item.FireResistance;
-				m_Resistances[2] += item.ColdResistance;
-				m_Resistances[3] += item.PoisonResistance;
-				m_Resistances[4] += item.EnergyResistance;
-			}
-
-			for (var i = 0; i < m_Resistances.Length; ++i)
-			{
-				var min = GetMinResistance((ResistanceType)i);
-				var max = GetMaxResistance((ResistanceType)i);
-
-				if (max < min)
-				{
-					max = min;
-				}
-
-				if (m_Resistances[i] > max)
-				{
-					m_Resistances[i] = max;
-				}
-				else if (m_Resistances[i] < min)
-				{
-					m_Resistances[i] = min;
-				}
-			}
-		}
-
-		public virtual int GetMinResistance(ResistanceType type)
-		{
-			if (m_Player)
-			{
-				return m_MinPlayerResistance;
-			}
-
-			return -100;
-		}
-
-		public virtual int GetMaxResistance(ResistanceType type)
-		{
-			if (m_Player)
-			{
-				return m_MaxPlayerResistance;
-			}
-
-			return 100;
-		}
-
-		public int GetAOSStatus(int index)
-		{
-			return (m_AOSStatusHandler == null) ? 0 : m_AOSStatusHandler(this, index);
-		}
-
-		public virtual void SendPropertiesTo(Mobile from)
-		{
-			from.Send(PropertyList);
-		}
-
-		public virtual void OnAosSingleClick(Mobile from)
-		{
-			var opl = PropertyList;
-
-			if (opl.Header > 0)
-			{
-				int hue;
-
-				if (m_NameHue != -1)
-				{
-					hue = m_NameHue;
-				}
-				else if (IsStaff())
-				{
-					hue = 11;
-				}
-				else
-				{
-					hue = Notoriety.GetHue(Notoriety.Compute(from, this));
-				}
-
-				from.Send(new MessageLocalized(m_Serial, Body, MessageType.Label, hue, 3, opl.Header, Name, opl.HeaderArgs));
-			}
-		}
-
-		public virtual string ApplyNameSuffix(string suffix)
-		{
-			return suffix;
-		}
-
-		public virtual void AddNameProperties(ObjectPropertyList list)
-		{
-			var name = Name;
-
-			if (name == null)
-			{
-				name = String.Empty;
-			}
-
-			var prefix = ""; // still needs to be defined due to cliloc. Only defined in PlayerMobile. BaseCreature and BaseVendor require the suffix for the title and use the same cliloc.
-
-			var suffix = "";
-
-			if (PropertyTitle && !String.IsNullOrEmpty(Title))
-			{
-				suffix = Title;
-			}
-
-			suffix = ApplyNameSuffix(suffix);
-
-			list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~           
-		}
-
-		public virtual void GetProperties(ObjectPropertyList list)
-		{
-			AddNameProperties(list);
-
-			if (Spawner != null)
-			{
-				Spawner.GetSpawnProperties(this, list);
-			}
-		}
-
-		public virtual void GetChildProperties(ObjectPropertyList list, Item item)
-		{ }
-
-		public virtual void GetChildNameProperties(ObjectPropertyList list, Item item)
-		{ }
-
-		public List<Mobile> Stabled => m_Stabled;
-
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public VirtueInfo Virtues { get => m_Virtues; set { } }
-
-		public object Party { get => m_Party; set => m_Party = value; }
-		public List<SkillMod> SkillMods => m_SkillMods;
-
-		/// <summary>
-		///     Overridable. Virtual event invoked when <paramref name="skill" /> changes in some way.
-		/// </summary>
-		public virtual void OnSkillInvalidated(Skill skill)
-		{ }
-
-		public virtual void UpdateSkillMods()
-		{
-			ValidateSkillMods();
-
-			for (var i = 0; i < m_SkillMods.Count; ++i)
-			{
-				var mod = m_SkillMods[i];
-
-				var sk = m_Skills[mod.Skill];
-
-				if (sk != null)
-				{
-					sk.Update();
-				}
-			}
-		}
-
-		public virtual void ValidateSkillMods()
-		{
-			for (var i = 0; i < m_SkillMods.Count;)
-			{
-				var mod = m_SkillMods[i];
-
-				if (mod.CheckCondition())
-				{
-					++i;
-				}
-				else
-				{
-					InternalRemoveSkillMod(mod);
-				}
-			}
-		}
-
-		public virtual void AddSkillMod(SkillMod mod)
-		{
-			if (mod == null)
-			{
-				return;
-			}
-
-			ValidateSkillMods();
-
-			if (!m_SkillMods.Contains(mod))
-			{
-				m_SkillMods.Add(mod);
-				mod.Owner = this;
-
-				var sk = m_Skills[mod.Skill];
-
-				if (sk != null)
-				{
-					sk.Update();
-				}
-			}
-		}
-
-		public virtual void RemoveSkillMod(SkillMod mod)
-		{
-			if (mod == null)
-			{
-				return;
-			}
-
-			ValidateSkillMods();
-
-			InternalRemoveSkillMod(mod);
-		}
-
-		private void InternalRemoveSkillMod(SkillMod mod)
-		{
-			if (m_SkillMods.Contains(mod))
-			{
-				m_SkillMods.Remove(mod);
-				mod.Owner = null;
-
-				var sk = m_Skills[mod.Skill];
-
-				if (sk != null)
-				{
-					sk.Update();
-				}
-			}
-		}
-
-		private class WarmodeTimer : Timer
-		{
-			private readonly Mobile m_Mobile;
-			private bool m_Value;
-
-			public bool Value { get => m_Value; set => m_Value = value; }
-
-			public WarmodeTimer(Mobile m, bool value)
-				: base(WarmodeSpamDelay)
-			{
-				m_Mobile = m;
-				m_Value = value;
-			}
-
-			protected override void OnTick()
-			{
-				m_Mobile.Warmode = m_Value;
-				m_Mobile.m_WarmodeChanges = 0;
-
-				m_Mobile.m_WarmodeTimer = null;
-			}
-		}
-
-		/// <summary>
-		///     Overridable. Virtual event invoked when a client, <paramref name="from" />, invokes a 'help request' for the Mobile. Seemingly no longer functional in newer clients.
-		/// </summary>
-		public virtual void OnHelpRequest(Mobile from)
-		{ }
-
-		public void DelayChangeWarmode(bool value)
-		{
-			if (m_WarmodeTimer != null)
-			{
-				m_WarmodeTimer.Value = value;
-				return;
-			}
-
-			if (m_Warmode == value)
-			{
-				return;
-			}
-
-			DateTime now = DateTime.UtcNow, next = m_NextWarmodeChange;
-
-			if (now > next || m_WarmodeChanges == 0)
-			{
-				m_WarmodeChanges = 1;
-				m_NextWarmodeChange = now + WarmodeSpamCatch;
-			}
-			else if (m_WarmodeChanges == WarmodeCatchCount)
-			{
-				m_WarmodeTimer = new WarmodeTimer(this, value);
-				m_WarmodeTimer.Start();
-
-				return;
-			}
-			else
-			{
-				++m_WarmodeChanges;
-			}
-
-			Warmode = value;
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int MeleeDamageAbsorb { get; set; }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int MagicDamageAbsorb { get => m_MagicDamageAbsorb; set => m_MagicDamageAbsorb = value; }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int SkillsTotal => m_Skills == null ? 0 : m_Skills.Total;
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int SkillsCap
-		{
-			get => m_Skills == null ? 0 : m_Skills.Cap;
-			set
-			{
-				if (m_Skills != null)
-				{
-					m_Skills.Cap = value;
-				}
-			}
-		}
-
-		public bool InLOS(Mobile target)
-		{
-			if (m_Deleted || m_Map == null)
-			{
-				return false;
-			}
-
-			if (target == this || IsStaff())
-			{
-				return true;
-			}
-
-			return m_Map.LineOfSight(this, target);
-		}
-
-		public bool InLOS(object target)
-		{
-			if (m_Deleted || m_Map == null)
-			{
-				return false;
-			}
-
-			if (target == this || IsStaff())
-			{
-				return true;
-			}
-
-			if (target is Item item)
-			{
-				if (item.RootParent == this)
-				{
-					return true;
-				}
-
-				if (item.Parent is Container)
-				{
-					return InLOS(item.Parent);
-				}
-			}
-
-			return m_Map.LineOfSight(this, target);
-		}
-
-		public bool InLOS(Point3D target)
-		{
-			if (m_Deleted || m_Map == null)
-			{
-				return false;
-			}
-
-			if (IsStaff())
-			{
-				return true;
-			}
-
-			return m_Map.LineOfSight(this, target);
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int BaseSoundID { get => m_BaseSoundID; set => m_BaseSoundID = value; }
-
-		public bool BeginAction(object toLock)
-		{
-			if (_actions == null)
-			{
-				_actions = new List<object>
-				{
-					toLock
-				};
-
-				return true;
-			}
-
-			if (!_actions.Contains(toLock))
-			{
-				_actions.Add(toLock);
-
-				return true;
-			}
-
-			return false;
-		}
-
-		public bool CanBeginAction(object toLock)
-		{
-			return _actions == null || !_actions.Contains(toLock);
-		}
-
-		public void EndAction(object toLock)
-		{
-			if (_actions != null)
-			{
-				_actions.Remove(toLock);
-
-				if (_actions.Count == 0)
-				{
-					_actions = null;
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.Decorator)]
-		public int NameHue { get => m_NameHue; set => m_NameHue = value; }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int Hunger
-		{
-			get => m_Hunger;
-			set
-			{
-				var oldValue = m_Hunger;
-
-				if (oldValue != value)
-				{
-					m_Hunger = value;
-
-					EventSink.InvokeHungerChanged(new HungerChangedEventArgs(this, oldValue));
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int Thirst { get => m_Thirst; set => m_Thirst = value; }
-
-		[CommandProperty(AccessLevel.Decorator)]
-		public int BAC { get => m_BAC; set => m_BAC = value; }
-
-		public virtual int DefaultBloodHue => 0;
-
-		public virtual bool HasBlood => Alive && BloodHue >= 0 && !Body.IsGhost && !Body.IsEquipment;
-
-		private int m_BloodHue = -1;
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual int BloodHue
-		{
-			get
-			{
-				if (m_BloodHue < 0)
-				{
-					return DefaultBloodHue;
-				}
-
-				return m_BloodHue;
-			}
-			set => m_BloodHue = value;
-		}
-
-		private long m_LastMoveTime;
-
-		/// <summary>
-		///     Gets or sets the number of steps this player may take when hidden before being revealed.
-		/// </summary>
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int AllowedStealthSteps { get => m_AllowedStealthSteps; set => m_AllowedStealthSteps = value; }
-
-		private StatLockType m_StrLock, m_DexLock, m_IntLock;
-
-		private Item m_Holding;
-
-		public Item Holding
-		{
-			get => m_Holding;
-			set
-			{
-				if (m_Holding != value)
-				{
-					if (m_Holding != null)
-					{
-						UpdateTotal(m_Holding, TotalType.Weight, -(m_Holding.TotalWeight + m_Holding.PileWeight));
-
-						if (m_Holding.HeldBy == this)
-						{
-							m_Holding.HeldBy = null;
-						}
-					}
-
-					if (value != null && m_Holding != null)
-					{
-						DropHolding();
-					}
-
-					m_Holding = value;
-
-					if (m_Holding != null)
-					{
-						UpdateTotal(m_Holding, TotalType.Weight, m_Holding.TotalWeight + m_Holding.PileWeight);
-
-						if (m_Holding.HeldBy == null)
-						{
-							m_Holding.HeldBy = this;
-						}
-					}
-				}
-			}
-		}
-
-		public long LastMoveTime { get => m_LastMoveTime; set => m_LastMoveTime = value; }
-
-		private static readonly string _ParaTimerID = "ParalyzeTimer";
-		private static readonly string _FrozenTimerID = "FreezeTimer";
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual bool Paralyzed
-		{
-			get => m_Paralyzed;
-			set
-			{
-				if (m_Paralyzed != value)
-				{
-					m_Paralyzed = value;
-					Delta(MobileDelta.Flags);
-
-					SendLocalizedMessage(m_Paralyzed ? 502381 : 502382);
-
-					TimerRegistry.RemoveFromRegistry(_ParaTimerID, this);
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.Decorator)]
-		public bool Frozen
-		{
-			get => m_Frozen;
-			set
-			{
-				if (m_Frozen != value)
-				{
-					m_Frozen = value;
-					Delta(MobileDelta.Flags);
-
-					TimerRegistry.RemoveFromRegistry(_FrozenTimerID, this);
-				}
-			}
-		}
-
-		public void Paralyze(TimeSpan duration)
-		{
-			if (!m_Paralyzed)
-			{
-				Paralyzed = true;
-
-				TimerRegistry.Register(_ParaTimerID, this, duration, m => m.Paralyzed = false);
-			}
-		}
-
-		public void Freeze(TimeSpan duration)
-		{
-			if (!m_Frozen)
-			{
-				Frozen = true;
-
-				TimerRegistry.Register(_FrozenTimerID, this, duration, m => m.Frozen = false);
-			}
-		}
-
-		/// <summary>
-		///     Gets or sets the <see cref="StatLockType">lock state</see> for the <see cref="RawStr" /> property.
-		/// </summary>
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public StatLockType StrLock
-		{
-			get => m_StrLock;
-			set
-			{
-				if (m_StrLock != value)
-				{
-					m_StrLock = value;
-
-					if (m_NetState != null)
-					{
-						m_NetState.Send(new StatLockInfo(this));
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		///     Gets or sets the <see cref="StatLockType">lock state</see> for the <see cref="RawDex" /> property.
-		/// </summary>
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public StatLockType DexLock
-		{
-			get => m_DexLock;
-			set
-			{
-				if (m_DexLock != value)
-				{
-					m_DexLock = value;
-
-					if (m_NetState != null)
-					{
-						m_NetState.Send(new StatLockInfo(this));
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		///     Gets or sets the <see cref="StatLockType">lock state</see> for the <see cref="RawInt" /> property.
-		/// </summary>
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public StatLockType IntLock
-		{
-			get => m_IntLock;
-			set
-			{
-				if (m_IntLock != value)
-				{
-					m_IntLock = value;
-
-					if (m_NetState != null)
-					{
-						m_NetState.Send(new StatLockInfo(this));
-					}
-				}
-			}
-		}
-
-		public override string ToString()
-		{
-			return String.Format("0x{0:X} \"{1}\"", m_Serial.Value, Name);
-		}
-
-		public long NextActionTime { get; set; }
-
-		public long NextActionMessage { get => m_NextActionMessage; set => m_NextActionMessage = value; }
-
-		private static int m_ActionMessageDelay = 125;
-
-		public static int ActionMessageDelay { get => m_ActionMessageDelay; set => m_ActionMessageDelay = value; }
-
-		public virtual void SendSkillMessage()
-		{
-			if (m_NextActionMessage - Core.TickCount >= 0)
-			{
-				return;
-			}
-
-			m_NextActionMessage = Core.TickCount + m_ActionMessageDelay;
-
-			SendLocalizedMessage(500118); // You must wait a few moments to use another skill.
-		}
-
-		public virtual void SendActionMessage()
-		{
-			if (m_NextActionMessage - Core.TickCount >= 0)
-			{
-				return;
-			}
-
-			m_NextActionMessage = Core.TickCount + m_ActionMessageDelay;
-
-			SendLocalizedMessage(500119); // You must wait to perform another action.
-		}
-
-		public virtual void ClearHands()
-		{
-			ClearHand(FindItemOnLayer(Layer.OneHanded));
-			ClearHand(FindItemOnLayer(Layer.TwoHanded));
-		}
-
-		public virtual void ClearHand(Item item)
-		{
-			if (item != null && item.Movable && !item.AllowEquipedCast(this))
-			{
-				var pack = Backpack;
-
-				if (pack == null)
-				{
-					AddToBackpack(item);
-				}
-				else
-				{
-					pack.DropItem(item);
-				}
-			}
-		}
-
-		#region Timers
-
-		#region Regeneration
-		private static bool m_GlobalRegenThroughPoison = true;
-		public static bool GlobalRegenThroughPoison { get => m_GlobalRegenThroughPoison; set => m_GlobalRegenThroughPoison = value; }
-
-		public static readonly string _HitsRegenTimerID = "HitsRegenTimer";
-		public static readonly string _StamRegenTimerID = "StamRegenTimer";
-		public static readonly string _ManaRegenTimerID = "ManaRegenTimer";
-		public static readonly string _HitsRegenTimerPlayerID = _HitsRegenTimerID + "Player";
-		public static readonly string _StamRegenTimerPlayerID = _StamRegenTimerID + "Player";
-		public static readonly string _ManaRegenTimerPlayerID = _ManaRegenTimerID + "Player";
-
-		private bool m_InternalCanRegen;
-
-		public virtual bool RegenThroughPoison => m_GlobalRegenThroughPoison;
-
-		public virtual bool CanRegenHits => Alive && !Deleted && (RegenThroughPoison || !Poisoned) && m_InternalCanRegen;
-		public virtual bool CanRegenStam => Alive && !Deleted && m_InternalCanRegen;
-		public virtual bool CanRegenMana => Alive && !Deleted && m_InternalCanRegen;
-
-		private void HitsOnTick()
-		{
-			if (CanRegenHits)
-			{
-				Hits++;
-
-				if (Hits < HitsMax)
-				{
-					TimerRegistry.UpdateRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this, GetHitsRegenRate(this));
-				}
-			}
-		}
-
-		private void StamOnTick()
-		{
-			if (CanRegenMana)
-			{
-				Stam++;
-
-				if (Stam < StamMax)
-				{
-					TimerRegistry.UpdateRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this, GetStamRegenRate(this));
-				}
-			}
-		}
-
-		private void ManaOnTick()
-		{
-			if (CanRegenMana)
-			{
-				Mana++;
-
-				if (Mana < ManaMax)
-				{
-					TimerRegistry.UpdateRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this, GetManaRegenRate(this));
-				}
-			}
-		}
-		#endregion
-
-		#region Aggro Timer
-		private static readonly string _ExpireAggroTimerID = "ExpireAggroTimer";
-
-		public void UpdateAggrExpire()
-		{
-			if (m_Deleted || (m_Aggressors.Count == 0 && m_Aggressed.Count == 0))
-			{
-				StopAggrExpire();
-			}
-			else if (!TimerRegistry.HasTimer(_ExpireAggroTimerID, this))
-			{
-				TimerRegistry.Register(_ExpireAggroTimerID, this, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), false, TimerPriority.OneSecond, m => m.AggroExpireOnTick());
-			}
-		}
-
-		private void AggroExpireOnTick()
-		{
-			if (Deleted || (Aggressors.Count == 0 && Aggressed.Count == 0))
-			{
-				StopAggrExpire();
-			}
-			else
-			{
-				CheckAggrExpire();
-			}
-		}
-
-		private void StopAggrExpire()
-		{
-			TimerRegistry.RemoveFromRegistry(_ExpireAggroTimerID, this);
-		}
-
-		private void CheckAggrExpire()
-		{
-			for (var i = m_Aggressors.Count - 1; i >= 0; --i)
-			{
-				if (i >= m_Aggressors.Count)
-				{
-					continue;
-				}
-
-				var info = m_Aggressors[i];
-
-				if (info.Expired)
-				{
-					var attacker = info.Attacker;
-					attacker.RemoveAggressed(this);
-
-					m_Aggressors.RemoveAt(i);
-					info.Free();
-
-					if (m_NetState != null && Utility.InUpdateRange(this, attacker) && CanSee(attacker))
-					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, attacker));
-					}
-				}
-			}
-
-			for (var i = m_Aggressed.Count - 1; i >= 0; --i)
-			{
-				if (i >= m_Aggressed.Count)
-				{
-					continue;
-				}
-
-				var info = m_Aggressed[i];
-
-				if (info.Expired)
-				{
-					var defender = info.Defender;
-					defender.RemoveAggressor(this);
-
-					m_Aggressed.RemoveAt(i);
-					info.Free();
-
-					if (m_NetState != null && Utility.InUpdateRange(this, defender) && CanSee(defender))
-					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, defender));
-					}
-				}
-			}
-
-			UpdateAggrExpire();
-		}
-		#endregion
-
-		#region Expire Combatant Timer
-		private static readonly string _ExpireCombatantTimerID = "ExpireCombatantTimer";
-
-		private void StartExpireCombatantTimer()
-		{
-			TimerRegistry.Register(_ExpireCombatantTimerID, this, TimeSpan.FromMinutes(1), false, TimerPriority.FiveSeconds, m => m.CheckExpireCombatant());
-		}
-
-		private void RemoveCombatantTimer()
-		{
-			TimerRegistry.RemoveFromRegistry(_ExpireCombatantTimerID, this);
-		}
-
-		private void CheckExpireCombatantTimer()
-		{
-			if (!TimerRegistry.UpdateRegistry(_ExpireCombatantTimerID, this, TimeSpan.FromMinutes(1)))
-			{
-				StartExpireCombatantTimer();
-			}
-		}
-
-		private void CheckExpireCombatant()
-		{
-			Combatant = null;
-		}
-		#endregion
-
-		#region Logout
-		/* Logout:
+        public static AOSStatusHandler AOSStatusHandler { get => m_AOSStatusHandler; set => m_AOSStatusHandler = value; }
+        #endregion
+
+        #region Regeneration
+        private static RegenRateHandler m_HitsRegenRate, m_StamRegenRate, m_ManaRegenRate;
+        private static TimeSpan m_DefaultHitsRate, m_DefaultStamRate, m_DefaultManaRate;
+
+        public static RegenRateHandler HitsRegenRateHandler { get => m_HitsRegenRate; set => m_HitsRegenRate = value; }
+
+        public static TimeSpan DefaultHitsRate { get => m_DefaultHitsRate; set => m_DefaultHitsRate = value; }
+
+        public static RegenRateHandler StamRegenRateHandler { get => m_StamRegenRate; set => m_StamRegenRate = value; }
+
+        public static TimeSpan DefaultStamRate { get => m_DefaultStamRate; set => m_DefaultStamRate = value; }
+
+        public static RegenRateHandler ManaRegenRateHandler { get => m_ManaRegenRate; set => m_ManaRegenRate = value; }
+
+        public static TimeSpan DefaultManaRate { get => m_DefaultManaRate; set => m_DefaultManaRate = value; }
+
+        public static TimeSpan GetHitsRegenRate(Mobile m)
+        {
+            if (m_HitsRegenRate == null)
+            {
+                return m_DefaultHitsRate;
+            }
+
+            return m_HitsRegenRate(m);
+        }
+
+        public static TimeSpan GetStamRegenRate(Mobile m)
+        {
+            if (m_StamRegenRate == null)
+            {
+                return m_DefaultStamRate;
+            }
+
+            return m_StamRegenRate(m);
+        }
+
+        public static TimeSpan GetManaRegenRate(Mobile m)
+        {
+            if (m_ManaRegenRate == null)
+            {
+                return m_DefaultManaRate;
+            }
+
+            return m_ManaRegenRate(m);
+        }
+        #endregion
+
+        private class MovementRecord
+        {
+            public long m_End;
+
+            private static readonly Queue<MovementRecord> m_InstancePool = new Queue<MovementRecord>();
+
+            public static MovementRecord NewInstance(long end)
+            {
+                MovementRecord r;
+
+                if (m_InstancePool.Count > 0)
+                {
+                    r = m_InstancePool.Dequeue();
+
+                    r.m_End = end;
+                }
+                else
+                {
+                    r = new MovementRecord(end);
+                }
+
+                return r;
+            }
+
+            private MovementRecord(long end)
+            {
+                m_End = end;
+            }
+
+            public bool Expired()
+            {
+                bool v = Core.TickCount - m_End >= 0;
+
+                if (v)
+                {
+                    m_InstancePool.Enqueue(this);
+                }
+
+                return v;
+            }
+        }
+
+        #region Var declarations
+        private readonly Serial m_Serial;
+        private Map m_Map;
+        private Point3D m_Location;
+        private Direction m_Direction;
+        private Body m_Body;
+        private int m_Hue;
+        private Poison m_Poison;
+        private Timer m_PoisonTimer;
+        private BaseGuild m_Guild;
+        private string m_GuildTitle;
+        private bool m_Criminal;
+        private string m_Name;
+        private int m_Deaths, m_Kills, m_ShortTermMurders;
+        private int m_SpeechHue, m_EmoteHue, m_WhisperHue, m_YellHue;
+        private string m_Language;
+        private NetState m_NetState;
+        private bool m_Female, m_Warmode, m_Hidden, m_Blessed, m_Flying;
+        private int m_StatCap;
+        private int m_StrCap;
+        private int m_DexCap;
+        private int m_IntCap;
+        private int m_StrMaxCap;
+        private int m_DexMaxCap;
+        private int m_IntMaxCap;
+        private int m_Str, m_Dex, m_Int;
+        private int m_Hits, m_Stam, m_Mana;
+        private int m_Fame, m_Karma;
+        private AccessLevel m_AccessLevel;
+        private Skills m_Skills;
+        private List<Item> m_Items;
+        private bool m_Player;
+        private string m_Title;
+        private string m_Profile;
+        private bool m_ProfileLocked;
+        private int m_LightLevel;
+        private int m_TotalGold, m_TotalItems, m_TotalWeight;
+        private List<StatMod> m_StatMods;
+        private ISpell m_Spell;
+        private Target m_Target;
+        private Prompt m_Prompt;
+        private ContextMenu m_ContextMenu;
+        private List<AggressorInfo> m_Aggressors, m_Aggressed;
+        private IDamageable m_Combatant;
+        private List<Mobile> m_Stabled;
+        private bool m_AutoPageNotify;
+        private bool m_CanHearGhosts;
+        private bool m_CanSwim, m_CantWalk;
+        private int m_TithingPoints;
+        private bool m_DisplayGuildTitle;
+        private bool m_DisplayGuildAbbr;
+        private Mobile m_GuildFealty;
+        private DateTime[] m_StuckMenuUses;
+        private long m_NextSkillTime;
+        private long m_NextActionMessage;
+        private bool m_Paralyzed;
+        private bool m_Frozen;
+        private int m_AllowedStealthSteps;
+        private int m_Hunger;
+        private int m_NameHue = -1;
+        private Region m_Region;
+        private int m_BaseSoundID;
+        private int m_VirtualArmor;
+        private bool m_Squelched;
+        private int m_MagicDamageAbsorb;
+        private int m_Followers, m_FollowersMax;
+        private List<object> _actions; // prefer List<object> over ArrayList for more specific profiling information
+        private Queue<MovementRecord> m_MoveRecords;
+        private int m_WarmodeChanges;
+        private DateTime m_NextWarmodeChange;
+        private WarmodeTimer m_WarmodeTimer;
+        private int m_Thirst, m_BAC;
+        private VirtueInfo m_Virtues;
+        private object m_Party;
+        private List<SkillMod> m_SkillMods;
+        private Body m_BodyMod;
+        private DateTime m_LastStrGain;
+        private DateTime m_LastIntGain;
+        private DateTime m_LastDexGain;
+        private Race m_Race;
+        #endregion
+
+        private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds(1.0);
+        private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds(4.0);
+
+        private const int WarmodeCatchCount = 4;
+        // Allow four warmode changes in 0.5 seconds, any more will be delay for two seconds
+
+        [CommandProperty(AccessLevel.Decorator)]
+        public Race Race
+        {
+            get
+            {
+                if (m_Race == null)
+                {
+                    m_Race = Race.DefaultRace;
+                }
+
+                return m_Race;
+            }
+            set
+            {
+                Race oldRace = Race;
+
+                m_Race = value;
+
+                if (m_Race == null)
+                {
+                    m_Race = Race.DefaultRace;
+                }
+
+                Body = m_Race.Body(this);
+                UpdateResistances();
+
+                Delta(MobileDelta.Race);
+
+                OnRaceChange(oldRace);
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool CharacterOut { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool PublicHouseContent { get; set; }
+
+        public DFAlgorithm DFA { get; set; }
+
+        protected virtual void OnRaceChange(Race oldRace)
+        { }
+
+        public virtual double RacialSkillBonus => 0;
+
+        public virtual double GetRacialSkillBonus(SkillName skill)
+        {
+            return RacialSkillBonus;
+        }
+
+        public virtual void MutateSkill(SkillName skill, ref double value)
+        { }
+
+        private List<ResistanceMod> m_ResistMods;
+
+        private int[] m_Resistances;
+
+        protected List<string> m_SlayerVulnerabilities = new List<string>();
+        protected bool m_SpecialSlayerMechanics; // false
+
+        public List<string> SlayerVulnerabilities => m_SlayerVulnerabilities;
+
+        [CommandProperty(AccessLevel.Decorator)]
+        public bool SpecialSlayerMechanics => m_SpecialSlayerMechanics;
+
+        public int[] Resistances => m_Resistances;
+
+        public virtual int BasePhysicalResistance => 0;
+        public virtual int BaseFireResistance => 0;
+        public virtual int BaseColdResistance => 0;
+        public virtual int BasePoisonResistance => 0;
+        public virtual int BaseEnergyResistance => 0;
+
+        public virtual void ComputeLightLevels(out int global, out int personal)
+        {
+            ComputeBaseLightLevels(out global, out personal);
+
+            if (m_Region != null)
+            {
+                m_Region.AlterLightLevel(this, ref global, ref personal);
+            }
+        }
+
+        public virtual void ComputeBaseLightLevels(out int global, out int personal)
+        {
+            global = 0;
+            personal = m_LightLevel;
+        }
+
+        public virtual void CheckLightLevels(bool forceResend)
+        { }
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public virtual int PhysicalResistance => GetResistance(ResistanceType.Physical);
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public virtual int FireResistance => GetResistance(ResistanceType.Fire);
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public virtual int ColdResistance => GetResistance(ResistanceType.Cold);
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public virtual int PoisonResistance => GetResistance(ResistanceType.Poison);
+
+        [CommandProperty(AccessLevel.Counselor)]
+        public virtual int EnergyResistance => GetResistance(ResistanceType.Energy);
+
+        public virtual void UpdateResistances()
+        {
+            if (m_Resistances == null)
+            {
+                m_Resistances = new[] { int.MinValue, int.MinValue, int.MinValue, int.MinValue, int.MinValue };
+            }
+
+            bool delta = false;
+
+            for (int i = 0; i < m_Resistances.Length; ++i)
+            {
+                if (m_Resistances[i] != int.MinValue)
+                {
+                    m_Resistances[i] = int.MinValue;
+                    delta = true;
+                }
+            }
+
+            if (delta)
+            {
+                Delta(MobileDelta.Resistances);
+                ProcessDelta();
+            }
+        }
+
+        public virtual int GetResistance(ResistanceType type)
+        {
+            if (m_Resistances == null)
+            {
+                m_Resistances = new[] { int.MinValue, int.MinValue, int.MinValue, int.MinValue, int.MinValue };
+            }
+
+            int v = (int)type;
+
+            if (v < 0 || v >= m_Resistances.Length)
+            {
+                return 0;
+            }
+
+            int res = m_Resistances[v];
+
+            if (res == int.MinValue)
+            {
+                ComputeResistances();
+                res = m_Resistances[v];
+            }
+
+            return res;
+        }
+
+        public List<ResistanceMod> ResistanceMods { get => m_ResistMods; set => m_ResistMods = value; }
+
+        public virtual void AddResistanceMod(ResistanceMod toAdd)
+        {
+            if (m_ResistMods == null)
+            {
+                m_ResistMods = new List<ResistanceMod>();
+            }
+
+            m_ResistMods.Add(toAdd);
+            UpdateResistances();
+        }
+
+        public virtual void RemoveResistanceMod(ResistanceMod toRemove)
+        {
+            if (m_ResistMods != null)
+            {
+                m_ResistMods.Remove(toRemove);
+
+                if (m_ResistMods.Count == 0)
+                {
+                    m_ResistMods = null;
+                }
+            }
+
+            UpdateResistances();
+        }
+
+        private static int m_MinPlayerResistance = -70;
+
+        public static int MinPlayerResistance { get => m_MinPlayerResistance; set => m_MinPlayerResistance = value; }
+
+        private static int m_MaxPlayerResistance = 70;
+
+        public static int MaxPlayerResistance { get => m_MaxPlayerResistance; set => m_MaxPlayerResistance = value; }
+
+        public virtual void ComputeResistances()
+        {
+            if (m_Resistances == null)
+            {
+                m_Resistances = new[] { int.MinValue, int.MinValue, int.MinValue, int.MinValue, int.MinValue };
+            }
+
+            for (int i = 0; i < m_Resistances.Length; ++i)
+            {
+                m_Resistances[i] = 0;
+            }
+
+            m_Resistances[0] += BasePhysicalResistance;
+            m_Resistances[1] += BaseFireResistance;
+            m_Resistances[2] += BaseColdResistance;
+            m_Resistances[3] += BasePoisonResistance;
+            m_Resistances[4] += BaseEnergyResistance;
+
+            for (int i = 0; m_ResistMods != null && i < m_ResistMods.Count; ++i)
+            {
+                ResistanceMod mod = m_ResistMods[i];
+                int v = (int)mod.Type;
+
+                if (v >= 0 && v < m_Resistances.Length)
+                {
+                    m_Resistances[v] += mod.Offset;
+                }
+            }
+
+            for (int i = 0; i < m_Items.Count; ++i)
+            {
+                Item item = m_Items[i];
+
+                if (item.CheckPropertyConfliction(this))
+                {
+                    continue;
+                }
+
+                m_Resistances[0] += item.PhysicalResistance;
+                m_Resistances[1] += item.FireResistance;
+                m_Resistances[2] += item.ColdResistance;
+                m_Resistances[3] += item.PoisonResistance;
+                m_Resistances[4] += item.EnergyResistance;
+            }
+
+            for (int i = 0; i < m_Resistances.Length; ++i)
+            {
+                int min = GetMinResistance((ResistanceType)i);
+                int max = GetMaxResistance((ResistanceType)i);
+
+                if (max < min)
+                {
+                    max = min;
+                }
+
+                if (m_Resistances[i] > max)
+                {
+                    m_Resistances[i] = max;
+                }
+                else if (m_Resistances[i] < min)
+                {
+                    m_Resistances[i] = min;
+                }
+            }
+        }
+
+        public virtual int GetMinResistance(ResistanceType type)
+        {
+            if (m_Player)
+            {
+                return m_MinPlayerResistance;
+            }
+
+            return -100;
+        }
+
+        public virtual int GetMaxResistance(ResistanceType type)
+        {
+            if (m_Player)
+            {
+                return m_MaxPlayerResistance;
+            }
+
+            return 100;
+        }
+
+        public int GetAOSStatus(int index)
+        {
+            return (m_AOSStatusHandler == null) ? 0 : m_AOSStatusHandler(this, index);
+        }
+
+        public virtual void SendPropertiesTo(Mobile from)
+        {
+            from.Send(PropertyList);
+        }
+
+        public virtual void OnAosSingleClick(Mobile from)
+        {
+            ObjectPropertyList opl = PropertyList;
+
+            if (opl.Header > 0)
+            {
+                int hue;
+
+                if (m_NameHue != -1)
+                {
+                    hue = m_NameHue;
+                }
+                else if (IsStaff())
+                {
+                    hue = 11;
+                }
+                else
+                {
+                    hue = Notoriety.GetHue(Notoriety.Compute(from, this));
+                }
+
+                from.Send(new MessageLocalized(m_Serial, Body, MessageType.Label, hue, 3, opl.Header, Name, opl.HeaderArgs));
+            }
+        }
+
+        public virtual string ApplyNameSuffix(string suffix)
+        {
+            return suffix;
+        }
+
+        public virtual void AddNameProperties(ObjectPropertyList list)
+        {
+            string name = Name;
+
+            if (name == null)
+            {
+                name = string.Empty;
+            }
+
+            string prefix = ""; // still needs to be defined due to cliloc. Only defined in PlayerMobile. BaseCreature and BaseVendor require the suffix for the title and use the same cliloc.
+
+            string suffix = "";
+
+            if (PropertyTitle && !string.IsNullOrEmpty(Title))
+            {
+                suffix = Title;
+            }
+
+            suffix = ApplyNameSuffix(suffix);
+
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~           
+        }
+
+        public virtual void GetProperties(ObjectPropertyList list)
+        {
+            AddNameProperties(list);
+
+            if (Spawner != null)
+            {
+                Spawner.GetSpawnProperties(this, list);
+            }
+        }
+
+        public virtual void GetChildProperties(ObjectPropertyList list, Item item)
+        { }
+
+        public virtual void GetChildNameProperties(ObjectPropertyList list, Item item)
+        { }
+
+        public List<Mobile> Stabled => m_Stabled;
+
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
+        public VirtueInfo Virtues { get => m_Virtues; set { } }
+
+        public object Party { get => m_Party; set => m_Party = value; }
+        public List<SkillMod> SkillMods => m_SkillMods;
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked when <paramref name="skill" /> changes in some way.
+        /// </summary>
+        public virtual void OnSkillInvalidated(Skill skill)
+        { }
+
+        public virtual void UpdateSkillMods()
+        {
+            ValidateSkillMods();
+
+            for (int i = 0; i < m_SkillMods.Count; ++i)
+            {
+                SkillMod mod = m_SkillMods[i];
+
+                Skill sk = m_Skills[mod.Skill];
+
+                if (sk != null)
+                {
+                    sk.Update();
+                }
+            }
+        }
+
+        public virtual void ValidateSkillMods()
+        {
+            for (int i = 0; i < m_SkillMods.Count;)
+            {
+                SkillMod mod = m_SkillMods[i];
+
+                if (mod.CheckCondition())
+                {
+                    ++i;
+                }
+                else
+                {
+                    InternalRemoveSkillMod(mod);
+                }
+            }
+        }
+
+        public virtual void AddSkillMod(SkillMod mod)
+        {
+            if (mod == null)
+            {
+                return;
+            }
+
+            ValidateSkillMods();
+
+            if (!m_SkillMods.Contains(mod))
+            {
+                m_SkillMods.Add(mod);
+                mod.Owner = this;
+
+                Skill sk = m_Skills[mod.Skill];
+
+                if (sk != null)
+                {
+                    sk.Update();
+                }
+            }
+        }
+
+        public virtual void RemoveSkillMod(SkillMod mod)
+        {
+            if (mod == null)
+            {
+                return;
+            }
+
+            ValidateSkillMods();
+
+            InternalRemoveSkillMod(mod);
+        }
+
+        private void InternalRemoveSkillMod(SkillMod mod)
+        {
+            if (m_SkillMods.Contains(mod))
+            {
+                m_SkillMods.Remove(mod);
+                mod.Owner = null;
+
+                Skill sk = m_Skills[mod.Skill];
+
+                if (sk != null)
+                {
+                    sk.Update();
+                }
+            }
+        }
+
+        private class WarmodeTimer : Timer
+        {
+            private readonly Mobile m_Mobile;
+            private bool m_Value;
+
+            public bool Value { get => m_Value; set => m_Value = value; }
+
+            public WarmodeTimer(Mobile m, bool value)
+                : base(WarmodeSpamDelay)
+            {
+                m_Mobile = m;
+                m_Value = value;
+            }
+
+            protected override void OnTick()
+            {
+                m_Mobile.Warmode = m_Value;
+                m_Mobile.m_WarmodeChanges = 0;
+
+                m_Mobile.m_WarmodeTimer = null;
+            }
+        }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked when a client, <paramref name="from" />, invokes a 'help request' for the Mobile. Seemingly no longer functional in newer clients.
+        /// </summary>
+        public virtual void OnHelpRequest(Mobile from)
+        { }
+
+        public void DelayChangeWarmode(bool value)
+        {
+            if (m_WarmodeTimer != null)
+            {
+                m_WarmodeTimer.Value = value;
+                return;
+            }
+
+            if (m_Warmode == value)
+            {
+                return;
+            }
+
+            DateTime now = DateTime.UtcNow, next = m_NextWarmodeChange;
+
+            if (now > next || m_WarmodeChanges == 0)
+            {
+                m_WarmodeChanges = 1;
+                m_NextWarmodeChange = now + WarmodeSpamCatch;
+            }
+            else if (m_WarmodeChanges == WarmodeCatchCount)
+            {
+                m_WarmodeTimer = new WarmodeTimer(this, value);
+                m_WarmodeTimer.Start();
+
+                return;
+            }
+            else
+            {
+                ++m_WarmodeChanges;
+            }
+
+            Warmode = value;
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MeleeDamageAbsorb { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int MagicDamageAbsorb { get => m_MagicDamageAbsorb; set => m_MagicDamageAbsorb = value; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SkillsTotal => m_Skills == null ? 0 : m_Skills.Total;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int SkillsCap
+        {
+            get => m_Skills == null ? 0 : m_Skills.Cap;
+            set
+            {
+                if (m_Skills != null)
+                {
+                    m_Skills.Cap = value;
+                }
+            }
+        }
+
+        public bool InLOS(Mobile target)
+        {
+            if (m_Deleted || m_Map == null)
+            {
+                return false;
+            }
+
+            if (target == this || IsStaff())
+            {
+                return true;
+            }
+
+            return m_Map.LineOfSight(this, target);
+        }
+
+        public bool InLOS(object target)
+        {
+            if (m_Deleted || m_Map == null)
+            {
+                return false;
+            }
+
+            if (target == this || IsStaff())
+            {
+                return true;
+            }
+
+            if (target is Item item)
+            {
+                if (item.RootParent == this)
+                {
+                    return true;
+                }
+
+                if (item.Parent is Container)
+                {
+                    return InLOS(item.Parent);
+                }
+            }
+
+            return m_Map.LineOfSight(this, target);
+        }
+
+        public bool InLOS(Point3D target)
+        {
+            if (m_Deleted || m_Map == null)
+            {
+                return false;
+            }
+
+            if (IsStaff())
+            {
+                return true;
+            }
+
+            return m_Map.LineOfSight(this, target);
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int BaseSoundID { get => m_BaseSoundID; set => m_BaseSoundID = value; }
+
+        public bool BeginAction(object toLock)
+        {
+            if (_actions == null)
+            {
+                _actions = new List<object>
+                {
+                    toLock
+                };
+
+                return true;
+            }
+
+            if (!_actions.Contains(toLock))
+            {
+                _actions.Add(toLock);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CanBeginAction(object toLock)
+        {
+            return _actions == null || !_actions.Contains(toLock);
+        }
+
+        public void EndAction(object toLock)
+        {
+            if (_actions != null)
+            {
+                _actions.Remove(toLock);
+
+                if (_actions.Count == 0)
+                {
+                    _actions = null;
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.Decorator)]
+        public int NameHue { get => m_NameHue; set => m_NameHue = value; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Hunger
+        {
+            get => m_Hunger;
+            set
+            {
+                int oldValue = m_Hunger;
+
+                if (oldValue != value)
+                {
+                    m_Hunger = value;
+
+                    EventSink.InvokeHungerChanged(new HungerChangedEventArgs(this, oldValue));
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Thirst { get => m_Thirst; set => m_Thirst = value; }
+
+        [CommandProperty(AccessLevel.Decorator)]
+        public int BAC { get => m_BAC; set => m_BAC = value; }
+
+        public virtual int DefaultBloodHue => 0;
+
+        public virtual bool HasBlood => Alive && BloodHue >= 0 && !Body.IsGhost && !Body.IsEquipment;
+
+        private int m_BloodHue = -1;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual int BloodHue
+        {
+            get
+            {
+                if (m_BloodHue < 0)
+                {
+                    return DefaultBloodHue;
+                }
+
+                return m_BloodHue;
+            }
+            set => m_BloodHue = value;
+        }
+
+        private long m_LastMoveTime;
+
+        /// <summary>
+        ///     Gets or sets the number of steps this player may take when hidden before being revealed.
+        /// </summary>
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int AllowedStealthSteps { get => m_AllowedStealthSteps; set => m_AllowedStealthSteps = value; }
+
+        private StatLockType m_StrLock, m_DexLock, m_IntLock;
+
+        private Item m_Holding;
+
+        public Item Holding
+        {
+            get => m_Holding;
+            set
+            {
+                if (m_Holding != value)
+                {
+                    if (m_Holding != null)
+                    {
+                        UpdateTotal(m_Holding, TotalType.Weight, -(m_Holding.TotalWeight + m_Holding.PileWeight));
+
+                        if (m_Holding.HeldBy == this)
+                        {
+                            m_Holding.HeldBy = null;
+                        }
+                    }
+
+                    if (value != null && m_Holding != null)
+                    {
+                        DropHolding();
+                    }
+
+                    m_Holding = value;
+
+                    if (m_Holding != null)
+                    {
+                        UpdateTotal(m_Holding, TotalType.Weight, m_Holding.TotalWeight + m_Holding.PileWeight);
+
+                        if (m_Holding.HeldBy == null)
+                        {
+                            m_Holding.HeldBy = this;
+                        }
+                    }
+                }
+            }
+        }
+
+        public long LastMoveTime { get => m_LastMoveTime; set => m_LastMoveTime = value; }
+
+        private static readonly string _ParaTimerID = "ParalyzeTimer";
+        private static readonly string _FrozenTimerID = "FreezeTimer";
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual bool Paralyzed
+        {
+            get => m_Paralyzed;
+            set
+            {
+                if (m_Paralyzed != value)
+                {
+                    m_Paralyzed = value;
+                    Delta(MobileDelta.Flags);
+
+                    SendLocalizedMessage(m_Paralyzed ? 502381 : 502382);
+
+                    TimerRegistry.RemoveFromRegistry(_ParaTimerID, this);
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.Decorator)]
+        public bool Frozen
+        {
+            get => m_Frozen;
+            set
+            {
+                if (m_Frozen != value)
+                {
+                    m_Frozen = value;
+                    Delta(MobileDelta.Flags);
+
+                    TimerRegistry.RemoveFromRegistry(_FrozenTimerID, this);
+                }
+            }
+        }
+
+        public void Paralyze(TimeSpan duration)
+        {
+            if (!m_Paralyzed)
+            {
+                Paralyzed = true;
+
+                TimerRegistry.Register(_ParaTimerID, this, duration, m => m.Paralyzed = false);
+            }
+        }
+
+        public void Freeze(TimeSpan duration)
+        {
+            if (!m_Frozen)
+            {
+                Frozen = true;
+
+                TimerRegistry.Register(_FrozenTimerID, this, duration, m => m.Frozen = false);
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="StatLockType">lock state</see> for the <see cref="RawStr" /> property.
+        /// </summary>
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
+        public StatLockType StrLock
+        {
+            get => m_StrLock;
+            set
+            {
+                if (m_StrLock != value)
+                {
+                    m_StrLock = value;
+
+                    if (m_NetState != null)
+                    {
+                        m_NetState.Send(new StatLockInfo(this));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="StatLockType">lock state</see> for the <see cref="RawDex" /> property.
+        /// </summary>
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
+        public StatLockType DexLock
+        {
+            get => m_DexLock;
+            set
+            {
+                if (m_DexLock != value)
+                {
+                    m_DexLock = value;
+
+                    if (m_NetState != null)
+                    {
+                        m_NetState.Send(new StatLockInfo(this));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="StatLockType">lock state</see> for the <see cref="RawInt" /> property.
+        /// </summary>
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
+        public StatLockType IntLock
+        {
+            get => m_IntLock;
+            set
+            {
+                if (m_IntLock != value)
+                {
+                    m_IntLock = value;
+
+                    if (m_NetState != null)
+                    {
+                        m_NetState.Send(new StatLockInfo(this));
+                    }
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("0x{0:X} \"{1}\"", m_Serial.Value, Name);
+        }
+
+        public long NextActionTime { get; set; }
+
+        public long NextActionMessage { get => m_NextActionMessage; set => m_NextActionMessage = value; }
+
+        private static int m_ActionMessageDelay = 125;
+
+        public static int ActionMessageDelay { get => m_ActionMessageDelay; set => m_ActionMessageDelay = value; }
+
+        public virtual void SendSkillMessage()
+        {
+            if (m_NextActionMessage - Core.TickCount >= 0)
+            {
+                return;
+            }
+
+            m_NextActionMessage = Core.TickCount + m_ActionMessageDelay;
+
+            SendLocalizedMessage(500118); // You must wait a few moments to use another skill.
+        }
+
+        public virtual void SendActionMessage()
+        {
+            if (m_NextActionMessage - Core.TickCount >= 0)
+            {
+                return;
+            }
+
+            m_NextActionMessage = Core.TickCount + m_ActionMessageDelay;
+
+            SendLocalizedMessage(500119); // You must wait to perform another action.
+        }
+
+        public virtual void ClearHands()
+        {
+            ClearHand(FindItemOnLayer(Layer.OneHanded));
+            ClearHand(FindItemOnLayer(Layer.TwoHanded));
+        }
+
+        public virtual void ClearHand(Item item)
+        {
+            if (item != null && item.Movable && !item.AllowEquipedCast(this))
+            {
+                Container pack = Backpack;
+
+                if (pack == null)
+                {
+                    AddToBackpack(item);
+                }
+                else
+                {
+                    pack.DropItem(item);
+                }
+            }
+        }
+
+        #region Timers
+
+        #region Regeneration
+        private static bool m_GlobalRegenThroughPoison = true;
+        public static bool GlobalRegenThroughPoison { get => m_GlobalRegenThroughPoison; set => m_GlobalRegenThroughPoison = value; }
+
+        public static readonly string _HitsRegenTimerID = "HitsRegenTimer";
+        public static readonly string _StamRegenTimerID = "StamRegenTimer";
+        public static readonly string _ManaRegenTimerID = "ManaRegenTimer";
+        public static readonly string _HitsRegenTimerPlayerID = _HitsRegenTimerID + "Player";
+        public static readonly string _StamRegenTimerPlayerID = _StamRegenTimerID + "Player";
+        public static readonly string _ManaRegenTimerPlayerID = _ManaRegenTimerID + "Player";
+
+        private bool m_InternalCanRegen;
+
+        public virtual bool RegenThroughPoison => m_GlobalRegenThroughPoison;
+
+        public virtual bool CanRegenHits => Alive && !Deleted && (RegenThroughPoison || !Poisoned) && m_InternalCanRegen;
+        public virtual bool CanRegenStam => Alive && !Deleted && m_InternalCanRegen;
+        public virtual bool CanRegenMana => Alive && !Deleted && m_InternalCanRegen;
+
+        private void HitsOnTick()
+        {
+            if (CanRegenHits)
+            {
+                Hits++;
+
+                if (Hits < HitsMax)
+                {
+                    TimerRegistry.UpdateRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this, GetHitsRegenRate(this));
+                }
+            }
+        }
+
+        private void StamOnTick()
+        {
+            if (CanRegenMana)
+            {
+                Stam++;
+
+                if (Stam < StamMax)
+                {
+                    TimerRegistry.UpdateRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this, GetStamRegenRate(this));
+                }
+            }
+        }
+
+        private void ManaOnTick()
+        {
+            if (CanRegenMana)
+            {
+                Mana++;
+
+                if (Mana < ManaMax)
+                {
+                    TimerRegistry.UpdateRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this, GetManaRegenRate(this));
+                }
+            }
+        }
+        #endregion
+
+        #region Aggro Timer
+        private static readonly string _ExpireAggroTimerID = "ExpireAggroTimer";
+
+        public void UpdateAggrExpire()
+        {
+            if (m_Deleted || (m_Aggressors.Count == 0 && m_Aggressed.Count == 0))
+            {
+                StopAggrExpire();
+            }
+            else if (!TimerRegistry.HasTimer(_ExpireAggroTimerID, this))
+            {
+                TimerRegistry.Register(_ExpireAggroTimerID, this, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), false, TimerPriority.OneSecond, m => m.AggroExpireOnTick());
+            }
+        }
+
+        private void AggroExpireOnTick()
+        {
+            if (Deleted || (Aggressors.Count == 0 && Aggressed.Count == 0))
+            {
+                StopAggrExpire();
+            }
+            else
+            {
+                CheckAggrExpire();
+            }
+        }
+
+        private void StopAggrExpire()
+        {
+            TimerRegistry.RemoveFromRegistry(_ExpireAggroTimerID, this);
+        }
+
+        private void CheckAggrExpire()
+        {
+            for (int i = m_Aggressors.Count - 1; i >= 0; --i)
+            {
+                if (i >= m_Aggressors.Count)
+                {
+                    continue;
+                }
+
+                AggressorInfo info = m_Aggressors[i];
+
+                if (info.Expired)
+                {
+                    Mobile attacker = info.Attacker;
+                    attacker.RemoveAggressed(this);
+
+                    m_Aggressors.RemoveAt(i);
+                    info.Free();
+
+                    if (m_NetState != null && Utility.InUpdateRange(this, attacker) && CanSee(attacker))
+                    {
+                        m_NetState.Send(MobileIncoming.Create(m_NetState, this, attacker));
+                    }
+                }
+            }
+
+            for (int i = m_Aggressed.Count - 1; i >= 0; --i)
+            {
+                if (i >= m_Aggressed.Count)
+                {
+                    continue;
+                }
+
+                AggressorInfo info = m_Aggressed[i];
+
+                if (info.Expired)
+                {
+                    Mobile defender = info.Defender;
+                    defender.RemoveAggressor(this);
+
+                    m_Aggressed.RemoveAt(i);
+                    info.Free();
+
+                    if (m_NetState != null && Utility.InUpdateRange(this, defender) && CanSee(defender))
+                    {
+                        m_NetState.Send(MobileIncoming.Create(m_NetState, this, defender));
+                    }
+                }
+            }
+
+            UpdateAggrExpire();
+        }
+        #endregion
+
+        #region Expire Combatant Timer
+        private static readonly string _ExpireCombatantTimerID = "ExpireCombatantTimer";
+
+        private void StartExpireCombatantTimer()
+        {
+            TimerRegistry.Register(_ExpireCombatantTimerID, this, TimeSpan.FromMinutes(1), false, TimerPriority.FiveSeconds, m => m.CheckExpireCombatant());
+        }
+
+        private void RemoveCombatantTimer()
+        {
+            TimerRegistry.RemoveFromRegistry(_ExpireCombatantTimerID, this);
+        }
+
+        private void CheckExpireCombatantTimer()
+        {
+            if (!TimerRegistry.UpdateRegistry(_ExpireCombatantTimerID, this, TimeSpan.FromMinutes(1)))
+            {
+                StartExpireCombatantTimer();
+            }
+        }
+
+        private void CheckExpireCombatant()
+        {
+            Combatant = null;
+        }
+        #endregion
+
+        #region Logout
+        /* Logout:
         *
         * When a client logs into mobile x
         *  - if ( x is Internalized ) move x to logout location and map
@@ -1871,1796 +1871,1796 @@ namespace Server
         *  - An internalized person getting killed (say, by poison). Where does the body go?
         *  - Regions now have a GetLogoutDelay( Mobile m ); virtual function (see above)
         */
-		private Point3D m_LogoutLocation;
-		private Map m_LogoutMap;
-
-		private static readonly string _LogoutTimerID = "LogoutTimer";
-
-		public virtual TimeSpan GetLogoutDelay()
-		{
-			return Region.GetLogoutDelay(this);
-		}
-
-		private void DoLogout()
-		{
-			if (m_Map != Map.Internal)
-			{
-				EventSink.InvokeLogout(new LogoutEventArgs(this));
-
-				m_LogoutLocation = m_Location;
-				m_LogoutMap = m_Map;
-
-				Internalize();
-			}
-		}
-		#endregion
-
-		#region Combat Timer
-		private static readonly string _CombatTimerPlayerID = "CombatTimerPlayer";
-		private static readonly string _CombatTimerID = "CombatTimer";
-
-		private long m_NextCombatTime;
-		public long NextCombatTime { get => m_NextCombatTime; set => m_NextCombatTime = value; }
-
-		private bool UsePlayerCombatTimer()
-		{
-			return Player || m_Dex > 100;
-		}
-
-		private void StartCombatTimer()
-		{
-			var playerTimer = UsePlayerCombatTimer();
-
-			TimerRegistry.Register(
-				playerTimer ? _CombatTimerPlayerID : _CombatTimerID,
-				this,
-				TimeSpan.FromSeconds(0.01),
-				false,
-				playerTimer ? TimerPriority.EveryTick : TimerPriority.FiftyMS,
-				m => m.CombatTimerOnTick());
-		}
-
-		private void RemoveCombatTimer()
-		{
-			TimerRegistry.RemoveFromRegistry(UsePlayerCombatTimer() ? _CombatTimerPlayerID : _CombatTimerID, this);
-		}
-
-		private void CombatTimerOnTick()
-		{
-			if (Core.TickCount - m_NextCombatTime >= 0)
-			{
-				var combatant = Combatant;
-
-				// If no combatant, wrong map, one of us is a ghost, or cannot see, or deleted, then stop combat
-				if (combatant == null || combatant.Deleted || m_Deleted || combatant.Map != m_Map ||
-					!combatant.Alive || !Alive || !CanSee(combatant) || combatant is Mobile mobile && mobile.IsDeadBondedPet ||
-					IsDeadBondedPet)
-				{
-					Combatant = null;
-					return;
-				}
-
-				var weapon = Weapon;
-
-				if (!InRange(combatant, weapon.MaxRange))
-				{
-					return;
-				}
-
-				if (InLOS(combatant))
-				{
-					weapon.OnBeforeSwing(this, combatant);
-					RevealingAction();
-					m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(this, combatant).TotalMilliseconds;
-				}
-			}
-		}
-		#endregion
-
-		#region Expire Crimimnal
-		private static readonly string _ExpireCrimID = "ExpireCriminalTimer";
-		private static TimeSpan _ExpireCriminalDelay = TimeSpan.FromMinutes(2.0);
-
-		public static TimeSpan ExpireCriminalDelay { get => _ExpireCriminalDelay; set => _ExpireCriminalDelay = value; }
-
-		private void StartCrimDelayTimer()
-		{
-			if (!TimerRegistry.UpdateRegistry(_ExpireCrimID, this, _ExpireCriminalDelay))
-			{
-				TimerRegistry.Register(_ExpireCrimID, this, _ExpireCriminalDelay, TimerPriority.FiveSeconds, m => m.Criminal = false);
-			}
-		}
-
-		private void StopCrimDelayTimer()
-		{
-			TimerRegistry.RemoveFromRegistry(_ExpireCrimID, this);
-		}
-		#endregion
-		#endregion
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public long NextSkillTime { get => m_NextSkillTime; set => m_NextSkillTime = value; }
-
-		public List<AggressorInfo> Aggressors => m_Aggressors;
-
-		public List<AggressorInfo> Aggressed => m_Aggressed;
-
-		private int m_ChangingCombatant;
-
-		public bool ChangingCombatant => m_ChangingCombatant > 0;
-
-		public virtual void Attack(IDamageable e)
-		{
-			if (CheckAttack(e))
-			{
-				if (!m_Warmode)
-				{
-					Warmode = true;
-				}
-
-				Combatant = e;
-			}
-		}
-
-		public virtual bool CheckAttack(IDamageable e)
-		{
-			return Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e);
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool GuardImmune { get; set; }
-
-		/// <summary>
-		///     Overridable. Gets or sets which Mobile that this Mobile is currently engaged in combat with.
-		///     <seealso cref="OnCombatantChange" />
-		/// </summary>
-		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual IDamageable Combatant
-		{
-			get => m_Combatant;
-			set
-			{
-				if (m_Deleted)
-				{
-					return;
-				}
-
-				if (m_Combatant != value && value != this)
-				{
-					if (++m_ChangingCombatant > 100)
-					{
-						m_ChangingCombatant = 0;
-						return;
-					}
-
-					var old = m_Combatant;
-
-					m_Combatant = value;
-
-					if (!Region.OnCombatantChange(this, old, m_Combatant) || (m_Combatant != null && !CanBeHarmful(m_Combatant, false)))
-					{
-						m_Combatant = old;
-						--m_ChangingCombatant;
-						return;
-					}
-
-					if (m_NetState != null)
-					{
-						m_NetState.Send(new ChangeCombatant(m_Combatant));
-					}
-
-					if (m_Combatant == null)
-					{
-						RemoveCombatantTimer();
-						RemoveCombatTimer();
-					}
-					else
-					{
-						CheckExpireCombatantTimer();
-						StartCombatTimer();
-					}
-
-					if (m_Combatant != null && CanBeHarmful(m_Combatant, false))
-					{
-						DoHarmful(m_Combatant);
-
-						if (m_Combatant is Mobile mobile)
-						{
-							mobile.PlaySound(mobile.GetAngerSound());
-						}
-					}
-
-					OnCombatantChange();
-					--m_ChangingCombatant;
-				}
-			}
-		}
-
-		/// <summary>
-		///     Overridable. Virtual event invoked after the <see cref="Combatant" /> property has changed.
-		///     <seealso cref="Combatant" />
-		/// </summary>
-		public virtual void OnCombatantChange()
-		{ }
-
-		public double GetDistanceToSqrt(Point3D p)
-		{
-			var xDelta = m_Location.m_X - p.m_X;
-			var yDelta = m_Location.m_Y - p.m_Y;
-
-			return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
-		}
-
-		public double GetDistanceToSqrt(Mobile m)
-		{
-			var xDelta = m_Location.m_X - m.m_Location.m_X;
-			var yDelta = m_Location.m_Y - m.m_Location.m_Y;
-
-			return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
-		}
-
-		public double GetDistanceToSqrt(IPoint2D p)
-		{
-			var xDelta = m_Location.m_X - p.X;
-			var yDelta = m_Location.m_Y - p.Y;
-
-			return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
-		}
-
-		public virtual void AggressiveAction(Mobile aggressor)
-		{
-			AggressiveAction(aggressor, false);
-		}
-
-		public virtual void AggressiveAction(Mobile aggressor, bool criminal)
-		{
-			if (aggressor == this)
-				return;
-
-			var args = AggressiveActionEventArgs.Create(this, aggressor, criminal);
-
-			EventSink.InvokeAggressiveAction(args);
-
-			args.Free();
-
-			if (Combatant == aggressor)
-			{
-				CheckExpireCombatantTimer();
-			}
-
-			var addAggressor = true;
-
-			var list = m_Aggressors;
-
-			for (var i = 0; i < list.Count; ++i)
-			{
-				var info = list[i];
-
-				if (info.Attacker == aggressor)
-				{
-					info.Refresh();
-					info.CriminalAggression = criminal;
-					info.CanReportMurder = criminal;
-
-					addAggressor = false;
-				}
-			}
-
-			list = aggressor.m_Aggressors;
-
-			for (var i = 0; i < list.Count; ++i)
-			{
-				var info = list[i];
-
-				if (info.Attacker == this)
-				{
-					info.Refresh();
-
-					addAggressor = false;
-				}
-			}
-
-			var addAggressed = true;
-
-			list = m_Aggressed;
-
-			for (var i = 0; i < list.Count; ++i)
-			{
-				var info = list[i];
-
-				if (info.Defender == aggressor)
-				{
-					info.Refresh();
-
-					addAggressed = false;
-				}
-			}
-
-			list = aggressor.m_Aggressed;
-
-			for (var i = 0; i < list.Count; ++i)
-			{
-				var info = list[i];
-
-				if (info.Defender == this)
-				{
-					info.Refresh();
-					info.CriminalAggression = criminal;
-					info.CanReportMurder = criminal;
-
-					addAggressed = false;
-				}
-			}
-
-			var setCombatant = false;
-
-			if (addAggressor)
-			{
-				m_Aggressors.Add(AggressorInfo.Create(aggressor, this, criminal));
-
-				if (CanSee(aggressor) && m_NetState != null)
-				{
-					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
-				}
-
-				if (Combatant == null)
-					setCombatant = true;
-
-				UpdateAggrExpire();
-			}
-
-			if (addAggressed)
-			{
-				aggressor.m_Aggressed.Add(AggressorInfo.Create(aggressor, this, criminal));
-
-				if (CanSee(aggressor) && m_NetState != null)
-				{
-					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
-				}
-
-				if (Combatant == null)
-					setCombatant = true;
-
-				UpdateAggrExpire();
-			}
-
-			if (setCombatant && !Hidden)
-				Combatant = aggressor;
-
-			Region.OnAggressed(aggressor, this, criminal);
-		}
-
-		public void RemoveAggressed(Mobile aggressed)
-		{
-			if (m_Deleted)
-			{
-				return;
-			}
-
-			var list = m_Aggressed;
-
-			for (var i = 0; i < list.Count; ++i)
-			{
-				var info = list[i];
-
-				if (info.Defender == aggressed)
-				{
-					m_Aggressed.RemoveAt(i);
-					info.Free();
-
-					if (m_NetState != null && CanSee(aggressed))
-					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressed));
-					}
-
-					break;
-				}
-			}
-
-			UpdateAggrExpire();
-		}
-
-		public void RemoveAggressor(Mobile aggressor)
-		{
-			if (m_Deleted)
-			{
-				return;
-			}
-
-			var list = m_Aggressors;
-
-			for (var i = 0; i < list.Count; ++i)
-			{
-				var info = list[i];
-
-				if (info.Attacker == aggressor)
-				{
-					m_Aggressors.RemoveAt(i);
-					info.Free();
-
-					if (m_NetState != null && CanSee(aggressor))
-					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
-					}
-
-					break;
-				}
-			}
-
-			UpdateAggrExpire();
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int TotalGold => GetTotal(TotalType.Gold);
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int TotalItems => GetTotal(TotalType.Items);
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int TotalWeight => GetTotal(TotalType.Weight);
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int TithingPoints
-		{
-			get => m_TithingPoints;
-			set
-			{
-				if (m_TithingPoints != value)
-				{
-					m_TithingPoints = value;
-
-					Delta(MobileDelta.TithingPoints);
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int Followers
-		{
-			get => m_Followers;
-			set
-			{
-				if (m_Followers != value)
-				{
-					m_Followers = value;
-
-					Delta(MobileDelta.Followers);
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int FollowersMax
-		{
-			get => m_FollowersMax;
-			set
-			{
-				if (m_FollowersMax != value)
-				{
-					m_FollowersMax = value;
-
-					Delta(MobileDelta.Followers);
-				}
-			}
-		}
-
-		public virtual int GetTotal(TotalType type)
-		{
-			switch (type)
-			{
-				case TotalType.Gold:
-				return m_TotalGold;
-
-				case TotalType.Items:
-				return m_TotalItems;
-
-				case TotalType.Weight:
-				return m_TotalWeight;
-			}
-
-			return 0;
-		}
-
-		public virtual void UpdateTotal(Item sender, TotalType type, int delta)
-		{
-			if (delta == 0 || sender.IsVirtualItem)
-			{
-				return;
-			}
-
-			switch (type)
-			{
-				case TotalType.Gold:
-				m_TotalGold += delta;
-				Delta(MobileDelta.Gold);
-				break;
-
-				case TotalType.Items:
-				m_TotalItems += delta;
-				break;
-
-				case TotalType.Weight:
-				m_TotalWeight += delta;
-				Delta(MobileDelta.Weight);
-				OnWeightChange(m_TotalWeight - delta);
-				break;
-			}
-		}
-
-		public virtual void UpdateTotals()
-		{
-			if (m_Items == null)
-			{
-				return;
-			}
-
-			var oldWeight = m_TotalWeight;
-
-			m_TotalGold = 0;
-			m_TotalItems = 0;
-			m_TotalWeight = 0;
-
-			for (var i = 0; i < m_Items.Count; ++i)
-			{
-				var item = m_Items[i];
-
-				item.UpdateTotals();
-
-				if (item.IsVirtualItem)
-				{
-					continue;
-				}
-
-				m_TotalGold += item.TotalGold;
-				m_TotalItems += item.TotalItems + 1;
-				m_TotalWeight += item.TotalWeight + item.PileWeight;
-			}
-
-			if (m_Holding != null)
-			{
-				m_TotalWeight += m_Holding.TotalWeight + m_Holding.PileWeight;
-			}
-
-			if (m_TotalWeight != oldWeight)
-			{
-				OnWeightChange(oldWeight);
-			}
-		}
-
-		public void ClearQuestArrow()
-		{
-			m_QuestArrow = null;
-		}
-
-		public void ClearTarget()
-		{
-			m_Target = null;
-		}
-
-		private bool m_TargetLocked;
-
-		public bool TargetLocked { get => m_TargetLocked; set => m_TargetLocked = value; }
-
-		private class SimpleTarget : Target
-		{
-			private readonly TargetCallback m_Callback;
-
-			public SimpleTarget(int range, TargetFlags flags, bool allowGround, TargetCallback callback)
-				: base(range, allowGround, flags)
-			{
-				m_Callback = callback;
-			}
-
-			protected override void OnTarget(Mobile from, object targeted)
-			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, targeted);
-				}
-			}
-		}
-
-		public Target BeginTarget(int range, bool allowGround, TargetFlags flags, TargetCallback callback)
-		{
-			Target t = new SimpleTarget(range, flags, allowGround, callback);
-
-			Target = t;
-
-			return t;
-		}
-
-		private class SimpleStateTarget : Target
-		{
-			private readonly TargetStateCallback m_Callback;
-			private readonly object m_State;
-
-			public SimpleStateTarget(int range, TargetFlags flags, bool allowGround, TargetStateCallback callback, object state)
-				: base(range, allowGround, flags)
-			{
-				m_Callback = callback;
-				m_State = state;
-			}
-
-			protected override void OnTarget(Mobile from, object targeted)
-			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, targeted, m_State);
-				}
-			}
-		}
-
-		public Target BeginTarget(int range, bool allowGround, TargetFlags flags, TargetStateCallback callback, object state)
-		{
-			Target t = new SimpleStateTarget(range, flags, allowGround, callback, state);
-
-			Target = t;
-
-			return t;
-		}
-
-		private class SimpleStateTarget<T> : Target
-		{
-			private readonly TargetStateCallback<T> m_Callback;
-			private readonly T m_State;
-
-			public SimpleStateTarget(int range, TargetFlags flags, bool allowGround, TargetStateCallback<T> callback, T state)
-				: base(range, allowGround, flags)
-			{
-				m_Callback = callback;
-				m_State = state;
-			}
-
-			protected override void OnTarget(Mobile from, object targeted)
-			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, targeted, m_State);
-				}
-			}
-		}
-
-		public Target BeginTarget<T>(int range, bool allowGround, TargetFlags flags, TargetStateCallback<T> callback, T state)
-		{
-			Target t = new SimpleStateTarget<T>(range, flags, allowGround, callback, state);
-
-			Target = t;
-
-			return t;
-		}
-
-		public Target Target
-		{
-			get => m_Target;
-			set
-			{
-				var oldTarget = m_Target;
-				var newTarget = value;
-
-				if (oldTarget == newTarget)
-				{
-					return;
-				}
-
-				m_Target = null;
-
-				if (oldTarget != null && newTarget != null)
-				{
-					oldTarget.Cancel(this, TargetCancelType.Overriden);
-				}
-
-				m_Target = newTarget;
-
-				if (newTarget != null && m_NetState != null && !m_TargetLocked)
-				{
-					m_NetState.Send(newTarget.GetPacketFor(m_NetState));
-				}
-
-				OnTargetChange();
-			}
-		}
-
-		/// <summary>
-		///     Overridable. Virtual event invoked after the <see cref="Target">Target property</see> has changed.
-		/// </summary>
-		protected virtual void OnTargetChange()
-		{ }
-
-		public ContextMenu ContextMenu
-		{
-			get => m_ContextMenu;
-			set
-			{
-				m_ContextMenu = value;
-
-				if (m_ContextMenu != null)
-				{
-					Send(new DisplayContextMenu(m_ContextMenu));
-				}
-			}
-		}
-
-		public virtual bool CheckContextMenuDisplay(IEntity target)
-		{
-			return true;
-		}
-
-		#region Prompts
-		private class SimplePrompt : Prompt
-		{
-			private readonly PromptCallback m_Callback;
-			private readonly PromptCallback m_CancelCallback;
-			private readonly bool m_CallbackHandlesCancel;
-
-			public SimplePrompt(PromptCallback callback, PromptCallback cancelCallback)
-			{
-				m_Callback = callback;
-				m_CancelCallback = cancelCallback;
-			}
-
-			public SimplePrompt(PromptCallback callback, bool callbackHandlesCancel)
-			{
-				m_Callback = callback;
-				m_CallbackHandlesCancel = callbackHandlesCancel;
-			}
-
-			public SimplePrompt(PromptCallback callback)
-				: this(callback, false)
-			{ }
-
-			public override void OnResponse(Mobile from, string text)
-			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, text);
-				}
-			}
-
-			public override void OnCancel(Mobile from)
-			{
-				if (m_CallbackHandlesCancel && m_Callback != null)
-				{
-					m_Callback(from, "");
-				}
-				else if (m_CancelCallback != null)
-				{
-					m_CancelCallback(from, "");
-				}
-			}
-		}
-
-		public Prompt BeginPrompt(PromptCallback callback, PromptCallback cancelCallback)
-		{
-			Prompt p = new SimplePrompt(callback, cancelCallback);
-
-			Prompt = p;
-			return p;
-		}
-
-		public Prompt BeginPrompt(PromptCallback callback, bool callbackHandlesCancel)
-		{
-			Prompt p = new SimplePrompt(callback, callbackHandlesCancel);
-
-			Prompt = p;
-			return p;
-		}
-
-		public Prompt BeginPrompt(PromptCallback callback)
-		{
-			return BeginPrompt(callback, false);
-		}
-
-		private class SimpleStatePrompt : Prompt
-		{
-			private readonly PromptStateCallback m_Callback;
-			private readonly PromptStateCallback m_CancelCallback;
-
-			private readonly bool m_CallbackHandlesCancel;
-
-			private readonly object m_State;
-
-			public SimpleStatePrompt(PromptStateCallback callback, PromptStateCallback cancelCallback, object state)
-			{
-				m_Callback = callback;
-				m_CancelCallback = cancelCallback;
-				m_State = state;
-			}
-
-			public SimpleStatePrompt(PromptStateCallback callback, bool callbackHandlesCancel, object state)
-			{
-				m_Callback = callback;
-				m_State = state;
-				m_CallbackHandlesCancel = callbackHandlesCancel;
-			}
-
-			public SimpleStatePrompt(PromptStateCallback callback, object state)
-				: this(callback, false, state)
-			{ }
-
-			public override void OnResponse(Mobile from, string text)
-			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, text, m_State);
-				}
-			}
-
-			public override void OnCancel(Mobile from)
-			{
-				if (m_CallbackHandlesCancel && m_Callback != null)
-				{
-					m_Callback(from, "", m_State);
-				}
-				else if (m_CancelCallback != null)
-				{
-					m_CancelCallback(from, "", m_State);
-				}
-			}
-		}
-
-		public Prompt BeginPrompt(PromptStateCallback callback, PromptStateCallback cancelCallback, object state)
-		{
-			Prompt p = new SimpleStatePrompt(callback, cancelCallback, state);
-
-			Prompt = p;
-			return p;
-		}
-
-		public Prompt BeginPrompt(PromptStateCallback callback, bool callbackHandlesCancel, object state)
-		{
-			Prompt p = new SimpleStatePrompt(callback, callbackHandlesCancel, state);
-
-			Prompt = p;
-			return p;
-		}
-
-		public Prompt BeginPrompt(PromptStateCallback callback, object state)
-		{
-			return BeginPrompt(callback, false, state);
-		}
-
-		private class SimpleStatePrompt<T> : Prompt
-		{
-			private readonly PromptStateCallback<T> m_Callback;
-			private readonly PromptStateCallback<T> m_CancelCallback;
-
-			private readonly bool m_CallbackHandlesCancel;
-
-			private readonly T m_State;
-
-			public SimpleStatePrompt(PromptStateCallback<T> callback, PromptStateCallback<T> cancelCallback, T state)
-			{
-				m_Callback = callback;
-				m_CancelCallback = cancelCallback;
-				m_State = state;
-			}
-
-			public SimpleStatePrompt(PromptStateCallback<T> callback, bool callbackHandlesCancel, T state)
-			{
-				m_Callback = callback;
-				m_State = state;
-				m_CallbackHandlesCancel = callbackHandlesCancel;
-			}
-
-			public SimpleStatePrompt(PromptStateCallback<T> callback, T state)
-				: this(callback, false, state)
-			{ }
-
-			public override void OnResponse(Mobile from, string text)
-			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, text, m_State);
-				}
-			}
-
-			public override void OnCancel(Mobile from)
-			{
-				if (m_CallbackHandlesCancel && m_Callback != null)
-				{
-					m_Callback(from, "", m_State);
-				}
-				else if (m_CancelCallback != null)
-				{
-					m_CancelCallback(from, "", m_State);
-				}
-			}
-		}
-
-		public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, PromptStateCallback<T> cancelCallback, T state)
-		{
-			Prompt p = new SimpleStatePrompt<T>(callback, cancelCallback, state);
-
-			Prompt = p;
-			return p;
-		}
-
-		public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, bool callbackHandlesCancel, T state)
-		{
-			Prompt p = new SimpleStatePrompt<T>(callback, callbackHandlesCancel, state);
-
-			Prompt = p;
-			return p;
-		}
-
-		public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, T state)
-		{
-			return BeginPrompt(callback, false, state);
-		}
-
-		public Prompt Prompt
-		{
-			get => m_Prompt;
-			set
-			{
-				var oldPrompt = m_Prompt;
-				var newPrompt = value;
-
-				if (oldPrompt == newPrompt)
-				{
-					return;
-				}
-
-				m_Prompt = null;
-
-				if (oldPrompt != null && newPrompt != null)
-				{
-					oldPrompt.OnCancel(this);
-				}
-
-				m_Prompt = newPrompt;
-
-				if (newPrompt != null)
-				{
-					newPrompt.SendTo(this);
-					//Send(new UnicodePrompt(newPrompt));
-				}
-			}
-		}
-		#endregion
-
-		private bool InternalOnMove(Direction d)
-		{
-			if (!OnMove(d))
-			{
-				return false;
-			}
-
-			var e = MovementEventArgs.Create(this, d);
-
-			EventSink.InvokeMovement(e);
-
-			var ret = !e.Blocked;
-
-			e.Free();
-
-			return ret;
-		}
-
-		/// <summary>
-		///     Overridable. Event invoked before the Mobile <see cref="Move">moves</see>.
-		/// </summary>
-		/// <returns>True if the move is allowed, false if not.</returns>
-		protected virtual bool OnMove(Direction d)
-		{
-			if (m_Hidden && m_AccessLevel == AccessLevel.Player)
-			{
-				if (m_AllowedStealthSteps-- <= 0 || (d & Direction.Running) != 0 || Mounted)
-				{
-					RevealingAction();
-				}
-			}
-
-			return true;
-		}
-
-		private static readonly Packet[][] m_MovingPacketCache =
-		{
-			new Packet[8], new Packet[8]
-		};
-
-		private bool m_Pushing;
-		private bool m_IgnoreMobiles;
-		private bool m_IsStealthing;
-
-		public bool Pushing { get => m_Pushing; set => m_Pushing = value; }
-
-		private static int m_WalkFoot = 400;
-		private static int m_RunFoot = 200;
-		private static int m_WalkMount = 200;
-		private static int m_RunMount = 100;
-
-		public static int WalkFoot { get => m_WalkFoot; set => m_WalkFoot = value; }
-		public static int RunFoot { get => m_RunFoot; set => m_RunFoot = value; }
-		public static int WalkMount { get => m_WalkMount; set => m_WalkMount = value; }
-		public static int RunMount { get => m_RunMount; set => m_RunMount = value; }
-
-		private long m_EndQueue;
-
-		private static readonly List<IEntity> m_MoveList = new List<IEntity>();
-		private static readonly List<Mobile> m_MoveClientList = new List<Mobile>();
-
-		private static AccessLevel m_FwdAccessOverride = AccessLevel.Counselor;
-		private static bool m_FwdEnabled = true;
-		private static bool m_FwdUOTDOverride;
-		private static int m_FwdMaxSteps = 4;
-
-		public static AccessLevel FwdAccessOverride { get => m_FwdAccessOverride; set => m_FwdAccessOverride = value; }
-		public static bool FwdEnabled { get => m_FwdEnabled; set => m_FwdEnabled = value; }
-		public static bool FwdUOTDOverride { get => m_FwdUOTDOverride; set => m_FwdUOTDOverride = value; }
-		public static int FwdMaxSteps { get => m_FwdMaxSteps; set => m_FwdMaxSteps = value; }
-
-		public virtual void ClearFastwalkStack()
-		{
-			if (m_MoveRecords != null && m_MoveRecords.Count > 0)
-			{
-				m_MoveRecords.Clear();
-			}
-
-			m_EndQueue = Core.TickCount;
-		}
-
-		public virtual bool CheckMovement(Direction d, out int newZ)
-		{
-			return Movement.Movement.CheckMovement(this, Map, Location, d, out newZ);
-		}
-
-		public virtual bool Move(Direction d)
-		{
-			if (m_Deleted)
-			{
-				return false;
-			}
-
-			var box = FindBankNoCreate();
-
-			if (box != null && box.Opened)
-			{
-				box.Close();
-			}
-
-			var newLocation = m_Location;
-			var oldLocation = newLocation;
-
-			if ((m_Direction & Direction.Mask) == (d & Direction.Mask))
-			{
-				// We are actually moving (not just a direction change)
-
-				if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
-				{
-					SendLocalizedMessage(500111); // You are frozen and can not move.
-
-					return false;
-				}
-
-
-				if (CheckMovement(d, out var newZ))
-				{
-					int x = oldLocation.m_X, y = oldLocation.m_Y;
-					int oldX = x, oldY = y;
-					var oldZ = oldLocation.m_Z;
-
-					switch (d & Direction.Mask)
-					{
-						case Direction.North:
-						--y;
-						break;
-						case Direction.Right:
-						++x;
-						--y;
-						break;
-						case Direction.East:
-						++x;
-						break;
-						case Direction.Down:
-						++x;
-						++y;
-						break;
-						case Direction.South:
-						++y;
-						break;
-						case Direction.Left:
-						--x;
-						++y;
-						break;
-						case Direction.West:
-						--x;
-						break;
-						case Direction.Up:
-						--x;
-						--y;
-						break;
-					}
-
-					newLocation.m_X = x;
-					newLocation.m_Y = y;
-					newLocation.m_Z = newZ;
-
-					m_Pushing = false;
-
-					var map = m_Map;
-
-					if (map != null)
-					{
-						var oldSector = map.GetSector(oldX, oldY);
-						var newSector = map.GetSector(x, y);
-
-						if (oldSector != newSector)
-						{
-							for (var i = 0; i < oldSector.Mobiles.Count; ++i)
-							{
-								var m = oldSector.Mobiles[i];
-
-								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
-								{
-									return false;
-								}
-							}
-
-							for (var i = 0; i < oldSector.Items.Count; ++i)
-							{
-								var item = oldSector.Items[i];
-
-								if (item.AtWorldPoint(oldX, oldY) &&
-									(item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
-								{
-									return false;
-								}
-							}
-
-							for (var i = 0; i < newSector.Mobiles.Count; ++i)
-							{
-								var m = newSector.Mobiles[i];
-
-								if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
-
-							for (var i = 0; i < newSector.Items.Count; ++i)
-							{
-								var item = newSector.Items[i];
-
-								if (item.AtWorldPoint(x, y) &&
-									(item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
-						}
-						else
-						{
-							for (var i = 0; i < oldSector.Mobiles.Count; ++i)
-							{
-								var m = oldSector.Mobiles[i];
-
-								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
-								{
-									return false;
-								}
-
-								if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
-
-							for (var i = 0; i < oldSector.Items.Count; ++i)
-							{
-								var item = oldSector.Items[i];
-
-								if (item.AtWorldPoint(oldX, oldY) &&
-									(item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
-								{
-									return false;
-								}
-
-								if (item.AtWorldPoint(x, y) &&
-									(item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
-								{
-									return false;
-								}
-							}
-						}
-
-						if (!Region.CanMove(this, d, newLocation, oldLocation, m_Map))
-						{
-							return false;
-						}
-					}
-					else
-					{
-						return false;
-					}
-
-					if (!InternalOnMove(d))
-					{
-						return false;
-					}
-
-					if (m_FwdEnabled && m_NetState != null && m_AccessLevel < m_FwdAccessOverride &&
-						(!m_FwdUOTDOverride || !m_NetState.IsUOTDClient))
-					{
-						if (m_MoveRecords == null)
-						{
-							m_MoveRecords = new Queue<MovementRecord>(6);
-						}
-
-						while (m_MoveRecords.Count > 0)
-						{
-							var r = m_MoveRecords.Peek();
-
-							if (r.Expired())
-							{
-								m_MoveRecords.Dequeue();
-							}
-							else
-							{
-								break;
-							}
-						}
-
-						if (m_MoveRecords.Count >= m_FwdMaxSteps)
-						{
-							var fw = new FastWalkEventArgs(m_NetState);
-							EventSink.InvokeFastWalk(fw);
-
-							if (fw.Blocked)
-							{
-								return false;
-							}
-						}
-
-						var delay = ComputeMovementSpeed(d);
-
-						long end;
-
-						if (m_MoveRecords.Count > 0)
-						{
-							end = m_EndQueue + delay;
-						}
-						else
-						{
-							end = Core.TickCount + delay;
-						}
-
-						m_MoveRecords.Enqueue(MovementRecord.NewInstance(end));
-
-						m_EndQueue = end;
-					}
-
-					m_LastMoveTime = Core.TickCount;
-				}
-				else
-				{
-					return false;
-				}
-
-				DisruptiveAction();
-			}
-
-			if (m_NetState != null)
-			{
-				m_NetState.Send(MovementAck.Instantiate(m_NetState.Sequence, this));
-			}
-
-			SetLocation(newLocation, false);
-			SetDirection(d);
-
-			if (m_Map != null)
-			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
-
-				foreach (var o in eable)
-				{
-					if (o == this)
-					{
-						continue;
-					}
-
-					if (o is Mobile mob)
-					{
-						if (mob.NetState != null)
-						{
-							m_MoveClientList.Add(mob);
-						}
-						m_MoveList.Add(mob);
-					}
-					else if (o is Item item && item.HandlesOnMovement)
-					{
-						m_MoveList.Add(item);
-					}
-				}
-
-				eable.Free();
-
-				var cache = m_MovingPacketCache;
-
-				foreach (var m in m_MoveClientList)
-				{
-					var ns = m.NetState;
-
-					if (ns != null && m.InUpdateRange(m_Location) && m.CanSee(this))
-					{
-						var noto = Notoriety.Compute(m, this);
-						var p = cache[0][noto];
-
-						if (p == null)
-						{
-							cache[0][noto] = p = Packet.Acquire(new MobileMoving(this, noto));
-						}
-
-						ns.Send(p);
-					}
-				}
-
-				for (var i = 0; i < cache.Length; ++i)
-				{
-					for (var j = 0; j < cache[i].Length; ++j)
-					{
-						Packet.Release(ref cache[i][j]);
-					}
-				}
-
-				for (var i = 0; i < m_MoveList.Count; ++i)
-				{
-					var o = m_MoveList[i];
-
-					if (o is Mobile mobile)
-					{
-						mobile.OnMovement(this, oldLocation);
-					}
-					else if (o is Item item)
-					{
-						item.OnMovement(this, oldLocation);
-					}
-				}
-
-				if (m_MoveList.Count > 0)
-				{
-					m_MoveList.Clear();
-				}
-
-				if (m_MoveClientList.Count > 0)
-				{
-					m_MoveClientList.Clear();
-				}
-			}
-
-			OnAfterMove(oldLocation);
-			return true;
-		}
-
-		public virtual void OnAfterMove(Point3D oldLocation)
-		{ }
-
-		public int ComputeMovementSpeed()
-		{
-			return ComputeMovementSpeed(Direction, false);
-		}
-
-		public int ComputeMovementSpeed(Direction dir)
-		{
-			return ComputeMovementSpeed(dir, true);
-		}
-
-		public virtual int ComputeMovementSpeed(Direction dir, bool checkTurning)
-		{
-			int delay;
-
-			if (Mounted)
-			{
-				delay = (dir & Direction.Running) != 0 ? m_RunMount : m_WalkMount;
-			}
-			else
-			{
-				delay = (dir & Direction.Running) != 0 ? m_RunFoot : m_WalkFoot;
-			}
-
-			return delay;
-		}
-
-		/// <summary>
-		///     Overridable. Virtual event invoked when a Mobile <paramref name="m" /> moves off this Mobile.
-		/// </summary>
-		/// <returns>True if the move is allowed, false if not.</returns>
-		public virtual bool OnMoveOff(Mobile m)
-		{
-			return true;
-		}
-
-		public virtual bool IsDeadBondedPet => false;
-
-		/// <summary>
-		///     Overridable. Event invoked when a Mobile <paramref name="m" /> moves over this Mobile.
-		/// </summary>
-		/// <returns>True if the move is allowed, false if not.</returns>
-		public virtual bool OnMoveOver(Mobile m)
-		{
-			if (m_Map == null || m_Deleted)
-			{
-				return true;
-			}
-
-			return m.CheckShove(this);
-		}
-
-		public virtual bool CheckShove(Mobile shoved)
-		{
-			if (!m_IgnoreMobiles && (m_Map.Rules & MapRules.FreeMovement) == 0)
-			{
-				if (!shoved.Alive || !Alive || shoved.IsDeadBondedPet || IsDeadBondedPet)
-				{
-					return true;
-				}
-
-				if (shoved.m_Hidden && shoved.IsStaff())
-				{
-					return true;
-				}
-
-				if (!m_Pushing)
-				{
-					m_Pushing = true;
-
-					int number;
-
-					if (IsStaff())
-					{
-						number = shoved.m_Hidden ? 1019041 : 1019040;
-					}
-					else
-					{
-						if (Stam == StamMax)
-						{
-							number = shoved.m_Hidden ? 1019043 : 1019042;
-							Stam -= 10;
-
-							RevealingAction();
-						}
-						else
-						{
-							return false;
-						}
-					}
-
-					SendLocalizedMessage(number);
-				}
-			}
-			return true;
-		}
-
-		/// <summary>
-		///     Overridable. Virtual event invoked when the Mobile sees another Mobile, <paramref name="m" />, move.
-		/// </summary>
-		public virtual void OnMovement(Mobile m, Point3D oldLocation)
-		{ }
-
-		public ISpell Spell { get => m_Spell; set => m_Spell = value; }
-
-		[CommandProperty(AccessLevel.Administrator)]
-		public bool AutoPageNotify { get => m_AutoPageNotify; set => m_AutoPageNotify = value; }
-
-		public virtual void CriminalAction(bool message)
-		{
-			if (m_Deleted)
-			{
-				return;
-			}
-
-			Criminal = true;
-
-			Region.OnCriminalAction(this, message);
-		}
-
-		public virtual bool IsPlayer()
-		{
-			return AccessLevel < AccessLevel.Counselor;
-		}
-
-		public virtual bool IsStaff()
-		{
-			return AccessLevel >= AccessLevel.Counselor;
-		}
-
-		public virtual bool IsSnoop(Mobile from)
-		{
-			return from != this;
-		}
-
-		/// <summary>
-		///     Overridable. Any call to <see cref="Resurrect" /> will silently fail if this method returns false.
-		///     <seealso cref="Resurrect" />
-		/// </summary>
-		public virtual bool CheckResurrect()
-		{
-			return true;
-		}
-
-		/// <summary>
-		///     Overridable. Event invoked before the Mobile is <see cref="Resurrect">resurrected</see>.
-		///     <seealso cref="Resurrect" />
-		/// </summary>
-		public virtual void OnBeforeResurrect()
-		{ }
-
-		/// <summary>
-		///     Overridable. Event invoked after the Mobile is <see cref="Resurrect">resurrected</see>.
-		///     <seealso cref="Resurrect" />
-		/// </summary>
-		public virtual void OnAfterResurrect()
-		{ }
-
-		public virtual void Resurrect()
-		{
-			if (!Alive)
-			{
-				if (!Region.OnResurrect(this))
-				{
-					return;
-				}
-
-				if (!CheckResurrect())
-				{
-					return;
-				}
-
-				OnBeforeResurrect();
-
-				var box = FindBankNoCreate();
-
-				if (box != null && box.Opened)
-				{
-					box.Close();
-				}
-
-				Poison = null;
-
-				Warmode = false;
-
-				Hits = 10;
-				Stam = StamMax;
-				Mana = 0;
-
-				BodyMod = 0;
-				Body = Race.AliveBody(this);
-
-				ProcessDeltaQueue();
-
-				for (var i = m_Items.Count - 1; i >= 0; --i)
-				{
-					if (i >= m_Items.Count)
-					{
-						continue;
-					}
-
-					var item = m_Items[i];
-
-					if (item.ItemID == 8270)
-					{
-						item.Delete();
-					}
-				}
-
-				SendIncomingPacket();
-				SendIncomingPacket();
-
-				OnAfterResurrect();
-			}
-		}
-
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
-		public IAccount Account { get; set; }
-
-		private bool m_Deleted;
-
-		public bool Deleted => m_Deleted;
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int VirtualArmor
-		{
-			get => m_VirtualArmor;
-			set
-			{
-				if (m_VirtualArmor != value)
-				{
-					m_VirtualArmor = value;
-
-					Delta(MobileDelta.Armor);
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual double ArmorRating => 0.0;
-
-		public void DropHolding()
-		{
-			var holding = m_Holding;
-
-			if (holding != null)
-			{
-				if (!holding.Deleted && holding.HeldBy == this && holding.Map == Map.Internal)
-				{
-					AddToBackpack(holding);
-				}
-
-				Holding = null;
-				holding.ClearBounce();
-			}
-		}
-
-		public virtual void Delete()
-		{
-			if (m_Deleted)
-			{
-				return;
-			}
-
-			if (!World.OnDelete(this))
-			{
-				return;
-			}
-
-			if (m_NetState != null)
-			{
-				m_NetState.CancelAllTrades();
-			}
-
-			if (m_NetState != null)
-			{
-				m_NetState.Dispose();
-			}
-
-			DropHolding();
-
-			Region.OnRegionChange(this, m_Region, null);
-
-			m_Region = null;
-			//Is the above line REALLY needed?  The old Region system did NOT have said line
-			//and worked fine, because of this a LOT of extra checks have to be done everywhere...
-			//I guess this should be there for Garbage collection purposes, but, still, is it /really/ needed?
-
-			OnDelete();
-
-			for (var i = m_Items.Count - 1; i >= 0; --i)
-			{
-				if (i < m_Items.Count)
-				{
-					m_Items[i].OnParentDeleted(this);
-				}
-			}
-
-			for (var i = 0; i < m_Stabled.Count; i++)
-			{
-				m_Stabled[i].Delete();
-			}
-
-			SendRemovePacket();
-
-			if (m_Guild != null)
-			{
-				m_Guild.OnDelete(this);
-			}
-
-			m_Deleted = true;
-
-			if (m_Map != null)
-			{
-				m_Map.OnLeave(this);
-				m_Map = null;
-			}
-
-			m_Hair = null;
-			m_FacialHair = null;
-			m_MountItem = null;
-			m_Face = null;
-
-			World.RemoveMobile(this);
-
-			OnAfterDelete();
-
-			FreeCache();
-		}
-
-		/// <summary>
-		///     Overridable. Virtual event invoked before the Mobile is deleted.
-		/// </summary>
-		public virtual void OnDelete()
-		{
-			if (m_Spawner != null)
-			{
-				m_Spawner.Remove(this);
-				m_Spawner = null;
-			}
-		}
-
-		/// <summary>
-		///     Overridable. Returns true if the player is alive, false if otherwise. By default, this is computed by: <c>!Deleted &amp;&amp; (!Player || !Body.IsGhost)</c>
-		/// </summary>
-		[CommandProperty(AccessLevel.Counselor)]
-		public virtual bool Alive => !m_Deleted && (!m_Player || !m_Body.IsGhost);
-
-		public virtual bool CheckSpellCast(ISpell spell)
-		{
-			return true;
-		}
-
-		/// <summary>
-		///     Overridable. Virtual event invoked when the Mobile casts a <paramref name="spell" />.
-		/// </summary>
-		/// <param name="spell"></param>
-		public virtual void OnSpellCast(ISpell spell)
-		{ }
-
-		/// <summary>
-		///     Overridable. Virtual event invoked after <see cref="TotalWeight" /> changes.
-		/// </summary>
-		public virtual void OnWeightChange(int oldValue)
-		{ }
-
-		/// <summary>
-		///     Overridable. Virtual event invoked when the <see cref="Skill.Base" /> or <see cref="Skill.BaseFixedPoint" /> property of
-		///     <paramref
-		///         name="skill" />
-		///     changes.
-		/// </summary>
-		public virtual void OnSkillChange(SkillName skill, double oldBase)
-		{ }
-
-		/// <summary>
-		///     Overridable. Invoked after the mobile is deleted. When overriden, be sure to call the base method.
-		/// </summary>
-		public virtual void OnAfterDelete()
-		{
-			StopAggrExpire();
-
-			CheckAggrExpire();
-
-			if (m_PoisonTimer != null)
-			{
-				m_PoisonTimer.Stop();
-			}
-
-			if (m_WarmodeTimer != null)
-			{
-				m_WarmodeTimer.Stop();
-			}
-
-			if (m_AutoManifestTimer != null)
-			{
-				m_AutoManifestTimer.Stop();
-			}
-
-			Timer.DelayCall(EventSink.InvokeMobileDeleted, new MobileDeletedEventArgs(this));
-		}
-
-		public virtual bool AllowSkillUse(SkillName name)
-		{
-			return true;
-		}
-
-		public virtual bool UseSkill(SkillName name)
-		{
-			return Skills.UseSkill(this, name);
-		}
-
-		public virtual bool UseSkill(int skillID)
-		{
-			return Skills.UseSkill(this, skillID);
-		}
-
-		private static CreateCorpseHandler m_CreateCorpse;
-
-		public static TimeSpan DefaultCorpseDecay => _DefaultCorpseDecay;
-		public static readonly TimeSpan _DefaultCorpseDecay = TimeSpan.FromMinutes(7);
-
-		public static CreateCorpseHandler CreateCorpseHandler { get => m_CreateCorpse; set => m_CreateCorpse = value; }
-
-		public virtual TimeSpan CorpseDecayTime => _DefaultCorpseDecay;
-
-		public virtual DeathMoveResult GetParentMoveResultFor(Item item)
+        private Point3D m_LogoutLocation;
+        private Map m_LogoutMap;
+
+        private static readonly string _LogoutTimerID = "LogoutTimer";
+
+        public virtual TimeSpan GetLogoutDelay()
+        {
+            return Region.GetLogoutDelay(this);
+        }
+
+        private void DoLogout()
+        {
+            if (m_Map != Map.Internal)
+            {
+                EventSink.InvokeLogout(new LogoutEventArgs(this));
+
+                m_LogoutLocation = m_Location;
+                m_LogoutMap = m_Map;
+
+                Internalize();
+            }
+        }
+        #endregion
+
+        #region Combat Timer
+        private static readonly string _CombatTimerPlayerID = "CombatTimerPlayer";
+        private static readonly string _CombatTimerID = "CombatTimer";
+
+        private long m_NextCombatTime;
+        public long NextCombatTime { get => m_NextCombatTime; set => m_NextCombatTime = value; }
+
+        private bool UsePlayerCombatTimer()
+        {
+            return Player || m_Dex > 100;
+        }
+
+        private void StartCombatTimer()
+        {
+            var playerTimer = UsePlayerCombatTimer();
+
+            TimerRegistry.Register(
+                playerTimer ? _CombatTimerPlayerID : _CombatTimerID,
+                this,
+                TimeSpan.FromSeconds(0.01),
+                false,
+                playerTimer ? TimerPriority.EveryTick : TimerPriority.FiftyMS,
+                m => m.CombatTimerOnTick());
+        }
+
+        private void RemoveCombatTimer()
+        {
+            TimerRegistry.RemoveFromRegistry(UsePlayerCombatTimer() ? _CombatTimerPlayerID : _CombatTimerID, this);
+        }
+
+        private void CombatTimerOnTick()
+        {
+            if (Core.TickCount - m_NextCombatTime >= 0)
+            {
+                IDamageable combatant = Combatant;
+
+                // If no combatant, wrong map, one of us is a ghost, or cannot see, or deleted, then stop combat
+                if (combatant == null || combatant.Deleted || m_Deleted || combatant.Map != m_Map ||
+                    !combatant.Alive || !Alive || !CanSee(combatant) || combatant is Mobile mobile && mobile.IsDeadBondedPet ||
+                    IsDeadBondedPet)
+                {
+                    Combatant = null;
+                    return;
+                }
+
+                IWeapon weapon = Weapon;
+
+                if (!InRange(combatant, weapon.MaxRange))
+                {
+                    return;
+                }
+
+                if (InLOS(combatant))
+                {
+                    weapon.OnBeforeSwing(this, combatant);
+                    RevealingAction();
+                    m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(this, combatant).TotalMilliseconds;
+                }
+            }
+        }
+        #endregion
+
+        #region Expire Crimimnal
+        private static readonly string _ExpireCrimID = "ExpireCriminalTimer";
+        private static TimeSpan _ExpireCriminalDelay = TimeSpan.FromMinutes(2.0);
+
+        public static TimeSpan ExpireCriminalDelay { get => _ExpireCriminalDelay; set => _ExpireCriminalDelay = value; }
+
+        private void StartCrimDelayTimer()
+        {
+            if (!TimerRegistry.UpdateRegistry(_ExpireCrimID, this, _ExpireCriminalDelay))
+            {
+                TimerRegistry.Register(_ExpireCrimID, this, _ExpireCriminalDelay, TimerPriority.FiveSeconds, m => m.Criminal = false);
+            }
+        }
+
+        private void StopCrimDelayTimer()
+        {
+            TimerRegistry.RemoveFromRegistry(_ExpireCrimID, this);
+        }
+        #endregion
+        #endregion
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public long NextSkillTime { get => m_NextSkillTime; set => m_NextSkillTime = value; }
+
+        public List<AggressorInfo> Aggressors => m_Aggressors;
+
+        public List<AggressorInfo> Aggressed => m_Aggressed;
+
+        private int m_ChangingCombatant;
+
+        public bool ChangingCombatant => m_ChangingCombatant > 0;
+
+        public virtual void Attack(IDamageable e)
+        {
+            if (CheckAttack(e))
+            {
+                if (!m_Warmode)
+                {
+                    Warmode = true;
+                }
+
+                Combatant = e;
+            }
+        }
+
+        public virtual bool CheckAttack(IDamageable e)
+        {
+            return Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e);
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public bool GuardImmune { get; set; }
+
+        /// <summary>
+        ///     Overridable. Gets or sets which Mobile that this Mobile is currently engaged in combat with.
+        ///     <seealso cref="OnCombatantChange" />
+        /// </summary>
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual IDamageable Combatant
+        {
+            get => m_Combatant;
+            set
+            {
+                if (m_Deleted)
+                {
+                    return;
+                }
+
+                if (m_Combatant != value && value != this)
+                {
+                    if (++m_ChangingCombatant > 100)
+                    {
+                        m_ChangingCombatant = 0;
+                        return;
+                    }
+
+                    IDamageable old = m_Combatant;
+
+                    m_Combatant = value;
+
+                    if (!Region.OnCombatantChange(this, old, m_Combatant) || (m_Combatant != null && !CanBeHarmful(m_Combatant, false)))
+                    {
+                        m_Combatant = old;
+                        --m_ChangingCombatant;
+                        return;
+                    }
+
+                    if (m_NetState != null)
+                    {
+                        m_NetState.Send(new ChangeCombatant(m_Combatant));
+                    }
+
+                    if (m_Combatant == null)
+                    {
+                        RemoveCombatantTimer();
+                        RemoveCombatTimer();
+                    }
+                    else
+                    {
+                        CheckExpireCombatantTimer();
+                        StartCombatTimer();
+                    }
+
+                    if (m_Combatant != null && CanBeHarmful(m_Combatant, false))
+                    {
+                        DoHarmful(m_Combatant);
+
+                        if (m_Combatant is Mobile mobile)
+                        {
+                            mobile.PlaySound(mobile.GetAngerSound());
+                        }
+                    }
+
+                    OnCombatantChange();
+                    --m_ChangingCombatant;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked after the <see cref="Combatant" /> property has changed.
+        ///     <seealso cref="Combatant" />
+        /// </summary>
+        public virtual void OnCombatantChange()
+        { }
+
+        public double GetDistanceToSqrt(Point3D p)
+        {
+            int xDelta = m_Location.m_X - p.m_X;
+            int yDelta = m_Location.m_Y - p.m_Y;
+
+            return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
+        }
+
+        public double GetDistanceToSqrt(Mobile m)
+        {
+            int xDelta = m_Location.m_X - m.m_Location.m_X;
+            int yDelta = m_Location.m_Y - m.m_Location.m_Y;
+
+            return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
+        }
+
+        public double GetDistanceToSqrt(IPoint2D p)
+        {
+            int xDelta = m_Location.m_X - p.X;
+            int yDelta = m_Location.m_Y - p.Y;
+
+            return Math.Sqrt((xDelta * xDelta) + (yDelta * yDelta));
+        }
+
+        public virtual void AggressiveAction(Mobile aggressor)
+        {
+            AggressiveAction(aggressor, false);
+        }
+
+        public virtual void AggressiveAction(Mobile aggressor, bool criminal)
+        {
+            if (aggressor == this)
+                return;
+
+            AggressiveActionEventArgs args = AggressiveActionEventArgs.Create(this, aggressor, criminal);
+
+            EventSink.InvokeAggressiveAction(args);
+
+            args.Free();
+
+            if (Combatant == aggressor)
+            {
+                CheckExpireCombatantTimer();
+            }
+
+            bool addAggressor = true;
+
+            List<AggressorInfo> list = m_Aggressors;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+
+                if (info.Attacker == aggressor)
+                {
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                    info.CanReportMurder = criminal;
+
+                    addAggressor = false;
+                }
+            }
+
+            list = aggressor.m_Aggressors;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+
+                if (info.Attacker == this)
+                {
+                    info.Refresh();
+
+                    addAggressor = false;
+                }
+            }
+
+            bool addAggressed = true;
+
+            list = m_Aggressed;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+
+                if (info.Defender == aggressor)
+                {
+                    info.Refresh();
+
+                    addAggressed = false;
+                }
+            }
+
+            list = aggressor.m_Aggressed;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+
+                if (info.Defender == this)
+                {
+                    info.Refresh();
+                    info.CriminalAggression = criminal;
+                    info.CanReportMurder = criminal;
+
+                    addAggressed = false;
+                }
+            }
+
+            bool setCombatant = false;
+
+            if (addAggressor)
+            {
+                m_Aggressors.Add(AggressorInfo.Create(aggressor, this, criminal));
+
+                if (CanSee(aggressor) && m_NetState != null)
+                {
+                    m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+                }
+
+                if (Combatant == null)
+                    setCombatant = true;
+
+                UpdateAggrExpire();
+            }
+
+            if (addAggressed)
+            {
+                aggressor.m_Aggressed.Add(AggressorInfo.Create(aggressor, this, criminal));
+
+                if (CanSee(aggressor) && m_NetState != null)
+                {
+                    m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+                }
+
+                if (Combatant == null)
+                    setCombatant = true;
+
+                UpdateAggrExpire();
+            }
+
+            if (setCombatant && !Hidden)
+                Combatant = aggressor;
+
+            Region.OnAggressed(aggressor, this, criminal);
+        }
+
+        public void RemoveAggressed(Mobile aggressed)
+        {
+            if (m_Deleted)
+            {
+                return;
+            }
+
+            List<AggressorInfo> list = m_Aggressed;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+
+                if (info.Defender == aggressed)
+                {
+                    m_Aggressed.RemoveAt(i);
+                    info.Free();
+
+                    if (m_NetState != null && CanSee(aggressed))
+                    {
+                        m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressed));
+                    }
+
+                    break;
+                }
+            }
+
+            UpdateAggrExpire();
+        }
+
+        public void RemoveAggressor(Mobile aggressor)
+        {
+            if (m_Deleted)
+            {
+                return;
+            }
+
+            List<AggressorInfo> list = m_Aggressors;
+
+            for (int i = 0; i < list.Count; ++i)
+            {
+                AggressorInfo info = list[i];
+
+                if (info.Attacker == aggressor)
+                {
+                    m_Aggressors.RemoveAt(i);
+                    info.Free();
+
+                    if (m_NetState != null && CanSee(aggressor))
+                    {
+                        m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+                    }
+
+                    break;
+                }
+            }
+
+            UpdateAggrExpire();
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TotalGold => GetTotal(TotalType.Gold);
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TotalItems => GetTotal(TotalType.Items);
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TotalWeight => GetTotal(TotalType.Weight);
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int TithingPoints
+        {
+            get => m_TithingPoints;
+            set
+            {
+                if (m_TithingPoints != value)
+                {
+                    m_TithingPoints = value;
+
+                    Delta(MobileDelta.TithingPoints);
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int Followers
+        {
+            get => m_Followers;
+            set
+            {
+                if (m_Followers != value)
+                {
+                    m_Followers = value;
+
+                    Delta(MobileDelta.Followers);
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int FollowersMax
+        {
+            get => m_FollowersMax;
+            set
+            {
+                if (m_FollowersMax != value)
+                {
+                    m_FollowersMax = value;
+
+                    Delta(MobileDelta.Followers);
+                }
+            }
+        }
+
+        public virtual int GetTotal(TotalType type)
+        {
+            switch (type)
+            {
+                case TotalType.Gold:
+                    return m_TotalGold;
+
+                case TotalType.Items:
+                    return m_TotalItems;
+
+                case TotalType.Weight:
+                    return m_TotalWeight;
+            }
+
+            return 0;
+        }
+
+        public virtual void UpdateTotal(Item sender, TotalType type, int delta)
+        {
+            if (delta == 0 || sender.IsVirtualItem)
+            {
+                return;
+            }
+
+            switch (type)
+            {
+                case TotalType.Gold:
+                    m_TotalGold += delta;
+                    Delta(MobileDelta.Gold);
+                    break;
+
+                case TotalType.Items:
+                    m_TotalItems += delta;
+                    break;
+
+                case TotalType.Weight:
+                    m_TotalWeight += delta;
+                    Delta(MobileDelta.Weight);
+                    OnWeightChange(m_TotalWeight - delta);
+                    break;
+            }
+        }
+
+        public virtual void UpdateTotals()
+        {
+            if (m_Items == null)
+            {
+                return;
+            }
+
+            int oldWeight = m_TotalWeight;
+
+            m_TotalGold = 0;
+            m_TotalItems = 0;
+            m_TotalWeight = 0;
+
+            for (int i = 0; i < m_Items.Count; ++i)
+            {
+                Item item = m_Items[i];
+
+                item.UpdateTotals();
+
+                if (item.IsVirtualItem)
+                {
+                    continue;
+                }
+
+                m_TotalGold += item.TotalGold;
+                m_TotalItems += item.TotalItems + 1;
+                m_TotalWeight += item.TotalWeight + item.PileWeight;
+            }
+
+            if (m_Holding != null)
+            {
+                m_TotalWeight += m_Holding.TotalWeight + m_Holding.PileWeight;
+            }
+
+            if (m_TotalWeight != oldWeight)
+            {
+                OnWeightChange(oldWeight);
+            }
+        }
+
+        public void ClearQuestArrow()
+        {
+            m_QuestArrow = null;
+        }
+
+        public void ClearTarget()
+        {
+            m_Target = null;
+        }
+
+        private bool m_TargetLocked;
+
+        public bool TargetLocked { get => m_TargetLocked; set => m_TargetLocked = value; }
+
+        private class SimpleTarget : Target
+        {
+            private readonly TargetCallback m_Callback;
+
+            public SimpleTarget(int range, TargetFlags flags, bool allowGround, TargetCallback callback)
+                : base(range, allowGround, flags)
+            {
+                m_Callback = callback;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (m_Callback != null)
+                {
+                    m_Callback(from, targeted);
+                }
+            }
+        }
+
+        public Target BeginTarget(int range, bool allowGround, TargetFlags flags, TargetCallback callback)
+        {
+            Target t = new SimpleTarget(range, flags, allowGround, callback);
+
+            Target = t;
+
+            return t;
+        }
+
+        private class SimpleStateTarget : Target
+        {
+            private readonly TargetStateCallback m_Callback;
+            private readonly object m_State;
+
+            public SimpleStateTarget(int range, TargetFlags flags, bool allowGround, TargetStateCallback callback, object state)
+                : base(range, allowGround, flags)
+            {
+                m_Callback = callback;
+                m_State = state;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (m_Callback != null)
+                {
+                    m_Callback(from, targeted, m_State);
+                }
+            }
+        }
+
+        public Target BeginTarget(int range, bool allowGround, TargetFlags flags, TargetStateCallback callback, object state)
+        {
+            Target t = new SimpleStateTarget(range, flags, allowGround, callback, state);
+
+            Target = t;
+
+            return t;
+        }
+
+        private class SimpleStateTarget<T> : Target
+        {
+            private readonly TargetStateCallback<T> m_Callback;
+            private readonly T m_State;
+
+            public SimpleStateTarget(int range, TargetFlags flags, bool allowGround, TargetStateCallback<T> callback, T state)
+                : base(range, allowGround, flags)
+            {
+                m_Callback = callback;
+                m_State = state;
+            }
+
+            protected override void OnTarget(Mobile from, object targeted)
+            {
+                if (m_Callback != null)
+                {
+                    m_Callback(from, targeted, m_State);
+                }
+            }
+        }
+
+        public Target BeginTarget<T>(int range, bool allowGround, TargetFlags flags, TargetStateCallback<T> callback, T state)
+        {
+            Target t = new SimpleStateTarget<T>(range, flags, allowGround, callback, state);
+
+            Target = t;
+
+            return t;
+        }
+
+        public Target Target
+        {
+            get => m_Target;
+            set
+            {
+                Target oldTarget = m_Target;
+                Target newTarget = value;
+
+                if (oldTarget == newTarget)
+                {
+                    return;
+                }
+
+                m_Target = null;
+
+                if (oldTarget != null && newTarget != null)
+                {
+                    oldTarget.Cancel(this, TargetCancelType.Overriden);
+                }
+
+                m_Target = newTarget;
+
+                if (newTarget != null && m_NetState != null && !m_TargetLocked)
+                {
+                    m_NetState.Send(newTarget.GetPacketFor(m_NetState));
+                }
+
+                OnTargetChange();
+            }
+        }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked after the <see cref="Target">Target property</see> has changed.
+        /// </summary>
+        protected virtual void OnTargetChange()
+        { }
+
+        public ContextMenu ContextMenu
+        {
+            get => m_ContextMenu;
+            set
+            {
+                m_ContextMenu = value;
+
+                if (m_ContextMenu != null)
+                {
+                    Send(new DisplayContextMenu(m_ContextMenu));
+                }
+            }
+        }
+
+        public virtual bool CheckContextMenuDisplay(IEntity target)
+        {
+            return true;
+        }
+
+        #region Prompts
+        private class SimplePrompt : Prompt
+        {
+            private readonly PromptCallback m_Callback;
+            private readonly PromptCallback m_CancelCallback;
+            private readonly bool m_CallbackHandlesCancel;
+
+            public SimplePrompt(PromptCallback callback, PromptCallback cancelCallback)
+            {
+                m_Callback = callback;
+                m_CancelCallback = cancelCallback;
+            }
+
+            public SimplePrompt(PromptCallback callback, bool callbackHandlesCancel)
+            {
+                m_Callback = callback;
+                m_CallbackHandlesCancel = callbackHandlesCancel;
+            }
+
+            public SimplePrompt(PromptCallback callback)
+                : this(callback, false)
+            { }
+
+            public override void OnResponse(Mobile from, string text)
+            {
+                if (m_Callback != null)
+                {
+                    m_Callback(from, text);
+                }
+            }
+
+            public override void OnCancel(Mobile from)
+            {
+                if (m_CallbackHandlesCancel && m_Callback != null)
+                {
+                    m_Callback(from, "");
+                }
+                else if (m_CancelCallback != null)
+                {
+                    m_CancelCallback(from, "");
+                }
+            }
+        }
+
+        public Prompt BeginPrompt(PromptCallback callback, PromptCallback cancelCallback)
+        {
+            Prompt p = new SimplePrompt(callback, cancelCallback);
+
+            Prompt = p;
+            return p;
+        }
+
+        public Prompt BeginPrompt(PromptCallback callback, bool callbackHandlesCancel)
+        {
+            Prompt p = new SimplePrompt(callback, callbackHandlesCancel);
+
+            Prompt = p;
+            return p;
+        }
+
+        public Prompt BeginPrompt(PromptCallback callback)
+        {
+            return BeginPrompt(callback, false);
+        }
+
+        private class SimpleStatePrompt : Prompt
+        {
+            private readonly PromptStateCallback m_Callback;
+            private readonly PromptStateCallback m_CancelCallback;
+
+            private readonly bool m_CallbackHandlesCancel;
+
+            private readonly object m_State;
+
+            public SimpleStatePrompt(PromptStateCallback callback, PromptStateCallback cancelCallback, object state)
+            {
+                m_Callback = callback;
+                m_CancelCallback = cancelCallback;
+                m_State = state;
+            }
+
+            public SimpleStatePrompt(PromptStateCallback callback, bool callbackHandlesCancel, object state)
+            {
+                m_Callback = callback;
+                m_State = state;
+                m_CallbackHandlesCancel = callbackHandlesCancel;
+            }
+
+            public SimpleStatePrompt(PromptStateCallback callback, object state)
+                : this(callback, false, state)
+            { }
+
+            public override void OnResponse(Mobile from, string text)
+            {
+                if (m_Callback != null)
+                {
+                    m_Callback(from, text, m_State);
+                }
+            }
+
+            public override void OnCancel(Mobile from)
+            {
+                if (m_CallbackHandlesCancel && m_Callback != null)
+                {
+                    m_Callback(from, "", m_State);
+                }
+                else if (m_CancelCallback != null)
+                {
+                    m_CancelCallback(from, "", m_State);
+                }
+            }
+        }
+
+        public Prompt BeginPrompt(PromptStateCallback callback, PromptStateCallback cancelCallback, object state)
+        {
+            Prompt p = new SimpleStatePrompt(callback, cancelCallback, state);
+
+            Prompt = p;
+            return p;
+        }
+
+        public Prompt BeginPrompt(PromptStateCallback callback, bool callbackHandlesCancel, object state)
+        {
+            Prompt p = new SimpleStatePrompt(callback, callbackHandlesCancel, state);
+
+            Prompt = p;
+            return p;
+        }
+
+        public Prompt BeginPrompt(PromptStateCallback callback, object state)
+        {
+            return BeginPrompt(callback, false, state);
+        }
+
+        private class SimpleStatePrompt<T> : Prompt
+        {
+            private readonly PromptStateCallback<T> m_Callback;
+            private readonly PromptStateCallback<T> m_CancelCallback;
+
+            private readonly bool m_CallbackHandlesCancel;
+
+            private readonly T m_State;
+
+            public SimpleStatePrompt(PromptStateCallback<T> callback, PromptStateCallback<T> cancelCallback, T state)
+            {
+                m_Callback = callback;
+                m_CancelCallback = cancelCallback;
+                m_State = state;
+            }
+
+            public SimpleStatePrompt(PromptStateCallback<T> callback, bool callbackHandlesCancel, T state)
+            {
+                m_Callback = callback;
+                m_State = state;
+                m_CallbackHandlesCancel = callbackHandlesCancel;
+            }
+
+            public SimpleStatePrompt(PromptStateCallback<T> callback, T state)
+                : this(callback, false, state)
+            { }
+
+            public override void OnResponse(Mobile from, string text)
+            {
+                if (m_Callback != null)
+                {
+                    m_Callback(from, text, m_State);
+                }
+            }
+
+            public override void OnCancel(Mobile from)
+            {
+                if (m_CallbackHandlesCancel && m_Callback != null)
+                {
+                    m_Callback(from, "", m_State);
+                }
+                else if (m_CancelCallback != null)
+                {
+                    m_CancelCallback(from, "", m_State);
+                }
+            }
+        }
+
+        public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, PromptStateCallback<T> cancelCallback, T state)
+        {
+            Prompt p = new SimpleStatePrompt<T>(callback, cancelCallback, state);
+
+            Prompt = p;
+            return p;
+        }
+
+        public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, bool callbackHandlesCancel, T state)
+        {
+            Prompt p = new SimpleStatePrompt<T>(callback, callbackHandlesCancel, state);
+
+            Prompt = p;
+            return p;
+        }
+
+        public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, T state)
+        {
+            return BeginPrompt(callback, false, state);
+        }
+
+        public Prompt Prompt
+        {
+            get => m_Prompt;
+            set
+            {
+                Prompt oldPrompt = m_Prompt;
+                Prompt newPrompt = value;
+
+                if (oldPrompt == newPrompt)
+                {
+                    return;
+                }
+
+                m_Prompt = null;
+
+                if (oldPrompt != null && newPrompt != null)
+                {
+                    oldPrompt.OnCancel(this);
+                }
+
+                m_Prompt = newPrompt;
+
+                if (newPrompt != null)
+                {
+                    newPrompt.SendTo(this);
+                    //Send(new UnicodePrompt(newPrompt));
+                }
+            }
+        }
+        #endregion
+
+        private bool InternalOnMove(Direction d)
+        {
+            if (!OnMove(d))
+            {
+                return false;
+            }
+
+            MovementEventArgs e = MovementEventArgs.Create(this, d);
+
+            EventSink.InvokeMovement(e);
+
+            bool ret = !e.Blocked;
+
+            e.Free();
+
+            return ret;
+        }
+
+        /// <summary>
+        ///     Overridable. Event invoked before the Mobile <see cref="Move">moves</see>.
+        /// </summary>
+        /// <returns>True if the move is allowed, false if not.</returns>
+        protected virtual bool OnMove(Direction d)
+        {
+            if (m_Hidden && m_AccessLevel == AccessLevel.Player)
+            {
+                if (m_AllowedStealthSteps-- <= 0 || (d & Direction.Running) != 0 || Mounted)
+                {
+                    RevealingAction();
+                }
+            }
+
+            return true;
+        }
+
+        private static readonly Packet[][] m_MovingPacketCache =
+        {
+            new Packet[8], new Packet[8]
+        };
+
+        private bool m_Pushing;
+        private bool m_IgnoreMobiles;
+        private bool m_IsStealthing;
+
+        public bool Pushing { get => m_Pushing; set => m_Pushing = value; }
+
+        private static int m_WalkFoot = 400;
+        private static int m_RunFoot = 200;
+        private static int m_WalkMount = 200;
+        private static int m_RunMount = 100;
+
+        public static int WalkFoot { get => m_WalkFoot; set => m_WalkFoot = value; }
+        public static int RunFoot { get => m_RunFoot; set => m_RunFoot = value; }
+        public static int WalkMount { get => m_WalkMount; set => m_WalkMount = value; }
+        public static int RunMount { get => m_RunMount; set => m_RunMount = value; }
+
+        private long m_EndQueue;
+
+        private static readonly List<IEntity> m_MoveList = new List<IEntity>();
+        private static readonly List<Mobile> m_MoveClientList = new List<Mobile>();
+
+        private static AccessLevel m_FwdAccessOverride = AccessLevel.Counselor;
+        private static bool m_FwdEnabled = true;
+        private static bool m_FwdUOTDOverride;
+        private static int m_FwdMaxSteps = 4;
+
+        public static AccessLevel FwdAccessOverride { get => m_FwdAccessOverride; set => m_FwdAccessOverride = value; }
+        public static bool FwdEnabled { get => m_FwdEnabled; set => m_FwdEnabled = value; }
+        public static bool FwdUOTDOverride { get => m_FwdUOTDOverride; set => m_FwdUOTDOverride = value; }
+        public static int FwdMaxSteps { get => m_FwdMaxSteps; set => m_FwdMaxSteps = value; }
+
+        public virtual void ClearFastwalkStack()
+        {
+            if (m_MoveRecords != null && m_MoveRecords.Count > 0)
+            {
+                m_MoveRecords.Clear();
+            }
+
+            m_EndQueue = Core.TickCount;
+        }
+
+        public virtual bool CheckMovement(Direction d, out int newZ)
+        {
+            return Movement.Movement.CheckMovement(this, Map, Location, d, out newZ);
+        }
+
+        public virtual bool Move(Direction d)
+        {
+            if (m_Deleted)
+            {
+                return false;
+            }
+
+            BankBox box = FindBankNoCreate();
+
+            if (box != null && box.Opened)
+            {
+                box.Close();
+            }
+
+            Point3D newLocation = m_Location;
+            Point3D oldLocation = newLocation;
+
+            if ((m_Direction & Direction.Mask) == (d & Direction.Mask))
+            {
+                // We are actually moving (not just a direction change)
+
+                if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
+                {
+                    SendLocalizedMessage(500111); // You are frozen and can not move.
+
+                    return false;
+                }
+
+
+                if (CheckMovement(d, out int newZ))
+                {
+                    int x = oldLocation.m_X, y = oldLocation.m_Y;
+                    int oldX = x, oldY = y;
+                    int oldZ = oldLocation.m_Z;
+
+                    switch (d & Direction.Mask)
+                    {
+                        case Direction.North:
+                            --y;
+                            break;
+                        case Direction.Right:
+                            ++x;
+                            --y;
+                            break;
+                        case Direction.East:
+                            ++x;
+                            break;
+                        case Direction.Down:
+                            ++x;
+                            ++y;
+                            break;
+                        case Direction.South:
+                            ++y;
+                            break;
+                        case Direction.Left:
+                            --x;
+                            ++y;
+                            break;
+                        case Direction.West:
+                            --x;
+                            break;
+                        case Direction.Up:
+                            --x;
+                            --y;
+                            break;
+                    }
+
+                    newLocation.m_X = x;
+                    newLocation.m_Y = y;
+                    newLocation.m_Z = newZ;
+
+                    m_Pushing = false;
+
+                    Map map = m_Map;
+
+                    if (map != null)
+                    {
+                        Sector oldSector = map.GetSector(oldX, oldY);
+                        Sector newSector = map.GetSector(x, y);
+
+                        if (oldSector != newSector)
+                        {
+                            for (int i = 0; i < oldSector.Mobiles.Count; ++i)
+                            {
+                                Mobile m = oldSector.Mobiles[i];
+
+                                if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+                            }
+
+                            for (int i = 0; i < oldSector.Items.Count; ++i)
+                            {
+                                Item item = oldSector.Items[i];
+
+                                if (item.AtWorldPoint(oldX, oldY) &&
+                                    (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+                            }
+
+                            for (int i = 0; i < newSector.Mobiles.Count; ++i)
+                            {
+                                Mobile m = newSector.Mobiles[i];
+
+                                if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
+
+                            for (int i = 0; i < newSector.Items.Count; ++i)
+                            {
+                                Item item = newSector.Items[i];
+
+                                if (item.AtWorldPoint(x, y) &&
+                                    (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < oldSector.Mobiles.Count; ++i)
+                            {
+                                Mobile m = oldSector.Mobiles[i];
+
+                                if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+
+                                if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
+
+                            for (int i = 0; i < oldSector.Items.Count; ++i)
+                            {
+                                Item item = oldSector.Items[i];
+
+                                if (item.AtWorldPoint(oldX, oldY) &&
+                                    (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
+                                {
+                                    return false;
+                                }
+
+                                if (item.AtWorldPoint(x, y) &&
+                                    (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+
+                        if (!Region.CanMove(this, d, newLocation, oldLocation, m_Map))
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                    if (!InternalOnMove(d))
+                    {
+                        return false;
+                    }
+
+                    if (m_FwdEnabled && m_NetState != null && m_AccessLevel < m_FwdAccessOverride &&
+                        (!m_FwdUOTDOverride || !m_NetState.IsUOTDClient))
+                    {
+                        if (m_MoveRecords == null)
+                        {
+                            m_MoveRecords = new Queue<MovementRecord>(6);
+                        }
+
+                        while (m_MoveRecords.Count > 0)
+                        {
+                            MovementRecord r = m_MoveRecords.Peek();
+
+                            if (r.Expired())
+                            {
+                                m_MoveRecords.Dequeue();
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        if (m_MoveRecords.Count >= m_FwdMaxSteps)
+                        {
+                            FastWalkEventArgs fw = new FastWalkEventArgs(m_NetState);
+                            EventSink.InvokeFastWalk(fw);
+
+                            if (fw.Blocked)
+                            {
+                                return false;
+                            }
+                        }
+
+                        int delay = ComputeMovementSpeed(d);
+
+                        long end;
+
+                        if (m_MoveRecords.Count > 0)
+                        {
+                            end = m_EndQueue + delay;
+                        }
+                        else
+                        {
+                            end = Core.TickCount + delay;
+                        }
+
+                        m_MoveRecords.Enqueue(MovementRecord.NewInstance(end));
+
+                        m_EndQueue = end;
+                    }
+
+                    m_LastMoveTime = Core.TickCount;
+                }
+                else
+                {
+                    return false;
+                }
+
+                DisruptiveAction();
+            }
+
+            if (m_NetState != null)
+            {
+                m_NetState.Send(MovementAck.Instantiate(m_NetState.Sequence, this));
+            }
+
+            SetLocation(newLocation, false);
+            SetDirection(d);
+
+            if (m_Map != null)
+            {
+                IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
+
+                foreach (IEntity o in eable)
+                {
+                    if (o == this)
+                    {
+                        continue;
+                    }
+
+                    if (o is Mobile mob)
+                    {
+                        if (mob.NetState != null)
+                        {
+                            m_MoveClientList.Add(mob);
+                        }
+                        m_MoveList.Add(mob);
+                    }
+                    else if (o is Item item && item.HandlesOnMovement)
+                    {
+                        m_MoveList.Add(item);
+                    }
+                }
+
+                eable.Free();
+
+                Packet[][] cache = m_MovingPacketCache;
+
+                foreach (Mobile m in m_MoveClientList)
+                {
+                    NetState ns = m.NetState;
+
+                    if (ns != null && m.InUpdateRange(m_Location) && m.CanSee(this))
+                    {
+                        int noto = Notoriety.Compute(m, this);
+                        Packet p = cache[0][noto];
+
+                        if (p == null)
+                        {
+                            cache[0][noto] = p = Packet.Acquire(new MobileMoving(this, noto));
+                        }
+
+                        ns.Send(p);
+                    }
+                }
+
+                for (int i = 0; i < cache.Length; ++i)
+                {
+                    for (int j = 0; j < cache[i].Length; ++j)
+                    {
+                        Packet.Release(ref cache[i][j]);
+                    }
+                }
+
+                for (int i = 0; i < m_MoveList.Count; ++i)
+                {
+                    IEntity o = m_MoveList[i];
+
+                    if (o is Mobile mobile)
+                    {
+                        mobile.OnMovement(this, oldLocation);
+                    }
+                    else if (o is Item item)
+                    {
+                        item.OnMovement(this, oldLocation);
+                    }
+                }
+
+                if (m_MoveList.Count > 0)
+                {
+                    m_MoveList.Clear();
+                }
+
+                if (m_MoveClientList.Count > 0)
+                {
+                    m_MoveClientList.Clear();
+                }
+            }
+
+            OnAfterMove(oldLocation);
+            return true;
+        }
+
+        public virtual void OnAfterMove(Point3D oldLocation)
+        { }
+
+        public int ComputeMovementSpeed()
+        {
+            return ComputeMovementSpeed(Direction, false);
+        }
+
+        public int ComputeMovementSpeed(Direction dir)
+        {
+            return ComputeMovementSpeed(dir, true);
+        }
+
+        public virtual int ComputeMovementSpeed(Direction dir, bool checkTurning)
+        {
+            int delay;
+
+            if (Mounted)
+            {
+                delay = (dir & Direction.Running) != 0 ? m_RunMount : m_WalkMount;
+            }
+            else
+            {
+                delay = (dir & Direction.Running) != 0 ? m_RunFoot : m_WalkFoot;
+            }
+
+            return delay;
+        }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked when a Mobile <paramref name="m" /> moves off this Mobile.
+        /// </summary>
+        /// <returns>True if the move is allowed, false if not.</returns>
+        public virtual bool OnMoveOff(Mobile m)
+        {
+            return true;
+        }
+
+        public virtual bool IsDeadBondedPet => false;
+
+        /// <summary>
+        ///     Overridable. Event invoked when a Mobile <paramref name="m" /> moves over this Mobile.
+        /// </summary>
+        /// <returns>True if the move is allowed, false if not.</returns>
+        public virtual bool OnMoveOver(Mobile m)
+        {
+            if (m_Map == null || m_Deleted)
+            {
+                return true;
+            }
+
+            return m.CheckShove(this);
+        }
+
+        public virtual bool CheckShove(Mobile shoved)
+        {
+            if (!m_IgnoreMobiles && (m_Map.Rules & MapRules.FreeMovement) == 0)
+            {
+                if (!shoved.Alive || !Alive || shoved.IsDeadBondedPet || IsDeadBondedPet)
+                {
+                    return true;
+                }
+
+                if (shoved.m_Hidden && shoved.IsStaff())
+                {
+                    return true;
+                }
+
+                if (!m_Pushing)
+                {
+                    m_Pushing = true;
+
+                    int number;
+
+                    if (IsStaff())
+                    {
+                        number = shoved.m_Hidden ? 1019041 : 1019040;
+                    }
+                    else
+                    {
+                        if (Stam == StamMax)
+                        {
+                            number = shoved.m_Hidden ? 1019043 : 1019042;
+                            Stam -= 10;
+
+                            RevealingAction();
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+
+                    SendLocalizedMessage(number);
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked when the Mobile sees another Mobile, <paramref name="m" />, move.
+        /// </summary>
+        public virtual void OnMovement(Mobile m, Point3D oldLocation)
+        { }
+
+        public ISpell Spell { get => m_Spell; set => m_Spell = value; }
+
+        [CommandProperty(AccessLevel.Administrator)]
+        public bool AutoPageNotify { get => m_AutoPageNotify; set => m_AutoPageNotify = value; }
+
+        public virtual void CriminalAction(bool message)
+        {
+            if (m_Deleted)
+            {
+                return;
+            }
+
+            Criminal = true;
+
+            Region.OnCriminalAction(this, message);
+        }
+
+        public virtual bool IsPlayer()
+        {
+            return AccessLevel < AccessLevel.Counselor;
+        }
+
+        public virtual bool IsStaff()
+        {
+            return AccessLevel >= AccessLevel.Counselor;
+        }
+
+        public virtual bool IsSnoop(Mobile from)
+        {
+            return from != this;
+        }
+
+        /// <summary>
+        ///     Overridable. Any call to <see cref="Resurrect" /> will silently fail if this method returns false.
+        ///     <seealso cref="Resurrect" />
+        /// </summary>
+        public virtual bool CheckResurrect()
+        {
+            return true;
+        }
+
+        /// <summary>
+        ///     Overridable. Event invoked before the Mobile is <see cref="Resurrect">resurrected</see>.
+        ///     <seealso cref="Resurrect" />
+        /// </summary>
+        public virtual void OnBeforeResurrect()
+        { }
+
+        /// <summary>
+        ///     Overridable. Event invoked after the Mobile is <see cref="Resurrect">resurrected</see>.
+        ///     <seealso cref="Resurrect" />
+        /// </summary>
+        public virtual void OnAfterResurrect()
+        { }
+
+        public virtual void Resurrect()
+        {
+            if (!Alive)
+            {
+                if (!Region.OnResurrect(this))
+                {
+                    return;
+                }
+
+                if (!CheckResurrect())
+                {
+                    return;
+                }
+
+                OnBeforeResurrect();
+
+                BankBox box = FindBankNoCreate();
+
+                if (box != null && box.Opened)
+                {
+                    box.Close();
+                }
+
+                Poison = null;
+
+                Warmode = false;
+
+                Hits = 10;
+                Stam = StamMax;
+                Mana = 0;
+
+                BodyMod = 0;
+                Body = Race.AliveBody(this);
+
+                ProcessDeltaQueue();
+
+                for (int i = m_Items.Count - 1; i >= 0; --i)
+                {
+                    if (i >= m_Items.Count)
+                    {
+                        continue;
+                    }
+
+                    Item item = m_Items[i];
+
+                    if (item.ItemID == 8270)
+                    {
+                        item.Delete();
+                    }
+                }
+
+                SendIncomingPacket();
+                SendIncomingPacket();
+
+                OnAfterResurrect();
+            }
+        }
+
+        [CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+        public IAccount Account { get; set; }
+
+        private bool m_Deleted;
+
+        public bool Deleted => m_Deleted;
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int VirtualArmor
+        {
+            get => m_VirtualArmor;
+            set
+            {
+                if (m_VirtualArmor != value)
+                {
+                    m_VirtualArmor = value;
+
+                    Delta(MobileDelta.Armor);
+                }
+            }
+        }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public virtual double ArmorRating => 0.0;
+
+        public void DropHolding()
+        {
+            Item holding = m_Holding;
+
+            if (holding != null)
+            {
+                if (!holding.Deleted && holding.HeldBy == this && holding.Map == Map.Internal)
+                {
+                    AddToBackpack(holding);
+                }
+
+                Holding = null;
+                holding.ClearBounce();
+            }
+        }
+
+        public virtual void Delete()
+        {
+            if (m_Deleted)
+            {
+                return;
+            }
+
+            if (!World.OnDelete(this))
+            {
+                return;
+            }
+
+            if (m_NetState != null)
+            {
+                m_NetState.CancelAllTrades();
+            }
+
+            if (m_NetState != null)
+            {
+                m_NetState.Dispose();
+            }
+
+            DropHolding();
+
+            Region.OnRegionChange(this, m_Region, null);
+
+            m_Region = null;
+            //Is the above line REALLY needed?  The old Region system did NOT have said line
+            //and worked fine, because of this a LOT of extra checks have to be done everywhere...
+            //I guess this should be there for Garbage collection purposes, but, still, is it /really/ needed?
+
+            OnDelete();
+
+            for (int i = m_Items.Count - 1; i >= 0; --i)
+            {
+                if (i < m_Items.Count)
+                {
+                    m_Items[i].OnParentDeleted(this);
+                }
+            }
+
+            for (int i = 0; i < m_Stabled.Count; i++)
+            {
+                m_Stabled[i].Delete();
+            }
+
+            SendRemovePacket();
+
+            if (m_Guild != null)
+            {
+                m_Guild.OnDelete(this);
+            }
+
+            m_Deleted = true;
+
+            if (m_Map != null)
+            {
+                m_Map.OnLeave(this);
+                m_Map = null;
+            }
+
+            m_Hair = null;
+            m_FacialHair = null;
+            m_MountItem = null;
+            m_Face = null;
+
+            World.RemoveMobile(this);
+
+            OnAfterDelete();
+
+            FreeCache();
+        }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked before the Mobile is deleted.
+        /// </summary>
+        public virtual void OnDelete()
+        {
+            if (m_Spawner != null)
+            {
+                m_Spawner.Remove(this);
+                m_Spawner = null;
+            }
+        }
+
+        /// <summary>
+        ///     Overridable. Returns true if the player is alive, false if otherwise. By default, this is computed by: <c>!Deleted &amp;&amp; (!Player || !Body.IsGhost)</c>
+        /// </summary>
+        [CommandProperty(AccessLevel.Counselor)]
+        public virtual bool Alive => !m_Deleted && (!m_Player || !m_Body.IsGhost);
+
+        public virtual bool CheckSpellCast(ISpell spell)
+        {
+            return true;
+        }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked when the Mobile casts a <paramref name="spell" />.
+        /// </summary>
+        /// <param name="spell"></param>
+        public virtual void OnSpellCast(ISpell spell)
+        { }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked after <see cref="TotalWeight" /> changes.
+        /// </summary>
+        public virtual void OnWeightChange(int oldValue)
+        { }
+
+        /// <summary>
+        ///     Overridable. Virtual event invoked when the <see cref="Skill.Base" /> or <see cref="Skill.BaseFixedPoint" /> property of
+        ///     <paramref
+        ///         name="skill" />
+        ///     changes.
+        /// </summary>
+        public virtual void OnSkillChange(SkillName skill, double oldBase)
+        { }
+
+        /// <summary>
+        ///     Overridable. Invoked after the mobile is deleted. When overriden, be sure to call the base method.
+        /// </summary>
+        public virtual void OnAfterDelete()
+        {
+            StopAggrExpire();
+
+            CheckAggrExpire();
+
+            if (m_PoisonTimer != null)
+            {
+                m_PoisonTimer.Stop();
+            }
+
+            if (m_WarmodeTimer != null)
+            {
+                m_WarmodeTimer.Stop();
+            }
+
+            if (m_AutoManifestTimer != null)
+            {
+                m_AutoManifestTimer.Stop();
+            }
+
+            Timer.DelayCall(EventSink.InvokeMobileDeleted, new MobileDeletedEventArgs(this));
+        }
+
+        public virtual bool AllowSkillUse(SkillName name)
+        {
+            return true;
+        }
+
+        public virtual bool UseSkill(SkillName name)
+        {
+            return Skills.UseSkill(this, name);
+        }
+
+        public virtual bool UseSkill(int skillID)
+        {
+            return Skills.UseSkill(this, skillID);
+        }
+
+        private static CreateCorpseHandler m_CreateCorpse;
+
+        public static TimeSpan DefaultCorpseDecay => _DefaultCorpseDecay;
+        public static readonly TimeSpan _DefaultCorpseDecay = TimeSpan.FromMinutes(7);
+
+        public static CreateCorpseHandler CreateCorpseHandler { get => m_CreateCorpse; set => m_CreateCorpse = value; }
+
+        public virtual TimeSpan CorpseDecayTime => _DefaultCorpseDecay;
+
+        public virtual DeathMoveResult GetParentMoveResultFor(Item item)
 		{
 			return item.OnParentDeath(this);
 		}
@@ -3681,27 +3681,27 @@ namespace Server
 				return;
 			}
 
-			if (!Alive || IsDeadBondedPet)
-			{
-				return;
-			}
+            if (!Alive || IsDeadBondedPet)
+            {
+                return;
+            }
 
-			if (m_Deleted)
-			{
-				return;
-			}
+            if (m_Deleted)
+            {
+                return;
+            }
 
-			if (!Region.OnBeforeDeath(this))
-			{
-				return;
-			}
+            if (!Region.OnBeforeDeath(this))
+            {
+                return;
+            }
 
-			if (!OnBeforeDeath())
-			{
-				return;
-			}
+            if (!OnBeforeDeath())
+            {
+                return;
+            }
 
-			var box = FindBankNoCreate();
+            BankBox box = FindBankNoCreate();
 
 			if (box != null && box.Opened)
 			{
@@ -3740,27 +3740,27 @@ namespace Server
 			{
 				Paralyzed = false;
 
-				TimerRegistry.RemoveFromRegistry(_ParaTimerID, this);
-			}
+                TimerRegistry.RemoveFromRegistry(_ParaTimerID, this);
+            }
 
 			if (Frozen)
 			{
 				Frozen = false;
 
-				TimerRegistry.RemoveFromRegistry(_FrozenTimerID, this);
+                TimerRegistry.RemoveFromRegistry(_FrozenTimerID, this);
 			}
 
-			var content = new List<Item>();
-			var equip = new List<Item>();
-			var moveToPack = new List<Item>();
+			List<Item> content = new List<Item>();
+			List<Item> equip = new List<Item>();
+			List<Item> moveToPack = new List<Item>();
 
-			var itemsCopy = new List<Item>(m_Items);
+			List<Item> itemsCopy = new List<Item>(m_Items);
 
-			var pack = Backpack;
+			Container pack = Backpack;
 
-			for (var i = 0; i < itemsCopy.Count; ++i)
+			for (int i = 0; i < itemsCopy.Count; ++i)
 			{
-				var item = itemsCopy[i];
+				Item item = itemsCopy[i];
 
 				if (item == pack)
 				{
@@ -3772,33 +3772,33 @@ namespace Server
 					equip.Add(item);
 				}
 
-				var res = GetParentMoveResultFor(item);
+				DeathMoveResult res = GetParentMoveResultFor(item);
 
 				switch (res)
 				{
 					case DeathMoveResult.MoveToCorpse:
-						{
-							content.Add(item);
-							equip.Add(item);
-							break;
-						}
+					{
+						content.Add(item);
+						equip.Add(item);
+						break;
+					}
 					case DeathMoveResult.MoveToBackpack:
-						{
-							moveToPack.Add(item);
-							break;
-						}
+					{
+						moveToPack.Add(item);
+						break;
+					}
 				}
 			}
 
 			if (pack != null)
 			{
-				var packCopy = new List<Item>(pack.Items);
+				List<Item> packCopy = new List<Item>(pack.Items);
 
-				for (var i = 0; i < packCopy.Count; ++i)
+				for (int i = 0; i < packCopy.Count; ++i)
 				{
-					var item = packCopy[i];
+					Item item = packCopy[i];
 
-					var res = GetInventoryMoveResultFor(item);
+					DeathMoveResult res = GetInventoryMoveResultFor(item);
 
 					if (res == DeathMoveResult.MoveToCorpse)
 					{
@@ -3810,9 +3810,9 @@ namespace Server
 					}
 				}
 
-				for (var i = 0; i < moveToPack.Count; ++i)
+				for (int i = 0; i < moveToPack.Count; ++i)
 				{
-					var item = moveToPack[i];
+					Item item = moveToPack[i];
 
 					if (RetainPackLocsOnDeath && item.Parent == pack)
 					{
@@ -3835,15 +3835,15 @@ namespace Server
 				facialhair = new FacialHairInfo(m_FacialHair.ItemID, m_FacialHair.Hue);
 			}
 
-			var c = m_CreateCorpse == null ? null : m_CreateCorpse(this, hair, facialhair, content, equip);
+			Container c = m_CreateCorpse == null ? null : m_CreateCorpse(this, hair, facialhair, content, equip);
 
 			if (m_Map != null)
 			{
 				Packet animPacket = null;
 
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state != m_NetState)
 					{
@@ -3895,9 +3895,9 @@ namespace Server
 		{
 			if (LastKiller != null)
 			{
-				var items = LastKiller.Items;
+				List<Item> items = LastKiller.Items;
 
-				var i = items.Count;
+				int i = items.Count;
 
 				while (--i >= 0)
 				{
@@ -3906,7 +3906,7 @@ namespace Server
 						continue;
 					}
 
-					var o = items[i];
+					Item o = items[i];
 
 					if (o != null)
 					{
@@ -3915,7 +3915,7 @@ namespace Server
 				}
 			}
 
-			var sound = GetDeathSound();
+			int sound = GetDeathSound();
 
 			if (sound >= 0)
 			{
@@ -3938,7 +3938,7 @@ namespace Server
 				//Body = this.Female ? 0x193 : 0x192;
 				Body = Race.GhostBody(this);
 
-				var deathShroud = new Item(0x204E)
+				Item deathShroud = new Item(0x204E)
 				{
 					Movable = false,
 					Layer = Layer.OuterTorso
@@ -4008,19 +4008,19 @@ namespace Server
 		}
 
 		public virtual int GetDeathSound()
-		{
-			if (m_BaseSoundID != 0)
+        {
+            if (m_BaseSoundID != 0)
 			{
 				return m_BaseSoundID + 4;
 			}
 
-			if (m_Body.IsHuman)
-			{
-				return Utility.Random(m_Female ? 0x314 : 0x423, m_Female ? 4 : 5);
-			}
+            if (m_Body.IsHuman)
+            {
+                return Utility.Random(m_Female ? 0x314 : 0x423, m_Female ? 4 : 5);
+            }
 
-			return -1;
-		}
+            return -1;
+        }
 		#endregion
 
 		private static char[] m_GhostChars = { 'o', 'O' };
@@ -4077,8 +4077,8 @@ namespace Server
 				return;
 			}
 
-			var root = item.RootParent;
-			var okay = false;
+			object root = item.RootParent;
+			bool okay = false;
 
 			if (!Utility.InUpdateRange(this, item.GetWorldLocation()))
 			{
@@ -4090,7 +4090,7 @@ namespace Server
 			}
 			else if (!item.IsAccessibleTo(this))
 			{
-				var reg = Region.Find(item.GetWorldLocation(), item.Map);
+				Region reg = Region.Find(item.GetWorldLocation(), item.Map);
 
 				if (reg == null || !reg.SendInaccessibleMessage(item, this))
 				{
@@ -4180,8 +4180,8 @@ namespace Server
 				return;
 			}
 
-			var from = this;
-			var state = m_NetState;
+			Mobile from = this;
+			NetState state = m_NetState;
 
 			if (from.IsStaff() || Core.TickCount - from.NextActionTime >= 0)
 			{
@@ -4227,7 +4227,7 @@ namespace Server
 					{ }
 					else
 					{
-						var root = item.RootParent;
+						object root = item.RootParent;
 
 						if (root is Mobile mobile && !mobile.CheckNonlocalLift(from, item))
 						{
@@ -4245,7 +4245,7 @@ namespace Server
 						{
 							item.SetLastMoved();
 
-							var itemGrid = item.GridLocation;
+							byte itemGrid = item.GridLocation;
 
 							if (item.Spawner != null)
 							{
@@ -4263,7 +4263,7 @@ namespace Server
 								amount = item.Amount;
 							}
 
-							var oldAmount = item.Amount;
+							int oldAmount = item.Amount;
 
 							Item oldStack = null;
 
@@ -4272,14 +4272,14 @@ namespace Server
 								oldStack = LiftItemDupe(item, amount);
 							}
 
-							var map = from.Map;
+							Map map = from.Map;
 
 							if (m_DragEffects && map != null && (root == null || root is Item))
 							{
-								var eable = map.GetClientsInRange(from.Location);
+								IPooledEnumerable<NetState> eable = map.GetClientsInRange(from.Location);
 								Packet p = null;
 
-								foreach (var ns in eable)
+								foreach (NetState ns in eable)
 								{
 									if (ns.Mobile != from && ns.Mobile.CanSee(from) && ns.Mobile.InLOS(from) && ns.Mobile.CanSee(root))
 									{
@@ -4308,9 +4308,9 @@ namespace Server
 								eable.Free();
 							}
 
-							var fixLoc = item.Location;
-							var fixMap = item.Map;
-							var shouldFix = item.Parent == null;
+							Point3D fixLoc = item.Location;
+							Map fixMap = item.Map;
+							bool shouldFix = item.Parent == null;
 
 							item.RecordBounce(this, oldStack);
 							item.OnItemLifted(from, item);
@@ -4324,7 +4324,7 @@ namespace Server
 								oldStack.GridLocation = itemGrid;
 							}
 
-							var liftSound = item.GetLiftSound(from);
+							int liftSound = item.GetLiftSound(from);
 
 							if (liftSound != -1)
 							{
@@ -4432,10 +4432,10 @@ namespace Server
 
 		public virtual bool Drop(Item to, Point3D loc)
 		{
-			var from = this;
-			var item = from.Holding;
+			Mobile from = this;
+			Item item = from.Holding;
 
-			var valid = item != null && item.HeldBy == from && item.Map == Map.Internal;
+			bool valid = item != null && item.HeldBy == from && item.Map == Map.Internal;
 
 			from.Holding = null;
 
@@ -4444,7 +4444,7 @@ namespace Server
 				return false;
 			}
 
-			var bounced = true;
+			bool bounced = true;
 
 			item.SetLastMoved();
 
@@ -4464,10 +4464,10 @@ namespace Server
 
 		public virtual bool Drop(Point3D loc)
 		{
-			var from = this;
-			var item = from.Holding;
+			Mobile from = this;
+			Item item = from.Holding;
 
-			var valid = item != null && item.HeldBy == from && item.Map == Map.Internal;
+			bool valid = item != null && item.HeldBy == from && item.Map == Map.Internal;
 
 			from.Holding = null;
 
@@ -4476,7 +4476,7 @@ namespace Server
 				return false;
 			}
 
-			var bounced = true;
+			bool bounced = true;
 
 			item.SetLastMoved();
 
@@ -4496,10 +4496,10 @@ namespace Server
 
 		public virtual bool Drop(Mobile to, Point3D loc)
 		{
-			var from = this;
-			var item = from.Holding;
+			Mobile from = this;
+			Item item = from.Holding;
 
-			var valid = item != null && item.HeldBy == from && item.Map == Map.Internal;
+			bool valid = item != null && item.HeldBy == from && item.Map == Map.Internal;
 
 			from.Holding = null;
 
@@ -4508,7 +4508,7 @@ namespace Server
 				return false;
 			}
 
-			var bounced = true;
+			bool bounced = true;
 
 			item.SetLastMoved();
 
@@ -4535,9 +4535,9 @@ namespace Server
 				return false;
 			}
 
-			var sb = new StringBuilder(text.Length, text.Length);
+			StringBuilder sb = new StringBuilder(text.Length, text.Length);
 
-			for (var i = 0; i < text.Length; ++i)
+			for (int i = 0; i < text.Length; ++i)
 			{
 				if (text[i] != ' ')
 				{
@@ -4577,7 +4577,7 @@ namespace Server
 				return false;
 			}
 
-			var delay = m_AutoManifestTimeout;
+			TimeSpan delay = m_AutoManifestTimeout;
 
 			if (delay > TimeSpan.Zero && (!Warmode || m_AutoManifestTimer != null))
 			{
@@ -4600,9 +4600,9 @@ namespace Server
 
 		private void AddSpeechItemsFrom(List<IEntity> list, Container cont)
 		{
-			for (var i = 0; i < cont.Items.Count; ++i)
+			for (int i = 0; i < cont.Items.Count; ++i)
 			{
-				var item = cont.Items[i];
+				Item item = cont.Items[i];
 
 				if (item.HandlesOnSpeech)
 				{
@@ -4645,9 +4645,9 @@ namespace Server
 
 			private int GetDistance(IEntity p)
 			{
-				var x = m_RelativeTo.X - p.X;
-				var y = m_RelativeTo.Y - p.Y;
-				var z = m_RelativeTo.Z - p.Z;
+				int x = m_RelativeTo.X - p.X;
+				int y = m_RelativeTo.Y - p.Y;
+				int z = m_RelativeTo.Z - p.Z;
 
 				x *= 11;
 				y *= 11;
@@ -4664,7 +4664,7 @@ namespace Server
 		#region Get*InRange
 		public IPooledEnumerable<Item> GetItemsInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -4676,7 +4676,7 @@ namespace Server
 
 		public IPooledEnumerable<IEntity> GetObjectsInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -4688,7 +4688,7 @@ namespace Server
 
 		public IPooledEnumerable<Mobile> GetMobilesInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -4700,7 +4700,7 @@ namespace Server
 
 		public IPooledEnumerable<NetState> GetClientsInRange(int range)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
@@ -4721,7 +4721,7 @@ namespace Server
 				return;
 			}
 
-			var range = 15;
+			int range = 15;
 
 			switch (type)
 			{
@@ -4744,7 +4744,7 @@ namespace Server
 				break;
 			}
 
-			var regArgs = new SpeechEventArgs(this, text, type, hue, keywords);
+			SpeechEventArgs regArgs = new SpeechEventArgs(this, text, type, hue, keywords);
 
 			EventSink.InvokeSpeech(regArgs);
 			Region.OnSpeech(regArgs);
@@ -4757,23 +4757,23 @@ namespace Server
 
 			text = regArgs.Speech;
 
-			if (String.IsNullOrEmpty(text))
+			if (string.IsNullOrEmpty(text))
 			{
 				return;
 			}
 
-			var hears = m_Hears;
-			var onSpeech = m_OnSpeech;
+			List<Mobile> hears = m_Hears;
+			List<IEntity> onSpeech = m_OnSpeech;
 
 			if (m_Map != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, range);
+				IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, range);
 
-				foreach (var o in eable)
+				foreach (IEntity o in eable)
 				{
 					if (o is Mobile heard)
 					{
-						if (heard.CanSee(this) && (m_NoSpeechLOS || !heard.Player || heard.InLOS(this)))
+                        if (heard.CanSee(this) && (m_NoSpeechLOS || !heard.Player || heard.InLOS(this)))
 						{
 							if (heard.m_NetState != null)
 							{
@@ -4785,9 +4785,9 @@ namespace Server
 								onSpeech.Add(heard);
 							}
 
-							for (var i = 0; i < heard.Items.Count; ++i)
+							for (int i = 0; i < heard.Items.Count; ++i)
 							{
-								var item = heard.Items[i];
+								Item item = heard.Items[i];
 
 								if (item.HandlesOnSpeech)
 								{
@@ -4818,7 +4818,7 @@ namespace Server
 				eable.Free();
 
 				object mutateContext = null;
-				var mutatedText = text;
+				string mutatedText = text;
 				SpeechEventArgs mutatedArgs = null;
 
 				if (MutateSpeech(hears, ref mutatedText, ref mutateContext))
@@ -4835,15 +4835,15 @@ namespace Server
 
 				// TODO: Should this be sorted like onSpeech is below?
 
-				for (var i = 0; i < hears.Count; ++i)
+				for (int i = 0; i < hears.Count; ++i)
 				{
-					var heard = hears[i];
+					Mobile heard = hears[i];
 
 					if (mutatedArgs == null || !CheckHearsMutatedSpeech(heard, mutateContext))
 					{
 						heard.OnSpeech(regArgs);
 
-						var ns = heard.NetState;
+						NetState ns = heard.NetState;
 
 						if (ns != null)
 						{
@@ -4859,7 +4859,7 @@ namespace Server
 					{
 						heard.OnSpeech(mutatedArgs);
 
-						var ns = heard.NetState;
+						NetState ns = heard.NetState;
 
 						if (ns != null)
 						{
@@ -4881,13 +4881,13 @@ namespace Server
 					onSpeech.Sort(LocationComparer.GetInstance(this));
 				}
 
-				for (var i = 0; i < onSpeech.Count; ++i)
+				for (int i = 0; i < onSpeech.Count; ++i)
 				{
-					var obj = onSpeech[i];
+					IEntity obj = onSpeech[i];
 
 					if (obj is Mobile heard)
 					{
-						if (mutatedArgs == null || !CheckHearsMutatedSpeech(heard, mutateContext))
+                        if (mutatedArgs == null || !CheckHearsMutatedSpeech(heard, mutateContext))
 						{
 							heard.OnSpeech(regArgs);
 						}
@@ -4898,7 +4898,7 @@ namespace Server
 					}
 					else
 					{
-						var item = (Item)obj;
+						Item item = (Item)obj;
 
 						item.OnSpeech(regArgs);
 					}
@@ -4936,14 +4936,14 @@ namespace Server
 
 		public DamageEntry FindMostRecentDamageEntry(bool allowSelf)
 		{
-			for (var i = m_DamageEntries.Count - 1; i >= 0; --i)
+			for (int i = m_DamageEntries.Count - 1; i >= 0; --i)
 			{
 				if (i >= m_DamageEntries.Count)
 				{
 					continue;
 				}
 
-				var de = m_DamageEntries[i];
+				DamageEntry de = m_DamageEntries[i];
 
 				if (de.HasExpired)
 				{
@@ -4965,14 +4965,14 @@ namespace Server
 
 		public DamageEntry FindLeastRecentDamageEntry(bool allowSelf)
 		{
-			for (var i = 0; i < m_DamageEntries.Count; ++i)
+			for (int i = 0; i < m_DamageEntries.Count; ++i)
 			{
 				if (i < 0)
 				{
 					continue;
 				}
 
-				var de = m_DamageEntries[i];
+				DamageEntry de = m_DamageEntries[i];
 
 				if (de.HasExpired)
 				{
@@ -4997,14 +4997,14 @@ namespace Server
 		{
 			DamageEntry mostTotal = null;
 
-			for (var i = m_DamageEntries.Count - 1; i >= 0; --i)
+			for (int i = m_DamageEntries.Count - 1; i >= 0; --i)
 			{
 				if (i >= m_DamageEntries.Count)
 				{
 					continue;
 				}
 
-				var de = m_DamageEntries[i];
+				DamageEntry de = m_DamageEntries[i];
 
 				if (de.HasExpired)
 				{
@@ -5028,14 +5028,14 @@ namespace Server
 		{
 			DamageEntry mostTotal = null;
 
-			for (var i = m_DamageEntries.Count - 1; i >= 0; --i)
+			for (int i = m_DamageEntries.Count - 1; i >= 0; --i)
 			{
 				if (i >= m_DamageEntries.Count)
 				{
 					continue;
 				}
 
-				var de = m_DamageEntries[i];
+				DamageEntry de = m_DamageEntries[i];
 
 				if (de.HasExpired)
 				{
@@ -5052,14 +5052,14 @@ namespace Server
 
 		public DamageEntry FindDamageEntryFor(Mobile m)
 		{
-			for (var i = m_DamageEntries.Count - 1; i >= 0; --i)
+			for (int i = m_DamageEntries.Count - 1; i >= 0; --i)
 			{
 				if (i >= m_DamageEntries.Count)
 				{
 					continue;
 				}
 
-				var de = m_DamageEntries[i];
+				DamageEntry de = m_DamageEntries[i];
 
 				if (de.HasExpired)
 				{
@@ -5081,7 +5081,7 @@ namespace Server
 
 		public virtual DamageEntry RegisterDamage(int amount, Mobile from)
 		{
-			var de = FindDamageEntryFor(from);
+			DamageEntry de = FindDamageEntryFor(from);
 
 			if (de == null)
 			{
@@ -5094,11 +5094,11 @@ namespace Server
 			m_DamageEntries.Remove(de);
 			m_DamageEntries.Add(de);
 
-			var master = from.GetDamageMaster(this);
+			Mobile master = from.GetDamageMaster(this);
 
 			if (master != null)
 			{
-				var list = de.Responsible;
+				List<DamageEntry> list = de.Responsible;
 
 				if (list == null)
 				{
@@ -5107,9 +5107,9 @@ namespace Server
 
 				DamageEntry resp = null;
 
-				for (var i = 0; i < list.Count; ++i)
+				for (int i = 0; i < list.Count; ++i)
 				{
-					var check = list[i];
+					DamageEntry check = list[i];
 
 					if (check.Damager == master)
 					{
@@ -5187,8 +5187,8 @@ namespace Server
 
 			if (amount > 0)
 			{
-				var oldHits = Hits;
-				var newHits = oldHits - amount;
+				int oldHits = Hits;
+				int newHits = oldHits - amount;
 
 				if (checkDisrupt && m_Spell != null)
 				{
@@ -5204,17 +5204,17 @@ namespace Server
 
 				Paralyzed = false;
 
-				var m = Mount;
+				IMount m = Mount;
 
 				if (m != null && informMount)
 				{
-					var temp = amount;
-
+					int temp = amount;
+					
 					m.OnRiderDamaged(from, ref amount, newHits < 0);
-
+					
 					if (temp > amount)
 					{
-						var absorbed = temp - amount;
+						int absorbed = temp - amount;
 						newHits += absorbed;
 					}
 				}
@@ -5226,7 +5226,7 @@ namespace Server
 				{
 					m_LastKiller = from;
 
-					m_InternalCanRegen = false;
+                    m_InternalCanRegen = false;
 
 					Hits = 0;
 
@@ -5235,8 +5235,8 @@ namespace Server
 						Kill();
 					}
 
-					m_InternalCanRegen = true;
-				}
+                    m_InternalCanRegen = true;
+                }
 				else
 				{
 					FatigueHandler(this, amount, DFA);
@@ -5253,53 +5253,53 @@ namespace Server
 			switch (m_VisibleDamageType)
 			{
 				case VisibleDamageType.Related:
+				{
+					NetState ourState = m_NetState, theirState = from == null ? null : from.m_NetState;
+
+					if (ourState == null)
 					{
-						NetState ourState = m_NetState, theirState = from == null ? null : from.m_NetState;
+						Mobile master = GetDamageMaster(from);
 
-						if (ourState == null)
+						if (master != null)
 						{
-							var master = GetDamageMaster(from);
-
-							if (master != null)
-							{
-								ourState = master.m_NetState;
-							}
+							ourState = master.m_NetState;
 						}
-
-						if (theirState == null && from != null)
-						{
-							var master = from.GetDamageMaster(this);
-
-							if (master != null)
-							{
-								theirState = master.m_NetState;
-							}
-						}
-
-						if (amount > 0 && (ourState != null || theirState != null))
-						{
-							Packet p = Packet.Acquire(new DamagePacket(this, amount));
-
-							if (ourState != null)
-							{
-								ourState.Send(p);
-							}
-
-							if (theirState != null && theirState != ourState)
-							{
-								theirState.Send(p);
-							}
-
-							Packet.Release(p);
-						}
-
-						break;
 					}
+
+					if (theirState == null && from != null)
+					{
+						Mobile master = from.GetDamageMaster(this);
+
+						if (master != null)
+						{
+							theirState = master.m_NetState;
+						}
+					}
+
+					if (amount > 0 && (ourState != null || theirState != null))
+					{
+						Packet p = Packet.Acquire(new DamagePacket(this, amount));
+
+						if (ourState != null)
+						{
+							ourState.Send(p);
+						}
+
+						if (theirState != null && theirState != ourState)
+						{
+							theirState.Send(p);
+						}
+
+						Packet.Release(p);
+					}
+
+					break;
+				}
 				case VisibleDamageType.Everyone:
-					{
-						SendDamageToAll(amount);
-						break;
-					}
+				{
+					SendDamageToAll(amount);
+					break;
+				}
 			}
 		}
 
@@ -5310,18 +5310,18 @@ namespace Server
 				return;
 			}
 
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map == null)
 			{
 				return;
 			}
 
-			var eable = map.GetClientsInRange(m_Location);
+			IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
 
 			Packet p = Packet.Acquire(new DamagePacket(this, amount));
 
-			foreach (var ns in eable)
+			foreach (NetState ns in eable)
 			{
 				if (ns.Mobile.CanSee(this))
 				{
@@ -5393,412 +5393,412 @@ namespace Server
 
 		public virtual void Deserialize(GenericReader reader)
 		{
-			var version = reader.ReadInt();
+			int version = reader.ReadInt();
 
 			switch (version)
 			{
-				case 38:
+                case 38:
 				case 37:
-					{
-						m_DisplayGuildAbbr = reader.ReadBool();
+				{
+					m_DisplayGuildAbbr = reader.ReadBool();
 
-						goto case 36;
-					}
+					goto case 36;
+				}
 				case 36:
-					{
-						m_BloodHue = reader.ReadInt();
-						m_Deaths = reader.ReadInt();
-					}
-					goto case 35;
+				{
+					m_BloodHue = reader.ReadInt();
+					m_Deaths = reader.ReadInt();
+				}
+				goto case 35;
 				case 35:
 				GuardImmune = reader.ReadBool();
 				goto case 34;
 				case 34:
-					{
-						m_StrCap = reader.ReadInt();
-						m_DexCap = reader.ReadInt();
-						m_IntCap = reader.ReadInt();
-						m_StrMaxCap = reader.ReadInt();
-						m_DexMaxCap = reader.ReadInt();
-						m_IntMaxCap = reader.ReadInt();
+				{
+					m_StrCap = reader.ReadInt();
+					m_DexCap = reader.ReadInt();
+					m_IntCap = reader.ReadInt();
+					m_StrMaxCap = reader.ReadInt();
+					m_DexMaxCap = reader.ReadInt();
+					m_IntMaxCap = reader.ReadInt();
 
-						goto case 33;
-					}
+					goto case 33;
+				}
 				case 33:
+				{
+					m_SpecialSlayerMechanics = reader.ReadBool();
+
+					if (reader.ReadBool())
 					{
-						m_SpecialSlayerMechanics = reader.ReadBool();
+						int length = reader.ReadInt();
 
-						if (reader.ReadBool())
+						for (int i = 0; i < length; i++)
 						{
-							var length = reader.ReadInt();
-
-							for (var i = 0; i < length; i++)
-							{
-								m_SlayerVulnerabilities.Add(reader.ReadString());
-							}
-
-						}
-						else
-						{
-							m_SlayerVulnerabilities = new List<string>();
+							m_SlayerVulnerabilities.Add(reader.ReadString());
 						}
 
-						goto case 32;
 					}
+					else
+					{
+						m_SlayerVulnerabilities = new List<string>();
+					}
+
+					goto case 32;
+				}
 				case 32:
-					{
-						m_IgnoreMobiles = reader.ReadBool();
+				{
+					m_IgnoreMobiles = reader.ReadBool();
 
-						goto case 31;
-					}
+					goto case 31;
+				}
 				case 31:
-					{
-						m_LastStrGain = reader.ReadDeltaTime();
-						m_LastIntGain = reader.ReadDeltaTime();
-						m_LastDexGain = reader.ReadDeltaTime();
+				{
+					m_LastStrGain = reader.ReadDeltaTime();
+					m_LastIntGain = reader.ReadDeltaTime();
+					m_LastDexGain = reader.ReadDeltaTime();
 
-						goto case 30;
-					}
+					goto case 30;
+				}
 				case 30:
+				{
+					byte hairflag = reader.ReadByte();
+
+					if ((hairflag & 0x01) != 0)
 					{
-						var hairflag = reader.ReadByte();
-
-						if ((hairflag & 0x01) != 0)
-						{
-							m_Hair = new HairInfo(reader);
-						}
-
-						if ((hairflag & 0x02) != 0)
-						{
-							m_FacialHair = new FacialHairInfo(reader);
-						}
-
-						if ((hairflag & 0x04) != 0)
-						{
-							m_Face = new FaceInfo(reader);
-						}
-
-						goto case 29;
+						m_Hair = new HairInfo(reader);
 					}
+
+					if ((hairflag & 0x02) != 0)
+					{
+						m_FacialHair = new FacialHairInfo(reader);
+					}
+
+					if ((hairflag & 0x04) != 0)
+					{
+						m_Face = new FaceInfo(reader);
+					}
+
+					goto case 29;
+				}
 				case 29:
-					{
-						m_Race = reader.ReadRace();
-						goto case 28;
-					}
+				{
+					m_Race = reader.ReadRace();
+					goto case 28;
+				}
 				case 28:
+				{
+					if (version <= 30)
 					{
-						if (version <= 30)
-						{
-							LastStatGain = reader.ReadDeltaTime();
-						}
-
-						goto case 27;
+						LastStatGain = reader.ReadDeltaTime();
 					}
+
+					goto case 27;
+				}
 				case 27:
-					{
-						m_TithingPoints = reader.ReadInt();
+				{
+					m_TithingPoints = reader.ReadInt();
 
-						goto case 26;
-					}
+					goto case 26;
+				}
 				case 26:
 				case 25:
 				case 24:
-					{
-						m_Corpse = reader.ReadItem() as Container;
+				{
+					m_Corpse = reader.ReadItem() as Container;
 
-						goto case 23;
-					}
+					goto case 23;
+				}
 				case 23:
-					{
-						m_CreationTime = reader.ReadDateTime();
+				{
+					m_CreationTime = reader.ReadDateTime();
 
-						goto case 22;
-					}
+					goto case 22;
+				}
 				case 22: // Just removed followers
 				case 21:
-					{
-						m_Stabled = reader.ReadStrongMobileList();
+				{
+					m_Stabled = reader.ReadStrongMobileList();
 
-						goto case 20;
-					}
+					goto case 20;
+				}
 				case 20:
-					{
-						m_CantWalk = reader.ReadBool();
+				{
+					m_CantWalk = reader.ReadBool();
 
-						goto case 19;
-					}
+					goto case 19;
+				}
 				case 19: // Just removed variables
 				case 18:
-					{
-						m_Virtues = new VirtueInfo(reader);
+				{
+					m_Virtues = new VirtueInfo(reader);
 
-						goto case 17;
-					}
+					goto case 17;
+				}
 				case 17:
-					{
-						m_Thirst = reader.ReadInt();
-						m_BAC = reader.ReadInt();
+				{
+					m_Thirst = reader.ReadInt();
+					m_BAC = reader.ReadInt();
 
-						goto case 16;
-					}
+					goto case 16;
+				}
 				case 16:
+				{
+					m_ShortTermMurders = reader.ReadInt();
+
+					if (version <= 24)
 					{
-						m_ShortTermMurders = reader.ReadInt();
-
-						if (version <= 24)
-						{
-							reader.ReadDateTime();
-							reader.ReadDateTime();
-						}
-
-						goto case 15;
+						reader.ReadDateTime();
+						reader.ReadDateTime();
 					}
+
+					goto case 15;
+				}
 				case 15:
+				{
+					if (version < 22)
 					{
-						if (version < 22)
-						{
-							reader.ReadInt(); // followers
-						}
-
-						m_FollowersMax = reader.ReadInt();
-
-						goto case 14;
+						reader.ReadInt(); // followers
 					}
+
+					m_FollowersMax = reader.ReadInt();
+
+					goto case 14;
+				}
 				case 14:
-					{
-						m_MagicDamageAbsorb = reader.ReadInt();
+				{
+					m_MagicDamageAbsorb = reader.ReadInt();
 
-						goto case 13;
-					}
+					goto case 13;
+				}
 				case 13:
-					{
-						m_GuildFealty = reader.ReadMobile();
+				{
+					m_GuildFealty = reader.ReadMobile();
 
-						goto case 12;
-					}
+					goto case 12;
+				}
 				case 12:
-					{
-						m_Guild = reader.ReadGuild();
+				{
+					m_Guild = reader.ReadGuild();
 
-						goto case 11;
-					}
+					goto case 11;
+				}
 				case 11:
-					{
-						m_DisplayGuildTitle = reader.ReadBool();
+				{
+					m_DisplayGuildTitle = reader.ReadBool();
 
-						goto case 10;
-					}
+					goto case 10;
+				}
 				case 10:
-					{
-						m_CanSwim = reader.ReadBool();
+				{
+					m_CanSwim = reader.ReadBool();
 
-						goto case 9;
-					}
+					goto case 9;
+				}
 				case 9:
-					{
-						m_Squelched = reader.ReadBool();
+				{
+					m_Squelched = reader.ReadBool();
 
-						goto case 8;
-					}
+					goto case 8;
+				}
 				case 8:
-					{
-						m_Holding = reader.ReadItem();
+				{
+					m_Holding = reader.ReadItem();
 
-						goto case 7;
-					}
+					goto case 7;
+				}
 				case 7:
-					{
-						m_VirtualArmor = reader.ReadInt();
+				{
+					m_VirtualArmor = reader.ReadInt();
 
-						goto case 6;
-					}
+					goto case 6;
+				}
 				case 6:
-					{
-						m_BaseSoundID = reader.ReadInt();
+				{
+					m_BaseSoundID = reader.ReadInt();
 
-						goto case 5;
-					}
+					goto case 5;
+				}
 				case 5:
-					{
-						if (version < 38)
-						{
-							reader.ReadBool();
-							reader.ReadBool();
-						}
+				{
+                    if (version < 38)
+                    {
+                        reader.ReadBool();
+                        reader.ReadBool();
+                    }
 
-						goto case 4;
-					}
+					goto case 4;
+				}
 				case 4:
+				{
+					if (version <= 25)
 					{
-						if (version <= 25)
-						{
-							Poison.Deserialize(reader);
-						}
-
-						goto case 3;
+						Poison.Deserialize(reader);
 					}
+
+					goto case 3;
+				}
 				case 3:
-					{
-						m_StatCap = reader.ReadInt();
+				{
+					m_StatCap = reader.ReadInt();
 
-						goto case 2;
-					}
+					goto case 2;
+				}
 				case 2:
-					{
-						m_NameHue = reader.ReadInt();
+				{
+					m_NameHue = reader.ReadInt();
 
-						goto case 1;
-					}
+					goto case 1;
+				}
 				case 1:
-					{
-						m_Hunger = reader.ReadInt();
+				{
+					m_Hunger = reader.ReadInt();
 
-						goto case 0;
-					}
+					goto case 0;
+				}
 				case 0:
+				{
+					if (version < 37)
 					{
-						if (version < 37)
-						{
-							m_DisplayGuildAbbr = true;
-						}
-
-						if (version < 34)
-						{
-							m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
-							m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
-							m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
-							m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
-							m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
-							m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
-						}
-
-						if (version < 21)
-						{
-							m_Stabled = new List<Mobile>();
-						}
-
-						if (version < 18)
-						{
-							m_Virtues = new VirtueInfo();
-						}
-
-						if (version < 11)
-						{
-							m_DisplayGuildTitle = true;
-						}
-
-						if (version < 3)
-						{
-							m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
-						}
-
-						if (version < 15)
-						{
-							m_Followers = 0;
-							m_FollowersMax = 5;
-						}
-
-						m_Location = reader.ReadPoint3D();
-						m_Body = new Body(reader.ReadInt());
-						m_Name = reader.ReadString();
-						m_GuildTitle = reader.ReadString();
-						m_Criminal = reader.ReadBool();
-						m_Kills = reader.ReadInt();
-						m_SpeechHue = reader.ReadInt();
-						m_EmoteHue = reader.ReadInt();
-						m_WhisperHue = reader.ReadInt();
-						m_YellHue = reader.ReadInt();
-						m_Language = reader.ReadString();
-						m_Female = reader.ReadBool();
-						m_Warmode = reader.ReadBool();
-						m_Hidden = reader.ReadBool();
-						m_Direction = (Direction)reader.ReadByte();
-						m_Hue = reader.ReadInt();
-						m_Str = reader.ReadInt();
-						m_Dex = reader.ReadInt();
-						m_Int = reader.ReadInt();
-						m_Hits = reader.ReadInt();
-						m_Stam = reader.ReadInt();
-						m_Mana = reader.ReadInt();
-						m_Map = reader.ReadMap();
-						m_Blessed = reader.ReadBool();
-						m_Fame = reader.ReadInt();
-						m_Karma = reader.ReadInt();
-						m_AccessLevel = (AccessLevel)reader.ReadByte();
-
-						m_Skills = new Skills(this, reader);
-
-						m_Items = reader.ReadStrongItemList();
-
-						m_Player = reader.ReadBool();
-						m_Title = reader.ReadString();
-						m_Profile = reader.ReadString();
-						m_ProfileLocked = reader.ReadBool();
-
-						if (version <= 18)
-						{
-							reader.ReadInt();
-							reader.ReadInt();
-							reader.ReadInt();
-						}
-
-						m_AutoPageNotify = reader.ReadBool();
-
-						m_LogoutLocation = reader.ReadPoint3D();
-						m_LogoutMap = reader.ReadMap();
-
-						m_StrLock = (StatLockType)reader.ReadByte();
-						m_DexLock = (StatLockType)reader.ReadByte();
-						m_IntLock = (StatLockType)reader.ReadByte();
-
-						m_StatMods = new List<StatMod>();
-						m_SkillMods = new List<SkillMod>();
-
-						if (reader.ReadBool())
-						{
-							m_StuckMenuUses = new DateTime[reader.ReadInt()];
-
-							for (var i = 0; i < m_StuckMenuUses.Length; ++i)
-							{
-								m_StuckMenuUses[i] = reader.ReadDateTime();
-							}
-						}
-						else
-						{
-							m_StuckMenuUses = null;
-						}
-
-						if (m_Player && m_Map != Map.Internal)
-						{
-							m_LogoutLocation = m_Location;
-							m_LogoutMap = m_Map;
-
-							m_Map = Map.Internal;
-						}
-
-						if (m_Map != null)
-						{
-							m_Map.OnEnter(this);
-						}
-
-						if (m_Criminal)
-						{
-							StartCrimDelayTimer();
-						}
-
-						m_InternalCanRegen = true;
-
-						if (ShouldCheckStatTimers)
-						{
-							CheckStatTimers();
-						}
-
-						UpdateRegion();
-
-						UpdateResistances();
-
-						break;
+						m_DisplayGuildAbbr = true;
 					}
+
+					if (version < 34)
+					{
+						m_StrCap = Config.Get("PlayerCaps.StrCap", 125);
+						m_DexCap = Config.Get("PlayerCaps.DexCap", 125);
+						m_IntCap = Config.Get("PlayerCaps.IntCap", 125);
+						m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
+						m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
+						m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
+					}
+
+					if (version < 21)
+					{
+						m_Stabled = new List<Mobile>();
+					}
+
+					if (version < 18)
+					{
+						m_Virtues = new VirtueInfo();
+					}
+
+					if (version < 11)
+					{
+						m_DisplayGuildTitle = true;
+					}
+
+					if (version < 3)
+					{
+						m_StatCap = Config.Get("PlayerCaps.TotalStatCap", 225);
+					}
+
+					if (version < 15)
+					{
+						m_Followers = 0;
+						m_FollowersMax = 5;
+					}
+
+					m_Location = reader.ReadPoint3D();
+					m_Body = new Body(reader.ReadInt());
+					m_Name = reader.ReadString();
+					m_GuildTitle = reader.ReadString();
+					m_Criminal = reader.ReadBool();
+					m_Kills = reader.ReadInt();
+					m_SpeechHue = reader.ReadInt();
+					m_EmoteHue = reader.ReadInt();
+					m_WhisperHue = reader.ReadInt();
+					m_YellHue = reader.ReadInt();
+					m_Language = reader.ReadString();
+					m_Female = reader.ReadBool();
+					m_Warmode = reader.ReadBool();
+					m_Hidden = reader.ReadBool();
+					m_Direction = (Direction)reader.ReadByte();
+					m_Hue = reader.ReadInt();
+					m_Str = reader.ReadInt();
+					m_Dex = reader.ReadInt();
+					m_Int = reader.ReadInt();
+					m_Hits = reader.ReadInt();
+					m_Stam = reader.ReadInt();
+					m_Mana = reader.ReadInt();
+					m_Map = reader.ReadMap();
+					m_Blessed = reader.ReadBool();
+					m_Fame = reader.ReadInt();
+					m_Karma = reader.ReadInt();
+					m_AccessLevel = (AccessLevel)reader.ReadByte();
+
+					m_Skills = new Skills(this, reader);
+
+					m_Items = reader.ReadStrongItemList();
+
+					m_Player = reader.ReadBool();
+					m_Title = reader.ReadString();
+					m_Profile = reader.ReadString();
+					m_ProfileLocked = reader.ReadBool();
+
+					if (version <= 18)
+					{
+						reader.ReadInt();
+						reader.ReadInt();
+						reader.ReadInt();
+					}
+
+					m_AutoPageNotify = reader.ReadBool();
+
+					m_LogoutLocation = reader.ReadPoint3D();
+					m_LogoutMap = reader.ReadMap();
+
+					m_StrLock = (StatLockType)reader.ReadByte();
+					m_DexLock = (StatLockType)reader.ReadByte();
+					m_IntLock = (StatLockType)reader.ReadByte();
+
+					m_StatMods = new List<StatMod>();
+					m_SkillMods = new List<SkillMod>();
+
+					if (reader.ReadBool())
+					{
+						m_StuckMenuUses = new DateTime[reader.ReadInt()];
+
+						for (int i = 0; i < m_StuckMenuUses.Length; ++i)
+						{
+							m_StuckMenuUses[i] = reader.ReadDateTime();
+						}
+					}
+					else
+					{
+						m_StuckMenuUses = null;
+					}
+
+					if (m_Player && m_Map != Map.Internal)
+					{
+						m_LogoutLocation = m_Location;
+						m_LogoutMap = m_Map;
+
+						m_Map = Map.Internal;
+					}
+
+					if (m_Map != null)
+					{
+						m_Map.OnEnter(this);
+					}
+
+                    if (m_Criminal)
+                    {
+                        StartCrimDelayTimer();
+                    }
+
+                    m_InternalCanRegen = true;
+
+					if (ShouldCheckStatTimers)
+					{
+						CheckStatTimers();
+					}
+
+					UpdateRegion();
+
+					UpdateResistances();
+
+					break;
+				}
 			}
 
 			if (!m_Player)
@@ -5861,11 +5861,11 @@ namespace Server
 
 		public virtual void ResetStatTimers()
 		{
-			TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
-			TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
-			TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
+            TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
+            TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
+            TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
 
-			if (!m_Deleted)
+            if (!m_Deleted)
 			{
 				Hits = m_Hits;
 				Stam = m_Stam;
@@ -5886,7 +5886,7 @@ namespace Server
 		{
 			writer.Write(38); // version
 
-			// 38 - Removed Disarm/Stun Ready
+            // 38 - Removed Disarm/Stun Ready
 
 			// 37
 			writer.Write(m_DisplayGuildAbbr);
@@ -5914,7 +5914,7 @@ namespace Server
 
 				writer.Write(m_SlayerVulnerabilities.Count);
 
-				for (var i = 0; i < m_SlayerVulnerabilities.Count; i++)
+				for (int i = 0; i < m_SlayerVulnerabilities.Count; i++)
 				{
 					writer.Write(m_SlayerVulnerabilities[i]);
 				}
@@ -6067,7 +6067,7 @@ namespace Server
 
 				writer.Write(m_StuckMenuUses.Length);
 
-				for (var i = 0; i < m_StuckMenuUses.Length; ++i)
+				for (int i = 0; i < m_StuckMenuUses.Length; ++i)
 				{
 					writer.Write(m_StuckMenuUses[i]);
 				}
@@ -6243,7 +6243,7 @@ namespace Server
 		public virtual void OnSubItemBounceCleared(Item item)
 		{ }
 
-		public virtual int MaxWeight => Int32.MaxValue;
+		public virtual int MaxWeight => int.MaxValue;
 
 		public virtual void Obtained(Item item)
 		{
@@ -6265,26 +6265,26 @@ namespace Server
 				return;
 			}
 
-			if (item.Parent is Mobile mobileParent)
-			{
-				mobileParent.RemoveItem(item);
-			}
-			else if (item.Parent is Item itemParent)
-			{
-				itemParent.RemoveItem(item);
-			}
-			else
-			{
-				item.SendRemovePacket();
-			}
+            if (item.Parent is Mobile mobileParent)
+            {
+                mobileParent.RemoveItem(item);
+            }
+            else if (item.Parent is Item itemParent)
+            {
+                itemParent.RemoveItem(item);
+            }
+            else
+            {
+                item.SendRemovePacket();
+            }
 
-			var equipped = FindItemOnLayer(item.Layer);
+            Item equipped = FindItemOnLayer(item.Layer);
 
 			if (equipped != null && equipped != item)
 			{
 				try
 				{
-					using (var op = new StreamWriter("LayerConflict.log", true))
+					using (StreamWriter op = new StreamWriter("LayerConflict.log", true))
 					{
 						op.WriteLine("# {0}", DateTime.UtcNow);
 						op.WriteLine("Offending Mobile: {0} [{1}]", GetType(), this);
@@ -6294,14 +6294,14 @@ namespace Server
 						op.WriteLine();
 					}
 
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Mobile: {0} [{1}]", GetType(), this));
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Item: {0} [{1}]", item, item.GetType()));
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Equipped Item: {0} [{1}]", equipped, equipped.GetType()));
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Layer: {0}", item.Layer.ToString()));
+					Utility.WriteConsoleColor(ConsoleColor.Red, string.Format("Offending Mobile: {0} [{1}]", GetType(), this));
+					Utility.WriteConsoleColor(ConsoleColor.Red, string.Format("Offending Item: {0} [{1}]", item, item.GetType()));
+					Utility.WriteConsoleColor(ConsoleColor.Red, string.Format("Equipped Item: {0} [{1}]", equipped, equipped.GetType()));
+					Utility.WriteConsoleColor(ConsoleColor.Red, string.Format("Layer: {0}", item.Layer.ToString()));
 				}
 				catch (Exception e)
 				{
-					Diagnostics.ExceptionLogging.LogException(e);
+                    Diagnostics.ExceptionLogging.LogException(e);
 				}
 			}
 
@@ -6370,7 +6370,7 @@ namespace Server
 
 		public virtual void Animate(AnimationType type, int action)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map != null)
 			{
@@ -6378,9 +6378,9 @@ namespace Server
 
 				Packet p = null;
 
-				var eable = map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state.Mobile.CanSee(this))
 					{
@@ -6400,7 +6400,7 @@ namespace Server
 
 		public virtual void Animate(int action, int frameCount, int repeatCount, bool forward, bool repeat, int delay)
 		{
-			var map = m_Map;
+			Map map = m_Map;
 
 			if (map != null)
 			{
@@ -6408,9 +6408,9 @@ namespace Server
 
 				Packet p = null;
 
-				var eable = map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state.Mobile.CanSee(this))
 					{
@@ -6537,9 +6537,9 @@ namespace Server
 			{
 				Packet p = Packet.Acquire(new PlaySound(soundID, this));
 
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state.Mobile.CanSee(this))
 					{
@@ -6583,7 +6583,7 @@ namespace Server
 			get => m_AccessLevel;
 			set
 			{
-				var oldValue = m_AccessLevel;
+				AccessLevel oldValue = m_AccessLevel;
 
 				if (oldValue != value)
 				{
@@ -6610,7 +6610,7 @@ namespace Server
 			get => m_Fame;
 			set
 			{
-				var oldValue = m_Fame;
+				int oldValue = m_Fame;
 
 				if (oldValue != value)
 				{
@@ -6636,7 +6636,7 @@ namespace Server
 			get => m_Karma;
 			set
 			{
-				var old = m_Karma;
+				int old = m_Karma;
 
 				if (old != value)
 				{
@@ -6676,12 +6676,12 @@ namespace Server
 
 		public void SayTo(Mobile to, string format, params object[] args)
 		{
-			SayTo(to, false, String.Format(format, args));
+			SayTo(to, false, string.Format(format, args));
 		}
 
 		public void SayTo(Mobile to, bool ascii, string format, params object[] args)
 		{
-			SayTo(to, ascii, String.Format(format, args));
+			SayTo(to, ascii, string.Format(format, args));
 		}
 
 		public void SayTo(Mobile to, int number)
@@ -6711,7 +6711,7 @@ namespace Server
 
 		public void SayTo(Mobile to, int hue, string text, string args, bool ascii)
 		{
-			PrivateOverheadMessage(MessageType.Regular, hue, ascii, String.Format(text, args), to.NetState);
+			PrivateOverheadMessage(MessageType.Regular, hue, ascii, string.Format(text, args), to.NetState);
 		}
 
 		public void Say(int number, int hue)
@@ -6741,7 +6741,7 @@ namespace Server
 
 		public void Say(string format, params object[] args)
 		{
-			Say(String.Format(format, args));
+			Say(string.Format(format, args));
 		}
 
 		public void Say(int number, AffixType type, string affix, string args)
@@ -6766,7 +6766,7 @@ namespace Server
 
 		public void Emote(string format, params object[] args)
 		{
-			Emote(String.Format(format, args));
+			Emote(string.Format(format, args));
 		}
 
 		public void Emote(int number)
@@ -6786,7 +6786,7 @@ namespace Server
 
 		public void Whisper(string format, params object[] args)
 		{
-			Whisper(String.Format(format, args));
+			Whisper(string.Format(format, args));
 		}
 
 		public void Whisper(int number)
@@ -6806,7 +6806,7 @@ namespace Server
 
 		public void Yell(string format, params object[] args)
 		{
-			Yell(String.Format(format, args));
+			Yell(string.Format(format, args));
 		}
 
 		public void Yell(int number)
@@ -6843,9 +6843,9 @@ namespace Server
 		{
 			if (m_Map != null)
 			{
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state != m_NetState && (everyone || !state.Mobile.CanSee(this)))
 					{
@@ -6859,24 +6859,24 @@ namespace Server
 
 		public void ClearScreen()
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange - 4);
+				IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange - 4);
 
-				foreach (var o in eable)
+				foreach (IEntity o in eable)
 				{
 					if (o is Mobile m)
 					{
-						if (m != this && Utility.InUpdateRange(m, m_Location, m.m_Location))
+                        if (m != this && Utility.InUpdateRange(m, m_Location, m.m_Location))
 						{
 							ns.Send(m.RemovePacket);
 						}
 					}
 					else if (o is Item item && InRange(item.Location, item.GetUpdateRange(this)))
 					{
-						ns.Send(item.RemovePacket);
+                        ns.Send(item.RemovePacket);
 					}
 				}
 
@@ -6895,20 +6895,20 @@ namespace Server
 		}
 
 		public bool Send(Packet p, bool throwOnOffline)
-		{
-			if (m_NetState != null)
+        {
+            if (m_NetState != null)
 			{
 				m_NetState.Send(p);
 				return true;
 			}
 
-			if (throwOnOffline)
-			{
-				throw new MobileNotConnectedException(this, "Packet could not be sent.");
-			}
+            if (throwOnOffline)
+            {
+                throw new MobileNotConnectedException(this, "Packet could not be sent.");
+            }
 
-			return false;
-		}
+            return false;
+        }
 
 		#region Gumps/Menus
 		public bool SendHuePicker(HuePicker p)
@@ -6917,28 +6917,28 @@ namespace Server
 		}
 
 		public bool SendHuePicker(HuePicker p, bool throwOnOffline)
-		{
-			if (m_NetState != null)
+        {
+            if (m_NetState != null)
 			{
 				p.SendTo(m_NetState);
 				return true;
 			}
 
-			if (throwOnOffline)
-			{
-				throw new MobileNotConnectedException(this, "Hue picker could not be sent.");
-			}
+            if (throwOnOffline)
+            {
+                throw new MobileNotConnectedException(this, "Hue picker could not be sent.");
+            }
 
-			return false;
-		}
+            return false;
+        }
 
 		public Gump FindGump(Type type)
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
-				foreach (var gump in ns.Gumps)
+				foreach (Gump gump in ns.Gumps)
 				{
 					if (type.IsAssignableFrom(gump.GetType()))
 					{
@@ -6956,10 +6956,10 @@ namespace Server
 		}
 
 		public bool CloseGump(Type type)
-		{
-			if (m_NetState != null)
+        {
+            if (m_NetState != null)
 			{
-				var gump = FindGump(type);
+				Gump gump = FindGump(type);
 
 				if (gump != null)
 				{
@@ -6973,8 +6973,8 @@ namespace Server
 				return true;
 			}
 
-			return false;
-		}
+            return false;
+        }
 
 		[Obsolete("Use CloseGump( Type ) instead.")]
 		public bool CloseGump(Type type, int buttonID)
@@ -6990,15 +6990,15 @@ namespace Server
 
 		public bool CloseAllGumps()
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
-				var gumps = new List<Gump>(ns.Gumps);
+				List<Gump> gumps = new List<Gump>(ns.Gumps);
 
 				ns.ClearGumps();
 
-				foreach (var gump in gumps)
+				foreach (Gump gump in gumps)
 				{
 					ns.Send(new CloseGump(gump.TypeID, 0));
 
@@ -7008,8 +7008,8 @@ namespace Server
 				return true;
 			}
 
-			return false;
-		}
+            return false;
+        }
 
 		[Obsolete("Use CloseAllGumps() instead.", false)]
 		public bool CloseAllGumps(bool throwOnOffline)
@@ -7034,20 +7034,20 @@ namespace Server
 		}
 
 		public bool SendGump(Gump g, bool throwOnOffline)
-		{
-			if (m_NetState != null)
+        {
+            if (m_NetState != null)
 			{
 				g.SendTo(m_NetState);
 				return true;
 			}
 
-			if (throwOnOffline)
-			{
-				throw new MobileNotConnectedException(this, "Gump could not be sent.");
-			}
+            if (throwOnOffline)
+            {
+                throw new MobileNotConnectedException(this, "Gump could not be sent.");
+            }
 
-			return false;
-		}
+            return false;
+        }
 
 		public bool SendMenu(IMenu m)
 		{
@@ -7055,20 +7055,20 @@ namespace Server
 		}
 
 		public bool SendMenu(IMenu m, bool throwOnOffline)
-		{
-			if (m_NetState != null)
+        {
+            if (m_NetState != null)
 			{
 				m.SendTo(m_NetState);
 				return true;
 			}
 
-			if (throwOnOffline)
-			{
-				throw new MobileNotConnectedException(this, "Menu could not be sent.");
-			}
+            if (throwOnOffline)
+            {
+                throw new MobileNotConnectedException(this, "Menu could not be sent.");
+            }
 
-			return false;
-		}
+            return false;
+        }
 		#endregion
 
 		/// <summary>
@@ -7106,43 +7106,43 @@ namespace Server
 
 		public void SendEverything()
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (m_Map != null && ns != null)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange);
+				IPooledEnumerable<IEntity> eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange);
 
-				foreach (var o in eable)
+				foreach (IEntity o in eable)
 				{
 					if (o is Item item)
 					{
-						if (InRange(item.GetWorldLocation(), item.GetUpdateRange(this)) && CanSee(item))
+                        if (InRange(item.GetWorldLocation(), item.GetUpdateRange(this)) && CanSee(item))
 						{
 							item.SendInfoTo(ns);
 						}
 					}
 					else if (o is Mobile m && Utility.InUpdateRange(this, m) && CanSee(m))
 					{
-						ns.Send(MobileIncoming.Create(ns, this, m));
+                        ns.Send(MobileIncoming.Create(ns, this, m));
 
-						if (ns.IsEnhancedClient)
-						{
-							ns.Send(new HealthbarPoisonEC(m));
-							ns.Send(new HealthbarYellowEC(m));
-						}
-						else
-						{
-							ns.Send(new HealthbarPoison(m));
-							ns.Send(new HealthbarYellow(m));
-						}
+                        if (ns.IsEnhancedClient)
+                        {
+                            ns.Send(new HealthbarPoisonEC(m));
+                            ns.Send(new HealthbarYellowEC(m));
+                        }
+                        else
+                        {
+                            ns.Send(new HealthbarPoison(m));
+                            ns.Send(new HealthbarYellow(m));
+                        }
 
-						if (m.IsDeadBondedPet)
-						{
-							ns.Send(new BondedStatus(0, m.m_Serial, 1));
-						}
+                        if (m.IsDeadBondedPet)
+                        {
+                            ns.Send(new BondedStatus(0, m.m_Serial, 1));
+                        }
 
-						ns.Send(m.OPLPacket);
-					}
+                        ns.Send(m.OPLPacket);
+                    }
 				}
 
 				eable.Free();
@@ -7173,7 +7173,7 @@ namespace Server
 						m_NetState.ValidateAllTrades();
 					}
 
-					var oldMap = m_Map;
+					Map oldMap = m_Map;
 
 					if (m_Map != null)
 					{
@@ -7183,7 +7183,7 @@ namespace Server
 						SendRemovePacket();
 					}
 
-					for (var i = 0; i < m_Items.Count; ++i)
+					for (int i = 0; i < m_Items.Count; ++i)
 					{
 						m_Items[i].Map = value;
 					}
@@ -7197,7 +7197,7 @@ namespace Server
 						m_Map.OnEnter(this);
 					}
 
-					var ns = m_NetState;
+					NetState ns = m_NetState;
 
 					if (ns != null && m_Map != null)
 					{
@@ -7255,8 +7255,8 @@ namespace Server
 				return;
 			}
 
-			var newRegion = Region.Find(m_Location, m_Map);
-			var oldRegion = m_Region;
+			Region newRegion = Region.Find(m_Location, m_Map);
+			Region oldRegion = m_Region;
 
 			if (newRegion != oldRegion)
 			{
@@ -7332,7 +7332,7 @@ namespace Server
 				return false;
 			}
 
-			var n = Notoriety.Compute(this, target);
+			int n = Notoriety.Compute(this, target);
 
 			return n == Notoriety.Criminal || n == Notoriety.Murderer;
 		}
@@ -7407,8 +7407,8 @@ namespace Server
 			}
 
 			if (target is Mobile mobile)
-			{
-				if (mobile.m_Blessed || !mobile.Alive || mobile.IsDeadBondedPet)
+            {
+                if (mobile.m_Blessed || !mobile.Alive || mobile.IsDeadBondedPet)
 				{
 					if (message)
 					{
@@ -7418,11 +7418,11 @@ namespace Server
 					return false;
 				}
 
-				if (!mobile.CanBeHarmedBy(this, message))
-				{
-					return false;
-				}
-			}
+                if (!mobile.CanBeHarmedBy(this, message))
+                {
+                    return false;
+                }
+            }
 
 			if (target == this)
 			{
@@ -7482,34 +7482,34 @@ namespace Server
 				return;
 			}
 
-			var isCriminal = IsHarmfulCriminal(target);
+			bool isCriminal = IsHarmfulCriminal(target);
 
 			OnHarmfulAction(target, isCriminal);
 
-			if (target is Mobile mobile)
-			{
-				mobile.AggressiveAction(this, isCriminal);
-			}
+            if (target is Mobile mobile)
+            {
+                mobile.AggressiveAction(this, isCriminal);
+            }
 
-			Region.OnDidHarmful(this, target);
+            Region.OnDidHarmful(this, target);
 
-			if (target is Mobile harmed)
-			{
-				harmed.Region.OnGotHarmful(this, harmed);
-			}
-			else if (target is Item)
-			{
-				Region.Find(target.Location, target.Map).OnGotHarmful(this, target);
-			}
+            if (target is Mobile harmed)
+            {
+                harmed.Region.OnGotHarmful(this, harmed);
+            }
+            else if (target is Item)
+            {
+                Region.Find(target.Location, target.Map).OnGotHarmful(this, target);
+            }
 
-			if (!indirect)
+            if (!indirect)
 			{
 				Combatant = target;
 			}
 
-			CheckExpireCombatantTimer();
+            CheckExpireCombatantTimer();
 
-		}
+        }
 
 		public virtual bool HarmfulCheck(IDamageable target)
 		{
@@ -7531,9 +7531,9 @@ namespace Server
 
 		public bool RemoveStatMod(string name)
 		{
-			for (var i = 0; i < m_StatMods.Count; ++i)
+			for (int i = 0; i < m_StatMods.Count; ++i)
 			{
-				var check = m_StatMods[i];
+				StatMod check = m_StatMods[i];
 
 				if (check.Name == name)
 				{
@@ -7550,9 +7550,9 @@ namespace Server
 
 		public StatMod GetStatMod(string name)
 		{
-			for (var i = 0; i < m_StatMods.Count; ++i)
+			for (int i = 0; i < m_StatMods.Count; ++i)
 			{
-				var check = m_StatMods[i];
+				StatMod check = m_StatMods[i];
 
 				if (check.Name == name)
 				{
@@ -7565,9 +7565,9 @@ namespace Server
 
 		public void AddStatMod(StatMod mod)
 		{
-			for (var i = 0; i < m_StatMods.Count; ++i)
+			for (int i = 0; i < m_StatMods.Count; ++i)
 			{
-				var check = m_StatMods[i];
+				StatMod check = m_StatMods[i];
 
 				if (check.Name == mod.Name)
 				{
@@ -7609,11 +7609,11 @@ namespace Server
 		/// </summary>
 		public int GetStatOffset(StatType type)
 		{
-			var offset = 0;
+			int offset = 0;
 
-			for (var i = 0; i < m_StatMods.Count; ++i)
+			for (int i = 0; i < m_StatMods.Count; ++i)
 			{
-				var mod = m_StatMods[i];
+				StatMod mod = m_StatMods[i];
 
 				if (mod.HasElapsed())
 				{
@@ -7689,32 +7689,32 @@ namespace Server
 
 				if (m_Str != value)
 				{
-					var oldValue = m_Str;
+					int oldValue = m_Str;
 
 					m_Str = value;
 					Delta(MobileDelta.Stat | MobileDelta.Hits);
 
-					if (CanRegenHits)
-					{
-						if (Hits < HitsMax)
-						{
-							TimerRegistry.Register(
-								Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID,
-								this,
-								GetHitsRegenRate(this),
-								Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
-								false, TimerPriority.TenMS,
-								mobile => mobile.HitsOnTick());
-						}
-						else if (Hits > HitsMax)
-						{
-							Hits = HitsMax;
-						}
-					}
-					else
-					{
-						TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
-					}
+                    if (CanRegenHits)
+                    {
+                        if (Hits < HitsMax)
+                        {
+                            TimerRegistry.Register(
+                                Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID,
+                                this,
+                                GetHitsRegenRate(this),
+                                Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                                false, TimerPriority.TenMS,
+                                mobile => mobile.HitsOnTick());
+                        }
+                        else if (Hits > HitsMax)
+                        {
+                            Hits = HitsMax;
+                        }
+                    }
+                    else
+                    {
+                        TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
+                    }
 
 					OnRawStrChange(oldValue);
 					OnRawStatChange(StatType.Str, oldValue);
@@ -7735,7 +7735,7 @@ namespace Server
 		{
 			get
 			{
-				var value = m_Str + GetStatOffset(StatType.Str);
+				int value = m_Str + GetStatOffset(StatType.Str);
 
 				if (value < 1)
 				{
@@ -7781,31 +7781,31 @@ namespace Server
 
 				if (m_Dex != value)
 				{
-					var oldValue = m_Dex;
+					int oldValue = m_Dex;
 
 					m_Dex = value;
 					Delta(MobileDelta.Stat | MobileDelta.Stam);
 
-					if (CanRegenStam)
-					{
-						if (Stam < StamMax)
-						{
-							TimerRegistry.Register(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID,
-								this,
-								GetStamRegenRate(this),
-								Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
-								false, TimerPriority.TenMS,
-								mobile => mobile.StamOnTick());
-						}
-						else if (Stam > StamMax)
-						{
-							Stam = StamMax;
-						}
-					}
-					else
-					{
-						TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
-					}
+                    if (CanRegenStam)
+                    {
+                        if (Stam < StamMax)
+                        {
+                            TimerRegistry.Register(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID,
+                                this,
+                                GetStamRegenRate(this),
+                                Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                                false, TimerPriority.TenMS,
+                                mobile => mobile.StamOnTick());
+                        }
+                        else if (Stam > StamMax)
+                        {
+                            Stam = StamMax;
+                        }
+                    }
+                    else
+                    {
+                        TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
+                    }
 
 					OnRawDexChange(oldValue);
 					OnRawStatChange(StatType.Dex, oldValue);
@@ -7826,7 +7826,7 @@ namespace Server
 		{
 			get
 			{
-				var value = m_Dex + GetStatOffset(StatType.Dex);
+				int value = m_Dex + GetStatOffset(StatType.Dex);
 
 				if (value < 1)
 				{
@@ -7872,31 +7872,31 @@ namespace Server
 
 				if (m_Int != value)
 				{
-					var oldValue = m_Int;
+					int oldValue = m_Int;
 
 					m_Int = value;
 					Delta(MobileDelta.Stat | MobileDelta.Mana);
 
-					if (CanRegenMana)
-					{
-						if (Mana < ManaMax)
-						{
-							TimerRegistry.Register(
-								Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID,
-								this,
-								GetManaRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
-								false, TimerPriority.TenMS,
-								mobile => mobile.ManaOnTick());
-						}
-						else if (Mana > ManaMax)
-						{
-							Mana = ManaMax;
-						}
-					}
-					else
-					{
-						TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
-					}
+                    if (CanRegenMana)
+                    {
+                        if (Mana < ManaMax)
+                        {
+                            TimerRegistry.Register(
+                                Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID,
+                                this,
+                                GetManaRegenRate(this), Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                                false, TimerPriority.TenMS,
+                                mobile => mobile.ManaOnTick());
+                        }
+                        else if (Mana > ManaMax)
+                        {
+                            Mana = ManaMax;
+                        }
+                    }
+                    else
+                    {
+                        TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
+                    }
 
 					OnRawIntChange(oldValue);
 					OnRawStatChange(StatType.Int, oldValue);
@@ -7917,7 +7917,7 @@ namespace Server
 		{
 			get
 			{
-				var value = m_Int + GetStatOffset(StatType.Int);
+				int value = m_Int + GetStatOffset(StatType.Int);
 
 				if (value < 1)
 				{
@@ -7973,7 +7973,7 @@ namespace Server
 				{
 					value = HitsMax;
 
-					for (var i = 0; i < m_Aggressors.Count; i++) //reset reports on full HP
+					for (int i = 0; i < m_Aggressors.Count; i++) //reset reports on full HP
 					{
 						m_Aggressors[i].CanReportMurder = false;
 					}
@@ -7986,7 +7986,7 @@ namespace Server
 
 				if (m_Hits != value)
 				{
-					var oldValue = m_Hits;
+					int oldValue = m_Hits;
 					m_Hits = value;
 					Delta(MobileDelta.Hits);
 					OnHitsChange(oldValue);
@@ -7996,23 +7996,23 @@ namespace Server
 				{
 					if (CanRegenHits)
 					{
-						TimerRegistry.Register(
-							Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID,
-							this, GetHitsRegenRate(this),
-							Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
-							false,
-							TimerPriority.TenMS,
-							mobile => mobile.HitsOnTick());
-					}
+                        TimerRegistry.Register(
+                            Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID,
+                            this, GetHitsRegenRate(this),
+                            Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                            false,
+                            TimerPriority.TenMS,
+                            mobile => mobile.HitsOnTick());
+                    }
 					else
 					{
-						TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
-					}
+                        TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
+                    }
 				}
 				else
 				{
-					TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
-				}
+                    TimerRegistry.RemoveFromRegistry(Player ? _HitsRegenTimerPlayerID : _HitsRegenTimerID, this);
+                }
 			}
 		}
 
@@ -8050,35 +8050,35 @@ namespace Server
 
 				if (m_Stam != value)
 				{
-					var oldValue = m_Stam;
+					int oldValue = m_Stam;
 					m_Stam = value;
 					Delta(MobileDelta.Stam);
 					OnStamChange(oldValue);
 				}
 
-				if (m_Stam < StamMax)
-				{
-					if (CanRegenStam)
-					{
-						TimerRegistry.Register(
-							Player ? _StamRegenTimerPlayerID : _StamRegenTimerID,
-							this,
-							GetStamRegenRate(this),
-							Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
-							false,
-							TimerPriority.TenMS,
-							mobile => mobile.StamOnTick());
-					}
-					else
-					{
-						TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
-					}
-				}
-				else
-				{
-					TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
-				}
-			}
+                if (m_Stam < StamMax)
+                {
+                    if (CanRegenStam)
+                    {
+                        TimerRegistry.Register(
+                            Player ? _StamRegenTimerPlayerID : _StamRegenTimerID,
+                            this,
+                            GetStamRegenRate(this),
+                            Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                            false,
+                            TimerPriority.TenMS,
+                            mobile => mobile.StamOnTick());
+                    }
+                    else
+                    {
+                        TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
+                    }
+                }
+                else
+                {
+                    TimerRegistry.RemoveFromRegistry(Player ? _StamRegenTimerPlayerID : _StamRegenTimerID, this);
+                }
+            }
 		}
 
 		/// <summary>
@@ -8121,7 +8121,7 @@ namespace Server
 
 				if (m_Mana != value)
 				{
-					var oldValue = m_Mana;
+					int oldValue = m_Mana;
 					m_Mana = value;
 					Delta(MobileDelta.Mana);
 					OnManaChange(oldValue);
@@ -8131,23 +8131,23 @@ namespace Server
 				{
 					if (CanRegenMana)
 					{
-						TimerRegistry.Register(
-							Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID,
-							this, GetManaRegenRate(this),
-							Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
-							false,
-							TimerPriority.TenMS,
-							mobile => mobile.ManaOnTick());
-					}
+                        TimerRegistry.Register(
+                            Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID,
+                            this, GetManaRegenRate(this),
+                            Player ? TimeSpan.FromMilliseconds(50) : TimeSpan.FromMilliseconds(250),
+                            false,
+                            TimerPriority.TenMS,
+                            mobile => mobile.ManaOnTick());
+                    }
 					else
 					{
-						TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
-					}
+                        TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
+                    }
 				}
 				else
 				{
-					TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
-				}
+                    TimerRegistry.RemoveFromRegistry(Player ? _ManaRegenTimerPlayerID : _ManaRegenTimerID, this);
+                }
 			}
 		}
 
@@ -8196,7 +8196,7 @@ namespace Server
 			}
 			set
 			{
-				var oldHue = m_Hue;
+				int oldHue = m_Hue;
 
 				if (oldHue != value)
 				{
@@ -8240,7 +8240,7 @@ namespace Server
 
 		public virtual int GetPacketFlags()
 		{
-			var flags = 0x0;
+			int flags = 0x0;
 
 			if (m_Paralyzed || m_Frozen || (m_Spell != null && !m_Spell.CheckMovement(this)))
 			{
@@ -8283,7 +8283,7 @@ namespace Server
 		// Pre-7.0.0.0 Packet Flags
 		public virtual int GetOldPacketFlags()
 		{
-			var flags = 0x0;
+			int flags = 0x0;
 
 			if (m_Paralyzed || m_Frozen)
 			{
@@ -8450,9 +8450,9 @@ namespace Server
 
 			if (m_Map != null)
 			{
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (!state.Mobile.CanSee(this))
 					{
@@ -8528,7 +8528,7 @@ namespace Server
 						m_NetState.CancelAllTrades();
 					}
 
-					var box = FindBankNoCreate();
+					BankBox box = FindBankNoCreate();
 
 					if (box != null && box.Opened)
 					{
@@ -8545,26 +8545,26 @@ namespace Server
 						OnDisconnected();
 						EventSink.InvokeDisconnected(new DisconnectedEventArgs(this));
 
-						// Disconnected, start the logout timer
-						var logoutDelay = GetLogoutDelay();
-						if (!TimerRegistry.UpdateRegistry(_LogoutTimerID, this, logoutDelay))
-						{
-							TimerRegistry.Register(_LogoutTimerID, this, logoutDelay, TimerPriority.OneSecond, m => m.DoLogout());
-						}
+                        // Disconnected, start the logout timer
+                        var logoutDelay = GetLogoutDelay();
+                        if (!TimerRegistry.UpdateRegistry(_LogoutTimerID, this, logoutDelay))
+                        {
+                            TimerRegistry.Register(_LogoutTimerID, this, logoutDelay, TimerPriority.OneSecond, m => m.DoLogout());
+                        }
 					}
 					else
 					{
 						OnConnected();
 						EventSink.InvokeConnected(new ConnectedEventArgs(this));
 
-						// Connected, stop the logout timer and if needed, move to the world
+                        // Connected, stop the logout timer and if needed, move to the world
 
-						if (TimerRegistry.HasTimer(_LogoutTimerID, this))
-						{
-							TimerRegistry.RemoveFromRegistry(_LogoutTimerID, this);
-						}
+                        if (TimerRegistry.HasTimer(_LogoutTimerID, this))
+                        {
+                            TimerRegistry.RemoveFromRegistry(_LogoutTimerID, this);
+                        }
 
-						if (m_Map == Map.Internal && m_LogoutMap != null)
+                        if (m_Map == Map.Internal && m_LogoutMap != null)
 						{
 							CharacterOut = true;
 							Map = m_LogoutMap;
@@ -8576,18 +8576,18 @@ namespace Server
 						}
 					}
 
-					for (var i = m_Items.Count - 1; i >= 0; --i)
+					for (int i = m_Items.Count - 1; i >= 0; --i)
 					{
 						if (i >= m_Items.Count)
 						{
 							continue;
 						}
 
-						var item = m_Items[i];
+						Item item = m_Items[i];
 
 						if (item is SecureTradeContainer)
 						{
-							for (var j = item.Items.Count - 1; j >= 0; --j)
+							for (int j = item.Items.Count - 1; j >= 0; --j)
 							{
 								if (j < item.Items.Count)
 								{
@@ -8607,19 +8607,19 @@ namespace Server
 		}
 
 		public virtual bool CanSee(object o)
-		{
-			if (o is Item item)
+        {
+            if (o is Item item)
 			{
 				return CanSee(item);
 			}
 
-			if (o is Mobile mobile)
-			{
-				return CanSee(mobile);
-			}
+            if (o is Mobile mobile)
+            {
+                return CanSee(mobile);
+            }
 
-			return true;
-		}
+            return true;
+        }
 
 		public virtual bool CanSee(Item item)
 		{
@@ -8628,36 +8628,36 @@ namespace Server
 				return false;
 			}
 
-			if (item.Map == Map.Internal)
-			{
-				return false;
-			}
+            if (item.Map == Map.Internal)
+            {
+                return false;
+            }
 
-			if (item.Parent != null)
+            if (item.Parent != null)
 			{
 				if (item.Parent is Item itemParent)
 				{
-					if (!(CanSee(itemParent) && itemParent.IsChildVisibleTo(this, item)))
+                    if (!(CanSee(itemParent) && itemParent.IsChildVisibleTo(this, item)))
 					{
 						return false;
 					}
 				}
 				else if (item.Parent is Mobile mobileParent && !CanSee(mobileParent))
 				{
-					return false;
+                    return false;
 				}
 			}
 
 			if (item is BankBox box)
 			{
-				if (IsPlayer() && (box.Owner != this || !box.Opened))
+                if (IsPlayer() && (box.Owner != this || !box.Opened))
 				{
 					return false;
 				}
 			}
 			else if (item is SecureTradeContainer container)
 			{
-				var trade = container.Trade;
+				SecureTrade trade = container.Trade;
 
 				if (trade != null && trade.From.Mobile != this && trade.To.Mobile != this)
 				{
@@ -8716,7 +8716,7 @@ namespace Server
 			get => m_GuildTitle;
 			set
 			{
-				var old = m_GuildTitle;
+				string old = m_GuildTitle;
 
 				if (old != value)
 				{
@@ -8814,7 +8814,7 @@ namespace Server
 			{
 				if (m_Name != value) // I'm leaving out the && m_NameMod == null
 				{
-					var oldName = m_Name;
+					string oldName = m_Name;
 					m_Name = value;
 					OnAfterNameChange(oldName, m_Name);
 					Delta(MobileDelta.Name);
@@ -8839,7 +8839,7 @@ namespace Server
 		{
 			get
 			{
-				var d = m_LastStrGain;
+				DateTime d = m_LastStrGain;
 
 				if (m_LastIntGain > d)
 				{
@@ -8866,7 +8866,7 @@ namespace Server
 			get => m_Guild;
 			set
 			{
-				var old = m_Guild;
+				BaseGuild old = m_Guild;
 
 				if (old != value)
 				{
@@ -9066,7 +9066,7 @@ namespace Server
 				return ApplyPoisonResult.Immune;
 			}
 
-			var oldPoison = m_Poison;
+			Poison oldPoison = m_Poison;
 			Poison = poison;
 
 			OnPoisoned(from, poison, oldPoison);
@@ -9112,7 +9112,7 @@ namespace Server
 		{
 			if (CheckCure(from))
 			{
-				var oldPoison = m_Poison;
+				Poison oldPoison = m_Poison;
 				Poison = null;
 
 				OnCured(from, oldPoison);
@@ -9138,10 +9138,10 @@ namespace Server
 		public virtual void OnAfterSpawn()
 		{ }
 
-		protected virtual void OnCreate()
-		{ }
+        protected virtual void OnCreate()
+        { }
 
-		[CommandProperty(AccessLevel.GameMaster)]
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool Poisoned => m_Poison != null;
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -9166,7 +9166,7 @@ namespace Server
 		}
 
 		private static readonly int[] m_InvalidBodies =
-		{
+        {
 			//32,		// Dunno why is blocked
 			//95,		// Used for Turkey
 			//156,		// Dunno why is blocked
@@ -9223,9 +9223,9 @@ namespace Server
 
 		public virtual int SafeBody(int body)
 		{
-			var delta = -1;
+			int delta = -1;
 
-			for (var i = 0; delta < 0 && i < m_InvalidBodies.Length; ++i)
+			for (int i = 0; delta < 0 && i < m_InvalidBodies.Length; ++i)
 			{
 				delta = m_InvalidBodies[i] - body;
 			}
@@ -9256,19 +9256,19 @@ namespace Server
 		public Region Region
 		{
 			get
-			{
-				if (m_Region == null)
-				{
-					if (Map == null)
+            {
+                if (m_Region == null)
+                {
+                    if (Map == null)
 					{
 						return Map.Internal.DefaultRegion;
 					}
 
-					return Map.DefaultRegion;
-				}
+                    return Map.DefaultRegion;
+                }
 
-				return m_Region;
-			}
+                return m_Region;
+            }
 		}
 
 		public void FreeCache()
@@ -9354,9 +9354,9 @@ namespace Server
 		{
 			if (m_Map != null && m_Map != Map.Internal && !World.Loading)
 			{
-				var oldList = m_PropertyList;
+				ObjectPropertyList oldList = m_PropertyList;
 				Packet.Release(ref m_PropertyList);
-				var newList = PropertyList;
+				ObjectPropertyList newList = PropertyList;
 
 				if (oldList == null || oldList.Hash != newList.Hash)
 				{
@@ -9400,15 +9400,15 @@ namespace Server
 				return;
 			}
 
-			var box = FindBankNoCreate();
+			BankBox box = FindBankNoCreate();
 
 			if (box != null && box.Opened)
 			{
 				box.Close();
 			}
 
-			var oldLocation = m_Location;
-			var oldMap = m_Map;
+			Point3D oldLocation = m_Location;
+			Map oldMap = m_Map;
 
 			if (oldMap != null)
 			{
@@ -9418,7 +9418,7 @@ namespace Server
 				SendRemovePacket();
 			}
 
-			foreach (var o in m_Items)
+			foreach (Item o in m_Items)
 			{
 				o.Map = map;
 			}
@@ -9427,7 +9427,7 @@ namespace Server
 
 			m_Location = newLocation;
 
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
@@ -9481,7 +9481,7 @@ namespace Server
 				return;
 			}
 
-			var oldLocation = m_Location;
+			Point3D oldLocation = m_Location;
 
 			if (oldLocation != newLocation)
 			{
@@ -9490,7 +9490,7 @@ namespace Server
 
 				if (AccessLevel <= AccessLevel.Counselor)
 				{
-					var box = FindBankNoCreate();
+					BankBox box = FindBankNoCreate();
 
 					if (box != null && box.Opened)
 					{
@@ -9519,15 +9519,15 @@ namespace Server
 					EventSink.InvokeTeleportMovement(new TeleportMovementEventArgs(this, oldLocation, newLocation));
 				}
 
-				var map = m_Map;
+				Map map = m_Map;
 
 				if (map != null)
 				{
 					// First, send a remove message to everyone who can no longer see us. (inOldRange && !inNewRange)
 
-					var eable = map.GetClientsInRange(oldLocation);
+					IPooledEnumerable<NetState> eable = map.GetClientsInRange(oldLocation);
 
-					foreach (var ns in eable)
+					foreach (NetState ns in eable)
 					{
 						if (ns != m_NetState && !Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile))
 						{
@@ -9543,20 +9543,20 @@ namespace Server
 					Packet hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this)),
 						   hbyKRPacket = Packet.Acquire(new HealthbarYellowEC(this));
 
-					var ourState = m_NetState;
+					NetState ourState = m_NetState;
 
 					// Check to see if we are attached to a client
 					if (ourState != null)
 					{
-						var eeable = map.GetObjectsInRange(newLocation, Core.GlobalRadarRange);
+						IPooledEnumerable<IEntity> eeable = map.GetObjectsInRange(newLocation, Core.GlobalRadarRange);
 
 						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
-						foreach (var o in eeable)
+						foreach (IEntity o in eeable)
 						{
 							if (o is Item item)
 							{
-								var range = item.GetUpdateRange(this);
-								var loc = item.GetWorldLocation();
+                                int range = item.GetUpdateRange(this);
+								Point3D loc = item.GetWorldLocation();
 
 								if (!Utility.InRange(oldLocation, loc, range) && Utility.InRange(newLocation, loc, range) && CanSee(item))
 								{
@@ -9565,8 +9565,8 @@ namespace Server
 							}
 							else if (o != this && o is Mobile m)
 							{
-								// Will we enter their update range? (Y: Update)
-								var update = Utility.InUpdateRange(m, newLocation, m);
+                                // Will we enter their update range? (Y: Update)
+								bool update = Utility.InUpdateRange(m, newLocation, m);
 
 								// Were we already in their update range? (Y: Cancel Update)
 								if (update && Utility.InUpdateRange(m, oldLocation, m))
@@ -9638,9 +9638,9 @@ namespace Server
 						eable = map.GetClientsInRange(newLocation);
 
 						// We're not attached to a client, so simply send an Incoming
-						foreach (var ns in eable)
+						foreach (NetState ns in eable)
 						{
-							var update = Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile);
+							bool update = Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile);
 
 							if (update && Utility.InUpdateRange(ns.Mobile, oldLocation, ns.Mobile))
 							{
@@ -9868,7 +9868,7 @@ namespace Server
 		{
 			get
 			{
-				var item = m_Weapon as Item;
+				Item item = m_Weapon as Item;
 
 				if (item != null && !item.Deleted && item.Parent == this && CanSee(item))
 				{
@@ -9889,8 +9889,8 @@ namespace Server
 					return m_Weapon = weapon;
 				}
 
-				return GetDefaultWeapon();
-			}
+                return GetDefaultWeapon();
+            }
 		}
 
 		public virtual IWeapon GetDefaultWeapon()
@@ -9953,12 +9953,12 @@ namespace Server
 
 		public Item FindItemOnLayer(Layer layer)
 		{
-			var eq = m_Items;
-			var count = eq.Count;
+			List<Item> eq = m_Items;
+			int count = eq.Count;
 
-			for (var i = 0; i < count; ++i)
+			for (int i = 0; i < count; ++i)
 			{
-				var item = eq[i];
+				Item item = eq[i];
 
 				if (!item.Deleted && item.Layer == layer)
 				{
@@ -10126,9 +10126,9 @@ namespace Server
 		{
 			if (m_Map != null)
 			{
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state.Mobile.CanSee(this))
 					{
@@ -10178,7 +10178,7 @@ namespace Server
 				return false;
 			}
 
-			var pack = Backpack;
+			Container pack = Backpack;
 
 			return pack != null && pack.TryDropItem(this, item, false);
 		}
@@ -10192,8 +10192,8 @@ namespace Server
 
 			if (!PlaceInBackpack(item))
 			{
-				var loc = m_Location;
-				var map = m_Map;
+				Point3D loc = m_Location;
+				Map map = m_Map;
 
 				if ((map == null || map == Map.Internal) && m_LogoutMap != null)
 				{
@@ -10249,20 +10249,20 @@ namespace Server
 
 		public virtual bool OpenTrade(Mobile from, Item offer)
 		{
-			if (!from.Player || !Player || !from.Alive || !Alive)
+			if (!from.Player || !Player || !from.Alive || !Alive || from.Hidden)
 			{
 				return false;
 			}
 
-			var ourState = m_NetState;
-			var theirState = from.m_NetState;
+			NetState ourState = m_NetState;
+			NetState theirState = from.m_NetState;
 
 			if (ourState == null || theirState == null)
 			{
 				return false;
 			}
 
-			var cont = theirState.FindTradeContainer(this);
+			SecureTradeContainer cont = theirState.FindTradeContainer(this);
 
 			if (!from.CheckTrade(this, offer, cont, true, true, 0, 0))
 			{
@@ -10293,7 +10293,7 @@ namespace Server
 		{
 			if (from == this)
 			{
-				var pack = Backpack;
+				Container pack = Backpack;
 
 				if (pack != null)
 				{
@@ -10314,7 +10314,7 @@ namespace Server
 
 		public virtual bool CheckEquip(Item item)
 		{
-			for (var i = 0; i < m_Items.Count; ++i)
+			for (int i = 0; i < m_Items.Count; ++i)
 			{
 				if (m_Items[i].CheckConflictingLayer(this, item, item.Layer) ||
 					item.CheckConflictingLayer(this, m_Items[i], m_Items[i].Layer))
@@ -10437,12 +10437,12 @@ namespace Server
 			EventSink.InvokeOnItemUse(new OnItemUseEventArgs(from, item));
 		}
 
-		public virtual bool CheckHasTradeDrop(Mobile from, Item item, Item target)
-		{
-			return true;
-		}
+        public virtual bool CheckHasTradeDrop(Mobile from, Item item, Item target)
+        {
+            return true;
+        }
 
-		public virtual bool CheckNonlocalDrop(Mobile from, Item item, Item target)
+        public virtual bool CheckNonlocalDrop(Mobile from, Item item, Item target)
 		{
 			if (from == this || (from.AccessLevel > AccessLevel && from.AccessLevel >= AccessLevel.GameMaster))
 			{
@@ -10509,7 +10509,7 @@ namespace Server
 			m_NextSkillTime = Core.TickCount;
 			m_DamageEntries = new List<DamageEntry>();
 
-			var ourType = GetType();
+			Type ourType = GetType();
 			m_TypeRef = World.m_MobileTypes.IndexOf(ourType);
 
 			if (m_TypeRef == -1)
@@ -10528,7 +10528,7 @@ namespace Server
 
 			World.AddMobile(this);
 
-			var ourType = GetType();
+			Type ourType = GetType();
 			m_TypeRef = World.m_MobileTypes.IndexOf(ourType);
 
 			if (m_TypeRef == -1)
@@ -10538,11 +10538,11 @@ namespace Server
 			}
 
 			Timer.DelayCall(() =>
-			{
-				EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(this));
-				m_InternalCanRegen = true;
-				OnCreate();
-			});
+            {
+                EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(this));
+                m_InternalCanRegen = true;
+                OnCreate();
+            });
 		}
 
 		public void DefaultMobileInit()
@@ -10602,14 +10602,14 @@ namespace Server
 		#region GetDirectionTo[..]
 		public Direction GetDirectionTo(int x, int y)
 		{
-			var dx = m_Location.m_X - x;
-			var dy = m_Location.m_Y - y;
+			int dx = m_Location.m_X - x;
+			int dy = m_Location.m_Y - y;
 
-			var rx = (dx - dy) * 44;
-			var ry = (dx + dy) * 44;
+			int rx = (dx - dy) * 44;
+			int ry = (dx + dy) * 44;
 
-			var ax = Math.Abs(rx);
-			var ay = Math.Abs(ry);
+			int ax = Math.Abs(rx);
+			int ay = Math.Abs(ry);
 
 			Direction ret;
 
@@ -10664,7 +10664,7 @@ namespace Server
 
 		public virtual void ProcessDelta()
 		{
-			var m = this;
+			Mobile m = this;
 			MobileDelta delta;
 
 			delta = m.m_DeltaFlags;
@@ -10674,7 +10674,7 @@ namespace Server
 				return;
 			}
 
-			var attrs = delta & MobileDelta.Attributes;
+			MobileDelta attrs = delta & MobileDelta.Attributes;
 
 			m.m_DeltaFlags = MobileDelta.None;
 			m.m_InDeltaQueue = false;
@@ -10684,7 +10684,7 @@ namespace Server
 			bool sendUpdate = false, sendRemove = false;
 			bool sendPublicStats = false, sendPrivateStats = false;
 			bool sendMoving = false, sendNonlocalMoving = false;
-			var sendOPLUpdate = (delta & MobileDelta.Properties) != 0;
+			bool sendOPLUpdate = (delta & MobileDelta.Properties) != 0;
 
 			bool sendHair = false, sendFacialHair = false, removeHair = false, removeFacialHair = false, sendFace = false, removeFace = false;
 
@@ -10793,7 +10793,7 @@ namespace Server
 
 			Packet[][] cache = { new Packet[8], new Packet[8] };
 
-			var ourState = m.m_NetState;
+			NetState ourState = m.m_NetState;
 
 			if (ourState != null)
 			{
@@ -10813,7 +10813,7 @@ namespace Server
 
 				if (sendMoving)
 				{
-					var noto = Notoriety.Compute(m, m);
+					int noto = Notoriety.Compute(m, m);
 					ourState.Send(cache[0][noto] = Packet.Acquire(new MobileMoving(m, noto)));
 				}
 
@@ -10857,7 +10857,7 @@ namespace Server
 
 				if (sendStam || sendMana)
 				{
-					var ip = m_Party as IParty;
+					IParty ip = m_Party as IParty;
 
 					if (ip != null && sendStam)
 					{
@@ -10936,9 +10936,9 @@ namespace Server
 				Packet faceRemovePacket = null;
 				Packet faceSendPacket = null;
 
-				var eable = m.Map.GetClientsInRange(m.m_Location);
+				IPooledEnumerable<NetState> eable = m.Map.GetClientsInRange(m.m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					beholder = state.Mobile;
 
@@ -10966,9 +10966,9 @@ namespace Server
 
 						if (sendMoving)
 						{
-							var noto = Notoriety.Compute(beholder, m);
+							int noto = Notoriety.Compute(beholder, m);
 
-							var p = cache[0][noto];
+							Packet p = cache[0][noto];
 
 							if (p == null)
 							{
@@ -11112,9 +11112,9 @@ namespace Server
 
 			if (sendMoving || sendNonlocalMoving || sendHealthbarPoison || sendHealthbarYellow)
 			{
-				for (var i = 0; i < cache.Length; ++i)
+				for (int i = 0; i < cache.Length; ++i)
 				{
-					for (var j = 0; j < cache[i].Length; ++j)
+					for (int j = 0; j < cache[i].Length; ++j)
 					{
 						Packet.Release(ref cache[i][j]);
 					}
@@ -11133,7 +11133,7 @@ namespace Server
 
 			_Processing = true;
 
-			var i = m_DeltaQueue.Count;
+			int i = m_DeltaQueue.Count;
 
 			while (--i >= 0)
 			{
@@ -11155,7 +11155,7 @@ namespace Server
 			{
 				if (m_Deaths != value)
 				{
-					var oldValue = m_Deaths;
+					int oldValue = m_Deaths;
 
 					m_Deaths = Math.Max(0, value);
 
@@ -11173,7 +11173,7 @@ namespace Server
 			get => m_Kills;
 			set
 			{
-				var oldValue = m_Kills;
+				int oldValue = m_Kills;
 
 				if (m_Kills != value)
 				{
@@ -11231,11 +11231,11 @@ namespace Server
 
 				if (m_Criminal)
 				{
-					StartCrimDelayTimer();
+                    StartCrimDelayTimer();
 				}
 				else
 				{
-					StopCrimDelayTimer();
+                    StopCrimDelayTimer();
 				}
 			}
 		}
@@ -11249,8 +11249,8 @@ namespace Server
 		}
 
 		public bool CheckAlive(bool message)
-		{
-			if (!Alive)
+        {
+            if (!Alive)
 			{
 				if (message)
 				{
@@ -11260,8 +11260,8 @@ namespace Server
 				return false;
 			}
 
-			return true;
-		}
+            return true;
+        }
 
 		#region Overhead messages
 		public void PublicOverheadMessage(MessageType type, int hue, bool ascii, string text)
@@ -11286,9 +11286,9 @@ namespace Server
 
 				p.Acquire();
 
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state.Mobile.CanSee(this) && (noLineOfSight || state.Mobile.InLOS(this)))
 					{
@@ -11318,9 +11318,9 @@ namespace Server
 			{
 				Packet p = Packet.Acquire(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
 
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state.Mobile.CanSee(this) && (noLineOfSight || state.Mobile.InLOS(this)))
 					{
@@ -11348,9 +11348,9 @@ namespace Server
 				Packet cp = null;
 				Packet ep = null;
 
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state.Mobile.CanSee(this) && (noLineOfSight || state.Mobile.InLOS(this)))
 					{
@@ -11421,7 +11421,7 @@ namespace Server
 
 		public void LocalOverheadMessage(MessageType type, int hue, bool ascii, string text)
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
@@ -11443,7 +11443,7 @@ namespace Server
 
 		public void LocalOverheadMessage(MessageType type, int hue, int number, string args)
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
@@ -11462,9 +11462,9 @@ namespace Server
 			{
 				Packet p = Packet.Acquire(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
 
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state != m_NetState && state.Mobile.CanSee(this))
 					{
@@ -11495,9 +11495,9 @@ namespace Server
 
 				p.Acquire();
 
-				var eable = m_Map.GetClientsInRange(m_Location);
+				IPooledEnumerable<NetState> eable = m_Map.GetClientsInRange(m_Location);
 
-				foreach (var state in eable)
+				foreach (NetState state in eable)
 				{
 					if (state != m_NetState && state.Mobile.CanSee(this))
 					{
@@ -11515,7 +11515,7 @@ namespace Server
 		#region SendLocalizedMessage
 		public void SendLocalizedMessage(int number)
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
@@ -11530,9 +11530,9 @@ namespace Server
 
 		public void SendLocalizedMessage(int number, string args, int hue)
 		{
-			if (hue == 0x3B2 && String.IsNullOrEmpty(args))
+			if (hue == 0x3B2 && string.IsNullOrEmpty(args))
 			{
-				var ns = m_NetState;
+				NetState ns = m_NetState;
 
 				if (ns != null)
 				{
@@ -11541,7 +11541,7 @@ namespace Server
 			}
 			else
 			{
-				var ns = m_NetState;
+				NetState ns = m_NetState;
 
 				if (ns != null)
 				{
@@ -11562,7 +11562,7 @@ namespace Server
 
 		public void SendLocalizedMessage(int number, bool append, string affix, string args, int hue)
 		{
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
@@ -11601,7 +11601,7 @@ namespace Server
 
 		public void SendMessage(string format, params object[] args)
 		{
-			SendMessage(0x3B2, String.Format(format, args));
+			SendMessage(0x3B2, string.Format(format, args));
 		}
 
 		public void SendMessage(int hue, string text)
@@ -11611,7 +11611,7 @@ namespace Server
 				OnSendMessage(hue, text, false);
 			}
 
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
@@ -11621,7 +11621,7 @@ namespace Server
 
 		public void SendMessage(int hue, string format, params object[] args)
 		{
-			SendMessage(hue, String.Format(format, args));
+			SendMessage(hue, string.Format(format, args));
 		}
 
 		public void SendAsciiMessage(string text)
@@ -11631,7 +11631,7 @@ namespace Server
 
 		public void SendAsciiMessage(string format, params object[] args)
 		{
-			SendAsciiMessage(0x3B2, String.Format(format, args));
+			SendAsciiMessage(0x3B2, string.Format(format, args));
 		}
 
 		public void SendAsciiMessage(int hue, string text)
@@ -11641,7 +11641,7 @@ namespace Server
 				OnSendMessage(hue, text, true);
 			}
 
-			var ns = m_NetState;
+			NetState ns = m_NetState;
 
 			if (ns != null)
 			{
@@ -11651,7 +11651,7 @@ namespace Server
 
 		public void SendAsciiMessage(int hue, string format, params object[] args)
 		{
-			SendAsciiMessage(hue, String.Format(format, args));
+			SendAsciiMessage(hue, string.Format(format, args));
 		}
 		#endregion
 
@@ -11715,7 +11715,7 @@ namespace Server
 		{
 			if (this == from && (!m_DisableDismountInWarmode || !m_Warmode))
 			{
-				var mount = Mount;
+				IMount mount = Mount;
 
 				if (mount != null)
 				{
@@ -11791,7 +11791,7 @@ namespace Server
 				Send(new StatLockInfo(this));
 			}
 
-			var ip = m_Party as IParty;
+			IParty ip = m_Party as IParty;
 
 			if (ip != null)
 			{
@@ -11861,7 +11861,7 @@ namespace Server
 			}
 		}
 
-		public virtual bool CanTarget => true;
+        public virtual bool CanTarget => true;
 		public virtual bool ClickTitle => true;
 
 		public virtual bool PropertyTitle => true;
@@ -11870,44 +11870,44 @@ namespace Server
 		public virtual bool ShowAccessTitle => false;
 
 		public bool CheckSkill(SkillName skill, double minSkill, double maxSkill)
-		{
-			if (m_SkillCheckLocationHandler == null)
+        {
+            if (m_SkillCheckLocationHandler == null)
 			{
 				return false;
 			}
 
-			return m_SkillCheckLocationHandler(this, skill, minSkill, maxSkill);
-		}
+            return m_SkillCheckLocationHandler(this, skill, minSkill, maxSkill);
+        }
 
 		public bool CheckSkill(SkillName skill, double chance)
-		{
-			if (m_SkillCheckDirectLocationHandler == null)
+        {
+            if (m_SkillCheckDirectLocationHandler == null)
 			{
 				return false;
 			}
 
-			return m_SkillCheckDirectLocationHandler(this, skill, chance);
-		}
+            return m_SkillCheckDirectLocationHandler(this, skill, chance);
+        }
 
 		public bool CheckTargetSkill(SkillName skill, object target, double minSkill, double maxSkill)
-		{
-			if (m_SkillCheckTargetHandler == null)
+        {
+            if (m_SkillCheckTargetHandler == null)
 			{
 				return false;
 			}
 
-			return m_SkillCheckTargetHandler(this, skill, target, minSkill, maxSkill);
-		}
+            return m_SkillCheckTargetHandler(this, skill, target, minSkill, maxSkill);
+        }
 
 		public bool CheckTargetSkill(SkillName skill, object target, double chance)
-		{
-			if (m_SkillCheckDirectTargetHandler == null)
+        {
+            if (m_SkillCheckDirectTargetHandler == null)
 			{
 				return false;
 			}
 
-			return m_SkillCheckDirectTargetHandler(this, skill, target, chance);
-		}
+            return m_SkillCheckDirectTargetHandler(this, skill, target, chance);
+        }
 
 		public virtual void DisruptiveAction()
 		{
@@ -11933,7 +11933,7 @@ namespace Server
 		{
 			get
 			{
-				var ar = FindItemOnLayer(Layer.InnerLegs);
+				Item ar = FindItemOnLayer(Layer.InnerLegs);
 
 				if (ar == null)
 				{
@@ -11948,7 +11948,7 @@ namespace Server
 		{
 			get
 			{
-				var ar = FindItemOnLayer(Layer.InnerTorso);
+				Item ar = FindItemOnLayer(Layer.InnerTorso);
 
 				if (ar == null)
 				{
@@ -11977,7 +11977,7 @@ namespace Server
 			{
 				if (m_StatCap != value)
 				{
-					var old = m_StatCap;
+					int old = m_StatCap;
 
 					m_StatCap = value;
 

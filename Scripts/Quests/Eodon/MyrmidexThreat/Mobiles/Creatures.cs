@@ -357,7 +357,7 @@ namespace Server.Mobiles
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int v = reader.ReadInt();
+                reader.ReadInt();
 
                 Delete();
             }
@@ -398,7 +398,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             _Spawn = new List<BaseCreature>();
 
@@ -482,9 +482,9 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != this && m is PlayerMobile && CanBeHarmful(m) && CanSee(m) && ((PlayerMobile)m).AllFollowers.Where(pet => !(pet is IMount) || ((IMount)pet).Rider == null).Count() > 0)
+                if (m != this && m is PlayerMobile pm && CanBeHarmful(m) && CanSee(pm) && pm.AllFollowers.Count(pet => !(pet is IMount) || ((IMount)pet).Rider == null) > 0)
                 {
-                    list.Add(m);
+                    list.Add(pm);
                 }
             }
 
@@ -581,7 +581,7 @@ namespace Server.Mobiles
 
                     foreach (Mobile m in eable)
                     {
-                        if (m != this && m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile) && CanBeHarmful(m))
+                        if (m != this && m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile && CanBeHarmful(m))
                         {
                             Direction d = Utility.GetDirection(this, m);
 
@@ -656,7 +656,7 @@ namespace Server.Mobiles
                 Math.Cos( 000.0 / 180.0 * Math.PI ), Math.Sin( 000.0 / 180.0 * Math.PI ),
                 Math.Cos( 340.0 / 180.0 * Math.PI ), Math.Sin( 340.0 / 180.0 * Math.PI ),
                 Math.Cos( 320.0 / 180.0 * Math.PI ), Math.Sin( 320.0 / 180.0 * Math.PI ),
-                Math.Cos( 300.0 / 180.0 * Math.PI ), Math.Sin( 300.0 / 180.0 * Math.PI ),
+                Math.Cos( 300.0 / 180.0 * Math.PI ), Math.Sin( 300.0 / 180.0 * Math.PI )
         };
 
         public override void GenerateLoot()
@@ -688,7 +688,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             _NextMastery = DateTime.UtcNow;
             _NextSpecial = DateTime.UtcNow;
@@ -752,7 +752,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -60,7 +60,7 @@ namespace Server.Mobiles
         public override bool Unprovokable => true;
         public override bool AreaPeaceImmune => true;
         public override Poison PoisonImmune => Poison.Lethal;
-        public override Poison HitPoison => (0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly);
+        public override Poison HitPoison => 0.8 >= Utility.RandomDouble() ? Poison.Greater : Poison.Deadly;
         public override int TreasureMapLevel => 1;
 
         public override void GenerateLoot()
@@ -77,7 +77,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

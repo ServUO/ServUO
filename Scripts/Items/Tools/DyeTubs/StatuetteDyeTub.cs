@@ -23,25 +23,16 @@ namespace Server.Items
         public override int LabelNumber => 1049741;// Reward Statuette Dye Tub
         public override CustomHuePicker CustomHuePicker => CustomHuePicker.LeatherDyeTub;
 
-        private static Type[] _Dyables = new[]
-{
+        private static Type[] _Dyables =
+        {
             typeof(MongbatDartboard), typeof(FelineBlessedStatue)
         };
 
         public override Type[] ForcedDyables => _Dyables;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsRewardItem
-        {
-            get
-            {
-                return m_IsRewardItem;
-            }
-            set
-            {
-                m_IsRewardItem = value;
-            }
-        }
+        public bool IsRewardItem { get => m_IsRewardItem; set => m_IsRewardItem = value; }
+
         public override void OnDoubleClick(Mobile from)
         {
             if (m_IsRewardItem && !Engines.VeteranRewards.RewardSystem.CheckIsUsableBy(from, this, null))

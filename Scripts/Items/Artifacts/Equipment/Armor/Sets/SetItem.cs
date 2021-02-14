@@ -59,16 +59,16 @@ namespace Server
         {
             AosAttributes attrs;
 
-            if (setItem is BaseWeapon)
-                attrs = ((BaseWeapon)setItem).Attributes;
-            else if (setItem is BaseArmor)
-                attrs = ((BaseArmor)setItem).Attributes;
-            else if (setItem is BaseClothing)
-                attrs = ((BaseClothing)setItem).Attributes;
-            else if (setItem is BaseQuiver)
-                attrs = ((BaseQuiver)setItem).Attributes;
-            else if (setItem is BaseJewel)
-                attrs = ((BaseJewel)setItem).Attributes;
+            if (setItem is BaseWeapon weapon)
+                attrs = weapon.Attributes;
+            else if (setItem is BaseArmor armor)
+                attrs = armor.Attributes;
+            else if (setItem is BaseClothing clothing)
+                attrs = clothing.Attributes;
+            else if (setItem is BaseQuiver quiver)
+                attrs = quiver.Attributes;
+            else if (setItem is BaseJewel jewel)
+                attrs = jewel.Attributes;
             else
                 attrs = new AosAttributes(setItem as Item);
 
@@ -79,13 +79,11 @@ namespace Server
 
             int prop;
 
-            if (setItem is IFishingAttire)
+            if (setItem is IFishingAttire attire)
             {
-                IFishingAttire attire = (IFishingAttire)setItem;
-
                 if (setItem.SetEquipped && attire.SetBonus > 0)
                     list.Add(1151573, attire.SetBonus.ToString()); //Fish Bait Strength +~1_VAL~% (total)
-                else if (((IFishingAttire)setItem).BaitBonus > 0)
+                else if (attire.BaitBonus > 0)
                     list.Add(1151572, attire.BaitBonus.ToString()); //Fish Bait Strength +~1_VAL~%
             }
 
@@ -185,10 +183,8 @@ namespace Server
 
         public static void Remove(Mobile from, SetItem setID, Item item)
         {
-            if (item is ISetItem)
+            if (item is ISetItem setItem)
             {
-                ISetItem setItem = (ISetItem)item;
-
                 if (setItem.IsSetItem && setItem.SetID == setID)
                 {
                     if (setItem.LastEquipped)
@@ -368,7 +364,7 @@ namespace Server
         {
             int total = 0;
 
-            foreach (Item item in m.Items.Where(i => i is ISetItem && ((ISetItem)i).IsSetItem && ((ISetItem)i).SetEquipped))
+            foreach (Item item in m.Items.Where(i => i is ISetItem item && item.IsSetItem && item.SetEquipped))
             {
                 ISetItem sItem = item as ISetItem;
 

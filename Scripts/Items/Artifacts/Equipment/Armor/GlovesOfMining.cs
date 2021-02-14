@@ -215,13 +215,13 @@ namespace Server.Items
         {
             base.OnAdded(parent);
 
-            if (m_Bonus != 0 && parent is Mobile)
+            if (m_Bonus != 0 && parent is Mobile mobile)
             {
                 if (m_SkillMod != null)
                     m_SkillMod.Remove();
 
                 m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, m_Bonus);
-                ((Mobile)parent).AddSkillMod(m_SkillMod);
+                mobile.AddSkillMod(m_SkillMod);
             }
         }
 

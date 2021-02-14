@@ -2,7 +2,7 @@ namespace Server.PathAlgorithms
 {
     public abstract class PathAlgorithm
     {
-        private static readonly Direction[] m_CalcDirections = new Direction[9]
+        private static readonly Direction[] m_CalcDirections =
         {
             Direction.Up,
             Direction.North,
@@ -14,6 +14,7 @@ namespace Server.PathAlgorithms
             Direction.South,
             Direction.Down
         };
+
         public abstract bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal);
 
         public abstract Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal);
@@ -22,10 +23,12 @@ namespace Server.PathAlgorithms
         {
             int x = xDest + 1 - xSource;
             int y = yDest + 1 - ySource;
-            int v = (y * 3) + x;
+            int v = y * 3 + x;
 
             if (v < 0 || v >= 9)
+            {
                 return Direction.North;
+            }
 
             return m_CalcDirections[v];
         }

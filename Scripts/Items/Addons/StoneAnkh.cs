@@ -24,7 +24,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Addon is StoneAnkh && ((StoneAnkh)Addon).IsRewardItem)
+            if (Addon is StoneAnkh ankh && ankh.IsRewardItem)
                 list.Add(1076221); // 5th Year Veteran Reward
         }
 

@@ -16,7 +16,7 @@ namespace Server.Engines.TombOfKings
 
         private static readonly string _TimerID = "ChamberSpawner";
 
-        private static readonly Point3D[] m_Positions = new Point3D[]
+        private static readonly Point3D[] m_Positions =
         {
             new Point3D( 9, 199, -9 ),
             new Point3D( 9, 183, -9 ),
@@ -30,10 +30,10 @@ namespace Server.Engines.TombOfKings
             new Point3D( 60, 167, -9 ),
             new Point3D( 60, 151, -9 ),
             new Point3D( 60, 135, -9 ),
-            new Point3D( 60, 119, -9 ),
+            new Point3D( 60, 119, -9 )
         };
 
-        private static readonly Type[] m_CreatureTypes = new Type[]
+        private static readonly Type[] m_CreatureTypes =
         {
             typeof( SilverSerpent ),
             typeof( UndeadGuardian ),
@@ -134,7 +134,7 @@ namespace Server.Engines.TombOfKings
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Creatures = new List<Mobile>();
             int count = reader.ReadInt();

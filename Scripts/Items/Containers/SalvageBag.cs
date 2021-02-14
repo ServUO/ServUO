@@ -46,14 +46,14 @@ namespace Server.Items
             {
                 if (i != null && !i.Deleted)
                 {
-                    if (i is BaseWeapon)
+                    if (i is BaseWeapon weapon)
                     {
-                        if (CraftResources.GetType(((BaseWeapon)i).Resource) == CraftResourceType.Metal)
+                        if (CraftResources.GetType(weapon.Resource) == CraftResourceType.Metal)
                             return true;
                     }
-                    if (i is BaseArmor)
+                    if (i is BaseArmor armor)
                     {
-                        if (CraftResources.GetType(((BaseArmor)i).Resource) == CraftResourceType.Metal)
+                        if (CraftResources.GetType(armor.Resource) == CraftResourceType.Metal)
                             return true;
                     }
                     if (i is DragonBardingDeed)
@@ -128,7 +128,7 @@ namespace Server.Items
 
                 double skill = Math.Max(from.Skills[SkillName.Mining].Value, from.Skills[SkillName.Blacksmith].Value);
 
-                if (item is DragonBardingDeed || (item is BaseArmor && ((BaseArmor)item).PlayerConstructed) || (item is BaseWeapon && ((BaseWeapon)item).PlayerConstructed) || (item is BaseClothing && ((BaseClothing)item).PlayerConstructed))
+                if (item is DragonBardingDeed || item is BaseArmor armor && armor.PlayerConstructed || item is BaseWeapon weapon && weapon.PlayerConstructed || item is BaseClothing clothing && clothing.PlayerConstructed)
                 {
                     if (skill > 100.0)
                         skill = 100.0;
@@ -173,7 +173,7 @@ namespace Server.Items
         #region Salvaging
         private void SalvageIngots(Mobile from)
         {
-            bool ToolFound = from.Backpack.Items.Any(i => i is ITool && ((ITool)i).CraftSystem == DefBlacksmithy.CraftSystem);
+            bool ToolFound = from.Backpack.Items.Any(i => i is ITool tool && tool.CraftSystem == DefBlacksmithy.CraftSystem);
 
             if (!ToolFound)
             {
@@ -201,23 +201,23 @@ namespace Server.Items
             {
                 Item item = Smeltables[i];
 
-                if (item is BaseArmor)
+                if (item is BaseArmor armor)
                 {
-                    if (Resmelt(from, item, ((BaseArmor)item).Resource))
+                    if (Resmelt(from, armor, armor.Resource))
                         salvaged++;
                     else
                         notSalvaged++;
                 }
-                else if (item is BaseWeapon)
+                else if (item is BaseWeapon weapon)
                 {
-                    if (Resmelt(from, item, ((BaseWeapon)item).Resource))
+                    if (Resmelt(from, weapon, weapon.Resource))
                         salvaged++;
                     else
                         notSalvaged++;
                 }
-                else if (item is DragonBardingDeed)
+                else if (item is DragonBardingDeed deed)
                 {
-                    if (Resmelt(from, item, ((DragonBardingDeed)item).Resource))
+                    if (Resmelt(from, deed, deed.Resource))
                         salvaged++;
 
                     else
@@ -252,9 +252,9 @@ namespace Server.Items
             for (int i = Scissorables.Count - 1; i >= 0; i--)
             {
                 Item item = Scissorables[i];
-                if (item is IScissorable)
+                if (item is IScissorable scissorable)
                 {
-                    if (((IScissorable)item).Scissor(from, scissors))
+                    if (scissorable.Scissor(from, scissors))
                     {
                         salvaged++;
                     }

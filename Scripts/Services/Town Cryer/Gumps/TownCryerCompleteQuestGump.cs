@@ -39,22 +39,22 @@ namespace Server.Services.TownCryer
 
             AddImage(62, 42, GumpID);
 
-            if (Title is int)
+            if (Title is int intTitle)
             {
-                AddHtmlLocalized(0, 392, 454, 20, CenterLoc, string.Format("#{0}", (int)Title), 0, false, false);
+                AddHtmlLocalized(0, 392, 454, 20, CenterLoc, string.Format("#{0}", intTitle), 0, false, false);
             }
-            else if (Title is string)
+            else if (Title is string stringTitle)
             {
-                AddHtml(0, 392, 454, 20, Center((string)Title), false, false);
+                AddHtml(0, 392, 454, 20, Center(stringTitle), false, false);
             }
 
-            if (Body is int)
+            if (Body is int intBody)
             {
-                AddHtmlLocalized(27, 417, 390, 73, (int)Body, C32216(0x080808), false, true);
+                AddHtmlLocalized(27, 417, 390, 73, intBody, C32216(0x080808), false, true);
             }
-            else if (Body is string)
+            else if (Body is string stringBody)
             {
-                AddHtml(27, 417, 390, 73, (string)Body, false, true);
+                AddHtml(27, 417, 390, 73, stringBody, false, true);
             }
         }
     }

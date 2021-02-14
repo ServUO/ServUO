@@ -643,7 +643,7 @@ namespace Server.Items
                                 {
                                     from.SendLocalizedMessage(501356); // This person is already banned!
                                 }
-                                else if (poster is BaseCreature && ((BaseCreature)poster).NoHouseRestrictions)
+                                else if (poster is BaseCreature creature && creature.NoHouseRestrictions)
                                 {
                                     from.SendLocalizedMessage(1062040); // You cannot ban that.
                                 }

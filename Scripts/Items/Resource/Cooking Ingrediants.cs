@@ -142,13 +142,13 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is OracleOfTheSea)
+                if (targeted is OracleOfTheSea sea)
                 {
-                    if (((OracleOfTheSea)targeted).UsesRemaining >= 5)
+                    if (sea.UsesRemaining >= 5)
                         from.SendMessage("That is already fully charged!");
                     else
                     {
-                        ((OracleOfTheSea)targeted).UsesRemaining = 5;
+                        sea.UsesRemaining = 5;
                         from.SendMessage("You charge the oracle with the fish oil.");
                         m_Flask.Delete();
                     }

@@ -92,10 +92,8 @@ namespace Server.Items
 
             if (handTwo is BaseWeapon)
                 handOne = handTwo;
-            if (handTwo is BaseWeapon)
+            if (handTwo is BaseWeapon wep)
             {
-                BaseWeapon wep = (BaseWeapon)handTwo;
-
                 if (wep.Attributes.BalancedWeapon > 0)
                     return true;
             }
@@ -209,7 +207,7 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == m_PotionEffect && base.WillStack(from, dropped);
+            return dropped is BasePotion potion && potion.m_PotionEffect == m_PotionEffect && base.WillStack(from, potion);
         }
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)

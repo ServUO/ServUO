@@ -1,4 +1,4 @@
-﻿using Server.ContextMenus;
+using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Targeting;
@@ -65,15 +65,13 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is IPoint3D && from.Map != null)
+                if (targeted is IPoint3D point3D && from.Map != null)
                 {
-                    IPoint3D pnt = (IPoint3D)targeted;
+                    BaseBoat boat = BaseBoat.FindBoatAt(point3D, from.Map);
 
-                    BaseBoat boat = BaseBoat.FindBoatAt(pnt, from.Map);
-
-                    if (boat != null && boat == m_Galleon && IsSurface(pnt))
+                    if (boat != null && boat == m_Galleon && IsSurface(point3D))
                     {
-                        IPooledEnumerable eable = from.Map.GetObjectsInRange(new Point3D(pnt), 0);
+                        IPooledEnumerable eable = from.Map.GetObjectsInRange(new Point3D(point3D), 0);
 
                         foreach (object o in eable)
                         {
@@ -87,13 +85,12 @@ namespace Server.Items
                         }
                         eable.Free();
 
-                        StaticTarget st = (StaticTarget)pnt;
-                        int z = m_Galleon.ZSurface;
+                        StaticTarget st = (StaticTarget)point3D;
+                        int z;
 
-                        if (st != null)
-                            z = st.Z;
+                        z = st.Z;
 
-                        m_Container.MoveToWorld(new Point3D(pnt.X, pnt.Y, z), from.Map);
+                        m_Container.MoveToWorld(new Point3D(point3D.X, point3D.Y, z), from.Map);
                     }
                     else
                     {
@@ -105,13 +102,11 @@ namespace Server.Items
 
             public bool IsSurface(IPoint3D pnt)
             {
-                if (pnt is StaticTarget)
+                if (pnt is StaticTarget st && (st.Flags & TileFlag.Surface) > 0)
                 {
-                    StaticTarget st = (StaticTarget)pnt;
-
-                    if ((st.Flags & TileFlag.Surface) > 0)
-                        return true;
+                    return true;
                 }
+
                 return false;
             }
         }
@@ -147,13 +142,14 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Galleon);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Galleon = reader.ReadItem() as BaseGalleon;
         }

@@ -218,11 +218,11 @@ namespace Server.Gumps
         public override int TitleNumber => 1074974;
         public override int LabelNumber => 1074975;
 
-        public Mobile Owner { get; set; }
-        public int Index { get; set; }
-        public CollectionItem Item { get; set; }
+        public Mobile Owner { get; }
+        public int Index { get; }
+        public CollectionItem Item { get; }
 
-        public Action<CollectionItem, int> ConfirmCallback { get; set; }
+        public Action<CollectionItem, int> ConfirmCallback { get; }
 
         public aConfirmRewardGump(Mobile owner, CollectionItem item, int index, Action<CollectionItem, int> callback)
         {

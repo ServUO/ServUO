@@ -5,7 +5,7 @@ namespace Server.Items
 {
     public abstract class BaseRunicTool : BaseTool
     {
-        private static readonly SkillName[] m_PossibleBonusSkills = new SkillName[]
+        private static readonly SkillName[] m_PossibleBonusSkills =
         {
             SkillName.Swords,
             SkillName.Fencing,
@@ -37,7 +37,7 @@ namespace Server.Items
             SkillName.Ninjitsu
         };
 
-        private static readonly SkillName[] m_PossibleSpellbookSkills = new SkillName[]
+        private static readonly SkillName[] m_PossibleSpellbookSkills =
         {
             SkillName.Magery,
             SkillName.Meditation,
@@ -79,7 +79,7 @@ namespace Server.Items
 
             foreach (Item item in eable)
             {
-                if ((item.ItemID >= 0x4263 && item.ItemID <= 0x4272) || (item.ItemID >= 0x4277 && item.ItemID <= 0x4286) || (item.ItemID >= 17607 && item.ItemID <= 17610))
+                if (item.ItemID >= 0x4263 && item.ItemID <= 0x4272 || item.ItemID >= 0x4277 && item.ItemID <= 0x4286 || item.ItemID >= 17607 && item.ItemID <= 17610)
                 {
                     if (!hasSkill)
                     {
@@ -124,29 +124,29 @@ namespace Server.Items
 
         public static void ApplyAttributesTo(Item item, int attributeCount, int min, int max)
         {
-            if (item is FishingPole)
+            if (item is FishingPole pole)
             {
-                ApplyAttributesTo((FishingPole)item, attributeCount, min, max);
+                ApplyAttributesTo(pole, attributeCount, min, max);
             }
-            else if (item is BaseWeapon)
+            else if (item is BaseWeapon weapon)
             {
-                ApplyAttributesTo((BaseWeapon)item, attributeCount, min, max);
+                ApplyAttributesTo(weapon, attributeCount, min, max);
             }
-            else if (item is BaseArmor)
+            else if (item is BaseArmor armor)
             {
-                ApplyAttributesTo((BaseArmor)item, attributeCount, min, max);
+                ApplyAttributesTo(armor, attributeCount, min, max);
             }
-            else if (item is BaseHat)
+            else if (item is BaseHat hat)
             {
-                ApplyAttributesTo((BaseHat)item, attributeCount, min, max);
+                ApplyAttributesTo(hat, attributeCount, min, max);
             }
-            else if (item is BaseJewel)
+            else if (item is BaseJewel jewel)
             {
-                ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
+                ApplyAttributesTo(jewel, attributeCount, min, max);
             }
-            else if (item is Spellbook)
+            else if (item is Spellbook spellbook)
             {
-                ApplyAttributesTo((Spellbook)item, attributeCount, min, max);
+                ApplyAttributesTo(spellbook, attributeCount, min, max);
             }
         }
 
@@ -158,29 +158,29 @@ namespace Server.Items
             int min,
             int max)
         {
-            if (item is FishingPole)
+            if (item is FishingPole pole)
             {
-                ApplyAttributesTo((FishingPole)item, isRunicTool, luckChance, attributeCount, min, max);
+                ApplyAttributesTo(pole, isRunicTool, luckChance, attributeCount, min, max);
             }
-            else if (item is BaseWeapon)
+            else if (item is BaseWeapon weapon)
             {
-                ApplyAttributesTo((BaseWeapon)item, isRunicTool, luckChance, attributeCount, min, max);
+                ApplyAttributesTo(weapon, isRunicTool, luckChance, attributeCount, min, max);
             }
-            else if (item is BaseArmor)
+            else if (item is BaseArmor armor)
             {
-                ApplyAttributesTo((BaseArmor)item, isRunicTool, luckChance, attributeCount, min, max);
+                ApplyAttributesTo(armor, isRunicTool, luckChance, attributeCount, min, max);
             }
-            else if (item is BaseHat)
+            else if (item is BaseHat hat)
             {
-                ApplyAttributesTo((BaseHat)item, isRunicTool, luckChance, attributeCount, min, max);
+                ApplyAttributesTo(hat, isRunicTool, luckChance, attributeCount, min, max);
             }
-            else if (item is BaseJewel)
+            else if (item is BaseJewel jewel)
             {
-                ApplyAttributesTo((BaseJewel)item, isRunicTool, luckChance, attributeCount, min, max);
+                ApplyAttributesTo(jewel, isRunicTool, luckChance, attributeCount, min, max);
             }
-            else if (item is Spellbook)
+            else if (item is Spellbook spellbook)
             {
-                ApplyAttributesTo((Spellbook)item, isRunicTool, luckChance, attributeCount, min, max);
+                ApplyAttributesTo(spellbook, isRunicTool, luckChance, attributeCount, min, max);
             }
         }
 
@@ -492,8 +492,8 @@ namespace Server.Items
             m_Props.SetAll(false);
 
             bool isShield = (armor is BaseShield);
-            int baseCount = (isShield ? 7 : 20);
-            int baseOffset = (isShield ? 0 : 4);
+            int baseCount = isShield ? 7 : 20;
+            int baseOffset = isShield ? 0 : 4;
 
             if (!isShield && armor.MeditationAllowance == ArmorMeditationAllowance.All)
                 m_Props.Set(3, true); // remove mage armor from possible properties

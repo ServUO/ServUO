@@ -25,7 +25,6 @@ namespace Server.Mobiles
             new SpawnEntry(new Point3D(5475, 187, 0), new Point3D(514, 1561, 0)), // Shame
             new SpawnEntry(new Point3D(6085, 179, 0), new Point3D(4721, 3822, 0)), // Hythloth
             new SpawnEntry(new Point3D(6084, 66, 0), new Point3D(4721, 3822, 0)), // Hythloth
-            /*new SpawnEntry(new Point3D(5499, 2003, 0), new Point3D(2499, 919, 0)), // Covetous*/
             new SpawnEntry(new Point3D(5579, 1858, 0), new Point3D(2499, 919, 0))// Covetous
         };
         private static readonly ArrayList m_Instances = new ArrayList();
@@ -39,7 +38,7 @@ namespace Server.Mobiles
             Math.Cos(200.0 / 180.0 * Math.PI), Math.Sin(200.0 / 180.0 * Math.PI),
             Math.Cos(240.0 / 180.0 * Math.PI), Math.Sin(240.0 / 180.0 * Math.PI),
             Math.Cos(280.0 / 180.0 * Math.PI), Math.Sin(280.0 / 180.0 * Math.PI),
-            Math.Cos(320.0 / 180.0 * Math.PI), Math.Sin(320.0 / 180.0 * Math.PI),
+            Math.Cos(320.0 / 180.0 * Math.PI), Math.Sin(320.0 / 180.0 * Math.PI)
         };
 
         private bool m_TrueForm;
@@ -88,7 +87,7 @@ namespace Server.Mobiles
 
         public static ArrayList Instances => m_Instances;
 
-        public static bool CanSpawn => (m_Instances.Count == 0);
+        public static bool CanSpawn => m_Instances.Count == 0;
 
         public Type[] UniqueList => new[] { typeof(AcidProofRobe) };
 
@@ -224,7 +223,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_IsSpawned = reader.ReadBool();
             m_TrueForm = reader.ReadBool();
@@ -267,15 +266,13 @@ namespace Server.Mobiles
                 m.SendLocalizedMessage(1049524); // You have received a scroll of power!
                 m.AddToBackpack(new StatCapScroll(m_StatCap + RandomStatScrollLevel()));
 
-                if (m is PlayerMobile)
+                if (m is PlayerMobile pm)
                 {
-                    PlayerMobile pm = (PlayerMobile)m;
-
                     for (int j = 0; j < pm.JusticeProtectors.Count; ++j)
                     {
                         Mobile prot = pm.JusticeProtectors[j];
 
-                        if (prot.Map != m.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(m, prot))
+                        if (prot.Map != pm.Map || prot.Murderer || prot.Criminal || !JusticeVirtue.CheckMapRegion(pm, prot))
                             continue;
 
                         int chance = 0;
@@ -309,12 +306,13 @@ namespace Server.Mobiles
 
             if (0.1 >= random)
                 return 25;
-            else if (0.25 >= random)
+            if (0.25 >= random)
                 return 20;
-            else if (0.45 >= random)
+            if (0.45 >= random)
                 return 15;
-            else if (0.70 >= random)
+            if (0.70 >= random)
                 return 10;
+
             return 5;
         }
 
@@ -328,8 +326,8 @@ namespace Server.Mobiles
                 {
                     DamageStore ds = rights[i];
 
-                    if (ds.m_HasRight && ds.m_Mobile is PlayerMobile)
-                        PlayerMobile.ChampionTitleInfo.AwardHarrowerTitle((PlayerMobile)ds.m_Mobile);
+                    if (ds.m_HasRight && ds.m_Mobile is PlayerMobile mobile)
+                        PlayerMobile.ChampionTitleInfo.AwardHarrowerTitle(mobile);
                 }
 
                 if (!NoKillAwards)
@@ -361,11 +359,9 @@ namespace Server.Mobiles
 
                 return base.OnBeforeDeath();
             }
-            else
-            {
-                Morph();
-                return false;
-            }
+
+            Morph();
+            return false;
         }
 
         public virtual void RegisterDamageTo(Mobile m)
@@ -460,10 +456,11 @@ namespace Server.Mobiles
             double random = Utility.RandomDouble();
             if (0.05 >= random)
                 return CreateArtifact(UniqueList);
-            else if (0.15 >= random)
+            if (0.15 >= random)
                 return CreateArtifact(SharedList);
-            else if (0.30 >= random)
+            if (0.30 >= random)
                 return CreateArtifact(DecorativeList);
+
             return null;
         }
 

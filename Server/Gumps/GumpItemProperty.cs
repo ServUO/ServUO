@@ -39,7 +39,7 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return System.String.Format("{{ itemproperty {0} }}", m_Serial);
+			return string.Format("{{ itemproperty {0} }}", m_Serial);
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("itemproperty");

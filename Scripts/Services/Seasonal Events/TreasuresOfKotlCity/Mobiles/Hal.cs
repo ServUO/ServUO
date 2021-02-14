@@ -65,7 +65,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public override bool IsRedeemableItem(Item item)
         {
-            return item is ICombatEquipment && ((ICombatEquipment)item).ReforgedSuffix == ReforgedSuffix.Kotl;
+            return item is ICombatEquipment equipment && equipment.ReforgedSuffix == ReforgedSuffix.Kotl;
         }
 
         public override void SendRewardGump(Mobile m)
@@ -87,7 +87,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Instance = this;
         }

@@ -8,7 +8,7 @@ namespace Server.Engines.Events
 {
     public class HalloweenHauntings
     {
-        private static readonly Rectangle2D[] m_Cemetaries = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_Cemetaries =
         {
             new Rectangle2D(1272,3712,30,20), // Jhelom
             new Rectangle2D(1337,1444,48,52), // Britain
@@ -26,7 +26,7 @@ namespace Server.Engines.Events
             new Rectangle2D(4528,1314,28,20), // Moonglow
             new Rectangle2D(712,1104,22,30), // Yew
             new Rectangle2D(5824,1464,6,22), // Fire Dungeon
-            new Rectangle2D(5224,3655,5,14), // T2A
+            new Rectangle2D(5224,3655,5,14) // T2A
         };
         private static Timer m_Timer;
         private static Timer m_ClearTimer;
@@ -37,17 +37,7 @@ namespace Server.Engines.Events
         private static Dictionary<PlayerMobile, ZombieSkeleton> m_ReAnimated;
         private static List<PlayerMobile> m_DeathQueue;
 
-        public static Dictionary<PlayerMobile, ZombieSkeleton> ReAnimated
-        {
-            get
-            {
-                return m_ReAnimated;
-            }
-            set
-            {
-                m_ReAnimated = value;
-            }
-        }
+        public static Dictionary<PlayerMobile, ZombieSkeleton> ReAnimated { get => m_ReAnimated; set => m_ReAnimated = value; }
 
         public static void Initialize()
         {
@@ -75,10 +65,8 @@ namespace Server.Engines.Events
 
         public static void EventSink_PlayerDeath(PlayerDeathEventArgs e)
         {
-            if (e.Mobile != null && !e.Mobile.Deleted && e.Mobile is PlayerMobile) /* not sure .. better safe than sorry? */
+            if (e.Mobile != null && !e.Mobile.Deleted && e.Mobile is PlayerMobile player) /* not sure .. better safe than sorry? */
             {
-                PlayerMobile player = e.Mobile as PlayerMobile;
-
                 if (m_Timer.Running && !m_DeathQueue.Contains(player) && m_DeathQueue.Count < m_DeathQueueLimit)
                 {
                     m_DeathQueue.Add(player);
@@ -117,7 +105,7 @@ namespace Server.Engines.Events
                 if (player != null && !player.Deleted && m_ReAnimated.Count < m_TotalZombieLimit)
                 {
                     Map map = Utility.RandomBool() ? Map.Trammel : Map.Felucca;
-                    Point3D home = (GetRandomPointInRect(m_Cemetaries[Utility.Random(m_Cemetaries.Length)], map));
+                    Point3D home = GetRandomPointInRect(m_Cemetaries[Utility.Random(m_Cemetaries.Length)], map);
 
                     if (map.CanSpawnMobile(home))
                     {
@@ -186,7 +174,7 @@ namespace Server.Engines.Events
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -206,7 +194,7 @@ namespace Server.Engines.Events
         {
             m_DeadPlayer = player;
 
-            Name = (player != null) ? string.Format("{0}'s {1}", player.Name, m_Name) : m_Name;
+            Name = player != null ? string.Format("{0}'s {1}", player.Name, m_Name) : m_Name;
 
             Body = 0x93;
             BaseSoundID = 0x1c3;
@@ -324,7 +312,7 @@ namespace Server.Engines.Events
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_DeadPlayer = (PlayerMobile)reader.ReadMobile();
         }

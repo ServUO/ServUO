@@ -15,7 +15,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get { return m_UsesRemaining; }
+            get => m_UsesRemaining;
             set { m_UsesRemaining = value; InvalidateProperties(); }
         }
 
@@ -35,11 +35,7 @@ namespace Server.Items
             ShowUsesRemaining = true;
         }
 
-        public virtual bool ShowUsesRemaining
-        {
-            get { return true; }
-            set { }
-        }
+        public virtual bool ShowUsesRemaining { get => true; set { } }
 
         public PenOfWisdom(Serial serial)
             : base(serial)
@@ -77,7 +73,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_UsesRemaining = reader.ReadInt();
         }
@@ -149,10 +145,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targ)
             {
-                if (targ is Runebook)
+                if (targ is Runebook book)
                 {
-                    Runebook book = targ as Runebook;
-
                     if (!book.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
@@ -260,7 +254,7 @@ namespace Server.Items
                 {
                     if (i + 1 < 10)
                     {
-                        description = "0" + (i + 1).ToString();
+                        description = "0" + (i + 1);
                     }
                     else
                     {

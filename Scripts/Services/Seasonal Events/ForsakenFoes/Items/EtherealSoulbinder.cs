@@ -7,14 +7,14 @@ namespace Server.Items
     {
         public override int LabelNumber => 1159167;  // ethereal soulbinder
 
-        public double MaxSoulPoint { get; set; } = 100;
+        public double MaxSoulPoint { get; } = 100;
 
         private double m_SoulPoint;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public double SoulPoint
         {
-            get { return m_SoulPoint; }
+            get => m_SoulPoint;
             set
             {
                 if (value < 0)
@@ -54,17 +54,27 @@ namespace Server.Items
         private int GetDescription()
         {
             if (SoulPoint <= 0)
+            {
                 return 1159177; // An Empty Soulbinder
-            else if (SoulPoint <= 1)
+            }
+            if (SoulPoint <= 1)
+            {
                 return 1159176; // Meager
-            else if (SoulPoint <= 25)
+            }
+            if (SoulPoint <= 25)
+            {
                 return 1159175; // Grand
-            else if (SoulPoint <= 50)
+            }
+            if (SoulPoint <= 50)
+            {
                 return 1159174; // Exalted
-            else if (SoulPoint <= 90)
+            }
+            if (SoulPoint <= 90)
+            {
                 return 1159173; // Legendary
-            else
-                return 1159172; // Mythical
+            }
+
+            return 1159172; // Mythical
         }
 
         [Constructable]

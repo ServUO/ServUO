@@ -4,12 +4,12 @@ namespace Server.Misc
 {
     public class NameVerification
     {
-        public static readonly char[] SpaceDashPeriodQuote = new[]
+        public static readonly char[] SpaceDashPeriodQuote =
         {
             ' ', '-', '.', '\''
         };
         public static readonly char[] Empty = new char[0];
-        private static readonly string[] m_StartDisallowed = new[]
+        private static readonly string[] m_StartDisallowed =
         {
             "seer",
             "counselor",
@@ -18,7 +18,7 @@ namespace Server.Misc
             "lady",
             "lord"
         };
-        private static readonly string[] m_Disallowed = new[]
+        private static readonly string[] m_Disallowed =
         {
             "jigaboo",
             "chigaboo",
@@ -127,7 +127,7 @@ namespace Server.Misc
 
             name = name.ToLower();
 
-            if (!allowLetters || !allowDigits || (exceptions.Length > 0 && (noExceptionsAtStart || maxExceptions < int.MaxValue)))
+            if (!allowLetters || !allowDigits || exceptions.Length > 0 && (noExceptionsAtStart || maxExceptions < int.MaxValue))
             {
                 for (int i = 0; i < name.Length; ++i)
                 {
@@ -155,7 +155,7 @@ namespace Server.Misc
                             if (c == exceptions[j])
                                 except = true;
 
-                        if (!except || (i == 0 && noExceptionsAtStart))
+                        if (!except || i == 0 && noExceptionsAtStart)
                             return false;
 
                         if (exceptCount++ == maxExceptions)
@@ -179,10 +179,10 @@ namespace Server.Misc
                 if (!badPrefix)
                     continue;
 
-                bool badSuffix = ((indexOf + disallowed[i].Length) >= name.Length);
+                bool badSuffix = indexOf + disallowed[i].Length >= name.Length;
 
                 for (int j = 0; !badSuffix && j < exceptions.Length; ++j)
-                    badSuffix = (name[indexOf + disallowed[i].Length] == exceptions[j]);
+                    badSuffix = name[indexOf + disallowed[i].Length] == exceptions[j];
 
                 if (badSuffix)
                     return false;

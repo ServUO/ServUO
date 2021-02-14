@@ -155,7 +155,7 @@ namespace Server.Engines.Despise
             m_Creature.NextReacquireTime = Core.TickCount + (int)m_Creature.ReacquireDelay.TotalMilliseconds;
 
             int range = m_Creature.RangePerception;
-            IPoint3D p = m_Creature.Orb.Anchor as IPoint3D;
+            IPoint3D p = m_Creature.Orb.Anchor;
 
             if (p == null)
                 p = m_Creature;
@@ -183,7 +183,7 @@ namespace Server.Engines.Despise
                 {
                     DespiseCreature dc = m as DespiseCreature;
 
-                    if (m is DespiseBoss || (dc != null && (dc.Orb == null && !dc.Controlled) || (dc.Alignment != m_Creature.Alignment)))
+                    if (m is DespiseBoss || dc.Orb == null && !dc.Controlled || dc.Alignment != m_Creature.Alignment)
                     {
                         int distance = (int)m_Creature.GetDistanceToSqrt(m);
 
@@ -209,7 +209,7 @@ namespace Server.Engines.Despise
 
             int range = m_Creature.GetLeashLength();
 
-            if (p is Mobile && (Mobile)p == m_Creature.ControlMaster)
+            if (p is Mobile mobile && mobile == m_Creature.ControlMaster)
             {
                 p = m_Creature.Orb.GetAnchorActual();
 
@@ -217,10 +217,8 @@ namespace Server.Engines.Despise
                 {
                     return false;
                 }
-                else
-                {
-                    return base.WalkMobileRange(p, iSteps, bRun, range, range);
-                }
+
+                return base.WalkMobileRange(p, iSteps, bRun, range, range);
             }
 
             return base.WalkMobileRange(p, iSteps, bRun, iWantDistMin, iWantDistMax);
@@ -387,7 +385,7 @@ namespace Server.Engines.Despise
             m_Creature.NextReacquireTime = Core.TickCount + (int)m_Creature.ReacquireDelay.TotalMilliseconds;
 
             int range = m_Creature.RangePerception;
-            IPoint3D p = m_Creature.Orb.Anchor as IPoint3D;
+            IPoint3D p = m_Creature.Orb.Anchor;
 
             if (p == null)
                 p = m_Creature;
@@ -415,7 +413,7 @@ namespace Server.Engines.Despise
                 {
                     DespiseCreature dc = m as DespiseCreature;
 
-                    if (m is DespiseBoss || (dc != null && (dc.Orb == null && !dc.Controlled) || (dc.Alignment != m_Creature.Alignment)))
+                    if (m is DespiseBoss || dc.Orb == null && !dc.Controlled || dc.Alignment != m_Creature.Alignment)
                     {
                         int distance = (int)m_Creature.GetDistanceToSqrt(m);
 
@@ -441,7 +439,7 @@ namespace Server.Engines.Despise
 
             int range = m_Creature.GetLeashLength();
 
-            if (p is Mobile && (Mobile)p == m_Creature.ControlMaster)
+            if (p is Mobile mobile && mobile == m_Creature.ControlMaster)
             {
                 p = m_Creature.Orb.GetAnchorActual();
 
@@ -449,10 +447,8 @@ namespace Server.Engines.Despise
                 {
                     return false;
                 }
-                else
-                {
-                    return base.WalkMobileRange(p, iSteps, bRun, range, range);
-                }
+
+                return base.WalkMobileRange(p, iSteps, bRun, range, range);
             }
 
             return base.WalkMobileRange(p, iSteps, bRun, iWantDistMin, iWantDistMax);

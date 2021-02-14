@@ -18,7 +18,7 @@ namespace Server.Items
 
             foreach (object o in eable)
             {
-                if (o is Mobile && ((Mobile)o).InRange(Location, 1))
+                if (o is Mobile mobile && mobile.InRange(Location, 1))
                 {
                     eable.Free();
                     Visible = true;
@@ -37,15 +37,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

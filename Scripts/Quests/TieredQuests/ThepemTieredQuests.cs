@@ -6,7 +6,6 @@ namespace Server.Engines.Quests
     public class AllThatGlitters : BaseQuest, ITierQuest
     {
         public AllThatGlitters()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(CongealedSlugAcid), "Congealed Slug Acid", 5, 0x5742));
             AddObjective(new ObtainObjective(typeof(PileofInspectedGoldIngots), "Pile of Inspected Gold Ingots", 1, 0x1BEA));
@@ -37,25 +36,23 @@ namespace Server.Engines.Quests
         hand them over and I'll get to work on your elixir right away. After that, I have other tasks to finish for the mistress, 
         but you can return in a bit if you wish to make another purchase.*/
         public override object Complete => 1112951;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class TastyTreats : BaseQuest, ITierQuest
     {
         public TastyTreats()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(BouraSkin), "BouraSkin", 5, 0x11f4));
             AddObjective(new ObtainObjective(typeof(Dough), "Dough", 1, 0x103D));
@@ -83,25 +80,23 @@ namespace Server.Engines.Quests
         I usually do not need all five to produce five tasty treats. You can consider what is left over as payment for my services.
         The rest, I shall use... for other purposes. I have other tasks to finish right now for the master, but you can return in a bit if you wish to purchase more.*/
         public override object Complete => 1112947;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class MetalHead : BaseQuest, ITierQuest
     {
         public MetalHead()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(UndamagedIronBeetleScale), "Undamaged IronBeetle Scale", 10, 0x5742));
             AddObjective(new ObtainObjective(typeof(PileofInspectedDullCopperIngots), "Pile of Inspected DullCopper Ingots", 1, 0x1BEA));
@@ -132,25 +127,23 @@ namespace Server.Engines.Quests
         /*I see that you have returned. Did you still want the elixir of metal conversion? Yes? Good, just hand over the ingredients I asked for, 
         and I'll mix this up for you immediately. I'll be busy for a couple hours, but return after that if you wish to purchase more.*/
         public override object Complete => 1112955;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
     public class PinkistheNewBlack : BaseQuest, ITierQuest
     {
         public PinkistheNewBlack()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(SearedFireAntGoo), "Seared Fire Ant Goo", 5, 0x0976));
             AddObjective(new ObtainObjective(typeof(PileofInspectedAgapiteIngots), "Pile of Inspected Agapite Ingots", 1, 0x1BEA));
@@ -175,18 +168,17 @@ namespace Server.Engines.Quests
         /*Good to see you again, have you come to bring me the ingredients for the elixir of agapite conversion? Good, 
         I'll take those in return for this elixir I made earlier. I'll be busy the rest of the day, but come back tomorrow if you need more.*/
         public override object Complete => 1112959;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

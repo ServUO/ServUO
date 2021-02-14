@@ -91,7 +91,8 @@ namespace Server.Mobiles
                 Kill();
                 return;
             }
-            else if (Map != m_Target.Map || !InRange(m_Target, 15))
+
+            if (Map != m_Target.Map || !InRange(m_Target, 15))
             {
                 Map fromMap = Map;
                 Point3D from = Location;
@@ -110,15 +111,13 @@ namespace Server.Mobiles
                             to = loc;
                             break;
                         }
-                        else
-                        {
-                            loc.Z = toMap.GetAverageZ(loc.X, loc.Y);
 
-                            if (toMap.CanSpawnMobile(loc))
-                            {
-                                to = loc;
-                                break;
-                            }
+                        loc.Z = toMap.GetAverageZ(loc.X, loc.Y);
+
+                        if (toMap.CanSpawnMobile(loc))
+                        {
+                            to = loc;
+                            break;
                         }
                     }
                 }
@@ -175,7 +174,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Delete();
         }

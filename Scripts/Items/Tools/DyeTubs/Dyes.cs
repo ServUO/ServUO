@@ -26,7 +26,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -44,10 +44,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is DyeTub)
+                if (targeted is DyeTub tub)
                 {
-                    DyeTub tub = (DyeTub)targeted;
-
                     if (tub.Redyable)
                     {
                         if (tub.CustomHuePicker == null)

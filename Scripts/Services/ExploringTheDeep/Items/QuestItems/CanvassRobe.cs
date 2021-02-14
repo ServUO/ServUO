@@ -8,7 +8,6 @@ namespace Server.Items
 
         [Constructable]
         public CanvassRobe()
-            : base()
         {
             Hue = 2720;
             LootType = LootType.Blessed;
@@ -43,7 +42,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

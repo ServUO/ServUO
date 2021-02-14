@@ -121,9 +121,9 @@ namespace Server.Engines.Shadowguard
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (from is PlayerMobile && from.InRange(Location, 3))
+            if (from is PlayerMobile mobile && mobile.InRange(Location, 3))
             {
-                from.SendGump(new ShadowguardGump((PlayerMobile)from));
+                mobile.SendGump(new ShadowguardGump(mobile));
             }
         }
 
@@ -258,7 +258,7 @@ namespace Server.Engines.Shadowguard
                         {
                             Party party = Party.Get(enc.PartyLeader);
 
-                            if (enc.PartyLeader == info.Mobile || (party != null && party.Contains(info.Mobile)))
+                            if (enc.PartyLeader == info.Mobile || party != null && party.Contains(info.Mobile))
                             {
                                 m.SendLocalizedMessage(1156189, info.Mobile.Name); // ~1_NAME~ in your party is already attempting to join a Shadowguard encounter.  Start a new party without them or wait until they are finished and try again.
                                 return false;
@@ -269,7 +269,7 @@ namespace Server.Engines.Shadowguard
                         {
                             Party party = Party.Get(mob);
 
-                            if (mob == info.Mobile || (party != null && party.Contains(info.Mobile)))
+                            if (mob == info.Mobile || party != null && party.Contains(info.Mobile))
                             {
                                 m.SendLocalizedMessage(1156189, info.Mobile.Name); // ~1_NAME~ in your party is already attempting to join a Shadowguard encounter.  Start a new party without them or wait until they are finished and try again.
                                 return false;
@@ -339,13 +339,13 @@ namespace Server.Engines.Shadowguard
                 ColUtility.Free(instances);
                 return inst;
             }
-            else
+
+            if (type == EncounterType.Roof)
             {
-                if (type == EncounterType.Roof)
-                    return Instances.FirstOrDefault(e => e.IsRoof && !e.InUse);
-                else
-                    return Instances.FirstOrDefault(e => !e.IsRoof && !e.InUse);
+                return Instances.FirstOrDefault(e => e.IsRoof && !e.InUse);
             }
+
+            return Instances.FirstOrDefault(e => !e.IsRoof && !e.InUse);
         }
 
         public void AddToQueue(Mobile m, EncounterType encounter)
@@ -422,7 +422,6 @@ namespace Server.Engines.Shadowguard
                         message = true;
 
                     RemoveFromQueue(m);
-                    continue;
                 }
 
                 if (Queue.Count > 0)
@@ -487,7 +486,7 @@ namespace Server.Engines.Shadowguard
             new Rectangle2D(31, 2303, 64, 64),
             new Rectangle2D(127, 2303, 64, 64),
             new Rectangle2D(31, 2399, 64, 64),
-            new Rectangle2D(127, 2399, 64, 64),
+            new Rectangle2D(127, 2399, 64, 64)
         };
 
         public static Point3D[] CenterPoints =
@@ -618,7 +617,7 @@ namespace Server.Engines.Shadowguard
             Instance = this;
 
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             InitializeInstances();
 
@@ -687,23 +686,17 @@ namespace Server.Engines.Shadowguard
                     Timer.DelayCall(TimeSpan.FromSeconds(1), mob =>
                     {
                         ShadowguardEncounter.MovePlayer(mob, Instance.KickLocation, true);
-                        /*StormLevelGump menu = new StormLevelGump(mob);
-                        menu.BeginClose();
-                        mob.SendGump(menu);*/
                     }, m);
                 }
                 else if (m != encounter.PartyLeader)
                 {
                     Party p = Party.Get(encounter.PartyLeader);
 
-                    if (m is PlayerMobile && !encounter.Participants.Contains((PlayerMobile)m))
+                    if (m is PlayerMobile mobile && !encounter.Participants.Contains(mobile))
                     {
                         Timer.DelayCall(TimeSpan.FromSeconds(1), mob =>
                         {
                             ShadowguardEncounter.MovePlayer(mob, Instance.KickLocation, true);
-                            /*StormLevelGump menu = new StormLevelGump(mob);
-                            menu.BeginClose();
-                            mob.SendGump(menu);*/
                         }, m);
                     }
                 }
@@ -767,7 +760,7 @@ namespace Server.Engines.Shadowguard
         public static readonly int Red = 0x7E10;
         public static readonly int Green = 0x43F0;
 
-        public PlayerMobile User { get; set; }
+        public PlayerMobile User { get; }
 
         public ShadowguardGump(PlayerMobile user)
             : base(100, 100)
@@ -838,7 +831,7 @@ namespace Server.Engines.Shadowguard
 
     public class ShadowguardRegion : BaseRegion
     {
-        public ShadowguardInstance Instance { get; private set; }
+        public ShadowguardInstance Instance { get; }
 
         public ShadowguardRegion(Rectangle2D bounds, string regionName, ShadowguardInstance instance)
             : base(string.Format("Shadowguard_{0}", regionName), Map.TerMur, DefaultPriority, bounds)
@@ -867,9 +860,9 @@ namespace Server.Engines.Shadowguard
                         Instance.Encounter.CheckPlayerStatus(m);
                 });
             }
-            else if (m is BaseCreature && Instance.Encounter != null)
+            else if (m is BaseCreature creature && Instance.Encounter != null)
             {
-                Instance.Encounter.OnCreatureKilled((BaseCreature)m);
+                Instance.Encounter.OnCreatureKilled(creature);
             }
         }
 
@@ -878,16 +871,15 @@ namespace Server.Engines.Shadowguard
             if (m.AccessLevel >= AccessLevel.GameMaster)
                 return true;
 
-            if (o is AddonComponent && ((AddonComponent)o).ItemData.Height + ((AddonComponent)o).Z > m.Z + 3)
+            if (o is AddonComponent component && component.ItemData.Height + component.Z > m.Z + 3)
                 return false;
 
-            if (o is StaticTarget && ((StaticTarget)o).Z > m.Z + 3)
+            if (o is StaticTarget target && target.Z > m.Z + 3)
                 return false;
 
-            if (t.Flags == TargetFlags.Harmful)
+            if (t.Flags == TargetFlags.Harmful && (o is LadyMinax || o is ShadowguardGreaterDragon dragon && dragon.Z > m.Z))
             {
-                if (o is LadyMinax || (o is ShadowguardGreaterDragon && ((ShadowguardGreaterDragon)o).Z > m.Z))
-                    return false;
+                return false;
             }
 
             return base.OnTarget(m, t, o);

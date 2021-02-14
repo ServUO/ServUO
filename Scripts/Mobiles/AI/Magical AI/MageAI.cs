@@ -142,7 +142,7 @@ namespace Server.Mobiles
             if (m_Mobile.Target != null)
                 ProcessTarget();
 
-            if (c == null || c.Deleted || !c.Alive || c is Mobile && ((Mobile)c).IsDeadBondedPet || !m_Mobile.CanSee(c) ||
+            if (c == null || c.Deleted || !c.Alive || c is Mobile mobile && mobile.IsDeadBondedPet || !m_Mobile.CanSee(c) ||
                 !m_Mobile.CanBeHarmful(c, false) || c.Map != m_Mobile.Map)
             {
                 // Our combatant is deleted, dead, hidden, or we cannot hurt them
@@ -322,10 +322,10 @@ namespace Server.Mobiles
                 return;
             }
 
-            if (d is Mobile && (((Mobile)d).Paralyzed || ((Mobile)d).Frozen))
+            if (d is Mobile mobile && (mobile.Paralyzed || mobile.Frozen))
             {
                 if (m_Mobile.InRange(d, 1))
-                    RunFrom(d);
+                    RunFrom(mobile);
                 else if (!m_Mobile.InRange(d, m_Mobile.RangeFight > 2 ? m_Mobile.RangeFight : 2) && !MoveTo(d, true, 1))
                     OnFailedMove();
             }
@@ -430,12 +430,12 @@ namespace Server.Mobiles
             if (spell != null)
                 return spell;
 
-            if (c is Mobile && SmartAI && m_Combo != -1) // We are doing a spell combo
+            if (c is Mobile mobile && SmartAI && m_Combo != -1) // We are doing a spell combo
             {
-                spell = DoCombo((Mobile)c);
+                spell = DoCombo(mobile);
             }
-            else if (c is Mobile && SmartAI && (((Mobile)c).Spell is HealSpell || ((Mobile)c).Spell is GreaterHealSpell) &&
-                     !((Mobile)c).Poisoned) // They have a heal spell out
+            else if (c is Mobile m && SmartAI && (m.Spell is HealSpell || m.Spell is GreaterHealSpell) &&
+                     !m.Poisoned) // They have a heal spell out
             {
                 spell = new PoisonSpell(m_Mobile, null);
             }
@@ -627,8 +627,7 @@ namespace Server.Mobiles
 
         public bool CanDispel(Mobile m)
         {
-            return m is BaseCreature && ((BaseCreature)m).Summoned && m_Mobile.CanBeHarmful(m, false) &&
-                   !((BaseCreature)m).IsAnimatedDead;
+            return m is BaseCreature bc && bc.Summoned && m_Mobile.CanBeHarmful(m, false) && !bc.IsAnimatedDead;
         }
 
         public Spell CheckCastDispelField()
@@ -661,38 +660,29 @@ namespace Server.Mobiles
 
             foreach (Item item in eable)
             {
-                if (item is PoisonFieldSpell.InternalItem)
+                if (item is PoisonFieldSpell.InternalItem poisonField)
                 {
-                    PoisonFieldSpell.InternalItem field = (PoisonFieldSpell.InternalItem)item;
-
-                    if (field.Visible && field.Caster != null && m_Mobile != field.Caster &&
-                        SpellHelper.ValidIndirectTarget(field.Caster, m_Mobile) && field.Caster.CanBeHarmful(m_Mobile, false))
+                    if (poisonField.Visible && poisonField.Caster != null && m_Mobile != poisonField.Caster &&
+                        SpellHelper.ValidIndirectTarget(poisonField.Caster, m_Mobile) && poisonField.Caster.CanBeHarmful(m_Mobile, false))
                     {
                         eable.Free();
-                        return item;
+                        return poisonField;
                     }
                 }
-                else if (item is ParalyzeFieldSpell.InternalItem)
+                else if (item is ParalyzeFieldSpell.InternalItem paralyzeField)
                 {
-                    ParalyzeFieldSpell.InternalItem field = (ParalyzeFieldSpell.InternalItem)item;
-
-                    if (field.Visible && field.Caster != null && m_Mobile != field.Caster &&
-                        SpellHelper.ValidIndirectTarget(field.Caster, m_Mobile) && field.Caster.CanBeHarmful(m_Mobile, false))
+                    if (paralyzeField.Visible && paralyzeField.Caster != null && m_Mobile != paralyzeField.Caster &&
+                        SpellHelper.ValidIndirectTarget(paralyzeField.Caster, m_Mobile) && paralyzeField.Caster.CanBeHarmful(m_Mobile, false))
                     {
                         eable.Free();
-                        return item;
+                        return paralyzeField;
                     }
                 }
-                else if (item is FireFieldSpell.FireFieldItem)
+                else if (item is FireFieldSpell.FireFieldItem fireField && fireField.Visible && fireField.Caster != null && m_Mobile != fireField.Caster &&
+                         SpellHelper.ValidIndirectTarget(fireField.Caster, m_Mobile) && fireField.Caster.CanBeHarmful(m_Mobile, false))
                 {
-                    FireFieldSpell.FireFieldItem field = (FireFieldSpell.FireFieldItem)item;
-
-                    if (field.Visible && field.Caster != null && m_Mobile != field.Caster &&
-                        SpellHelper.ValidIndirectTarget(field.Caster, m_Mobile) && field.Caster.CanBeHarmful(m_Mobile, false))
-                    {
-                        eable.Free();
-                        return item;
-                    }
+                    eable.Free();
+                    return fireField;
                 }
             }
 

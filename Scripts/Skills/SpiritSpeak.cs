@@ -4,6 +4,8 @@ using Server.Mobiles;
 using Server.Network;
 using System;
 using System.Collections.Generic;
+using Server.Engines.Khaldun;
+
 #endregion
 
 namespace Server.SkillHandlers
@@ -109,21 +111,18 @@ namespace Server.SkillHandlers
 
                 foreach (object objs in eable)
                 {
-                    if (objs is Corpse && !((Corpse)objs).Channeled && !((Corpse)objs).Animated)
+                    if (objs is Corpse corpse && !corpse.Channeled && !corpse.Animated)
                     {
-                        toChannel = (Corpse)objs;
+                        toChannel = corpse;
                         break;
                     }
 
-                    if (objs is Engines.Khaldun.SageHumbolt)
+                    if (objs is SageHumbolt humbolt && humbolt.OnSpiritSpeak(Caster))
                     {
-                        if (((Engines.Khaldun.SageHumbolt)objs).OnSpiritSpeak(Caster))
-                        {
-                            eable.Free();
-                            Remove(Caster);
-                            Stop();
-                            return;
-                        }
+                        eable.Free();
+                        Remove(Caster);
+                        Stop();
+                        return;
                     }
                 }
 
@@ -154,7 +153,7 @@ namespace Server.SkillHandlers
                 {
                     Caster.CheckSkill(SkillName.SpiritSpeak, 0.0, 120.0);
 
-                    if (Utility.RandomDouble() > (Caster.Skills[SkillName.SpiritSpeak].Value / 100.0))
+                    if (Utility.RandomDouble() > Caster.Skills[SkillName.SpiritSpeak].Value / 100.0)
                     {
                         Caster.SendLocalizedMessage(502443); // You fail your attempt at contacting the netherworld.
                     }

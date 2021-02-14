@@ -51,14 +51,13 @@ namespace Server.Mobiles
         public override void GenerateLoot()
         {
             AddLoot(LootPack.SuperBoss, 8);
-            AddLoot(LootPack.Parrot, 1);
             AddLoot(LootPack.ArcanistScrolls, Utility.RandomMinMax(1, 6));
             AddLoot(LootPack.PeerlessResource, 8);
             AddLoot(LootPack.Talisman, 5);
             AddLoot(LootPack.LootItem<DiseasedBark>());
             AddLoot(LootPack.LootItem<EternallyCorruptTree>());
             AddLoot(LootPack.LootItem<MelisandesFermentedWine>(4, 8));
-            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(25.0));
             AddLoot(LootPack.RandomLootItem(new[] { typeof(MelisandesHairDye), typeof(MelisandesCorrodedHatchet), typeof(AlbinoSquirrelImprisonedInCrystal) }, 22.25, 1));
         }
 
@@ -118,7 +117,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         #region Smack Talk

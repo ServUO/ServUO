@@ -92,8 +92,8 @@ namespace Server.Items
 
             public Mobile Target => m_Target;
             public Mobile From => m_From;
-            public int Hits { get { return m_Hits; } set { m_Hits = value; } }
-            public DateTime LastHit { get { return m_LastHit; } set { m_LastHit = value; } }
+            public int Hits { get => m_Hits; set => m_Hits = value; }
+            public DateTime LastHit { get => m_LastHit; set => m_LastHit = value; }
 
             public ForceOfNatureTimer(Mobile from, Mobile target)
                 : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))

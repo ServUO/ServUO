@@ -7,12 +7,12 @@ namespace Server.Misc
     public class IPLimiter
     {
         public static bool Enabled = true;
-        public static bool SocketBlock = true;// true to block at connection, false to block at login request
+        public static bool SocketBlock = true; //  true to block at connection, false to block at login request
         public static int MaxAddresses = 10;
 
-        public static IPAddress[] Exemptions = new IPAddress[]	//For hosting services where there are cases where IPs can be proxied
+        public static IPAddress[] Exemptions =
         {
-            IPAddress.Parse( "127.0.0.1" ),
+            IPAddress.Parse( "127.0.0.1" ) // For hosting services where there are cases where IPs can be proxied
         };
 
         public static bool IsExempt(IPAddress ip)

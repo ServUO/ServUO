@@ -103,10 +103,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is AddonComponent && ((AddonComponent)targeted).Addon != null && ((AddonComponent)targeted).Addon is HarpsichordAddon)
+                if (targeted is AddonComponent component && component.Addon != null && component.Addon is HarpsichordAddon addon)
                 {
-                    HarpsichordAddon addon = ((AddonComponent)targeted).Addon as HarpsichordAddon;
-
                     if (addon.List.Contains(Item.Music))
                     {
                         from.Send(new MessageLocalized(addon.Serial, addon.ItemID, MessageType.Regular, 0x3B2, 3, 1153059, "", "")); // The Harpsichord already has this song.                        

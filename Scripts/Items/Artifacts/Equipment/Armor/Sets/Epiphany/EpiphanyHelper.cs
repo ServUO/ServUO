@@ -25,9 +25,7 @@ namespace Server.Items
             if (m == null)
                 return 1;
 
-            return Math.Max(1, Math.Min(5, m.Items.Where(i => i is IEpiphanyArmor &&
-                                      ((IEpiphanyArmor)i).Alignment == armor.Alignment &&
-                                      ((IEpiphanyArmor)i).Type == armor.Type).Count()));
+            return Math.Max(1, Math.Min(5, m.Items.Count(i => i is IEpiphanyArmor eArmor && eArmor.Alignment == armor.Alignment && eArmor.Type == armor.Type)));
         }
 
         public static int GetBonus(Mobile m, IEpiphanyArmor armor)
@@ -138,10 +136,10 @@ namespace Server.Items
                     break;
             }
 
-            if (item is Item)
+            if (item is Item eItem)
             {
-                list.Add(1150240, GetFrequency(((Item)item).Parent as Mobile, item).ToString()); // Set Bonus: Frequency ~1_val~
-                list.Add(1150243, GetBonus(((Item)item).Parent as Mobile, item).ToString()); // Karma Bonus: Burst level ~1_val~
+                list.Add(1150240, GetFrequency(eItem.Parent as Mobile, item).ToString()); // Set Bonus: Frequency ~1_val~
+                list.Add(1150243, GetBonus(eItem.Parent as Mobile, item).ToString()); // Karma Bonus: Burst level ~1_val~
             }
         }
     }

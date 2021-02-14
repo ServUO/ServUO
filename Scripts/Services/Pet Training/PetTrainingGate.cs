@@ -19,9 +19,8 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m is BaseCreature)
+            if (m is BaseCreature bc)
             {
-                BaseCreature bc = m as BaseCreature;
                 TrainingProfile profile = PetTrainingHelper.GetTrainingProfile(bc);
 
                 if (bc.Controlled && bc.ControlMaster != null && bc.ControlMaster.InRange(bc.Location, 25)
@@ -30,14 +29,14 @@ namespace Server.Items
                     profile.TrainingProgress = profile.TrainingProgressMax;
                     bc.FixedEffect(0x375A, 10, 30);
 
-                    if (bc.ControlMaster is PlayerMobile)
+                    if (bc.ControlMaster is PlayerMobile mobile)
                     {
-                        NewAnimalLoreGump gump = bc.ControlMaster.FindGump<NewAnimalLoreGump>();
+                        NewAnimalLoreGump gump = mobile.FindGump<NewAnimalLoreGump>();
 
                         if (gump != null)
                             gump.Refresh();
                         else
-                            BaseGump.SendGump(new NewAnimalLoreGump((PlayerMobile)bc.ControlMaster, bc));
+                            BaseGump.SendGump(new NewAnimalLoreGump(mobile, bc));
                     }
                 }
             }
@@ -59,7 +58,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -79,9 +78,8 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (m is BaseCreature)
+            if (m is BaseCreature bc)
             {
-                BaseCreature bc = m as BaseCreature;
                 TrainingProfile profile = PetTrainingHelper.GetTrainingProfile(bc);
 
                 if (bc.Controlled && bc.ControlMaster != null && bc.ControlMaster.InRange(bc.Location, 25)
@@ -109,7 +107,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -160,7 +158,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

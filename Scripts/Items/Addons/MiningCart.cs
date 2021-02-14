@@ -362,14 +362,14 @@ namespace Server.Items
             {
                 base.GetProperties(list);
 
-                if (Addon is MiningCart)
+                if (Addon is MiningCart cart)
                 {
-                    switch (((MiningCart)Addon).CartType)
+                    switch (cart.CartType)
                     {
                         case MiningCartType.OreSouth:
-                        case MiningCartType.OreEast: list.Add(1094724, ((MiningCart)Addon).Ore.ToString()); break; // Ore: ~1_COUNT~
+                        case MiningCartType.OreEast: list.Add(1094724, cart.Ore.ToString()); break; // Ore: ~1_COUNT~
                         case MiningCartType.GemSouth:
-                        case MiningCartType.GemEast: list.Add(1094723, ((MiningCart)Addon).Gems.ToString()); break; // Gems: ~1_COUNT~
+                        case MiningCartType.GemEast: list.Add(1094723, cart.Gems.ToString()); break; // Gems: ~1_COUNT~
                     }
                 }
             }

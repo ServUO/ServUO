@@ -62,30 +62,10 @@ namespace Server.Engines.CannedEvil
         public string SpawnName { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool ConfinedRoaming
-        {
-            get
-            {
-                return m_ConfinedRoaming;
-            }
-            set
-            {
-                m_ConfinedRoaming = value;
-            }
-        }
+        public bool ConfinedRoaming { get => m_ConfinedRoaming; set => m_ConfinedRoaming = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool HasBeenAdvanced
-        {
-            get
-            {
-                return m_HasBeenAdvanced;
-            }
-            set
-            {
-                m_HasBeenAdvanced = value;
-            }
-        }
+        public bool HasBeenAdvanced { get => m_HasBeenAdvanced; set => m_HasBeenAdvanced = value; }
 
         public bool TimerRunning => TimerRegistry.HasTimer(_TimerID, this);
         public bool RestartTimerRunning => TimerRegistry.HasTimer(_RestartTimerID, this);
@@ -140,25 +120,12 @@ namespace Server.Engines.CannedEvil
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool RandomizeType
-        {
-            get
-            {
-                return m_RandomizeType;
-            }
-            set
-            {
-                m_RandomizeType = value;
-            }
-        }
+        public bool RandomizeType { get => m_RandomizeType; set => m_RandomizeType = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Kills
         {
-            get
-            {
-                return m_Kills;
-            }
+            get => m_Kills;
             set
             {
                 m_Kills = value;
@@ -169,10 +136,7 @@ namespace Server.Engines.CannedEvil
         [CommandProperty(AccessLevel.GameMaster)]
         public Rectangle2D SpawnArea
         {
-            get
-            {
-                return m_SpawnArea;
-            }
+            get => m_SpawnArea;
             set
             {
                 m_SpawnArea = value;
@@ -182,54 +146,21 @@ namespace Server.Engines.CannedEvil
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan RestartDelay
-        {
-            get
-            {
-                return m_RestartDelay;
-            }
-            set
-            {
-                m_RestartDelay = value;
-            }
-        }
+        public TimeSpan RestartDelay { get => m_RestartDelay; set => m_RestartDelay = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime RestartTime => m_RestartTime;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public TimeSpan ExpireDelay
-        {
-            get
-            {
-                return m_ExpireDelay;
-            }
-            set
-            {
-                m_ExpireDelay = value;
-            }
-        }
+        public TimeSpan ExpireDelay { get => m_ExpireDelay; set => m_ExpireDelay = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime ExpireTime
-        {
-            get
-            {
-                return m_ExpireTime;
-            }
-            set
-            {
-                m_ExpireTime = value;
-            }
-        }
+        public DateTime ExpireTime { get => m_ExpireTime; set => m_ExpireTime = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ChampionSpawnType Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get => m_Type;
             set
             {
                 m_Type = value;
@@ -240,10 +171,7 @@ namespace Server.Engines.CannedEvil
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Active
         {
-            get
-            {
-                return m_Active;
-            }
+            get => m_Active;
             set
             {
                 if (value)
@@ -258,25 +186,12 @@ namespace Server.Engines.CannedEvil
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Champion
-        {
-            get
-            {
-                return m_Champion;
-            }
-            set
-            {
-                m_Champion = value;
-            }
-        }
+        public Mobile Champion { get => m_Champion; set => m_Champion = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int Level
         {
-            get
-            {
-                return m_RedSkulls.Count;
-            }
+            get => m_RedSkulls.Count;
             set
             {
                 for (int i = m_RedSkulls.Count - 1; i >= value; --i)
@@ -604,18 +519,17 @@ namespace Server.Engines.CannedEvil
 
                         RegisterDamageTo(m);
 
-                        if (killer is BaseCreature)
-                            killer = ((BaseCreature)killer).GetMaster();
-
-                        if (killer is PlayerMobile)
+                        if (killer is BaseCreature creature)
                         {
-                            #region Scroll of Transcendence
+                            killer = creature.GetMaster();
+                        }
+
+                        if (killer is PlayerMobile pm)
+                        {
                             if (Map == Map.Felucca)
                             {
                                 if (Utility.RandomDouble() < ChampionSystem.ScrollChance)
                                 {
-                                    PlayerMobile pm = (PlayerMobile)killer;
-
                                     if (Utility.RandomDouble() < ChampionSystem.TranscendenceChance)
                                     {
                                         ScrollOfTranscendence SoTF = CreateRandomSoT(true);
@@ -633,12 +547,11 @@ namespace Server.Engines.CannedEvil
                             {
                                 if (Utility.RandomDouble() < 0.0015)
                                 {
-                                    killer.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
+                                    pm.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
                                     ScrollOfTranscendence SoTT = CreateRandomSoT(false);
-                                    killer.AddToBackpack(SoTT);
+                                    pm.AddToBackpack(SoTT);
                                 }
                             }
-                            #endregion
 
                             int mobSubLevel = rankOfMob + 1;
                             if (mobSubLevel >= 0)
@@ -647,16 +560,16 @@ namespace Server.Engines.CannedEvil
 
                                 int pointsToGain = mobSubLevel * 40;
 
-                                if (VirtueHelper.Award(killer, VirtueName.Valor, pointsToGain, ref gainedPath))
+                                if (VirtueHelper.Award(pm, VirtueName.Valor, pointsToGain, ref gainedPath))
                                 {
                                     if (gainedPath)
-                                        killer.SendLocalizedMessage(1054032); // You have gained a path in Valor!
+                                        pm.SendLocalizedMessage(1054032); // You have gained a path in Valor!
                                     else
-                                        killer.SendLocalizedMessage(1054030); // You have gained in Valor!
+                                        pm.SendLocalizedMessage(1054030); // You have gained in Valor!
                                     //No delay on Valor gains
                                 }
 
-                                PlayerMobile.ChampionTitleInfo info = ((PlayerMobile)killer).ChampionTitles;
+                                PlayerMobile.ChampionTitleInfo info = pm.ChampionTitles;
 
                                 info.Award(m_Type, mobSubLevel);
 
@@ -752,9 +665,9 @@ namespace Server.Engines.CannedEvil
                 m_Champion.MoveToWorld(p, Map);
                 ((BaseCreature)m_Champion).Home = p;
 
-                if (m_Champion is BaseChampion)
+                if (m_Champion is BaseChampion champion)
                 {
-                    ((BaseChampion)m_Champion).OnChampPopped(this);
+                    champion.OnChampPopped(this);
                 }
             }
         }
@@ -799,9 +712,8 @@ namespace Server.Engines.CannedEvil
                 m.MoveToWorld(loc, Map);
                 ++mobCount;
 
-                if (m is BaseCreature)
+                if (m is BaseCreature bc)
                 {
-                    BaseCreature bc = m as BaseCreature;
                     bc.Tamable = false;
                     bc.IsChampionSpawn = true;
 

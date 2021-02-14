@@ -22,7 +22,7 @@ namespace Server.Items
         private int m_Hits;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Hits { get { return m_Hits; } set { m_Hits = value; InvalidateDamageState(); } }
+        public int Hits { get => m_Hits; set { m_Hits = value; InvalidateDamageState(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Processing { get; set; }
@@ -77,7 +77,7 @@ namespace Server.Items
         public override bool DisplaysContent => false;
         public override int DefaultMaxWeight => 300;
 
-        public List<Mobile> Viewing { get; set; } = new List<Mobile>();
+        public List<Mobile> Viewing { get; } = new List<Mobile>();
 
         public BaseShipCannon(BaseGalleon galleon)
             : base(0x2198)
@@ -223,7 +223,7 @@ namespace Server.Items
                     }
                 }
 
-                if (ammo != null && ammo is Item)
+                if (ammo != null)
                 {
                     if (Galleon.Contains(m))
                     {
@@ -369,7 +369,8 @@ namespace Server.Items
 
                 return false;
             }
-            else if (Items.Count == 3)
+
+            if (Items.Count == 3)
             {
                 if (message)
                 {
@@ -441,13 +442,7 @@ namespace Server.Items
                 return;
 
             Galleon.GetEntitiesOnBoard().OfType<PlayerMobile>().Where(x => x != from && Galleon.GetSecurityLevel(x) > SecurityLevel.Denied)
-                .ToList().ForEach(y =>
-                {
-                    if (from != null)
-                        y.SendLocalizedMessage(cliloc, from.Name);
-                    else
-                        y.SendLocalizedMessage(cliloc);
-                });
+                .ToList().ForEach(y => { y.SendLocalizedMessage(cliloc, from.Name); });
         }
 
         public void TryLightFuse(Mobile from)
@@ -465,7 +460,7 @@ namespace Server.Items
                 {
                     foreach (Item item in items)
                     {
-                        if (item is Matches && ((Matches)item).IsLight)
+                        if (item is Matches matches && matches.IsLight)
                         {
                             LightFuse(from);
                             return;
@@ -479,7 +474,7 @@ namespace Server.Items
                 {
                     foreach (Item item in items)
                     {
-                        if (item is Torch && ((Torch)item).Burning)
+                        if (item is Torch torch && torch.Burning)
                         {
                             LightFuse(from);
                             return;
@@ -490,12 +485,13 @@ namespace Server.Items
 
             Item i = from.FindItemOnLayer(Layer.TwoHanded);
 
-            if (i != null && i is Matches && ((Matches)i).IsLight)
+            if (i is Matches match && match.IsLight)
             {
                 LightFuse(from);
                 return;
             }
-            else if (i != null && i is Torch && ((Torch)i).Burning)
+
+            if (i is Torch t && t.Burning)
             {
                 LightFuse(from);
                 return;
@@ -520,8 +516,8 @@ namespace Server.Items
 
             Mobile shooter = null;
 
-            if (cannoneer is Mobile)
-                shooter = (Mobile)cannoneer;
+            if (cannoneer is Mobile mobile)
+                shooter = mobile;
 
             if (shooter != null && shooter.Player)
                 m_Hits -= Utility.RandomMinMax(0, 4);
@@ -601,19 +597,19 @@ namespace Server.Items
                             {
                                 IEntity toHit = list[Utility.Random(list.Count)];
 
-                                if (toHit is Mobile)
+                                if (toHit is Mobile mobileHit)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { (Mobile)toHit, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { mobileHit, newPoint, ammo, shooter });
                                     hit = true;
                                 }
-                                else if (toHit is BaseBoat)
+                                else if (toHit is BaseBoat boat)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseBoat)toHit, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { boat, newPoint, ammo, shooter });
                                     hit = true;
                                 }
-                                else if (toHit is DamageableItem)
+                                else if (toHit is DamageableItem item)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnDamageableItemHit), new object[] { (DamageableItem)toHit, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnDamageableItemHit), new object[] { item, newPoint, ammo, shooter });
                                     hit = true;
                                 }
                             }
@@ -649,19 +645,19 @@ namespace Server.Items
                             {
                                 IEntity toHit = list[Utility.Random(list.Count)];
 
-                                if (toHit is Mobile)
+                                if (toHit is Mobile hitMobile)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { (Mobile)toHit, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnMobileHit), new object[] { hitMobile, newPoint, ammo, shooter });
                                     hit = true;
                                 }
-                                else if (toHit is BaseBoat)
+                                else if (toHit is BaseBoat boat)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseBoat)toHit, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { boat, newPoint, ammo, shooter });
                                     hit = true;
                                 }
-                                else if (toHit is DamageableItem)
+                                else if (toHit is DamageableItem item)
                                 {
-                                    Timer.DelayCall(delay, new TimerStateCallback(OnDamageableItemHit), new object[] { (DamageableItem)toHit, newPoint, ammo, shooter });
+                                    Timer.DelayCall(delay, new TimerStateCallback(OnDamageableItemHit), new object[] { item, newPoint, ammo, shooter });
                                     hit = true;
                                 }
                             }
@@ -708,7 +704,7 @@ namespace Server.Items
                 foreach (StaticTile tile in tiles)
                 {
                     ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-                    bool isWater = (tile.ID >= 0x1796 && tile.ID <= 0x17B2);
+                    bool isWater = tile.ID >= 0x1796 && tile.ID <= 0x17B2;
 
                     if (!isWater && id.Surface && !id.Impassable)
                     {
@@ -794,9 +790,9 @@ namespace Server.Items
             {
                 int z = target.ZSurface;
 
-                if (target.TillerMan != null && target.TillerMan is IEntity)
+                if (target.TillerMan is IEntity entity)
                 {
-                    z = ((IEntity)target.TillerMan).Z;
+                    z = entity.Z;
                 }
 
                 Direction d = Utility.GetDirection(this, pnt);
@@ -838,7 +834,7 @@ namespace Server.Items
                 {
                     for (int count = 15; count > 0; count--)
                     {
-                        damage = (int)(ammoInfo.GetDamage(this) * Galleon.CannonDamageMod);
+                        damage = (int)(ammoInfo.GetDamage() * Galleon.CannonDamageMod);
                         Point3D loc = new Point3D(hit.X + Utility.RandomMinMax(0, 4), hit.Y + Utility.RandomMinMax(0, 4), hit.Z);
                         Effects.SendPacket(loc, target.Map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x36CB, loc, loc, 15, 15, true, true));
                         target.OnTakenDamage(shooter, damage);
@@ -847,7 +843,7 @@ namespace Server.Items
                 }
                 else
                 {
-                    damage = (int)(ammoInfo.GetDamage(this) * Galleon.CannonDamageMod);
+                    damage = (int)(ammoInfo.GetDamage() * Galleon.CannonDamageMod);
                     Effects.SendPacket(hit, target.Map, new GraphicalEffect(EffectType.FixedXYZ, Serial.Zero, Serial.Zero, 0x36CB, hit, hit, 15, 15, true, true));
                     target.OnTakenDamage(shooter, damage);
                 }
@@ -858,9 +854,9 @@ namespace Server.Items
 
                     foreach (Item item in eable)
                     {
-                        if (item is IShipCannon && !Galleon.Contains(item))
+                        if (item is IShipCannon cannon && !Galleon.Contains(item))
                         {
-                            ((IShipCannon)item).OnDamage(damage, shooter);
+                            cannon.OnDamage(damage, shooter);
                         }
                     }
 
@@ -899,14 +895,10 @@ namespace Server.Items
         {
             object[] objects = (object[])obj;
             Mobile toHit = objects[0] as Mobile;
-            Point3D pnt = (Point3D)objects[1];
             AmmoInfo info = objects[2] as AmmoInfo;
             Mobile shooter = objects[3] as Mobile;
 
             int damage = (int)(Utility.RandomMinMax(info.MinDamage, info.MaxDamage) * Galleon.CannonDamageMod);
-
-            if (info == null)
-                return;
 
             if (toHit != null)
             {
@@ -920,7 +912,6 @@ namespace Server.Items
         {
             object[] objects = (object[])obj;
             DamageableItem toHit = objects[0] as DamageableItem;
-            Point3D pnt = (Point3D)objects[1];
             AmmoInfo info = objects[2] as AmmoInfo;
             Mobile shooter = objects[3] as Mobile;
 
@@ -954,16 +945,16 @@ namespace Server.Items
                 if (!items && dam is DamageableItem)
                     continue;
 
-                if (items && dam is DamageableItem && ((DamageableItem)dam).CanDamage && !Galleon.Contains(dam))
-                    list.Add(dam);
+                if (items && dam is DamageableItem item && item.CanDamage && !Galleon.Contains(dam))
+                    list.Add(item);
 
                 if (player && mob is PlayerMobile)
                     list.Add(mob);
 
-                if (monsters && mob is BaseCreature && !((BaseCreature)mob).Controlled && !((BaseCreature)mob).Summoned)
+                if (monsters && mob is BaseCreature bc && !bc.Controlled && !bc.Summoned)
                     list.Add(mob);
 
-                if (pet && mob is BaseCreature && (((BaseCreature)mob).Controlled || ((BaseCreature)mob).Summoned))
+                if (pet && mob is BaseCreature creature && (creature.Controlled || creature.Summoned))
                     list.Add(mob);
 
                 if (seacreature && (mob is BaseSeaChampion || mob is Kraken))
@@ -1113,7 +1104,7 @@ namespace Server.Items
             base.GetProperties(list);
 
             list.Add(1116026, Charged == CannonAction.Finish ? "#1116031" : "#1116032"); // Charged: ~1_VALUE~
-            list.Add(1116027, string.Format("{0}", AmmoInfo.GetAmmoName(this).ToString())); // Ammo: ~1_VALUE~
+            list.Add(1116027, string.Format("{0}", AmmoInfo.GetAmmoName(this))); // Ammo: ~1_VALUE~
             list.Add(1116028, Primed == CannonAction.Finish ? "#1116031" : "#1116032"); //Primed: ~1_VALUE~
             list.Add(1116580 + (int)DamageState);
             list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
@@ -1133,8 +1124,8 @@ namespace Server.Items
 
         private class UnloadContext : ContextMenuEntry
         {
-            public Mobile From { get; set; }
-            public BaseShipCannon Cannon { get; set; }
+            public Mobile From { get; }
+            public BaseShipCannon Cannon { get; }
 
             public UnloadContext(BaseShipCannon cannon, Mobile from)
                 : base(1116072, 2) // Unload
@@ -1154,8 +1145,8 @@ namespace Server.Items
 
         private class DismantleContext : ContextMenuEntry
         {
-            public Mobile From { get; set; }
-            public BaseShipCannon Cannon { get; set; }
+            public Mobile From { get; }
+            public BaseShipCannon Cannon { get; }
 
             public DismantleContext(BaseShipCannon cannon, Mobile from)
                 : base(1116069, 2)
@@ -1200,8 +1191,8 @@ namespace Server.Items
 
         private class RepairContext : ContextMenuEntry
         {
-            public Mobile From { get; set; }
-            public BaseShipCannon Cannon { get; set; }
+            public Mobile From { get; }
+            public BaseShipCannon Cannon { get; }
 
             public RepairContext(BaseShipCannon cannon, Mobile from)
                 : base(1116602, 2)
@@ -1311,7 +1302,7 @@ namespace Server.Items
 
         public class ShipCannonGump : BaseGump
         {
-            public BaseShipCannon Cannon { get; set; }
+            public BaseShipCannon Cannon { get; }
 
             public ShipCannonGump(PlayerMobile pm, BaseShipCannon cannon)
                 : base(pm, 100, 100)
@@ -1448,7 +1439,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1475,7 +1466,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -1504,7 +1495,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

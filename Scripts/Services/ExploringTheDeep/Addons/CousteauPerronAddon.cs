@@ -2,7 +2,7 @@ namespace Server.Items
 {
     public class CousteauPerronAddon : BaseAddon
     {
-        private static readonly int[,] m_AddOnSimpleComponents = new int[,]
+        private static readonly int[,] m_AddOnSimpleComponents =
         {
               {2602, 1, 2, 0}, {7828, 1, 3, 3}, {4602, 0, 1, 0},
               {4601, -1, 1, 0}, {1560, 0, 0, 26}, {1560, 1, 0, 26},
@@ -37,7 +37,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

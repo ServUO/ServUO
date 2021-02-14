@@ -56,7 +56,7 @@ namespace Server.Mobiles
         public override int Hides => 20;
         public override HideType HideType => HideType.Barbed;
         public override int Scales => 7;
-        public override ScaleType ScaleType => (Body == 12 ? ScaleType.Yellow : ScaleType.Red);
+        public override ScaleType ScaleType => Body == 12 ? ScaleType.Yellow : ScaleType.Red;
         public override FoodType FavoriteFood => FoodType.Meat;
         public override bool CanAngerOnTame => true;
         public override bool CanFly => true;
@@ -75,7 +75,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

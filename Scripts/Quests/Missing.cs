@@ -5,7 +5,6 @@ namespace Server.Engines.Quests
     public class Missing : BaseQuest
     {
         public Missing()
-            : base()
         {
             AddObjective(new ObtainObjective(typeof(ArielHavenWritofMembership), "Ariel Haven Writ of Membership", 4, 0x2831));
 

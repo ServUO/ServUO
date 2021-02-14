@@ -29,10 +29,10 @@ namespace Server.Items
 
         public Note(object content) : base(0x1234)
         {
-            if (content is int)
-                m_Number = (int)content;
-            else if (content is string)
-                m_String = (string)content;
+            if (content is int i)
+                m_Number = i;
+            else if (content is string s)
+                m_String = s;
         }
 
         public override void OnDoubleClick(Mobile m)

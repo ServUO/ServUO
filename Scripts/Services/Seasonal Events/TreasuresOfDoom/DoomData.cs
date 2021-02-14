@@ -36,16 +36,16 @@ namespace Server.Engines.Points
 
             Region r = bc.Region;
 
-            if (damager is PlayerMobile && r.IsPartOf("Doom"))
+            if (damager is PlayerMobile mobile && r.IsPartOf("Doom"))
             {
-                if (!DungeonPoints.ContainsKey(damager))
-                    DungeonPoints[damager] = 0;
+                if (!DungeonPoints.ContainsKey(mobile))
+                    DungeonPoints[mobile] = 0;
 
-                int luck = Math.Max(0, ((PlayerMobile)damager).RealLuck);
+                int luck = Math.Max(0, mobile.RealLuck);
 
-                DungeonPoints[damager] += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)));
+                DungeonPoints[mobile] += (int)Math.Max(0, (bc.Fame * (1 + Math.Sqrt(luck) / 100)));
 
-                int x = DungeonPoints[damager];
+                int x = DungeonPoints[mobile];
                 const double A = 0.000863316841;
                 const double B = 0.00000425531915;
 
@@ -57,29 +57,29 @@ namespace Server.Engines.Points
 
                     if (i != null)
                     {
-                        RunicReforging.GenerateRandomItem(i, damager, Math.Max(100, RunicReforging.GetDifficultyFor(bc)), RunicReforging.GetLuckForKiller(bc), ReforgedPrefix.None, ReforgedSuffix.Doom);
+                        RunicReforging.GenerateRandomItem(i, mobile, Math.Max(100, RunicReforging.GetDifficultyFor(bc)), RunicReforging.GetLuckForKiller(bc), ReforgedPrefix.None, ReforgedSuffix.Doom);
 
-                        damager.PlaySound(0x5B4);
-                        damager.SendLocalizedMessage(1155588); // You notice the crest of Doom on your fallen foe's equipment and decide it may be of some value...
+                        mobile.PlaySound(0x5B4);
+                        mobile.SendLocalizedMessage(1155588); // You notice the crest of Doom on your fallen foe's equipment and decide it may be of some value...
 
-                        if (!damager.PlaceInBackpack(i))
+                        if (!mobile.PlaceInBackpack(i))
                         {
-                            if (damager.BankBox != null && damager.BankBox.TryDropItem(damager, i, false))
-                                damager.SendLocalizedMessage(1079730); // The item has been placed into your bank box.
+                            if (mobile.BankBox != null && mobile.BankBox.TryDropItem(mobile, i, false))
+                                mobile.SendLocalizedMessage(1079730); // The item has been placed into your bank box.
                             else
                             {
-                                damager.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
-                                i.MoveToWorld(damager.Location, damager.Map);
+                                mobile.SendLocalizedMessage(1072523); // You find an artifact, but your backpack and bank are too full to hold it.
+                                i.MoveToWorld(mobile.Location, mobile.Map);
                             }
                         }
 
-                        DungeonPoints.Remove(damager);
+                        DungeonPoints.Remove(mobile);
                     }
                 }
             }
         }
 
-        public Dictionary<Mobile, int> DungeonPoints { get; set; }
+        public Dictionary<Mobile, int> DungeonPoints { get; }
 
         public override void Serialize(GenericWriter writer)
         {

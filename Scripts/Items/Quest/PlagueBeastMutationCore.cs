@@ -27,14 +27,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Cut
         {
-            get
-            {
-                return m_Cut;
-            }
-            set
-            {
-                m_Cut = value;
-            }
+            get => m_Cut;
+            set => m_Cut = value;
         }
         public virtual bool Scissor(Mobile from, Scissors scissors)
         {
@@ -60,7 +54,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.Write(m_Cut);
@@ -69,8 +62,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Cut = reader.ReadBool();
         }

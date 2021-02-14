@@ -5,10 +5,6 @@ using Server.Spells;
 using System;
 using System.Collections.Generic;
 
-/*
-this is From me to you, Under no terms, Conditions...   K?  to apply you
-just simply Unpatch/delete, Stick these in, Same location.. Restart
-*/
 namespace Server.Engines.Doom
 {
     public class LeverPuzzleController : Item
@@ -22,28 +18,28 @@ namespace Server.Engines.Doom
         /* font&hue for above msgs. index matches */
         public static int[][] MsgParams =
         {
-            new int[] { 0x66d, 3 },
-            new int[] { 0x66d, 3 },
-            new int[] { 0x34, 3 }
+            new[] { 0x66d, 3 },
+            new[] { 0x66d, 3 },
+            new[] { 0x34, 3 }
         };
         /* World data for items */
         public static int[][] TA =
         {
-            new int[] { 316, 64, 5 },
-            /* 3D Coords for levers */ new int[] { 323, 58, 5 },
-            new int[] { 332, 63, 5 },
-            new int[] { 323, 71, 5 },
-            new int[] { 324, 64 },
-            /* 2D Coords for standing regions */ new int[] { 316, 65 },
-            new int[] { 324, 58 },
-            new int[] { 332, 64 },
-            new int[] { 323, 72 },
-            new int[] { 468, 92, -1 }, new int[] { 0x181D, 0x482 },
-            /* 3D coord, itemid+hue for L.R. teles */ new int[] { 469, 92, -1 }, new int[] { 0x1821, 0x3fd },
-            new int[] { 470, 92, -1 }, new int[] { 0x1825, 0x66d },
-            new int[] { 319, 70, 18 }, new int[] { 0x12d8 },
-            /* 3D coord, itemid for statues */ new int[] { 329, 60, 18 }, new int[] { 0x12d9 },
-            new int[] { 469, 96, 6 }
+            new[] { 316, 64, 5 },
+            /* 3D Coords for levers */ new[] { 323, 58, 5 },
+            new[] { 332, 63, 5 },
+            new[] { 323, 71, 5 },
+            new[] { 324, 64 },
+            /* 2D Coords for standing regions */ new[] { 316, 65 },
+            new[] { 324, 58 },
+            new[] { 332, 64 },
+            new[] { 323, 72 },
+            new[] { 468, 92, -1 }, new[] { 0x181D, 0x482 },
+            /* 3D coord, itemid+hue for L.R. teles */ new[] { 469, 92, -1 }, new[] { 0x1821, 0x3fd },
+            new[] { 470, 92, -1 }, new[] { 0x1825, 0x66d },
+            new[] { 319, 70, 18 }, new[] { 0x12d8 },
+            /* 3D coord, itemid for statues */ new[] { 329, 60, 18 }, new[] { 0x12d9 },
+            new[] { 469, 96, 6 }
         /* 3D Coords for Fake Box */ };
         /* CLILOC data for statue "correct souls" messages */
         public static int[] Statue_Msg = { 1050009, 1050007, 1050008, 1050008 };
@@ -57,12 +53,12 @@ namespace Server.Engines.Doom
         /* Lamp Room area Poison message data */
         public static int[][] PA =
         {
-            new int[] { 0, 0, 0xA6 },
-            new int[] { 1050001, 0x485, 0xAA },
-            new int[] { 1050003, 0x485, 0xAC },
-            new int[] { 1050056, 0x485, 0xA8 },
-            new int[] { 1050057, 0x485, 0xA4 },
-            new int[] { 1062091, 0x23F3, 0xAC }
+            new[] { 0, 0, 0xA6 },
+            new[] { 1050001, 0x485, 0xAA },
+            new[] { 1050003, 0x485, 0xAC },
+            new[] { 1050056, 0x485, 0xA8 },
+            new[] { 1050057, 0x485, 0xA4 },
+            new[] { 1062091, 0x23F3, 0xAC }
         };
         public static Poison[] PA2 =
         {
@@ -133,42 +129,15 @@ namespace Server.Engines.Doom
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ushort MyKey
-        {
-            get
-            {
-                return m_MyKey;
-            }
-            set
-            {
-                m_MyKey = value;
-            }
-        }
+        public ushort MyKey { get => m_MyKey; set => m_MyKey = value; }
         [CommandProperty(AccessLevel.GameMaster)]
-        public ushort TheirKey
-        {
-            get
-            {
-                return m_TheirKey;
-            }
-            set
-            {
-                m_TheirKey = value;
-            }
-        }
+        public ushort TheirKey { get => m_TheirKey; set => m_TheirKey = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Enabled
-        {
-            get
-            {
-                return m_Enabled;
-            }
-            set
-            {
-                m_Enabled = value;
-            }
-        }
+        public bool Enabled { get => m_Enabled; set => m_Enabled = value; }
+
         public Mobile Successful => m_Successful;
+
         public bool CircleComplete
         {
             get	/* OSI: all 5 must be occupied */
@@ -267,7 +236,7 @@ namespace Server.Engines.Doom
 
         public static bool AniSafe(Mobile m)
         {
-            return (m != null && !TransformationSpellHelper.UnderTransformation(m) && m.BodyMod == 0 && m.Alive);
+            return m != null && !TransformationSpellHelper.UnderTransformation(m) && m.BodyMod == 0 && m.Alive;
         }
 
         public static IEntity ZAdjustedIEFromMobile(Mobile m, int ZDelta)
@@ -280,7 +249,7 @@ namespace Server.Engines.Doom
             if (m != null && !m.Deleted && m.Alive)
             {
                 int damage = Utility.Random(min, max);
-                AOS.Damage(m, damage, (poison) ? 0 : 100, 0, 0, (poison) ? 100 : 0, 0);
+                AOS.Damage(m, damage, poison ? 0 : 100, 0, 0, poison ? 100 : 0, 0);
             }
         }
 
@@ -349,7 +318,7 @@ namespace Server.Engines.Doom
             }
             if (m_Tiles != null)
             {
-                foreach (Region region in m_Tiles)
+                foreach (LeverPuzzleRegion region in m_Tiles)
                 {
                     region.Unregister();
                 }
@@ -469,7 +438,7 @@ namespace Server.Engines.Doom
                 if (TheirKey == MyKey)
                 {
                     GenKey();
-                    if ((m_Successful = (m_Player = GetOccupant(0))) != null)
+                    if ((m_Successful = m_Player = GetOccupant(0)) != null)
                     {
                         SendLocationEffect(lp_Center, 0x1153, 0, 60, 1);
                         PlaySounds(lp_Center, cs1);
@@ -486,13 +455,13 @@ namespace Server.Engines.Doom
                 {
                     for (int i = 0; i < 16; i++)  /* Count matching SET bits, ie correct codes */
                     {
-                        if ((((MyKey >> i) & 1) == 1) && (((TheirKey >> i) & 1) == 1))
+                        if (((MyKey >> i) & 1) == 1 && ((TheirKey >> i) & 1) == 1)
                         {
                             Correct++;
                         }
                     }
 
-                    PuzzleStatus(Statue_Msg[Correct], (Correct > 0) ? Correct.ToString() : null);
+                    PuzzleStatus(Statue_Msg[Correct], Correct > 0 ? Correct.ToString() : null);
 
                     for (int i = 0; i < 5; i++)
                     {
@@ -514,7 +483,7 @@ namespace Server.Engines.Doom
             ushort[] CA = { 1, 2, 4, 8 };
             for (i = 0; i < 4; i++)
             {
-                n = (((n = Utility.Random(0, 3)) == i) ? n & ~i : n); /* if(i==n) { return pointless; } */
+                n = ((n = Utility.Random(0, 3)) == i) ? n & ~i : n;
                 tmp = CA[i];
                 CA[i] = CA[n];
                 CA[n] = tmp;
@@ -528,6 +497,7 @@ namespace Server.Engines.Doom
         {
             base.Serialize(writer);
             writer.Write(0); // version
+
             writer.WriteItemList(m_Levers, true);
             writer.WriteItemList(m_Statues, true);
             writer.WriteItemList(m_Teles, true);
@@ -537,8 +507,7 @@ namespace Server.Engines.Doom
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Levers = reader.ReadStrongItemList();
             m_Statues = reader.ReadStrongItemList();
@@ -566,13 +535,9 @@ namespace Server.Engines.Doom
                     return true;
                 }
 
-                if (m is BaseCreature)
+                if (m is BaseCreature bc && (bc.Controlled || bc.Summoned) && !bc.IsDeadBondedPet)
                 {
-                    BaseCreature bc = (BaseCreature)m;
-                    if ((bc.Controlled || bc.Summoned) && !bc.IsDeadBondedPet)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
             return false;
@@ -593,7 +558,7 @@ namespace Server.Engines.Doom
 
             protected override void OnTick()
             {
-                if (m_Player == null || !(m_Player.Map == Map.Malas))
+                if (m_Player == null || m_Player.Map != Map.Malas)
                 {
                     Stop();
                 }
@@ -606,7 +571,7 @@ namespace Server.Engines.Doom
                         Effects.SendTargetEffect(m_Player, 0x11B7, 20, 10);
                         PlayerSendASCII(m_Player, 0);  // You are pinned down ...
 
-                        PlaySounds(m_Player.Location, (!m_Player.Female) ? fs : ms);
+                        PlaySounds(m_Player.Location, !m_Player.Female ? fs : ms);
                         PlayEffect(ZAdjustedIEFromMobile(m_Player, 50), m_Player, 0x11B7, 20, false);
                     }
                     else if (Count == 2)
@@ -627,7 +592,7 @@ namespace Server.Engines.Doom
 
                         Effects.SendTargetEffect(m_Player, 0x36B0, 20, 10);
                         PlayerSendASCII(m_Player, 1); // A speeding rock  ...
-                        PlaySounds(m_Player.Location, (!m_Player.Female) ? fs2 : ms2);
+                        PlaySounds(m_Player.Location, !m_Player.Female ? fs2 : ms2);
 
                         int j = Utility.Random(6, 10);
                         for (int i = 0; i < j; i++)

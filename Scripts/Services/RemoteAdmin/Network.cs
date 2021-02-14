@@ -230,15 +230,11 @@ namespace Server.RemoteAdmin
                     Console.WriteLine("WARNING: Unable to compress admin packet, zlib error: {0}", error);
                     return p;
                 }
-                else
-                {
-                    return new AdminCompressedPacket(dest, destSize, length);
-                }
+
+                return new AdminCompressedPacket(dest, destSize, length);
             }
-            else
-            {
-                return p;
-            }
+
+            return p;
         }
     }
 

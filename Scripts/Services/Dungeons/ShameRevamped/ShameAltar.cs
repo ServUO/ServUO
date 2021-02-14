@@ -204,7 +204,7 @@ namespace Server.Engines.ShameRevamped
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Teleporter = reader.ReadItem() as ShameTeleporter;
             TeleporterLocation = reader.ReadPoint3D();

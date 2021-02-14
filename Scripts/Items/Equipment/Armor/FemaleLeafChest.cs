@@ -30,6 +30,7 @@ namespace Server.Items
         public override CraftResource DefaultResource => CraftResource.RegularLeather;
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
         public override bool AllowMaleWearer => false;
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -39,7 +40,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Server.ContextMenus;
+using Server.ContextMenus;
 using Server.Gumps;
 using Server.Multis;
 using System;
@@ -90,8 +90,8 @@ namespace Server.Items
 
                 Container hold;
 
-                if (m_Crate.Boat is BaseGalleon)
-                    hold = ((BaseGalleon)m_Crate.Boat).GalleonHold;
+                if (m_Crate.Boat is BaseGalleon galleon)
+                    hold = galleon.GalleonHold;
                 else
                     hold = m_Crate.Boat.Hold;
 
@@ -165,7 +165,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Owner = reader.ReadMobile();
             m_Boat = reader.ReadItem() as BaseBoat;

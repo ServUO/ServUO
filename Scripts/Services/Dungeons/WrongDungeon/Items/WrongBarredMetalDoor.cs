@@ -12,32 +12,16 @@ namespace Server.Items
         private bool m_MagicUnlocked;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Picker
-        {
-            get { return m_Picker; }
-            set { m_Picker = value; }
-        }
+        public Mobile Picker { get => m_Picker; set => m_Picker = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int MaxLockLevel
-        {
-            get { return m_MaxLockLevel; }
-            set { m_MaxLockLevel = value; }
-        }
+        public int MaxLockLevel { get => m_MaxLockLevel; set => m_MaxLockLevel = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LockLevel
-        {
-            get { return m_LockLevel; }
-            set { m_LockLevel = value; }
-        }
+        public int LockLevel { get => m_LockLevel; set => m_LockLevel = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int RequiredSkill
-        {
-            get { return m_RequiredSkill; }
-            set { m_RequiredSkill = value; }
-        }
+        public int RequiredSkill { get => m_RequiredSkill; set => m_RequiredSkill = value; }
 
         [Constructable]
         public WrongBarredMetalDoor(DoorFacing facing)
@@ -131,7 +115,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader) // Default Deserialize method
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_RequiredSkill = reader.ReadInt();
             m_MaxLockLevel = reader.ReadInt();

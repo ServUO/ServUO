@@ -74,10 +74,7 @@ namespace Server.Regions
         {
             Item item = e as Item;
 
-            if (item != null && ((m.PublicHouseContent && House.Public) ||
-                                 House.IsInside(m) ||
-                                 ExcludeItem(item) ||
-                                 (item.RootParent != null && m.CanSee(item.RootParent))))
+            if (item != null && (m.PublicHouseContent && House.Public || House.IsInside(m) || ExcludeItem(item) || item.RootParent != null && m.CanSee(item.RootParent)))
             {
                 return true;
             }
@@ -90,7 +87,7 @@ namespace Server.Regions
             return IsStairArea(item) || m_ItemTypes.Any(t => t == item.GetType() || item.GetType().IsSubclassOf(t));
         }
 
-        private static readonly Type[] m_ItemTypes = new Type[]
+        private static readonly Type[] m_ItemTypes =
         {
             typeof(BaseHouse),  typeof(HouseTeleporter),
             typeof(BaseDoor),   typeof(Static),
@@ -128,13 +125,13 @@ namespace Server.Regions
 
             m_Recursion = true;
 
-            if (m is BaseCreature && ((BaseCreature)m).NoHouseRestrictions)
+            if (m is BaseCreature creature && creature.NoHouseRestrictions)
             {
             }
-            else if (m is BaseCreature && ((BaseCreature)m).IsHouseSummonable && !(BaseCreature.Summoning || House.IsInside(oldLocation, 16)))
+            else if (m is BaseCreature bc && bc.IsHouseSummonable && !(BaseCreature.Summoning || House.IsInside(oldLocation, 16)))
             {
             }
-            else if ((House.Public) && House.IsBanned(m) && House.IsInside(m))
+            else if (House.Public && House.IsBanned(m) && House.IsInside(m))
             {
                 m.Location = House.BanLocation;
             }
@@ -147,12 +144,9 @@ namespace Server.Regions
                 m.Location = House.BanLocation;
                 m.SendLocalizedMessage(1061637); // You are not allowed to access 
             }
-            else if (House is HouseFoundation)
+            else if (House is HouseFoundation foundation && foundation.Customizer != null && foundation.Customizer != m && foundation.IsInside(m))
             {
-                HouseFoundation foundation = (HouseFoundation)House;
-
-                if (foundation.Customizer != null && foundation.Customizer != m && House.IsInside(m))
-                    m.Location = House.BanLocation;
+                m.Location = foundation.BanLocation;
             }
 
             if (House.InternalizedVendors.Count > 0 && House.IsInside(m) && !House.IsInside(oldLocation, 16) && House.IsOwner(m) && m.Alive && !m.HasGump(typeof(NoticeGump)))
@@ -174,22 +168,22 @@ namespace Server.Regions
             if (!base.OnMoveInto(from, d, newLocation, oldLocation))
                 return false;
 
-            if (from is BaseCreature && ((BaseCreature)from).NoHouseRestrictions)
+            if (from is BaseCreature creature && creature.NoHouseRestrictions)
             {
             }
-            else if (from is BaseCreature && !((BaseCreature)from).Controlled) // Untamed creatures cannot enter public houses
-            {
-                return false;
-            }
-            else if (from is BaseCreature && ((BaseCreature)from).IsHouseSummonable && !(BaseCreature.Summoning || House.IsInside(oldLocation, 16)))
+            else if (from is BaseCreature untamedCreature && !untamedCreature.Controlled) // Untamed creatures cannot enter public houses
             {
                 return false;
             }
-            else if (from is BaseCreature && !((BaseCreature)from).Controlled && !House.Public)
+            else if (from is BaseCreature bc && bc.IsHouseSummonable && !(BaseCreature.Summoning || House.IsInside(oldLocation, 16)))
             {
                 return false;
             }
-            else if ((House.Public) && House.IsBanned(from) && House.IsInside(newLocation, 16))
+            else if (from is BaseCreature baseCreature && !baseCreature.Controlled && !House.Public)
+            {
+                return false;
+            }
+            else if (House.Public && House.IsBanned(from) && House.IsInside(newLocation, 16))
             {
                 from.Location = House.BanLocation;
                 return false;
@@ -203,12 +197,9 @@ namespace Server.Regions
                 from.SendLocalizedMessage(1061637); // You are not allowed to access 
                 return false;
             }
-            else if (House is HouseFoundation)
+            else if (House is HouseFoundation foundation && foundation.Customizer != null && foundation.Customizer != from && foundation.IsInside(newLocation, 16))
             {
-                HouseFoundation foundation = (HouseFoundation)House;
-
-                if (foundation.Customizer != null && foundation.Customizer != from && House.IsInside(newLocation, 16))
-                    return false;
+                return false;
             }
 
             if (House.InternalizedVendors.Count > 0 && House.IsInside(from) && !House.IsInside(oldLocation, 16) && House.IsOwner(from) && from.Alive && !from.HasGump(typeof(NoticeGump)))
@@ -249,9 +240,11 @@ namespace Server.Regions
         public override bool OnDecay(Item item)
         {
             if ((House.IsLockedDown(item) || House.IsSecure(item)) && House.IsInside(item))
+            {
                 return false;
-            else
-                return base.OnDecay(item);
+            }
+
+            return base.OnDecay(item);
         }
 
         public override TimeSpan GetLogoutDelay(Mobile m)
@@ -262,7 +255,7 @@ namespace Server.Regions
                 {
                     AggressorInfo info = m.Aggressed[i];
 
-                    if (info.Defender.Player && (DateTime.UtcNow - info.LastCombatTime) < CombatHeatDelay)
+                    if (info.Defender.Player && DateTime.UtcNow - info.LastCombatTime < CombatHeatDelay)
                         return base.GetLogoutDelay(m);
                 }
 
@@ -312,9 +305,11 @@ namespace Server.Regions
             }
 
             if (!House.IsInside(from) || !House.IsActive)
+            {
                 return;
+            }
 
-            else if (e.HasKeyword(0x33)) // remove thyself
+            if (e.HasKeyword(0x33)) // remove thyself
             {
                 from.SendLocalizedMessage(501326); // Target the individual to eject from this house.
                 from.Target = new HouseKickTarget(House);
@@ -395,10 +390,8 @@ namespace Server.Regions
 
         public override bool OnDoubleClick(Mobile from, object o)
         {
-            if (o is Container)
+            if (o is Container c)
             {
-                Container c = (Container)o;
-
                 SecureAccessResult res = House.CheckSecureAccess(from, c);
 
                 switch (res)

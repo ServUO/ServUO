@@ -121,7 +121,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public override Mobile Focus
         {
-            get { return m_Focus; }
+            get => m_Focus;
             set
             {
                 if (Deleted)
@@ -297,7 +297,8 @@ namespace Server.Mobiles
                     Stop();
                     return;
                 }
-                else if (m_Owner.Weapon is Fists)
+
+                if (m_Owner.Weapon is Fists)
                 {
                     m_Owner.Kill();
                     Stop();
@@ -319,9 +320,9 @@ namespace Server.Mobiles
                     TeleportTo(target);
                     target.BoltEffect(0);
 
-                    if (target is BaseCreature)
+                    if (target is BaseCreature creature)
                     {
-                        ((BaseCreature)target).NoKillAwards = true;
+                        creature.NoKillAwards = true;
                     }
 
                     target.Damage(target.HitsMax, m_Owner);
@@ -371,7 +372,7 @@ namespace Server.Mobiles
                     return;
                 }
 
-                if ((m_Stage++ % 4) == 0 || !m_Owner.Move(m_Owner.Direction))
+                if (m_Stage++ % 4 == 0 || !m_Owner.Move(m_Owner.Direction))
                 {
                     m_Owner.Direction = (Direction)Utility.Random(8);
                 }

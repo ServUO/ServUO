@@ -37,10 +37,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public string BookName
         {
-            get
-            {
-                return m_BookName;
-            }
+            get => m_BookName;
             set
             {
                 m_BookName = value;
@@ -50,27 +47,15 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
-            get
-            {
-                return m_Level;
-            }
-            set
-            {
-                m_Level = value;
-            }
+            get => m_Level;
+            set => m_Level = value;
         }
         public ArrayList Entries => m_Entries;
         public BOBFilter Filter => m_Filter;
         public int ItemCount
         {
-            get
-            {
-                return m_ItemCount;
-            }
-            set
-            {
-                m_ItemCount = value;
-            }
+            get => m_ItemCount;
+            set => m_ItemCount = value;
         }
         public override void OnDoubleClick(Mobile from)
         {
@@ -78,8 +63,8 @@ namespace Server.Engines.BulkOrders
                 from.LocalOverheadMessage(Network.MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
             else if (m_Entries.Count == 0)
                 from.SendLocalizedMessage(1062381); // The book is empty.
-            else if (from is PlayerMobile)
-                from.SendGump(new BOBGump((PlayerMobile)from, this));
+            else if (from is PlayerMobile mobile)
+                mobile.SendGump(new BOBGump(mobile, this));
         }
 
         public override void OnDoubleClickSecureTrade(Mobile from)
@@ -119,12 +104,13 @@ namespace Server.Engines.BulkOrders
                     from.SendLocalizedMessage(1062385); // You must have the book in your backpack to add deeds to it.
                     return false;
                 }
-                else if (!from.Backpack.CheckHold(from, dropped, true, true))
+
+                if (!from.Backpack.CheckHold(from, dropped, true, true))
                     return false;
-                else if (m_Entries.Count < 500)
+                if (m_Entries.Count < 500)
                 {
-                    if (dropped is LargeBOD)
-                        m_Entries.Add(new BOBLargeEntry((LargeBOD)dropped));
+                    if (dropped is LargeBOD largeBod)
+                        m_Entries.Add(new BOBLargeEntry(largeBod));
                     else if (dropped is SmallBOD) // Sanity
                         m_Entries.Add(new BOBSmallEntry((SmallBOD)dropped));
 
@@ -139,18 +125,16 @@ namespace Server.Engines.BulkOrders
                     from.SendSound(0x42, GetWorldLocation());
                     from.SendLocalizedMessage(1062386); // Deed added to book.
 
-                    if (from is PlayerMobile)
-                        from.SendGump(new BOBGump((PlayerMobile)from, this));
+                    if (from is PlayerMobile mobile)
+                        mobile.SendGump(new BOBGump(mobile, this));
 
                     dropped.Delete();
 
                     return true;
                 }
-                else
-                {
-                    from.SendLocalizedMessage(1062387); // The book is full of deeds.
-                    return false;
-                }
+
+                from.SendLocalizedMessage(1062387); // The book is full of deeds.
+                return false;
             }
 
             from.SendLocalizedMessage(1062388); // That is not a bulk order deed.
@@ -169,9 +153,9 @@ namespace Server.Engines.BulkOrders
 
         public void InvalidateItems()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile m = (Mobile)RootParent;
+                Mobile m = mobile;
 
                 m.UpdateTotals();
                 InvalidateContainers(Parent);
@@ -180,10 +164,8 @@ namespace Server.Engines.BulkOrders
 
         public void InvalidateContainers(object parent)
         {
-            if (parent != null && parent is Container)
+            if (parent != null && parent is Container c)
             {
-                Container c = (Container)parent;
-
                 c.InvalidateProperties();
                 InvalidateContainers(c.Parent);
             }
@@ -209,15 +191,15 @@ namespace Server.Engines.BulkOrders
             {
                 object obj = m_Entries[i];
 
-                if (obj is BOBLargeEntry)
+                if (obj is BOBLargeEntry largeEntry)
                 {
                     writer.WriteEncodedInt(0);
-                    ((BOBLargeEntry)obj).Serialize(writer);
+                    largeEntry.Serialize(writer);
                 }
-                else if (obj is BOBSmallEntry)
+                else if (obj is BOBSmallEntry smallEntry)
                 {
                     writer.WriteEncodedInt(1);
-                    ((BOBSmallEntry)obj).Serialize(writer);
+                    smallEntry.Serialize(writer);
                 }
                 else
                 {

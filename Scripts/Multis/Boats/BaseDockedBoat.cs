@@ -128,7 +128,8 @@ namespace Server.Multis
             {
                 return;
             }
-            else if (!IsChildOf(from.Backpack))
+
+            if (!IsChildOf(from.Backpack))
             {
                 from.SendLocalizedMessage(1042001); // That must be in your pack for you to use it.
             }
@@ -153,8 +154,8 @@ namespace Server.Multis
                 boat.BoatItem = this;
                 boat.Owner = from;
 
-                if (oldOwner != from && boat is BaseGalleon)
-                    ((BaseGalleon)boat).SecurityEntry = new SecurityEntry((BaseGalleon)boat);
+                if (oldOwner != from && boat is BaseGalleon galleon)
+                    galleon.SecurityEntry = new SecurityEntry(galleon);
 
                 p = new Point3D(p.X - Offset.X, p.Y - Offset.Y, p.Z - Offset.Z);
 

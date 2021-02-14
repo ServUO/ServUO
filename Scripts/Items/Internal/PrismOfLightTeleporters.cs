@@ -17,16 +17,12 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (!MondainsLegacy.PrismOfLight && (int)m.AccessLevel < (int)AccessLevel.GameMaster)
-            {
-                m.SendLocalizedMessage(1042753, "Prism of Light"); // ~1_SOMETHING~ has been temporarily disabled.
-                return true;
-            }
-
             if (m.Backpack != null)
             {
                 if (m.Backpack.FindItemByType(typeof(PrismOfLightAdmissionTicket), true) != null)
+                {
                     return base.OnMoveOver(m);
+                }
             }
 
             m.SendLocalizedMessage(1074277); // No admission without a ticket.
@@ -43,7 +39,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -62,16 +58,12 @@ namespace Server.Items
 
         public override bool OnMoveOver(Mobile m)
         {
-            if (!MondainsLegacy.PrismOfLight && (int)m.AccessLevel < (int)AccessLevel.GameMaster)
-            {
-                m.SendLocalizedMessage(1042753, "Prism of Light"); // ~1_SOMETHING~ has been temporarily disabled.
-                return true;
-            }
-
             if (m.Backpack != null)
             {
                 if (m.Backpack.FindItemByType(typeof(PrismOfLightAdmissionTicket), true) != null)
+                {
                     return base.OnMoveOver(m);
+                }
             }
 
             m.SendLocalizedMessage(1074277); // No admission without a ticket.
@@ -87,7 +79,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -121,8 +113,8 @@ namespace Server.Items
                 Delete();
                 return false;
             }
-            else
-                return true;
+
+            return true;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -134,7 +126,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

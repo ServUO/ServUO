@@ -34,7 +34,8 @@ namespace Server.Spells.Mysticism
             {
                 return;
             }
-            else if (CheckHSequence(d))
+
+            if (CheckHSequence(d))
             {
                 IDamageable target = d;
                 IDamageable source = Caster;
@@ -72,7 +73,7 @@ namespace Server.Spells.Mysticism
 
         public class InternalTarget : Target
         {
-            public EagleStrikeSpell Owner { get; set; }
+            public EagleStrikeSpell Owner { get; }
 
             public InternalTarget(EagleStrikeSpell owner)
                 : this(owner, false)
@@ -92,10 +93,10 @@ namespace Server.Spells.Mysticism
 
                 if (!from.CanSee(o))
                     from.SendLocalizedMessage(500237); // Target can not be seen.
-                else if (o is IDamageable)
+                else if (o is IDamageable damageable)
                 {
-                    SpellHelper.Turn(from, o);
-                    Owner.OnTarget((IDamageable)o);
+                    SpellHelper.Turn(from, damageable);
+                    Owner.OnTarget(damageable);
                 }
             }
 

@@ -81,7 +81,7 @@ namespace Server.Mobiles
         public override double AutoDispelChance => 1.0;
         public override bool BardImmune => true;
         public override Poison PoisonImmune => Poison.Lethal;
-        public override Poison HitPoison => (0.8 >= Utility.RandomDouble() ? Poison.Deadly : Poison.Lethal);
+        public override Poison HitPoison => 0.8 >= Utility.RandomDouble() ? Poison.Deadly : Poison.Lethal;
 
         public override int GetIdleSound() { return 1557; }
         public override int GetAngerSound() { return 1554; }
@@ -143,8 +143,8 @@ namespace Server.Mobiles
                     continue;
 
                 //Pets
-                if (m is BaseCreature && (((BaseCreature)m).GetMaster() is PlayerMobile))
-                    list.Add(m);
+                if (m is BaseCreature creature && creature.GetMaster() is PlayerMobile)
+                    list.Add(creature);
                 //players
                 else if (m is PlayerMobile)
                     list.Add(m);
@@ -174,68 +174,68 @@ namespace Server.Mobiles
 
             if (helm != null)
             {
-                if (helm is BaseArmor && ((BaseArmor)helm).GorgonLenseCharges > 0)
+                if (helm is BaseArmor armor && armor.GorgonLenseCharges > 0)
                 {
-                    perc = GetScaleEffectiveness(((BaseArmor)helm).GorgonLenseType);
+                    perc = GetScaleEffectiveness(armor.GorgonLenseType);
 
                     if (perc > Utility.Random(100))
                     {
-                        ((BaseArmor)helm).GorgonLenseCharges--;
+                        armor.GorgonLenseCharges--;
                         deflect = true;
                     }
                 }
-                else if (helm is BaseClothing && ((BaseClothing)helm).GorgonLenseCharges > 0)
+                else if (helm is BaseClothing clothing && clothing.GorgonLenseCharges > 0)
                 {
-                    perc = GetScaleEffectiveness(((BaseClothing)helm).GorgonLenseType);
+                    perc = GetScaleEffectiveness(clothing.GorgonLenseType);
 
                     if (perc > Utility.Random(100))
                     {
-                        ((BaseClothing)helm).GorgonLenseCharges--;
+                        clothing.GorgonLenseCharges--;
                         deflect = true;
                     }
                 }
             }
 
-            if (!deflect && shi != null && shi is BaseShield && ((BaseArmor)shi).GorgonLenseCharges > 0)
+            if (!deflect && shi != null && shi is BaseShield shield && shield.GorgonLenseCharges > 0)
             {
-                perc = GetScaleEffectiveness(((BaseArmor)shi).GorgonLenseType);
+                perc = GetScaleEffectiveness(shield.GorgonLenseType);
 
                 if (perc > Utility.Random(100))
                 {
-                    ((BaseArmor)shi).GorgonLenseCharges--;
+                    shield.GorgonLenseCharges--;
                     deflect = true;
                 }
             }
 
             if (!deflect && neck != null)
             {
-                if (neck is BaseArmor && ((BaseArmor)neck).GorgonLenseCharges > 0)
+                if (neck is BaseArmor armor && armor.GorgonLenseCharges > 0)
                 {
-                    perc = GetScaleEffectiveness(((BaseArmor)neck).GorgonLenseType);
+                    perc = GetScaleEffectiveness(armor.GorgonLenseType);
 
                     if (perc > Utility.Random(100))
                     {
-                        ((BaseArmor)neck).GorgonLenseCharges--;
+                        armor.GorgonLenseCharges--;
                         deflect = true;
                     }
                 }
-                else if (neck is BaseJewel && ((BaseJewel)neck).GorgonLenseCharges > 0)
+                else if (neck is BaseJewel jewel && jewel.GorgonLenseCharges > 0)
                 {
-                    perc = GetScaleEffectiveness(((BaseJewel)neck).GorgonLenseType);
+                    perc = GetScaleEffectiveness(jewel.GorgonLenseType);
 
                     if (perc > Utility.Random(100))
                     {
-                        ((BaseJewel)neck).GorgonLenseCharges--;
+                        jewel.GorgonLenseCharges--;
                         deflect = true;
                     }
                 }
-                else if (neck is BaseClothing && ((BaseClothing)neck).GorgonLenseCharges > 0)
+                else if (neck is BaseClothing clothing && clothing.GorgonLenseCharges > 0)
                 {
-                    perc = GetScaleEffectiveness(((BaseClothing)neck).GorgonLenseType);
+                    perc = GetScaleEffectiveness(clothing.GorgonLenseType);
 
                     if (perc > Utility.Random(100))
                     {
-                        ((BaseClothing)neck).GorgonLenseCharges--;
+                        clothing.GorgonLenseCharges--;
                         deflect = true;
                     }
                 }
@@ -243,13 +243,13 @@ namespace Server.Mobiles
 
             if (!deflect && ear != null)
             {
-                if (ear is BaseJewel && ((BaseJewel)ear).GorgonLenseCharges > 0)
+                if (ear is BaseJewel jewel && jewel.GorgonLenseCharges > 0)
                 {
-                    perc = GetScaleEffectiveness(((BaseJewel)ear).GorgonLenseType);
+                    perc = GetScaleEffectiveness(jewel.GorgonLenseType);
 
                     if (perc > Utility.Random(100))
                     {
-                        ((BaseJewel)ear).GorgonLenseCharges--;
+                        jewel.GorgonLenseCharges--;
                         deflect = true;
                     }
                 }
@@ -331,7 +331,7 @@ namespace Server.Mobiles
             if (map == null || target == null)
                 return;
 
-            if ((target is BaseCreature && ((BaseCreature)target).SummonMaster != this) || CanBeHarmful(target))
+            if (target is BaseCreature bc && bc.SummonMaster != this || CanBeHarmful(target))
             {
                 if (CheckBlockGaze(target))
                 {
@@ -366,11 +366,10 @@ namespace Server.Mobiles
                     target.Frozen = target.Blessed = true;
                     target.SolidHueOverride = 761;
 
-                    //clone.MoveToWorld(loc, target.Map);
                     Summon(clone, false, this, loc, 0, TimeSpan.FromMinutes(90));
 
-                    if (target is BaseCreature && !((BaseCreature)target).Summoned && ((BaseCreature)target).GetMaster() != null)
-                        ((BaseCreature)target).GetMaster().SendLocalizedMessage(1113281, null, 43); // Your pet has been petrified!
+                    if (target is BaseCreature creature && !creature.Summoned && creature.GetMaster() != null)
+                        creature.GetMaster().SendLocalizedMessage(1113281, null, 43); // Your pet has been petrified!
                     else
                         target.SendLocalizedMessage(1112768); // You have been turned to stone!!!
 
@@ -406,34 +405,34 @@ namespace Server.Mobiles
             }
 
             if (stones >= 5)
-                return;
-            else
             {
-                BaseCreature stone = GetRandomStoneMonster();
-
-                bool validLocation = false;
-                Point3D loc = Location;
-
-                for (int j = 0; !validLocation && j < 10; ++j)
-                {
-                    int x = X + Utility.Random(10) - 1;
-                    int y = Y + Utility.Random(10) - 1;
-                    int z = map.GetAverageZ(x, y);
-
-                    if (validLocation = map.CanFit(x, y, Z, 16, false, false))
-                        loc = new Point3D(x, y, Z);
-                    else if (validLocation = map.CanFit(x, y, z, 16, false, false))
-                        loc = new Point3D(x, y, z);
-                }
-
-                Summon(stone, false, this, loc, 0, TimeSpan.FromMinutes(90));
-                //stone.MoveToWorld(loc, map);
-                stone.Frozen = stone.Blessed = true;
-                stone.SolidHueOverride = 761;
-                stone.Combatant = null;
-
-                m_Helpers.Add(stone);
+                return;
             }
+
+            BaseCreature stone = GetRandomStoneMonster();
+
+            bool validLocation = false;
+            Point3D loc = Location;
+
+            for (int j = 0; !validLocation && j < 10; ++j)
+            {
+                int x = X + Utility.Random(10) - 1;
+                int y = Y + Utility.Random(10) - 1;
+                int z = map.GetAverageZ(x, y);
+
+                if (validLocation = map.CanFit(x, y, Z, 16, false, false))
+                    loc = new Point3D(x, y, Z);
+                else if (validLocation = map.CanFit(x, y, z, 16, false, false))
+                    loc = new Point3D(x, y, z);
+            }
+
+            Summon(stone, false, this, loc, 0, TimeSpan.FromMinutes(90));
+            //stone.MoveToWorld(loc, map);
+            stone.Frozen = stone.Blessed = true;
+            stone.SolidHueOverride = 761;
+            stone.Combatant = null;
+
+            m_Helpers.Add(stone);
 
             m_StoneDelay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 150));
         }
@@ -505,7 +504,7 @@ namespace Server.Mobiles
                         targ.Combatant = targ;
                     }
 
-                    if (targ is PlayerMobile || (targ is BaseCreature && ((BaseCreature)targ).GetMaster() is PlayerMobile))
+                    if (targ is PlayerMobile || targ is BaseCreature creature && creature.GetMaster() is PlayerMobile)
                     {
                         int d = (int)m.GetDistanceToSqrt(targ.Location);
 
@@ -557,7 +556,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Scales = reader.ReadInt();
 
@@ -599,8 +598,10 @@ namespace Server.Mobiles
                     target.Blessed = false;
                     m_Medusa.RemoveAffectedMobiles(target);
 
-                    if (target is BaseCreature && !((BaseCreature)target).Summoned && ((BaseCreature)target).GetMaster() != null)
-                        ((BaseCreature)target).GetMaster().SendLocalizedMessage(1113285, null, 43); // Beware! A statue of your pet has been created!
+                    if (target is BaseCreature bc && !bc.Summoned && bc.GetMaster() != null)
+                    {
+                        bc.GetMaster().SendLocalizedMessage(1113285, null, 43); // Beware! A statue of your pet has been created!
+                    }
 
                     BuffInfo.RemoveBuff(target, BuffIcon.MedusaStone);
                 }
@@ -616,7 +617,7 @@ namespace Server.Mobiles
                     {
                         int d = (int)clone.GetDistanceToSqrt(m.Location);
 
-                        if (m != null && m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile))
+                        if (m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile)
                         {
                             if (m.NetState != null)
                             {
@@ -752,7 +753,8 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             Delete();
         }
     }

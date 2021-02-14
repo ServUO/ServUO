@@ -64,10 +64,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BardingCrafter
         {
-            get
-            {
-                return m_BardingCrafter;
-            }
+            get => m_BardingCrafter;
             set
             {
                 m_BardingCrafter = value;
@@ -77,10 +74,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BardingExceptional
         {
-            get
-            {
-                return m_BardingExceptional;
-            }
+            get => m_BardingExceptional;
             set
             {
                 m_BardingExceptional = value;
@@ -90,10 +84,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public int BardingHP
         {
-            get
-            {
-                return m_BardingHP;
-            }
+            get => m_BardingHP;
             set
             {
                 m_BardingHP = value;
@@ -103,10 +94,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasBarding
         {
-            get
-            {
-                return m_HasBarding;
-            }
+            get => m_HasBarding;
             set
             {
                 m_HasBarding = value;
@@ -130,10 +118,7 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource BardingResource
         {
-            get
-            {
-                return m_BardingResource;
-            }
+            get => m_BardingResource;
             set
             {
                 m_BardingResource = value;
@@ -269,7 +254,7 @@ namespace Server.Mobiles
             {
                 if (HasBarding)
                 {
-                    int percent = (BardingExceptional ? 20 : 10);
+                    int percent = BardingExceptional ? 20 : 10;
                     int absorbed = AOS.Scale(amount, percent);
 
                     amount -= absorbed;

@@ -32,7 +32,7 @@ namespace Server.Gumps
         {
             var from = e.Mobile;
 
-            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || Engines.Fellowship.ForsakenFoesEvent.Instance.Running && from.Region.IsPartOf("BlackthornDungeon") || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
+            if ((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle") || Engines.Fellowship.ForsakenFoesEvent.Instance.Running && from.Region.IsPartOf("BlackthornDungeon") || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
             {
                 var menu = new StormLevelGump(from);
                 menu.BeginClose();
@@ -51,10 +51,10 @@ namespace Server.Gumps
             }
         }
 
-        private static readonly StormLevelEntry[] m_Entries = new StormLevelEntry[]
+        private static readonly StormLevelEntry[] m_Entries =
         {
             // Britain
-            new StormLevelEntry(1011028, new Point3D[]
+            new StormLevelEntry(1011028, new[]
             {
                 new Point3D(1522, 1757, 28),
                 new Point3D(1519, 1619, 10),
@@ -64,7 +64,7 @@ namespace Server.Gumps
             }),
 
             // Trinsic
-            new StormLevelEntry(1011029, new Point3D[]
+            new StormLevelEntry(1011029, new[]
             {
                 new Point3D(2005, 2754, 30),
                 new Point3D(1993, 2827, 0),
@@ -74,7 +74,7 @@ namespace Server.Gumps
             }),
 
             // Vesper
-            new StormLevelEntry(1011030, new Point3D[]
+            new StormLevelEntry(1011030, new[]
             {
                 new Point3D(2973, 891, 0),
                 new Point3D(3003, 776, 0),
@@ -84,7 +84,7 @@ namespace Server.Gumps
             }),
 
             // Minoc
-            new StormLevelEntry(1011031, new Point3D[]
+            new StormLevelEntry(1011031, new[]
             {
                 new Point3D(2498, 392, 0),
                 new Point3D(2433, 541, 0),
@@ -94,7 +94,7 @@ namespace Server.Gumps
             }),
 
             // Jhelom ==
-            new StormLevelEntry(1011343, new Point3D[]
+            new StormLevelEntry(1011343, new[]
             {
                 new Point3D(490, 1166, 0),
                 new Point3D(652, 1098, 0),
@@ -104,7 +104,7 @@ namespace Server.Gumps
             }),
 
             // Moonglow
-            new StormLevelEntry(1011344, new Point3D[]
+            new StormLevelEntry(1011344, new[]
             {
                 new Point3D(4444, 1061, 0),
                 new Point3D(4443, 1066, 0),
@@ -114,7 +114,7 @@ namespace Server.Gumps
             }),
 
             // Yew
-            new StormLevelEntry(1011032, new Point3D[]
+            new StormLevelEntry(1011032, new[]
             {
                 new Point3D(490, 1166, 0),
                 new Point3D(652, 1098, 0),
@@ -124,17 +124,17 @@ namespace Server.Gumps
             }),
 
             // Magincia
-            new StormLevelEntry(1016172, new Point3D[]
+            new StormLevelEntry(1016172, new[]
             {
                 new Point3D(3669, 2099, 20),
                 new Point3D(3689, 2235, 20),
                 new Point3D(3680, 2067, 5),
                 new Point3D(3772, 2116, 20),
-                new Point3D(3660, 2122, 20),
+                new Point3D(3660, 2122, 20)
             }),
 
             // Cove
-            new StormLevelEntry(1011033, new Point3D[]
+            new StormLevelEntry(1011033, new[]
             {
                 new Point3D(2230, 1159, 0),
                 new Point3D(2218, 1203, 0),
@@ -144,7 +144,7 @@ namespace Server.Gumps
             }),
             
             // Papua
-            new StormLevelEntry(1011057, new Point3D[]
+            new StormLevelEntry(1011057, new[]
             {
                 new Point3D(5720, 3109, -1),
                 new Point3D(5677, 3176, -3),
@@ -154,7 +154,7 @@ namespace Server.Gumps
             }),
 
             // Delucia
-            new StormLevelEntry(1011058, new Point3D[]
+            new StormLevelEntry(1011058, new[]
             {
                 new Point3D(5216, 4033, 37),
                 new Point3D(5262, 4049, 37),
@@ -164,7 +164,7 @@ namespace Server.Gumps
             }),
 
             // Skara Brae
-            new StormLevelEntry(1011347, new Point3D[]
+            new StormLevelEntry(1011347, new[]
             {
                 new Point3D(5216, 4033, 37),
                 new Point3D(5262, 4049, 37),
@@ -174,7 +174,7 @@ namespace Server.Gumps
             }),
 
             // Serpent's Hold
-            new StormLevelEntry(1011348, new Point3D[]
+            new StormLevelEntry(1011348, new[]
             {
                 new Point3D(5216, 4033, 37),
                 new Point3D(5262, 4049, 37),

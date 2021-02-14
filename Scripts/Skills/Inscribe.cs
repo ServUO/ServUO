@@ -2,6 +2,7 @@ using Server.Items;
 using Server.Targeting;
 using System;
 using System.Collections;
+using Server.Engines.Khaldun;
 
 namespace Server.SkillHandlers
 {
@@ -97,9 +98,9 @@ namespace Server.SkillHandlers
                         SetUser(book, from);
                     }
                 }
-                else if (targeted is Engines.Khaldun.MysteriousBook)
+                else if (targeted is MysteriousBook mBook)
                 {
-                    ((Engines.Khaldun.MysteriousBook)targeted).OnInscribeTarget(from);
+                    mBook.OnInscribeTarget(from);
                 }
                 else
                 {

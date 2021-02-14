@@ -17,8 +17,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
-            get { return m_Level; }
-            set { m_Level = value; }
+            get => m_Level;
+            set => m_Level = value;
         }
 
         public override int DefaultGumpID => 1156;
@@ -35,10 +35,8 @@ namespace Server.Items
         {
             bool canDrop = base.OnDragDropInto(from, item, p);
 
-            if (canDrop && item is ChickenLizardEgg)
+            if (canDrop && item is ChickenLizardEgg egg)
             {
-                ChickenLizardEgg egg = (ChickenLizardEgg)item;
-
                 if (egg.TotalIncubationTime > TimeSpan.FromHours(120))
                     egg.BurnEgg();
                 else
@@ -55,10 +53,8 @@ namespace Server.Items
         {
             bool canDrop = base.OnDragDrop(from, item);
 
-            if (canDrop && item is ChickenLizardEgg)
+            if (canDrop && item is ChickenLizardEgg egg)
             {
-                ChickenLizardEgg egg = (ChickenLizardEgg)item;
-
                 if (egg.TotalIncubationTime > TimeSpan.FromHours(120))
                     egg.BurnEgg();
                 else
@@ -100,8 +96,8 @@ namespace Server.Items
 
             foreach (Item item in Items)
             {
-                if (item is ChickenLizardEgg)
-                    ((ChickenLizardEgg)item).CheckStatus();
+                if (item is ChickenLizardEgg egg)
+                    egg.CheckStatus();
             }
         }
 
@@ -118,10 +114,10 @@ namespace Server.Items
 
         public static void IncreaseStage_OnTarget(Mobile from, object targeted)
         {
-            if (targeted is ChickenLizardEgg)
+            if (targeted is ChickenLizardEgg egg)
             {
-                ((ChickenLizardEgg)targeted).TotalIncubationTime += TimeSpan.FromHours(24);
-                ((ChickenLizardEgg)targeted).CheckStatus();
+                egg.TotalIncubationTime += TimeSpan.FromHours(24);
+                egg.CheckStatus();
             }
         }
 
@@ -133,7 +129,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write((int)m_Level);
@@ -145,8 +140,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Level = (SecureLevel)reader.ReadInt();
 

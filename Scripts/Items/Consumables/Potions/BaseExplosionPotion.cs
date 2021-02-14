@@ -104,7 +104,7 @@ namespace Server.Items
 
             bool damageThrower = false;
 
-            if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
+            if (from.Target is ThrowTarget target && target.Potion == this)
             {
                 Target.Cancel(from);
             }
@@ -178,17 +178,13 @@ namespace Server.Items
                 Point3D loc;
                 Map map;
 
-                if (parent is Item)
+                if (parent is Item item)
                 {
-                    Item item = (Item)parent;
-
                     loc = item.GetWorldLocation();
                     map = item.Map;
                 }
-                else if (parent is Mobile)
+                else if (parent is Mobile m)
                 {
-                    Mobile m = (Mobile)parent;
-
                     loc = m.Location;
                     map = m.Map;
                 }
@@ -202,13 +198,13 @@ namespace Server.Items
             }
             else
             {
-                if (parent is Item)
+                if (parent is Item item)
                 {
-                    ((Item)parent).PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
+                    item.PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
                 }
-                else if (parent is Mobile)
+                else if (parent is Mobile mobile)
                 {
-                    ((Mobile)parent).PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
+                    mobile.PublicOverheadMessage(MessageType.Regular, 0x22, false, timer.ToString());
                 }
 
                 states[1] = timer - 1;

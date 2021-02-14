@@ -46,7 +46,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.Rich);
             AddLoot(LootPack.Average, 2);
             AddLoot(LootPack.MedScrolls, 2);
-            AddLoot(LootPack.RandomLootItem(new System.Type[] { typeof(LichFormScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(VengefulSpiritScroll), typeof(WitherScroll) }, 25.0, 1, false, true));
+            AddLoot(LootPack.RandomLootItem(new[] { typeof(LichFormScroll), typeof(PoisonStrikeScroll), typeof(StrangleScroll), typeof(VengefulSpiritScroll), typeof(WitherScroll) }, 25.0, 1, false, true));
         }
 
         public Daemon(Serial serial)
@@ -77,7 +77,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -92,8 +92,8 @@ namespace Server.Items
 
             Point3D loc = new Point3D(p);
 
-            if (p is StaticTarget)
-                loc.Z -= TileData.ItemTable[((StaticTarget)p).ItemID].CalcHeight;	/* NOTE: OSI does not properly normalize Z positioning here.
+            if (p is StaticTarget target)
+                loc.Z -= TileData.ItemTable[target.ItemID].CalcHeight;	/* NOTE: OSI does not properly normalize Z positioning here.
             * A side affect is that you can only place on floors (due to the CanFit call).
             * That functionality may be desired. And so, it's included in this script.
             */

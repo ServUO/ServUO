@@ -5,11 +5,12 @@ namespace Server.Mobiles
     [CorpseName("an ophidian corpse")]
     public class OphidianKnight : BaseCreature
     {
-        private static readonly string[] m_Names = new string[]
+        private static readonly string[] m_Names =
         {
             "an ophidian knight-errant",
             "an ophidian avenger"
         };
+
         [Constructable]
         public OphidianKnight()
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -71,7 +72,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

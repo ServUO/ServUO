@@ -67,7 +67,7 @@ namespace Server.Engines.Plants
 
         Ice = 0x2000000,
         Dark = 0x4000000,
-        Bright = 0x8000000,
+        Bright = 0x8000000
     }
 
     public class PlantPigmentHueInfo
@@ -153,7 +153,7 @@ namespace Server.Engines.Plants
 
         public static bool IsMixable(PlantPigmentHue hue)
         {
-            return (hue <= PlantPigmentHue.White && hue != PlantPigmentHue.None);
+            return hue <= PlantPigmentHue.White && hue != PlantPigmentHue.None;
         }
 
         public static bool IsBright(PlantPigmentHue hue)
@@ -179,17 +179,17 @@ namespace Server.Engines.Plants
 
             if (first == PlantPigmentHue.Plain)
                 return second | PlantPigmentHue.Bright;
-            else if (second == PlantPigmentHue.Plain)
+            if (second == PlantPigmentHue.Plain)
                 return first | PlantPigmentHue.Bright;
 
             if (first == PlantPigmentHue.White)
                 return second | PlantPigmentHue.Ice;
-            else if (second == PlantPigmentHue.White)
+            if (second == PlantPigmentHue.White)
                 return first | PlantPigmentHue.Ice;
 
             if (first == PlantPigmentHue.Black)
                 return second | PlantPigmentHue.Dark;
-            else if (second == PlantPigmentHue.Black)
+            if (second == PlantPigmentHue.Black)
                 return first | PlantPigmentHue.Dark;
 
             bool firstPrimary = IsPrimary(first);

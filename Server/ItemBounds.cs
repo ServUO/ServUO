@@ -17,13 +17,13 @@ namespace Server
 
 			if (File.Exists("Data/Binary/Bounds.bin"))
 			{
-				using (var fs = new FileStream("Data/Binary/Bounds.bin", FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (FileStream fs = new FileStream("Data/Binary/Bounds.bin", FileMode.Open, FileAccess.Read, FileShare.Read))
 				{
-					var bin = new BinaryReader(fs);
+					BinaryReader bin = new BinaryReader(fs);
 
-					var count = Math.Min(m_Bounds.Length, (int)(fs.Length / 8));
+					int count = Math.Min(m_Bounds.Length, (int)(fs.Length / 8));
 
-					for (var i = 0; i < count; ++i)
+					for (int i = 0; i < count; ++i)
 					{
 						int xMin = bin.ReadInt16();
 						int yMin = bin.ReadInt16();

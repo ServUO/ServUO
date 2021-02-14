@@ -8,14 +8,14 @@ namespace Server.Engines.VvV
 {
     public class VvVBattleStatusGump : BaseGump
     {
-        public VvVBattle Battle { get; set; }
+        public VvVBattle Battle { get; }
 
         public override int GetTypeID()
         {
             return 0xF3ECC;
         }
 
-        public VvVBattleStatusGump(PlayerMobile pm, VvVBattle battle) : base(pm, 50, 50)
+        public VvVBattleStatusGump(PlayerMobile pm, VvVBattle battle) : base(pm)
         {
             Battle = battle;
         }
@@ -69,20 +69,8 @@ namespace Server.Engines.VvV
                 AddBackground(145, 271, (int)Math.Min(216, (t.Score * offset)), 12, 30584);
             }
 
-            TimeSpan left = (Battle.StartTime + TimeSpan.FromMinutes(VvVBattle.Duration)) - DateTime.UtcNow;
+            TimeSpan left = Battle.StartTime + TimeSpan.FromMinutes(VvVBattle.Duration) - DateTime.UtcNow;
             AddHtml(210, 21, 100, 20, "<basefont color=#FF0000>" + string.Format("{0:mm\\:ss}", left), false, false);
         }
-
-        /*public void Refresh(bool recompile = true)
-        {
-            Entries.Clear();
-            Entries.TrimExcess();
-            AddGumpLayout();
-
-            if (User.NetState != null)
-                User.NetState.RemoveGump(this);
-
-            User.SendGump(this, false);
-        }*/
     }
 }

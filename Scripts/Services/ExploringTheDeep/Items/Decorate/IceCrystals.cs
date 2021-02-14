@@ -1,10 +1,10 @@
-﻿namespace Server.Items
+namespace Server.Items
 {
     public class IceCrystals : Item
     {
         public override int LabelNumber => 1028710;  // crystal
 
-        private static readonly int[] m_ItemIDs = new int[]
+        private static readonly int[] m_ItemIDs =
         {
             0x2208, 0x221D, 0x2FDC, 0x2228, 0x2209, 0x2FDD, 0x2FDC
         };
@@ -31,7 +31,7 @@
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

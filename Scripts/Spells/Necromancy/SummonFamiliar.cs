@@ -54,7 +54,7 @@ namespace Server.Spells.Necromancy
             FinishSequence();
         }
 
-        private static readonly SummonFamiliarEntry[] m_Entries = new SummonFamiliarEntry[]
+        private static readonly SummonFamiliarEntry[] m_Entries =
         {
             new SummonFamiliarEntry(typeof(HordeMinionFamiliar), 1060146, 30.0, 30.0), // Horde Minion
             new SummonFamiliarEntry(typeof(ShadowWispFamiliar), 1060142, 50.0, 50.0), // Shadow Wisp
@@ -134,8 +134,8 @@ namespace Server.Spells.Necromancy
 
                 AddButton(27, 53 + (i * 21), 9702, 9703, i + 1, GumpButtonType.Reply, 0);
 
-                if (name is int)
-                    AddHtmlLocalized(50, 51 + (i * 21), 150, 20, (int)name, enabled ? EnabledColor16 : DisabledColor16, false, false);
+                if (name is int iName)
+                    AddHtmlLocalized(50, 51 + (i * 21), 150, 20, iName, enabled ? EnabledColor16 : DisabledColor16, false, false);
                 else if (name is string)
                     AddHtml(50, 51 + (i * 21), 150, 20, string.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", enabled ? EnabledColor32 : DisabledColor32, name), false, false);
             }

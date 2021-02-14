@@ -12,13 +12,13 @@ namespace Server.Items
         private ItemQuality _Quality;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public CraftResource Resource { get { return _Resource; } set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
+        public CraftResource Resource { get => _Resource; set { _Resource = value; _Resource = value; Hue = CraftResources.GetHue(_Resource); InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Crafter { get { return _Crafter; } set { _Crafter = value; InvalidateProperties(); } }
+        public Mobile Crafter { get => _Crafter; set { _Crafter = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public ItemQuality Quality { get { return _Quality; } set { _Quality = value; InvalidateProperties(); } }
+        public ItemQuality Quality { get => _Quality; set { _Quality = value; InvalidateProperties(); } }
 
         public bool PlayerConstructed => true;
 
@@ -29,7 +29,7 @@ namespace Server.Items
         public KeyRing()
             : base(0x1011)
         {
-            Weight = 1.0; // They seem to have no weight on OSI ?!
+            Weight = 1.0; 
 
             m_Keys = new List<Key>();
         }
@@ -55,17 +55,16 @@ namespace Server.Items
                 from.SendLocalizedMessage(501689); // Only non-blank keys can be put on a keyring.
                 return false;
             }
-            else if (Keys.Count >= MaxKeys)
+
+            if (Keys.Count >= MaxKeys)
             {
                 from.SendLocalizedMessage(1008138); // This keyring is full.
                 return false;
             }
-            else
-            {
-                Add(key);
-                from.SendLocalizedMessage(501691); // You put the key on the keyring.
-                return true;
-            }
+
+            Add(key);
+            from.SendLocalizedMessage(501691); // You put the key on the keyring.
+            return true;
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -256,14 +255,14 @@ namespace Server.Items
                     m_KeyRing.Open(from);
                     from.SendLocalizedMessage(501685); // You open the keyring.
                 }
-                else if (targeted is ILockable)
+                else if (targeted is ILockable o)
                 {
-                    ILockable o = (ILockable)targeted;
-
                     foreach (Key key in m_KeyRing.Keys)
                     {
                         if (key.UseOn(from, o))
+                        {
                             return;
+                        }
                     }
 
                     from.SendLocalizedMessage(1008140); // You do not have a key for that.

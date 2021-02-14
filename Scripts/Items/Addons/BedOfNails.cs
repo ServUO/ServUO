@@ -19,8 +19,8 @@ namespace Server.Items
         {
             bool allow = base.OnMoveOver(m);
 
-            if (allow && Addon is BedOfNailsAddon)
-                ((BedOfNailsAddon)Addon).OnMoveOver(m);
+            if (allow && Addon is BedOfNailsAddon addon)
+                addon.OnMoveOver(m);
 
             return allow;
         }

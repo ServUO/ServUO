@@ -40,7 +40,7 @@ namespace Server.Engines.Craft
 
         public override void OnResponse(Network.NetState sender, RelayInfo info)
         {
-            bool makersMark = (info.ButtonID == 1);
+            bool makersMark = info.ButtonID == 1;
 
             if (makersMark)
                 m_From.SendLocalizedMessage(501808); // You mark the item.

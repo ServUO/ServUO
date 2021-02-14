@@ -19,7 +19,7 @@ namespace Server.Engines.VendorSearching
         public static string FilePath = Path.Combine("Saves/Misc", "VendorSearch.bin");
         public static StringList StringList => StringList.Localization;
 
-        public static List<SearchItem> DoSearchAuction(Mobile m, SearchCriteria criteria)
+        public static List<SearchItem> DoSearchAuction(SearchCriteria criteria)
         {
             if (criteria == null || Auction.Auction.Auctions == null || Auction.Auction.Auctions.Count == 0)
             {
@@ -27,7 +27,7 @@ namespace Server.Engines.VendorSearching
             }
 
             List<SearchItem> list = new List<SearchItem>();
-            bool excludefel = criteria.Details.FirstOrDefault(d => d.Attribute is Misc && (Misc)d.Attribute == Misc.ExcludeFel) != null;
+            bool excludefel = criteria.Details.FirstOrDefault(d => d.Attribute is Misc misc && misc == Misc.ExcludeFel) != null;
 
             foreach (Auction.Auction pv in Auction.Auction.Auctions.Where(pv => pv.AuctionItem != null &&
                                                                                 pv.AuctionItem.Map != Map.Internal &&
@@ -47,13 +47,13 @@ namespace Server.Engines.VendorSearching
             return list;
         }
 
-        public static List<SearchItem> DoSearch(Mobile m, SearchCriteria criteria)
+        public static List<SearchItem> DoSearch(SearchCriteria criteria)
         {
             if (criteria == null || PlayerVendor.PlayerVendors == null || PlayerVendor.PlayerVendors.Count == 0)
                 return null;
 
             List<SearchItem> list = new List<SearchItem>();
-            bool excludefel = criteria.Details.FirstOrDefault(d => d.Attribute is Misc && (Misc)d.Attribute == Misc.ExcludeFel) != null;
+            bool excludefel = criteria.Details.FirstOrDefault(d => d.Attribute is Misc misc && misc == Misc.ExcludeFel) != null;
 
             foreach (PlayerVendor pv in PlayerVendor.PlayerVendors.Where(pv => pv.Map != Map.Internal &&
                                                                                pv.Map != null &&
@@ -74,9 +74,9 @@ namespace Server.Engines.VendorSearching
                     {
                         price = vendorItem.Price;
                     }
-                    else if (item.Parent is Container)
+                    else if (item.Parent is Container parent)
                     {
-                        vendorItem = GetParentVendorItem(pv, (Container)item.Parent);
+                        vendorItem = GetParentVendorItem(pv, parent);
 
                         if (vendorItem != null)
                         {
@@ -109,9 +109,9 @@ namespace Server.Engines.VendorSearching
 
             if (vendorItem == null)
             {
-                if (parent.Parent is Container)
+                if (parent.Parent is Container container)
                 {
-                    return GetParentVendorItem(pv, (Container)parent.Parent);
+                    return GetParentVendorItem(pv, container);
                 }
             }
 
@@ -120,9 +120,9 @@ namespace Server.Engines.VendorSearching
 
         public static bool CheckMatch(Item item, int price, SearchCriteria searchCriteria)
         {
-            if (item is CommodityDeed && ((CommodityDeed)item).Commodity != null)
+            if (item is CommodityDeed deed && deed.Commodity != null)
             {
-                item = ((CommodityDeed)item).Commodity;
+                item = deed.Commodity;
             }
 
             if (searchCriteria.MinPrice > -1 && price < searchCriteria.MinPrice)
@@ -135,10 +135,8 @@ namespace Server.Engines.VendorSearching
             {
                 string name;
 
-                if (item is CommodityDeed && ((CommodityDeed)item).Commodity is ICommodity)
+                if (item is CommodityDeed commodityDeed && commodityDeed.Commodity is ICommodity commodity)
                 {
-                    ICommodity commodity = (ICommodity)((CommodityDeed)item).Commodity;
-
                     if (!string.IsNullOrEmpty(commodity.Description.String))
                     {
                         name = commodity.Description.String;
@@ -180,40 +178,40 @@ namespace Server.Engines.VendorSearching
                 if (value == 0)
                     value = 1;
 
-                if (o is AosAttribute)
+                if (o is AosAttribute attribute)
                 {
                     AosAttributes attrs = RunicReforging.GetAosAttributes(item);
 
-                    if (attrs == null || attrs[(AosAttribute)o] < value)
+                    if (attrs == null || attrs[attribute] < value)
                         return false;
                 }
-                else if (o is AosWeaponAttribute)
+                else if (o is AosWeaponAttribute weaponAttribute)
                 {
                     AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(item);
 
-                    if ((AosWeaponAttribute)o == AosWeaponAttribute.MageWeapon)
+                    if (weaponAttribute == AosWeaponAttribute.MageWeapon)
                     {
-                        if (attrs == null || attrs[(AosWeaponAttribute)o] == 0 || attrs[(AosWeaponAttribute)o] > Math.Max(0, 30 - value))
+                        if (attrs == null || attrs[weaponAttribute] == 0 || attrs[weaponAttribute] > Math.Max(0, 30 - value))
                             return false;
                     }
-                    else if (attrs == null || attrs[(AosWeaponAttribute)o] < value)
+                    else if (attrs == null || attrs[weaponAttribute] < value)
                         return false;
                 }
-                else if (o is SAAbsorptionAttribute)
+                else if (o is SAAbsorptionAttribute absorptionAttribute)
                 {
                     SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(item);
 
-                    if (attrs == null || attrs[(SAAbsorptionAttribute)o] < value)
+                    if (attrs == null || attrs[absorptionAttribute] < value)
                         return false;
                 }
-                else if (o is AosArmorAttribute)
+                else if (o is AosArmorAttribute armorAttribute)
                 {
                     AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(item);
 
-                    if (attrs == null || attrs[(AosArmorAttribute)o] < value)
+                    if (attrs == null || attrs[armorAttribute] < value)
                         return false;
                 }
-                else if (o is SkillName)
+                else if (o is SkillName skillName)
                 {
                     if (detail.Category != Category.RequiredSkill)
                     {
@@ -228,7 +226,7 @@ namespace Server.Engines.VendorSearching
                                 SkillName check;
                                 double bonus;
 
-                                if (skillbonuses.GetValues(i, out check, out bonus) && check == (SkillName)o && bonus >= value)
+                                if (skillbonuses.GetValues(i, out check, out bonus) && check == skillName && bonus >= value)
                                 {
                                     hasSkill = true;
                                     break;
@@ -238,9 +236,9 @@ namespace Server.Engines.VendorSearching
                             if (!hasSkill)
                                 return false;
                         }
-                        else if (item is SpecialScroll && value >= 105)
+                        else if (item is SpecialScroll scroll && value >= 105)
                         {
-                            if (((SpecialScroll)item).Skill != (SkillName)o || ((SpecialScroll)item).Value < value)
+                            if (scroll.Skill != skillName || scroll.Value < value)
                                 return false;
                         }
                         else
@@ -248,7 +246,7 @@ namespace Server.Engines.VendorSearching
                             return false;
                         }
                     }
-                    else if (!(item is BaseWeapon) || ((BaseWeapon)item).DefSkill != (SkillName)o)
+                    else if (!(item is BaseWeapon) || ((BaseWeapon)item).DefSkill != skillName)
                     {
                         return false;
                     }
@@ -257,18 +255,16 @@ namespace Server.Engines.VendorSearching
                 {
                     return false;
                 }
-                else if (o is AosElementAttribute)
+                else if (o is AosElementAttribute elementAttribute)
                 {
-                    if (item is BaseWeapon)
+                    if (item is BaseWeapon wep)
                     {
-                        BaseWeapon wep = item as BaseWeapon;
-
                         if (detail.Category == Category.DamageType)
                         {
                             int phys, fire, cold, pois, nrgy, chaos, direct;
                             wep.GetDamageTypes(null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
 
-                            switch ((AosElementAttribute)o)
+                            switch (elementAttribute)
                             {
                                 case AosElementAttribute.Physical: if (phys < value) return false; break;
                                 case AosElementAttribute.Fire: if (fire < value) return false; break;
@@ -281,7 +277,7 @@ namespace Server.Engines.VendorSearching
                         }
                         else
                         {
-                            switch ((AosElementAttribute)o)
+                            switch (elementAttribute)
                             {
                                 case AosElementAttribute.Physical:
                                     if (wep.WeaponAttributes.ResistPhysicalBonus < value) return false;
@@ -301,11 +297,9 @@ namespace Server.Engines.VendorSearching
                             }
                         }
                     }
-                    else if (item is BaseArmor && detail.Category == Category.Resists)
+                    else if (item is BaseArmor armor && detail.Category == Category.Resists)
                     {
-                        BaseArmor armor = item as BaseArmor;
-
-                        switch ((AosElementAttribute)o)
+                        switch (elementAttribute)
                         {
                             case AosElementAttribute.Physical:
                                 if (armor.PhysicalResistance < value) return false;
@@ -328,7 +322,7 @@ namespace Server.Engines.VendorSearching
                     {
                         AosElementAttributes attrs = RunicReforging.GetElementalAttributes(item);
 
-                        if (attrs == null || attrs[(AosElementAttribute)o] < value)
+                        if (attrs == null || attrs[elementAttribute] < value)
                         {
                             return false;
                         }
@@ -338,9 +332,9 @@ namespace Server.Engines.VendorSearching
                         return false;
                     }
                 }
-                else if (o is Misc)
+                else if (o is Misc misc)
                 {
-                    switch ((Misc)o)
+                    switch (misc)
                     {
                         case Misc.ExcludeFel: break;
                         case Misc.GargoyleOnly:
@@ -403,17 +397,15 @@ namespace Server.Engines.VendorSearching
                             break;
                     }
                 }
-                else if (o is string)
+                else if (o is string s)
                 {
-                    string str = o as string;
-
-                    if (str == "WeaponVelocity" && (!(item is BaseRanged) || ((BaseRanged)item).Velocity < value))
+                    if (s == "WeaponVelocity" && (!(item is BaseRanged) || ((BaseRanged)item).Velocity < value))
                         return false;
 
-                    if (str == "SearingWeapon" && (!(item is BaseWeapon) || !((BaseWeapon)item).SearingWeapon))
+                    if (s == "SearingWeapon" && (!(item is BaseWeapon) || !((BaseWeapon)item).SearingWeapon))
                         return false;
 
-                    if (str == "ArtifactRarity" && (!(item is IArtifact) || ((IArtifact)item).ArtifactRarity < value))
+                    if (s == "ArtifactRarity" && (!(item is IArtifact) || ((IArtifact)item).ArtifactRarity < value))
                     {
                         return false;
                     }
@@ -425,9 +417,9 @@ namespace Server.Engines.VendorSearching
 
         private static bool CheckSlayer(Item item, object o)
         {
-            if (o is TalismanSlayerName && (TalismanSlayerName)o == TalismanSlayerName.Undead)
+            if (o is TalismanSlayerName name && name == TalismanSlayerName.Undead)
             {
-                if (!(item is ISlayer) || ((((ISlayer)item).Slayer != SlayerName.Silver && ((ISlayer)item).Slayer2 != SlayerName.Silver)))
+                if (!(item is ISlayer) || ((ISlayer)item).Slayer != SlayerName.Silver && ((ISlayer)item).Slayer2 != SlayerName.Silver)
                 {
                     if (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != TalismanSlayerName.Undead)
                     {
@@ -437,12 +429,12 @@ namespace Server.Engines.VendorSearching
             }
             else
             {
-                if (o is SlayerName && (!(item is ISlayer) || (((ISlayer)item).Slayer != (SlayerName)o && ((ISlayer)item).Slayer2 != (SlayerName)o)))
+                if (o is SlayerName slayerName && (!(item is ISlayer) || ((ISlayer)item).Slayer != slayerName && ((ISlayer)item).Slayer2 != slayerName))
                 {
                     return false;
                 }
 
-                if (o is TalismanSlayerName && (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != (TalismanSlayerName)o))
+                if (o is TalismanSlayerName talismanSlayerName && (!(item is BaseTalisman) || ((BaseTalisman)item).Slayer != talismanSlayerName))
                 {
                     return false;
                 }
@@ -460,14 +452,14 @@ namespace Server.Engines.VendorSearching
 
         private static bool CheckKeyword(string searchstring, Item item)
         {
-            if (item is CommodityDeed && ((CommodityDeed)item).Commodity != null)
+            if (item is CommodityDeed deed && deed.Commodity != null)
             {
-                item = ((CommodityDeed)item).Commodity;
+                item = deed.Commodity;
             }
 
-            if (item is IResource)
+            if (item is IResource resource)
             {
-                string resName = CraftResources.GetName(((IResource)item).Resource);
+                string resName = CraftResources.GetName(resource.Resource);
 
                 if (resName.ToLower().IndexOf(searchstring.ToLower()) >= 0)
                 {
@@ -475,10 +467,8 @@ namespace Server.Engines.VendorSearching
                 }
             }
 
-            if (item is ICommodity)
+            if (item is ICommodity commodity)
             {
-                ICommodity commodity = (ICommodity)item;
-
                 string name = commodity.Description.String;
 
                 if (string.IsNullOrEmpty(name) && commodity.Description.Number > 0)
@@ -585,10 +575,10 @@ namespace Server.Engines.VendorSearching
                 {
                     e.Mobile.BeginTarget(-1, false, TargetFlags.None, (m, targeted) =>
                         {
-                            if (targeted is Item)
+                            if (targeted is Item item)
                             {
-                                Console.WriteLine(GetItemName((Item)targeted));
-                                e.Mobile.SendMessage(GetItemName((Item)targeted));
+                                Console.WriteLine(GetItemName(item));
+                                e.Mobile.SendMessage(GetItemName(item));
                             }
                         });
                 });
@@ -762,8 +752,8 @@ namespace Server.Engines.VendorSearching
 
             foreach (Item item in c.Items)
             {
-                if (item is Container && !IsSearchableContainer(item.GetType()))
-                    GetItems((Container)item, list);
+                if (item is Container container && !IsSearchableContainer(container.GetType()))
+                    GetItems(container, list);
                 else
                     list.Add(item);
             }
@@ -776,7 +766,7 @@ namespace Server.Engines.VendorSearching
             if (r.GetLogoutDelay(m) == TimeSpan.Zero)
                 return true;
 
-            return r is GuardedRegion && !((GuardedRegion)r).Disabled || r is HouseRegion && ((HouseRegion)r).House.IsFriend(m);
+            return r is GuardedRegion guardRegion && !guardRegion.Disabled || r is HouseRegion houseRegion && houseRegion.House.IsFriend(m);
         }
 
         private static bool IsSearchableContainer(Type type)
@@ -789,7 +779,7 @@ namespace Server.Engines.VendorSearching
             typeof(BaseQuiver),         typeof(BaseResourceSatchel),
             typeof(FishBowl),           typeof(FirstAidBelt),
             typeof(Plants.SeedBox),     typeof(BaseSpecialScrollBook),
-            typeof(GardenShedBarrel),   typeof(JewelryBox),
+            typeof(GardenShedBarrel),   typeof(JewelryBox)
         };
     }
 
@@ -842,15 +832,6 @@ namespace Server.Engines.VendorSearching
         NotBrittle,
         Antique,
         NotAntique
-    }
-
-    public enum SpecialSearch
-    {
-        PowerScroll,
-        StatScroll,
-        Transcendence,
-        Alacrity,
-        UsesRemaining
     }
 
     public class SearchCategory
@@ -932,17 +913,17 @@ namespace Server.Engines.VendorSearching
         {
             SearchDetail d = Details.FirstOrDefault(det => det.Attribute == o);
 
-            if (o is Layer)
+            if (o is Layer layerObject)
             {
-                SearchDetail layer = Details.FirstOrDefault(det => det.Attribute is Layer && (Layer)det.Attribute != (Layer)o);
+                SearchDetail layer = Details.FirstOrDefault(det => det.Attribute is Layer attribute && attribute != (Layer)o);
 
                 if (layer != null)
                 {
                     Details.Remove(layer);
                 }
 
-                Details.Add(new SearchDetail(o, name, propname, value, cat));
-                SearchType = (Layer)o;
+                Details.Add(new SearchDetail(layerObject, name, propname, value, cat));
+                SearchType = layerObject;
             }
             else if (d == null)
             {
@@ -1027,7 +1008,7 @@ namespace Server.Engines.VendorSearching
             TalismanSlayerName,
             TalismanSkill,
             TalismanRemoval,
-            Int,
+            Int
         }
 
         public object Attribute { get; set; }

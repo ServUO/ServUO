@@ -7,7 +7,6 @@ namespace Server.Mobiles
     {
         [Constructable]
         public SerpentsFangHighExecutioner()
-            : base()
         {
             Name = "Black Order High Executioner";
             Title = "of the Serpent's Fang Sect";
@@ -62,7 +61,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

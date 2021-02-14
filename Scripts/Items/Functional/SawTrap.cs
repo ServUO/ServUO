@@ -49,10 +49,7 @@ namespace Server.Items
 
                 return SawTrapType.NorthWall;
             }
-            set
-            {
-                ItemID = GetBaseID(value);
-            }
+            set => ItemID = GetBaseID(value);
         }
         public override bool PassivelyTriggered => false;
         public override TimeSpan PassiveTriggerDelay => TimeSpan.Zero;
@@ -91,15 +88,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

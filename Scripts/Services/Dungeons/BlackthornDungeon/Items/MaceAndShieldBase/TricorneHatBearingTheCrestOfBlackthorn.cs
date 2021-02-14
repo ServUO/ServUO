@@ -6,7 +6,6 @@ namespace Server.Items
 
         [Constructable]
         public TricorneHatBearingTheCrestOfBlackthorn2()
-            : base()
         {
             ReforgedSuffix = ReforgedSuffix.Blackthorn;
             WeaponAttributes.HitLowerDefend = 30;
@@ -38,12 +37,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
-
-            if (version == 0)
-            {
-                xWeaponAttributesDeserializeHelper(reader, this);
-            }
+            reader.ReadInt();
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-
-/*
- * Called in MondainsQuestGump.cs to show simple string for simple quest objectives.
- */
+using System.Collections.Generic;
 
 namespace Server.Engines.Quests
 {
@@ -24,7 +20,7 @@ namespace Server.Engines.Quests
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

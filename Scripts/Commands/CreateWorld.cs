@@ -16,7 +16,7 @@ namespace Server.Commands
         {
             Create,
             Delete,
-            Recreate,
+            Recreate
         }
 
         public enum Category
@@ -32,13 +32,13 @@ namespace Server.Commands
 
         public class CommandEntry
         {
-            public string Name { get; set; }
-            public string CreateCommand { get; set; }
-            public string DeleteCommand { get; set; }
-            public int CheckID { get; set; }
-            public int Delay { get; set; }
+            public string Name { get; }
+            public string CreateCommand { get; }
+            public string DeleteCommand { get; }
+            public int CheckID { get; }
+            public int Delay { get; }
 
-            public Category Category { get; set; }
+            public Category Category { get; }
 
             public CommandEntry(string n, string c, string d, Category cat, int i, int delay = 0)
             {
@@ -51,7 +51,7 @@ namespace Server.Commands
             }
         }
 
-        public static List<CommandEntry> Commands = new List<CommandEntry>(new CommandEntry[]
+        public static List<CommandEntry> Commands = new List<CommandEntry>(new[]
         {
             new CommandEntry("Moongates",           "Moongen",          "MoonGenDelete",        Category.Decoration,      101),
             new CommandEntry("Doors",               "DoorGen",          "DoorGenDelete",        Category.Decoration,      102),
@@ -77,7 +77,7 @@ namespace Server.Commands
             new CommandEntry("New Wrong",           "GenWrongRevamp",               null,       Category.RevampedDungeon, 125),
             new CommandEntry("Kotl City",           "GenerateTreasuresOfKotlCity",  null,       Category.System,          126),
             new CommandEntry("Fillable Containers", "CheckFillables",               null,       Category.Spawn,           127, 5),
-            new CommandEntry("Champ Spawns",        "GenChampSpawns",   "DelChampSpawns",       Category.Spawn,           128),
+            new CommandEntry("Champ Spawns",        "GenChampSpawns",   "DelChampSpawns",       Category.Spawn,           128)
         });
 
         public static bool WorldCreating { get; set; }
@@ -95,8 +95,8 @@ namespace Server.Commands
         {
             if (string.IsNullOrEmpty(e.ArgString))
             {
-                if (e.Mobile is PlayerMobile)
-                    BaseGump.SendGump(new NewCreateWorldGump((PlayerMobile)e.Mobile, GumpType.Create));
+                if (e.Mobile is PlayerMobile mobile)
+                    BaseGump.SendGump(new NewCreateWorldGump(mobile, GumpType.Create));
                 else
                     e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Create));
             }
@@ -117,8 +117,8 @@ namespace Server.Commands
         {
             if (string.IsNullOrEmpty(e.ArgString))
             {
-                if (e.Mobile is PlayerMobile)
-                    BaseGump.SendGump(new NewCreateWorldGump((PlayerMobile)e.Mobile, GumpType.Delete));
+                if (e.Mobile is PlayerMobile mobile)
+                    BaseGump.SendGump(new NewCreateWorldGump(mobile, GumpType.Delete));
                 else
                     e.Mobile.SendGump(new CreateWorldGump(e, GumpType.Delete));
             }
@@ -255,15 +255,13 @@ namespace Server.Commands
                 {
                     return true;
                 }
-                else
-                {
-                    string er = string.Format("<br>- Cannot generate {0}. You need to generate Spawners first.", entry.Name);
-                    Console.WriteLine(er);
 
-                    error += er;
+                string er = string.Format("<br>- Cannot generate {0}. You need to generate Spawners first.", entry.Name);
+                Console.WriteLine(er);
 
-                    return false;
-                }
+                error += er;
+
+                return false;
             }
 
             return true;
@@ -351,14 +349,14 @@ namespace Server.Gumps
 
     public class NewCreateWorldGump : BaseGump
     {
-        public CreateWorld.GumpType GumpType { get; set; }
+        public CreateWorld.GumpType GumpType { get; }
         public CreateWorld.Category CategoryFilter { get; set; }
 
         public bool CheckAll { get; set; }
         public bool UncheckAll { get; set; }
 
         public NewCreateWorldGump(PlayerMobile pm, CreateWorld.GumpType type)
-            : base(pm, 50, 50)
+            : base(pm)
         {
             GumpType = type;
         }
@@ -506,7 +504,7 @@ namespace Server.Gumps
                 case 115:
                     return WeakEntityCollection.HasCollection("sa");
                 case 116:
-                    return World.Items.Values.Where(i => i != null && (i is XmlSpawner || i is Spawner)).Count() > 1000;
+                    return World.Items.Values.Count(i => i != null && (i is XmlSpawner || i is Spawner)) > 1000;
                 case 117:
                     return WeakEntityCollection.HasCollection("despise");
                 case 118:

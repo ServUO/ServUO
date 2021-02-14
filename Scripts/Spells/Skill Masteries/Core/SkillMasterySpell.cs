@@ -439,9 +439,9 @@ namespace Server.Spells.SkillMasteries
             PartyList.Add(m);
             AddPartyEffects(m);
 
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                foreach (Mobile pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
+                foreach (Mobile pet in pm.AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
                 {
                     AddPartyMember(pet);
                 }
@@ -453,9 +453,9 @@ namespace Server.Spells.SkillMasteries
             PartyList.Remove(m);
             RemovePartyEffects(m);
 
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                foreach (Mobile pet in ((PlayerMobile)m).AllFollowers.Where(p => PartyList.Contains(p)))
+                foreach (Mobile pet in pm.AllFollowers.Where(p => PartyList.Contains(p)))
                 {
                     RemovePartyMember(pet);
                 }
@@ -464,9 +464,9 @@ namespace Server.Spells.SkillMasteries
 
         private void UpdatePets(Mobile m)
         {
-            if (m is PlayerMobile)
+            if (m is PlayerMobile pm)
             {
-                foreach (Mobile pet in ((PlayerMobile)m).AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
+                foreach (Mobile pet in pm.AllFollowers.Where(p => !PartyList.Contains(p) && ValidPartyMember(p)))
                 {
                     AddPartyMember(pet);
                 }
@@ -489,7 +489,7 @@ namespace Server.Spells.SkillMasteries
                 {
                     spell.PartyList.IterateReverse(mob =>
                         {
-                            if (mob != spell.Caster || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != mob))
+                            if (mob != spell.Caster || mob is BaseCreature bc && bc.GetMaster() != mob)
                             {
                                 spell.RemovePartyMember(mob);
                             }
@@ -642,9 +642,9 @@ namespace Server.Spells.SkillMasteries
             CheckTable(from);
             Mobile check = from;
 
-            if (from is BaseCreature && (((BaseCreature)from).Controlled || ((BaseCreature)from).Summoned) && ((BaseCreature)from).GetMaster() != null)
+            if (from is BaseCreature bc && (bc.Controlled || bc.Summoned) && bc.GetMaster() != null)
             {
-                check = ((BaseCreature)from).GetMaster();
+                check = bc.GetMaster();
                 CheckTable(check);
             }
 
@@ -1293,9 +1293,8 @@ namespace Server.Spells.SkillMasteries
             e.Mobile.SendMessage("Target the mobile who will learn all skill masteries.");
             e.Mobile.BeginTarget(-1, false, TargetFlags.None, (mobile, targeted) =>
                 {
-                    if (targeted is Mobile)
+                    if (targeted is Mobile m)
                     {
-                        Mobile m = targeted as Mobile;
                         int count = 0;
 
                         foreach (Skill sk in m.Skills)
@@ -1320,18 +1319,14 @@ namespace Server.Spells.SkillMasteries
             {
                 Item mastery = SkillMasteryPrimer.GetRandom();
 
-                if (targeted is Mobile)
+                if (targeted is Mobile m)
                 {
-                    Mobile m = targeted as Mobile;
-
                     m.Backpack.DropItem(mastery);
 
                     e.Mobile.SendMessage("A mastery has been added to your pack!");
                 }
-                else if (targeted is IPoint3D)
+                else if (targeted is IPoint3D p)
                 {
-                    IPoint3D p = targeted as IPoint3D;
-
                     mastery.MoveToWorld(new Point3D(p.X, p.Y, p.Z), e.Mobile.Map);
                 }
                 else

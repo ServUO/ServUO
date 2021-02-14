@@ -13,15 +13,15 @@ namespace Server.Engines.SorcerersDungeon
         {
             CommandSystem.Register("TOSDSpawner", AccessLevel.Administrator, e =>
                 {
-                    if (e.Mobile is PlayerMobile)
+                    if (e.Mobile is PlayerMobile mobile)
                     {
                         if (Instance != null)
                         {
-                            BaseGump.SendGump(new TOSDSpawnerGump((PlayerMobile)e.Mobile));
+                            BaseGump.SendGump(new TOSDSpawnerGump(mobile));
                         }
                         else
                         {
-                            e.Mobile.SendMessage("This spawner is not set up at this time. Enabled Treasures of Sorcerer's Dungeon to enable the spawner.");
+                            mobile.SendMessage("This spawner is not set up at this time. Enabled Treasures of Sorcerer's Dungeon to enable the spawner.");
                         }
                     }
                 });
@@ -62,9 +62,9 @@ namespace Server.Engines.SorcerersDungeon
 
                 foreach (Item item in eable)
                 {
-                    if (item is XmlSpawner)
+                    if (item is XmlSpawner spawner)
                     {
-                        ((XmlSpawner)item).DoReset = true;
+                        spawner.DoReset = true;
                     }
                 }
             }
@@ -78,9 +78,9 @@ namespace Server.Engines.SorcerersDungeon
 
                 foreach (Item item in eable)
                 {
-                    if (item is XmlSpawner)
+                    if (item is XmlSpawner spawner)
                     {
-                        ((XmlSpawner)item).DoRespawn = true;
+                        spawner.DoRespawn = true;
                     }
                 }
             }

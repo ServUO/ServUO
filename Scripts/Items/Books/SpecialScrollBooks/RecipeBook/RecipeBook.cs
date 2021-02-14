@@ -347,10 +347,8 @@ namespace Server.Items
                 from.SendLocalizedMessage(1158823); // You must have the book in your backpack to add recipes to it.
                 return false;
             }
-            else if (dropped is RecipeScroll)
+            else if (dropped is RecipeScroll recipe)
             {
-                RecipeScroll recipe = dropped as RecipeScroll;
-
                 if (Recipes.Any(x => x.RecipeID == recipe.RecipeID))
                 {
                     Recipes.ForEach(x =>
@@ -363,10 +361,10 @@ namespace Server.Items
 
                     from.SendLocalizedMessage(1158826); // Recipe added to the book.
 
-                    if (from is PlayerMobile)
-                        from.SendGump(new RecipeBookGump((PlayerMobile)from, this));
+                    if (from is PlayerMobile mobile)
+                        mobile.SendGump(new RecipeBookGump(mobile, this));
 
-                    dropped.Delete();
+                    recipe.Delete();
                     return true;
                 }
                 else

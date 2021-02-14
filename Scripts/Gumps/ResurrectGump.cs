@@ -14,7 +14,7 @@ namespace Server.Gumps
         Healer = 2,
         Generic = 3,
         SilverSapling = 102034,
-        GemOfSalvation = 84106,
+        GemOfSalvation = 84106
     }
 
     public class ResurrectGump : Gump
@@ -223,12 +223,12 @@ namespace Server.Gumps
                     }
                 }
 
-                if (m_FromSacrifice && from is PlayerMobile)
+                if (m_FromSacrifice && from is PlayerMobile mobile)
                 {
-                    ((PlayerMobile)from).AvailableResurrects -= 1;
+                    mobile.AvailableResurrects -= 1;
 
-                    Container pack = from.Backpack;
-                    Container corpse = from.Corpse;
+                    Container pack = mobile.Backpack;
+                    Container corpse = mobile.Corpse;
 
                     if (pack != null && corpse != null)
                     {

@@ -1,4 +1,4 @@
-﻿using Server.Targeting;
+using Server.Targeting;
 
 namespace Server.Items
 {
@@ -18,8 +18,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Uses
         {
-            get { return m_Uses; }
-            set { m_Uses = value; }
+            get => m_Uses;
+            set => m_Uses = value;
         }
 
         public virtual HookType HookType => HookType.None;
@@ -46,16 +46,20 @@ namespace Server.Items
         {
             if (uses < 10)
                 return 1149853; //worn
-            else if (uses < 20)
+
+            if (uses < 20)
                 return 1149852; //fair
-            else if (uses < 30)
+
+            if (uses < 30)
                 return 1149851; //very good
-            else if (uses < 40)
+
+            if (uses < 40)
                 return 1149850; //good
-            else if (uses < 50)
+
+            if (uses < 50)
                 return 1149849; //excellent
-            else
-                return 1149848; //new
+
+            return 1149848; //new
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -93,10 +97,8 @@ namespace Server.Items
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is FishingPole)
+                if (targeted is FishingPole pole)
                 {
-                    FishingPole pole = (FishingPole)targeted;
-
                     if (pole.HookType != HookType.None)
                     {
                         Item hook = null;
@@ -129,13 +131,15 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Uses);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Uses = reader.ReadInt();
         }
 
@@ -170,7 +174,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -203,7 +207,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -236,7 +240,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

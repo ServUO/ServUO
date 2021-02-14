@@ -13,10 +13,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Parts Type
         {
-            get
-            {
-                return m_Type;
-            }
+            get => m_Type;
             set
             {
                 m_Type = value;
@@ -66,10 +63,8 @@ namespace Server.Items
                     return;
                 }
 
-                if (targeted is StorageLocker)
+                if (targeted is StorageLocker sl)
                 {
-                    StorageLocker sl = (StorageLocker)targeted;
-
                     if (sl.Type == m_Key.Type)
                     {
                         sl.Locked = false;
@@ -117,7 +112,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

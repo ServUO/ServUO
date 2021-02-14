@@ -88,7 +88,7 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return System.String.Format("{{ croppedtext {0} {1} {2} {3} {4} {5} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_Text == null ? m_TextID : Parent.Intern(m_Text));
+			return string.Format("{{ croppedtext {0} {1} {2} {3} {4} {5} }}", m_X, m_Y, m_Width, m_Height, m_Hue, m_Text == null ? m_TextID : Parent.Intern(m_Text));
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("croppedtext");

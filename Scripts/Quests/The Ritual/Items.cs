@@ -75,13 +75,13 @@ namespace Server.Engines.Quests.RitualQuest
             {
                 m.SendLocalizedMessage(1072529, string.Format("{0}\t{1}", ((int)(_NextUse - DateTime.UtcNow).TotalSeconds).ToString(), "seconds"));
             }
-            else if (m is PlayerMobile)
+            else if (m is PlayerMobile mobile)
             {
-                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)m);
+                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>(mobile);
 
-                if (quest != null && SpellHelper.CheckCanTravel(m) && _Timer == null && WarpBounds.Contains(m.Location))
+                if (quest != null && SpellHelper.CheckCanTravel(mobile) && _Timer == null && WarpBounds.Contains(mobile.Location))
                 {
-                    TeleportTo(m);
+                    TeleportTo(mobile);
                 }
             }
         }
@@ -119,9 +119,9 @@ namespace Server.Engines.Quests.RitualQuest
 
             charm._NextUse = DateTime.UtcNow + Cooldown;
 
-            if (!completeQuest && m is PlayerMobile)
+            if (!completeQuest && m is PlayerMobile mobile)
             {
-                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>((PlayerMobile)m);
+                CatchMeIfYouCanQuest quest = QuestHelper.GetQuest<CatchMeIfYouCanQuest>(mobile);
 
                 quest.Objectives[0].CurProgress = 0;
             }
@@ -272,7 +272,7 @@ namespace Server.Engines.Quests.RitualQuest
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 

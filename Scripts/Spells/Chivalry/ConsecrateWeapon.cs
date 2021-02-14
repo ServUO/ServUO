@@ -137,7 +137,7 @@ namespace Server.Spells.Chivalry
 
     public class ConsecratedWeaponContext
     {
-        public Mobile Owner { get; private set; }
+        public Mobile Owner { get; }
         public BaseWeapon Weapon { get; set; }
 
         public Timer Timer { get; set; }

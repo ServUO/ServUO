@@ -185,10 +185,10 @@ namespace Server.Gumps
                 object child = node.Children[index];
                 string name = "";
 
-                if (child is ParentNode)
-                    name = ((ParentNode)child).Name;
-                else if (child is ChildNode)
-                    name = ((ChildNode)child).Name;
+                if (child is ParentNode parentNode)
+                    name = parentNode.Name;
+                else if (child is ChildNode childNode)
+                    name = childNode.Name;
 
                 AddImageTiled(x, y, EntryWidth, EntryHeight, EntryGumpID);
                 AddLabelCropped(x + TextOffsetX, y, EntryWidth - TextOffsetX, EntryHeight, TextHue, name);
@@ -237,9 +237,9 @@ namespace Server.Gumps
                         {
                             object o = m_Node.Children[index];
 
-                            if (o is ParentNode)
+                            if (o is ParentNode node)
                             {
-                                from.SendGump(new GoGump(0, from, m_Tree, (ParentNode)o));
+                                from.SendGump(new GoGump(0, from, m_Tree, node));
                             }
                             else
                             {

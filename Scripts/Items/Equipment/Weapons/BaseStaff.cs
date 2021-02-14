@@ -30,15 +30,15 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void OnHit(Mobile attacker, IDamageable defender, double damageBonus)
         {
             base.OnHit(attacker, defender, damageBonus);
 
-            if (defender is Mobile)
-                ((Mobile)defender).Stam -= Utility.Random(3, 5); // 3-5 points of stamina loss
+            if (defender is Mobile mobile)
+                mobile.Stam -= Utility.Random(3, 5); // 3-5 points of stamina loss
         }
     }
 }

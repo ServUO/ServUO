@@ -161,7 +161,7 @@ namespace Server.Commands
                 if (value != null)
                     v = value.ToString();
 
-                currentRow.Add(name, v.ToString());
+                currentRow.Add(name, v);
                 if (headerSet.Contains(name))
                     return;
                 headerSet.Add(name);
@@ -178,12 +178,12 @@ namespace Server.Commands
                 {
                     if (first)
                     {
-                        outf.Write(string.Format("\"{0}\"", header));
+                        outf.Write("\"{0}\"", header);
                         first = false;
                     }
                     else
                     {
-                        outf.Write(string.Format(",\"{0}\"", header));
+                        outf.Write(",\"{0}\"", header);
                     }
                 }
                 outf.WriteLine("");
@@ -197,12 +197,12 @@ namespace Server.Commands
                         row.TryGetValue(header, out value);
                         if (first)
                         {
-                            outf.Write(string.Format("\"{0}\"", value));
+                            outf.Write("\"{0}\"", value);
                             first = false;
                         }
                         else
                         {
-                            outf.Write(string.Format(",\"{0}\"", value));
+                            outf.Write(",\"{0}\"", value);
                         }
                     }
                     outf.WriteLine("");

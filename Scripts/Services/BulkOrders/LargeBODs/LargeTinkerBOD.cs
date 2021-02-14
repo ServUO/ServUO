@@ -13,7 +13,7 @@ namespace Server.Engines.BulkOrders
         [CommandProperty(AccessLevel.GameMaster)]
         public GemType GemType
         {
-            get { return _GemType; }
+            get => _GemType;
             set
             {
                 if (Entries.Length > 0 && Entries[0].Details != null && Entries[0].Details.Type != null && Entries[0].Details.Type.IsSubclassOf(typeof(BaseJewel)))
@@ -26,7 +26,7 @@ namespace Server.Engines.BulkOrders
             }
         }
 
-        public static double[] m_BlackTinkerMaterialChances = new double[]
+        public static double[] m_BlackTinkerMaterialChances =
         {
             0.501953125, // None
             0.250000000, // Dull Copper

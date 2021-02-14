@@ -7,31 +7,31 @@ namespace Server.Engines.CityLoyalty
     public class CityDefinition
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public City City { get; private set; }
+        public City City { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D StoneLocation { get; private set; }
+        public Point3D StoneLocation { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D TradeMinisterLocation { get; private set; }
+        public Point3D TradeMinisterLocation { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D HeraldLocation { get; private set; }
+        public Point3D HeraldLocation { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D GuardsmanLocation { get; private set; }
+        public Point3D GuardsmanLocation { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D BoardLocation { get; private set; }
+        public Point3D BoardLocation { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public string Name { get; private set; }
+        public string Name { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int LocalizedName { get; private set; }
+        public int LocalizedName { get; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int BattleMessage { get; private set; }
+        public int BattleMessage { get; }
 
         private Region _Region;
 

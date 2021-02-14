@@ -60,7 +60,8 @@ namespace Server.Spells
             {
                 return false;
             }
-            else if (!Caster.Alive)
+
+            if (!Caster.Alive)
             {
                 Caster.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113082); // You may not fly while dead.
             }

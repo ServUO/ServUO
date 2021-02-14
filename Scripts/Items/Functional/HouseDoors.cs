@@ -19,18 +19,16 @@ namespace Server.Items
         {
         }
 
-        public override void Serialize(GenericWriter writer) // Default Serialize method
+        public override void Serialize(GenericWriter writer) 
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
-        public override void Deserialize(GenericReader reader) // Default Deserialize method
+        public override void Deserialize(GenericReader reader) 
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -50,15 +48,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer) // Default Serialize method
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader) // Default Deserialize method
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -84,15 +80,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer) // Default Serialize method
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader) // Default Deserialize method
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -116,26 +110,14 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DoorFacing Facing
         {
-            get
-            {
-                return m_Facing;
-            }
-            set
-            {
-                m_Facing = value;
-            }
+            get => m_Facing;
+            set => m_Facing = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public SecureLevel Level
         {
-            get
-            {
-                return m_Level;
-            }
-            set
-            {
-                m_Level = value;
-            }
+            get => m_Level;
+            set => m_Level = value;
         }
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
         {

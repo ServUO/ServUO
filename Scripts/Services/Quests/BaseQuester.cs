@@ -18,8 +18,10 @@ namespace Server.Engines.Quests
         {
             Mobile from = Owner.From;
 
-            if (from.CheckAlive() && from is PlayerMobile && m_Quester.CanTalkTo((PlayerMobile)from))
-                m_Quester.OnTalk((PlayerMobile)from, true);
+            if (from.CheckAlive() && from is PlayerMobile pm && m_Quester.CanTalkTo(pm))
+            {
+                m_Quester.OnTalk(pm, true);
+            }
         }
     }
 
@@ -87,20 +89,22 @@ namespace Server.Engines.Quests
         {
             base.AddCustomContextEntries(from, list);
 
-            if (from.Alive && from is PlayerMobile && TalkNumber > 0 && CanTalkTo((PlayerMobile)from))
+            if (from.Alive && from is PlayerMobile pm && TalkNumber > 0 && CanTalkTo(pm))
+            {
                 list.Add(new TalkEntry(this));
+            }
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.Alive && m is PlayerMobile)
+            if (m.Alive && m is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)m;
-
                 int range = GetAutoTalkRange(pm);
 
-                if (m.Alive && range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && CanTalkTo(pm))
+                if (pm.Alive && range >= 0 && InRange(m, range) && !InRange(oldLocation, range) && CanTalkTo(pm))
+                {
                     OnTalk(pm, false);
+                }
             }
         }
 
@@ -112,15 +116,13 @@ namespace Server.Engines.Quests
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         protected Item SetHue(Item item, int hue)

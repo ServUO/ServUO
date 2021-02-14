@@ -24,7 +24,7 @@ namespace Server.Engines.Khaldun
 
     public class GumshoeItemGump : Gump
     {
-        public GumshoeItemGump(Mobile from, int itemID, int itemHue, string itemName, int cliloc, string secondLineText)
+        public GumshoeItemGump(int itemID, int itemHue, string itemName, int cliloc, string secondLineText)
             : base(50, 50)
         {
             AddBackground(0, 0, 454, 400, 9380);

@@ -76,7 +76,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.SuperBoss, 8);
             AddLoot(LootPack.Gems, 12);
             AddLoot(LootPack.PeerlessResource, 8);
-            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(25.0));
             AddLoot(LootPack.LootItem<CrimsonCincture>(2.5));
         }
 
@@ -120,17 +120,16 @@ namespace Server.Mobiles
         {
             if (Map != null && attacker != this && 0.1 > Utility.RandomDouble())
             {
-                if (attacker is BaseCreature)
+                if (attacker is BaseCreature pet)
                 {
-                    BaseCreature pet = (BaseCreature)attacker;
-                    if (pet.ControlMaster != null && (attacker is Dragon || attacker is GreaterDragon || attacker is SkeletalDragon || attacker is WhiteWyrm || attacker is Drake))
+                    if (pet.ControlMaster != null && (pet is Dragon || pet is GreaterDragon || pet is SkeletalDragon || pet is WhiteWyrm || pet is Drake))
                     {
                         Combatant = null;
                         pet.Combatant = null;
                         Combatant = null;
                         pet.ControlMaster = null;
                         pet.Controlled = false;
-                        attacker.Emote(string.Format("* {0} decided to go wild *", attacker.Name));
+                        pet.Emote(string.Format("* {0} decided to go wild *", pet.Name));
                     }
 
                     if (pet.ControlMaster != null && 0.1 > Utility.RandomDouble())
@@ -138,7 +137,7 @@ namespace Server.Mobiles
                         Combatant = null;
                         pet.Combatant = pet.ControlMaster;
                         Combatant = null;
-                        attacker.Emote(string.Format("* {0} is being angered *", attacker.Name));
+                        pet.Emote(string.Format("* {0} is being angered *", pet.Name));
                     }
                 }
             }
@@ -155,7 +154,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override bool OnBeforeDeath()
@@ -186,10 +185,8 @@ namespace Server.Mobiles
 
         private void Terrorize(object o)
         {
-            if (o is Mobile)
+            if (o is Mobile m)
             {
-                Mobile m = (Mobile)o;
-
                 m.Frozen = false;
                 m.SendLocalizedMessage(1005603); // You can move again!
 

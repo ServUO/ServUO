@@ -5,7 +5,7 @@ namespace Server.Items
         private int _Charges;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Charges { get { return _Charges; } set { _Charges = value; InvalidateProperties(); } }
+        public int Charges { get => _Charges; set { _Charges = value; InvalidateProperties(); } }
 
         public override int LabelNumber => 1157221;  // A specially lined keg for powder of fortification.
 
@@ -27,10 +27,8 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile m, Item dropped)
         {
-            if (dropped is PowderOfTemperament)
+            if (dropped is PowderOfTemperament powder)
             {
-                PowderOfTemperament powder = dropped as PowderOfTemperament;
-
                 if (_Charges < 250)
                 {
                     if (powder.UsesRemaining + _Charges > 250)

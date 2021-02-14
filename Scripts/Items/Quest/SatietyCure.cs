@@ -9,8 +9,8 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Uses
         {
-            get { return m_Uses; }
-            set { m_Uses = value; }
+            get => m_Uses;
+            set => m_Uses = value;
         }
 
         [Constructable]
@@ -58,16 +58,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
+
             writer.WriteEncodedInt(m_Uses);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
 
-            int version = reader.ReadInt();
             m_Uses = reader.ReadEncodedInt();
         }
     }

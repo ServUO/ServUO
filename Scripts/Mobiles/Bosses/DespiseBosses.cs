@@ -40,9 +40,9 @@ namespace Server.Engines.Despise
 
         public override void OnKilledBy(Mobile mob)
         {
-            if (mob is PlayerMobile)
+            if (mob is PlayerMobile mobile)
             {
-                int chance = ArtifactChance + Math.Min(10, ((PlayerMobile)mob).Luck / 180);
+                int chance = ArtifactChance + Math.Min(10, mobile.Luck / 180);
 
                 if (chance >= Utility.Random(100))
                 {
@@ -54,15 +54,15 @@ namespace Server.Engines.Despise
 
                         if (arty != null)
                         {
-                            Container pack = mob.Backpack;
+                            Container pack = mobile.Backpack;
 
-                            if (pack == null || !pack.TryDropItem(mob, arty, false))
+                            if (pack == null || !pack.TryDropItem(mobile, arty, false))
                             {
-                                mob.BankBox.DropItem(arty);
-                                mob.SendMessage("An artifact has been placed in your bankbox!");
+                                mobile.BankBox.DropItem(arty);
+                                mobile.SendMessage("An artifact has been placed in your bankbox!");
                             }
                             else
-                                mob.SendLocalizedMessage(1153440); // An artifact has been placed in your backpack!
+                                mobile.SendLocalizedMessage(1153440); // An artifact has been placed in your backpack!
                         }
                     }
                 }
@@ -139,7 +139,7 @@ namespace Server.Engines.Despise
             typeof(DespicableQuiver),
             typeof(UnforgivenVeil),
             typeof(HailstormHuman),
-            typeof(HailstormGargoyle),
+            typeof(HailstormGargoyle)
         };
 
         public DespiseBoss(Serial serial) : base(serial)
@@ -150,13 +150,15 @@ namespace Server.Engines.Despise
         {
             base.Serialize(writer);
             writer.Write(0);
+
             writer.Write(m_Wisp);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
+
             m_Wisp = reader.ReadMobile() as BaseCreature;
         }
     }
@@ -246,7 +248,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -334,7 +336,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -412,7 +414,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -490,7 +492,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

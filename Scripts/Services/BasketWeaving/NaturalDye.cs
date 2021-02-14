@@ -31,10 +31,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public PlantPigmentHue PigmentHue
         {
-            get
-            {
-                return m_Hue;
-            }
+            get => m_Hue;
             set
             {
                 m_Hue = value;
@@ -48,10 +45,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get
-            {
-                return m_UsesRemaining;
-            }
+            get => m_UsesRemaining;
             set
             {
                 m_UsesRemaining = value;
@@ -59,6 +53,7 @@ namespace Server.Items
             }
         }
         public override int LabelNumber => 1112136;// natural dye
+
         public bool RetainsColorFrom => true;
 
         public override bool ForceShowProperties => true;
@@ -129,12 +124,12 @@ namespace Server.Items
 
                 if (item != null)
                 {
-                    bool valid = (item is IDyable || item is BaseTalisman ||
-                        item is BaseBook || item is BaseClothing ||
-                        item is BaseJewel || item is BaseStatuette ||
-                        item is BaseWeapon || item is Runebook ||
-                        item is Spellbook || item is DecorativePlant || item is ShoulderParrot ||
-                        item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
+                    bool valid = item is IDyable || item is BaseTalisman ||
+                                 item is BaseBook || item is BaseClothing ||
+                                 item is BaseJewel || item is BaseStatuette ||
+                                 item is BaseWeapon || item is Runebook ||
+                                 item is Spellbook || item is DecorativePlant || item is ShoulderParrot ||
+                                 item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item);
 
                     if (item is HoodedShroudOfShadows || item is MonkRobe)
                     {
@@ -149,23 +144,22 @@ namespace Server.Items
                             from.SendLocalizedMessage(500446); // That is too far away.
                             return;
                         }
-                        else
-                        {
-                            BaseHouse house = BaseHouse.FindHouseAt(item);
 
-                            if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)))
-                            {
-                                from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
-                                return;
-                            }
-                            else if (!house.IsCoOwner(from))
-                            {
-                                from.SendLocalizedMessage(501023); // You must be the owner to use this item.
-                                return;
-                            }
-                            else
-                                valid = true;
+                        BaseHouse house = BaseHouse.FindHouseAt(item);
+
+                        if (house == null || !house.IsLockedDown(item) && !house.IsSecure(item))
+                        {
+                            from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
+                            return;
                         }
+
+                        if (!house.IsCoOwner(from))
+                        {
+                            from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                            return;
+                        }
+
+                        valid = true;
                     }
                     else if (!item.IsChildOf(from.Backpack))
                     {
@@ -173,11 +167,11 @@ namespace Server.Items
                         return;
                     }
 
-                    if (!valid && item is BaseArmor)
+                    if (!valid && item is BaseArmor armor)
                     {
-                        CraftResourceType restype = CraftResources.GetType(((BaseArmor)item).Resource);
-                        if ((CraftResourceType.Leather == restype || CraftResourceType.Metal == restype) &&
-                            ArmorMaterialType.Bone != ((BaseArmor)item).MaterialType)
+                        CraftResourceType restype = CraftResources.GetType(armor.Resource);
+
+                        if ((CraftResourceType.Leather == restype || CraftResourceType.Metal == restype) && ArmorMaterialType.Bone != armor.MaterialType)
                         {
                             valid = true;
                         }

@@ -25,7 +25,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Type BaitType
         {
-            get { return m_BaitType; }
+            get => m_BaitType;
             set
             {
                 m_BaitType = value;
@@ -41,18 +41,18 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool EnhancedBait { get { return m_EnhancedBait; } set { m_EnhancedBait = value; InvalidateProperties(); } }
+        public bool EnhancedBait { get => m_EnhancedBait; set { m_EnhancedBait = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int BaitUses { get { return m_BaitUses; } set { m_BaitUses = value; InvalidateProperties(); } }
+        public int BaitUses { get => m_BaitUses; set { m_BaitUses = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool InUse { get { return m_InUse; } set { m_InUse = value; InvalidateProperties(); } }
+        public bool InUse { get => m_InUse; set { m_InUse = value; InvalidateProperties(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; InvalidateProperties(); } }
+        public Mobile Owner { get => m_Owner; set { m_Owner = value; InvalidateProperties(); } }
 
-        public override int LabelNumber { get { if (m_Owner == null) return 1096487; else return 0; } }
+        public override int LabelNumber { get { if (m_Owner == null) return 1096487; return 0; } }
         public override bool DisplaysContent => false;
 
         [Constructable]
@@ -108,10 +108,10 @@ namespace Server.Items
             if (m_BaitType != null)
             {
                 object label = FishInfo.GetFishLabel(m_BaitType);
-                if (label is int)
-                    list.Add(1116468, string.Format("#{0}", (int)label)); //baited to attract: ~1_val~
-                else if (label is string)
-                    list.Add(1116468, (string)label);
+                if (label is int i)
+                    list.Add(1116468, string.Format("#{0}", i)); //baited to attract: ~1_val~
+                else if (label is string s)
+                    list.Add(1116468, s);
 
                 list.Add(1116466, m_BaitUses.ToString());
             }
@@ -186,7 +186,7 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1116388); // The trap is too cumbersome to deploy that far away.
             }
-            else if (!IsValidTile(targeted, map))
+            else if (!IsValidTile(targeted))
                 from.SendMessage("You cannot deploy a trap there!"); //TODO: Get Cliloc
             else if (!IsValidLocation(x, y, z, map))
                 from.SendLocalizedMessage(1116393); //The location is too close to another trap.
@@ -261,7 +261,6 @@ namespace Server.Items
                 return;
             }
 
-            bool rare = true;
             double bump = m_Bobs / 100.0;
 
             Type type = FishInfo.GetSpecialItem(m_Owner, this, Location, bump, this is LavaLobsterTrap);
@@ -271,10 +270,8 @@ namespace Server.Items
                 Item item = Loot.Construct(type);
                 DropItem(item);
 
-                if (item is RareCrabAndLobster && rare)
+                if (item is RareCrabAndLobster fish)
                 {
-                    RareCrabAndLobster fish = (RareCrabAndLobster)item;
-
                     fish.Fisher = m_Owner;
                     fish.DateCaught = DateTime.UtcNow;
                     fish.Weight = Utility.RandomMinMax(10, 200);
@@ -350,7 +347,7 @@ namespace Server.Items
             }
 
             //is owner, or in same guild
-            if (m_Owner == from || (from.Guild != null && from.Guild == m_Owner.Guild))
+            if (m_Owner == from || from.Guild != null && from.Guild == m_Owner.Guild)
                 return true;
 
             //partied
@@ -373,20 +370,18 @@ namespace Server.Items
             return false;
         }
 
-        public virtual bool IsValidTile(object targeted, Map map)
+        public virtual bool IsValidTile(object targeted)
         {
             int tileID = 0;
 
-            if (targeted is LandTarget)
+            if (targeted is LandTarget landTarget)
             {
-                LandTarget obj = (LandTarget)targeted;
-                tileID = obj.TileID;
+                tileID = landTarget.TileID;
             }
 
-            else if (targeted is StaticTarget)
+            else if (targeted is StaticTarget staticTarget)
             {
-                StaticTarget obj = (StaticTarget)targeted;
-                tileID = obj.ItemID;
+                tileID = staticTarget.ItemID;
             }
 
             for (int i = 0; i < UseableTiles.Length; i++)
@@ -414,7 +409,7 @@ namespace Server.Items
         }
 
         public virtual int[] UseableTiles => m_WaterTiles;
-        private readonly int[] m_WaterTiles = new int[]
+        private readonly int[] m_WaterTiles =
         {
             //Deep Water
             0x00AA, 0x00A9,
@@ -428,7 +423,7 @@ namespace Server.Items
             //Static tiles
             0x1797, 0x1798,
             0x1799, 0x179A,
-            0x179B, 0x179C,
+            0x179B, 0x179C
 
         };
 
@@ -451,7 +446,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             int index = reader.ReadInt();
             m_BaitType = FishInfo.GetTypeFromIndex(index);

@@ -61,7 +61,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
 
         public override void OnDoubleClick(Mobile from)
@@ -128,11 +128,11 @@ namespace Server.Items
                     return;
                 }
 
-                if (targeted is Mobile)
+                if (targeted is Mobile mobile)
                 {
                     if (from.InRange(m_Bandage.GetWorldLocation(), Bandage.Range))
                     {
-                        if (BandageContext.BeginHeal(from, (Mobile)targeted, m_Bandage is EnhancedBandage) != null)
+                        if (BandageContext.BeginHeal(from, mobile, m_Bandage is EnhancedBandage) != null)
                         {
                             NegativeAttributes.OnCombatAction(from);
                             m_Bandage.Consume();
@@ -143,9 +143,9 @@ namespace Server.Items
                         from.SendLocalizedMessage(500295); // You are too far away to do that.
                     }
                 }
-                else if (targeted is PlagueBeastInnard)
+                else if (targeted is PlagueBeastInnard innard)
                 {
-                    if (((PlagueBeastInnard)targeted).OnBandage(from))
+                    if (innard.OnBandage(from))
                     {
                         NegativeAttributes.OnCombatAction(from);
                         m_Bandage.Consume();
@@ -159,9 +159,9 @@ namespace Server.Items
 
             protected override void OnNonlocalTarget(Mobile from, object targeted)
             {
-                if (targeted is PlagueBeastInnard)
+                if (targeted is PlagueBeastInnard innard)
                 {
-                    if (((PlagueBeastInnard)targeted).OnBandage(from))
+                    if (innard.OnBandage(from))
                     {
                         m_Bandage.Consume();
                     }
@@ -185,8 +185,8 @@ namespace Server.Items
 
         public Mobile Healer => m_Healer;
         public Mobile Patient => m_Patient;
-        public int Slips { get { return m_Slips; } set { m_Slips = value; } }
-        public int HealedPoisonOrBleed { get { return m_HealedPoisonOrBleed; } set { m_HealedPoisonOrBleed = value; } }
+        public int Slips { get => m_Slips; set => m_Slips = value; }
+        public int HealedPoisonOrBleed { get => m_HealedPoisonOrBleed; set => m_HealedPoisonOrBleed = value; }
         public Timer Timer => m_Timer;
         public int HealingBonus => m_HealingBonus;
 
@@ -244,10 +244,8 @@ namespace Server.Items
             {
                 return SkillName.Veterinary;
             }
-            else
-            {
-                return SkillName.Healing;
-            }
+
+            return SkillName.Healing;
         }
 
         public static SkillName GetSecondarySkill(Mobile healer, Mobile m)
@@ -261,10 +259,8 @@ namespace Server.Items
             {
                 return SkillName.AnimalLore;
             }
-            else
-            {
-                return SkillName.Anatomy;
-            }
+
+            return SkillName.Anatomy;
         }
 
         public void CheckPoisonOrBleed()
@@ -330,14 +326,13 @@ namespace Server.Items
                 patientNumber = -1;
                 playSound = false;
             }
-            else if (!m_Patient.Alive || (petPatient != null && petPatient.IsDeadPet))
+            else if (!m_Patient.Alive || petPatient != null && petPatient.IsDeadPet)
             {
                 double healing = m_Healer.Skills[primarySkill].Value;
                 double anatomy = m_Healer.Skills[secondarySkill].Value;
                 double chance = ((healing - 68.0) / 50.0) - (m_Slips * 0.02);
 
-                if (((checkSkills = (healing >= 80.0 && anatomy >= 80.0)) && chance > Utility.RandomDouble()) ||
-                    (Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer))
+                if ((checkSkills = healing >= 80.0 && anatomy >= 80.0) && chance > Utility.RandomDouble() || Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer)
                 {
                     if (m_Patient.Map == null || !m_Patient.Map.CanFit(m_Patient.Location, 16, false, false))
                     {
@@ -613,13 +608,13 @@ namespace Server.Items
 
         public static BandageContext BeginHeal(Mobile healer, Mobile patient, bool enhanced)
         {
-            bool isDeadPet = (patient is BaseCreature && ((BaseCreature)patient).IsDeadPet);
+            bool isDeadPet = patient is BaseCreature creature && creature.IsDeadPet;
 
-            if (patient is IRepairableMobile && ((IRepairableMobile)patient).RepairResource != typeof(Bandage))
+            if (patient is IRepairableMobile iRepairable && iRepairable.RepairResource != typeof(Bandage))
             {
                 healer.SendLocalizedMessage(500970); // Bandages cannot be used on that.
             }
-            else if (patient is BaseCreature && ((BaseCreature)patient).IsAnimatedDead)
+            else if (patient is BaseCreature bc && bc.IsAnimatedDead)
             {
                 healer.SendLocalizedMessage(500951); // You cannot heal that.
             }

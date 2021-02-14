@@ -150,8 +150,8 @@ namespace Server.Spells.SkillMasteries
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is Mobile)
-                    m_Owner.OnTarget((Mobile)o);
+                if (o is Mobile mobile)
+                    m_Owner.OnTarget(mobile);
             }
 
             protected override void OnTargetFinish(Mobile from)

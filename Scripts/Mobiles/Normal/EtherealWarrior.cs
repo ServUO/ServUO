@@ -62,12 +62,12 @@ namespace Server.Mobiles
 
         public override void OnMovement(Mobile from, Point3D oldLocation)
         {
-            if (!from.Alive && (from is PlayerMobile))
+            if (!from.Alive && from is PlayerMobile)
             {
-                if (!from.Frozen && (DateTime.UtcNow >= m_NextResurrect) && InRange(from, 4) && !InRange(oldLocation, 4) && InLOS(from))
+                if (!from.Frozen && DateTime.UtcNow >= m_NextResurrect && InRange(from, 4) && !InRange(oldLocation, 4) && InLOS(from))
                 {
                     m_NextResurrect = DateTime.UtcNow + ResurrectDelay;
-                    if (!from.Criminal && (from.Kills < 5) && (from.Karma > 0))
+                    if (!from.Criminal && from.Kills < 5 && from.Karma > 0)
                     {
                         if (from.Map != null && from.Map.CanFit(from.Location, 16, false, false))
                         {
@@ -142,7 +142,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

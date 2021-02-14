@@ -47,7 +47,7 @@ namespace Server.Engines.Shadowguard
             if (Completed || Bottles == null)
                 return;
 
-            int liquorCount = Bottles.Where(b => b != null && !b.Deleted).Count();
+            int liquorCount = Bottles.Count(b => b != null && !b.Deleted);
 
             if (liquorCount < LiquorCount)
             {
@@ -86,7 +86,7 @@ namespace Server.Engines.Shadowguard
 
             int a = row % 2 == 0 ? 0 : 3;
             int startX = ranPnt.X + a;
-            int x = startX + ((row / 2) * 9);
+            int x = startX + (row / 2) * 9;
 
             ShadowguardPirate pirate = new ShadowguardPirate();
             pirate.MoveToWorld(new Point3D(x, ranPnt.Y, ranPnt.Z), Map.TerMur);
@@ -167,7 +167,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Pirates = new List<Mobile>();
             Bottles = new List<ShadowguardBottleOfLiquor>();
@@ -523,7 +523,7 @@ namespace Server.Engines.Shadowguard
             if (Completed || Armor == null)
                 return;
 
-            if (Armor.Where(a => a != null && !a.Deleted).Count() == 0)
+            if (Armor.Count(a => a != null && !a.Deleted) == 0)
                 CompleteEncounter();
         }
 
@@ -634,7 +634,6 @@ namespace Server.Engines.Shadowguard
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0);
 
             writer.Write(Armor == null ? 0 : Armor.Count);
@@ -653,8 +652,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Armor = new List<Item>();
             DestroyedArmor = new List<Item>();
@@ -667,8 +665,10 @@ namespace Server.Engines.Shadowguard
 
                 if (it != null)
                 {
-                    if (it is CursedSuitOfArmor)
-                        ((CursedSuitOfArmor)it).Encounter = this;
+                    if (it is CursedSuitOfArmor armor)
+                    {
+                        armor.Encounter = this;
+                    }
 
                     Armor.Add(it);
                 }
@@ -692,8 +692,10 @@ namespace Server.Engines.Shadowguard
                 BaseCreature bc = reader.ReadMobile() as BaseCreature;
                 if (bc != null)
                 {
-                    if (bc is EnsorcelledArmor)
-                        ((EnsorcelledArmor)bc).Encounter = this;
+                    if (bc is EnsorcelledArmor armor)
+                    {
+                        armor.Encounter = this;
+                    }
 
                     Spawn.Add(bc);
                 }
@@ -763,8 +765,10 @@ namespace Server.Engines.Shadowguard
 
         public override void CheckEncounter()
         {
-            if (FlowCheckers != null && FlowCheckers.Where(c => c.Complete).Count() == 4)
+            if (FlowCheckers != null && FlowCheckers.Count(c => c.Complete) == 4)
+            {
                 CompleteEncounter();
+            }
         }
 
         public override void OnCreatureKilled(BaseCreature bc)
@@ -979,7 +983,6 @@ namespace Server.Engines.Shadowguard
             public void Check(Mobile m)
             {
                 Point3D p;
-                Map map = Map.TerMur;
                 bool southFacing = _Spigot.ItemID == 39922;
 
                 if (_Checked != null)
@@ -992,20 +995,14 @@ namespace Server.Engines.Shadowguard
 
                 Item item = FindItem(p);
 
-                if (item is ShadowguardCanal)
+                if (item is ShadowguardCanal canal && (southFacing && (canal.Flow == Flow.NorthSouth || canal.Flow == Flow.SouthEastCorner || canal.Flow == Flow.SouthWestCorner) || !southFacing && (canal.Flow == Flow.EastWest || canal.Flow == Flow.SouthEastCorner || canal.Flow == Flow.NorthEastCorner)))
                 {
-                    ShadowguardCanal canal = item as ShadowguardCanal;
+                    if (_Checked == null)
+                        _Checked = new List<ShadowguardCanal>();
 
-                    if ((southFacing && (canal.Flow == Flow.NorthSouth || canal.Flow == Flow.SouthEastCorner || canal.Flow == Flow.SouthWestCorner)) ||
-                       (!southFacing && (canal.Flow == Flow.EastWest || canal.Flow == Flow.SouthEastCorner || canal.Flow == Flow.NorthEastCorner)))
-                    {
-                        if (_Checked == null)
-                            _Checked = new List<ShadowguardCanal>();
+                    _Checked.Add(canal);
 
-                        _Checked.Add(canal);
-
-                        RecursiveCheck(item, null);
-                    }
+                    RecursiveCheck(canal, null);
                 }
 
                 if (Complete)
@@ -1030,19 +1027,23 @@ namespace Server.Engines.Shadowguard
                     {
                         if (Connects(item, next))
                         {
-                            if (next is ShadowguardDrain)
+                            if (next is ShadowguardDrain drain)
                             {
-                                _Drain = (ShadowguardDrain)next;
+                                _Drain = drain;
+
                                 return;
                             }
-                            else if (next is ShadowguardCanal)
+
+                            if (next is ShadowguardCanal canal)
                             {
                                 if (_Checked == null)
+                                {
                                     _Checked = new List<ShadowguardCanal>();
+                                }
 
-                                _Checked.Add((ShadowguardCanal)next);
+                                _Checked.Add(canal);
 
-                                RecursiveCheck(next, item);
+                                RecursiveCheck(canal, item);
                             }
                         }
                     }
@@ -1051,9 +1052,9 @@ namespace Server.Engines.Shadowguard
 
             public bool Connects(Item one, Item two)
             {
-                if (one is ShadowguardCanal && two is ShadowguardDrain)
+                if (one is ShadowguardCanal canal && two is ShadowguardDrain)
                 {
-                    Flow flow = ((ShadowguardCanal)one).Flow;
+                    Flow flow = canal.Flow;
                     Direction d = Utility.GetDirection(one, two);
                     bool canConnect = false;
 
@@ -1067,9 +1068,10 @@ namespace Server.Engines.Shadowguard
 
                     return canConnect;
                 }
-                else if (two is ShadowguardCanal)
+
+                if (two is ShadowguardCanal shadowguardCanal)
                 {
-                    return ((ShadowguardCanal)one).Connects((ShadowguardCanal)two);
+                    return ((ShadowguardCanal)one).Connects(shadowguardCanal);
                 }
 
                 return false;
@@ -1111,16 +1113,16 @@ namespace Server.Engines.Shadowguard
 
             private void Fill(object o)
             {
-                if (o is ShadowguardCanal)
+                if (o is ShadowguardCanal canal)
                 {
-                    ((ShadowguardCanal)o).Fill();
+                    canal.Fill();
 
-                    if (_Checked.IndexOf((ShadowguardCanal)o) == _Checked.Count - 1)
+                    if (_Checked.IndexOf(canal) == _Checked.Count - 1)
                         _Drain.Hue = 0;
                 }
             }
 
-            private readonly int[] _Offsets = new int[]
+            private readonly int[] _Offsets =
             {
                 0, -1,
                 1, 0,
@@ -1179,7 +1181,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Elementals = new List<BaseCreature>();
 
@@ -1324,8 +1326,10 @@ namespace Server.Engines.Shadowguard
 
         public override void OnCreatureKilled(BaseCreature bc)
         {
-            if (bc is VileDrake && Drakes != null && Drakes.Contains((VileDrake)bc))
-                Drakes.Remove((VileDrake)bc);
+            if (bc is VileDrake drake && Drakes != null && Drakes.Contains(drake))
+            {
+                Drakes.Remove(drake);
+            }
 
             if (bc == Dragon)
             {
@@ -1384,7 +1388,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Drakes = new List<VileDrake>();
             Bells = new List<Item>();
@@ -1426,7 +1430,7 @@ namespace Server.Engines.Shadowguard
 
         public List<Type> Bosses { get; set; }
 
-        private readonly Type[] _Bosses = new Type[] { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
+        private readonly Type[] _Bosses = { typeof(Anon), typeof(Virtuebane), typeof(Ozymandias), typeof(Juonar) };
 
         public override TimeSpan EncounterDuration => TimeSpan.MaxValue;
         public override TimeSpan ResetDuration => TimeSpan.FromMinutes(5);
@@ -1582,7 +1586,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Bosses = new List<Type>();
 

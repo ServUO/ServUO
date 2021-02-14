@@ -17,7 +17,7 @@ namespace Server.Items
         public bool CanDecipher => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public MagicKey Key { get { return m_Key; } set { m_Key = value; } }
+        public MagicKey Key { get => m_Key; set => m_Key = value; }
 
         public override int LabelNumber => 1113379;  // Puzzle Board
         public override int Lifespan => 600;
@@ -32,12 +32,14 @@ namespace Server.Items
         public override void OnDoubleClick(Mobile from)
         {
             if (!IsChildOf(from.Backpack))
-                from.SendLocalizedMessage(500325); // I am too far away to do that.
-            else if (from is PlayerMobile && IsInPuzzleRoom(from))
             {
-                from.CloseGump(typeof(PuzzleChest.PuzzleGump));
-                from.CloseGump(typeof(PuzzleChest.StatusGump));
-                BaseGump.SendGump(new CircuitTrapGump((PlayerMobile)from, this));
+                from.SendLocalizedMessage(500325); // I am too far away to do that.
+            }
+            else if (from is PlayerMobile pm && IsInPuzzleRoom(pm))
+            {
+                pm.CloseGump(typeof(PuzzleChest.PuzzleGump));
+                pm.CloseGump(typeof(PuzzleChest.StatusGump));
+                BaseGump.SendGump(new CircuitTrapGump(pm, this));
             }
         }
 
@@ -200,14 +202,16 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // ver
+            writer.Write(0);
+
             writer.Write(m_Key);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_Key = reader.ReadItem() as MagicKey;
         }
     }

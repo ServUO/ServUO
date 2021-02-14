@@ -78,22 +78,20 @@ namespace Server.Items
             {
                 foreach (Target t in targets)
                 {
-                    if (t.Entity is BaseGalleon && AmmoType != AmmunitionType.Grapeshot)
+                    if (t.Entity is BaseGalleon galleon && AmmoType != AmmunitionType.Grapeshot)
                     {
                         if (shoot)
                         {
                             DoShootEffects();
                             TimeSpan delay = TimeSpan.FromSeconds(t.Range / 10.0);
 
-                            Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { (BaseGalleon)t.Entity, t.Location, AmmoType });
+                            Timer.DelayCall(delay, new TimerStateCallback(OnShipHit), new object[] { galleon, t.Location, AmmoType });
                         }
 
                         acquiredTarget = true;
                     }
-                    else if (t.Entity is Mobile && AmmoType == AmmunitionType.Grapeshot)
+                    else if (t.Entity is Mobile m && AmmoType == AmmunitionType.Grapeshot)
                     {
-                        Mobile m = t.Entity as Mobile;
-
                         if (shoot)
                         {
                             DoShootEffects();
@@ -153,7 +151,6 @@ namespace Server.Items
                     case AmmunitionType.FlameCannonball:
                         {
                             Point3D newPoint = pnt;
-                            //List<IEntity> list = new List<IEntity>();
 
                             for (int i = -lateralOffset; i <= lateralOffset; i++)
                             {
@@ -173,7 +170,7 @@ namespace Server.Items
                                         Range = currentRange
                                     };
 
-                                    return new Target[] { target };
+                                    return new[] { target };
                                 }
                             }
                         }
@@ -206,7 +203,8 @@ namespace Server.Items
                                 {
                                     Target toHit = mobiles[Utility.Random(mobiles.Count)];
                                     ColUtility.Free(mobiles);
-                                    return new Target[] { toHit };
+
+                                    return new[] { toHit };
                                 }
                             }
 
@@ -238,7 +236,7 @@ namespace Server.Items
 
             foreach (Mobile m in eable)
             {
-                if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile))
+                if (m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile)
                 {
                     yield return m;
                 }
@@ -278,7 +276,7 @@ namespace Server.Items
                 foreach (StaticTile tile in tiles)
                 {
                     ItemData id = TileData.ItemTable[tile.ID & TileData.MaxItemValue];
-                    bool isWater = (tile.ID >= 0x1796 && tile.ID <= 0x17B2);
+                    bool isWater = tile.ID >= 0x1796 && tile.ID <= 0x17B2;
 
                     if (!isWater && id.Surface && !id.Impassable)
                     {
@@ -302,15 +300,15 @@ namespace Server.Items
 
             if (ammoInfo != null && target != null)
             {
-                int damage = (Utility.RandomMinMax(ammoInfo.MinDamage, ammoInfo.MaxDamage));
+                int damage = Utility.RandomMinMax(ammoInfo.MinDamage, ammoInfo.MaxDamage);
                 damage /= 7;
                 target.OnTakenDamage(Operator, damage);
 
                 int z = target.ZSurface;
 
-                if (target.TillerMan != null && target.TillerMan is IEntity)
+                if (target.TillerMan != null && target.TillerMan is IEntity entity)
                 {
-                    z = ((IEntity)target.TillerMan).Z;
+                    z = entity.Z;
                 }
 
                 Direction d = Utility.GetDirection(this, pnt);
@@ -364,7 +362,7 @@ namespace Server.Items
 
                         foreach (PlayerMobile mob in target.MobilesOnBoard.OfType<PlayerMobile>().Where(pm => Operator.CanBeHarmful(pm, false)))
                         {
-                            if (target is BaseGalleon && ((BaseGalleon)target).GetSecurityLevel(mob) > highest)
+                            if (target is BaseGalleon galleon && galleon.GetSecurityLevel(mob) > highest)
                             {
                                 candidates.Insert(0, mob);
                             }
@@ -393,7 +391,6 @@ namespace Server.Items
         {
             object[] objects = (object[])obj;
             Mobile toHit = objects[0] as Mobile;
-            Point3D pnt = (Point3D)objects[1];
 
             AmmoInfo ammoInfo = AmmoInfo.GetAmmoInfo((AmmunitionType)objects[2]);
 
@@ -478,7 +475,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -503,7 +500,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -530,7 +527,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

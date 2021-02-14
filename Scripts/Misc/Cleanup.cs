@@ -28,23 +28,21 @@ namespace Server.Misc
                     items.Add(item);
                     continue;
                 }
-                else if (item is CommodityDeed)
-                {
-                    CommodityDeed deed = (CommodityDeed)item;
 
+                if (item is CommodityDeed deed)
+                {
                     if (deed.Commodity != null)
                         validItems.Add(deed.Commodity);
 
                     continue;
                 }
-                else if (item is BaseHouse)
-                {
-                    BaseHouse house = (BaseHouse)item;
 
+                if (item is BaseHouse house)
+                {
                     foreach (RelocatedEntity relEntity in house.RelocatedEntities)
                     {
-                        if (relEntity.Entity is Item)
-                            validItems.Add((Item)relEntity.Entity);
+                        if (relEntity.Entity is Item entity)
+                            validItems.Add(entity);
                     }
 
                     foreach (VendorInventory inventory in house.VendorInventories)
@@ -53,9 +51,8 @@ namespace Server.Misc
                             validItems.Add(subItem);
                     }
                 }
-                else if (item is BankBox)
+                else if (item is BankBox box)
                 {
-                    BankBox box = (BankBox)item;
                     Mobile owner = box.Owner;
 
                     if (owner == null)
@@ -71,21 +68,21 @@ namespace Server.Misc
 
                     continue;
                 }
-                else if ((item.Layer == Layer.Hair || item.Layer == Layer.FacialHair))
+                else if (item.Layer == Layer.Hair || item.Layer == Layer.FacialHair)
                 {
                     object rootParent = item.RootParent;
 
-                    if (rootParent is Mobile)
+                    if (rootParent is Mobile m)
                     {
-                        Mobile rootMobile = (Mobile)rootParent;
-                        if (item.Parent != rootMobile && rootMobile.IsPlayer())
+                        if (item.Parent != m && m.IsPlayer())
                         {
                             items.Add(item);
                             continue;
                         }
-                        else if (item.Parent == rootMobile)
+
+                        if (item.Parent == m)
                         {
-                            hairCleanup.Add(rootMobile);
+                            hairCleanup.Add(m);
                             continue;
                         }
                     }
@@ -138,36 +135,22 @@ namespace Server.Misc
                 return false;
 
             if (item is ICommodity || item is BaseBoat ||
-                item is Fish || item is BigFish ||
-                item is BasePotion || item is Food || item is CookableFood ||
+                item is Fish || item is BigFish || item is Food ||
                 item is SpecialFishingNet || item is BaseMagicFish ||
                 item is Shoes || item is Sandals ||
                 item is Boots || item is ThighBoots ||
                 item is TreasureMap || item is MessageInABottle ||
                 item is BaseArmor || item is BaseWeapon ||
-                item is BaseClothing ||
-                item is BaseJewel ||
-                item is BasePotion
-            #region Champion artifacts
-                ||
-                item is SkullPole ||
-                item is EvilIdolSkull ||
-                item is MonsterStatuette ||
-                item is Pier ||
-                item is ArtifactLargeVase ||
-                item is ArtifactVase ||
-                item is MinotaurStatueDeed ||
-                item is SwampTile ||
-                item is WallBlood ||
-                item is TatteredAncientMummyWrapping ||
-                item is LavaTile ||
-                item is DemonSkull ||
-                item is Web ||
-                item is WaterTile ||
-                item is WindSpirit ||
-                item is DirtPatch ||
+                item is BaseClothing || item is BaseJewel ||
+                item is SkullPole || item is EvilIdolSkull ||
+                item is MonsterStatuette || item is Pier ||
+                item is ArtifactLargeVase || item is ArtifactVase ||
+                item is MinotaurStatueDeed || item is SwampTile ||
+                item is WallBlood || item is TatteredAncientMummyWrapping ||
+                item is LavaTile || item is DemonSkull ||
+                item is Web || item is WaterTile ||
+                item is WindSpirit || item is DirtPatch ||
                 item is Futon)
-                #endregion
                 return true;
 
             return false;

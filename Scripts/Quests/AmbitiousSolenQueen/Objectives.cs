@@ -33,9 +33,11 @@ namespace Server.Engines.Quests.Ambitious
             bool redSolen = ((AmbitiousQueenQuest)System).RedSolen;
 
             if (redSolen)
+            {
                 return from is RedSolenQueen;
-            else
-                return from is BlackSolenQueen;
+            }
+
+            return from is BlackSolenQueen;
         }
 
         public override void OnKill(BaseCreature creature, Container corpse)
@@ -102,42 +104,26 @@ namespace Server.Engines.Quests.Ambitious
         {
         }
 
-        public override object Message =>
-                // Return to the ambitious solen queen for your reward.
-                1054148;
+        public override object Message => 1054148; // Return to the ambitious solen queen for your reward.
+
         public bool BagOfSending
         {
-            get
-            {
-                return m_BagOfSending;
-            }
-            set
-            {
-                m_BagOfSending = value;
-            }
+            get => m_BagOfSending;
+            set => m_BagOfSending = value;
         }
+
         public bool PowderOfTranslocation
         {
-            get
-            {
-                return m_PowderOfTranslocation;
-            }
-            set
-            {
-                m_PowderOfTranslocation = value;
-            }
+            get => m_PowderOfTranslocation;
+            set => m_PowderOfTranslocation = value;
         }
+
         public bool Gold
         {
-            get
-            {
-                return m_Gold;
-            }
-            set
-            {
-                m_Gold = value;
-            }
+            get => m_Gold;
+            set => m_Gold = value;
         }
+
         public override void OnComplete()
         {
             System.AddConversation(new End2Conversation());

@@ -3,16 +3,19 @@ namespace Server.Items
     [Flipable]
     public class ParagonChest : LockableContainer
     {
-        private static readonly int[] m_ItemIDs = new int[]
+        private static readonly int[] m_ItemIDs =
         {
             0x9AB, 0xE40, 0xE41, 0xE7C
         };
-        private static readonly int[] m_Hues = new int[]
+
+        private static readonly int[] m_Hues =
         {
             0x0, 0x455, 0x47E, 0x89F, 0x8A5, 0x8AB,
             0x966, 0x96D, 0x972, 0x973, 0x979
         };
+
         private string m_Name;
+
         [Constructable]
         public ParagonChest(string name, int level)
             : base(Utility.RandomList(m_ItemIDs))
@@ -56,7 +59,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_Name);
@@ -65,46 +67,9 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Name = Utility.Intern(reader.ReadString());
-        }
-
-        private static void GetRandomAOSStats(out int attributeCount, out int min, out int max)
-        {
-            int rnd = Utility.Random(15);
-
-            if (rnd < 1)
-            {
-                attributeCount = Utility.RandomMinMax(2, 6);
-                min = 20;
-                max = 70;
-            }
-            else if (rnd < 3)
-            {
-                attributeCount = Utility.RandomMinMax(2, 4);
-                min = 20;
-                max = 50;
-            }
-            else if (rnd < 6)
-            {
-                attributeCount = Utility.RandomMinMax(2, 3);
-                min = 20;
-                max = 40;
-            }
-            else if (rnd < 10)
-            {
-                attributeCount = Utility.RandomMinMax(1, 2);
-                min = 10;
-                max = 30;
-            }
-            else
-            {
-                attributeCount = 1;
-                min = 10;
-                max = 20;
-            }
         }
 
         private void Fill(int level)
@@ -148,63 +113,11 @@ namespace Server.Items
             {
                 Item item = Loot.RandomArmorOrShieldOrWeaponOrJewelry();
 
-                if (item != null && RandomItemGenerator.Enabled)
+                if (item != null)
                 {
                     TreasureMapChest.GetRandomItemStat(out int min, out int max);
 
                     RunicReforging.GenerateRandomItem(item, 0, min, max);
-
-                    DropItem(item);
-                    continue;
-                }
-
-                if (item is BaseWeapon)
-                {
-                    BaseWeapon weapon = (BaseWeapon)item;
-
-                    int attributeCount;
-                    int min, max;
-
-                    GetRandomAOSStats(out attributeCount, out min, out max);
-
-                    BaseRunicTool.ApplyAttributesTo(weapon, attributeCount, min, max);
-
-                    DropItem(item);
-                }
-                else if (item is BaseArmor)
-                {
-                    BaseArmor armor = (BaseArmor)item;
-
-                    int attributeCount;
-                    int min, max;
-
-                    GetRandomAOSStats(out attributeCount, out min, out max);
-
-                    BaseRunicTool.ApplyAttributesTo(armor, attributeCount, min, max);
-
-                    DropItem(item);
-                }
-                else if (item is BaseHat)
-                {
-                    BaseHat hat = (BaseHat)item;
-
-                    int attributeCount;
-                    int min, max;
-
-                    GetRandomAOSStats(out attributeCount, out min, out max);
-
-                    BaseRunicTool.ApplyAttributesTo(hat, attributeCount, min, max);
-
-                    DropItem(item);
-                }
-                else if (item is BaseJewel)
-                {
-                    int attributeCount;
-                    int min, max;
-
-                    GetRandomAOSStats(out attributeCount, out min, out max);
-
-                    BaseRunicTool.ApplyAttributesTo((BaseJewel)item, attributeCount, min, max);
 
                     DropItem(item);
                 }

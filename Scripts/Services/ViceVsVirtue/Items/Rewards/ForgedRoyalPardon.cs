@@ -18,19 +18,19 @@ namespace Server.Engines.VvV
         {
             if (IsChildOf(m.Backpack))
             {
-                if (m is PlayerMobile && ViceVsVirtueSystem.IsVvV(m))
+                if (m is PlayerMobile pm && ViceVsVirtueSystem.IsVvV(pm))
                 {
-                    if (m.Kills <= 0)
+                    if (pm.Kills <= 0)
                     {
-                        m.SendMessage("You have no use for this item.");
+                        pm.SendMessage("You have no use for this item.");
                     }
-                    else if (Spells.SpellHelper.CheckCombat(m))
+                    else if (Spells.SpellHelper.CheckCombat(pm))
                     {
-                        m.SendLocalizedMessage(1116588); //You cannot use a forged pardon while in combat.
+                        pm.SendLocalizedMessage(1116588); //You cannot use a forged pardon while in combat.
                     }
                     else
                     {
-                        m.SendGump(new ConfirmCallbackGump((PlayerMobile)m, 1155524, 1155525, null, null, (mobile, obj) =>
+                        pm.SendGump(new ConfirmCallbackGump(pm, 1155524, 1155525, null, null, (mobile, obj) =>
                             {
                                 mobile.Kills = 0;
 
@@ -74,7 +74,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -22,50 +22,13 @@ namespace Server.Gumps
         {
         }
 
-        public virtual int ItemID
-        {
-            get
-            {
-                return m_ItemID;
-            }
-            set
-            {
-                m_ItemID = value;
-            }
-        }
-        public virtual int Hue
-        {
-            get
-            {
-                return m_Hue;
-            }
-            set
-            {
-                m_Hue = value;
-            }
-        }
-        public virtual int LocalizedTooltip
-        {
-            get
-            {
-                return m_LocalizedTooltip;
-            }
-            set
-            {
-                m_LocalizedTooltip = value;
-            }
-        }
-        public virtual TextDefinition Label
-        {
-            get
-            {
-                return m_Label;
-            }
-            set
-            {
-                m_Label = value;
-            }
-        }
+        public virtual int ItemID { get => m_ItemID; set => m_ItemID = value; }
+
+        public virtual int Hue { get => m_Hue; set => m_Hue = value; }
+
+        public virtual int LocalizedTooltip { get => m_LocalizedTooltip; set => m_LocalizedTooltip = value; }
+
+        public virtual TextDefinition Label { get => m_Label; set => m_Label = value; }
     }
 
     public class BaseImageTileButtonsGump : Gump

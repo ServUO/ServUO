@@ -52,7 +52,8 @@ namespace Server.Spells.SkillMasteries
                 Caster.SendLocalizedMessage(1060179); //You must be wielding a weapon to use this ability!
                 return false;
             }
-            else if (weapon.ExtendedWeaponAttributes.MysticWeapon > 0 || Enhancement.GetValue(Caster, ExtendedWeaponAttribute.MysticWeapon) > 0)
+
+            if (weapon.ExtendedWeaponAttributes.MysticWeapon > 0 || Enhancement.GetValue(Caster, ExtendedWeaponAttribute.MysticWeapon) > 0)
             {
                 Caster.SendMessage("That weapon is already under these effects.");
                 return false;

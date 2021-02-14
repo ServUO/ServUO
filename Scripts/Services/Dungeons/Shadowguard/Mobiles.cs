@@ -88,7 +88,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -132,7 +132,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             BlockReflect = true;
         }
@@ -179,7 +179,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -233,7 +233,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -277,7 +277,6 @@ namespace Server.Engines.Shadowguard
             Paralyze(defender);
         }
 
-        #region Paralyze
         private void Paralyze(Mobile defender)
         {
             defender.Paralyze(TimeSpan.FromSeconds(Utility.Random(3)));
@@ -287,7 +286,6 @@ namespace Server.Engines.Shadowguard
 
             defender.SendLocalizedMessage(1060164); // The attack has temporarily paralyzed you!
         }
-        #endregion
 
         public override void GenerateLoot()
         {
@@ -303,7 +301,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -427,7 +425,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -483,7 +481,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -568,7 +566,7 @@ namespace Server.Engines.Shadowguard
 
         public override int Damage(int amount, Mobile from, bool informmount, bool checkfizzle)
         {
-            if (from == null || (ShadowguardController.GetEncounter(Location, Map) != null && Z == from.Z))
+            if (from == null || ShadowguardController.GetEncounter(Location, Map) != null && Z == from.Z)
             {
                 return base.Damage(amount, from, informmount, checkfizzle);
             }
@@ -641,7 +639,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -789,7 +787,7 @@ namespace Server.Engines.Shadowguard
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

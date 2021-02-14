@@ -23,9 +23,9 @@ namespace Server.Items
 
         public override void OnRemoved()
         {
-            if (Owner != null && !Owner.Deleted && Owner.RootParent is Mobile)
+            if (Owner != null && !Owner.Deleted && Owner.RootParent is Mobile m)
             {
-                ((Mobile)Owner.RootParent).SendLocalizedMessage(1155618, string.IsNullOrEmpty(Owner.Name) ? string.Format("#{0}", Owner.LabelNumber) : Owner.Name); // Your ~1_name~'s Tincture of Silver has worn off.
+                m.SendLocalizedMessage(1155618, string.IsNullOrEmpty(Owner.Name) ? string.Format("#{0}", Owner.LabelNumber) : Owner.Name); // Your ~1_name~'s Tincture of Silver has worn off.
             }
         }
 
@@ -48,9 +48,9 @@ namespace Server.Items
 
         public override void OnAfterDuped(ItemSocket oldSocket)
         {
-            if (oldSocket is SlayerSocket)
+            if (oldSocket is SlayerSocket socket)
             {
-                Slayer = ((SlayerSocket)oldSocket).Slayer;
+                Slayer = socket.Slayer;
             }
         }
 

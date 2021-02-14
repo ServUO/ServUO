@@ -28,7 +28,7 @@ namespace Server.Regions
 
         public static bool RestrictBoats
         {
-            get { return m_RestrictBoats; }
+            get => m_RestrictBoats;
             set
             {
                 m_RestrictBoats = value;
@@ -53,9 +53,9 @@ namespace Server.Regions
         }
 
         public static Rectangle2D[] Bounds => m_Bounds;
-        private static readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_Bounds =
         {
-            new Rectangle2D(4529, 2296, 45, 112),
+            new Rectangle2D(4529, 2296, 45, 112)
         };
 
         public SeaMarketRegion(XmlElement xml, Map map, Region parent)
@@ -130,14 +130,13 @@ namespace Server.Regions
                     Map map = capt.Map;
 
                     string locArgs;
-                    string combine;
 
                     if (Sextant.Format(loc, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
                         locArgs = string.Format("{0}°{1}'{2},{3}°{4}'{5}", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W");
                     else
                         locArgs = "?????";
 
-                    combine = string.Format("{0}\t{1}", capt.PirateName > -1 ? string.Format("#{0}", capt.PirateName) : capt.Name, locArgs);
+                    var combine = string.Format("{0}\t{1}", capt.PirateName > -1 ? string.Format("#{0}", capt.PirateName) : capt.Name, locArgs);
 
                     int cliloc = Utility.RandomMinMax(1149856, 1149865);
                     npc.SayTo(from, cliloc, combine);
@@ -168,7 +167,7 @@ namespace Server.Regions
 
                 foreach (Mobile mob in eable)
                 {
-                    if (mob is BaseVendor || mob is MondainQuester || mob is GalleonPilot)
+                    if (mob is BaseVendor || mob is GalleonPilot)
                     {
                         TryPirateBlab(player, mob);
                         break;
@@ -266,12 +265,12 @@ namespace Server.Regions
                 boat.Owner.SendMessage("You can only dock your boat here for {0} minutes.", (int)KickDuration.TotalMinutes);
         }
 
-        private readonly Rectangle2D[] m_KickLocs = new Rectangle2D[]
+        private readonly Rectangle2D[] m_KickLocs =
         {
             new Rectangle2D(m_Bounds[0].X - 100, m_Bounds[0].X - 100, 200 + m_Bounds[0].Width, 100),
             new Rectangle2D(m_Bounds[0].X - 100, m_Bounds[0].Y, 100, m_Bounds[0].Height + 100),
             new Rectangle2D(m_Bounds[0].X, m_Bounds[0].Y + m_Bounds[0].Height, m_Bounds[0].Width + 100, 100),
-            new Rectangle2D(m_Bounds[0].X + m_Bounds[0].Width, m_Bounds[0].Y, 100, m_Bounds[0].Height),
+            new Rectangle2D(m_Bounds[0].X + m_Bounds[0].Width, m_Bounds[0].Y, 100, m_Bounds[0].Height)
         };
 
         public bool KickBoat(BaseBoat boat)
@@ -336,7 +335,7 @@ namespace Server.Regions
 
         public static void Load(GenericReader reader)
         {
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_RestrictBoats = reader.ReadBool();
 

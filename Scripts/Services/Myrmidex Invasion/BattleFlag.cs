@@ -60,7 +60,7 @@ namespace Server.Engines.MyrmidexInvasion
                 if (kvp.Value.Count > 0)
                 {
                     int wave = kvp.Key + 1;
-                    int count = kvp.Value.Where(bc => bc.Alive).Count();
+                    int count = kvp.Value.Count(bc => bc.Alive);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(delay), () =>
                     {
@@ -77,7 +77,7 @@ namespace Server.Engines.MyrmidexInvasion
                 if (kvp.Value.Count > 0)
                 {
                     int wave = kvp.Key + 1;
-                    int count = kvp.Value.Where(bc => bc.Alive).Count();
+                    int count = kvp.Value.Count(bc => bc.Alive);
 
                     Timer.DelayCall(TimeSpan.FromSeconds(delay), () =>
                     {
@@ -93,24 +93,20 @@ namespace Server.Engines.MyrmidexInvasion
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m is BaseCreature && NextSpawn < DateTime.UtcNow)
+            if (m is BaseCreature bc && NextSpawn < DateTime.UtcNow)
             {
-                BaseCreature bc = (BaseCreature)m;
                 Point3D check = Allegiance == Allegiance.Myrmidex ? new Point3D(914, 1807, 0) : Location;
 
                 if (Allegiance == Allegiance.Myrmidex && bc.InRange(check, 8))
                 {
-                    if (bc is BritannianInfantry || (bc is BaseEodonTribesman && ((BaseEodonTribesman)bc).TribeType != EodonTribe.Barrab))
+                    if (bc is BritannianInfantry || bc is BaseEodonTribesman tribesman && tribesman.TribeType != EodonTribe.Barrab)
                     {
                         Spawn(false, typeof(MyrmidexDrone), typeof(MyrmidexWarrior), typeof(TribeWarrior));
                     }
                 }
-                else if (Allegiance == Allegiance.Tribes && bc.InRange(check, 8))
+                else if (Allegiance == Allegiance.Tribes && bc.InRange(check, 8) && (bc is MyrmidexDrone || bc is MyrmidexWarrior || bc is BaseEodonTribesman tribesman && tribesman.TribeType == EodonTribe.Barrab))
                 {
-                    if (bc is MyrmidexDrone || bc is MyrmidexWarrior || (bc is BaseEodonTribesman && ((BaseEodonTribesman)bc).TribeType == EodonTribe.Barrab))
-                    {
-                        Spawn(true, typeof(BritannianInfantry));
-                    }
+                    Spawn(true, typeof(BritannianInfantry));
                 }
             }
         }

@@ -41,14 +41,15 @@ namespace Server.Engines.Harvest
         public BonusHarvestResource[] BonusResources { get; set; }
         public bool RaceBonus { get; set; }
         public bool RandomizeVeins { get; set; }
-        public Dictionary<Map, Dictionary<Point2D, HarvestBank>> Banks { get; set; }
+        public Dictionary<Map, Dictionary<Point2D, HarvestBank>> Banks { get; }
 
         public void SendMessageTo(Mobile from, object message)
         {
-            if (message is int)
-                from.SendLocalizedMessage((int)message);
-            else if (message is string)
-                from.SendMessage((string)message);
+            if (message is int i)
+                from.SendLocalizedMessage(i);
+
+            else if (message is string s)
+                from.SendMessage(s);
         }
 
         public HarvestBank GetBank(Map map, int x, int y)
@@ -140,15 +141,15 @@ namespace Server.Engines.Harvest
 
                 return contains;
             }
-            else
+
+            int dist = -1;
+
+            for (int i = 0; dist < 0 && i < Tiles.Length; ++i)
             {
-                int dist = -1;
-
-                for (int i = 0; dist < 0 && i < Tiles.Length; ++i)
-                    dist = Tiles[i] - tileID;
-
-                return dist == 0;
+                dist = Tiles[i] - tileID;
             }
+
+            return dist == 0;
         }
 
         #region High Seas

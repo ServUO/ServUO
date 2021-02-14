@@ -43,8 +43,8 @@ namespace Server.Items
 
         private class InternalTarget : Target
         {
-            public ShipCannonDeed Deed { get; set; }
-            public BaseGalleon Galleon { get; set; }
+            public ShipCannonDeed Deed { get; }
+            public BaseGalleon Galleon { get; }
 
             public InternalTarget(ShipCannonDeed deed, BaseGalleon galleon)
                 : base(2, false, TargetFlags.None)
@@ -57,9 +57,9 @@ namespace Server.Items
             {
                 Map map = from.Map;
 
-                if (targeted is IPoint3D)
+                if (targeted is IPoint3D target3D)
                 {
-                    Point3D pnt = new Point3D((IPoint3D)targeted);
+                    Point3D pnt = new Point3D(target3D);
 
                     BaseGalleon galleon = BaseGalleon.FindGalleonAt(new Point2D(pnt.X, pnt.Y), map);
 
@@ -82,7 +82,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -108,7 +108,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -134,7 +134,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -160,7 +160,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -186,7 +186,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -212,7 +212,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -205,8 +205,8 @@ namespace Server.Spells.Fourth
                     AOS.Damage(m, m_Caster, damage, 0, 100, 0, 0, 0);
                     m.PlaySound(0x208);
 
-                    if (m is BaseCreature)
-                        ((BaseCreature)m).OnHarmfulSpell(m_Caster);
+                    if (m is BaseCreature bc)
+                        bc.OnHarmfulSpell(m_Caster);
                 }
 
                 return true;
@@ -270,8 +270,8 @@ namespace Server.Spells.Fourth
                                 AOS.Damage(m, caster, damage, 0, 100, 0, 0, 0);
                                 m.PlaySound(0x208);
 
-                                if (m is BaseCreature)
-                                    ((BaseCreature)m).OnHarmfulSpell(caster);
+                                if (m is BaseCreature bc)
+                                    bc.OnHarmfulSpell(caster);
                             }
                         }
                     }
@@ -290,8 +290,8 @@ namespace Server.Spells.Fourth
 
             protected override void OnTarget(Mobile from, object o)
             {
-                if (o is IPoint3D)
-                    m_Owner.Target((IPoint3D)o);
+                if (o is IPoint3D point3D)
+                    m_Owner.Target(point3D);
             }
 
             protected override void OnTargetFinish(Mobile from)

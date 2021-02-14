@@ -13,7 +13,7 @@ namespace Server
 		{
 			PermitBackgroundWrite = permitBackgroundWrite;
 
-			var saveThread = new Thread(delegate ()
+			Thread saveThread = new Thread(delegate ()
 			{
 				SaveItems(metrics);
 			})

@@ -39,10 +39,9 @@ namespace Server.Mobiles
             {
                 bool good = false;
 
-                if (from == Altar.Summoner || (Altar.DeadLine > DateTime.UtcNow &&
-                                               Altar.DeadLine - DateTime.UtcNow < TimeSpan.FromMinutes(10)))
+                if (from == Altar.Summoner || Altar.DeadLine > DateTime.UtcNow && Altar.DeadLine - DateTime.UtcNow < TimeSpan.FromMinutes(10))
                     good = true;
-                else if (from is BaseCreature && ((BaseCreature)from).GetMaster() == Altar.Summoner)
+                else if (from is BaseCreature creature && creature.GetMaster() == Altar.Summoner)
                     good = true;
                 else if (ShameAltar.AllowParties)
                 {
@@ -88,7 +87,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -138,7 +137,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
+            if (c.Map != null && c.Map.Rules == MapRules.FeluccaRules || 0.5 > Utility.RandomDouble())
                 c.DropItem(new QuartzGrit());
         }
 
@@ -158,7 +157,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -222,7 +221,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
+            if (c.Map != null && c.Map.Rules == MapRules.FeluccaRules || 0.5 > Utility.RandomDouble())
                 c.DropItem(new CorrosiveAsh());
         }
 
@@ -240,7 +239,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -295,7 +294,7 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if ((c.Map != null && c.Map.Rules == MapRules.FeluccaRules) || 0.5 > Utility.RandomDouble())
+            if (c.Map != null && c.Map.Rules == MapRules.FeluccaRules || 0.5 > Utility.RandomDouble())
                 c.DropItem(new CursedOilstone());
         }
 
@@ -313,7 +312,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

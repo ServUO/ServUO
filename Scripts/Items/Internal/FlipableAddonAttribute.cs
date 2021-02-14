@@ -8,11 +8,13 @@ namespace Server.Items
     public class FlipableAddonAttribute : Attribute
     {
         private static readonly string m_MethodName = "Flip";
-        private static readonly Type[] m_Params = new Type[]
+        private static readonly Type[] m_Params =
         {
             typeof(Mobile), typeof(Direction)
         };
+
         private readonly Direction[] m_Directions;
+
         public FlipableAddonAttribute(params Direction[] directions)
         {
             m_Directions = directions;
@@ -45,17 +47,21 @@ namespace Server.Items
 
                         ClearComponents(addon);
 
-                        flipMethod.Invoke(addon, new object[2] { from, m_Directions[index] });
+                        flipMethod.Invoke(addon, new object[] { from, m_Directions[index] });
 
                         BaseHouse house = null;
                         AddonFitResult result = AddonFitResult.Valid;
 
                         addon.Map = Map.Internal;
 
-                        if (addon is BaseAddon)
-                            result = ((BaseAddon)addon).CouldFit(addon.Location, from.Map, from, ref house);
-                        else if (addon is BaseAddonContainer)
-                            result = ((BaseAddonContainer)addon).CouldFit(addon.Location, from.Map, from, ref house);
+                        if (addon is BaseAddon baseAddon)
+                        {
+                            result = baseAddon.CouldFit(baseAddon.Location, from.Map, from, ref house);
+                        }
+                        else if (addon is BaseAddonContainer container)
+                        {
+                            result = container.CouldFit(container.Location, from.Map, from, ref house);
+                        }
 
                         addon.Map = from.Map;
 
@@ -68,7 +74,7 @@ namespace Server.Items
 
                             ClearComponents(addon);
 
-                            flipMethod.Invoke(addon, new object[2] { from, m_Directions[index] });
+                            flipMethod.Invoke(addon, new object[] { from, m_Directions[index] });
 
                             if (result == AddonFitResult.Blocked)
                                 from.SendLocalizedMessage(500269); // You cannot build that there.
@@ -92,10 +98,8 @@ namespace Server.Items
 
         private void ClearComponents(Item item)
         {
-            if (item is BaseAddon)
+            if (item is BaseAddon addon)
             {
-                BaseAddon addon = (BaseAddon)item;
-
                 foreach (AddonComponent c in addon.Components)
                 {
                     c.Addon = null;
@@ -104,17 +108,15 @@ namespace Server.Items
 
                 addon.Components.Clear();
             }
-            else if (item is BaseAddonContainer)
+            else if (item is BaseAddonContainer container)
             {
-                BaseAddonContainer addon = (BaseAddonContainer)item;
-
-                foreach (AddonContainerComponent c in addon.Components)
+                foreach (AddonContainerComponent c in container.Components)
                 {
                     c.Addon = null;
                     c.Delete();
                 }
 
-                addon.Components.Clear();
+                container.Components.Clear();
             }
         }
     }

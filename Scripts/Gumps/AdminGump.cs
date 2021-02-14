@@ -64,7 +64,7 @@ namespace Server.Gumps
 
         public void AddPageButton(int x, int y, int buttonID, string text, AdminGumpPage page, params AdminGumpPage[] subPages)
         {
-            bool isSelection = (m_PageType == page);
+            bool isSelection = m_PageType == page;
 
             for (int i = 0; !isSelection && i < subPages.Length; ++i)
                 isSelection = (m_PageType == subPages[i]);
@@ -161,7 +161,7 @@ namespace Server.Gumps
                     {
                         if (m.Murderer)
                             return 0x21;
-                        else if (m.Criminal)
+                        if (m.Criminal)
                             return 0x3B1;
 
                         return 0x58;
@@ -169,7 +169,7 @@ namespace Server.Gumps
             }
         }
 
-        private static readonly string[] m_AccessLevelStrings = new string[]
+        private static readonly string[] m_AccessLevelStrings =
         {
             "Player",
             "VIP",
@@ -403,13 +403,13 @@ namespace Server.Gumps
                         AddHtml(20, 150, 380, 80, Color("When enabled, only clients with an access level equal to or greater than the specified lockdown level may access the server. After setting a lockdown level, use the <em>Purge Invalid Clients</em> button to disconnect those clients without access.", LabelColor32), false, false);
 
                         AccessLevel level = AccountHandler.LockdownLevel;
-                        bool isLockedDown = (level > AccessLevel.VIP);
+                        bool isLockedDown = level > AccessLevel.VIP;
 
                         AddSelectedButton(20, 230, GetButtonID(3, 500), "Not Locked Down", !isLockedDown);
-                        AddSelectedButton(20, 260, GetButtonID(3, 504), "Administrators", (isLockedDown && level <= AccessLevel.Administrator));
-                        AddSelectedButton(20, 280, GetButtonID(3, 503), "Seers", (isLockedDown && level <= AccessLevel.Seer));
-                        AddSelectedButton(20, 300, GetButtonID(3, 502), "Game Masters", (isLockedDown && level <= AccessLevel.GameMaster));
-                        AddSelectedButton(20, 320, GetButtonID(3, 501), "Counselors", (isLockedDown && level <= AccessLevel.Counselor));
+                        AddSelectedButton(20, 260, GetButtonID(3, 504), "Administrators", isLockedDown && level <= AccessLevel.Administrator);
+                        AddSelectedButton(20, 280, GetButtonID(3, 503), "Seers", isLockedDown && level <= AccessLevel.Seer);
+                        AddSelectedButton(20, 300, GetButtonID(3, 502), "Game Masters", isLockedDown && level <= AccessLevel.GameMaster);
+                        AddSelectedButton(20, 320, GetButtonID(3, 501), "Counselors", isLockedDown && level <= AccessLevel.Counselor);
 
                         AddButtonLabeled(20, 350, GetButtonID(3, 510), "Purge Invalid Clients");
 
@@ -908,7 +908,7 @@ namespace Server.Gumps
                             }
                             else
                             {
-                                TimeSpan remaining = (DateTime.UtcNow - banTime);
+                                TimeSpan remaining = DateTime.UtcNow - banTime;
 
                                 if (remaining < TimeSpan.Zero)
                                     remaining = TimeSpan.Zero;
@@ -1220,9 +1220,7 @@ namespace Server.Gumps
                             {
                                 IPAddress[] loginList = acct.LoginIPs;
 
-                                bool contains = false;
-
-                                for (int i = 0; !contains && i < loginList.Length; ++i)
+                                for (int i = 0; i < loginList.Length; ++i)
                                 {
                                     if (((Firewall.IFirewallEntry)state).IsBlocked(loginList[i]))
                                     {
@@ -3030,7 +3028,7 @@ namespace Server.Gumps
 
                             if (m_PageType == AdminGumpPage.AccountDetails_Access_ClientIPs)
                             {
-                                from.SendGump(new WarningGump(1060635, 30720, string.Format("You are about to firewall {0}. All connection attempts from a matching IP will be refused. Are you sure?", m_List[index]), 0xFFC000, 420, 280, Firewall_Callback, new object[] { a, m_List[index] }));
+                                from.SendGump(new WarningGump(1060635, 30720, string.Format("You are about to firewall {0}. All connection attempts from a matching IP will be refused. Are you sure?", m_List[index]), 0xFFC000, 420, 280, Firewall_Callback, new[] { a, m_List[index] }));
                             }
                             else if (m_PageType == AdminGumpPage.AccountDetails_Access_Restrictions)
                             {
@@ -3212,9 +3210,9 @@ namespace Server.Gumps
             {
                 if (x == null && y == null)
                     return 0;
-                else if (x == null)
+                if (x == null)
                     return -1;
-                else if (y == null)
+                if (y == null)
                     return 1;
 
                 NetState a = x as NetState;
@@ -3228,17 +3226,22 @@ namespace Server.Gumps
 
                 if (aMob == null && bMob == null)
                     return 0;
-                else if (aMob == null)
+                if (aMob == null)
                     return 1;
-                else if (bMob == null)
+                if (bMob == null)
                     return -1;
 
                 if (aMob.AccessLevel > bMob.AccessLevel)
+                {
                     return -1;
-                else if (aMob.AccessLevel < bMob.AccessLevel)
+                }
+
+                if (aMob.AccessLevel < bMob.AccessLevel)
+                {
                     return 1;
-                else
-                    return Insensitive.Compare(aMob.Name, bMob.Name);
+                }
+
+                return Insensitive.Compare(aMob.Name, bMob.Name);
             }
         }
 
@@ -3250,9 +3253,9 @@ namespace Server.Gumps
             {
                 if (x == null && y == null)
                     return 0;
-                else if (x == null)
+                if (x == null)
                     return -1;
-                else if (y == null)
+                if (y == null)
                     return 1;
 
                 Account a = x as Account;
@@ -3268,15 +3271,26 @@ namespace Server.Gumps
                 GetAccountInfo(b, out bLevel, out bOnline);
 
                 if (aOnline && !bOnline)
+                {
                     return -1;
-                else if (bOnline && !aOnline)
+                }
+
+                if (bOnline && !aOnline)
+                {
                     return 1;
-                else if (aLevel > bLevel)
+                }
+
+                if (aLevel > bLevel)
+                {
                     return -1;
-                else if (aLevel < bLevel)
+                }
+
+                if (aLevel < bLevel)
+                {
                     return 1;
-                else
-                    return Insensitive.Compare(a.Username, b.Username);
+                }
+
+                return Insensitive.Compare(a.Username, b.Username);
             }
         }
     }

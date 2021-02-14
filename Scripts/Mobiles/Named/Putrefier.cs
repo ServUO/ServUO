@@ -62,7 +62,7 @@ namespace Server.Mobiles
             AddLoot(LootPack.UltraRich, 3);
             AddLoot(LootPack.MedScrolls, 2);
             AddLoot(LootPack.ArcanistScrolls);
-            AddLoot(LootPack.LootItem<ParrotItem>(60.0));
+            AddLoot(LootPack.LootItem<ParrotItem>(10.0));
             AddLoot(LootPack.LootItem<SpleenOfThePutrefier>());
         }
 

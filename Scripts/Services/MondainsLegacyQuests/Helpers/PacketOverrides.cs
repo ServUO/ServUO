@@ -34,10 +34,8 @@ namespace Server.Engines.Quests
 
         public static void QuestButton(NetState state, IEntity e, EncodedReader reader)
         {
-            if (state.Mobile is PlayerMobile)
+            if (state.Mobile is PlayerMobile from)
             {
-                PlayerMobile from = (PlayerMobile)state.Mobile;
-
                 from.CloseGump(typeof(MondainQuestGump));
                 from.SendGump(new MondainQuestGump(from));
             }

@@ -984,10 +984,8 @@ namespace Server.Items
             if (!IsEmpty || !Fillable || !ValidateUse(from, false))
                 return;
 
-            if (targ is BaseBeverage)
+            if (targ is BaseBeverage bev)
             {
-                BaseBeverage bev = (BaseBeverage)targ;
-
                 if (bev.IsEmpty || !bev.ValidateUse(from, true))
                     return;
 
@@ -1006,10 +1004,8 @@ namespace Server.Items
                     bev.Quantity = 0;
                 }
             }
-            else if (targ is BaseWaterContainer)
+            else if (targ is BaseWaterContainer bwc)
             {
-                BaseWaterContainer bwc = targ as BaseWaterContainer;
-
                 if (Quantity == 0 || (Content == BeverageType.Water && !IsFull))
                 {
                     Content = BeverageType.Water;
@@ -1025,15 +1021,14 @@ namespace Server.Items
                     }
                 }
             }
-            else if (targ is Item)
+            else if (targ is Item item)
             {
-                Item item = (Item)targ;
                 IWaterSource src;
 
                 src = (item as IWaterSource);
 
-                if (src == null && item is AddonComponent)
-                    src = (((AddonComponent)item).Addon as IWaterSource);
+                if (src == null && item is AddonComponent component)
+                    src = (component.Addon as IWaterSource);
 
                 if (src == null || src.Quantity <= 0)
                 {
@@ -1076,10 +1071,8 @@ namespace Server.Items
                     from.SendLocalizedMessage(1010089); // You fill the container with water.
                 }
             }
-            else if (targ is Cow)
+            else if (targ is Cow cow)
             {
-                Cow cow = (Cow)targ;
-
                 if (cow.TryMilk(from))
                 {
                     Content = BeverageType.Milk;
@@ -1087,9 +1080,9 @@ namespace Server.Items
                     from.SendLocalizedMessage(1080197); // You fill the container with milk.
                 }
             }
-            else if (targ is LandTarget)
+            else if (targ is LandTarget target)
             {
-                int tileID = ((LandTarget)targ).TileID;
+                int tileID = target.TileID;
 
                 PlayerMobile player = from as PlayerMobile;
 
@@ -1241,10 +1234,8 @@ namespace Server.Items
             if (IsEmpty || !Pourable || !ValidateUse(from, false))
                 return;
 
-            if (targ is BaseBeverage)
+            if (targ is BaseBeverage bev)
             {
-                BaseBeverage bev = (BaseBeverage)targ;
-
                 if (!bev.ValidateUse(from, true))
                     return;
 
@@ -1276,10 +1267,8 @@ namespace Server.Items
                     from.PlaySound(0x4E);
                 }
             }
-            else if (targ is WaterContainerComponent)
+            else if (targ is WaterContainerComponent component)
             {
-                WaterContainerComponent component = (WaterContainerComponent)targ;
-
                 if (component.IsFull)
                 {
                     from.SendLocalizedMessage(500848); // Couldn't pour it there.  It was already full.
@@ -1332,10 +1321,8 @@ namespace Server.Items
 
                 --Quantity;
             }
-            else if (targ is BaseWaterContainer)
+            else if (targ is BaseWaterContainer bwc)
             {
-                BaseWaterContainer bwc = targ as BaseWaterContainer;
-
                 if (Content != BeverageType.Water)
                 {
                     from.SendLocalizedMessage(500842); // Can't pour that in there.
@@ -1357,16 +1344,16 @@ namespace Server.Items
                     }
                 }
             }
-            else if (targ is PlantItem)
+            else if (targ is PlantItem item)
             {
-                ((PlantItem)targ).Pour(from, this);
+                item.Pour(from, this);
             }
-            else if (targ is ChickenLizardEgg)
+            else if (targ is ChickenLizardEgg egg)
             {
-                ((ChickenLizardEgg)targ).Pour(from, this);
+                egg.Pour(from, this);
             }
-            else if (targ is AddonComponent &&
-                     (((AddonComponent)targ).Addon is WaterVatEast || ((AddonComponent)targ).Addon is WaterVatSouth) &&
+            else if (targ is AddonComponent addonComponent &&
+                     (addonComponent.Addon is WaterVatEast || addonComponent.Addon is WaterVatSouth) &&
                      Content == BeverageType.Water)
             {
                 PlayerMobile player = from as PlayerMobile;
@@ -1381,7 +1368,7 @@ namespace Server.Items
 
                         if (obj != null && !obj.Completed)
                         {
-                            BaseAddon vat = ((AddonComponent)targ).Addon;
+                            BaseAddon vat = addonComponent.Addon;
 
                             if (vat.X > 5784 && vat.X < 5814 && vat.Y > 1903 && vat.Y < 1934 &&
                                 ((qs.RedSolen && vat.Map == Map.Trammel) || (!qs.RedSolen && vat.Map == Map.Felucca)))
@@ -1403,22 +1390,22 @@ namespace Server.Items
                     }
                 }
             }
-            else if (targ is WaterElemental)
+            else if (targ is WaterElemental elemental)
             {
                 if (this is Pitcher && Content == BeverageType.Water)
                 {
-                    EndlessDecanter.HandleThrow(this, (WaterElemental)targ, from);
+                    EndlessDecanter.HandleThrow(this, elemental, from);
                 }
             }
             else if (this is Pitcher && Content == BeverageType.Water)
             {
-                if (targ is FillableBarrel)
+                if (targ is FillableBarrel fBarrel)
                 {
-                    ((FillableBarrel)targ).Pour(from, this);
+                    fBarrel.Pour(from, this);
                 }
-                else if (targ is Barrel)
+                else if (targ is Barrel barrel)
                 {
-                    ((Barrel)targ).Pour(from, this);
+                    barrel.Pour(from, this);
                 }
             }
             else

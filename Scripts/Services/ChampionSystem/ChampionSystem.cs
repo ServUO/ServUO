@@ -114,6 +114,7 @@ namespace Server.Engines.CannedEvil
                 writer =>
                 {
                     writer.Write(1); // Version
+
                     writer.Write(m_Initialized);
                     writer.Write(m_LastRotate);
                     writer.WriteItemList(m_AllSpawns, true);
@@ -126,16 +127,11 @@ namespace Server.Engines.CannedEvil
                 m_Path,
                 reader =>
                 {
-                    int version = reader.ReadInt();
+                    reader.ReadInt();
 
                     m_Initialized = reader.ReadBool();
                     m_LastRotate = reader.ReadDateTime();
                     m_AllSpawns.AddRange(reader.ReadItemList().Cast<ChampionSpawn>());
-
-                    if (version == 0)
-                    {
-                        //m_ForceGenerate = true;
-                    }
                 });
         }
 

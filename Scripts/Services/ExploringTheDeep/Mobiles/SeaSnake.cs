@@ -1,4 +1,4 @@
-﻿namespace Server.Mobiles
+namespace Server.Mobiles
 {
     [CorpseName("a sea snake corpse")]
     public class SeaSnake : BaseCreature
@@ -63,7 +63,7 @@
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

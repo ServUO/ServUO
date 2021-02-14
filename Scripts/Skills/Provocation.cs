@@ -45,10 +45,8 @@ namespace Server.SkillHandlers
             {
                 from.RevealingAction();
 
-                if (targeted is BaseCreature && from.CanBeHarmful((Mobile)targeted, true, false, true))
+                if (targeted is BaseCreature creature && from.CanBeHarmful(creature, true, false, true))
                 {
-                    BaseCreature creature = (BaseCreature)targeted;
-
                     if (!m_Instrument.IsChildOf(from.Backpack))
                     {
                         from.SendLocalizedMessage(1062488); // The instrument you are trying to play is no longer in your backpack!
@@ -93,7 +91,7 @@ namespace Server.SkillHandlers
             {
                 from.RevealingAction();
 
-                if (targeted is BaseCreature || (from is BaseCreature && ((BaseCreature)from).CanProvoke))
+                if (targeted is BaseCreature || from is BaseCreature baseCreature && baseCreature.CanProvoke)
                 {
                     BaseCreature creature = targeted as BaseCreature;
                     Mobile target = targeted as Mobile;
@@ -122,26 +120,26 @@ namespace Server.SkillHandlers
                     {
                         from.NextSkillTime = Core.TickCount + 10000;
 
-                        double diff = ((m_Instrument.GetDifficultyFor(m_Creature) + m_Instrument.GetDifficultyFor(target)) * 0.5) - 5.0;
+                        double diff = (m_Instrument.GetDifficultyFor(m_Creature) + m_Instrument.GetDifficultyFor(target)) * 0.5 - 5.0;
                         double music = from.Skills[SkillName.Musicianship].Value;
                         int masteryBonus = 0;
 
-                        if (from is PlayerMobile)
-                            masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus((PlayerMobile)from, SkillName.Provocation);
+                        if (from is PlayerMobile pm)
+                            masteryBonus = Spells.SkillMasteries.BardSpell.GetMasteryBonus(pm, SkillName.Provocation);
 
                         if (masteryBonus > 0)
-                            diff -= (diff * ((double)masteryBonus / 100));
+                            diff -= diff * ((double)masteryBonus / 100);
 
                         if (music > 100.0)
                         {
                             diff -= (music - 100.0) * 0.5;
                         }
 
-                        if (questTargets || (from.CanBeHarmful(m_Creature, true, false, true) && from.CanBeHarmful(target, true, false, true)))
+                        if (questTargets || from.CanBeHarmful(m_Creature, true, false, true) && from.CanBeHarmful(target, true, false, true))
                         {
                             if (from.Player && !BaseInstrument.CheckMusicianship(from))
                             {
-                                from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
+                                from.NextSkillTime = Core.TickCount + (10000 - masteryBonus / 5 * 1000);
                                 from.SendLocalizedMessage(500612); // You play poorly, and there is no effect.
                                 m_Instrument.PlayInstrumentBadly(from);
                                 m_Instrument.ConsumeUse(from);
@@ -150,7 +148,7 @@ namespace Server.SkillHandlers
                             {
                                 if (!from.CheckTargetSkill(SkillName.Provocation, target, diff - 25.0, diff + 25.0))
                                 {
-                                    from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
+                                    from.NextSkillTime = Core.TickCount + (10000 - masteryBonus / 5 * 1000);
                                     from.SendLocalizedMessage(501599); // Your music fails to incite enough anger.
                                     m_Instrument.PlayInstrumentBadly(from);
                                     m_Instrument.ConsumeUse(from);
@@ -201,7 +199,7 @@ namespace Server.SkillHandlers
                             return false;
                     }
 
-                    if (from is PlayerMobile && (m_Creature.GetType() == typeof(Rabbit) || m_Creature.GetType() == typeof(JackRabbit)) && ((creature is WanderingHealer) || (creature is EvilWanderingHealer)))
+                    if (from is PlayerMobile && (m_Creature.GetType() == typeof(Rabbit) || m_Creature.GetType() == typeof(JackRabbit)) && (creature is WanderingHealer || creature is EvilWanderingHealer))
                         return true;
 
                     return false;

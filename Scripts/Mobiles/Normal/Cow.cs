@@ -52,26 +52,14 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public DateTime MilkedOn
         {
-            get
-            {
-                return m_MilkedOn;
-            }
-            set
-            {
-                m_MilkedOn = value;
-            }
+            get => m_MilkedOn;
+            set => m_MilkedOn = value;
         }
         [CommandProperty(AccessLevel.GameMaster)]
         public int Milk
         {
-            get
-            {
-                return m_Milk;
-            }
-            set
-            {
-                m_Milk = value;
-            }
+            get => m_Milk;
+            set => m_Milk = value;
         }
         public override int Meat => 8;
         public override int Hides => 12;
@@ -130,7 +118,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_MilkedOn = reader.ReadDateTime();
             m_Milk = reader.ReadInt();

@@ -25,7 +25,6 @@ namespace Server.Items
         {
             if (!Deleted && DespiseController.Instance != null)
             {
-                //DespiseController.Instance.AddDespisePoints(from, this);
                 Engines.Points.PointsSystem.DespiseCrystals.AwardPoints(from, Amount);
                 Delete();
             }
@@ -45,7 +44,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

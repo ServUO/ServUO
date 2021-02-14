@@ -110,9 +110,9 @@ namespace Server.Spells.Spellweaving
 
             protected override void OnTarget(Mobile m, object o)
             {
-                if (o is IPoint3D)
+                if (o is IPoint3D point3D)
                 {
-                    m_Owner.Target(new Point3D((IPoint3D)o));
+                    m_Owner.Target(new Point3D(point3D));
                 }
             }
 
@@ -203,15 +203,13 @@ namespace Server.Spells.Spellweaving
             public override void Serialize(GenericWriter writer)
             {
                 base.Serialize(writer);
-
                 writer.Write(0); // version
             }
 
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-
-                int version = reader.ReadInt();
+                reader.ReadInt();
 
                 Delete();
             }

@@ -7,7 +7,7 @@ namespace Server.Engines.VvV
 {
     public class ConfirmSignupGump : Gump
     {
-        public PlayerMobile User { get; set; }
+        public PlayerMobile User { get; }
 
         public ConfirmSignupGump(PlayerMobile pm)
             : base(50, 50)

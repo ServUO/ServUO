@@ -25,7 +25,7 @@ namespace Server.Engines.Harvest
 
         public virtual bool CheckTool(Mobile from, Item tool)
         {
-            bool wornOut = tool == null || tool.Deleted || (tool is IUsesRemaining && ((IUsesRemaining)tool).UsesRemaining <= 0);
+            bool wornOut = tool == null || tool.Deleted || tool is IUsesRemaining remaining && remaining.UsesRemaining <= 0;
 
             if (wornOut)
                 from.SendLocalizedMessage(1044038); // You have worn out your tool!
@@ -43,7 +43,7 @@ namespace Server.Engines.Harvest
             return CheckTool(from, tool);
         }
 
-        public virtual bool CheckRange(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
+        public virtual bool CheckRange(Mobile from, HarvestDefinition def, Map map, Point3D loc, bool timed)
         {
             bool inRange = from.Map == map && from.InRange(loc, def.MaxRange);
 
@@ -117,7 +117,7 @@ namespace Server.Engines.Harvest
                 return;
             }
 
-            if (!CheckRange(from, tool, def, map, loc, true))
+            if (!CheckRange(from, def, map, loc, true))
                 return;
             if (!CheckResources(from, tool, def, map, loc, true))
                 return;
@@ -179,7 +179,7 @@ namespace Server.Engines.Harvest
                             int racialAmount = (int)Math.Ceiling(amount * 1.1);
                             int feluccaRacialAmount = (int)Math.Ceiling(feluccaAmount * 1.1);
 
-                            bool eligableForRacialBonus = (def.RaceBonus && from.Race == Race.Human);
+                            bool eligableForRacialBonus = def.RaceBonus && from.Race == Race.Human;
                             bool inFelucca = map == Map.Felucca && !Siege.SiegeShard;
 
                             if (eligableForRacialBonus && inFelucca && bank.Current >= feluccaRacialAmount && 0.1 > Utility.RandomDouble())
@@ -234,22 +234,18 @@ namespace Server.Engines.Harvest
                         EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool, item, bonusItem, this));
                     }
 
-                    #region High Seas
                     OnToolUsed(from, tool, item != null);
-                    #endregion
                 }
 
                 // Siege rules will take into account axes and polearms used for lumberjacking
-                if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
+                if (tool is IUsesRemaining withUses && (withUses is BaseHarvestTool || withUses is Pickaxe || withUses is SturdyPickaxe || withUses is GargoylesPickaxe || Siege.SiegeShard))
                 {
-                    IUsesRemaining toolWithUses = (IUsesRemaining)tool;
+                    withUses.ShowUsesRemaining = true;
 
-                    toolWithUses.ShowUsesRemaining = true;
+                    if (withUses.UsesRemaining > 0)
+                        --withUses.UsesRemaining;
 
-                    if (toolWithUses.UsesRemaining > 0)
-                        --toolWithUses.UsesRemaining;
-
-                    if (toolWithUses.UsesRemaining < 1)
+                    if (withUses.UsesRemaining < 1)
                     {
                         tool.Delete();
                         def.SendMessageTo(from, def.ToolBrokeMessage);
@@ -362,7 +358,7 @@ namespace Server.Engines.Harvest
         {
             bool racialBonus = def.RaceBonus && from.Race == Race.Elf;
 
-            if (vein.ChanceToFallback > (Utility.RandomDouble() + (racialBonus ? .20 : 0)))
+            if (vein.ChanceToFallback > Utility.RandomDouble() + (racialBonus ? .20 : 0))
                 return fallback;
 
             double skillValue = from.Skills[def.Skill].Value;
@@ -395,7 +391,7 @@ namespace Server.Engines.Harvest
                 return false;
             }
 
-            if (!CheckRange(from, tool, def, map, loc, true))
+            if (!CheckRange(from, def, map, loc, true))
             {
                 from.EndAction(locked);
                 return false;
@@ -413,20 +409,20 @@ namespace Server.Engines.Harvest
                 return false;
             }
 
-            DoHarvestingEffect(from, tool, def, map, loc);
+            DoHarvestingEffect(from, def, loc);
 
             new HarvestSoundTimer(from, tool, this, def, toHarvest, locked, last).Start();
 
             return !last;
         }
 
-        public virtual void DoHarvestingSound(Mobile from, Item tool, HarvestDefinition def, object toHarvest)
+        public virtual void DoHarvestingSound(Mobile from, HarvestDefinition def, object toHarvest)
         {
             if (def.EffectSounds.Length > 0)
                 from.PlaySound(Utility.RandomList(def.EffectSounds));
         }
 
-        public virtual void DoHarvestingEffect(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc)
+        public virtual void DoHarvestingEffect(Mobile from, HarvestDefinition def, Point3D loc)
         {
             from.Direction = from.GetDirectionTo(loc);
 
@@ -456,7 +452,6 @@ namespace Server.Engines.Harvest
             return def;
         }
 
-        #region High Seas
         public virtual HarvestDefinition GetDefinitionFromSpecialTile(int tileID)
         {
             HarvestDefinition def = null;
@@ -471,7 +466,6 @@ namespace Server.Engines.Harvest
 
             return def;
         }
-        #endregion
 
         public virtual void StartHarvesting(Mobile from, Item tool, object toHarvest)
         {
@@ -492,7 +486,7 @@ namespace Server.Engines.Harvest
                 return;
             }
 
-            if (!CheckRange(from, tool, def, map, loc, false))
+            if (!CheckRange(from, def, map, loc, false))
                 return;
             if (!CheckResources(from, tool, def, map, loc, false))
                 return;
@@ -513,21 +507,17 @@ namespace Server.Engines.Harvest
 
         public virtual bool GetHarvestDetails(Mobile from, Item tool, object toHarvest, out int tileID, out Map map, out Point3D loc)
         {
-            if (toHarvest is Static && !((Static)toHarvest).Movable)
+            if (toHarvest is Static staticObj && !staticObj.Movable)
             {
-                Static obj = (Static)toHarvest;
-
-                tileID = (obj.ItemID & 0x3FFF) | 0x4000;
-                map = obj.Map;
-                loc = obj.GetWorldLocation();
+                tileID = (staticObj.ItemID & 0x3FFF) | 0x4000;
+                map = staticObj.Map;
+                loc = staticObj.GetWorldLocation();
             }
-            else if (toHarvest is StaticTarget)
+            else if (toHarvest is StaticTarget staticTarget)
             {
-                StaticTarget obj = (StaticTarget)toHarvest;
-
-                tileID = (obj.ItemID & 0x3FFF) | 0x4000;
+                tileID = (staticTarget.ItemID & 0x3FFF) | 0x4000;
                 map = from.Map;
-                loc = obj.Location;
+                loc = staticTarget.Location;
             }
             else if (toHarvest is LandTarget obj)
             {
@@ -555,9 +545,9 @@ namespace Server.Engines.Harvest
             HarvestSystem system = null;
             HarvestDefinition def = null;
 
-            if (tool is IHarvestTool)
+            if (tool is IHarvestTool harvestTool)
             {
-                system = ((IHarvestTool)tool).HarvestSystem;
+                system = harvestTool.HarvestSystem;
             }
 
             if (system != null)
@@ -565,16 +555,16 @@ namespace Server.Engines.Harvest
                 switch (e.ResourceType)
                 {
                     case 0: // ore
-                        if (system is Mining)
-                            def = ((Mining)system).OreAndStone;
+                        if (system is Mining miningOreStone)
+                            def = miningOreStone.OreAndStone;
                         break;
                     case 1: // sand
-                        if (system is Mining)
-                            def = ((Mining)system).Sand;
+                        if (system is Mining miningSand)
+                            def = miningSand.Sand;
                         break;
                     case 2: // wood
-                        if (system is Lumberjacking)
-                            def = ((Lumberjacking)system).Definition;
+                        if (system is Lumberjacking lumberjacking)
+                            def = lumberjacking.Definition;
                         break;
                     case 3: // grave
                         if (TryHarvestGrave(m))

@@ -47,7 +47,6 @@ namespace Server.Items
             if (!m.InRange(this, 2))
             {
                 m.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1019045); // I can't reach that.
-                return;
             }
             else
             {
@@ -82,7 +81,7 @@ namespace Server.Items
 
                     //This call to another method to do something special, so you don't need
                     //to override OnDoubleClick and rewrite this section again.
-                    if (m_Working == true)
+                    if (m_Working)
                     {
                         DoSomethingSpecial(m);
                     }
@@ -94,7 +93,7 @@ namespace Server.Items
                         m_Used = false;
                     });
                 }
-                else if (ItemID == m_TurnOff && m_Used == true)
+                else if (ItemID == m_TurnOff && m_Used)
                 {
                     ItemID = m_TurnOn;
                     Effects.PlaySound(Location, Map, 0x3E8);
@@ -118,6 +117,7 @@ namespace Server.Items
         {
             base.Serialize(writer);
             writer.Write(0); // version
+
             writer.Write(m_TurnOn);
             writer.Write(m_TurnOff);
             writer.Write(m_LocMessageA);
@@ -129,7 +129,8 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
+
             m_TurnOn = reader.ReadInt();
             m_TurnOff = reader.ReadInt();
             m_LocMessageA = reader.ReadInt();

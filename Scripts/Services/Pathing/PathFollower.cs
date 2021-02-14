@@ -15,6 +15,7 @@ namespace Server
         private Point3D m_Next, m_LastGoalLoc;
         private DateTime m_LastPathTime;
         private MoveMethod m_Mover;
+
         public PathFollower(Mobile from, IPoint3D goal)
         {
             m_From = from;
@@ -23,28 +24,24 @@ namespace Server
 
         public MoveMethod Mover
         {
-            get
-            {
-                return m_Mover;
-            }
-            set
-            {
-                m_Mover = value;
-            }
+            get => m_Mover;
+            set => m_Mover = value;
         }
+
         public IPoint3D Goal => m_Goal;
+
         public MoveResult Move(Direction d)
         {
             if (m_Mover == null)
-                return (m_From.Move(d) ? MoveResult.Success : MoveResult.Blocked);
+                return m_From.Move(d) ? MoveResult.Success : MoveResult.Blocked;
 
             return m_Mover(d);
         }
 
         public Point3D GetGoalLocation()
         {
-            if (m_Goal is Item)
-                return ((Item)m_Goal).GetWorldLocation();
+            if (m_Goal is Item item)
+                return item.GetWorldLocation();
 
             return new Point3D(m_Goal);
         }
@@ -83,7 +80,7 @@ namespace Server
 
             if (m_Path == null)
                 repath = true;
-            else if ((!m_Path.Success || goal != m_LastGoalLoc) && (m_LastPathTime + RepathDelay) <= DateTime.UtcNow)
+            else if ((!m_Path.Success || goal != m_LastGoalLoc) && m_LastPathTime + RepathDelay <= DateTime.UtcNow)
                 repath = true;
             else if (m_Path.Success && Check(m_From.Location, m_LastGoalLoc, 0))
                 repath = true;

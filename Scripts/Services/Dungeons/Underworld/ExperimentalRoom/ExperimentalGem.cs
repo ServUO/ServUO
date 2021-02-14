@@ -52,16 +52,16 @@ namespace Server.Items
         public bool IsExtremeHue => m_IsExtremeHue;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Complete { get { return m_Complete; } set { m_Complete = value; } }
+        public bool Complete { get => m_Complete; set => m_Complete = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Room CurrentRoom { get { return m_CurrentRoom; } set { m_CurrentRoom = value; } }
+        public Room CurrentRoom { get => m_CurrentRoom; set => m_CurrentRoom = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double Completed { get { return m_Completed; } set { m_Completed = value; } }
+        public double Completed { get => m_Completed; set => m_Completed = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public double ToComplete { get { return m_ToComplete; } set { m_ToComplete = value; } }
+        public double ToComplete { get => m_ToComplete; set => m_ToComplete = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurrentHue => m_CurrentHue;
@@ -70,7 +70,7 @@ namespace Server.Items
         public int LastIndex => m_LastIndex;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public Mobile Owner { get { return m_Owner; } set { m_Owner = value; } }
+        public Mobile Owner { get => m_Owner; set => m_Owner = value; }
 
         public override int Lifespan => m_Span;
 
@@ -79,7 +79,10 @@ namespace Server.Items
             get
             {
                 if (m_Active)
+                {
                     return 1113409; // An Experimental Gem [Activated]
+                }
+
                 return 1113380; //An Experimental Gem
             }
         }
@@ -225,7 +228,7 @@ namespace Server.Items
                         m_Holding = true;
                         Hue = Neutral;
                         m_CurrentHue = Neutral;
-                        CompletePuzzle(m);
+                        CompletePuzzle();
 
                         m.PlaySound(0x1FF);
                         m.LocalOverheadMessage(MessageType.Regular, 0x21, 1113403); // Congratulations!! The last room has been unlocked!! Hurry through to claim your reward!
@@ -319,7 +322,7 @@ namespace Server.Items
             return "NOT STANDING ON A COLOR";
         }
 
-        private void CompletePuzzle(Mobile m)
+        private void CompletePuzzle()
         {
             if (m_Timer != null)
             {
@@ -485,6 +488,7 @@ namespace Server.Items
         /// <summary>
         /// Checks locations the player is standing, in relation to the gem hue.
         /// </summary>
+        /// <param name="from">player using</param>
         /// <param name="oldHue">current gem hue</param>
         /// <param name="floorHue">where they are standing</param>
         /// <returns>-1 if they are in the wrong spot, the new gem hue if in the correct spot</returns>
@@ -568,15 +572,15 @@ namespace Server.Items
             return false;
         }
 
-        public int[] RegularHues = new int[]
+        public int[] RegularHues =
         {
             White,
             Pink,
             LightGreen,
-            Orange,
+            Orange
         };
 
-        private readonly int[] ExtremeHues = new int[]
+        private readonly int[] ExtremeHues =
         {
             Red,
             Blue,
@@ -584,19 +588,19 @@ namespace Server.Items
             DarkGreen
         };
 
-        private static readonly int[][] m_RoomHues = new int[][]
+        private static readonly int[][] m_RoomHues =
         {
             //Room One
-            new int[] { White, Pink, Red, Blue },
+            new[] { White, Pink, Red, Blue },
 
             //Room Two
-            new int[] { Pink, Blue, Red, Orange, LightGreen, White },
+            new[] { Pink, Blue, Red, Orange, LightGreen, White },
 
             //Room Three
-            new int[] { Blue, Pink, DarkGreen, Orange, Brown, LightGreen, Red, White },
+            new[] { Blue, Pink, DarkGreen, Orange, Brown, LightGreen, Red, White }
         };
 
-        private static readonly Rectangle2D[] m_FloorRecs = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_FloorRecs =
         {
             //Room One
             new Rectangle2D(977, 1104, 5, 5),   // White, opposite of pink
@@ -620,10 +624,10 @@ namespace Server.Items
             new Rectangle2D(977, 1079, 3, 5),   //DarkGreen, opposite of Brown
             new Rectangle2D(980, 1079, 3, 5),   //Orange, opposite of LightGreen
             new Rectangle2D(986, 1079, 3, 5),   //Blue, opposite of red
-            new Rectangle2D(989, 1079, 3, 5),   //Pink, opposite of White
+            new Rectangle2D(989, 1079, 3, 5) //Pink, opposite of White
         };
 
-        private static readonly int[] m_FloorHues = new int[]
+        private static readonly int[] m_FloorHues =
         {
             //Room One
             White,
@@ -650,11 +654,11 @@ namespace Server.Items
             Pink
         };
 
-        private static readonly Rectangle2D[] m_RoomRecs = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_RoomRecs =
         {
             new Rectangle2D(977, 1104, 15, 10), //RoomOne
             new Rectangle2D(977, 1092, 15, 9), //RoomTwo
-            new Rectangle2D(977, 1074, 15, 10), //RoomThree
+            new Rectangle2D(977, 1074, 15, 10) //RoomThree
         };
 
         public ExperimentalGem(Serial serial) : base(serial)

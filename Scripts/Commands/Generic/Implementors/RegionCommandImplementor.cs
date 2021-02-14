@@ -7,7 +7,7 @@ namespace Server.Commands.Generic
     {
         public RegionCommandImplementor()
         {
-            Accessors = new string[] { "Region" };
+            Accessors = new[] { "Region" };
             SupportRequirement = CommandSupport.Region;
             SupportsConditionals = true;
             AccessLevel = AccessLevel.GameMaster;

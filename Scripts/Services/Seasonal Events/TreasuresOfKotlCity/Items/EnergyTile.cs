@@ -10,7 +10,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public DateTime m_NextDeactivation;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextDeactivation { get { return m_NextDeactivation; } set { m_NextDeactivation = value; } }
+        public DateTime NextDeactivation { get => m_NextDeactivation; set => m_NextDeactivation = value; }
 
         public override BaseAddonDeed Deed => null;
 
@@ -76,7 +76,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_NextDeactivation = reader.ReadDateTime();
         }
@@ -87,7 +87,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         private bool m_Active;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active { get { return m_Active; } set { m_Active = value; } }
+        public bool Active { get => m_Active; set => m_Active = value; }
 
         public EnergyTileComponent() : base(0x9B3A)
         {
@@ -100,7 +100,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             if (!m_Active)
                 return base.OnMoveOver(m);
 
-            if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile))
+            if (m is PlayerMobile || m is BaseCreature creature && creature.GetMaster() is PlayerMobile)
             {
                 AOS.Damage(m, Utility.RandomMinMax(100, 150), false, 0, 0, 0, 0, 100);
 
@@ -127,7 +127,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_Active = reader.ReadBool();
         }

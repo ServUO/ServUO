@@ -30,7 +30,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -43,7 +43,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxArcaneCharges
         {
-            get { return m_MaxArcaneCharges; }
+            get => m_MaxArcaneCharges;
             set
             {
                 m_MaxArcaneCharges = value;
@@ -55,7 +55,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int CurArcaneCharges
         {
-            get { return m_CurArcaneCharges; }
+            get => m_CurArcaneCharges;
             set
             {
                 m_CurArcaneCharges = value;
@@ -67,7 +67,7 @@ namespace Server.Items
         public int TempHue { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool IsArcane => (m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0);
+        public bool IsArcane => m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0;
 
         public void Update()
         {
@@ -179,10 +179,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Number
         {
-            get
-            {
-                return m_LabelNumber;
-            }
+            get => m_LabelNumber;
             set
             {
                 m_LabelNumber = value;
@@ -264,17 +261,10 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
-            switch (version)
-            {
-                case 0:
-                    {
-                        m_LabelNumber = reader.ReadInt();
-                        IsRewardItem = reader.ReadBool();
-                        break;
-                    }
-            }
+            m_LabelNumber = reader.ReadInt();
+            IsRewardItem = reader.ReadBool();
         }
     }
 
@@ -308,7 +298,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -344,7 +334,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -378,7 +368,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -412,7 +402,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public DyeType DyeType
         {
-            get { return m_DyeType; }
+            get => m_DyeType;
             set
             {
                 DyeType old = m_DyeType;
@@ -38,10 +38,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int UsesRemaining
         {
-            get
-            {
-                return m_UsesRemaining;
-            }
+            get => m_UsesRemaining;
             set
             {
                 m_UsesRemaining = value;
@@ -52,10 +49,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BooksOnly
         {
-            get
-            {
-                return m_BooksOnly;
-            }
+            get => m_BooksOnly;
             set
             {
                 m_BooksOnly = value;
@@ -126,7 +120,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write((int)m_DyeType);
@@ -137,8 +130,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_DyeType = (DyeType)reader.ReadInt();
             m_UsesRemaining = reader.ReadInt();
@@ -177,18 +169,17 @@ namespace Server.Items
                     }
                     else
                     {
-                        valid = (item is IDyable ||
-                                      item is BaseBook || item is BaseClothing ||
-                                      item is BaseJewel || item is BaseStatuette ||
-                                      item is BaseWeapon || item is Runebook ||
-                                      item is BaseTalisman || item is Spellbook ||
-                                      item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item));
+                        valid = item is IDyable || item is BaseBook ||
+                                item is BaseJewel || item is BaseStatuette ||
+                                item is BaseWeapon || item is Runebook ||
+                                item is BaseTalisman || item is Spellbook ||
+                                item.IsArtifact || BasePigmentsOfTokuno.IsValidItem(item);
 
-                        if (!valid && item is BaseArmor)
+                        if (!valid && item is BaseArmor armor)
                         {
-                            CraftResourceType restype = CraftResources.GetType(((BaseArmor)item).Resource);
+                            CraftResourceType restype = CraftResources.GetType(armor.Resource);
                             if ((CraftResourceType.Leather == restype || CraftResourceType.Metal == restype) &&
-                                ArmorMaterialType.Bone != ((BaseArmor)item).MaterialType)
+                                ArmorMaterialType.Bone != armor.MaterialType)
                             {
                                 valid = true;
                             }
@@ -201,23 +192,22 @@ namespace Server.Items
                                 from.SendLocalizedMessage(500446); // That is too far away.
                                 return;
                             }
-                            else
-                            {
-                                BaseHouse house = BaseHouse.FindHouseAt(item);
 
-                                if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)))
-                                {
-                                    from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
-                                    return;
-                                }
-                                else if (!house.IsCoOwner(from))
-                                {
-                                    from.SendLocalizedMessage(501023); // You must be the owner to use this item.
-                                    return;
-                                }
-                                else
-                                    valid = true;
+                            BaseHouse house = BaseHouse.FindHouseAt(item);
+
+                            if (house == null || (!house.IsLockedDown(item) && !house.IsSecure(item)))
+                            {
+                                from.SendLocalizedMessage(501022); // Furniture must be locked down to paint it.
+                                return;
                             }
+
+                            if (!house.IsCoOwner(from))
+                            {
+                                from.SendLocalizedMessage(501023); // You must be the owner to use this item.
+                                return;
+                            }
+
+                            valid = true;
                         }
                     }
 

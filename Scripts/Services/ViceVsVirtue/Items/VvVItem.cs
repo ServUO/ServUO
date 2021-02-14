@@ -9,30 +9,28 @@ namespace Server.Items
     {
         public static void CheckProperties(Item item)
         {
-            if (item is PrimerOnArmsTalisman && ((PrimerOnArmsTalisman)item).Attributes.AttackChance != 10)
+            if (item is PrimerOnArmsTalisman talisman && talisman.Attributes.AttackChance != 10)
             {
-                ((PrimerOnArmsTalisman)item).Attributes.AttackChance = 10;
+                talisman.Attributes.AttackChance = 10;
             }
 
-            if (item is ClaininsSpellbook && ((ClaininsSpellbook)item).Attributes.LowerManaCost != 10)
+            if (item is ClaininsSpellbook spellbook && spellbook.Attributes.LowerManaCost != 10)
             {
-                ((ClaininsSpellbook)item).Attributes.LowerManaCost = 10;
+                spellbook.Attributes.LowerManaCost = 10;
             }
 
-            if (item is CrimsonCincture && ((CrimsonCincture)item).Attributes.BonusDex != 10)
+            if (item is CrimsonCincture cincture && cincture.Attributes.BonusDex != 10)
             {
-                ((CrimsonCincture)item).Attributes.BonusDex = 10;
+                cincture.Attributes.BonusDex = 10;
             }
 
-            if (item is CrystallineRing && ((CrystallineRing)item).Attributes.CastRecovery != 3)
+            if (item is CrystallineRing ring && ring.Attributes.CastRecovery != 3)
             {
-                ((CrystallineRing)item).Attributes.CastRecovery = 3;
+                ring.Attributes.CastRecovery = 3;
             }
 
-            if (item is HumanFeyLeggings)
+            if (item is HumanFeyLeggings fey)
             {
-                HumanFeyLeggings fey = (HumanFeyLeggings)item;
-
                 if (fey.PhysicalBonus != 3)
                     fey.PhysicalBonus = 3;
 
@@ -46,15 +44,13 @@ namespace Server.Items
                     fey.EnergyBonus = 3;
             }
 
-            if (item is FoldedSteelGlasses && ((FoldedSteelGlasses)item).Attributes.DefendChance != 25)
+            if (item is FoldedSteelGlasses steelGlasses && steelGlasses.Attributes.DefendChance != 25)
             {
-                ((FoldedSteelGlasses)item).Attributes.DefendChance = 25;
+                steelGlasses.Attributes.DefendChance = 25;
             }
 
-            if (item is HeartOfTheLion)
+            if (item is HeartOfTheLion lion)
             {
-                HeartOfTheLion lion = (HeartOfTheLion)item;
-
                 if (lion.PhysicalBonus != 5)
                     lion.PhysicalBonus = 5;
 
@@ -71,10 +67,8 @@ namespace Server.Items
                     lion.EnergyBonus = 5;
             }
 
-            if (item is HuntersHeaddress)
+            if (item is HuntersHeaddress hunters)
             {
-                HuntersHeaddress hunters = (HuntersHeaddress)item;
-
                 if (hunters.Resistances.Physical != 8)
                     hunters.Resistances.Physical = 8;
 
@@ -91,38 +85,36 @@ namespace Server.Items
                     hunters.Resistances.Energy = 3;
             }
 
-            if (item is KasaOfTheRajin && ((KasaOfTheRajin)item).Attributes.DefendChance != 10)
+            if (item is KasaOfTheRajin kasa && kasa.Attributes.DefendChance != 10)
             {
-                ((KasaOfTheRajin)item).Attributes.DefendChance = 10;
+                kasa.Attributes.DefendChance = 10;
             }
 
-            if (item is MaceAndShieldGlasses && ((MaceAndShieldGlasses)item).Attributes.WeaponDamage != 10)
+            if (item is MaceAndShieldGlasses shieldGlasses && shieldGlasses.Attributes.WeaponDamage != 10)
             {
-                ((MaceAndShieldGlasses)item).Attributes.WeaponDamage = 10;
+                shieldGlasses.Attributes.WeaponDamage = 10;
             }
 
-            if (item is VesperOrderShield && ((VesperOrderShield)item).Attributes.CastSpeed != 0)
+            if (item is VesperOrderShield shield && shield.Attributes.CastSpeed != 0)
             {
-                ((VesperOrderShield)item).Attributes.CastSpeed = 0;
+                shield.Attributes.CastSpeed = 0;
 
-                if (item.Name != "Order Shield")
-                    item.Name = "Order Shield";
+                if (shield.Name != "Order Shield")
+                    shield.Name = "Order Shield";
             }
 
-            if (item is OrnamentOfTheMagician && ((OrnamentOfTheMagician)item).Attributes.RegenMana != 3)
+            if (item is OrnamentOfTheMagician magician && magician.Attributes.RegenMana != 3)
             {
-                ((OrnamentOfTheMagician)item).Attributes.RegenMana = 3;
+                magician.Attributes.RegenMana = 3;
             }
 
-            if (item is RingOfTheVile && ((RingOfTheVile)item).Attributes.AttackChance != 25)
+            if (item is RingOfTheVile vile && vile.Attributes.AttackChance != 25)
             {
-                ((RingOfTheVile)item).Attributes.AttackChance = 25;
+                vile.Attributes.AttackChance = 25;
             }
 
-            if (item is RuneBeetleCarapace)
+            if (item is RuneBeetleCarapace carapace)
             {
-                RuneBeetleCarapace carapace = (RuneBeetleCarapace)item;
-
                 if (carapace.PhysicalBonus != 3)
                     carapace.PhysicalBonus = 3;
 
@@ -139,10 +131,8 @@ namespace Server.Items
                     carapace.EnergyBonus = 3;
             }
 
-            if (item is SpiritOfTheTotem)
+            if (item is SpiritOfTheTotem totem)
             {
-                SpiritOfTheTotem totem = (SpiritOfTheTotem)item;
-
                 if (totem.Resistances.Fire != 7)
                     totem.Resistances.Fire = 7;
 
@@ -156,15 +146,13 @@ namespace Server.Items
                     totem.Resistances.Energy = 6;
             }
 
-            if (item is Stormgrip && ((Stormgrip)item).Attributes.AttackChance != 10)
+            if (item is Stormgrip stormgrip && stormgrip.Attributes.AttackChance != 10)
             {
-                ((Stormgrip)item).Attributes.AttackChance = 10;
+                stormgrip.Attributes.AttackChance = 10;
             }
 
-            if (item is InquisitorsResolution)
+            if (item is InquisitorsResolution inquis)
             {
-                InquisitorsResolution inquis = (InquisitorsResolution)item;
-
                 if (inquis.PhysicalBonus != 5)
                     inquis.PhysicalBonus = 5;
 
@@ -181,15 +169,13 @@ namespace Server.Items
                     inquis.EnergyBonus = -7;
             }
 
-            if (item is TomeOfLostKnowledge && ((TomeOfLostKnowledge)item).Attributes.RegenMana != 3)
+            if (item is TomeOfLostKnowledge knowledge && knowledge.Attributes.RegenMana != 3)
             {
-                ((TomeOfLostKnowledge)item).Attributes.RegenMana = 3;
+                knowledge.Attributes.RegenMana = 3;
             }
 
-            if (item is WizardsCrystalGlasses)
+            if (item is WizardsCrystalGlasses glasses)
             {
-                WizardsCrystalGlasses glasses = (WizardsCrystalGlasses)item;
-
                 if (glasses.PhysicalBonus != 5)
                     glasses.PhysicalBonus = 5;
 

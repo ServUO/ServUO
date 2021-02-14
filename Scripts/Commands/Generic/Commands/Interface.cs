@@ -13,7 +13,7 @@ namespace Server.Commands.Generic
         {
             AccessLevel = AccessLevel.GameMaster;
             Supports = CommandSupport.Complex | CommandSupport.Simple;
-            Commands = new string[] { "Interface" };
+            Commands = new[] { "Interface" };
             ObjectTypes = ObjectTypes.Both;
             Usage = "Interface [view <properties ...>]";
             Description = "Opens an interface to interact with matched objects. Generally used with condition arguments.";
@@ -130,17 +130,13 @@ namespace Server.Commands.Generic
                 object obj = m_List[i];
                 bool isDeleted = false;
 
-                if (obj is Item)
+                if (obj is Item item)
                 {
-                    Item item = (Item)obj;
-
                     if (!(isDeleted = item.Deleted))
                         AddEntryHtml(40 + 130, item.GetType().Name);
                 }
-                else if (obj is Mobile)
+                else if (obj is Mobile mob)
                 {
-                    Mobile mob = (Mobile)obj;
-
                     if (!(isDeleted = mob.Deleted))
                         AddEntryHtml(40 + 130, mob.Name);
                 }
@@ -182,9 +178,9 @@ namespace Server.Commands.Generic
                         AddEntryHtml(130, value);
                     }
 
-                    bool isSelected = (m_Select != null && obj == m_Select);
+                    bool isSelected = m_Select != null && obj == m_Select;
 
-                    AddEntryButton(20, (isSelected ? 9762 : ArrowRightID1), (isSelected ? 9763 : ArrowRightID2), 3 + i, ArrowRightWidth, ArrowRightHeight);
+                    AddEntryButton(20, isSelected ? 9762 : ArrowRightID1, isSelected ? 9763 : ArrowRightID2, 3 + i, ArrowRightWidth, ArrowRightHeight);
                 }
             }
 
@@ -224,10 +220,10 @@ namespace Server.Commands.Generic
                                 break;
                             }
 
-                            if (obj is Item && !((Item)obj).Deleted)
-                                m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, (Item)obj));
-                            else if (obj is Mobile && !((Mobile)obj).Deleted)
-                                m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, (Mobile)obj));
+                            if (obj is Item item && !item.Deleted)
+                                m_From.SendGump(new InterfaceItemGump(m_From, m_Columns, m_List, m_Page, item));
+                            else if (obj is Mobile mobile && !mobile.Deleted)
+                                m_From.SendGump(new InterfaceMobileGump(m_From, m_Columns, m_List, m_Page, mobile));
                             else
                                 m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Select));
                         }
@@ -298,7 +294,8 @@ namespace Server.Commands.Generic
                 m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Item));
                 return;
             }
-            else if (!BaseCommand.IsAccessible(m_From, m_Item))
+
+            if (!BaseCommand.IsAccessible(m_From, m_Item))
             {
                 m_From.SendMessage("That is no longer accessible.");
                 m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Item));
@@ -342,7 +339,7 @@ namespace Server.Commands.Generic
                     {
                         Mobile owner = m_Item.RootParent as Mobile;
 
-                        if (owner != null && (owner.Map != null && owner.Map != Map.Internal) && !BaseCommand.IsAccessible(m_From, owner) /* !m_From.CanSee( owner )*/)
+                        if (owner != null && owner.Map != null && owner.Map != Map.Internal && !BaseCommand.IsAccessible(m_From, owner))
                         {
                             m_From.SendMessage("You can not get what you can not see.");
                         }
@@ -455,7 +452,8 @@ namespace Server.Commands.Generic
                 m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Mobile));
                 return;
             }
-            else if (!BaseCommand.IsAccessible(m_From, m_Mobile))
+
+            if (!BaseCommand.IsAccessible(m_From, m_Mobile))
             {
                 m_From.SendMessage("That is no longer accessible.");
                 m_From.SendGump(new InterfaceGump(m_From, m_Columns, m_List, m_Page, m_Mobile));

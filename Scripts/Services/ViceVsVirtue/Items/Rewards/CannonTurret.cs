@@ -20,7 +20,7 @@ namespace Server.Engines.VvV
         [CommandProperty(AccessLevel.GameMaster)]
         public int ShotsRemaining
         {
-            get { return _ShotsRemaining; }
+            get => _ShotsRemaining;
             set
             {
                 _ShotsRemaining = value;
@@ -96,9 +96,7 @@ namespace Server.Engines.VvV
 
             foreach (Mobile m in eable)
             {
-                if (Owner == null || (ViceVsVirtueSystem.IsEnemy(Owner, m) && m.InLOS(Location)
-                                                                           && m is PlayerMobile
-                                                                           && m.AccessLevel == AccessLevel.Player))
+                if (Owner == null || ViceVsVirtueSystem.IsEnemy(Owner, m) && m.InLOS(Location) && m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
                 {
                     list.Add(m);
                 }
@@ -163,7 +161,7 @@ namespace Server.Engines.VvV
                 Effects.PlaySound(p, map, 0x664);
             });
 
-            Timer.DelayCall(TimeSpan.FromMilliseconds(250 + (150 * (range))), () =>
+            Timer.DelayCall(TimeSpan.FromMilliseconds(250 + (150 * range)), () =>
             {
                 if (Owner != null)
                     Owner.DoHarmful(target);
@@ -216,7 +214,7 @@ namespace Server.Engines.VvV
             public override void Deserialize(GenericReader reader)
             {
                 base.Deserialize(reader);
-                int version = reader.ReadInt();
+                reader.ReadInt();
             }
         }
 
@@ -239,7 +237,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Owner = reader.ReadMobile();
             Base = reader.ReadItem() as CannonBase;
@@ -324,7 +322,7 @@ namespace Server.Engines.VvV
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

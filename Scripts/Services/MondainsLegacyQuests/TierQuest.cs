@@ -18,8 +18,8 @@ namespace Server.Engines.Quests
 
     public class TierQuestInfo
     {
-        public Type Quester { get; set; }
-        public TierInfo[] Tiers { get; set; }
+        public Type Quester { get; }
+        public TierInfo[] Tiers { get; }
 
         public TierQuestInfo(Type quester, params TierInfo[] tiers)
         {
@@ -27,9 +27,9 @@ namespace Server.Engines.Quests
             Tiers = tiers;
         }
 
-        public static TierQuestInfo Percolem { get; set; }
-        public static TierQuestInfo Thepem { get; set; }
-        public static TierQuestInfo Zosilem { get; set; }
+        public static TierQuestInfo Percolem { get; }
+        public static TierQuestInfo Thepem { get; }
+        public static TierQuestInfo Zosilem { get; }
 
         static TierQuestInfo()
         {
@@ -72,7 +72,7 @@ namespace Server.Engines.Quests
             return 0;
         }
 
-        public static Dictionary<PlayerMobile, Dictionary<Type, int>> PlayerTierInfo { get; set; } = new Dictionary<PlayerMobile, Dictionary<Type, int>>();
+        public static Dictionary<PlayerMobile, Dictionary<Type, int>> PlayerTierInfo { get; } = new Dictionary<PlayerMobile, Dictionary<Type, int>>();
 
         public static void CompleteQuest(PlayerMobile pm, ITierQuest quest)
         {
@@ -213,9 +213,9 @@ namespace Server.Engines.Quests
 
     public class TierInfo
     {
-        public Type[] Quests { get; set; }
-        public TimeSpan Cooldown { get; set; }
-        public int ToComplete { get; set; }
+        public Type[] Quests { get; }
+        public TimeSpan Cooldown { get; }
+        public int ToComplete { get; }
 
         public TierInfo(int toComplete, TimeSpan cooldown, params Type[] quests)
         {

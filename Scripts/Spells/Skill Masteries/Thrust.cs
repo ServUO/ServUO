@@ -24,14 +24,8 @@ namespace Server.Spells.SkillMasteries
         public int AttackModifier => (GetMasteryLevel() * 6) * Phase;
         public int DefenseModifier
         {
-            get
-            {
-                return _DefenseMod;
-            }
-            set
-            {
-                _DefenseMod = Math.Min((GetMasteryLevel() * 6) * 3, value);
-            }
+            get => _DefenseMod;
+            set => _DefenseMod = Math.Min((GetMasteryLevel() * 6) * 3, value);
         }
 
         public int DefenseModDisplayed => Math.Min(18, DefenseModifier);
@@ -39,7 +33,7 @@ namespace Server.Spells.SkillMasteries
         public int _Phase;
         public int Phase
         {
-            get { return _Phase; }
+            get => _Phase;
             set
             {
                 if (value > 3)

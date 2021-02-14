@@ -1,4 +1,4 @@
-﻿using Server.Gumps;
+using Server.Gumps;
 using Server.Mobiles;
 using System;
 
@@ -28,13 +28,13 @@ namespace Server.Items
             {
                 from.SendLocalizedMessage(1073648); // You may only proceed while in your original state...
             }
-            else if (from is PlayerMobile)
+            else if (from is PlayerMobile mobile)
             {
                 _HairID = 0;
                 _BeardID = 0;
 
-                from.CloseGump(typeof(GenderChangeConfirmGump));
-                BaseGump.SendGump(new GenderChangeConfirmGump((PlayerMobile)from, this));
+                mobile.CloseGump(typeof(GenderChangeConfirmGump));
+                BaseGump.SendGump(new GenderChangeConfirmGump(mobile, this));
             }
         }
 

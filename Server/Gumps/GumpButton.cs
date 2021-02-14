@@ -86,7 +86,7 @@ namespace Server.Gumps
 				{
 					m_Type = value;
 
-					var parent = Parent;
+					Gump parent = Parent;
 
 					if (parent != null)
 					{
@@ -104,7 +104,7 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return System.String.Format("{{ button {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_ID1, m_ID2, (int)m_Type, m_Param, m_ButtonID);
+			return string.Format("{{ button {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_ID1, m_ID2, (int)m_Type, m_Param, m_ButtonID);
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("button");

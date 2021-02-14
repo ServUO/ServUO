@@ -39,42 +39,16 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active
-        {
-            get
-            {
-                return m_Active;
-            }
-            set
-            {
-                m_Active = value;
-            }
-        }
+        public bool Active { get => m_Active; set => m_Active = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public Point3D PointDest
-        {
-            get
-            {
-                return m_PointDest;
-            }
-            set
-            {
-                m_PointDest = value;
-            }
-        }
+        public Point3D PointDest { get => m_PointDest; set => m_PointDest = value; }
+
         [CommandProperty(AccessLevel.GameMaster)]
-        public Map MapDest
-        {
-            get
-            {
-                return m_MapDest;
-            }
-            set
-            {
-                m_MapDest = value;
-            }
-        }
+        public Map MapDest { get => m_MapDest; set => m_MapDest = value; }
+
         public override int LabelNumber => 1016511;// the floor of the cavern seems to have collapsed here - a faint light is visible at the bottom of the pit
+
         public override void OnDoubleClick(Mobile m)
         {
             if (!m_Active)

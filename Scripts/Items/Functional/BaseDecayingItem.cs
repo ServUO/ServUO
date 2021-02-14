@@ -8,7 +8,7 @@ namespace Server.Items
         public virtual bool UseSeconds => true;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DecayingItemSocket DecayInfo { get { return GetSocket<DecayingItemSocket>(); } set { } }
+        public DecayingItemSocket DecayInfo { get => GetSocket<DecayingItemSocket>(); set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int TimeLeft
@@ -58,9 +58,9 @@ namespace Server.Items
 
         public virtual void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...

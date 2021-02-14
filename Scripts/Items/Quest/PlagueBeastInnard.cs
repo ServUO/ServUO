@@ -58,15 +58,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             PlagueBeastLord owner = Owner;
 
@@ -96,15 +94,10 @@ namespace Server.Items
 
         public PlagueBeastOrgan Organ
         {
-            get
-            {
-                return m_Organ;
-            }
-            set
-            {
-                m_Organ = value;
-            }
+            get => m_Organ;
+            set => m_Organ = value;
         }
+
         public bool IsBrain => ItemID == 0x1CF0;
         public bool IsGland => ItemID == 0x1CEF;
         public bool IsReceptacle => ItemID == 0x9DF;
@@ -133,10 +126,9 @@ namespace Server.Items
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (m_Organ != null && m_Organ.OnDropped(from, dropped, this))
+            if (m_Organ != null && m_Organ.OnDropped(from, dropped, this) && dropped is PlagueBeastComponent component)
             {
-                if (dropped is PlagueBeastComponent)
-                    m_Organ.Components.Add((PlagueBeastComponent)dropped);
+                m_Organ.Components.Add(component);
             }
 
             return true;
@@ -166,7 +158,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.WriteEncodedInt(0); // version
 
             writer.WriteItem(m_Organ);
@@ -175,8 +166,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
 
             m_Organ = reader.ReadItem<PlagueBeastOrgan>();
         }

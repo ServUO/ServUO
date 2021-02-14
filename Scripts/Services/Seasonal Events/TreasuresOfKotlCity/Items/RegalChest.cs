@@ -151,7 +151,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         public void TryDelayedLock()
         {
-            if (Locked || (m_Timer != null && m_Timer.Running))
+            if (Locked || m_Timer != null && m_Timer.Running)
                 return;
 
             EndTimer();
@@ -179,7 +179,7 @@ namespace Server.Engines.TreasuresOfKotlCity
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             TryDelayedLock();
         }

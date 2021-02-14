@@ -26,12 +26,12 @@ namespace Server.Items
         [Usage("GenWinchAssembly")]
         private static void DelWinchAssembly_Command(CommandEventArgs e)
         {
-            DeleteWinchAssembly(e.Mobile);
+            DeleteWinchAssembly();
         }
 
         public static void GenWinchAssembly(Mobile m)
         {
-            DeleteWinchAssembly(m);
+            DeleteWinchAssembly();
 
             // Winch 
             WinchAssembly winch = new WinchAssembly();
@@ -61,11 +61,11 @@ namespace Server.Items
             }
         }
 
-        private static void DeleteWinchAssembly(Mobile from)
+        private static void DeleteWinchAssembly()
         {
             WeakEntityCollection.Delete(EntityName);
 
-            var ladder = Map.Trammel.FindItem<ShipLadder>(new Point3D(6400, 1656, 0), 0);
+            var ladder = Map.Trammel.FindItem<ShipLadder>(new Point3D(6400, 1656, 0));
 
             if (ladder != null)
             {
@@ -76,12 +76,12 @@ namespace Server.Items
         public override int LabelNumber => 1154433;  // Winch Assembly
         public override bool ForceShowProperties => true;
 
-        public override Type[] Keys => new Type[] { typeof(BearingAssembly), typeof(FlyWheel), typeof(PowerCore), typeof(WireSpool) };
+        public override Type[] Keys => new[] { typeof(BearingAssembly), typeof(FlyWheel), typeof(PowerCore), typeof(WireSpool) };
         public override int KeyCount => 0;
         public override MasterKey MasterKey => null;
 
         public override BasePeerless Boss => new Shadowlord();
-        public override Rectangle2D[] BossBounds => new Rectangle2D[] { new Rectangle2D(6399, 1631, 38, 38) };
+        public override Rectangle2D[] BossBounds => new[] { new Rectangle2D(6399, 1631, 38, 38) };
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Hatch Hatch { get; set; }
@@ -142,7 +142,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Hatch = reader.ReadItem<Hatch>();
 
@@ -229,107 +229,106 @@ namespace Server.Items
 
         [Constructable]
         public Hatch(WinchAssembly winch)
-            : base()
         {
             Winch = winch;
             winch.Hatch = this;
 
-            AddComponent(new HatchTile(this), 2, 7, 0);
-            AddComponent(new HatchTile(this), 2, 6, 0);
-            AddComponent(new HatchTile(this), 2, 5, 0);
-            AddComponent(new HatchTile(this), 2, 4, 0);
-            AddComponent(new HatchTile(this), 2, 3, 0);
-            AddComponent(new HatchTile(this), 2, 2, 0);
-            AddComponent(new HatchTile(this), 3, 7, 0);
-            AddComponent(new HatchTile(this), 3, 6, 0);
-            AddComponent(new HatchTile(this), 3, 5, 0);
-            AddComponent(new HatchTile(this), 3, 4, 0);
-            AddComponent(new HatchTile(this), 3, 3, 0);
-            AddComponent(new HatchTile(this), 3, 2, 0);
-            AddComponent(new HatchTile(this), 4, 7, 0);
-            AddComponent(new HatchTile(this), 4, 6, 0);
-            AddComponent(new HatchTile(this), 4, 5, 0);
-            AddComponent(new HatchTile(this), 4, 4, 0);
-            AddComponent(new HatchTile(this), 4, 3, 0);
-            AddComponent(new HatchTile(this), 4, 2, 0);
-            AddComponent(new HatchTile(this), 5, 7, 0);
-            AddComponent(new HatchTile(this), 5, 6, 0);
-            AddComponent(new HatchTile(this), 5, 5, 0);
-            AddComponent(new HatchTile(this), 5, 4, 0);
-            AddComponent(new HatchTile(this), 5, 3, 0);
-            AddComponent(new HatchTile(this), 5, 2, 0);
-            AddComponent(new HatchTile(this), 2, -1, 0);
-            AddComponent(new HatchTile(this), 2, -2, 0);
-            AddComponent(new HatchTile(this), 2, -3, 0);
-            AddComponent(new HatchTile(this), 2, -4, 0);
-            AddComponent(new HatchTile(this), 2, -5, 0);
-            AddComponent(new HatchTile(this), 2, -6, 0);
-            AddComponent(new HatchTile(this), 3, -1, 0);
-            AddComponent(new HatchTile(this), 3, -2, 0);
-            AddComponent(new HatchTile(this), 3, -3, 0);
-            AddComponent(new HatchTile(this), 3, -4, 0);
-            AddComponent(new HatchTile(this), 3, -5, 0);
-            AddComponent(new HatchTile(this), 3, -6, 0);
-            AddComponent(new HatchTile(this), 4, -1, 0);
-            AddComponent(new HatchTile(this), 4, -2, 0);
-            AddComponent(new HatchTile(this), 4, -3, 0);
-            AddComponent(new HatchTile(this), 4, -4, 0);
-            AddComponent(new HatchTile(this), 4, -5, 0);
-            AddComponent(new HatchTile(this), 4, -6, 0);
-            AddComponent(new HatchTile(this), 5, -1, 0);
-            AddComponent(new HatchTile(this), 5, -2, 0);
-            AddComponent(new HatchTile(this), 5, -3, 0);
-            AddComponent(new HatchTile(this), 5, -4, 0);
-            AddComponent(new HatchTile(this), 5, -5, 0);
-            AddComponent(new HatchTile(this), 5, -6, 0);
-            AddComponent(new HatchTile(this), -4, 7, 0);
-            AddComponent(new HatchTile(this), -4, 6, 0);
-            AddComponent(new HatchTile(this), -4, 5, 0);
-            AddComponent(new HatchTile(this), -4, 4, 0);
-            AddComponent(new HatchTile(this), -4, 3, 0);
-            AddComponent(new HatchTile(this), -4, 2, 0);
-            AddComponent(new HatchTile(this), -3, 7, 0);
-            AddComponent(new HatchTile(this), -3, 6, 0);
-            AddComponent(new HatchTile(this), -3, 5, 0);
-            AddComponent(new HatchTile(this), -3, 4, 0);
-            AddComponent(new HatchTile(this), -3, 3, 0);
-            AddComponent(new HatchTile(this), -3, 2, 0);
-            AddComponent(new HatchTile(this), -2, 7, 0);
-            AddComponent(new HatchTile(this), -2, 6, 0);
-            AddComponent(new HatchTile(this), -2, 5, 0);
-            AddComponent(new HatchTile(this), -2, 4, 0);
-            AddComponent(new HatchTile(this), -2, 3, 0);
-            AddComponent(new HatchTile(this), -2, 2, 0);
-            AddComponent(new HatchTile(this), -1, 7, 0);
-            AddComponent(new HatchTile(this), -1, 6, 0);
-            AddComponent(new HatchTile(this), -1, 5, 0);
-            AddComponent(new HatchTile(this), -1, 4, 0);
-            AddComponent(new HatchTile(this), -1, 3, 0);
-            AddComponent(new HatchTile(this), -1, 2, 0);
-            AddComponent(new HatchTile(this), -4, -1, 0);
-            AddComponent(new HatchTile(this), -4, -2, 0);
-            AddComponent(new HatchTile(this), -4, -3, 0);
-            AddComponent(new HatchTile(this), -4, -4, 0);
-            AddComponent(new HatchTile(this), -4, -5, 0);
-            AddComponent(new HatchTile(this), -4, -6, 0);
-            AddComponent(new HatchTile(this), -3, -1, 0);
-            AddComponent(new HatchTile(this), -3, -2, 0);
-            AddComponent(new HatchTile(this), -3, -3, 0);
-            AddComponent(new HatchTile(this), -3, -4, 0);
-            AddComponent(new HatchTile(this), -3, -5, 0);
-            AddComponent(new HatchTile(this), -3, -6, 0);
-            AddComponent(new HatchTile(this), -2, -1, 0);
-            AddComponent(new HatchTile(this), -2, -2, 0);
-            AddComponent(new HatchTile(this), -2, -3, 0);
-            AddComponent(new HatchTile(this), -2, -4, 0);
-            AddComponent(new HatchTile(this), -2, -5, 0);
-            AddComponent(new HatchTile(this), -2, -6, 0);
-            AddComponent(new HatchTile(this), -1, -1, 0);
-            AddComponent(new HatchTile(this), -1, -2, 0);
-            AddComponent(new HatchTile(this), -1, -3, 0);
-            AddComponent(new HatchTile(this), -1, -4, 0);
-            AddComponent(new HatchTile(this), -1, -5, 0);
-            AddComponent(new HatchTile(this), -1, -6, 0);
+            AddComponent(new HatchTile(), 2, 7, 0);
+            AddComponent(new HatchTile(), 2, 6, 0);
+            AddComponent(new HatchTile(), 2, 5, 0);
+            AddComponent(new HatchTile(), 2, 4, 0);
+            AddComponent(new HatchTile(), 2, 3, 0);
+            AddComponent(new HatchTile(), 2, 2, 0);
+            AddComponent(new HatchTile(), 3, 7, 0);
+            AddComponent(new HatchTile(), 3, 6, 0);
+            AddComponent(new HatchTile(), 3, 5, 0);
+            AddComponent(new HatchTile(), 3, 4, 0);
+            AddComponent(new HatchTile(), 3, 3, 0);
+            AddComponent(new HatchTile(), 3, 2, 0);
+            AddComponent(new HatchTile(), 4, 7, 0);
+            AddComponent(new HatchTile(), 4, 6, 0);
+            AddComponent(new HatchTile(), 4, 5, 0);
+            AddComponent(new HatchTile(), 4, 4, 0);
+            AddComponent(new HatchTile(), 4, 3, 0);
+            AddComponent(new HatchTile(), 4, 2, 0);
+            AddComponent(new HatchTile(), 5, 7, 0);
+            AddComponent(new HatchTile(), 5, 6, 0);
+            AddComponent(new HatchTile(), 5, 5, 0);
+            AddComponent(new HatchTile(), 5, 4, 0);
+            AddComponent(new HatchTile(), 5, 3, 0);
+            AddComponent(new HatchTile(), 5, 2, 0);
+            AddComponent(new HatchTile(), 2, -1, 0);
+            AddComponent(new HatchTile(), 2, -2, 0);
+            AddComponent(new HatchTile(), 2, -3, 0);
+            AddComponent(new HatchTile(), 2, -4, 0);
+            AddComponent(new HatchTile(), 2, -5, 0);
+            AddComponent(new HatchTile(), 2, -6, 0);
+            AddComponent(new HatchTile(), 3, -1, 0);
+            AddComponent(new HatchTile(), 3, -2, 0);
+            AddComponent(new HatchTile(), 3, -3, 0);
+            AddComponent(new HatchTile(), 3, -4, 0);
+            AddComponent(new HatchTile(), 3, -5, 0);
+            AddComponent(new HatchTile(), 3, -6, 0);
+            AddComponent(new HatchTile(), 4, -1, 0);
+            AddComponent(new HatchTile(), 4, -2, 0);
+            AddComponent(new HatchTile(), 4, -3, 0);
+            AddComponent(new HatchTile(), 4, -4, 0);
+            AddComponent(new HatchTile(), 4, -5, 0);
+            AddComponent(new HatchTile(), 4, -6, 0);
+            AddComponent(new HatchTile(), 5, -1, 0);
+            AddComponent(new HatchTile(), 5, -2, 0);
+            AddComponent(new HatchTile(), 5, -3, 0);
+            AddComponent(new HatchTile(), 5, -4, 0);
+            AddComponent(new HatchTile(), 5, -5, 0);
+            AddComponent(new HatchTile(), 5, -6, 0);
+            AddComponent(new HatchTile(), -4, 7, 0);
+            AddComponent(new HatchTile(), -4, 6, 0);
+            AddComponent(new HatchTile(), -4, 5, 0);
+            AddComponent(new HatchTile(), -4, 4, 0);
+            AddComponent(new HatchTile(), -4, 3, 0);
+            AddComponent(new HatchTile(), -4, 2, 0);
+            AddComponent(new HatchTile(), -3, 7, 0);
+            AddComponent(new HatchTile(), -3, 6, 0);
+            AddComponent(new HatchTile(), -3, 5, 0);
+            AddComponent(new HatchTile(), -3, 4, 0);
+            AddComponent(new HatchTile(), -3, 3, 0);
+            AddComponent(new HatchTile(), -3, 2, 0);
+            AddComponent(new HatchTile(), -2, 7, 0);
+            AddComponent(new HatchTile(), -2, 6, 0);
+            AddComponent(new HatchTile(), -2, 5, 0);
+            AddComponent(new HatchTile(), -2, 4, 0);
+            AddComponent(new HatchTile(), -2, 3, 0);
+            AddComponent(new HatchTile(), -2, 2, 0);
+            AddComponent(new HatchTile(), -1, 7, 0);
+            AddComponent(new HatchTile(), -1, 6, 0);
+            AddComponent(new HatchTile(), -1, 5, 0);
+            AddComponent(new HatchTile(), -1, 4, 0);
+            AddComponent(new HatchTile(), -1, 3, 0);
+            AddComponent(new HatchTile(), -1, 2, 0);
+            AddComponent(new HatchTile(), -4, -1, 0);
+            AddComponent(new HatchTile(), -4, -2, 0);
+            AddComponent(new HatchTile(), -4, -3, 0);
+            AddComponent(new HatchTile(), -4, -4, 0);
+            AddComponent(new HatchTile(), -4, -5, 0);
+            AddComponent(new HatchTile(), -4, -6, 0);
+            AddComponent(new HatchTile(), -3, -1, 0);
+            AddComponent(new HatchTile(), -3, -2, 0);
+            AddComponent(new HatchTile(), -3, -3, 0);
+            AddComponent(new HatchTile(), -3, -4, 0);
+            AddComponent(new HatchTile(), -3, -5, 0);
+            AddComponent(new HatchTile(), -3, -6, 0);
+            AddComponent(new HatchTile(), -2, -1, 0);
+            AddComponent(new HatchTile(), -2, -2, 0);
+            AddComponent(new HatchTile(), -2, -3, 0);
+            AddComponent(new HatchTile(), -2, -4, 0);
+            AddComponent(new HatchTile(), -2, -5, 0);
+            AddComponent(new HatchTile(), -2, -6, 0);
+            AddComponent(new HatchTile(), -1, -1, 0);
+            AddComponent(new HatchTile(), -1, -2, 0);
+            AddComponent(new HatchTile(), -1, -3, 0);
+            AddComponent(new HatchTile(), -1, -4, 0);
+            AddComponent(new HatchTile(), -1, -5, 0);
+            AddComponent(new HatchTile(), -1, -6, 0);
         }
 
         public Hatch(Serial serial) : base(serial)
@@ -438,9 +437,9 @@ namespace Server.Items
     public class HatchTile : AddonComponent
     {
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active => (Z == 1);
+        public bool Active => Z == 1;
 
-        public HatchTile(Hatch hatch)
+        public HatchTile()
             : base(0x07CD)
         {
             Hue = 2969;
@@ -476,7 +475,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadEncodedInt();
+            reader.ReadEncodedInt();
         }
     }
 
@@ -534,7 +533,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Altar = reader.ReadItem<PeerlessAltar>();
         }

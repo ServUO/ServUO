@@ -42,7 +42,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public DespiseCreature Pet
         {
-            get { return m_Pet; }
+            get => m_Pet;
             set
             {
                 if (m_Pet != null && value == null)
@@ -65,13 +65,10 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public LeashLength LeashLength
         {
-            get { return m_LeashLength; }
+            get => m_LeashLength;
             set
             {
                 m_LeashLength = value;
-
-                //if (m_Pet != null)
-                //    m_Pet.RangeHome = m_Pet.GetLeashLength();
 
                 InvalidateHue();
                 InvalidateProperties();
@@ -81,7 +78,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public Aggression Aggression
         {
-            get { return m_Aggression; }
+            get => m_Aggression;
             set
             {
                 if (value != m_Aggression)
@@ -97,14 +94,14 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public Alignment Alignment
         {
-            get { return m_Alignment; }
+            get => m_Alignment;
             set { m_Alignment = value; InvalidateProperties(); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public IEntity Anchor
         {
-            get { return m_Anchor; }
+            get => m_Anchor;
             set
             {
                 m_Anchor = value;
@@ -122,7 +119,7 @@ namespace Server.Engines.Despise
         [CommandProperty(AccessLevel.GameMaster)]
         public bool Conscripted
         {
-            get { return m_Conscripted; }
+            get => m_Conscripted;
             set
             {
                 m_Conscripted = value;
@@ -152,7 +149,7 @@ namespace Server.Engines.Despise
 
         public bool CheckOwnerAlignment()
         {
-            if (m_Owner == null || (m_Owner.Karma > 0 && m_Alignment != Alignment.Good) || (m_Owner.Karma < 0 && m_Alignment != Alignment.Evil))
+            if (m_Owner == null || m_Owner.Karma > 0 && m_Alignment != Alignment.Good || m_Owner.Karma < 0 && m_Alignment != Alignment.Evil)
             {
                 if (m_Owner != null)
                     m_Owner.SendLocalizedMessage(1153313); // You are no longer aligned with your Wisp Orb. It dissolves into aether!
@@ -192,12 +189,12 @@ namespace Server.Engines.Despise
 
             object name = GetAnchorName();
 
-            if (name != null)                   //Anchor: ~1_NAME~
+            if (name != null) //Anchor: ~1_NAME~
             {
-                if (name is int)
-                    list.Add(1153265, string.Format("#{0}", (int)name));
-                else if (name is string)
-                    list.Add(1153265, (string)name);
+                if (name is int intName)
+                    list.Add(1153265, string.Format("#{0}", intName));
+                else if (name is string stringName)
+                    list.Add(1153265, stringName);
             }
 
             int leash = 1153262 + (int)m_LeashLength;
@@ -257,12 +254,12 @@ namespace Server.Engines.Despise
             if (m_Anchor == null)
                 m_Anchor = m_Pet.ControlMaster;
 
-            if (m_Anchor is Item)
+            if (m_Anchor is Item item)
             {
-                if (((Item)m_Anchor).HeldBy != null)
-                    return ((Item)m_Anchor).HeldBy.Location;
+                if (item.HeldBy != null)
+                    return item.HeldBy.Location;
 
-                return ((Item)m_Anchor).GetWorldLocation();
+                return item.GetWorldLocation();
             }
 
             return m_Anchor.Location;
@@ -276,9 +273,9 @@ namespace Server.Engines.Despise
             if (m_Anchor == null)
                 m_Anchor = m_Pet.ControlMaster;
 
-            if (m_Anchor is Item && ((Item)m_Anchor).RootParentEntity != null)
+            if (m_Anchor is Item item && item.RootParentEntity != null)
             {
-                return ((Item)m_Anchor).RootParentEntity;
+                return item.RootParentEntity;
             }
 
             return m_Anchor;
@@ -347,15 +344,15 @@ namespace Server.Engines.Despise
 
             protected override void OnTarget(Mobile from, object targeted)
             {
-                if (targeted is BaseCreature)
+                if (targeted is BaseCreature bc)
                 {
-                    DespiseCreature creature = targeted as DespiseCreature;
+                    DespiseCreature creature = bc as DespiseCreature;
 
                     if (creature == null)
                         from.SendLocalizedMessage(1153286); // That cannot be possessed by a Wisp Orb.
                     else if (m_Orb.Pet == null)
                     {
-                        if (((BaseCreature)targeted).Controlled)
+                        if (bc.Controlled)
                             from.SendLocalizedMessage(1153287); // That creature is already under the control of a Wisp Orb.
                         else if (creature.Power > 5)
                             from.SendLocalizedMessage(1153336); // That creature is too powerful for you to coerce.
@@ -374,7 +371,7 @@ namespace Server.Engines.Despise
                             m_Orb.Pet.PublicOverheadMessage(MessageType.Regular, 0x3B2, 1153295, from.Name); // * This creature is now under the control of ~1_NAME~ *
                         }
                     }
-                    else if (targeted == m_Orb.Pet)
+                    else if (bc == m_Orb.Pet)
                     {
                         int aggr = (int)m_Orb.Aggression + 1;
                         if (aggr >= 2) aggr = 0;
@@ -385,7 +382,7 @@ namespace Server.Engines.Despise
                     }
                     else
                     {
-                        m_Orb.TrySetAnchor(from, (BaseCreature)targeted);
+                        m_Orb.TrySetAnchor(from, bc);
                     }
                 }
                 else if (targeted == m_Orb)
@@ -397,9 +394,9 @@ namespace Server.Engines.Despise
 
                     from.SendLocalizedMessage(1153278, m_Orb.LeashLength.ToString()); // Your possessed creature's leash is now: ~1_VAL~
                 }
-                else if (targeted is IPoint3D && m_Orb.Pet != null)
+                else if (targeted is IPoint3D point3D && m_Orb.Pet != null)
                 {
-                    m_Orb.TrySetAnchor(from, (IPoint3D)targeted);
+                    m_Orb.TrySetAnchor(from, point3D);
                 }
             }
         }
@@ -409,15 +406,15 @@ namespace Server.Engines.Despise
             if (m_Anchor == null)
                 return "None";
 
-            if (m_Anchor is Mobile)
-                return ((Mobile)m_Anchor).Name;
+            if (m_Anchor is Mobile mobile)
+                return mobile.Name;
 
-            if (m_Anchor is Item)
+            if (m_Anchor is Item item)
             {
-                if (((Item)m_Anchor).Name != null)
-                    return ((Item)m_Anchor).Name;
+                if (item.Name != null)
+                    return item.Name;
 
-                return ((Item)m_Anchor).LabelNumber;
+                return item.LabelNumber;
             }
 
             if (m_Anchor is StaticTarget)
@@ -436,10 +433,8 @@ namespace Server.Engines.Despise
             if (!CheckOwnerAlignment() || from != m_Owner)
                 return;
 
-            if (p is Mobile)
+            if (p is Mobile m)
             {
-                Mobile m = p as Mobile;
-
                 Anchor = m;
                 from.SendLocalizedMessage(1153280, m == m_Owner ? "You!" : m.Name + ".");
 
@@ -447,18 +442,16 @@ namespace Server.Engines.Despise
                 m_Pet.ControlOrder = OrderType.Follow;
             }
 
-            if (p is Item)
+            if (p is Item item)
             {
-                Item item = p as Item;
-
                 Anchor = item;
 
                 object name = GetAnchorName(); // Your possessed creature is now anchored to ~1_NAME~
 
-                if (name is int)
-                    from.SendLocalizedMessage(1153280, string.Format("#{0}", (int)name));
-                else if (name is string)
-                    from.SendLocalizedMessage(1153280, (string)name);
+                if (name is int intName)
+                    from.SendLocalizedMessage(1153280, string.Format("#{0}", intName));
+                else if (name is string stringName)
+                    from.SendLocalizedMessage(1153280, stringName);
 
                 m_Pet.ControlTarget = m_Pet.ControlMaster;
                 m_Pet.ControlOrder = OrderType.Follow;
@@ -528,9 +521,9 @@ namespace Server.Engines.Despise
 
             Item item = owner.Backpack.FindItemByType(typeof(WispOrb));
 
-            if (item != null && item is WispOrb)
+            if (item is WispOrb orb)
             {
-                Mobile pet = ((WispOrb)item).Pet;
+                Mobile pet = orb.Pet;
 
                 if (pet != null)
                     pet.MoveToWorld(owner.Location, owner.Map);
@@ -553,15 +546,15 @@ namespace Server.Engines.Despise
             writer.Write((int)m_Alignment);
             writer.Write(m_Conscripted);
 
-            if (m_Anchor is Mobile)
+            if (m_Anchor is Mobile mobile)
             {
                 writer.Write(1);
-                writer.Write((Mobile)m_Anchor);
+                writer.Write(mobile);
             }
-            else if (m_Anchor is Item)
+            else if (m_Anchor is Item item)
             {
                 writer.Write(2);
-                writer.Write((Item)m_Anchor);
+                writer.Write(item);
             }
             else
             {
@@ -572,7 +565,7 @@ namespace Server.Engines.Despise
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int v = reader.ReadInt();
+            reader.ReadInt();
 
             m_Owner = reader.ReadMobile();
             m_Pet = reader.ReadMobile() as DespiseCreature;

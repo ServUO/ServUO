@@ -28,21 +28,21 @@ namespace Server.Spells.Necromancy
         public override int NrgyResistOffset => -5;
         public override void DoEffect(Mobile m)
         {
-            if (m is PlayerMobile)
-                ((PlayerMobile)m).IgnoreMobiles = true;
+            if (m is PlayerMobile pm)
+                pm.IgnoreMobiles = true;
 
             m.PlaySound(0x17F);
             m.FixedParticles(0x374A, 1, 15, 9902, 1108, 4, EffectLayer.Waist);
 
-            int manadrain = Math.Max(8, 5 + (int)(0.16 * m.Skills.SpiritSpeak.Value));
+            int manaDrain = Math.Max(8, 5 + (int)(0.16 * m.Skills.SpiritSpeak.Value));
 
-            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.WraithForm, 1060524, 1153829, string.Format("15\t5\t5\t{0}", manadrain)));
+            BuffInfo.AddBuff(m, new BuffInfo(BuffIcon.WraithForm, 1060524, 1153829, string.Format("15\t5\t5\t{0}", manaDrain)));
         }
 
         public override void RemoveEffect(Mobile m)
         {
-            if (m is PlayerMobile && m.IsPlayer())
-                ((PlayerMobile)m).IgnoreMobiles = false;
+            if (m is PlayerMobile pm && pm.IsPlayer())
+                pm.IgnoreMobiles = false;
 
             BuffInfo.RemoveBuff(m, BuffIcon.WraithForm);
         }

@@ -47,7 +47,7 @@ namespace Server.Gumps
         private static readonly int EntryWidth = CoordWidth + OffsetSize + CoordWidth + OffsetSize + CoordWidth;
 
         private static readonly int TotalWidth = OffsetSize + EntryWidth + OffsetSize + SetWidth + OffsetSize;
-        private static readonly int TotalHeight = OffsetSize + (4 * (EntryHeight + OffsetSize));
+        private static readonly int TotalHeight = OffsetSize + 4 * (EntryHeight + OffsetSize);
 
         private static readonly int BackWidth = BorderSize + TotalWidth + BorderSize;
         private static readonly int BackHeight = BorderSize + TotalHeight + BorderSize;

@@ -107,16 +107,11 @@ namespace Server.Mobiles
                 {
                     m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(20, 30));
 
-                    if (combatant is BaseCreature)
+                    if (combatant is BaseCreature bc && bc.Controlled && bc.ControlMaster != null && !bc.ControlMaster.Deleted && bc.ControlMaster.Alive)
                     {
-                        BaseCreature bc = (BaseCreature)combatant;
-
-                        if (bc.Controlled && bc.ControlMaster != null && !bc.ControlMaster.Deleted && bc.ControlMaster.Alive)
+                        if (bc.ControlMaster.Map == Map && bc.ControlMaster.InRange(this, 12) && !UnderEffect(bc.ControlMaster))
                         {
-                            if (bc.ControlMaster.Map == Map && bc.ControlMaster.InRange(this, 12) && !UnderEffect(bc.ControlMaster))
-                            {
-                                Combatant = combatant = bc.ControlMaster;
-                            }
+                            Combatant = combatant = bc.ControlMaster;
                         }
                     }
 
@@ -124,7 +119,7 @@ namespace Server.Mobiles
                     {
                         int[][] coord =
                         {
-                            new int[] { -4, -6 }, new int[] { 4, -6 }, new int[] { 0, -8 }, new int[] { -5, 5 }, new int[] { 5, 5 }
+                            new[] { -4, -6 }, new[] { 4, -6 }, new[] { 0, -8 }, new[] { -5, 5 }, new[] { 5, 5 }
                         };
 
                         BaseCreature rabid;
@@ -195,7 +190,7 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    if ((count % 4) == 0)
+                    if (count % 4 == 0)
                     {
                         m.LocalOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, "* The swarm of insects bites and stings your flesh! *");
                         m.NonlocalOverheadMessage(Network.MessageType.Emote, m.SpeechHue, true, string.Format("* {0} is stung by a swarm of insects *", m.Name));
@@ -224,7 +219,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

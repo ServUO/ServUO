@@ -1,8 +1,12 @@
+using Server.Engines.Craft;
+
 namespace Server.Items
 {
-    public class DupresShield : BaseShield
+    public class DupresShield : BaseShield, IRepairable
     {
         public override bool IsArtifact => true;
+        public CraftSystem RepairSystem => DefBlacksmithy.CraftSystem;
+
         [Constructable]
         public DupresShield()
             : base(0x2B01)
@@ -19,7 +23,7 @@ namespace Server.Items
         {
         }
 
-        public override int LabelNumber => 1075196;// Dupre’s Shield
+        public override int LabelNumber => 1075196;// Dupreâ€™s Shield
         public override int BasePhysicalResistance => 1;
         public override int BaseFireResistance => 0;
         public override int BaseColdResistance => 0;

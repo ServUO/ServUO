@@ -4,7 +4,7 @@ namespace Server.Commands.Generic
     {
         public FacetCommandImplementor()
         {
-            Accessors = new string[] { "Facet" };
+            Accessors = new[] { "Facet" };
             SupportRequirement = CommandSupport.Area;
             SupportsConditionals = true;
             AccessLevel = AccessLevel.GameMaster;

@@ -37,28 +37,22 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemLevel Level
         {
-            get
-            {
-                return m_ItemLevel;
-            }
+            get => m_ItemLevel;
             set
             {
                 m_ItemLevel = value;
 
                 double bonus = ((int)m_ItemLevel * 100.0) * ((int)m_ItemLevel * 5);
 
-                HitsMax = ((int)(100 + bonus));
-                Hits = ((int)(100 + bonus));
+                HitsMax = (int)(100 + bonus);
+                Hits = (int)(100 + bonus);
             }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int IDStart
         {
-            get
-            {
-                return m_StartID;
-            }
+            get => m_StartID;
             set
             {
                 if (value < 0)
@@ -79,10 +73,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int IDHalfHits
         {
-            get
-            {
-                return m_HalfHitsID;
-            }
+            get => m_HalfHitsID;
             set
             {
                 if (value < 0)
@@ -103,10 +94,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int IDDestroyed
         {
-            get
-            {
-                return m_DestroyedID;
-            }
+            get => m_DestroyedID;
             set
             {
                 if (value < 0 || value > int.MaxValue)
@@ -119,10 +107,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int Hits
         {
-            get
-            {
-                return m_Hits;
-            }
+            get => m_Hits;
             set
             {
                 if (value > HitsMax)
@@ -154,7 +139,6 @@ namespace Server.Items
                 if (m_Hits < 0)
                 {
                     Destroy();
-                    return;
                 }
             }
         }
@@ -162,10 +146,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HitsMax
         {
-            get
-            {
-                return m_HitsMax;
-            }
+            get => m_HitsMax;
             set
             {
                 if (value > int.MaxValue)
@@ -326,7 +307,7 @@ namespace Server.Items
 
         public virtual void SendDamagePacket(Mobile from, int amount)
         {
-            NetState theirState = (from == null ? null : from.NetState);
+            NetState theirState = from == null ? null : from.NetState;
 
             if (theirState == null && from != null)
             {
@@ -352,8 +333,8 @@ namespace Server.Items
             if (DamageStore == null)
                 DamageStore = new Dictionary<Mobile, int>();
 
-            if (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)
-                m = ((BaseCreature)m).GetMaster();
+            if (m is BaseCreature creature && creature.GetMaster() is PlayerMobile)
+                m = creature.GetMaster();
 
             if (!DamageStore.ContainsKey(m))
                 DamageStore[m] = 0;
@@ -375,7 +356,7 @@ namespace Server.Items
 
         public bool Destroy()
         {
-            if (this == null || Deleted || Destroyed)
+            if (Deleted || Destroyed)
                 return false;
 
             Effects.PlaySound(Location, Map, DestroySound);
@@ -594,7 +575,6 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
             writer.Write(0); // version
 
             writer.Write(m_StartID);
@@ -615,8 +595,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             m_StartID = reader.ReadInt();
             m_HalfHitsID = reader.ReadInt();
@@ -657,7 +636,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

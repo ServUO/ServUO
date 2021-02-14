@@ -22,25 +22,22 @@ namespace Server.Engines.HuntsmasterChallenge
         private Timer m_Timer;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime SeasonBegins { get { return m_SeasonBegins; } set { m_SeasonBegins = value; } }
+        public DateTime SeasonBegins { get => m_SeasonBegins; set => m_SeasonBegins = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime SeasonEnds { get { return m_SeasonEnds; } set { m_SeasonEnds = value; } }
+        public DateTime SeasonEnds { get => m_SeasonEnds; set => m_SeasonEnds = value; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public int BonusIndex => m_BonusIndex;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool Active { get { return m_Active; } set { m_Active = value; CheckTimer(); } }
+        public bool Active { get => m_Active; set { m_Active = value; CheckTimer(); } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool NewSeason
         {
-            get { return false; }
-            set
-            {
-                EndSeason();
-            }
+            get => false;
+            set => EndSeason();
         }
 
         public static void Initialize()
@@ -137,9 +134,9 @@ namespace Server.Engines.HuntsmasterChallenge
 
                     foreach (Mobile player in players)
                     {
-                        if (player is PlayerMobile && ((PlayerMobile)player).NpcGuild == NpcGuild.RangersGuild && !player.Hidden)
+                        if (player is PlayerMobile mobile && mobile.NpcGuild == NpcGuild.RangersGuild && !mobile.Hidden)
                         {
-                            GiveHint(player, m);
+                            GiveHint(mobile, m);
                             eable.Free();
                             players.Free();
                             return;
@@ -215,13 +212,13 @@ namespace Server.Engines.HuntsmasterChallenge
 
                     CheckKill(info.HuntType, permit.KillEntry);
 
-                    if (from is PlayerMobile)
+                    if (from is PlayerMobile mobile)
                     {
-                        BaseQuest quest = QuestHelper.GetQuest((PlayerMobile)from, typeof(HuntmastersChallengeQuest));
+                        BaseQuest quest = QuestHelper.GetQuest(mobile, typeof(HuntmastersChallengeQuest));
 
-                        if (quest != null && quest is HuntmastersChallengeQuest)
+                        if (quest is HuntmastersChallengeQuest challengeQuest)
                         {
-                            ((HuntmastersChallengeQuest)quest).CompleteChallenge();
+                            challengeQuest.CompleteChallenge();
                         }
                     }
                 }
@@ -287,9 +284,9 @@ namespace Server.Engines.HuntsmasterChallenge
 
             foreach (Mobile m in copy)
             {
-                if (m == from && m is PlayerMobile)
+                if (m == from && m is PlayerMobile mobile)
                 {
-                    m.SendGump(new HuntmasterRewardGump(vendor, (PlayerMobile)m));
+                    mobile.SendGump(new HuntmasterRewardGump(vendor, mobile));
                     return true;
                 }
             }

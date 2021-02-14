@@ -18,7 +18,7 @@ namespace Server.Items
         {
             if (!from.HasGump(typeof(LiamDeFoeGump)))
             {
-                from.SendGump(new LiamDeFoeGump(from));
+                from.SendGump(new LiamDeFoeGump());
             }
         }
 
@@ -36,7 +36,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
@@ -49,10 +49,10 @@ namespace Server.Items
 
         private static void LiamDeFoeGump_OnCommand(CommandEventArgs e)
         {
-            e.Mobile.SendGump(new LiamDeFoeGump(e.Mobile));
+            e.Mobile.SendGump(new LiamDeFoeGump());
         }
 
-        public LiamDeFoeGump(Mobile owner) : base(50, 50)
+        public LiamDeFoeGump() : base(50, 50)
         {
             Closable = true;
             Disposable = true;
@@ -67,8 +67,6 @@ namespace Server.Items
 
         public override void OnResponse(NetState state, RelayInfo info) //Function for GumpButtonType.Reply Buttons 
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

@@ -30,27 +30,27 @@ namespace Server
 
 		public override string ToString()
 		{
-			return String.Format("({0}, {1})", m_X, m_Y);
+			return string.Format("({0}, {1})", m_X, m_Y);
 		}
 
 		public static Point2D Parse(string value)
 		{
-			var start = value.IndexOf('(');
-			var end = value.IndexOf(',', start + 1);
+			int start = value.IndexOf('(');
+			int end = value.IndexOf(',', start + 1);
 
-			var param1 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param1 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(')', start + 1);
 
-			var param2 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param2 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			return new Point2D(Convert.ToInt32(param1), Convert.ToInt32(param2));
 		}
 
 		public int CompareTo(Point2D other)
 		{
-			var v = m_X.CompareTo(other.m_X);
+			int v = m_X.CompareTo(other.m_X);
 
 			if (v == 0)
 			{
@@ -62,9 +62,9 @@ namespace Server
 
 		public int CompareTo(object other)
 		{
-			if (other is Point2D)
+			if (other is Point2D point2D)
 			{
-				return CompareTo((Point2D)other);
+				return CompareTo(point2D);
 			}
 
 			if (other == null)
@@ -82,7 +82,7 @@ namespace Server
 				return false;
 			}
 
-			var p = (IPoint2D)o;
+			IPoint2D p = (IPoint2D)o;
 
 			return m_X == p.X && m_Y == p.Y;
 		}
@@ -91,7 +91,7 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = 1 + Math.Abs(X) + Math.Abs(Y);
+				int hash = 1 + Math.Abs(X) + Math.Abs(Y);
 
 				hash = (hash * 397) ^ X;
 				hash = (hash * 397) ^ Y;
@@ -246,7 +246,7 @@ namespace Server
 
 		public override string ToString()
 		{
-			return String.Format("({0}, {1}, {2})", m_X, m_Y, m_Z);
+			return string.Format("({0}, {1}, {2})", m_X, m_Y, m_Z);
 		}
 
 		public override bool Equals(object o)
@@ -256,7 +256,7 @@ namespace Server
 				return false;
 			}
 
-			var p = (IPoint3D)o;
+			IPoint3D p = (IPoint3D)o;
 
 			return m_X == p.X && m_Y == p.Y && m_Z == p.Z;
 		}
@@ -265,7 +265,7 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = 1 + Math.Abs(X) + Math.Abs(Y) + Math.Abs(Z);
+				int hash = 1 + Math.Abs(X) + Math.Abs(Y) + Math.Abs(Z);
 
 				hash = (hash * 397) ^ X;
 				hash = (hash * 397) ^ Y;
@@ -277,20 +277,20 @@ namespace Server
 
 		public static Point3D Parse(string value)
 		{
-			var start = value.IndexOf('(');
-			var end = value.IndexOf(',', start + 1);
+			int start = value.IndexOf('(');
+			int end = value.IndexOf(',', start + 1);
 
-			var param1 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param1 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(',', start + 1);
 
-			var param2 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param2 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(')', start + 1);
 
-			var param3 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param3 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			return new Point3D(Convert.ToInt32(param1), Convert.ToInt32(param2), Convert.ToInt32(param3));
 		}
@@ -327,7 +327,7 @@ namespace Server
 
 		public int CompareTo(Point3D other)
 		{
-			var v = m_X.CompareTo(other.m_X);
+			int v = m_X.CompareTo(other.m_X);
 
 			if (v == 0)
 			{
@@ -344,9 +344,9 @@ namespace Server
 
 		public int CompareTo(object other)
 		{
-			if (other is Point3D)
+			if (other is Point3D point3D)
 			{
-				return CompareTo((Point3D)other);
+				return CompareTo(point3D);
 			}
 
 			if (other == null)
@@ -386,25 +386,25 @@ namespace Server
 
 		public static Rectangle2D Parse(string value)
 		{
-			var start = value.IndexOf('(');
-			var end = value.IndexOf(',', start + 1);
+			int start = value.IndexOf('(');
+			int end = value.IndexOf(',', start + 1);
 
-			var param1 = value.Substring(start + 1, end - (start + 1)).Trim();
-
-			start = end;
-			end = value.IndexOf(',', start + 1);
-
-			var param2 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param1 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(',', start + 1);
 
-			var param3 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param2 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param3 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(')', start + 1);
 
-			var param4 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param4 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			return new Rectangle2D(
 				Convert.ToInt32(param1),
@@ -473,14 +473,14 @@ namespace Server
 
 		public override string ToString()
 		{
-			return String.Format("({0}, {1})+({2}, {3})", X, Y, Width, Height);
+			return string.Format("({0}, {1})+({2}, {3})", X, Y, Width, Height);
 		}
 
 		public override int GetHashCode()
 		{
 			unchecked
 			{
-				var hash = 1 + Math.Abs(Start.X + Start.Y) + Math.Abs(End.X + End.Y);
+				int hash = 1 + Math.Abs(Start.X + Start.Y) + Math.Abs(End.X + End.Y);
 
 				hash = (hash * 397) ^ Start.GetHashCode();
 				hash = (hash * 397) ^ End.GetHashCode();
@@ -517,35 +517,35 @@ namespace Server
 
 		public static Rectangle3D Parse(string value)
 		{
-			var start = value.IndexOf('(');
-			var end = value.IndexOf(',', start + 1);
+			int start = value.IndexOf('(');
+			int end = value.IndexOf(',', start + 1);
 
-			var param1 = value.Substring(start + 1, end - (start + 1)).Trim();
-
-			start = end;
-			end = value.IndexOf(',', start + 1);
-
-			var param2 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param1 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(',', start + 1);
 
-			var param3 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param2 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(',', start + 1);
 
-			var param4 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param3 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(',', start + 1);
 
-			var param5 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param4 = value.Substring(start + 1, end - (start + 1)).Trim();
+
+			start = end;
+			end = value.IndexOf(',', start + 1);
+
+			string param5 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			start = end;
 			end = value.IndexOf(')', start + 1);
 
-			var param6 = value.Substring(start + 1, end - (start + 1)).Trim();
+			string param6 = value.Substring(start + 1, end - (start + 1)).Trim();
 
 			return new Rectangle3D(
 				Convert.ToInt32(param1),
@@ -585,14 +585,14 @@ namespace Server
 
 		public override string ToString()
 		{
-			return String.Format("({0}, {1}, {2})+({3}, {4}, {5})", Start.X, Start.Y, Start.Z, Width, Height, Depth);
+			return string.Format("({0}, {1}, {2})+({3}, {4}, {5})", Start.X, Start.Y, Start.Z, Width, Height, Depth);
 		}
 
 		public override int GetHashCode()
 		{
 			unchecked
 			{
-				var hash = 1 + Math.Abs(Start.X + Start.Y + Start.Z) + Math.Abs(End.X + End.Y + End.Z);
+				int hash = 1 + Math.Abs(Start.X + Start.Y + Start.Z) + Math.Abs(End.X + End.Y + End.Z);
 
 				hash = (hash * 397) ^ Start.GetHashCode();
 				hash = (hash * 397) ^ End.GetHashCode();

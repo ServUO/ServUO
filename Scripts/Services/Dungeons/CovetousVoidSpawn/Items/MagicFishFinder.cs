@@ -38,9 +38,9 @@ namespace Server.Items
 
         public void Decay()
         {
-            if (RootParent is Mobile)
+            if (RootParent is Mobile mobile)
             {
-                Mobile parent = (Mobile)RootParent;
+                Mobile parent = mobile;
 
                 if (Name == null)
                     parent.SendLocalizedMessage(1072515, "#" + LabelNumber); // The ~1_name~ expired...
@@ -157,7 +157,7 @@ namespace Server.Items
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             Expires = reader.ReadDateTime();
 
@@ -249,9 +249,9 @@ namespace Server.Items
 
         public class SchoolEntry
         {
-            public Point2D Location { get; set; }
+            public Point2D Location { get; }
             public bool HasFished { get; set; }
-            public Map Map { get; set; }
+            public Map Map { get; }
 
             public SchoolEntry(Map map, Point2D location)
             {

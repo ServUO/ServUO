@@ -120,9 +120,8 @@ namespace Server
 
         public static void HWInfo_OnTarget(Mobile from, object obj)
         {
-            if (obj is Mobile && ((Mobile)obj).Player)
+            if (obj is Mobile m && m.Player)
             {
-                Mobile m = (Mobile)obj;
                 Account acct = m.Account as Account;
 
                 if (acct != null)

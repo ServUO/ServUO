@@ -61,7 +61,7 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return System.String.Format("{{ checkertrans {0} {1} {2} {3} }}", m_X, m_Y, m_Width, m_Height);
+			return string.Format("{{ checkertrans {0} {1} {2} {3} }}", m_X, m_Y, m_Width, m_Height);
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("checkertrans");

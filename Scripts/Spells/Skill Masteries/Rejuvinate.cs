@@ -67,7 +67,7 @@ namespace Server.Spells.SkillMasteries
                 {
                     Caster.SendLocalizedMessage(1046439); // That is not a valid target.
                 }
-                else if (m is BaseCreature && ((BaseCreature)m).IsAnimatedDead)
+                else if (m is BaseCreature bc && bc.IsAnimatedDead)
                 {
                     Caster.SendLocalizedMessage(1046439); // That is not a valid target.
                 }

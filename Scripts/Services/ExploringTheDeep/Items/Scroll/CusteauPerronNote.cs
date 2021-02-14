@@ -26,7 +26,7 @@ namespace Server.Items
         {
             if (!from.HasGump(typeof(CusteauPerronNoteGump)))
             {
-                from.SendGump(new CusteauPerronNoteGump(from));
+                from.SendGump(new CusteauPerronNoteGump());
             }
         }
 
@@ -34,21 +34,21 @@ namespace Server.Items
         {
         }
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
-        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
             writer.Write(0); // version
         }
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
+        }
     }
 
     public class CusteauPerronNoteGump : Gump
     {
-        public CusteauPerronNoteGump(Mobile owner) : base(50, 50)
+        public CusteauPerronNoteGump() : base(50, 50)
         {
             Closable = true;
             Disposable = true;
@@ -62,8 +62,6 @@ namespace Server.Items
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
-            Mobile from = state.Mobile;
-
             switch (info.ButtonID)
             {
                 case 0:

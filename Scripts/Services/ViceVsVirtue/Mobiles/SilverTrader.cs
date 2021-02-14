@@ -66,15 +66,15 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile m)
         {
-            if (ViceVsVirtueSystem.Enabled && m is PlayerMobile && InRange(m.Location, 3))
+            if (ViceVsVirtueSystem.Enabled && m is PlayerMobile pm && InRange(pm.Location, 3))
             {
-                if (ViceVsVirtueSystem.IsVvV(m))
+                if (ViceVsVirtueSystem.IsVvV(pm))
                 {
-                    m.SendGump(new VvVRewardGump(this, (PlayerMobile)m));
+                    pm.SendGump(new VvVRewardGump(this, pm));
                 }
                 else
                 {
-                    SayTo(m, 1155585); // You have no silver to trade with. Join Vice vs Virtue and return to me.
+                    SayTo(pm, 1155585); // You have no silver to trade with. Join Vice vs Virtue and return to me.
                 }
             }
         }
@@ -92,8 +92,8 @@ namespace Server.Engines.VvV
                     {
                         Item itm = Backpack.FindItemByType(item.Type);
 
-                        if (itm is IVvVItem)
-                            ((IVvVItem)itm).IsVvVItem = true;
+                        if (itm is IVvVItem vItem)
+                            vItem.IsVvVItem = true;
 
                         continue;
                     }
@@ -102,11 +102,11 @@ namespace Server.Engines.VvV
 
                     if (i != null)
                     {
-                        if (i is IOwnerRestricted)
-                            ((IOwnerRestricted)i).OwnerName = "Your Player Name";
+                        if (i is IOwnerRestricted restricted)
+                            restricted.OwnerName = "Your Player Name";
 
-                        if (i is IVvVItem)
-                            ((IVvVItem)i).IsVvVItem = true;
+                        if (i is IVvVItem vItem)
+                            vItem.IsVvVItem = true;
 
                         NegativeAttributes neg = RunicReforging.GetNegativeAttributes(i);
 
@@ -114,10 +114,10 @@ namespace Server.Engines.VvV
                         {
                             neg.Antique = 1;
 
-                            if (i is IDurability && ((IDurability)i).MaxHitPoints == 0)
+                            if (i is IDurability durability && durability.MaxHitPoints == 0)
                             {
-                                ((IDurability)i).MaxHitPoints = 255;
-                                ((IDurability)i).HitPoints = 255;
+                                durability.MaxHitPoints = 255;
+                                durability.HitPoints = 255;
                             }
                         }
 
@@ -131,10 +131,10 @@ namespace Server.Engines.VvV
 
         private readonly Type[][] _Table =
         {
-            new Type[] { typeof(CrimsonCincture), typeof(GargishCrimsonCincture) },
-            new Type[] { typeof(MaceAndShieldGlasses), typeof(GargishMaceAndShieldGlasses) },
-            new Type[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
-            new Type[] { typeof(FoldedSteelGlasses), typeof(GargishFoldedSteelGlasses) },
+            new[] { typeof(CrimsonCincture), typeof(GargishCrimsonCincture) },
+            new[] { typeof(MaceAndShieldGlasses), typeof(GargishMaceAndShieldGlasses) },
+            new[] { typeof(WizardsCrystalGlasses), typeof(GargishWizardsCrystalGlasses) },
+            new[] { typeof(FoldedSteelGlasses), typeof(GargishFoldedSteelGlasses) }
         };
 
         public override bool OnDragDrop(Mobile from, Item dropped)
@@ -164,28 +164,28 @@ namespace Server.Engines.VvV
                                     {
                                         VvVRewards.OnRewardItemCreated(from, item);
 
-                                        if (item is GargishCrimsonCincture)
+                                        if (item is GargishCrimsonCincture cincture)
                                         {
-                                            ((GargishCrimsonCincture)item).Attributes.BonusDex = 10;
+                                            cincture.Attributes.BonusDex = 10;
                                         }
 
-                                        if (item is GargishMaceAndShieldGlasses)
+                                        if (item is GargishMaceAndShieldGlasses glasses)
                                         {
-                                            ((GargishMaceAndShieldGlasses)item).Attributes.WeaponDamage = 10;
+                                            glasses.Attributes.WeaponDamage = 10;
                                         }
 
-                                        if (item is GargishFoldedSteelGlasses)
+                                        if (item is GargishFoldedSteelGlasses steelGlasses)
                                         {
-                                            ((GargishFoldedSteelGlasses)item).Attributes.DefendChance = 25;
+                                            steelGlasses.Attributes.DefendChance = 25;
                                         }
 
-                                        if (item is GargishWizardsCrystalGlasses)
+                                        if (item is GargishWizardsCrystalGlasses crystalGlasses)
                                         {
-                                            ((GargishWizardsCrystalGlasses)item).PhysicalBonus = 5;
-                                            ((GargishWizardsCrystalGlasses)item).FireBonus = 5;
-                                            ((GargishWizardsCrystalGlasses)item).ColdBonus = 5;
-                                            ((GargishWizardsCrystalGlasses)item).PoisonBonus = 5;
-                                            ((GargishWizardsCrystalGlasses)item).EnergyBonus = 5;
+                                            crystalGlasses.PhysicalBonus = 5;
+                                            crystalGlasses.FireBonus = 5;
+                                            crystalGlasses.ColdBonus = 5;
+                                            crystalGlasses.PoisonBonus = 5;
+                                            crystalGlasses.EnergyBonus = 5;
                                         }
 
                                         from.AddToBackpack(item);

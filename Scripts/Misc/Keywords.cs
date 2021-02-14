@@ -35,18 +35,18 @@ namespace Server.Misc
                         }
                     case 0x0035: // i renounce my young player status*
                         {
-                            if (from is PlayerMobile && ((PlayerMobile)from).Young && !from.HasGump(typeof(RenounceYoungGump)))
+                            if (from is PlayerMobile mobile && mobile.Young && !mobile.HasGump(typeof(RenounceYoungGump)))
                             {
-                                from.SendGump(new RenounceYoungGump());
+                                mobile.SendGump(new RenounceYoungGump());
                             }
 
                             break;
                         }
                     case 0x6: // guild
                         {
-                            if (from is PlayerMobile && from.Guild != null)
+                            if (from is PlayerMobile mobile && mobile.Guild != null)
                             {
-                                ((PlayerMobile)from).SendGump(new GuildInfoGump((PlayerMobile)from, from.Guild as Guild));
+                                mobile.SendGump(new GuildInfoGump(mobile, mobile.Guild as Guild));
                             }
 
                             break;

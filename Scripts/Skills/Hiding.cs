@@ -9,14 +9,8 @@ namespace Server.SkillHandlers
         private static bool m_CombatOverride;
         public static bool CombatOverride
         {
-            get
-            {
-                return m_CombatOverride;
-            }
-            set
-            {
-                m_CombatOverride = value;
-            }
+            get => m_CombatOverride;
+            set => m_CombatOverride = value;
         }
         public static void Initialize()
         {
@@ -54,8 +48,8 @@ namespace Server.SkillHandlers
             int skill = Math.Min(100, (int)m.Skills[SkillName.Hiding].Value);
             int range = Math.Min((100 - skill) / 2 + 8, 18);	//Cap of 18 not OSI-exact, intentional difference
 
-            bool badCombat = (!m_CombatOverride && m.Combatant is Mobile && m.InRange(m.Combatant.Location, range) && ((Mobile)m.Combatant).InLOS(m.Combatant));
-            bool ok = (!badCombat /*&& m.CheckSkill( SkillName.Hiding, 0.0 - bonus, 100.0 - bonus )*/);
+            bool badCombat = !m_CombatOverride && m.Combatant is Mobile && m.InRange(m.Combatant.Location, range) && ((Mobile)m.Combatant).InLOS(m.Combatant);
+            bool ok = !badCombat;
 
             if (ok)
             {
@@ -76,7 +70,7 @@ namespace Server.SkillHandlers
                     eable.Free();
                 }
 
-                ok = (!badCombat && m.CheckSkill(SkillName.Hiding, 0.0 - bonus, 100.0 - bonus));
+                ok = !badCombat && m.CheckSkill(SkillName.Hiding, 0.0 - bonus, 100.0 - bonus);
             }
 
             if (badCombat)

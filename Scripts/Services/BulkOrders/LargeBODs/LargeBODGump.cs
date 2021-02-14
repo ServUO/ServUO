@@ -154,9 +154,9 @@ namespace Server.Engines.BulkOrders
             {
                 m_From.BeginTarget(-1, false, Targeting.TargetFlags.None, (m, targeted) =>
                 {
-                    if (!m_Deed.Deleted && targeted is Container)
+                    if (!m_Deed.Deleted && targeted is Container container)
                     {
-                        List<SmallBOD> list = ((Container)targeted).Items.OfType<SmallBOD>().ToList();
+                        List<SmallBOD> list = container.Items.OfType<SmallBOD>().ToList();
 
                         foreach (SmallBOD item in list)
                         {

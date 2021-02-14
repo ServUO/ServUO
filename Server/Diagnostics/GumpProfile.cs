@@ -19,7 +19,7 @@ namespace Server.Diagnostics
 			}
 
 
-			if (!_profiles.TryGetValue(type, out var prof))
+			if (!_profiles.TryGetValue(type, out GumpProfile prof))
 			{
 				_profiles.Add(type, prof = new GumpProfile(type));
 			}

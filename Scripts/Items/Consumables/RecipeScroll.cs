@@ -68,14 +68,12 @@ namespace Server.Items
 
             Recipe r = Recipe;
 
-            if (r != null && from is PlayerMobile)
+            if (r != null && from is PlayerMobile pm)
             {
-                PlayerMobile pm = from as PlayerMobile;
-
                 if (!pm.HasRecipe(r))
                 {
                     bool allRequiredSkills = true;
-                    double chance = r.CraftItem.GetSuccessChance(from, null, r.CraftSystem, false, ref allRequiredSkills);
+                    double chance = r.CraftItem.GetSuccessChance(pm, null, r.CraftSystem, false, ref allRequiredSkills);
 
                     if (allRequiredSkills && chance >= 0.0)
                     {

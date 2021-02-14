@@ -78,12 +78,12 @@ namespace Server.Mobiles
                 return 0;
             }
 
-            return SummonedHelpers.Where(bc => bc != null && bc.Alive).Count();
+            return SummonedHelpers.Count(bc => bc != null && bc.Alive);
         }
 
         public void Summon(Mobile target, bool initial = false)
         {
-            if (target == null || (!initial && InitialSpawn != null && InitialSpawn.Count > 0))
+            if (target == null || !initial && InitialSpawn != null && InitialSpawn.Count > 0)
                 return;
 
             Map map = Map;
@@ -122,29 +122,26 @@ namespace Server.Mobiles
 
                     BaseCreature spawn = new KrampusMinion();
 
-                    if (spawn != null)
+                    spawn.MoveToWorld(p, map);
+                    spawn.Home = p;
+                    spawn.RangeHome = 5;
+                    spawn.Team = Team;
+                    spawn.SummonMaster = this;
+
+                    if (!initial)
                     {
-                        spawn.MoveToWorld(p, map);
-                        spawn.Home = p;
-                        spawn.RangeHome = 5;
-                        spawn.Team = Team;
-                        spawn.SummonMaster = this;
-
-                        if (!initial)
+                        if (spawn.Combatant != null)
                         {
-                            if (spawn.Combatant != null)
-                            {
-                                if (!(spawn.Combatant is PlayerMobile) || !((PlayerMobile)spawn.Combatant).HonorActive)
-                                    spawn.Combatant = com;
-                            }
-                            else
-                            {
+                            if (!(spawn.Combatant is PlayerMobile) || !((PlayerMobile)spawn.Combatant).HonorActive)
                                 spawn.Combatant = com;
-                            }
                         }
-
-                        AddHelper(spawn, initial);
+                        else
+                        {
+                            spawn.Combatant = com;
+                        }
                     }
+
+                    AddHelper(spawn, initial);
                 }
 
                 if (initial)
@@ -402,7 +399,7 @@ namespace Server.Mobiles
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-            int version = reader.ReadInt();
+            reader.ReadInt();
 
             SpawnLocation = reader.ReadPoint3D();
 
