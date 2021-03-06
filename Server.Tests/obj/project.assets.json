@@ -1649,6 +1649,16 @@
           "build/netcoreapp2.1/xunit.runner.visualstudio.props": {}
         }
       },
+      "Scripts/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.8",
+        "compile": {
+          "bin/placeholder/Scripts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Scripts.dll": {}
+        }
+      },
       "Server/1.0.0": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.8",
@@ -1657,6 +1667,16 @@
         },
         "runtime": {
           "bin/placeholder/Server.dll": {}
+        }
+      },
+      "ServUO/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.8",
+        "compile": {
+          "bin/placeholder/ServUO.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ServUO.dll": {}
         }
       }
     }
@@ -5622,15 +5642,27 @@
         "xunit.runner.visualstudio.nuspec"
       ]
     },
+    "Scripts/1.0.0": {
+      "type": "project",
+      "path": "../Scripts/Scripts.csproj",
+      "msbuildProject": "../Scripts/Scripts.csproj"
+    },
     "Server/1.0.0": {
       "type": "project",
       "path": "../Server/Server.csproj",
       "msbuildProject": "../Server/Server.csproj"
+    },
+    "ServUO/1.0.0": {
+      "type": "project",
+      "path": "../Application/ServUO.csproj",
+      "msbuildProject": "../Application/ServUO.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net5.0": [
       "Microsoft.NET.Test.Sdk >= 16.7.1",
+      "Scripts >= 1.0.0",
+      "ServUO >= 1.0.0",
       "Server >= 1.0.0",
       "coverlet.collector >= 1.3.0",
       "xunit >= 2.4.1",
@@ -5666,6 +5698,12 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
+            "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\ServUO.csproj": {
+              "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\ServUO.csproj"
+            },
+            "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj": {
+              "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj"
+            },
             "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj": {
               "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj"
             }

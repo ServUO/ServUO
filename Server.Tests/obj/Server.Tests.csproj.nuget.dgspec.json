@@ -4,6 +4,102 @@
     "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server.Tests\\Server.Tests.csproj": {}
   },
   "projects": {
+    "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\ServUO.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\ServUO.csproj",
+        "projectName": "ServUO",
+        "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\ServUO.csproj",
+        "packagesPath": "C:\\Users\\mchek\\.nuget\\packages\\",
+        "outputPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\mchek\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "targetAlias": "net48",
+            "projectReferences": {
+              "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj": {
+                "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj"
+              },
+              "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj": {
+                "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "win7-x86": {
+          "#import": []
+        }
+      }
+    },
+    "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj",
+        "projectName": "Scripts",
+        "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj",
+        "packagesPath": "C:\\Users\\mchek\\.nuget\\packages\\",
+        "outputPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\mchek\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "targetAlias": "net48",
+            "projectReferences": {
+              "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj": {
+                "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server.Tests\\Server.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -29,6 +125,12 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
+              "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\ServUO.csproj": {
+                "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Application\\ServUO.csproj"
+              },
+              "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj": {
+                "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Scripts\\Scripts.csproj"
+              },
               "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj": {
                 "projectPath": "F:\\Users\\mchek\\RiderProjects\\mchekin\\ServUO\\Server\\Server.csproj"
               }
