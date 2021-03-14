@@ -2,10 +2,14 @@
 # Project Assemblies
 /Server.dll
 /Server/bin
-/Server/obj
+/Server/
+/Server.Tests/bin
+/Server.Tests/obj
 /Scripts.dll
 /Scripts/bin
 /Scripts/obj
+/Scripts.Tests/bin
+/Scripts.Tests/obj
 /Application/bin
 /Application/obj
 
