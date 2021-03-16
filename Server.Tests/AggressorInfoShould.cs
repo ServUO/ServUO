@@ -23,8 +23,8 @@ namespace Server.Tests
 			Assert.False(sut.Expired);
 			Assert.Equal(criminal, sut.CanReportMurder);
 			Assert.Equal(attacker, sut.Attacker);
-			Assert.Equal(defender, sut.Defender);
-			// Assert.Equal(defender, sut.LastCombatTime);
+			Assert.Equal(defender, sut.Defender); 
+			Assert.InRange<DateTime>(sut.LastCombatTime, DateTime.UtcNow.AddSeconds(-5.0), DateTime.UtcNow);
 		}
 	}
 }
