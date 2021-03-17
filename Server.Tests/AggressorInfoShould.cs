@@ -26,5 +26,26 @@ namespace Server.Tests
 			Assert.Equal(defender, sut.Defender); 
 			Assert.InRange<DateTime>(sut.LastCombatTime, DateTime.UtcNow.AddSeconds(-5.0), DateTime.UtcNow);
 		}
+
+        [Fact]
+        public void CreateTheSameInstanceAfterCallingFree()
+		{
+			Server.Misc.MapDefinitions.Configure();
+			Server.World.Load();
+			
+			var attacker = new Mobile();
+			var defender = new Mobile();
+			
+			var sut = AggressorInfo.Create(attacker, defender, true);
+			
+			var sut2 = AggressorInfo.Create(attacker, defender, true);
+			
+			sut.Free();
+			
+			var sut3 = AggressorInfo.Create(attacker, defender, true);
+			
+			Assert.NotSame(sut, sut2);
+			Assert.Same(sut, sut3);
+		}
 	}
 }
