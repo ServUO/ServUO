@@ -28,7 +28,7 @@ namespace Server.Tests
 			Assert.Same(_Attacker, sut.Attacker);
 			Assert.Same(_Defender, sut.Defender);
 			// ReSharper disable once RedundantTypeArgumentsOfMethod
-			Assert.InRange<DateTime>(sut.LastCombatTime, DateTime.UtcNow.AddSeconds(-5.0), DateTime.UtcNow);
+			Assert.InRange<DateTime>(sut.LastCombatTime, DateTime.UtcNow.AddSeconds(-1.0), DateTime.UtcNow);
 		}
 
 		[Fact]
@@ -43,6 +43,18 @@ namespace Server.Tests
 
 			Assert.NotSame(sut, sut2);
 			Assert.Same(sut, sut3);
+		}
+
+		[Fact]
+		public void RefreshReportedBackToFalse()
+		{
+			var sut = AggressorInfo.Create(_Attacker, _Defender, true);
+
+			sut.Reported = true;
+
+			sut.Refresh();
+
+			Assert.False(sut.Reported);
 		}
 	}
 
