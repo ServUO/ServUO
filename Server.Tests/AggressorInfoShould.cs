@@ -25,8 +25,8 @@ namespace Server.Tests
 			Assert.Equal(criminal, sut.CriminalAggression);
 			Assert.False(sut.Expired);
 			Assert.Equal(criminal, sut.CanReportMurder);
-			Assert.Equal(_Attacker, sut.Attacker);
-			Assert.Equal(_Defender, sut.Defender);
+			Assert.Same(_Attacker, sut.Attacker);
+			Assert.Same(_Defender, sut.Defender);
 			// ReSharper disable once RedundantTypeArgumentsOfMethod
 			Assert.InRange<DateTime>(sut.LastCombatTime, DateTime.UtcNow.AddSeconds(-5.0), DateTime.UtcNow);
 		}
