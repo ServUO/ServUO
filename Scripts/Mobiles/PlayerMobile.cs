@@ -1154,7 +1154,8 @@ namespace Server.Mobiles
             m_LastGlobalLight = global;
             m_LastPersonalLight = personal;
 
-            ns.Send(GlobalLightLevel.Instantiate(global));
+            GlobalLightLevel.Send(ns, global);
+
             ns.Send(new PersonalLightLevel(this, personal));
         }
 
@@ -1710,9 +1711,9 @@ namespace Server.Mobiles
                     // not in the list, so we're adding it
                     Aggressors.Add(AggressorInfo.Create(aggressiveMaster, this, criminal));
 
-                    if (CanSee(aggressiveMaster) && NetState != null)
+                    if (CanSee(aggressiveMaster))
                     {
-                        NetState.Send(MobileIncoming.Create(NetState, this, aggressiveMaster));
+                        MobileIncoming.Send(NetState, aggressiveMaster);
                     }
 
                     UpdateAggrExpire();
@@ -1747,9 +1748,9 @@ namespace Server.Mobiles
                     // not in the list, so we're adding it
                     creature.Aggressed.Add(AggressorInfo.Create(aggressiveMaster, this, criminal));
 
-                    if (CanSee(aggressiveMaster) && NetState != null)
+                    if (CanSee(aggressiveMaster))
                     {
-                        NetState.Send(MobileIncoming.Create(NetState, this, aggressiveMaster));
+                        MobileIncoming.Send(NetState, aggressiveMaster);
                     }
 
                     UpdateAggrExpire();
@@ -2961,6 +2962,18 @@ namespace Server.Mobiles
                 }
             }
         }
+
+		public override void OnAosSingleClick(Mobile from)
+		{
+			if (ViewOPL)
+			{
+				base.OnAosSingleClick(from);
+			}
+			else if (from.Region.OnSingleClick(from, this))
+			{
+				OnSingleClick(from);
+			}
+		}
 
         public override void DisruptiveAction()
         {
@@ -6287,14 +6300,14 @@ namespace Server.Mobiles
         #region Buff Icons
         public void ResendBuffs()
         {
-            if (m_BuffTable == null)
+			if (!BuffInfo.Enabled || m_BuffTable == null)
             {
                 return;
             }
 
             NetState state = NetState;
 
-            if (state != null)
+			if (state != null && state.BuffIcon)
             {
                 foreach (BuffInfo info in m_BuffTable.Values)
                 {
@@ -6307,7 +6320,7 @@ namespace Server.Mobiles
 
         public void AddBuff(BuffInfo b)
         {
-            if (b == null)
+			if (!BuffInfo.Enabled || b == null)
             {
                 return;
             }
@@ -6323,7 +6336,7 @@ namespace Server.Mobiles
 
             NetState state = NetState;
 
-            if (state != null)
+			if (state != null && state.BuffIcon)
             {
                 state.Send(new AddBuffPacket(this, b));
             }
@@ -6357,7 +6370,7 @@ namespace Server.Mobiles
 
             NetState state = NetState;
 
-            if (state != null)
+			if (state != null && state.BuffIcon)
             {
                 state.Send(new RemoveBuffPacket(this, b));
             }

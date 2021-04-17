@@ -45,6 +45,8 @@ namespace Server.Network
 		private readonly MessagePump m_MessagePump;
 		private readonly string m_ToString;
 
+		private ClientVersion m_Version;
+
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public DateTime ConnectedOn { get; }
 
@@ -88,13 +90,192 @@ namespace Server.Network
 		public ClientFlags Flags { get; set; }
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public ClientVersion Version { get; set; }
+		public ClientVersion Version
+		{
+			get => m_Version;
+			set
+			{
+				m_Version = value;
+
+				if (value >= m_Version70610)
+				{
+					_ProtocolChanges = ProtocolChanges.Version70610;
+				}
+				else if (value >= m_Version70500)
+				{
+					_ProtocolChanges = ProtocolChanges.Version70500;
+				}
+				else if (value >= m_Version704565)
+				{
+					_ProtocolChanges = ProtocolChanges.Version704565;
+				}
+				else if (value >= m_Version70331)
+				{
+					_ProtocolChanges = ProtocolChanges.Version70331;
+				}
+				else if (value >= m_Version70300)
+				{
+					_ProtocolChanges = ProtocolChanges.Version70300;
+				}
+				else if (value >= m_Version70160)
+				{
+					_ProtocolChanges = ProtocolChanges.Version70160;
+				}
+				else if (value >= m_Version70130)
+				{
+					_ProtocolChanges = ProtocolChanges.Version70130;
+				}
+				else if (value >= m_Version7090)
+				{
+					_ProtocolChanges = ProtocolChanges.Version7090;
+				}
+				else if (value >= m_Version7000)
+				{
+					_ProtocolChanges = ProtocolChanges.Version7000;
+				}
+				else if (value >= m_Version60142)
+				{
+					_ProtocolChanges = ProtocolChanges.Version60142;
+				}
+				else if (value >= m_Version6017)
+				{
+					_ProtocolChanges = ProtocolChanges.Version6017;
+				}
+				else if (value >= m_Version6000)
+				{
+					_ProtocolChanges = ProtocolChanges.Version6000;
+				}
+				else if (value >= m_Version502b)
+				{
+					_ProtocolChanges = ProtocolChanges.Version502b;
+				}
+				else if (value >= m_Version500a)
+				{
+					_ProtocolChanges = ProtocolChanges.Version500a;
+				}
+				else if (value >= m_Version407a)
+				{
+					_ProtocolChanges = ProtocolChanges.Version407a;
+				}
+				else if (value >= m_Version400a)
+				{
+					_ProtocolChanges = ProtocolChanges.Version400a;
+				}
+			}
+		}
+
+		private static readonly ClientVersion m_Version400a = new ClientVersion("4.0.0a");
+		private static readonly ClientVersion m_Version407a = new ClientVersion("4.0.7a");
+		private static readonly ClientVersion m_Version500a = new ClientVersion("5.0.0a");
+		private static readonly ClientVersion m_Version502b = new ClientVersion("5.0.2b");
+		private static readonly ClientVersion m_Version6000 = new ClientVersion("6.0.0.0");
+		private static readonly ClientVersion m_Version6017 = new ClientVersion("6.0.1.7");
+		private static readonly ClientVersion m_Version60142 = new ClientVersion("6.0.14.2");
+		private static readonly ClientVersion m_Version7000 = new ClientVersion("7.0.0.0");
+		private static readonly ClientVersion m_Version7090 = new ClientVersion("7.0.9.0");
+		private static readonly ClientVersion m_Version70130 = new ClientVersion("7.0.13.0");
+		private static readonly ClientVersion m_Version70160 = new ClientVersion("7.0.16.0");
+		private static readonly ClientVersion m_Version70300 = new ClientVersion("7.0.30.0");
+		private static readonly ClientVersion m_Version70331 = new ClientVersion("7.0.33.1");
+		private static readonly ClientVersion m_Version704565 = new ClientVersion("7.0.45.65");
+		private static readonly ClientVersion m_Version70500 = new ClientVersion("7.0.50.0");
+		private static readonly ClientVersion m_Version70610 = new ClientVersion("7.0.61.0");
+
+		private ProtocolChanges _ProtocolChanges;
+
+		private enum ProtocolChanges
+		{
+			NewSpellbook = 0x00000001,
+			DamagePacket = 0x00000002,
+			Unpack = 0x00000004,
+			BuffIcon = 0x00000008,
+			NewHaven = 0x00000010,
+			ContainerGridLines = 0x00000020,
+			ExtendedSupportedFeatures = 0x00000040,
+			StygianAbyss = 0x00000080,
+			HighSeas = 0x00000100,
+			NewCharacterList = 0x00000200,
+			NewCharacterCreation = 0x00000400,
+			ExtendedStatus = 0x00000800,
+			NewMobileIncoming = 0x00001000,
+			NewSecureTrading = 0x00002000,
+			UltimaStore = 0x00004000,
+			EndlessJourney = 0x00008000,
+
+			Version400a = NewSpellbook,
+			Version407a = Version400a | DamagePacket,
+			Version500a = Version407a | Unpack,
+			Version502b = Version500a | BuffIcon,
+			Version6000 = Version502b | NewHaven,
+			Version6017 = Version6000 | ContainerGridLines,
+			Version60142 = Version6017 | ExtendedSupportedFeatures,
+			Version7000 = Version60142 | StygianAbyss,
+			Version7090 = Version7000 | HighSeas,
+			Version70130 = Version7090 | NewCharacterList,
+			Version70160 = Version70130 | NewCharacterCreation,
+			Version70300 = Version70160 | ExtendedStatus,
+			Version70331 = Version70300 | NewMobileIncoming,
+			Version704565 = Version70331 | NewSecureTrading,
+			Version70500 = Version704565 | UltimaStore,
+			Version70610 = Version70500 | EndlessJourney
+		}
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool IsUOTDClient => (Flags & ClientFlags.UOTD) != 0 || (Version != null && Version.Type == ClientType.UOTD);
+		public bool NewSpellbook => (_ProtocolChanges & ProtocolChanges.NewSpellbook) != 0;
 
 		[CommandProperty(AccessLevel.Administrator, true)]
-		public bool IsEnhancedClient => IsUOTDClient || (Version != null && Version.Major >= 67);
+		public bool DamagePacket => (_ProtocolChanges & ProtocolChanges.DamagePacket) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool Unpack => (_ProtocolChanges & ProtocolChanges.Unpack) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool BuffIcon => (_ProtocolChanges & ProtocolChanges.BuffIcon) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool NewHaven => (_ProtocolChanges & ProtocolChanges.NewHaven) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool ContainerGridLines => (_ProtocolChanges & ProtocolChanges.ContainerGridLines) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool ExtendedSupportedFeatures => (_ProtocolChanges & ProtocolChanges.ExtendedSupportedFeatures) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool StygianAbyss => (_ProtocolChanges & ProtocolChanges.StygianAbyss) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool HighSeas => (_ProtocolChanges & ProtocolChanges.HighSeas) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool NewCharacterList => (_ProtocolChanges & ProtocolChanges.NewCharacterList) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool NewCharacterCreation => (_ProtocolChanges & ProtocolChanges.NewCharacterCreation) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool ExtendedStatus => (_ProtocolChanges & ProtocolChanges.ExtendedStatus) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool NewMobileIncoming => (_ProtocolChanges & ProtocolChanges.NewMobileIncoming) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool NewSecureTrading => (_ProtocolChanges & ProtocolChanges.NewSecureTrading) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool UltimaStore => (_ProtocolChanges & ProtocolChanges.UltimaStore) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool EndlessJourney => (_ProtocolChanges & ProtocolChanges.EndlessJourney) != 0;
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool IsUOTDClient => (Flags & ClientFlags.UOTD) != 0 || (m_Version != null && m_Version.Type == ClientType.UOTD);
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool IsSAClient => (m_Version != null && m_Version.Type == ClientType.SA);
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		public bool IsEnhancedClient => IsUOTDClient || (m_Version != null && m_Version.Major >= 67);
 
 		public List<SecureTrade> Trades { get; }
 
@@ -403,7 +584,11 @@ namespace Server.Network
 		public NetState(Socket socket, MessagePump messagePump)
 		{
 			Socket = socket;
-			Buffer = new ByteQueue();
+
+			for (var i = 0; i < Buffers.Length; i++)
+			{
+				Buffers[i] = new ByteQueue();
+			}
 
 			m_RecvBuffer = m_ReceiveBufferPool.AcquireBuffer();
 			m_MessagePump = messagePump;
@@ -453,6 +638,31 @@ namespace Server.Network
 				return;
 			}
 
+			if (Core.Debug && IPAddress.IsLoopback(Address))
+			{
+				using (var s = File.AppendText(Path.Combine("Logs", $"{m_ToString.Replace('.', '-')}.log")))
+				{
+					var pb = p.Stream?.ToArray();
+
+					s.WriteLine();
+
+					if (pb != null)
+					{
+						using (var ms = new MemoryStream(pb))
+						{
+							s.WriteLine($"[CV {m_Version}] {p.GetType()} 0x{p.PacketID:X2} ({ms.Length:N0} bytes)");
+
+							Utility.FormatBuffer(s, ms, pb.Length);
+						}
+					}
+					else
+					{
+						s.WriteLine($"[CV {m_Version}] {p.GetType()} 0x{p.PacketID:X2} (Compiled)");
+					}
+
+					s.Flush();
+				}
+			}
 
 			var buffer = p.Compile(CompressionEnabled, out var length);
 
@@ -526,7 +736,7 @@ namespace Server.Network
 
 						if (buffered && m_SendBufferPool.Count < SendBufferCapacity)
 						{
-							m_SendBufferPool.ReleaseBuffer(buffer);
+							m_SendBufferPool.ReleaseBuffer(ref buffer);
 						}
 
 						if (gram != null && !_Sending)
@@ -643,7 +853,9 @@ namespace Server.Network
 					}
 
 					lock (Buffer)
+					{
 						Buffer.Enqueue(buffer, 0, byteCount);
+					}
 
 					m_MessagePump.OnReceive(this);
 
@@ -937,20 +1149,18 @@ namespace Server.Network
 				TraceException(ex);
 			}
 
-			if (m_RecvBuffer != null)
-			{
-				lock (m_ReceiveBufferPool)
-				{
-					m_ReceiveBufferPool.ReleaseBuffer(m_RecvBuffer);
-				}
-			}
+			m_ReceiveBufferPool.ReleaseBuffer(ref m_RecvBuffer);
 
 			Socket = null;
 
 			PacketEncoder = null;
 			PacketEncryptor = null;
 
-			Buffer = null;
+			for (var i = 0; i < Buffers.Length; i++)
+			{
+				Buffers[i] = null;
+			}
+
 			m_RecvBuffer = null;
 
 			m_OnReceive = null;
@@ -1055,7 +1265,10 @@ namespace Server.Network
 
 		public Socket Socket { get; private set; }
 
-		public ByteQueue Buffer { get; private set; }
+		public ByteQueue[] Buffers { get; } = new ByteQueue[2];
+
+		public ByteQueue Buffer => Buffers[0];
+		public ByteQueue BufferSlice => Buffers[1];
 
 		public ExpansionInfo ExpansionInfo
 		{

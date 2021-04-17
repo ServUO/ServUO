@@ -30,18 +30,16 @@ namespace Server
 
 			var ns = m_Mobile.NetState;
 
-			if (ns == null)
+			if (ns != null)
 			{
-				return;
-			}
+				IPoint2D target = m_Target;
 
-			if (m_Target is IEntity)
-			{
-				ns.Send(new SetArrow(x, y, ((IEntity)m_Target).Serial));
-			}
-			else
-			{
-				ns.Send(new SetArrow(x, y, Serial.MinusOne));
+				if (target == null)
+				{
+					target = new Point2D(x, y);
+				}
+
+				SetArrow.Send(ns, target);
 			}
 		}
 
@@ -63,14 +61,14 @@ namespace Server
 
 			if (ns != null)
 			{
-				if (m_Target is IEntity)
+				IPoint2D target = m_Target;
+
+				if (target == null)
 				{
-					ns.Send(new CancelArrow(x, y, ((IEntity)m_Target).Serial));
+					target = new Point2D(x, y);
 				}
-				else
-				{
-					ns.Send(new CancelArrow(x, y, Serial.MinusOne));
-				}
+
+				CancelArrow.Send(ns, target);
 			}
 
 			m_Running = false;

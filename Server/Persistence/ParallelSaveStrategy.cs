@@ -11,13 +11,17 @@ namespace Server
 	{
 		private readonly int processorCount;
 		private readonly Queue<Item> _decayQueue;
+
 		private SaveMetrics metrics;
+
 		private SequentialFileWriter itemData, itemIndex;
 		private SequentialFileWriter mobileData, mobileIndex;
 		private SequentialFileWriter guildData, guildIndex;
+
 		private Consumer[] consumers;
 		private int cycle;
 		private bool finished;
+
 		public ParallelSaveStrategy(int pc)
 		{
 			processorCount = pc;
@@ -254,6 +258,7 @@ namespace Server
 			private readonly IEnumerable<Item> items;
 			private readonly IEnumerable<Mobile> mobiles;
 			private readonly IEnumerable<BaseGuild> guilds;
+
 			public Producer()
 			{
 				items = World.Items.Values;

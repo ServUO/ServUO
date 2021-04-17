@@ -107,7 +107,7 @@ namespace Server.Commands
                             {
                                 if (targ.CanSee(from))
                                 {
-                                    ns.Send(new MobileIncoming(targ, from));
+                                    MobileIncoming.Send(ns, from);
 
                                     ns.Send(from.OPLPacket);
 

@@ -22,39 +22,50 @@ namespace Server
 			m_From = new SecureTradeInfo(this, from, new SecureTradeContainer(this));
 			m_To = new SecureTradeInfo(this, to, new SecureTradeContainer(this));
 
-			from.Send(new MobileStatus(from, to));
+			var fromNS = from.NetState;
+			var toNS = to.NetState;
+
+			#region Update From
+
+			MobileStatus.Send(fromNS, to);
+
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
+			from.Send(new UpdateSecureTrade(m_To.Container, false, false));
 
-			from.Send(new SecureTradeEquip(m_To.Container, to));
-
-			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
-
-			from.Send(new SecureTradeEquip(m_From.Container, from));
+			SecureTradeEquip.Send(fromNS, m_From.Container, from);
+			SecureTradeEquip.Send(fromNS, m_To.Container, to);
 
 			from.Send(new DisplaySecureTrade(to, m_From.Container, m_To.Container, to.Name));
+
 			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-			if (from.Account != null)
+			if (from.Account != null && fromNS.NewSecureTrading)
 			{
 				from.Send(new UpdateSecureTrade(m_From.Container, TradeFlag.UpdateLedger, from.Account.TotalGold, from.Account.TotalPlat));
 			}
 
-			to.Send(new MobileStatus(to, from));
-			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
+			#endregion
 
-			to.Send(new SecureTradeEquip(m_From.Container, from));
+			#region Update To
 
-			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
+			MobileStatus.Send(toNS, from);
 
-			to.Send(new SecureTradeEquip(m_To.Container, to));
+			toNS.Send(new UpdateSecureTrade(m_To.Container, false, false));
+			toNS.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-			to.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
-			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
+			SecureTradeEquip.Send(toNS, m_To.Container, to);
+			SecureTradeEquip.Send(toNS, m_From.Container, from);
 
-			if (to.Account != null)
+			toNS.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
+
+			toNS.Send(new UpdateSecureTrade(m_To.Container, false, false));
+
+			if (toNS.Account != null && toNS.NewSecureTrading)
 			{
-				to.Send(new UpdateSecureTrade(m_To.Container, TradeFlag.UpdateLedger, to.Account.TotalGold, to.Account.TotalPlat));
+				toNS.Send(new UpdateSecureTrade(m_To.Container, TradeFlag.UpdateLedger, to.Account.TotalGold, to.Account.TotalPlat));
 			}
+
+			#endregion
 		}
 
 		public SecureTradeInfo From => m_From;
@@ -161,7 +172,7 @@ namespace Server
 			var ls = left.Mobile != null ? left.Mobile.NetState : null;
 			var rs = right.Mobile != null ? right.Mobile.NetState : null;
 
-			if (ls != null)
+			if (ls != null && ls.NewSecureTrading)
 			{
 				var plat = left.Mobile.Account.TotalPlat;
 				var gold = left.Mobile.Account.TotalGold;
@@ -169,7 +180,7 @@ namespace Server
 				ls.Send(new UpdateSecureTrade(left.Container, TradeFlag.UpdateLedger, gold, plat));
 			}
 
-			if (rs != null)
+			if (rs != null && rs.NewSecureTrading)
 			{
 				rs.Send(new UpdateSecureTrade(right.Container, TradeFlag.UpdateGold, left.Gold, left.Plat));
 			}

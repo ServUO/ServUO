@@ -187,7 +187,7 @@ namespace Server
 		/// <summary>
 		///     Secure Trade Layer
 		/// </summary>
-		SecureTrade = 0x1F
+		SecureTrade = 0x1F,
 	}
 
 	/// <summary>
@@ -214,7 +214,7 @@ namespace Server
 		/// <summary>
 		///     Resend the item's properties.
 		/// </summary>
-		Properties = 0x00000004
+		Properties = 0x00000004,
 	}
 
 	/// <summary>
@@ -235,7 +235,7 @@ namespace Server
 		/// <summary>
 		///     The item should be placed into the owners backpack.
 		/// </summary>
-		MoveToBackpack
+		MoveToBackpack,
 	}
 
 	/// <summary>
@@ -521,7 +521,7 @@ namespace Server
 		/// <summary>
 		///     Large pie shape (90 degrees), north-west corner. Equivalent to <c>LightType.NorthWestBig</c>.
 		/// </summary>
-		NorthWestBig2 = 55
+		NorthWestBig2 = 55,
 	}
 
 	/// <summary>
@@ -547,7 +547,7 @@ namespace Server
 		/// <summary>
 		///     Stealable. Lootable, always.
 		/// </summary>
-		Cursed = 3
+		Cursed = 3,
 	}
 
 	public class BounceInfo
@@ -644,7 +644,7 @@ namespace Server
 	{
 		Gold,
 		Items,
-		Weight
+		Weight,
 	}
 
 	[Flags]
@@ -711,7 +711,6 @@ namespace Server
 		private ImplFlag m_Flags;
 
 		#region Packet caches
-		private Packet m_WorldPacket;
 		private Packet m_RemovePacket;
 
 		private Packet m_OPLPacket;
@@ -773,6 +772,7 @@ namespace Server
 		/// <summary>
 		///     The <see cref="Mobile" /> who is currently <see cref="Mobile.Holding">holding</see> this item.
 		/// </summary>
+		[CommandProperty(AccessLevel.Counselor, true)]
 		public Mobile HeldBy
 		{
 			get
@@ -796,8 +796,42 @@ namespace Server
 				{
 					VerifyCompactInfo();
 				}
+
+				if (info.m_HeldBy != null && info.m_HeldBy.Player)
+				{
+					if (info.m_HeldBy.IsStaff())
+					{
+						LastHeldByStaff = info.m_HeldBy;
+
+						if (this is Container c)
+						{
+							foreach (var item in c.FindItemsByType<Item>(true))
+							{
+								item.LastHeldByStaff = info.m_HeldBy;
+							}
+						}
+					}
+					else if (info.m_HeldBy.IsPlayer())
+					{
+						LastHeldByPlayer = info.m_HeldBy;
+
+						if (this is Container c)
+						{
+							foreach (var item in c.FindItemsByType<Item>(true))
+							{
+								item.LastHeldByPlayer = info.m_HeldBy;
+							}
+						}
+					}
+				}
 			}
 		}
+
+		[CommandProperty(AccessLevel.Counselor, true)]
+		public Mobile LastHeldByPlayer { get; private set; }
+
+		[CommandProperty(AccessLevel.Counselor, true)]
+		public Mobile LastHeldByStaff { get; private set; }
 
 		private byte m_GridLocation; // Default 0
 
@@ -946,7 +980,7 @@ namespace Server
 			}
 
 			var isValid = info.m_Name != null || info.m_Items != null || info.m_Bounce != null || info.m_HeldBy != null || info.m_BlessedFor != null ||
-						   info.m_Spawner != null || info.m_TempFlags != 0 || info.m_SavedFlags != 0 || info.m_Weight != -1;
+						  info.m_Spawner != null || info.m_TempFlags != 0 || info.m_SavedFlags != 0 || info.m_Weight != -1;
 
 			if (!isValid)
 			{
@@ -1252,6 +1286,11 @@ namespace Server
 		{
 			get
 			{
+				if (!Core.ML)
+				{
+					return false;
+				}
+
 				if (!Movable && !(IsLockedDown || IsSecure) && ItemData.Weight == 255)
 				{
 					return false;
@@ -2214,6 +2253,11 @@ namespace Server
 
 		public void InvalidateProperties()
 		{
+			if (!ObjectPropertyList.Enabled)
+			{
+				return;
+			}
+
 			if (m_Map != null && m_Map != Map.Internal && !World.Loading)
 			{
 				var oldList = m_PropertyList;
@@ -2230,41 +2274,6 @@ namespace Server
 			{
 				ClearProperties();
 			}
-		}
-
-		private readonly object _wpl = new object();
-
-		public virtual Packet WorldPacket
-		{
-			get
-			{
-				// This needs to be invalidated when any of the following changes:
-				//  - ItemID
-				//  - Amount
-				//  - Location
-				//  - Hue
-				//  - Packet Flags
-				//  - Direction
-
-				if (m_WorldPacket == null)
-				{
-					lock (_wpl)
-					{
-						if (m_WorldPacket == null)
-						{
-							m_WorldPacket = new WorldItem(this);
-							m_WorldPacket.SetStatic();
-						}
-					}
-				}
-
-				return m_WorldPacket;
-			}
-		}
-
-		public virtual void ReleaseWorldPackets()
-		{
-			Packet.Release(ref m_WorldPacket);
 		}
 
 		[CommandProperty(AccessLevel.Decorator)]
@@ -2463,7 +2472,11 @@ namespace Server
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(14); // version
+			writer.Write(15); // version
+
+			// 15
+			writer.Write(LastHeldByPlayer);
+			writer.Write(LastHeldByStaff);
 
 			// 14
 			writer.Write(Sockets != null ? Sockets.Count : 0);
@@ -2615,8 +2628,7 @@ namespace Server
 				}
 			}
 
-			var implFlags = m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured |
-										ImplFlag.PayedInsurance | ImplFlag.QuestItem);
+			var implFlags = m_Flags & (ImplFlag.Visible | ImplFlag.Movable | ImplFlag.Stackable | ImplFlag.Insured | ImplFlag.PayedInsurance | ImplFlag.QuestItem);
 
 			if (implFlags != (ImplFlag.Visible | ImplFlag.Movable))
 			{
@@ -2970,20 +2982,30 @@ namespace Server
 
 			switch (version)
 			{
+				case 15:
+					{
+						LastHeldByPlayer = reader.ReadMobile();
+						LastHeldByStaff = reader.ReadMobile();
+						goto case 14;
+					}
 				case 14:
-				var socketCount = reader.ReadInt();
+					{
+						var socketCount = reader.ReadInt();
 
-				for (var i = 0; i < socketCount; i++)
-				{
-					ItemSocket.Load(this, reader);
-				}
+						for (var i = 0; i < socketCount; i++)
+						{
+							ItemSocket.Load(this, reader);
+						}
 
-				goto case 13;
+						goto case 13;
+					}
 				case 13:
 				case 12:
 				case 11:
-				m_GridLocation = reader.ReadByte();
-				goto case 10;
+					{
+						m_GridLocation = reader.ReadByte();
+						goto case 10;
+					}
 				case 10:
 					{
 						// Honesty removed to ItemSockets
@@ -3557,7 +3579,7 @@ namespace Server
 
 		public void SendInfoTo(NetState state)
 		{
-			SendInfoTo(state, state.Mobile != null);
+			SendInfoTo(state, state.Mobile != null && state.Mobile.ViewOPL);
 		}
 
 		public virtual void SendInfoTo(NetState state, bool sendOplPacket)
@@ -3572,7 +3594,12 @@ namespace Server
 
 		protected virtual Packet GetWorldPacketFor(NetState state)
 		{
-			return WorldPacket;
+			return WorldItem.Instantiate(state, this);
+		}
+
+		public virtual void ReleaseWorldPackets()
+		{
+			WorldItem.Free(this);
 		}
 
 		public virtual bool IsVirtualItem => false;
@@ -3905,7 +3932,7 @@ namespace Server
 
 			if (map != null && !Deleted)
 			{
-				var sendOPLUpdate = (flags & ItemDelta.Properties) != 0;
+				var sendOPLUpdate = ObjectPropertyList.Enabled && (flags & ItemDelta.Properties) != 0;
 
 				var contParent = m_Parent as Container;
 
@@ -3926,9 +3953,12 @@ namespace Server
 							{
 								if (rootParent.CanSee(this) && rootParent.InRange(worldLoc, GetUpdateRange(rootParent)))
 								{
-									ns.Send(new ContainerContentUpdate(this));
+									ContainerContentUpdate.Send(ns, this);
 
-									ns.Send(OPLPacket);
+									if (rootParent.ViewOPL)
+									{
+										ns.Send(OPLPacket);
+									}
 								}
 							}
 						}
@@ -3963,9 +3993,12 @@ namespace Server
 									{
 										if (tradeRecip.CanSee(this) && tradeRecip.InRange(worldLoc, GetUpdateRange(tradeRecip)))
 										{
-											ns.Send(new ContainerContentUpdate(this));
+											ContainerContentUpdate.Send(ns, this);
 
-											ns.Send(OPLPacket);
+											if (tradeRecip.ViewOPL)
+											{
+												ns.Send(OPLPacket);
+											}
 										}
 									}
 								}
@@ -4001,9 +4034,12 @@ namespace Server
 										{
 											if (mob.CanSee(this))
 											{
-												ns.Send(new ContainerContentUpdate(this));
+												ContainerContentUpdate.Send(ns, this);
 
-												ns.Send(OPLPacket);
+												if (mob.ViewOPL)
+												{
+													ns.Send(OPLPacket);
+												}
 											}
 										}
 									}
@@ -4042,7 +4078,7 @@ namespace Server
 								{
 									if (m_Parent is Item)
 									{
-										state.Send(new ContainerContentUpdate(this));
+										ContainerContentUpdate.Send(state, this);
 									}
 									else if (m_Parent is Mobile)
 									{
@@ -4057,7 +4093,10 @@ namespace Server
 									state.Send(p);
 								}
 
-								state.Send(OPLPacket);
+								if (m.ViewOPL)
+								{
+									state.Send(OPLPacket);
+								}
 							}
 						}
 					}
@@ -4092,7 +4131,10 @@ namespace Server
 
 								state.Send(p);
 
-								state.Send(OPLPacket);
+								if (m.ViewOPL)
+								{
+									state.Send(OPLPacket);
+								}
 							}
 						}
 
@@ -4573,7 +4615,7 @@ namespace Server
 								var m = state.Mobile;
 
 								if (m.CanSee(this) && m.InUpdateRange(m_Location) &&
-									(!m_NoMoveHS || (m_DeltaFlags & ItemDelta.Update) != 0 ||
+									(!state.HighSeas || !m_NoMoveHS || (m_DeltaFlags & ItemDelta.Update) != 0 ||
 									 !m.InRange(oldLoc, GetUpdateRange(m))))
 								{
 									SendInfoTo(state);
@@ -5513,9 +5555,9 @@ namespace Server
 
 		public virtual Packet GetStatusPacketFor(NetState state)
 		{
-			if (this is IDamageable && state != null && state.Mobile != null)
+			if (this is IDamageable d && state != null && state.Mobile != null && state.HighSeas)
 			{
-				return new MobileStatusCompact(CanBeRenamedBy(state.Mobile), (IDamageable)this);
+				return MobileStatus.Instantiate(state, d);
 			}
 
 			return null;
@@ -5646,6 +5688,14 @@ namespace Server
 		public virtual bool CanTarget => true;
 		public virtual bool DisplayLootType => true;
 
+		public virtual void OnSingleClickContained(Mobile from, Item item)
+		{
+			if (m_Parent is Item)
+			{
+				((Item)m_Parent).OnSingleClickContained(from, item);
+			}
+		}
+
 		public virtual void OnAosSingleClick(Mobile from)
 		{
 			var opl = PropertyList;
@@ -5653,6 +5703,40 @@ namespace Server
 			if (opl.Header > 0)
 			{
 				from.Send(new MessageLocalized(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, opl.Header, Name, opl.HeaderArgs));
+			}
+		}
+
+		public virtual void OnSingleClick(Mobile from)
+		{
+			if (Deleted || !from.CanSee(this))
+			{
+				return;
+			}
+
+			if (DisplayLootType)
+			{
+				LabelLootTypeTo(from);
+			}
+
+			var ns = from.NetState;
+
+			if (ns != null)
+			{
+				if (Name == null)
+				{
+					if (m_Amount <= 1)
+					{
+						ns.Send(new MessageLocalized(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, LabelNumber, "", ""));
+					}
+					else
+					{
+						ns.Send(new MessageLocalizedAffix(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, LabelNumber, "", AffixType.Append, String.Format(" : {0}", m_Amount), ""));
+					}
+				}
+				else
+				{
+					ns.Send(new UnicodeMessage(m_Serial, m_ItemID, MessageType.Label, 0x3B2, 3, "ENU", "", Name + (m_Amount > 1 ? " : " + m_Amount : "")));
+				}
 			}
 		}
 
@@ -5798,7 +5882,7 @@ namespace Server
 
 		public virtual bool CheckBlessed(Mobile m)
 		{
-			if (m_LootType == LootType.Blessed || Mobile.InsuranceEnabled && Insured)
+			if (m_LootType == LootType.Blessed || (Mobile.InsuranceEnabled && Insured))
 			{
 				return true;
 			}

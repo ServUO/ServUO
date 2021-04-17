@@ -94,21 +94,17 @@ namespace Server
 		private readonly int m_MaleGhostBody;
 		private readonly int m_FemaleGhostBody;
 
+		private readonly Expansion m_RequiredExpansion;
+
+		public Expansion RequiredExpansion => m_RequiredExpansion;
+
 		public int MaleBody => m_MaleBody;
 		public int MaleGhostBody => m_MaleGhostBody;
 
 		public int FemaleBody => m_FemaleBody;
 		public int FemaleGhostBody => m_FemaleGhostBody;
 
-		protected Race(
-			int raceID,
-			int raceIndex,
-			string name,
-			string pluralName,
-			int maleBody,
-			int femaleBody,
-			int maleGhostBody,
-			int femaleGhostBody)
+		protected Race(int raceID, int raceIndex, string name, string pluralName, int maleBody, int femaleBody, int maleGhostBody, int femaleGhostBody, Expansion requiredExpansion)
 		{
 			m_RaceID = raceID;
 			m_RaceIndex = raceIndex;
@@ -120,6 +116,7 @@ namespace Server
 			m_MaleGhostBody = maleGhostBody;
 			m_FemaleGhostBody = femaleGhostBody;
 
+			m_RequiredExpansion = requiredExpansion;
 			PluralName = pluralName;
 		}
 

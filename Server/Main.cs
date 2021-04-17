@@ -173,7 +173,7 @@ namespace Server
 		}
 
 		#region Expansions
-		public static Expansion Expansion => Expansion.EJ;
+		public static Expansion Expansion { get; set; } = Expansion.EJ;
 
 		public static bool T2A => Expansion >= Expansion.T2A;
 		public static bool UOR => Expansion >= Expansion.UOR;
@@ -360,6 +360,7 @@ namespace Server
 #else
 				Process.Start(ExePath, Arguments);
 			}
+
 			Process.Kill();
 #endif
 		}
@@ -504,36 +505,25 @@ namespace Server
 				Name = "Timer Thread"
 			};
 
-			var ver = Assembly.GetName().Version;
-			var buildDate = new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
+			var ver = new Version(ServUO.Constants.Assembly.Version);
 
-			Utility.PushColor(ConsoleColor.Cyan);
-#if DEBUG
-			Console.WriteLine(
-				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Debug",
-				ver.Major,
-				ver.Minor,
-				ver.Build,
-				ver.Revision,
-				buildDate);
-#else
-			Console.WriteLine(
-				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Release",
-				ver.Major,
-				ver.Minor,
-				ver.Build,
-				ver.Revision,
-				buildDate);
-#endif
-			Utility.PopColor();
+			Console.Title = $"{ServUO.Constants.Assembly.Title} {ver}";
+
+			Utility.PushColor(Console.ForegroundColor);
+
+			BeginColor(ConsoleColor.Blue);
+
+			Console.WriteLine($"{ServUO.Constants.Assembly.Product} {ver}");
+			Console.WriteLine($"{ServUO.Constants.Assembly.Description}");
+			Console.WriteLine($"{ServUO.Constants.Assembly.Company} [{ServUO.Constants.Website}]");
+
+			NextColor(ConsoleColor.Yellow);
 
 			var s = Arguments;
 
 			if (s.Length > 0)
 			{
-				Utility.PushColor(ConsoleColor.Yellow);
-				Console.WriteLine("Core: Running with arguments: {0}", s);
-				Utility.PopColor();
+				Console.WriteLine($"Core: Running with arguments: {s}");
 			}
 
 			ProcessorCount = Environment.ProcessorCount;
@@ -545,13 +535,7 @@ namespace Server
 
 			if (MultiProcessor || Is64Bit)
 			{
-				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine(
-					"Core: Optimizing for {0} {2}processor{1}",
-					ProcessorCount,
-					ProcessorCount == 1 ? "" : "s",
-					Is64Bit ? "64-bit " : "");
-				Utility.PopColor();
+				Console.WriteLine($"Core: Optimizing for {ProcessorCount} {(Is64Bit ? "64-bit " : "")}processor{(ProcessorCount == 1 ? "" : "s")}");
 			}
 
 			string dotnet = null;
@@ -564,9 +548,7 @@ namespace Server
 				{
 					dotnet = displayName.Invoke(null, null).ToString();
 
-					Utility.PushColor(ConsoleColor.Yellow);
 					Console.WriteLine("Core: Unix environment detected");
-					Utility.PopColor();
 
 					Unix = true;
 				}
@@ -577,71 +559,92 @@ namespace Server
 				UnsafeNativeMethods.SetConsoleCtrlHandler(m_ConsoleEventHandler, true);
 			}
 
-#if NETFX_472
-			dotnet = "4.7.2";
-#endif
+			if (String.IsNullOrWhiteSpace(dotnet))
+			{
+				dotnet = Environment.Version.ToString();
+			}
 
-#if NETFX_48
-			dotnet = "4.8";
-#endif
-
-			if (String.IsNullOrEmpty(dotnet))
-				dotnet = "MONO/CSC/Unknown";
-
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine("Core: Compiled for " + (Unix ? "MONO and running on {0}" : ".NET {0}"), dotnet);
-			Utility.PopColor();
+			Console.WriteLine($"Core: {(Unix ? $"MONO .NET {dotnet}" : $".NET {dotnet}")}");
 
 			if (GCSettings.IsServerGC)
 			{
-				Utility.PushColor(ConsoleColor.Green);
 				Console.WriteLine("Core: Server garbage collection mode enabled");
-				Utility.PopColor();
 			}
 
 			if (_UseHRT)
 			{
-				Utility.PushColor(ConsoleColor.DarkYellow);
-				Console.WriteLine(
-					"Core: Requested high resolution timing ({0})",
-					UsingHighResolutionTiming ? "Supported" : "Unsupported");
-				Utility.PopColor();
+				Console.WriteLine($"Core: High resolution timing {(UsingHighResolutionTiming ? "supported" : "unsupported")}");
 			}
 
-			Utility.PushColor(ConsoleColor.DarkYellow);
-			Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
-			Utility.PopColor();
+			Console.WriteLine($"Core: RNG using {RandomImpl.Type.Name} ({(RandomImpl.IsHardwareRNG ? "Hardware" : "Software")})");
 
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine("Core: Loading config...");
+			NextColor(ConsoleColor.DarkYellow);
+
+			Console.WriteLine("Core: Preparing...");
+			Console.WriteLine();
+
+			var sw = Stopwatch.StartNew();
+
 			Config.Load();
-			Utility.PopColor();
 
 			while (!ScriptCompiler.Compile(Debug, _Cache))
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Scripts: One or more scripts failed to compile or no script files were found.");
-				Utility.PopColor();
+				sw.Stop();
+
+				NextColor(ConsoleColor.Red);
+
+				Console.WriteLine("Core: Assembly load failed");
 
 				if (Service)
 				{
-					return;
+					break;
 				}
 
-				Console.WriteLine(" - Press return to exit, or R to try again.");
+				Console.WriteLine("Core: - Press return to exit, or R to try again");
 
 				if (Console.ReadKey(true).Key != ConsoleKey.R)
 				{
-					return;
+					break;
 				}
+
+				sw.Start();
 			}
 
+			sw.Stop();
+
+			Console.WriteLine();
+			Console.WriteLine($"Core: Preparation took {sw.Elapsed.TotalSeconds:F1} seconds");
+
+			EndColor();
+
+			Console.WriteLine();
+			Console.WriteLine("Core: Configuring...");
+			Console.WriteLine();
+
+			sw.Restart();
 			ScriptCompiler.Invoke("Configure");
+			sw.Stop();
+
+			Console.WriteLine();
+			Console.WriteLine($"Core: Configuration took {sw.Elapsed.TotalSeconds:F1} seconds");
+			Console.WriteLine();
 
 			Region.Load();
 			World.Load();
 
+			Console.WriteLine();
+			Console.WriteLine("Core: Initializing...");
+			Console.WriteLine();
+
+			sw.Restart();
 			ScriptCompiler.Invoke("Initialize");
+			sw.Stop();
+
+			Console.WriteLine();
+			Console.WriteLine($"Core: Initialization took {sw.Elapsed.TotalSeconds:F1} seconds");
+			Console.WriteLine();
+
+			sw.Reset();
 
 			MessagePump = new MessagePump();
 
@@ -651,6 +654,32 @@ namespace Server
 			}
 
 			NetState.Initialize();
+		}
+
+		private static void BeginColor(ConsoleColor color)
+		{
+			Console.BackgroundColor = color;
+			Console.Write(new string(' ', Console.BufferWidth));
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.WriteLine();
+
+			Utility.PushColor(color);
+		}
+
+		private static void NextColor(ConsoleColor color)
+		{
+			EndColor();
+			BeginColor(color);
+		}
+
+		private static void EndColor()
+		{
+			Console.WriteLine();
+			Console.BackgroundColor = Console.ForegroundColor;
+			Console.Write(new string(' ', Console.BufferWidth));
+			Console.BackgroundColor = ConsoleColor.Black;
+
+			Utility.PopColor();
 		}
 
 		public static void Run()
@@ -756,17 +785,15 @@ namespace Server
 		public static int GlobalMaxUpdateRange { get; set; }
 		public static int GlobalRadarRange { get; set; }
 
-		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
+		private static int m_ItemCount, m_MobileCount;
 
 		public static int ScriptItems => m_ItemCount;
 		public static int ScriptMobiles => m_MobileCount;
-		public static int ScriptCustoms => m_CustomsCount;
 
 		public static void VerifySerialization()
 		{
 			m_ItemCount = 0;
 			m_MobileCount = 0;
-			m_CustomsCount = 0;
 
 			VerifySerialization(Assembly.GetCallingAssembly());
 

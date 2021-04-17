@@ -1132,10 +1132,10 @@ namespace Server
 
 			foreach (var item in eable)
 			{
-				if (item.GetType() == typeof(TItem))
+				if (item is TItem o)
 				{
 					eable.Free();
-					return item as TItem;
+					return o;
 				}
 			}
 
@@ -1149,9 +1149,9 @@ namespace Server
 
 			foreach (var item in eable)
 			{
-				if (item.GetType() == typeof(TItem))
+				if (item is TItem o)
 				{
-					yield return item as TItem;
+					yield return o;
 				}
 			}
 
@@ -1164,10 +1164,10 @@ namespace Server
 
 			foreach (var m in eable)
 			{
-				if (m.GetType() == typeof(TMob))
+				if (m is TMob o)
 				{
 					eable.Free();
-					return m as TMob;
+					return o;
 				}
 			}
 
@@ -1181,9 +1181,9 @@ namespace Server
 
 			foreach (var m in eable)
 			{
-				if (m.GetType() == typeof(TMob))
+				if (m is TMob o)
 				{
-					yield return m as TMob;
+					yield return o;
 				}
 			}
 

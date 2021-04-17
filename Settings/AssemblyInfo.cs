@@ -17,4 +17,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration(ServUO.Constants.Assembly.Config)]
 
 [assembly: ComVisible(false)]
-[assembly: Guid("1299e2a3-050b-425b-b593-6be69ae004d5")]
+[assembly: Guid("e113f10b-b024-45f7-b5e8-31af1509d50b")]

@@ -30,7 +30,7 @@ namespace Server.Misc
         private class Human : Race
         {
             public Human(int raceID, int raceIndex)
-                : base(raceID, raceIndex, "Human", "Humans", 400, 401, 402, 403)
+                : base(raceID, raceIndex, "Human", "Humans", 400, 401, 402, 403, Expansion.None)
             {
             }
 
@@ -208,7 +208,7 @@ namespace Server.Misc
             };
 
             public Elf(int raceID, int raceIndex)
-                : base(raceID, raceIndex, "Elf", "Elves", 605, 606, 607, 608)
+                : base(raceID, raceIndex, "Elf", "Elves", 605, 606, 607, 608, Expansion.ML)
             {
             }
 
@@ -335,7 +335,7 @@ namespace Server.Misc
         private class Gargoyle : Race
         {
             public Gargoyle(int raceID, int raceIndex)
-                : base(raceID, raceIndex, "Gargoyle", "Gargoyles", 666, 667, 695, 694)
+                : base(raceID, raceIndex, "Gargoyle", "Gargoyles", 666, 667, 695, 694, Expansion.SA)
             {
             }
 

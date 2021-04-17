@@ -260,7 +260,8 @@ namespace Server.Items
                 NetState state = from.NetState;
 
                 state.Send(new BBDisplayBoard(this));
-                state.Send(new ContainerContent(from, this));
+
+                ContainerContent.Send(state, this);
             }
             else
             {

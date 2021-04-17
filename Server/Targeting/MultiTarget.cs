@@ -23,7 +23,7 @@ namespace Server.Targeting
 
 		public override Packet GetPacketFor(NetState ns)
 		{
-			return new MultiTargetReq(this);
+			return MultiTargetReq.Instantiate(ns, this);
 		}
 	}
 }

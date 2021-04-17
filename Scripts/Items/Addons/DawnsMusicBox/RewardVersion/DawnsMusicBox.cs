@@ -35,7 +35,7 @@ namespace Server.Items.MusicBox
         {
         }
 
-        public override int LabelNumber => 1075198;// Dawn’s Music Box
+        public override int LabelNumber => 1075198;// Dawnâ€™s Music Box
         [CommandProperty(AccessLevel.GameMaster, AccessLevel.Developer)]
         public bool IsPlaying => m_PlayingTimer != null;
         public List<MusicName> Tracks => m_Tracks;
@@ -194,10 +194,10 @@ namespace Server.Items.MusicBox
         {
             if (m_ActualSong != MusicName.Invalid && m.NetState != null)
             {
-                m.Send(PlayMusic.InvalidInstance); // Stop actual music
+                m.Send(PlayMusic.Invalid); // Stop actual music
 
                 if (play)
-                    m.Send(PlayMusic.GetInstance(m_ActualSong));
+                    PlayMusic.Send(m.NetState, m_ActualSong);
             }
         }
 

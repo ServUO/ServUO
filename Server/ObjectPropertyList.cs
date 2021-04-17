@@ -9,6 +9,8 @@ namespace Server
 {
 	public sealed class ObjectPropertyList : Packet
 	{
+		public static bool Enabled { get; set; } = true;
+
 		private int m_Hash;
 		private int m_Strings;
 

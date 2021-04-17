@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+
+using Server.Diagnostics;
 #endregion
 
 namespace Server
@@ -14,34 +16,33 @@ namespace Server
 
 		public static bool Compile(bool debug, bool cache)
 		{
-			var assemblies = new List<Assembly>
+			try
 			{
-				Assembly.LoadFrom("Scripts.dll"),
-				typeof(ScriptCompiler).Assembly
-			};
+				var assemblies = new List<Assembly>
+				{
+					Assembly.LoadFrom("Scripts.dll"),
+					typeof(ScriptCompiler).Assembly
+				};
 
-			Assemblies = assemblies.ToArray();
+				Assemblies = assemblies.ToArray();
 
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Scripts: Verifying...");
-			Utility.PopColor();
+				Console.WriteLine("Core: Verifying entity type serialization...");
 
-			var watch = Stopwatch.StartNew();
+				var watch = Stopwatch.StartNew();
 
-			Core.VerifySerialization();
+				Core.VerifySerialization();
 
-			watch.Stop();
+				watch.Stop();
 
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine(
-				"Finished ({0} items, {1} mobiles, {2} customs) ({3:F2} seconds)",
-				Core.ScriptItems,
-				Core.ScriptMobiles,
-				Core.ScriptCustoms,
-				watch.Elapsed.TotalSeconds);
-			Utility.PopColor();
+				Console.WriteLine($"Core: Verified {Core.ScriptItems} item and {Core.ScriptMobiles} mobile types");
 
-			return true;
+				return true;
+			}
+			catch (Exception ex)
+			{
+				ExceptionLogging.LogException(ex);
+				return false;
+			}
 		}
 
 		public static void Invoke(string method)

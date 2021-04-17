@@ -87,6 +87,7 @@ namespace Server.Network
 			Register(0x7D, 13, true, MenuResponse);
 			Register(0x80, 62, false, AccountLogin);
 			Register(0x83, 39, false, DeleteCharacter);
+			Register(0x8D, 0, false, ECCreateCharacter);
 			Register(0x91, 65, false, GameLogin);
 			Register(0x95, 9, true, HuePickerResponse);
 			Register(0x96, 0, true, GameCentralMoniter);
@@ -124,8 +125,6 @@ namespace Server.Network
 			//Register(0xFA, 1, true, Unhandled); // Currently Handled in UltimaStore.cs
 			Register(0xFB, 2, false, PublicHouseContent);
 
-			Register(0x8D, 0, false, ECCreateCharacter);
-
 			RegisterExtended(0x05, false, ScreenSize);
 			RegisterExtended(0x06, true, PartyMessage);
 			RegisterExtended(0x07, true, QuestArrow);
@@ -142,18 +141,13 @@ namespace Server.Network
 			RegisterExtended(0x1C, true, CastSpell);
 			RegisterExtended(0x24, false, UnhandledBF);
 			RegisterExtended(0x2C, true, BandageTarget);
-
-			#region Stygian Abyss
-			RegisterExtended(0x32, true, ToggleFlying);
-			#endregion
-
 			RegisterExtended(0x2D, true, TargetedSpell);
 			RegisterExtended(0x2E, true, TargetedSkillUse);
 			RegisterExtended(0x30, true, TargetByResourceMacro);
+			RegisterExtended(0x32, true, ToggleFlying);
 
 			RegisterEncoded(0x19, true, SetAbility);
 			RegisterEncoded(0x28, true, GuildGumpRequest);
-
 			RegisterEncoded(0x32, true, QuestGumpRequest);
 		}
 
@@ -631,18 +625,18 @@ namespace Server.Network
 
 		public static void TripTime(NetState state, PacketReader pvSrc)
 		{
-			int unk1 = pvSrc.ReadByte();
-			var unk2 = pvSrc.ReadInt32();
+			var ping = pvSrc.ReadByte();
+			//var data = pvSrc.ReadInt32();
 
-			state.Send(new TripTimeResponse(unk1));
+			TripTimeResponse.Send(state, ping, false);
 		}
 
 		public static void UTripTime(NetState state, PacketReader pvSrc)
 		{
-			int unk1 = pvSrc.ReadByte();
-			var unk2 = pvSrc.ReadInt32();
+			var ping = pvSrc.ReadByte();
+			//var data = pvSrc.ReadInt32();
 
-			state.Send(new UTripTimeResponse(unk1));
+			TripTimeResponse.Send(state, ping, true);
 		}
 
 		public static void ChangeZ(NetState state, PacketReader pvSrc)
@@ -1092,21 +1086,31 @@ namespace Server.Network
 			int x = pvSrc.ReadInt16();
 			int y = pvSrc.ReadInt16();
 			int z = pvSrc.ReadSByte();
-			var gridloc = pvSrc.ReadByte(); // grid location
+
+			if (state.ContainerGridLines)
+			{
+				var gridloc = pvSrc.ReadByte();
+
+				if (serial.IsItem)
+				{
+					var dropped = World.FindItem(serial);
+
+					if (dropped != null)
+					{
+						dropped.GridLocation = gridloc;
+					}
+				}
+			}
+
 			Serial dest = pvSrc.ReadInt32();
+
+			if (!state.ContainerGridLines)
+			{
+				pvSrc.Slice(); // push remaining data back to the buffer
+			}
 
 			var loc = new Point3D(x, y, z);
 			var from = state.Mobile;
-
-			if (serial.IsItem)
-			{
-				var dropped = World.FindItem(serial);
-
-				if (dropped != null)
-				{
-					dropped.GridLocation = gridloc;
-				}
-			}
 
 			if (dest.IsMobile)
 			{
@@ -1138,7 +1142,7 @@ namespace Server.Network
 
 		public static void LogoutReq(NetState state, PacketReader pvSrc)
 		{
-			state.Send(new LogoutAck());
+			LogoutAck.Send(state);
 		}
 
 		public static void ChangeSkillLock(NetState state, PacketReader pvSrc)
@@ -1220,11 +1224,14 @@ namespace Server.Network
 
 									var valid = false;
 
-									var id = TileData.ItemTable[graphic & TileData.MaxItemValue];
-
-									if (id.Surface)
+									if (state.HighSeas)
 									{
-										z -= id.Height;
+										var id = TileData.ItemTable[graphic & TileData.MaxItemValue];
+
+										if (id.Surface)
+										{
+											z -= id.Height;
+										}
 									}
 
 									for (var i = 0; !valid && i < tiles.Length; ++i)
@@ -1422,17 +1429,7 @@ namespace Server.Network
 
 		public static void Resynchronize(NetState state, PacketReader pvSrc)
 		{
-			var m = state.Mobile;
-
-			state.Send(new MobileUpdate(m));
-
-			state.Send(MobileIncoming.Create(state, m, m));
-
-			m.SendEverything();
-
-			state.Sequence = 0;
-
-			m.ClearFastwalkStack();
+			state.Mobile?.SendMapUpdates(false);
 		}
 
 		private static readonly int[] m_EmptyInts = new int[0];
@@ -1584,6 +1581,11 @@ namespace Server.Network
 			}
 		}
 
+		public static bool SingleClickProps { get; set; } = true;
+
+		public static Func<Mobile, Mobile, bool> MobileClickOverride;
+		public static Func<Mobile, Item, bool> ItemClickOverride;
+
 		private static void HandleSingleClick(Mobile m, IEntity target)
 		{
 			if (m == null || target == null || target.Deleted || !m.CanSee(target))
@@ -1595,14 +1597,39 @@ namespace Server.Network
 			{
 				if (Utility.InUpdateRange(m.Location, ti.GetWorldLocation()))
 				{
-					ti.OnAosSingleClick(m);
+					if (ItemClickOverride == null || !ItemClickOverride(m, ti))
+					{
+						if (SingleClickProps && m.ViewOPL)
+						{
+							ti.OnAosSingleClick(m);
+						}
+						else if (m.Region.OnSingleClick(m, ti))
+						{
+							if (ti.Parent is Item tip)
+							{
+								tip.OnSingleClickContained(m, ti);
+							}
+
+							ti.OnSingleClick(m);
+						}
+					}
 				}
 			}
 			else if (target is Mobile tm)
 			{
 				if (Utility.InUpdateRange(m, tm))
 				{
-					tm.OnAosSingleClick(m);
+					if (MobileClickOverride == null || !MobileClickOverride(m, tm))
+					{
+						if (SingleClickProps && m.ViewOPL)
+						{
+							tm.OnAosSingleClick(m);
+						}
+						else if (m.Region.OnSingleClick(m, tm))
+						{
+							tm.OnSingleClick(m);
+						}
+					}
 				}
 			}
 		}
@@ -1617,7 +1644,7 @@ namespace Server.Network
 
 		public static void PingReq(NetState state, PacketReader pvSrc)
 		{
-			state.Send(PingAck.Instantiate(pvSrc.ReadByte()));
+			PingAck.Send(state, pvSrc.ReadByte());
 		}
 
 		public static void SetUpdateRange(NetState state, PacketReader pvSrc)
@@ -1644,7 +1671,7 @@ namespace Server.Network
 
 			state.UpdateRange = range;
 
-			state.Send(ChangeUpdateRange.Instantiate(state.UpdateRange));
+			ChangeUpdateRange.Send(state);
 
 			if (state.Mobile != null)
 			{
@@ -1820,7 +1847,7 @@ namespace Server.Network
 
 		public static void BatchQueryProperties(NetState state, PacketReader pvSrc)
 		{
-			if (state == null || state.Mobile == null)
+			if (state == null || state.Mobile == null || !state.Mobile.ViewOPL)
 			{
 				return;
 			}
@@ -1863,7 +1890,7 @@ namespace Server.Network
 
 		public static void QueryProperties(NetState state, PacketReader pvSrc)
 		{
-			if (state == null || state.Mobile == null)
+			if (state == null || state.Mobile == null || !state.Mobile.ViewOPL)
 			{
 				return;
 			}
@@ -2112,9 +2139,16 @@ namespace Server.Network
 		{
 			var target = World.FindEntity(pvSrc.ReadInt32());
 
-			if (target != null)
+			if (target != null && ObjectPropertyList.Enabled)
 			{
-				ContextMenu.Display(state.Mobile, target);
+				if (!state.Mobile.ViewOPL)
+				{
+					HandleSingleClick(state.Mobile, target);
+				}
+				else
+				{
+					ContextMenu.Display(state.Mobile, target);
+				}
 			}
 		}
 
@@ -2356,7 +2390,7 @@ namespace Server.Network
 						Console.WriteLine("Login: {0}: Account In Use", state);
 						Utility.PopColor();
 
-						state.Send(new PopupMessage(PMMessage.CharInWorld));
+						PopupMessage.Send(state, PMMessage.CharInWorld);
 
 						return;
 					}
@@ -2386,7 +2420,7 @@ namespace Server.Network
 
 					if (state.Version == null)
 					{
-						state.Send(new ClientVersionReq());
+						ClientVersionReq.Send(state);
 
 						state.BlockAllPackets = true;
 
@@ -2406,45 +2440,19 @@ namespace Server.Network
 
 			state.Send(new LoginConfirm(m));
 
-			if (m.Map != null)
-			{
-				state.Send(new MapChange(m));
-			}
-
-			state.Send(new MapPatches());
-
-			state.Send(SupportedFeatures.Instantiate(state));
-
-			state.Sequence = 0;
-
-			state.Send(MobileIncoming.Create(state, m, m));
-
-			state.Send(new MobileUpdate(m));
-
-			m.SendEverything();
-
-			m.CheckLightLevels(true);
+			m.SendMapUpdates(false);
 
 			state.Send(LoginComplete.Instance);
 
-			state.Send(MobileIncoming.Create(state, m, m));
+			MobileStatus.Send(state, m);
 
-			state.Send(new MobileStatus(m, m));
-
-			state.Send(Network.SetWarMode.Instantiate(m.Warmode));
-
-			state.Send(SeasonChange.Instantiate(m.GetSeason(), true));
+			Network.SetWarMode.Send(state);
 
 			state.Send(new CurrentTime());
-
-			state.Send(new MapChange(m));
 
 			EventSink.InvokeLogin(new LoginEventArgs(m));
 
 			Console.WriteLine("Client: {0}: Entered World ({1})", state, m);
-
-			m.SendEverything();
-			m.ClearFastwalkStack();
 		}
 
 		public static void CreateCharacter(NetState state, PacketReader pvSrc)
@@ -2498,7 +2506,8 @@ namespace Server.Network
 			*/
 
 			var female = (genderRace % 2) != 0;
-			var raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
+			var raceID = (byte)(state.StygianAbyss ? (genderRace / 2) : (genderRace < 4 ? 0 : ((genderRace / 2) - 1)));
+
 			var race = Race.Races[raceID];
 
 			if (race == null)
@@ -2532,7 +2541,8 @@ namespace Server.Network
 						Utility.PushColor(ConsoleColor.Red);
 						Console.WriteLine("Login: {0}: Account in use", state);
 						Utility.PopColor();
-						state.Send(new PopupMessage(PMMessage.CharInWorld));
+
+						PopupMessage.Send(state, PMMessage.CharInWorld);
 						return;
 					}
 				}
@@ -2565,7 +2575,7 @@ namespace Server.Network
 
 				if (state.Version == null)
 				{
-					state.Send(new ClientVersionReq());
+					ClientVersionReq.Send(state);
 
 					state.BlockAllPackets = true;
 				}
@@ -2643,8 +2653,8 @@ namespace Server.Network
 			*/
 
 			var female = (genderRace % 2) != 0;
+			var raceID = (byte)(state.StygianAbyss ? (genderRace / 2) : (genderRace < 4 ? 0 : ((genderRace / 2) - 1)));
 
-			var raceID = (byte)(genderRace < 4 ? 0 : ((genderRace / 2) - 1));
 			var race = Race.Races[raceID];
 
 			if (race == null)
@@ -2678,7 +2688,8 @@ namespace Server.Network
 						Utility.PushColor(ConsoleColor.Red);
 						Console.WriteLine("Login: {0}: Account in use", state);
 						Utility.PopColor();
-						state.Send(new PopupMessage(PMMessage.CharInWorld));
+
+						PopupMessage.Send(state, PMMessage.CharInWorld);
 						return;
 					}
 				}
@@ -2711,7 +2722,7 @@ namespace Server.Network
 
 				if (state.Version == null)
 				{
-					state.Send(new ClientVersionReq());
+					ClientVersionReq.Send(state);
 
 					state.BlockAllPackets = true;
 				}
@@ -2846,6 +2857,8 @@ namespace Server.Network
 				Console.WriteLine("Login: {0}: Invalid Client", state);
 				Utility.PopColor();
 
+				PopupMessage.Send(state, PMMessage.LoginSyncError);
+
 				state.Dispose();
 				return;
 			}
@@ -2856,6 +2869,8 @@ namespace Server.Network
 				Console.WriteLine("Login: {0}: Invalid Client", state);
 				Utility.PopColor();
 
+				PopupMessage.Send(state, PMMessage.LoginSyncError);
+
 				state.Dispose();
 				return;
 			}
@@ -2865,6 +2880,8 @@ namespace Server.Network
 				Utility.PushColor(ConsoleColor.Red);
 				Console.WriteLine("Login: {0}: Invalid Client", state);
 				Utility.PopColor();
+
+				PopupMessage.Send(state, PMMessage.LoginSyncError);
 
 				state.Dispose();
 				return;
@@ -2882,9 +2899,8 @@ namespace Server.Network
 				state.CityInfo = e.CityInfo;
 				state.CompressionEnabled = true;
 
-				state.Send(SupportedFeatures.Instantiate(state));
-
-				state.Send(new CharacterList(state.Account, state.CityInfo, state.IsEnhancedClient));
+				SupportedFeatures.Send(state);
+				CharacterList.Send(state);
 			}
 			else
 			{
@@ -2935,7 +2951,7 @@ namespace Server.Network
 			var clientRev = pvSrc.ReadInt32();
 			var clientPat = pvSrc.ReadInt32();
 
-			state.Version = new ClientVersion(clientMaj, clientMin, clientRev, clientPat);
+			state.Version = new CV(clientMaj, clientMin, clientRev, clientPat);
 		}
 
 		public static void CrashReport(NetState state, PacketReader pvSrc)
@@ -3008,7 +3024,9 @@ namespace Server.Network
 			if (e.Rejected)
 			{
 				state.Account = null;
-				state.Send(new AccountLoginRej(ALRReason.BadComm));
+
+				AccountLoginRej.Send(state, ALRReason.BadComm);
+
 				state.Dispose();
 			}
 			else
@@ -3023,7 +3041,8 @@ namespace Server.Network
 
 		public static void AccountLogin_ReplyRej(NetState state, ALRReason reason)
 		{
-			state.Send(new AccountLoginRej(reason));
+			AccountLoginRej.Send(state, reason);
+
 			state.Dispose();
 		}
 
@@ -3107,7 +3126,8 @@ namespace Server.Network
 					if (check != null && check.Map != Map.Internal)
 					{
 						Console.WriteLine("Login: {0}: Account in use", state);
-						state.Send(new PopupMessage(PMMessage.CharInWorld));
+
+						PopupMessage.Send(state, PMMessage.CharInWorld);
 						return;
 					}
 				}
@@ -3133,7 +3153,7 @@ namespace Server.Network
 
 				if (state.Version == null)
 				{
-					state.Send(new ClientVersionReq());
+					ClientVersionReq.Send(state);
 
 					state.BlockAllPackets = true;
 				}

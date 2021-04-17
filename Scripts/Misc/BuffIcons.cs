@@ -6,15 +6,20 @@ namespace Server
 {
     public class BuffInfo
     {
+    	public static bool Enabled => Core.ML;
+    	
         public static void Initialize()
         {
-            EventSink.ClientVersionReceived += delegate (ClientVersionReceivedArgs args)
+            if (Enabled)
             {
-                PlayerMobile pm = args.State.Mobile as PlayerMobile;
-
-                if (pm != null)
-                    Timer.DelayCall(TimeSpan.Zero, pm.ResendBuffs);
-            };
+	            EventSink.ClientVersionReceived += args =>
+	            {
+	                PlayerMobile pm = args.State.Mobile as PlayerMobile;
+	
+	                if (pm != null)
+	                    Timer.DelayCall(TimeSpan.Zero, pm.ResendBuffs);
+	            };
+			}
         }
 
         public static int Blank => 1114057;  // ~1_val~

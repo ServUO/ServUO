@@ -440,7 +440,16 @@ namespace Server.Gumps
 
 		private Packet Compile(NetState ns)
 		{
-			IGumpWriter disp = new DisplayGumpPacked(this);
+			IGumpWriter disp;
+
+			if (ns == null || ns.Unpack)
+			{
+				disp = new DisplayGumpPacked(this);
+			}
+			else
+			{
+				disp = new DisplayGumpFast(this);
+			}
 
 			if (!m_Dragable)
 			{

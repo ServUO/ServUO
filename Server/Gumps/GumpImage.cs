@@ -1,23 +1,3 @@
-/***************************************************************************
- *                               GumpImage.cs
- *                            -------------------
- *   begin                : May 1, 2002
- *   copyright            : (C) The RunUO Software Team
- *   email                : info@runuo.com
- *
- *   $Id$
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
 using Server.Network;
 
 namespace Server.Gumps
@@ -67,9 +47,9 @@ namespace Server.Gumps
 		public override string Compile()
 		{
 			if (m_Hue == 0)
-				return System.String.Format("{{ gumppic {0} {1} {2} }}", m_X, m_Y, m_GumpID);
+				return $"{{ gumppic {m_X} {m_Y} {m_GumpID} }}";
 			else
-				return System.String.Format("{{ gumppic {0} {1} {2} hue={3} }}", m_X, m_Y, m_GumpID, m_Hue);
+				return $"{{ gumppic {m_X} {m_Y} {m_GumpID} hue={m_Hue} }}";
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("gumppic");

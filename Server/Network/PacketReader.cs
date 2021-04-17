@@ -8,8 +8,14 @@ namespace Server.Network
 	public class PacketReader
 	{
 		private readonly byte[] m_Data;
-		private readonly int m_Size;
-		private int m_Index;
+
+		private int m_Index, m_Size, m_Slice;
+
+		public int Index => m_Index;
+		public int Size => m_Size;
+		public int Chop => m_Slice;
+
+		public byte[] Buffer => m_Data;
 
 		public PacketReader(byte[] data, int size, bool fixedSize)
 		{
@@ -17,10 +23,6 @@ namespace Server.Network
 			m_Size = size;
 			m_Index = fixedSize ? 1 : 3;
 		}
-
-		public byte[] Buffer => m_Data;
-
-		public int Size => m_Size;
 
 		public void Trace(NetState state)
 		{
@@ -46,6 +48,20 @@ namespace Server.Network
 			}
 			catch
 			{ }
+		}
+
+		public void Slice()
+		{
+			if (m_Index <= m_Size)
+			{
+				m_Slice = m_Size - m_Index;
+				m_Size -= m_Slice;
+
+				if (m_Index > m_Size)
+				{
+					m_Index = m_Size;
+				}
+			}
 		}
 
 		public int Seek(int offset, SeekOrigin origin)

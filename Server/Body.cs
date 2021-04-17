@@ -40,9 +40,7 @@ namespace Server
 
 						var split = line.Split('\t');
 
-
-						if (Int32.TryParse(split[0], out var bodyID) && Enum.TryParse(split[1], true, out BodyType type) && bodyID >= 0 &&
-							bodyID < m_Types.Length)
+						if (Int32.TryParse(split[0], out var bodyID) && Enum.TryParse(split[1], true, out BodyType type) && bodyID >= 0 && bodyID < m_Types.Length)
 						{
 							m_Types[bodyID] = type;
 						}

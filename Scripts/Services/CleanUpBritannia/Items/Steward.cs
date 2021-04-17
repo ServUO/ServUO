@@ -165,9 +165,9 @@ namespace Server.Mobiles
 
         public override void OnStatsQuery(Mobile from)
         {
-            if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
+            if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
             {
-                from.Send(new MobileStatusCompact(false, this));
+                MobileStatus.Send(from.NetState, this);
 
                 if (Map != null)
                 {

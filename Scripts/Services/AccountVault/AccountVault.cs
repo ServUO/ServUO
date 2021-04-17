@@ -135,7 +135,8 @@ namespace Server.AccountVault
                 ProcessOpeners(from);
 
                 from.Send(Container.OPLPacket);
-                from.NetState.Send(new ContainerContentUpdate(Container));
+
+                ContainerContentUpdate.Send(from.NetState, Container);
 
                 Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
                 {

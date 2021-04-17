@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 namespace Server.Guilds
 {
+	public enum GuildType
+	{
+		Regular,
+		Chaos,
+		Order
+	}
+
 	public abstract class BaseGuild : ISerializable
 	{
 		private readonly int m_Id;
@@ -36,7 +43,11 @@ namespace Server.Guilds
 
 		public abstract string Abbreviation { get; set; }
 		public abstract string Name { get; set; }
+
+		public virtual GuildType Type { get; set; }
+
 		public abstract bool Disbanded { get; }
+
 		public abstract void OnDelete(Mobile mob);
 
 		private static readonly Dictionary<int, BaseGuild> m_GuildList = new Dictionary<int, BaseGuild>();

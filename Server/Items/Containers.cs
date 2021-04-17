@@ -67,6 +67,9 @@ namespace Server.Items
 			}
 		}
 
+		public override void OnSingleClick(Mobile from)
+		{ }
+
 		public override void OnDoubleClick(Mobile from)
 		{ }
 

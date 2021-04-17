@@ -611,15 +611,13 @@ namespace Server.Engines.JollyRoger
             {
                 if (Alive && Map != null)
                 {
-                    var flash = ScreenLightFlash.Instance;
+                    ScreenEffect flash = ScreenEffect.LightFlash;
                     IPooledEnumerable e = Map.GetClientsInRange(p, range * 4 + 5);
 
                     foreach (NetState ns in e)
                     {
-                        if (ns.Mobile != null)
-                        {
-                            ns.Mobile.Send(flash);
-                        }
+                        if (ns != null)
+                            ns.Send(flash);
                     }
 
                     e.Free();

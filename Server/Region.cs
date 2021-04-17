@@ -1085,6 +1085,16 @@ namespace Server
 			return true;
 		}
 
+		public virtual bool OnSingleClick(Mobile m, object o)
+		{
+			if (m_Parent != null)
+			{
+				return m_Parent.OnSingleClick(m, o);
+			}
+
+			return true;
+		}
+
 		public virtual void OnDelete(Item item)
 		{
 		}
@@ -1158,7 +1168,7 @@ namespace Server
 
 				if (oldRegion == null || oldRegion.Music != newRegion.Music)
 				{
-					m.Send(PlayMusic.GetInstance(newRegion.Music));
+					PlayMusic.Send(m.NetState, newRegion.Music);
 				}
 			}
 

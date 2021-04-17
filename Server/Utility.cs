@@ -329,8 +329,7 @@ namespace Server
 
 		private static uint SwapUnsignedInt(uint source)
 		{
-			return ((source & 0x000000FF) << 0x18) | ((source & 0x0000FF00) << 8) | ((source & 0x00FF0000) >> 8) |
-					 ((source & 0xFF000000) >> 0x18);
+			return ((source & 0x000000FF) << 0x18) | ((source & 0x0000FF00) << 8) | ((source & 0x00FF0000) >> 8) | ((source & 0xFF000000) >> 0x18);
 		}
 
 		public static bool TryConvertIPv6toIPv4(ref IPAddress address)
@@ -1531,7 +1530,8 @@ namespace Server
 
 		public static List<TOutput> CastConvertList<TInput, TOutput>(List<TInput> list) where TOutput : TInput
 		{
-			return list.ConvertAll(delegate (TInput value) { return (TOutput)value; });
+			return list.ConvertAll(delegate (TInput value)
+			{ return (TOutput)value; });
 		}
 
 		public static List<TOutput> SafeConvertList<TInput, TOutput>(List<TInput> list) where TOutput : class

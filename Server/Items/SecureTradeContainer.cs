@@ -1,5 +1,4 @@
 #region References
-
 using Server.Accounting;
 using Server.Network;
 #endregion
@@ -107,7 +106,7 @@ namespace Server.Items
 		{
 			if (child is VirtualCheck)
 			{
-				return !AccountGold.Enabled;
+				return !AccountGold.Enabled || m?.NetState?.NewSecureTrading != true;
 			}
 
 			return base.IsChildVisibleTo(m, child);

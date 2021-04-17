@@ -1152,10 +1152,7 @@ namespace Server.Multis
                 }
             }
 
-            if (theirState != null)
-            {
-                theirState.Send(new DamagePacket(this, amount));
-            }
+            DamagePacket.Send(theirState, this, amount);
         }
 
         public virtual void SetFacingComponents(Direction newDirection, Direction oldDirection, bool ignoreLastFacing)

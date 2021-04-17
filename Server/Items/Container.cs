@@ -1939,6 +1939,16 @@ namespace Server.Items
 			return false;
 		}
 
+		public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
+
+			if (CheckContentDisplay(from))
+			{
+				LabelTo(from, "({0} items, {1} stones)", TotalItems, TotalWeight);
+			}
+		}
+
 		public List<Mobile> Openers { get; set; }
 
 		public virtual bool IsPublicContainer => false;
@@ -1963,13 +1973,17 @@ namespace Server.Items
 
 			ValidatePositions();
 
-			to.Send(new ContainerDisplay(this));
+			ContainerDisplay.Send(ns, this);
+			ContainerContent.Send(ns, this);
 
-			to.Send(new ContainerContent(to, this));
-
-			foreach (var o in Items)
+			if (to.ViewOPL)
 			{
-				to.Send(o.OPLPacket);
+				var items = Items;
+
+				foreach (var o in items)
+				{
+					to.Send(o.OPLPacket);
+				}
 			}
 		}
 
@@ -2026,15 +2040,22 @@ namespace Server.Items
 
 			if (DisplaysContent) //CheckContentDisplay( from ) )
 			{
-				if (ParentsContain<Item>() || IsLockedDown || IsSecure) //Root Parent is the Mobile.  Parent could be another containter.
+				if (Core.ML)
 				{
-					list.Add(1073841, "{0}\t{1}\t{2}", TotalItems, MaxItems, TotalWeight);
-					// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~ stones
+					if (ParentsContain<Item>() || IsLockedDown || IsSecure) //Root Parent is the Mobile.  Parent could be another containter.
+					{
+						list.Add(1073841, "{0}\t{1}\t{2}", TotalItems, MaxItems, TotalWeight);
+						// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~ stones
+					}
+					else
+					{
+						list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
+						// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+					}
 				}
 				else
 				{
-					list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
-					// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+					list.Add(1050044, "{0}\t{1}", TotalItems, TotalWeight); // ~1_COUNT~ items, ~2_WEIGHT~ stones
 				}
 			}
 		}

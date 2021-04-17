@@ -13,7 +13,8 @@ namespace Server.Diagnostics
 		{
 			var list = new List<T>(profiles);
 
-			list.Sort(delegate (T a, T b) { return -a.TotalTime.CompareTo(b.TotalTime); });
+			list.Sort(delegate (T a, T b)
+			{ return -a.TotalTime.CompareTo(b.TotalTime); });
 
 			foreach (var prof in list)
 			{
