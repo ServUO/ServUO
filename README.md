@@ -14,7 +14,7 @@
 
 #### Requirements
 
-[.NET Framework 4.8] Runtime and SDK
+[.NET Framework 5.0] Runtime and SDK
 
 
 #### Windows
@@ -24,23 +24,26 @@ Run `Compile.WIN - Release.bat` for production environments.
 
 
 #### OSX
-
-`brew install mono`  
-`make`
+```
+brew install mono
+brew install dotnet
+dotnet build
+```
+To run `mono ServUO.exe`
 
 
 #### Ubuntu / Debian
-
-`apt-get install zlib1g-dev`  
-`apt-get install mono-complete`  
-`make`
+```
+apt-get install zlib1g-dev mono-complete dotnet-sdk-5.0 
+dotnet build
+```
+To run `mono ServUO.exe`
 
 
 #### Summary
 
 A [Quick Start] guide is available for more information on setting up your world.
 
-
    [ServUO]: <https://www.servuo.com>
    [Quick Start]: <https://www.servuo.com/wiki/startup/>
-   [.NET Framework 4.8]: <https://dotnet.microsoft.com/download/dotnet-framework/net48>
+   [.NET Framework 5.0]: <https://dotnet.microsoft.com/download>
