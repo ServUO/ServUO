@@ -28,6 +28,7 @@ clean:
 	rm -f ${EXENAME}.exe.mdb
 	rm -f Ultima.dll
 	rm -f Ultima.dll.mdb
+	rm -f Scripts.dll
 	rm -f *.bin
 
 
