@@ -279,7 +279,7 @@ namespace Server.Items
             if (m_Crafter != null)
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
 
-            if (m_Description != null && m_Description.Length > 0)
+            if (!string.IsNullOrEmpty(m_Description))
                 list.Add(m_Description);
         }
 
