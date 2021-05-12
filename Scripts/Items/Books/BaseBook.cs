@@ -368,7 +368,7 @@ namespace Server.Items
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (m_Title != null && m_Title.Length > 0)
+            if (!string.IsNullOrEmpty(m_Title))
                 list.Add(m_Title);
             else
                 base.AddNameProperty(list);

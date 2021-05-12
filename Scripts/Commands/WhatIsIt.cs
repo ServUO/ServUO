@@ -26,7 +26,7 @@ namespace Server.Commands
                 string typename = targeted.GetType().Name;
                 string article = "a";
 
-                if (typename != null && typename.Length > 0)
+                if (!string.IsNullOrEmpty(typename))
                 {
                     if ("aeiouy".IndexOf(typename.ToLower()[0]) >= 0)
                     {
