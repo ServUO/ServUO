@@ -2662,7 +2662,7 @@ namespace Server.Mobiles
                 m_Allured = reader.ReadBool();
             }
 
-            if (version <= 20)
+            if (version == 20)
             {
                 reader.ReadInt();
             }
