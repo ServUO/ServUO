@@ -213,7 +213,7 @@ namespace Server.Spells.SkillMasteries
 
         public static int GetMasteryLevel(Mobile m, SkillName name)
         {
-            return m.Skills[name].VolumeLearned;
+            return Math.Max(m is BaseCreature ? 1 : 0, m.Skills[name].VolumeLearned);
         }
 
         public static bool CanLearn(Mobile m, int spellID, SkillName skill)
