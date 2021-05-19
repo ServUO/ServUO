@@ -198,6 +198,12 @@ namespace Server.SkillHandlers
             {
                 return false;
             }
+			
+			// pets shouldn't reveal their masters
+			if (src is BaseCreature sbc && sbc.ControlMaster == target)
+			{
+				return false;
+			}
 
             SpellHelper.CheckResponsible(ref src);
             SpellHelper.CheckResponsible(ref target);
