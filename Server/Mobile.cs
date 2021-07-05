@@ -11781,7 +11781,7 @@ namespace Server
 		/// <param name="from"></param>
 		public virtual void OnStatsQuery(Mobile from)
 		{
-			if (from.Map == Map && Utility.InUpdateRange(this, from) && from.CanSee(this))
+			if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
 			{
 				from.Send(new MobileStatus(from, this));
 			}
