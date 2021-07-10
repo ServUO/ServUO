@@ -3,6 +3,8 @@
 /Server.dll
 /Server/bin
 /Server/obj
+/Server.Tests/bin
+/Server.Tests/obj
 /Scripts.dll
 /Scripts/bin
 /Scripts/obj
