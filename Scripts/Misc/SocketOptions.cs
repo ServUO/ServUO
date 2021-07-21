@@ -6,7 +6,7 @@ namespace Server
 {
     public class SocketOptions
     {
-        public static readonly int Port = Config.Get("Server.Port", 2593);
+        public static readonly int Port = Config.Get("Server.Port", 7057);
 
         private static readonly IPEndPoint[] m_ListenerEndPoints = new IPEndPoint[]
         {
