@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<serverListMap>
+    <!-- entry elements define a remote cidr address match that maps to a destination
+    cidrmatch   String  IP CIDR to match against the remote address, such as 192.168.1.0/24
+    destination String  Destination IP to use if matched
+    -->
+    <!-- Example 1 - Single address match where NATing is insufficient / misconfigued (SSH tunnel + docker)
+    <entry cidrmatch="172.18.0.1/32" destination="127.0.0.1"/>
+    -->
+    <!-- Example 2 - Local network match where NAT'ing is insufficent / misconfigured (docker)
+    <entry cidrmatch="192.168.1.0/24" destination="192.168.1.100"/>
+    -->
+</serverListMap>

@@ -27,4 +27,8 @@
   <ItemGroup>
     <Reference Include="System.Web" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IPNetwork2" Version="2.5.329" />
+  </ItemGroup>
 </Project>
