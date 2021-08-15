@@ -42,8 +42,8 @@ namespace Server.Misc
         * firewalls) or specific IP adddresses you can do so by modifying the file SocketOptions.cs found in this directory.
         */
 
-	private static readonly string m_AddressMapConfigPath = Path.Combine("Config", "ServerListMap.xml");
-	private static Dictionary<IPNetwork, string> AddressMap = new Dictionary<IPNetwork, string>();
+        private static readonly string m_AddressMapConfigPath = Path.Combine("Config", "ServerListMap.xml");
+        private static Dictionary<IPNetwork, string> AddressMap = new Dictionary<IPNetwork, string>();
 
         public static readonly string Address = Config.Get("Server.Address", default(string));
 
@@ -57,7 +57,7 @@ namespace Server.Misc
 
         public static void Initialize()
         {
-	    LoadAddressMap(m_AddressMapConfigPath);
+            LoadAddressMap(m_AddressMapConfigPath);
 
             if (Address == null)
             {
@@ -74,41 +74,41 @@ namespace Server.Misc
             EventSink.ServerList += EventSink_ServerList;
         }
 
-	private static void LoadAddressMap(string ConfigFile)
-	{
-	    if (!File.Exists(ConfigFile)) {
-	        Console.WriteLine("ServerListMap: Not present @ {0}", ConfigFile);
-		return;
-	    }
-	    XmlDocument doc = new XmlDocument();
-	    doc.Load(ConfigFile);
-	    string cidrmatch;
-	    string dest;
+        private static void LoadAddressMap(string ConfigFile)
+        {
+            if (!File.Exists(ConfigFile)) {
+                Console.WriteLine("ServerListMap: Not present @ {0}", ConfigFile);
+                return;
+            }
+            XmlDocument doc = new XmlDocument();
+            doc.Load(ConfigFile);
+            string cidrmatch;
+            string dest;
             foreach (XmlNode node in doc.GetElementsByTagName("serverListMap")[0].ChildNodes)
-	    {
-	        if (node.Name.Equals("entry") && node.Attributes["cidrmatch"] != null && node.Attributes["destination"] != null)
-	        {
-		    cidrmatch = node.Attributes["cidrmatch"].Value;
-		    IPNetwork net;
-		    try
-		    {
-		        net = IPNetwork.Parse(cidrmatch);
-		    }
-		    catch
-		    {
+            {
+                if (node.Name.Equals("entry") && node.Attributes["cidrmatch"] != null && node.Attributes["destination"] != null)
+                {
+                    cidrmatch = node.Attributes["cidrmatch"].Value;
+                    IPNetwork net;
+                    try
+                    {
+                        net = IPNetwork.Parse(cidrmatch);
+                    }
+                    catch
+                    {
                         Utility.WriteConsoleColor(ConsoleColor.Red, "ServerListMap: Invalid CIDR {0} - XML: {1}", cidrmatch, node.OuterXml);
-			continue;
-		    }    
-	            dest = node.Attributes["destination"].Value;
-		    AddressMap.Add(net, dest);
-		    Utility.WriteConsoleColor(ConsoleColor.Green, "ServerListMap: {0} => {1}", cidrmatch, dest);
-		}
-		else if (node.NodeType != System.Xml.XmlNodeType.Comment)
-	       	{
-		    Utility.WriteConsoleColor(ConsoleColor.Red, "ServerListMap: XML does not match required specification - {0}", node.OuterXml);
+                        continue;
+                    }    
+                    dest = node.Attributes["destination"].Value;
+                    AddressMap.Add(net, dest);
+                    Utility.WriteConsoleColor(ConsoleColor.Green, "ServerListMap: {0} => {1}", cidrmatch, dest);
                 }
-	    }
-	}
+                else if (node.NodeType != System.Xml.XmlNodeType.Comment)
+                {
+                    Utility.WriteConsoleColor(ConsoleColor.Red, "ServerListMap: XML does not match required specification - {0}", node.OuterXml);
+                }
+            }
+        }
 
         private static void EventSink_ServerList(ServerListEventArgs e)
         {
@@ -132,16 +132,16 @@ namespace Server.Misc
                     }
                 }
 
-		// ServerListMap matches
-		foreach (KeyValuePair<IPNetwork, string> pair in AddressMap)
-		{
-		    if (pair.Key.Contains(ipepRemote.Address))
-		    {
-			localAddress = IPAddress.Parse(pair.Value);
-		        Utility.WriteConsoleColor(ConsoleColor.Green, "ServerListMap: {0} matches {1}; using destination {2}", ipepRemote.Address, pair.Key, pair.Value);
-			break;
-		    }
-		}
+                // ServerListMap matches
+                foreach (KeyValuePair<IPNetwork, string> pair in AddressMap)
+                {
+                    if (pair.Key.Contains(ipepRemote.Address))
+                    {
+                        localAddress = IPAddress.Parse(pair.Value);
+                        Utility.WriteConsoleColor(ConsoleColor.Green, "ServerListMap: {0} matches {1}; using destination {2}", ipepRemote.Address, pair.Key, pair.Value);
+                        break;
+                    }
+                }
 
                 e.AddServer(ServerName, new IPEndPoint(localAddress, localPort));
             }
