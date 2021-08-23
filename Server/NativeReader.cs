@@ -86,13 +86,10 @@ namespace Server
 		{
 			var byteCount = 0U;
 
-			if (!UnsafeNativeMethods.ReadFile(source.SafeFileHandle.DangerousGetHandle(), (byte*)buffer + bufferIndex, (uint)length, ref byteCount, null))
-				return -1;
+			if (UnsafeNativeMethods.ReadFile(source.SafeFileHandle.DangerousGetHandle(), (byte*)buffer + bufferIndex, (uint)length, ref byteCount, null))
+				return (int)byteCount;
 
-			if (byteCount > 0)
-				source.Seek(byteCount, SeekOrigin.Current);
-
-			return (int)byteCount;
+			return -1;
 		}
 	}
 
@@ -130,16 +127,9 @@ namespace Server
 			return -1;
 		}
 
-#pragma warning disable CS0618
 		internal unsafe int InternalRead(FileStream source, void* buffer, int bufferIndex, int length)
 		{
-			var byteCount = UnsafeNativeMethods.read(source.Handle, (byte*)buffer + bufferIndex, length);
-
-			if (byteCount > 0)
-				source.Seek(byteCount, SeekOrigin.Current);
-
-			return byteCount;
+			return UnsafeNativeMethods.read(source.SafeFileHandle.DangerousGetHandle(), (byte*)buffer + bufferIndex, length);
 		}
-#pragma warning restore CS0618
 	}
 }
