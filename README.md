@@ -14,7 +14,7 @@
 
 #### Requirements
 
-[.NET Framework 5.0] Runtime and SDK
+[.NET 5.0] Runtime and SDK
 
 
 #### Windows
