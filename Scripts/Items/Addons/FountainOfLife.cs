@@ -27,7 +27,9 @@ namespace Server.Items
         bool ICommodity.IsDeedable => true;
 
         public static int HealingBonus => 10;
+
         public override int LabelNumber => 1152441;// enhanced bandage
+
         public override bool Dye(Mobile from, DyeTub sender)
         {
             return false;
@@ -81,22 +83,31 @@ namespace Server.Items
         public FountainOfLife()
             : this(10)
         {
+		}
+
+		[Constructable]
+        public FountainOfLife(int charges)
+            : this(charges, DateTime.MinValue)
+        {
         }
 
-        [Constructable]
-        public FountainOfLife(int charges)
-            : base(0x2AC0)
-        {
-            m_Charges = charges;
-        }
+		[Constructable]
+		public FountainOfLife(int charges, DateTime nextRecharge)
+			: base(0x2AC0)
+		{
+			Charges = charges;
+			NextRecharge = nextRecharge;
+		}
 
         public FountainOfLife(Serial serial)
             : base(serial)
         {
         }
 
-        public override BaseAddonContainerDeed Deed => new FountainOfLifeDeed(m_Charges);
+        public override BaseAddonContainerDeed Deed => new FountainOfLifeDeed(Charges, NextRecharge);
+
         public virtual TimeSpan RechargeTime => TimeSpan.FromDays(1);
+
         public override int LabelNumber => 1075197;// Fountain of Life
         public override int DefaultGumpID => 0x484;
         public override int DefaultDropSound => 66;
@@ -147,7 +158,7 @@ namespace Server.Items
         {
             base.AddNameProperties(list);
 
-            list.Add(1075217, m_Charges.ToString()); // ~1_val~ charges remaining
+            list.Add(1075217, Charges.ToString()); // ~1_val~ charges remaining
         }
 
         public override void Serialize(GenericWriter writer)
@@ -157,7 +168,7 @@ namespace Server.Items
             writer.WriteEncodedInt(1); //version
 
             writer.Write(NextRecharge);
-            writer.Write(m_Charges);
+            writer.Write(Charges);
 
             if (DateTime.UtcNow > NextRecharge)
             {
@@ -177,12 +188,14 @@ namespace Server.Items
                     NextRecharge = reader.ReadDateTime();
                     goto case 0;
                 case 0:
-                    m_Charges = reader.ReadInt();
+					{
+						Charges = reader.ReadInt();
 
-                    if (version < 1)
-                    {
-                        NextRecharge = reader.ReadDateTime();
-                    }
+						if (version < 1)
+						{
+							NextRecharge = reader.ReadDateTime();
+						}
+					}
                     break;
             }
         }
@@ -191,7 +204,7 @@ namespace Server.Items
         {
             NextRecharge = DateTime.UtcNow + RechargeTime;
 
-            m_Charges = 10;
+            Charges = 10;
 
             Enhance();
         }
@@ -214,7 +227,7 @@ namespace Server.Items
                 }
             }
 
-            for (int i = Items.Count - 1; i >= 0 && m_Charges > 0; --i)
+            for (int i = Items.Count - 1; i >= 0 && Charges > 0; --i)
             {
                 if (Items[i] is EnhancedBandage)
                     continue;
@@ -225,16 +238,16 @@ namespace Server.Items
                 {
                     Item enhanced;
 
-                    if (bandage.Amount > m_Charges)
+                    if (bandage.Amount > Charges)
                     {
-                        bandage.Amount -= m_Charges;
-                        enhanced = new EnhancedBandage(m_Charges);
-                        m_Charges = 0;
+                        bandage.Amount -= Charges;
+                        enhanced = new EnhancedBandage(Charges);
+                        Charges = 0;
                     }
                     else
                     {
                         enhanced = new EnhancedBandage(bandage.Amount);
-                        m_Charges -= bandage.Amount;
+                        Charges -= bandage.Amount;
                         bandage.Delete();
                     }
 
@@ -273,18 +286,26 @@ namespace Server.Items
     public class FountainOfLifeDeed : BaseAddonContainerDeed
     {
         private int m_Charges;
+
         [Constructable]
         public FountainOfLifeDeed()
             : this(10)
         {
-        }
+		}
 
-        [Constructable]
-        public FountainOfLifeDeed(int charges)
+		[Constructable]
+		public FountainOfLifeDeed(int charges)
+			: this(charges, DateTime.MinValue)
+		{ }
+
+		[Constructable]
+        public FountainOfLifeDeed(int charges, DateTime nextRecharge)
             : base()
         {
             LootType = LootType.Blessed;
-            m_Charges = charges;
+
+            Charges = charges;
+			NextRecharge = nextRecharge;
         }
 
         public FountainOfLifeDeed(Serial serial)
@@ -293,7 +314,9 @@ namespace Server.Items
         }
 
         public override int LabelNumber => 1075197;// Fountain of Life
-        public override BaseAddonContainer Addon => new FountainOfLife(m_Charges);
+
+        public override BaseAddonContainer Addon => new FountainOfLife(Charges, NextRecharge);
+
         [CommandProperty(AccessLevel.GameMaster)]
         public int Charges
         {
@@ -306,15 +329,23 @@ namespace Server.Items
                 m_Charges = Math.Min(value, 10);
                 InvalidateProperties();
             }
-        }
-        public override void Serialize(GenericWriter writer)
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public DateTime NextRecharge { get; set; }
+
+		public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.WriteEncodedInt(0); //version
+            writer.WriteEncodedInt(1); //version
 
-            writer.Write(m_Charges);
-        }
+			// 0
+			writer.Write(m_Charges);
+
+			// 1
+			writer.Write(NextRecharge);
+		}
 
         public override void Deserialize(GenericReader reader)
         {
@@ -322,7 +353,11 @@ namespace Server.Items
 
             int version = reader.ReadEncodedInt();
 
-            m_Charges = reader.ReadInt();
+			if (version >= 0)
+				m_Charges = reader.ReadInt();
+
+			if (version >= 1)
+				NextRecharge = reader.ReadDateTime();
         }
     }
 }
