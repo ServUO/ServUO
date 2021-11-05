@@ -182,7 +182,7 @@ namespace Server.Engines.Shadowguard
 
             if (!expired)
             {
-                foreach (PlayerMobile pm in encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in encounter.Region.AllPlayers.OfType<PlayerMobile>())
                 {
                     AddToTable(pm, encounter.Encounter);
                 }
@@ -539,7 +539,7 @@ namespace Server.Engines.Shadowguard
 
             if (Addons != null)
             {
-                Addons.IterateReverse(addon =>
+				ColUtility.IterateReverse(Addons, addon =>
                 {
                     addon.Delete();
                 });

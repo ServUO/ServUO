@@ -6,6 +6,7 @@ using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -52,7 +53,7 @@ namespace Server.Accounting
                 long share = 0, shared;
                 int diff;
 
-                foreach (Account a in Accounts.GetAccounts().OfType<Account>().Where(a => a.Count > 0))
+                foreach (IAccount a in Accounts.GetAccounts().Where(a => a.Count > 0))
                 {
                     try
                     {
@@ -62,7 +63,7 @@ namespace Server.Accounting
                             found += a.TotalCurrency * CurrencyThreshold;
                         }
 
-                        foreach (Mobile m in a.m_Mobiles.Where(m => m != null))
+                        foreach (Mobile m in a)
                         {
                             box = m.FindBankNoCreate();
 
@@ -193,116 +194,70 @@ namespace Server.Accounting
         {
             Username = Utility.GetText(node["username"], "empty");
 
-            string plainPassword = Utility.GetText(node["password"], null);
-            string MD5Password = Utility.GetText(node["cryptPassword"], null);
-            string SHA1Password = Utility.GetText(node["newCryptPassword"], null);
-            string SHA512Password = Utility.GetText(node["newSecureCryptPassword"], null);
+			#region Password
 
-            switch (AccountHandler.ProtectPasswords)
-            {
-                case PasswordProtection.None:
-                    {
-                        if (plainPassword != null)
-                        {
-                            SetPassword(plainPassword);
-                        }
-                        else if (SHA512Password != null)
-                        {
-                            _SHA512Password = SHA512Password;
-                        }
-                        else if (SHA1Password != null)
-                        {
-                            _SHA1Password = SHA1Password;
-                        }
-                        else if (MD5Password != null)
-                        {
-                            _MD5Password = MD5Password;
-                        }
-                        else
-                        {
-                            SetPassword("empty");
-                        }
+			bool passLoaded = false;
+			PasswordProtection prot = PasswordProtection.None;
 
-                        break;
-                    }
-                case PasswordProtection.Crypt:
-                    {
-                        if (MD5Password != null)
-                        {
-                            _MD5Password = MD5Password;
-                        }
-                        else if (plainPassword != null)
-                        {
-                            SetPassword(plainPassword);
-                        }
-                        else if (SHA1Password != null)
-                        {
-                            _SHA1Password = SHA1Password;
-                        }
-                        else if (SHA512Password != null)
-                        {
-                            _SHA512Password = SHA512Password;
-                        }
-                        else
-                        {
-                            SetPassword("empty");
-                        }
+			string pass = Utility.GetText(node["password"], null);
 
-                        break;
-                    }
-                case PasswordProtection.NewCrypt:
-                    {
-                        if (SHA1Password != null)
-                        {
-                            _SHA1Password = SHA1Password;
-                        }
-                        else if (plainPassword != null)
-                        {
-                            SetPassword(plainPassword);
-                        }
-                        else if (MD5Password != null)
-                        {
-                            _MD5Password = MD5Password;
-                        }
-                        else if (SHA512Password != null)
-                        {
-                            _SHA512Password = SHA512Password;
-                        }
-                        else
-                        {
-                            SetPassword("empty");
-                        }
+			if (!String.IsNullOrWhiteSpace(pass))
+			{
+				pass = pass.Replace("-", String.Empty);
 
-                        break;
-                    }
-                default: // PasswordProtection.NewSecureCrypt
-                    {
-                        if (SHA512Password != null)
-                        {
-                            _SHA512Password = SHA512Password;
-                        }
-                        else if (plainPassword != null)
-                        {
-                            SetPassword(plainPassword);
-                        }
-                        else if (SHA1Password != null)
-                        {
-                            _SHA1Password = SHA1Password;
-                        }
-                        else if (MD5Password != null)
-                        {
-                            _MD5Password = MD5Password;
-                        }
-                        else
-                        {
-                            SetPassword("empty");
-                        }
+				string enc = Utility.GetAttribute(node["password"], "enc", null);
 
-                        break;
-                    }
-            }
+				if (!String.IsNullOrWhiteSpace(enc) && Enum.TryParse(enc, true, out prot))
+				{
+					switch (prot)
+					{
+						case PasswordProtection.None: PlainPassword = pass; passLoaded = true; break;
+						case PasswordProtection.MD5: MD5Password = pass; passLoaded = true; break;
+						case PasswordProtection.SHA1: SHA1Password = pass; passLoaded = true; break;
+						case PasswordProtection.SHA512: SHA512Password = pass; passLoaded = true; break;
+					}
+				}
+			}
 
-            Enum.TryParse(Utility.GetText(node["accessLevel"], "Player"), true, out m_AccessLevel);
+			if (!passLoaded) // handle old password api
+			{
+				if (!passLoaded && (passLoaded = !String.IsNullOrWhiteSpace(pass = Utility.GetText(node["cryptPassword"], null))))
+				{
+					prot = PasswordProtection.MD5;
+				}
+
+				if (!passLoaded && (passLoaded = !String.IsNullOrWhiteSpace(pass = Utility.GetText(node["newCryptPassword"], null))))
+				{
+					prot = PasswordProtection.SHA1;
+				}
+
+				if (!passLoaded && (passLoaded = !String.IsNullOrWhiteSpace(pass = Utility.GetText(node["newSecureCryptPassword"], null))))
+				{
+					prot = PasswordProtection.SHA512;
+				}
+
+				if (!String.IsNullOrWhiteSpace(pass))
+				{
+					pass = pass.Replace("-", String.Empty);
+				}
+
+				switch (prot)
+				{
+					case PasswordProtection.None: PlainPassword = pass; passLoaded = true; break;
+					case PasswordProtection.MD5: MD5Password = pass; passLoaded = true; break;
+					case PasswordProtection.SHA1: SHA1Password = pass; passLoaded = true; break;
+					case PasswordProtection.SHA512: SHA512Password = pass; passLoaded = true; break;
+				}
+			}
+
+			if (!passLoaded)
+			{
+				SetPassword(!String.IsNullOrWhiteSpace(pass) && prot == PasswordProtection.None ? pass : "empty");
+			}
+
+			#endregion
+
+			Enum.TryParse(Utility.GetText(node["accessLevel"], "Player"), true, out m_AccessLevel);
 
             Flags = Utility.GetXMLInt32(Utility.GetText(node["flags"], "0"), 0);
             Created = Utility.GetXMLDateTime(Utility.GetText(node["created"], null), DateTime.UtcNow);
@@ -410,17 +365,17 @@ namespace Server.Accounting
         /// <summary>
         ///     Account password. Hashed with MD5. May be null.
         /// </summary>
-        public string _MD5Password { get; set; }
+        public string MD5Password { get; set; }
 
         /// <summary>
         ///     Account username and password hashed with SHA1. May be null.
         /// </summary>
-        public string _SHA1Password { get; set; }
+        public string SHA1Password { get; set; }
 
         /// <summary>
         ///     Account username and password hashed with SHA512. May be null.
         /// </summary>
-        public string _SHA512Password { get; set; }
+        public string SHA512Password { get; set; }
 
         /// <summary>
         ///     Internal bitfield of account flags. Consider using direct access properties (Banned, Young), or GetFlag/SetFlag
@@ -631,7 +586,33 @@ namespace Server.Accounting
                     m_Mobiles[index].Account = this;
                 }
             }
-        }
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			for (int i = 0; i < Length; ++i)
+			{
+				Mobile m = this[i];
+
+				if (m != null)
+				{
+					yield return m;
+				}
+			}
+		}
+
+		IEnumerator<Mobile> IEnumerable<Mobile>.GetEnumerator()
+		{
+			for (int i = 0; i < Length; ++i)
+			{
+				Mobile m = this[i];
+
+				if (m != null)
+				{
+					yield return m;
+				}
+			}
+		}
 
         /// <summary>
         ///     Deletes the account, all characters of the account, and all houses of those characters
@@ -670,70 +651,59 @@ namespace Server.Accounting
             Accounts.Remove(Username);
         }
 
-        public void SetPassword(string plainPassword)
-        {
-            switch (AccountHandler.ProtectPasswords)
-            {
-                case PasswordProtection.None:
-                    {
-                        PlainPassword = plainPassword;
-                        _MD5Password = null;
-                        _SHA1Password = null;
-                        _SHA512Password = null;
-                    }
-                    break;
-                case PasswordProtection.Crypt:
-                    {
-                        PlainPassword = null;
-                        _MD5Password = HashMD5(plainPassword);
-                        _SHA1Password = null;
-                        _SHA512Password = null;
-                    }
-                    break;
-                case PasswordProtection.NewCrypt:
-                    {
-                        PlainPassword = null;
-                        _MD5Password = null;
-                        _SHA1Password = HashSHA1(Username + plainPassword);
-                        _SHA512Password = null;
-                    }
-                    break;
-                default: // PasswordProtection.NewSecureCrypt
-                    {
-                        PlainPassword = null;
-                        _MD5Password = null;
-                        _SHA1Password = null;
-                        _SHA512Password = HashSHA512(Username + plainPassword);
-                    }
-                    break;
-            }
-        }
+		public void SetPassword(string plainPassword)
+		{
+			PlainPassword = MD5Password = SHA1Password = SHA512Password = null;
 
-        public bool CheckPassword(string plainPassword)
-        {
-            bool ok;
-            PasswordProtection curProt;
+			PasswordProtection prot = AccountHandler.ProtectPasswords;
 
-            if (PlainPassword != null)
-            {
-                ok = (PlainPassword == plainPassword);
-                curProt = PasswordProtection.None;
-            }
-            else if (_MD5Password != null)
-            {
-                ok = (_MD5Password == HashMD5(plainPassword));
-                curProt = PasswordProtection.Crypt;
-            }
-            else if (_SHA1Password != null)
-            {
-                ok = (_SHA1Password == HashSHA1(Username + plainPassword));
-                curProt = PasswordProtection.NewCrypt;
-            }
-            else
-            {
-                ok = (_SHA512Password == HashSHA512(Username + plainPassword));
-                curProt = PasswordProtection.NewSecureCrypt;
-            }
+			string salt = prot >= PasswordProtection.SHA1 ? Username : String.Empty;
+
+			string pass = Hash(salt + plainPassword, AccountHandler.ProtectPasswords);
+
+			switch (prot)
+			{
+				case PasswordProtection.None: PlainPassword = pass; break;
+				case PasswordProtection.MD5: MD5Password = pass; break;
+				case PasswordProtection.SHA1: SHA1Password = pass; break;
+				case PasswordProtection.SHA512: SHA512Password = pass; break;
+			}
+		}
+
+		public string GetPassword()
+		{
+			switch (AccountHandler.ProtectPasswords)
+			{
+				case PasswordProtection.None: return PlainPassword;
+				case PasswordProtection.MD5: return MD5Password;
+				case PasswordProtection.SHA1: return SHA1Password;
+				case PasswordProtection.SHA512: return SHA512Password;
+			}
+
+			return null;
+		}
+
+		public bool CheckPassword(string plainPassword)
+        {
+            bool ok = false;
+            PasswordProtection curProt = PasswordProtection.None;
+
+			if (PlainPassword != null)
+			{
+				ok = PlainPassword == Hash(plainPassword, curProt = PasswordProtection.None);
+			}
+			else if (MD5Password != null)
+			{
+				ok = MD5Password == Hash(plainPassword, curProt = PasswordProtection.MD5);
+			}
+			else if (SHA1Password != null)
+			{
+				ok = SHA1Password == Hash(Username + plainPassword, curProt = PasswordProtection.SHA1);
+			}
+			else if (SHA512Password != null)
+			{
+				ok = SHA512Password == Hash(Username + plainPassword, curProt = PasswordProtection.SHA512);
+			}
 
             if (ok && curProt != AccountHandler.ProtectPasswords)
             {
@@ -741,6 +711,35 @@ namespace Server.Accounting
             }
 
             return ok;
+        }
+
+        public static string Hash(string phrase, PasswordProtection type)
+        {
+			HashAlgorithm hash = null;
+
+			switch (type)
+			{
+				case PasswordProtection.None: return phrase;
+				case PasswordProtection.MD5: hash = m_MD5HashProvider ?? (m_MD5HashProvider = new MD5CryptoServiceProvider()); break;
+				case PasswordProtection.SHA1: hash = m_SHA1HashProvider ?? (m_SHA1HashProvider = new SHA1CryptoServiceProvider()); break;
+				case PasswordProtection.SHA512: hash = m_SHA512HashProvider ?? (m_SHA512HashProvider = new SHA512CryptoServiceProvider()); break;
+			}
+
+			if (hash == null)
+			{
+				return null;
+			}
+
+            if (m_HashBuffer == null)
+            {
+                m_HashBuffer = new byte[256];
+            }
+
+            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
+
+            string pass = BitConverter.ToString(hash.ComputeHash(m_HashBuffer, 0, length));
+
+			return pass.Replace("-", String.Empty);
         }
 
         public int CompareTo(IAccount other)
@@ -773,60 +772,6 @@ namespace Server.Accounting
             return string.Compare(Username, other.Username, StringComparison.Ordinal);
         }
 
-        public static string HashMD5(string phrase)
-        {
-            if (m_MD5HashProvider == null)
-            {
-                m_MD5HashProvider = new MD5CryptoServiceProvider();
-            }
-
-            if (m_HashBuffer == null)
-            {
-                m_HashBuffer = new byte[256];
-            }
-
-            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
-            byte[] hashed = m_MD5HashProvider.ComputeHash(m_HashBuffer, 0, length);
-
-            return BitConverter.ToString(hashed);
-        }
-
-        public static string HashSHA1(string phrase)
-        {
-            if (m_SHA1HashProvider == null)
-            {
-                m_SHA1HashProvider = new SHA1CryptoServiceProvider();
-            }
-
-            if (m_HashBuffer == null)
-            {
-                m_HashBuffer = new byte[256];
-            }
-
-            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
-            byte[] hashed = m_SHA1HashProvider.ComputeHash(m_HashBuffer, 0, length);
-
-            return BitConverter.ToString(hashed);
-        }
-
-        public static string HashSHA512(string phrase)
-        {
-            if (m_SHA512HashProvider == null)
-            {
-                m_SHA512HashProvider = new SHA512CryptoServiceProvider();
-            }
-
-            if (m_HashBuffer == null)
-            {
-                m_HashBuffer = new byte[256];
-            }
-
-            int length = Encoding.ASCII.GetBytes(phrase, 0, phrase.Length > 256 ? 256 : phrase.Length, m_HashBuffer, 0);
-            byte[] hashed = m_SHA512HashProvider.ComputeHash(m_HashBuffer, 0, length);
-
-            return BitConverter.ToString(hashed);
-        }
-
         public static void Initialize()
         {
             EventSink.Connected += EventSink_Connected;
@@ -844,19 +789,14 @@ namespace Server.Accounting
             string[] stringList;
             XmlElement accessCheck = node["accessCheck"];
 
-            if (accessCheck != null)
-            {
-                stringList =
-                    accessCheck.GetElementsByTagName("ip")
-                               .Cast<XmlElement>()
-                               .Select(ip => Utility.GetText(ip, null))
-                               .Where(text => text != null)
-                               .ToArray();
-            }
-            else
-            {
-                stringList = new string[0];
-            }
+			if (accessCheck != null)
+			{
+				stringList = accessCheck.GetElementsByTagName("ip").Cast<XmlElement>().Select(ip => Utility.GetText(ip, null)).Where(text => text != null).ToArray();
+			}
+			else
+			{
+				stringList = new string[0];
+			}
 
             return stringList;
         }
@@ -937,9 +877,9 @@ namespace Server.Accounting
                 try
                 {
                     int index = Utility.GetXMLInt32(Utility.GetAttribute(ele, "index", "0"), 0);
-                    int serial = Utility.GetXMLInt32(Utility.GetText(ele, "0"), 0);
+                    Serial serial = Utility.GetXMLSerial(Utility.GetText(ele, "0"), Serial.Zero);
 
-                    if (index >= 0 && index < list.Length)
+                    if (index >= 0 && index < list.Length && serial.IsMobile)
                     {
                         list[index] = World.FindMobile(serial);
                     }
@@ -1331,35 +1271,37 @@ namespace Server.Accounting
             xml.WriteString(Username);
             xml.WriteEndElement();
 
-            if (PlainPassword != null)
-            {
-                xml.WriteStartElement("password");
-                xml.WriteString(PlainPassword);
-                xml.WriteEndElement();
-            }
+			xml.WriteStartElement("password");
+			xml.WriteStartAttribute("enc");
 
-            if (_MD5Password != null)
+			if (PlainPassword != null)
             {
-                xml.WriteStartElement("cryptPassword");
-                xml.WriteString(_MD5Password);
-                xml.WriteEndElement();
-            }
-
-            if (_SHA1Password != null)
+				xml.WriteString("None");
+				xml.WriteEndAttribute();
+				xml.WriteString(PlainPassword);
+			}
+			else if (MD5Password != null)
             {
-                xml.WriteStartElement("newCryptPassword");
-                xml.WriteString(_SHA1Password);
-                xml.WriteEndElement();
-            }
-
-            if (_SHA512Password != null)
+				xml.WriteString("MD5");
+				xml.WriteEndAttribute();
+				xml.WriteString(MD5Password);
+			}
+			else if (SHA1Password != null)
             {
-                xml.WriteStartElement("newSecureCryptPassword");
-                xml.WriteString(_SHA512Password);
-                xml.WriteEndElement();
+				xml.WriteString("SHA1");
+				xml.WriteEndAttribute();
+				xml.WriteString(SHA1Password);
             }
+			else if (SHA512Password != null)
+            {
+				xml.WriteString("SHA512");
+				xml.WriteEndAttribute();
+				xml.WriteString(SHA512Password);
+			}
 
-            if (m_AccessLevel >= AccessLevel.Counselor)
+			xml.WriteEndElement();
+
+			if (m_AccessLevel >= AccessLevel.Counselor)
             {
                 xml.WriteStartElement("accessLevel");
                 xml.WriteString(m_AccessLevel.ToString());
@@ -1558,10 +1500,7 @@ namespace Server.Accounting
             TimeSpan ts = YoungDuration - acc.TotalGameTime;
             int hours = Math.Max((int)ts.TotalHours, 0);
 
-            m.SendAsciiMessage(
-                "You will enjoy the benefits and relatively safe status of a young player for {0} more hour{1}.",
-                hours,
-                hours != 1 ? "s" : "");
+			m.SendAsciiMessage("You will enjoy the benefits and relatively safe status of a young player for {0} more hour{1}.", hours, hours != 1 ? "s" : "");
         }
 
         private class YoungTimer : Timer

@@ -19,15 +19,16 @@ namespace Server.Mobiles
             Race = Race.Human;
             Blessed = true;
 
+			HairItemID = Hair.Human.Long;
+
             CantWalk = true;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Utility.AssignRandomHair(this);
 
             AddItem(new Backpack());
             AddItem(new FurBoots(2017));
             AddItem(new LongPants(2017));
             AddItem(new Doublet(1326));
-            AddItem(new LongHair(2213));
             AddItem(new Cloak(2017));
             AddItem(new Cap(398));
 

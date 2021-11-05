@@ -24,7 +24,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendLocalizedMessage(localization);
             }
@@ -32,7 +32,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization, int hue)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendLocalizedMessage(localization, "", hue);
             }
@@ -40,7 +40,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization, string args)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendLocalizedMessage(localization, args);
             }
@@ -48,7 +48,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(string message)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendMessage(0x25, message);
             }

@@ -103,7 +103,7 @@ namespace Server.Spells.SkillMasteries
             if (m_NextHeal > DateTime.UtcNow)
                 return false;
 
-            PartyList.IterateReverse(m =>
+            ColUtility.IterateReverse(PartyList, m =>
             {
                 if (CheckPartyEffects(m, true))
                 {

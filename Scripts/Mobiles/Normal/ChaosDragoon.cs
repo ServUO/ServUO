@@ -11,7 +11,7 @@ namespace Server.Mobiles
         {
             Name = "a chaos dragoon";
             Body = 0x190;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             SetStr(176, 225);
             SetDex(81, 95);

@@ -30,7 +30,7 @@ namespace Server.Engines.Khaldun
             Name = NameList.RandomName("male");
             CantWalk = true;
 
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Body = 0x190;
             HairItemID = Race.RandomHair(false);
             HairHue = Race.RandomHairHue();
@@ -75,7 +75,7 @@ namespace Server.Engines.Khaldun
 
     public class SBCaddelliteTinker : SBInfo
     {
-        private readonly List<GenericBuyInfo> m_BuyInfo;
+        private readonly List<IBuyItemInfo> m_BuyInfo;
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
         public SBCaddelliteTinker(BaseVendor owner)
@@ -84,9 +84,9 @@ namespace Server.Engines.Khaldun
         }
 
         public override IShopSellInfo SellInfo => m_SellInfo;
-        public override List<GenericBuyInfo> BuyInfo => m_BuyInfo;
+        public override List<IBuyItemInfo> BuyInfo => m_BuyInfo;
 
-        public class InternalBuyInfo : List<GenericBuyInfo>
+        public class InternalBuyInfo : List<IBuyItemInfo>
         {
             public InternalBuyInfo(BaseVendor owner)
             {

@@ -62,10 +62,9 @@ namespace Server.Items
                 {
                     from.SendLocalizedMessage(1054107); // This item must be in your backpack.
                 }
-                else if (targeted is BaseArmor)
+                else if (targeted is BaseArmor armor)
                 {
-                    BaseArmor armor = (BaseArmor)targeted;
-                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (Race.Gargoyle.ValidateEquipment(armor) && armor.Layer == Layer.Earrings))
+                    if (armor.Layer == Layer.Neck || armor.Layer == Layer.Helm || armor is BaseShield || (armor.Layer == Layer.Earrings && Race.Gargoyle.IsExclusiveEquipment(armor)))
                     {
                         if (armor.GorgonLenseCharges > 0 && armor.GorgonLenseType != LenseType)
                             from.SendGump(new GorgonLenseWarningGump(this, armor));

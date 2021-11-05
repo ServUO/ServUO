@@ -43,8 +43,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -113,8 +113,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -185,8 +185,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -257,8 +257,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -329,8 +329,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -401,8 +401,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -471,8 +471,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -541,8 +541,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -611,8 +611,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -681,8 +681,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -751,8 +751,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)
@@ -821,8 +821,8 @@ namespace Server.Items
             return canEquip;
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)

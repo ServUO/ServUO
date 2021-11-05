@@ -144,6 +144,15 @@ namespace Server
 							}
 						}
 					}
+					catch (Exception e)
+					{
+						if (Core.Debug)
+							Console.WriteLine($"[Ultima]: ArtData.GetStatic({nameof(index)}:{index})\n{e}");
+
+						m_Invalid[index] = true;
+
+						return null;
+					}
 					finally
 					{
 						bmp.UnlockBits(bd);
@@ -231,6 +240,11 @@ namespace Server
 						++y;
 						x = 0;
 					}
+				}
+				catch (Exception e)
+				{
+					if (Core.Debug)
+						Console.WriteLine($"[Ultima]: ArtData.Measure(...)\n{e}");
 				}
 				finally
 				{

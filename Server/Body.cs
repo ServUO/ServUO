@@ -73,10 +73,8 @@ namespace Server
 				{
 					return m_Types[m_BodyID];
 				}
-				else
-				{
-					return BodyType.Empty;
-				}
+
+				return BodyType.Empty;
 			}
 		}
 

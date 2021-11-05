@@ -38,7 +38,7 @@ namespace Server.SkillHandlers
 
             if (m.Target != null)
             {
-                Targeting.Target.Cancel(m);
+                m.Target.Cancel(m);
             }
 
             double bonus = 0.0;

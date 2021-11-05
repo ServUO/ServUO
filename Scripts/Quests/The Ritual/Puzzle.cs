@@ -50,7 +50,7 @@ namespace Server.Engines.Quests.RitualQuest
 
         private void DoSequence()
         {
-            if (Region != null && Region.GetPlayerCount() == 0)
+            if (Region != null && Region.PlayerCount == 0)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), DoSequence);
                 return;

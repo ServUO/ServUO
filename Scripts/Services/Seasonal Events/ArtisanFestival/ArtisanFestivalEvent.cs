@@ -134,16 +134,16 @@ namespace Server.Engines.ArtisanFestival
         {
             if (!IsActive() && base.IsActive())
             {
-                Utility.WriteConsoleColor(ConsoleColor.Green, string.Format("Attempting to Enable {0}...", Name));
+                Utility.WriteLine(ConsoleColor.Green, string.Format("Attempting to Enable {0}...", Name));
                 Generate();
 
                 if (!IsActive())
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Red, "Failed, check city balances. Try reducing _DefaultCityGold to a more reasonable level.");
+                    Utility.WriteLine(ConsoleColor.Red, "Failed, check city balances. Try reducing _DefaultCityGold to a more reasonable level.");
                 }
                 else
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Green, string.Format("Success! Artisan Festival Active in {0}.", CurrentCity.ToString()));
+                    Utility.WriteLine(ConsoleColor.Green, string.Format("Success! Artisan Festival Active in {0}.", CurrentCity.ToString()));
                 }
             }
         }
@@ -591,7 +591,7 @@ namespace Server.Engines.ArtisanFestival
 
         protected override void Remove()
         {
-            Utility.WriteConsoleColor(ConsoleColor.Green, string.Format("{0} Disabled!", Name));
+            Utility.WriteLine(ConsoleColor.Green, string.Format("{0} Disabled!", Name));
 
             EndTimer();
             Stage = -1;
@@ -636,9 +636,9 @@ namespace Server.Engines.ArtisanFestival
             writer.Write((int)Cycle);
             writer.Write(NextStage);
 
-            writer.WriteItem(TownTree);
-            writer.WriteItem(RewardBag);
-            writer.WriteMobile(Elf);
+            writer.Write(TownTree);
+            writer.Write(RewardBag);
+            writer.Write(Elf);
 
             if (PointTable != null)
             {

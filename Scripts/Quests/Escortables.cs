@@ -637,21 +637,7 @@ namespace Server.Engines.Quests
             else
                 AddItem(new Shoes(lowHue));
 
-            switch (Utility.Random(4))
-            {
-                case 0:
-                    AddItem(new ShortHair(Utility.RandomHairHue()));
-                    break;
-                case 1:
-                    AddItem(new TwoPigTails(Utility.RandomHairHue()));
-                    break;
-                case 2:
-                    AddItem(new ReceedingHair(Utility.RandomHairHue()));
-                    break;
-                case 3:
-                    AddItem(new KrisnaHair(Utility.RandomHairHue()));
-                    break;
-            }
+			Utility.AssignRandomHair(this, true);
 
             PackGold(200, 250);
         }

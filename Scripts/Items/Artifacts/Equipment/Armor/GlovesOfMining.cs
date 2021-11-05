@@ -211,8 +211,8 @@ namespace Server.Items
                 }
             }
         }
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             base.OnAdded(parent);
 
             if (m_Bonus != 0 && parent is Mobile)
@@ -225,8 +225,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (m_SkillMod != null)

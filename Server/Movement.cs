@@ -2,26 +2,13 @@ namespace Server.Movement
 {
 	public static class Movement
 	{
-		private static IMovementImpl m_Impl;
-
-		public static IMovementImpl Impl { get => m_Impl; set => m_Impl = value; }
-
-		/*public static bool CheckMovement(IPoint3D p, Direction d, out int newZ)
-		{
-			if (m_Impl != null)
-			{
-				return m_Impl.CheckMovement(p, d, out newZ);
-			}
-
-			newZ = p.Z;
-			return false;
-		}*/
+		public static IMovementImpl Impl { get; set; }
 
 		public static bool CheckMovement(IPoint3D p, Map map, Point3D loc, Direction d, out int newZ)
 		{
-			if (m_Impl != null)
+			if (Impl != null)
 			{
-				return m_Impl.CheckMovement(p, map, loc, d, out newZ);
+				return Impl.CheckMovement(p, map, loc, d, out newZ);
 			}
 
 			newZ = p.Z;
@@ -66,7 +53,6 @@ namespace Server.Movement
 
 	public interface IMovementImpl
 	{
-		//bool CheckMovement(IPoint3D p, Direction d, out int newZ);
 		bool CheckMovement(IPoint3D p, Map map, Point3D loc, Direction d, out int newZ);
 	}
 }

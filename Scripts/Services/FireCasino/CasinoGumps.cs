@@ -215,7 +215,7 @@ namespace Server.Engines.ResortAndCasino
             Entries.TrimExcess();
             AddGumpLayout();
             User.CloseGump(GetType());
-            User.SendGump(this, false);
+            User.SendGump(this);
         }
 
         public static int C16232(int c16)
@@ -345,7 +345,7 @@ namespace Server.Engines.ResortAndCasino
             Entries.TrimExcess();
             AddGumpLayout();
             User.CloseGump(GetType());
-            User.SendGump(this, false);
+            User.SendGump(this);
         }
 
         public static int C16232(int c16)

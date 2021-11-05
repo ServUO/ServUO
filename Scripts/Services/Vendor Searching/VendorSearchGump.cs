@@ -421,8 +421,8 @@ namespace Server.Engines.VendorSearching
                 Rectangle2D bounds = ItemBounds.Table[item.ItemID];
                 int y = 101 + (index * 75);
 
-                if (map == null && item.RootParentEntity is Mobile)
-                    map = ((Mobile)item.RootParentEntity).Map;
+                if (map == null && item.RootParent is Mobile m)
+                    map = m.Map;
 
                 AddImageTiledButton(50, y, 0x918, 0x918, 0x0, GumpButtonType.Page, 0, item.ItemID, item.Hue, 40 - bounds.Width / 2 - bounds.X, 30 - bounds.Height / 2 - bounds.Y);
                 AddItemProperty(item);

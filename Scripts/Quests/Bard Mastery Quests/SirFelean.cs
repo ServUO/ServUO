@@ -151,7 +151,7 @@ namespace Server.Engines.Quests
             InitStats(125, 100, 25);
 
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             Female = false;
             Body = 0x190;

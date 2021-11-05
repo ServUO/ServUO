@@ -227,7 +227,7 @@ namespace Server.Engines.Despise
 
         public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
         {
-            if (target.RootParentEntity == from)
+            if (target.RootParent == from)
             {
                 return base.OnDroppedInto(from, target, p);
             }
@@ -239,7 +239,7 @@ namespace Server.Engines.Despise
 
         public override bool OnDroppedOnto(Mobile from, Item target)
         {
-            if (target is Container && target.RootParentEntity != from)
+            if (target is Container && target.RootParent != from)
             {
                 from.SendLocalizedMessage(1153233); // The Wisp Orb vanishes to whence it came...
                 Delete();
@@ -276,9 +276,9 @@ namespace Server.Engines.Despise
             if (m_Anchor == null)
                 m_Anchor = m_Pet.ControlMaster;
 
-            if (m_Anchor is Item && ((Item)m_Anchor).RootParentEntity != null)
+            if (m_Anchor is Item i && i.RootParent != null)
             {
-                return ((Item)m_Anchor).RootParentEntity;
+                return i.RootParent;
             }
 
             return m_Anchor;

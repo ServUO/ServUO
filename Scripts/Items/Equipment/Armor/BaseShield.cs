@@ -70,8 +70,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             LastParryChance = 0;
 
             base.OnRemoved(parent);

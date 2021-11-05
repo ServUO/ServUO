@@ -1027,13 +1027,27 @@ namespace Server.Items
     [Flipable(0x315A, 0x315B)]
     public class PristineDreadHorn : Item, ICommodity
     {
-        [Constructable]
-        public PristineDreadHorn()
-            : base(0x315A)
-        {
-        }
+		[Constructable]
+		public PristineDreadHorn()
+			: this(1)
+		{
+		}
 
-        public PristineDreadHorn(Serial serial)
+		[Constructable]
+		public PristineDreadHorn(int amountFrom, int amountTo)
+			: this(Utility.RandomMinMax(amountFrom, amountTo))
+		{
+		}
+
+		[Constructable]
+		public PristineDreadHorn(int amount)
+			: base(0x315A)
+		{
+			Stackable = true;
+			Amount = amount;
+		}
+
+		public PristineDreadHorn(Serial serial)
             : base(serial)
         {
         }

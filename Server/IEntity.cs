@@ -23,6 +23,7 @@ namespace Server
 
 		void Delete();
 		void ProcessDelta();
+		void ClearProperties();
 		void InvalidateProperties();
 		void OnStatsQuery(Mobile m);
 	}
@@ -32,6 +33,7 @@ namespace Server
 		public Serial Serial { get; private set; }
 
 		public Point3D Location { get; set; }
+
 		public Map Map { get; set; }
 
 		public int X => Location.X;
@@ -94,6 +96,9 @@ namespace Server
 		}
 
 		void IEntity.ProcessDelta()
+		{ }
+
+		void IEntity.ClearProperties()
 		{ }
 
 		void IEntity.InvalidateProperties()

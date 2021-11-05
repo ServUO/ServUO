@@ -190,7 +190,7 @@ namespace Server.Engines.ShameRevamped
         public static void ResetOldSpawners(bool reset = true)
         {
             Region r = Region.Find(new Point3D(5538, 170, 5), Map.Trammel);
-            foreach (XmlSpawner spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
+            foreach (XmlSpawner spawner in r.AllItems.OfType<XmlSpawner>())
             {
                 if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
                 {
@@ -202,7 +202,7 @@ namespace Server.Engines.ShameRevamped
             }
 
             r = Region.Find(new Point3D(5538, 170, 5), Map.Felucca);
-            foreach (XmlSpawner spawner in r.GetEnumeratedItems().OfType<XmlSpawner>())
+            foreach (XmlSpawner spawner in r.AllItems.OfType<XmlSpawner>())
             {
                 if (spawner.Name.ToLower() != "shame_revamped" && spawner.Name.ToLower() != "shame_chest")
                 {

@@ -84,9 +84,9 @@ namespace Server.Mobiles
 
         public override int DefaultMaxWeight => 0;
 
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
-            if (!base.CheckHold(m, item, message, checkItems, plusItems, plusWeight))
+            if (!base.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight))
                 return false;
 
             if (Parent is PlayerVendor && item is Container && ((Container)item).Items.OfType<Container>().Any())
@@ -487,7 +487,7 @@ namespace Server.Mobiles
 
         public void InitBody()
         {
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             SpeechHue = 0x3B2;
 
             if (Female = Utility.RandomBool())
@@ -813,7 +813,7 @@ namespace Server.Mobiles
 
         public bool CanInteractWith(Mobile from, bool ownerOnly)
         {
-            if (!from.CanSee(this) || !Utility.InUpdateRange(from, this) || !from.CheckAlive())
+            if (!from.CanSee(this) || !from.InUpdateRange(this) || !from.CheckAlive())
                 return false;
 
             if (ownerOnly)

@@ -10,22 +10,18 @@ namespace Server.HuePickers
 	{
 		private static int m_NextSerial = 1;
 
-		private readonly int m_Serial;
-		private readonly int m_ItemID;
-
-		public int Serial => m_Serial;
-
-		public int ItemID => m_ItemID;
+		public int Serial { get; }
+		public int ItemID { get; }
 
 		public HuePicker(int itemID)
 		{
 			do
 			{
-				m_Serial = m_NextSerial++;
+				Serial = m_NextSerial++;
 			}
-			while (m_Serial == 0);
+			while (Serial == 0);
 
-			m_ItemID = itemID;
+			ItemID = itemID;
 		}
 
 		public virtual void Clip(ref int hue)

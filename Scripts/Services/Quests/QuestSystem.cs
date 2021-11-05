@@ -95,16 +95,16 @@ namespace Server.Engines.Quests
             if (pm.HasGump(typeof(QuestOfferGump)))
                 return false;
 
-            if (questType.Name == "DarkTidesQuest" && pm.Profession != 4) // necromancer
+            if (questType.Name == "DarkTidesQuest" && pm.Profession != Profession.Necromancer)
                 return false;
 
-            if (questType.Name == "UzeraanTurmoilQuest" && pm.Profession != 1 && pm.Profession != 2 && pm.Profession != 5) // warrior / magician / paladin
+            if (questType.Name == "UzeraanTurmoilQuest" && pm.Profession != Profession.Warrior && pm.Profession != Profession.Mage && pm.Profession != Profession.Paladin)
                 return false;
 
-            if (questType.Name == "HaochisTrialsQuest" && pm.Profession != 6) // samurai
+            if (questType.Name == "HaochisTrialsQuest" && pm.Profession != Profession.Samurai)
                 return false;
 
-            if (questType.Name == "EminosUndertakingQuest" && pm.Profession != 7) // ninja
+            if (questType.Name == "EminosUndertakingQuest" && pm.Profession != Profession.Ninja)
                 return false;
 
             List<QuestRestartInfo> doneQuests = pm.DoneQuests;

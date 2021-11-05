@@ -180,7 +180,7 @@ namespace Server
 				}
 				catch (Exception e)
 				{
-					Utility.WriteConsoleColor(ConsoleColor.Red, "[Persistence]: An error was encountered while loading a saved object");
+					Utility.WriteLine(ConsoleColor.Red, "[Persistence]: An error was encountered while loading a saved object");
 
 					throw new Exception(String.Format("[Persistence]: {0}", e));
 				}

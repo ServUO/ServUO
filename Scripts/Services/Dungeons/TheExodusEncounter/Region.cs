@@ -39,7 +39,7 @@ namespace Server.Engines.Exodus
             }
             protected override void OnTick()
             {
-                foreach (Mobile m in m_region.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
+                foreach (Mobile m in m_region.AllMobiles.Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
                 {
                     m.SendLocalizedMessage(1010589);
                 }
@@ -50,7 +50,7 @@ namespace Server.Engines.Exodus
 
         public void MoveLocation()
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
+            foreach (Mobile m in AllPlayers.Where(m => m.AccessLevel == AccessLevel.Player))
             {
                 Point3D p = Random_Locations[Utility.Random(Random_Locations.Length)];
 

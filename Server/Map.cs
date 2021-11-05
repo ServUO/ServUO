@@ -23,7 +23,7 @@
  * This can be used to compile your server with all of the updates enabled by
  * adding a single preprocessor directive definition to your build solution.
  */
-//#define Map_AllUpdates
+#define Map_AllUpdates
 
 /*
  *	Map_NewEnumerables
@@ -454,7 +454,6 @@ namespace Server
 				return Internal;
 			}
 
-
 			if (!Int32.TryParse(value, out var index))
 			{
 				return m_Maps.FirstOrDefault(m => m != null && Insensitive.Equals(m.Name, value));
@@ -621,6 +620,11 @@ namespace Server
 			return GetObjectsInBounds(new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1));
 		}
 
+		public IPooledEnumerable<IEntity> GetObjectsInBounds(Rectangle3D bounds)
+		{
+			return GetObjectsInBounds(new Rectangle2D(bounds.Start, bounds.End));
+		}
+
 		public IPooledEnumerable<IEntity> GetObjectsInBounds(Rectangle2D bounds)
 		{
 			return PooledEnumeration.GetEntities(this, bounds);
@@ -638,6 +642,11 @@ namespace Server
 		public IPooledEnumerable<NetState> GetClientsInRange(Point3D p, int range)
 		{
 			return GetClientsInBounds(new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1));
+		}
+
+		public IPooledEnumerable<NetState> GetClientsInBounds(Rectangle3D bounds)
+		{
+			return GetClientsInBounds(new Rectangle2D(bounds.Start, bounds.End));
 		}
 
 		public IPooledEnumerable<NetState> GetClientsInBounds(Rectangle2D bounds)
@@ -659,6 +668,11 @@ namespace Server
 			return GetItemsInBounds(new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1));
 		}
 
+		public IPooledEnumerable<Item> GetItemsInBounds(Rectangle3D bounds)
+		{
+			return GetItemsInBounds(new Rectangle2D(bounds.Start, bounds.End));
+		}
+
 		public IPooledEnumerable<Item> GetItemsInBounds(Rectangle2D bounds)
 		{
 			return PooledEnumeration.GetItems(this, bounds);
@@ -678,9 +692,38 @@ namespace Server
 			return GetMobilesInBounds(new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1));
 		}
 
+		public IPooledEnumerable<Mobile> GetMobilesInBounds(Rectangle3D bounds)
+		{
+			return GetMobilesInBounds(new Rectangle2D(bounds.Start, bounds.End));
+		}
+
 		public IPooledEnumerable<Mobile> GetMobilesInBounds(Rectangle2D bounds)
 		{
 			return PooledEnumeration.GetMobiles(this, bounds);
+		}
+
+		public IPooledEnumerable<BaseMulti> GetMultisInRange(Point3D p)
+		{
+#if Map_UseMaxRange || Map_AllUpdates
+			return GetMultisInRange(p, Core.GlobalMaxUpdateRange);
+#else
+			return GetMultisInRange(p, 18);
+#endif
+		}
+
+		public IPooledEnumerable<BaseMulti> GetMultisInRange(Point3D p, int range)
+		{
+			return GetMultisInBounds(new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1));
+		}
+
+		public IPooledEnumerable<BaseMulti> GetMultisInBounds(Rectangle3D bounds)
+		{
+			return GetMultisInBounds(new Rectangle2D(bounds.Start, bounds.End));
+		}
+
+		public IPooledEnumerable<BaseMulti> GetMultisInBounds(Rectangle2D bounds)
+		{
+			return PooledEnumeration.GetMultis(this, bounds);
 		}
 		#endregion
 
@@ -1006,9 +1049,11 @@ namespace Server
 			if (checkmob)
 			{
 				wet = (landFlags & TileFlag.Wet) != 0;
+
 				// dont allow wateronly creatures on land
 				if (cantwalk && !wet)
 					impassable = true;
+
 				// allow water creatures on water
 				if (canswim && wet)
 				{
@@ -1032,9 +1077,11 @@ namespace Server
 				if (checkmob)
 				{
 					wet = (id.Flags & TileFlag.Wet) != 0;
+
 					// dont allow wateronly creatures on land
 					if (cantwalk && !wet)
 						impassable = true;
+
 					// allow water creatures on water
 					if (canswim && wet)
 					{
@@ -1047,8 +1094,6 @@ namespace Server
 					return false;
 				else if (surface && !impassable && z == (staticTiles[i].Z + id.CalcHeight))
 					hasSurface = true;
-
-
 			}
 
 			var sector = GetSector(x, y);
@@ -1067,9 +1112,11 @@ namespace Server
 					if (checkmob)
 					{
 						wet = (id.Flags & TileFlag.Wet) != 0;
+
 						// dont allow wateronly creatures on land
 						if (cantwalk && !wet)
 							impassable = true;
+
 						// allow water creatures on water
 						if (canswim && wet)
 						{
@@ -1080,7 +1127,8 @@ namespace Server
 
 					if ((surface || impassable || (checkBlocksFit && item.BlocksFit)) && (item.Z + id.CalcHeight) > z && (z + height) > item.Z)
 						return false;
-					else if (surface && !impassable && !item.Movable && z == (item.Z + id.CalcHeight))
+
+					if (surface && !impassable && !item.Movable && z == (item.Z + id.CalcHeight))
 						hasSurface = true;
 				}
 			}
@@ -1106,17 +1154,32 @@ namespace Server
 		#region CanSpawnMobile
 		public bool CanSpawnMobile(Point3D p)
 		{
-			return CanSpawnMobile(p.m_X, p.m_Y, p.m_Z);
+			return CanSpawnMobile(p, true);
 		}
 
 		public bool CanSpawnMobile(Point2D p, int z)
 		{
-			return CanSpawnMobile(p.m_X, p.m_Y, z);
+			return CanSpawnMobile(p, z, true);
 		}
 
 		public bool CanSpawnMobile(int x, int y, int z)
 		{
-			if (!Region.Find(new Point3D(x, y, z), this).AllowSpawn())
+			return CanSpawnMobile(x, y, z, true);
+		}
+
+		public bool CanSpawnMobile(Point3D p, bool checkRegion)
+		{
+			return CanSpawnMobile(p.m_X, p.m_Y, p.m_Z, checkRegion);
+		}
+
+		public bool CanSpawnMobile(Point2D p, int z, bool checkRegion)
+		{
+			return CanSpawnMobile(p.m_X, p.m_Y, z, checkRegion);
+		}
+
+		public bool CanSpawnMobile(int x, int y, int z, bool checkRegion)
+		{
+			if (checkRegion && !Region.Find(new Point3D(x, y, z), this).AllowSpawn())
 			{
 				return false;
 			}
@@ -1194,17 +1257,23 @@ namespace Server
 		#region Spawn Position
 		public Point3D GetSpawnPosition(Point3D center, int range)
 		{
-			for (var i = 0; i < 10; i++)
+			return GetSpawnPosition(center, range, true);
+		}
+
+		public Point3D GetSpawnPosition(Point3D center, int range, bool checkRegion)
+		{
+			var attempts = (int)Math.Sqrt(range * range);
+
+			for (var i = 0; i < attempts; i++)
 			{
 				var x = center.X + (Utility.Random((range * 2) + 1) - range);
 				var y = center.Y + (Utility.Random((range * 2) + 1) - range);
 				var z = GetAverageZ(x, y);
 
-				if (CanSpawnMobile(new Point2D(x, y), center.Z))
-					return new Point3D(x, y, center.Z);
-
-				if (CanSpawnMobile(new Point2D(x, y), z))
+				if (CanSpawnMobile(x, y, z, checkRegion))
+				{
 					return new Point3D(x, y, z);
+				}
 			}
 
 			return center;
@@ -1588,9 +1657,9 @@ namespace Server
 			}
 		}
 
-		public Point2D Bound(Point2D p)
+		public Point2D Bound(IPoint2D p)
 		{
-			int x = p.m_X, y = p.m_Y;
+			int x = p.X, y = p.Y;
 
 			if (x < 0)
 			{
@@ -1625,7 +1694,7 @@ namespace Server
 			Name = name;
 			Rules = rules;
 
-			m_Regions = new Dictionary<string, Region>(StringComparer.OrdinalIgnoreCase);
+			m_Regions = new Dictionary<string, Region>(StringComparer.InvariantCultureIgnoreCase);
 
 			m_InvalidSector = new Sector(0, 0, this);
 			m_SectorsWidth = width >> SectorShift;
@@ -2272,8 +2341,7 @@ namespace Server
 				m_Bounds = bounds;
 			}
 
-			public NetState Current => m_CurrentList[m_CurrentIndex]; 
-
+			public NetState Current => m_CurrentList[m_CurrentIndex];
 			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
@@ -2396,7 +2464,6 @@ namespace Server
 			}
 
 			public IEntity Current => (IEntity)m_CurrentList[m_CurrentIndex]; 
-
 			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
@@ -2555,7 +2622,6 @@ namespace Server
 			}
 
 			public Item Current => m_CurrentList[m_CurrentIndex]; 
-
 			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
@@ -2677,7 +2743,6 @@ namespace Server
 			}
 
 			public Mobile Current => m_CurrentList[m_CurrentIndex]; 
-
 			object IEnumerator.Current => m_CurrentList[m_CurrentIndex]; 
 
 			void IDisposable.Dispose()
@@ -2777,7 +2842,6 @@ namespace Server
 			}
 
 			public StaticTile[] Current => m_Current; 
-
 			object IEnumerator.Current => m_Current; 
 
 			void IDisposable.Dispose()
@@ -2960,8 +3024,7 @@ namespace Server
 			int ix, iy, iz;
 			Point3D p;
 
-			while (Utility.NumberBetween(x, dest.m_X, org.m_X, 0.5) && Utility.NumberBetween(y, dest.m_Y, org.m_Y, 0.5) &&
-				   Utility.NumberBetween(z, dest.m_Z, org.m_Z, 0.5))
+			while (Utility.NumberBetween(x, dest.m_X, org.m_X, 0.5) && Utility.NumberBetween(y, dest.m_Y, org.m_Y, 0.5) && Utility.NumberBetween(z, dest.m_Z, org.m_Z, 0.5))
 			{
 				ix = (int)Math.Round(x);
 				iy = (int)Math.Round(y);
@@ -3025,8 +3088,7 @@ namespace Server
 
 				GetAverageZ(point.m_X, point.m_Y, ref landZ, ref landAvg, ref landTop);
 
-				if (landZ <= pointTop && landTop >= point.m_Z &&
-					(point.m_X != end.m_X || point.m_Y != end.m_Y || landZ > endTop || landTop < end.m_Z) && !landTile.Ignored)
+				if (landZ <= pointTop && landTop >= point.m_Z && (point.m_X != end.m_X || point.m_Y != end.m_Y || landZ > endTop || landTop < end.m_Z) && !landTile.Ignored)
 				{
 					return false;
 				}

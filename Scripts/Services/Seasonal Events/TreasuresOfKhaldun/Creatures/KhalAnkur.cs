@@ -364,7 +364,7 @@ namespace Server.Mobiles
             base.Serialize(writer);
             writer.Write(0); // version
 
-            writer.WriteItem(Spawn);
+            writer.Write(Spawn);
         }
 
         public override void Deserialize(GenericReader reader)

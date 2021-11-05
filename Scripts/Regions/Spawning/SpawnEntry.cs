@@ -80,7 +80,7 @@ namespace Server.Regions
 
             for (int i = 0; i < count; i++)
             {
-                int serial = reader.ReadInt();
+                Serial serial = reader.ReadSerial();
                 IEntity entity = World.FindEntity(serial);
 
                 if (entity != null)
@@ -211,7 +211,7 @@ namespace Server.Regions
 
             for (int i = 0; i < count; i++)
             {
-                int serial = reader.ReadInt();
+                Serial serial = reader.ReadSerial();
                 ISpawnable spawnableEntity = World.FindEntity(serial) as ISpawnable;
 
                 if (spawnableEntity != null)

@@ -55,9 +55,9 @@ namespace Server.Mobiles
             Female = true;
             Race = Race.Human;
             Hue = Race.RandomSkinHue();
-
-            Utility.AssignRandomHair(this, Utility.RandomHairHue());
-        }
+			HairHue = Race.RandomHairHue();
+            HairItemID = Race.RandomHair(this);
+		}
 
         public override void InitOutfit()
         {

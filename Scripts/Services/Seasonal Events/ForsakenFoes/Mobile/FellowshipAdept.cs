@@ -32,7 +32,7 @@ namespace Server.Engines.Fellowship
 
             Name = NameList.RandomName("male");
 
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Body = 0x190;
             HairItemID = 0x2044;
             HairHue = 1644;

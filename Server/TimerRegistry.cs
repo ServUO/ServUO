@@ -18,7 +18,7 @@ namespace Server
 			{
 				foreach (var kvp in Timers)
 				{
-					Utility.WriteConsoleColor(ConsoleColor.Green, "Timer ID: {0}", kvp.Key);
+					Utility.WriteLine(ConsoleColor.Green, "Timer ID: {0}", kvp.Key);
 
 					var elements = 0;
 					var timerCount = kvp.Value.Count;

@@ -105,8 +105,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (RootParent is Mobile)
             {
                 Mobile m = (Mobile)RootParent;
@@ -389,8 +389,8 @@ namespace Server.Items
             if (Pending != null)
             {
                 writer.Write(1);
-                writer.WriteMobile(Pending.Mobile);
-                writer.WriteItem(Pending.Bracelet);
+                writer.Write(Pending.Mobile);
+                writer.Write(Pending.Bracelet);
             }
             else
             {
@@ -407,8 +407,8 @@ namespace Server.Items
                 {
                     writer.Write(1);
 
-                    writer.WriteMobile(entry.Mobile);
-                    writer.WriteItem(entry.Bracelet);
+                    writer.Write(entry.Mobile);
+                    writer.Write(entry.Bracelet);
                 }
             }
         }

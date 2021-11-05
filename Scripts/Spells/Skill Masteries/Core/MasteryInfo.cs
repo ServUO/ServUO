@@ -263,13 +263,13 @@ namespace Server.Spells.SkillMasteries
                     ColUtility.Free(list);
                 }
 
-                if (m is PlayerMobile && oldMastery == SkillName.Necromancy)
+                if (m is PlayerMobile pm && oldMastery == SkillName.Necromancy)
                 {
-                    ((PlayerMobile)m).AllFollowers.IterateReverse(mob =>
+					ColUtility.IterateReverse(pm.AllFollowers, mob =>
                     {
-                        if (mob is BaseCreature && CommandUndeadSpell.ValidateTarget((BaseCreature)mob))
+                        if (mob is BaseCreature bc && CommandUndeadSpell.ValidateTarget(bc))
                         {
-                            ((BaseCreature)mob).SetControlMaster(null);
+                            bc.SetControlMaster(null);
                         }
                     });
                 }

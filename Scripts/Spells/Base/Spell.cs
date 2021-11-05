@@ -595,9 +595,12 @@ namespace Server.Spells
 
                 OnDisturb(type, false);
 
-                Target.Cancel(m_Caster);
+				if (m_Caster.Target != null)
+				{
+					m_Caster.Target.Cancel(m_Caster);
+				}
 
-                if (m_Caster.Player && type == DisturbType.Hurt)
+				if (m_Caster.Player && type == DisturbType.Hurt)
                 {
                     DoHurtFizzle();
                 }

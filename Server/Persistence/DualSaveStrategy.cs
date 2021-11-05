@@ -9,17 +9,16 @@ namespace Server
 		}
 
 		public override string Name => "Dual";
+
 		public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
 		{
 			PermitBackgroundWrite = permitBackgroundWrite;
 
-			var saveThread = new Thread(delegate ()
-			{
-				SaveItems(metrics);
-			})
+			var saveThread = new Thread(() => SaveItems(metrics))
 			{
 				Name = "Item Save Subset"
 			};
+
 			saveThread.Start();
 
 			SaveMobiles(metrics);

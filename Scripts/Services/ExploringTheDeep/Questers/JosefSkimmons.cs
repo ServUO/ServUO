@@ -20,7 +20,7 @@ namespace Server.Mobiles
             Blessed = true;
 
             CantWalk = true;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Utility.AssignRandomHair(this);
 
             AddItem(new Backpack());

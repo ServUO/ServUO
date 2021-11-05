@@ -80,7 +80,7 @@ namespace Server.Mobiles
 
         public override void OnStatsQuery(Mobile from)
         {
-            if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
+            if (from.Map == Map && from.InUpdateRange(this) && from.CanSee(this))
             {
                 BaseHouse house = BaseHouse.FindHouseAt(this);
 

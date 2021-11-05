@@ -84,13 +84,15 @@ namespace Server
 
 		internal unsafe int InternalRead(FileStream source, void* buffer, int bufferIndex, int length)
 		{
+			var index = source.Position;
+
 			var byteCount = 0U;
 
 			if (!UnsafeNativeMethods.ReadFile(source.SafeFileHandle.DangerousGetHandle(), (byte*)buffer + bufferIndex, (uint)length, ref byteCount, null))
 				return -1;
 
 			if (byteCount > 0)
-				source.Seek(byteCount, SeekOrigin.Current);
+				source.Position = index + byteCount;
 
 			return (int)byteCount;
 		}
@@ -133,10 +135,12 @@ namespace Server
 #pragma warning disable CS0618
 		internal unsafe int InternalRead(FileStream source, void* buffer, int bufferIndex, int length)
 		{
+			var index = source.Position;
+
 			var byteCount = UnsafeNativeMethods.read(source.Handle, (byte*)buffer + bufferIndex, length);
 
 			if (byteCount > 0)
-				source.Seek(byteCount, SeekOrigin.Current);
+				source.Position = index + byteCount;
 
 			return byteCount;
 		}

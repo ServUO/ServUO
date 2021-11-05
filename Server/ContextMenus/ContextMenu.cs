@@ -35,6 +35,11 @@ namespace Server.ContextMenus
 		public ContextMenuEntry[] Entries { get; private set; }
 
 		/// <summary>
+		///     Returns true if this ContextMenu requires packet version 2.
+		/// </summary>
+		public bool RequiresNewPacket => Entries.Any(t => t.Number < 3000000 || t.Number > 3032767);
+
+		/// <summary>
 		///     Instantiates a new ContextMenu instance.
 		/// </summary>
 		/// <param name="from">
@@ -52,13 +57,18 @@ namespace Server.ContextMenus
 
 			var list = new List<ContextMenuEntry>();
 
-			if (target is Mobile)
+			if (target is Mobile tmobile)
 			{
-				((Mobile)target).GetContextMenuEntries(from, list);
+				tmobile.GetContextMenuEntries(from, list);
 			}
-			else if (target is Item)
+			else if (target is Item titem)
 			{
-				((Item)target).GetContextMenuEntries(from, list);
+				titem.GetContextMenuEntries(from, list);
+			}
+
+			foreach (var e in list)
+			{
+				e.Owner = this;
 			}
 
 			EventSink.InvokeContextMenu(new ContextMenuEventArgs(From, Target, list));
@@ -78,11 +88,6 @@ namespace Server.ContextMenus
 		{
 			Dispose();
 		}
-
-		/// <summary>
-		///     Returns true if this ContextMenu requires packet version 2.
-		/// </summary>
-		public bool RequiresNewPacket => Entries.Any(t => t.Number < 3000000 || t.Number > 3032767);
 
 		public void Dispose()
 		{
@@ -123,12 +128,7 @@ namespace Server.ContextMenus
 				return false;
 			}
 
-			if (target is Mobile && !Utility.InUpdateRange(m, target.Location))
-			{
-				return false;
-			}
-
-			if (target is Item && !Utility.InUpdateRange(m, ((Item)target).GetWorldLocation()))
+			if (!m.InUpdateRange(target) || !m.CanSee(target))
 			{
 				return false;
 			}
@@ -145,16 +145,11 @@ namespace Server.ContextMenus
 				return false;
 			}
 
-			if (target is Item)
+			if (target is Item item && item.RootParent is Mobile mob && mob != m && mob.AccessLevel >= m.AccessLevel)
 			{
-				var root = ((Item)target).RootParent;
-
-				if (root is Mobile && root != m && ((Mobile)root).AccessLevel >= m.AccessLevel)
+				foreach (var e in c.Entries.Where(e => !e.NonLocalUse))
 				{
-					foreach (var e in c.Entries.Where(e => !e.NonLocalUse))
-					{
-						e.Enabled = false;
-					}
+					e.Enabled = false;
 				}
 			}
 

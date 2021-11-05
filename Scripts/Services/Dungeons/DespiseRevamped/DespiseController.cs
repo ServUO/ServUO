@@ -180,10 +180,10 @@ namespace Server.Engines.Despise
                 else strongest = 0.5 > Utility.RandomDouble() ? Alignment.Good : Alignment.Evil;
             }
 
-            List<Mobile> players = new List<Mobile>();
-            players.AddRange(m_GoodRegion.GetPlayers());
-            players.AddRange(m_EvilRegion.GetPlayers());
-            players.AddRange(m_StartRegion.GetPlayers());
+            HashSet<Mobile> players = new HashSet<Mobile>();
+            players.UnionWith(m_GoodRegion.AllPlayers);
+            players.UnionWith(m_EvilRegion.AllPlayers);
+            players.UnionWith(m_StartRegion.AllPlayers);
 
             foreach (Mobile m in players)
             {
@@ -274,7 +274,7 @@ namespace Server.Engines.Despise
             m_GoodSpawners = new List<XmlSpawner>();
             m_EvilSpawners = new List<XmlSpawner>();
 
-            foreach (Item item in m_LowerRegion.GetEnumeratedItems())
+            foreach (Item item in m_LowerRegion.AllItems)
             {
                 if (item is XmlSpawner && item.Name != null && item.Name.ToLower().IndexOf("despiserevamped") >= 0)
                 {
@@ -401,7 +401,7 @@ namespace Server.Engines.Despise
         {
             if (region != null)
             {
-                foreach (Mobile m in region.GetEnumeratedMobiles().Where(m => m is PlayerMobile))
+                foreach (Mobile m in region.AllMobiles.Where(m => m is PlayerMobile))
                     m.SendLocalizedMessage(cliloc);
             }
         }
@@ -411,10 +411,9 @@ namespace Server.Engines.Despise
             if (m_LowerRegion == null)
                 return;
 
-            List<Mobile> mobiles = m_LowerRegion.GetPlayers();
             Rectangle2D bounds = m_SequenceAlignment == Alignment.Evil ? EvilKickBounds : GoodKickBounds;
 
-            foreach (Mobile m in mobiles)
+            foreach (Mobile m in m_LowerRegion.AllPlayers)
             {
                 WispOrb orb = GetWispOrb(m);
                 Point3D p = GetRandomLoc(bounds);
@@ -437,8 +436,6 @@ namespace Server.Engines.Despise
 
                 m.SendLocalizedMessage(1153346); // You are summoned back to your stronghold.
             }
-
-            ColUtility.Free(mobiles);
         }
 
         private void TransportPlayers()
@@ -485,7 +482,7 @@ namespace Server.Engines.Despise
 
         public bool HasPlayers(Region r)
         {
-            return r != null && r.GetPlayerCount() > 0;
+            return r != null && r.PlayerCount > 0;
         }
 
         private Point3D GetRandomLoc(Rectangle2D rec)
@@ -532,9 +529,9 @@ namespace Server.Engines.Despise
             m_CleanupTimer = Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), EndSequence);
             m_CleanupTimer.Start();
 
-            foreach (Mobile m in m_LowerRegion.GetMobiles())
+            foreach (Mobile m in m_LowerRegion.AllMobiles)
             {
-                if (m is DespiseCreature && ((DespiseCreature)m).Orb != null)
+                if (m is DespiseCreature c && c.Orb != null)
                 {
                     m.Delete();
                 }
@@ -773,7 +770,7 @@ namespace Server.Engines.Despise
 
             foreach (Region r in new Region[] { m_GoodRegion, m_EvilRegion, m_LowerRegion, m_StartRegion })
             {
-                foreach (Item item in r.GetEnumeratedItems().Where(i => i is Moongate || i is GateTeleporter))
+                foreach (Item item in r.AllItems.Where(i => i is Moongate || i is GateTeleporter))
                 {
                     item.Delete();
                     WeakEntityCollection.Remove("despise", item);

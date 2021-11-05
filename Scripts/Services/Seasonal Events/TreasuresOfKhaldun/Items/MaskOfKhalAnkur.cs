@@ -68,16 +68,16 @@ namespace Server.Items
             }
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             base.OnAdded(parent);
 
             if (Charges == 0)
                 StartTimer();
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (Charges == 0)

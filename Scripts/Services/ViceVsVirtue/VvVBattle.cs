@@ -342,7 +342,7 @@ namespace Server.Engines.VvV
             UnContested = true;
             bool checkAggression = ViceVsVirtueSystem.EnhancedRules && NextCombatHeatCycle < DateTime.UtcNow;
 
-            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
             {
                 bool vvv = ViceVsVirtueSystem.IsVvV(pm);
 
@@ -441,7 +441,7 @@ namespace Server.Engines.VvV
             {
                 ((GuardedRegion)Region).Disabled = false;
 
-                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
                 {
                     pm.RecheckTownProtection();
                 }
@@ -532,7 +532,7 @@ namespace Server.Engines.VvV
 
             leader.Silver += AwardSilver(WinSilver + (OppositionCount(leader.Guild) * 50));
 
-            foreach (Mobile m in Region.GetEnumeratedMobiles())
+            foreach (Mobile m in Region.AllMobiles)
             {
                 Guild g = m.Guild as Guild;
 
@@ -621,7 +621,7 @@ namespace Server.Engines.VvV
             if (Altars == null || Region == null)
                 return;
 
-            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
             {
                 if (pm.NetState != null && pm.QuestArrow == null)
                 {
@@ -816,7 +816,7 @@ namespace Server.Engines.VvV
 
             SendStatusMessage(string.Format("{0} claimed the altar!", g != null ? g.Abbreviation : "somebody"));
 
-            foreach (PlayerMobile p in Region.GetEnumeratedMobiles().Where(player => player is PlayerMobile))
+            foreach (PlayerMobile p in Region.AllMobiles.Where(player => player is PlayerMobile))
             {
                 if (p.QuestArrow != null)
                     p.QuestArrow = null;
@@ -981,7 +981,7 @@ namespace Server.Engines.VvV
             if (Region == null)
                 return;
 
-            foreach (PlayerMobile m in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile m in Region.AllPlayers.OfType<PlayerMobile>())
             {
                 if (!ViceVsVirtueSystem.IsVvV(m) || m.NetState == null)
                     continue;
@@ -1004,7 +1004,7 @@ namespace Server.Engines.VvV
             if (Region == null)
                 return;
 
-            foreach (PlayerMobile m in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile m in Region.AllPlayers.OfType<PlayerMobile>())
             {
                 if (ViceVsVirtueSystem.IsVvV(m))
                 {

@@ -96,7 +96,7 @@ namespace Server
 
                                     while (--ents >= 0)
                                     {
-                                        ent = World.FindEntity(reader.ReadInt());
+                                        ent = World.FindEntity(reader.ReadSerial());
 
                                         if (ent != null && !ent.Deleted)
                                         {

@@ -14,21 +14,19 @@ namespace Server.Misc
     public enum PasswordProtection
     {
         None,
-        Crypt,
-        NewCrypt,
-        NewSecureCrypt
+        MD5,
+        SHA1,
+        SHA512
     }
 
     public class AccountHandler
     {
-        public static PasswordProtection ProtectPasswords = Config.GetEnum(
-            "Accounts.ProtectPasswords",
-            PasswordProtection.NewSecureCrypt);
+		public static PasswordProtection ProtectPasswords => Config.GetEnum("Accounts.ProtectPasswords", PasswordProtection.SHA512);
 
-        private static readonly int MaxAccountsPerIP = Config.Get("Accounts.AccountsPerIp", 1);
-        private static readonly bool AutoAccountCreation = Config.Get("Accounts.AutoCreateAccounts", true);
-        private static readonly bool RestrictDeletion = Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled);
-        private static readonly TimeSpan DeleteDelay = Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0));
+        private static int MaxAccountsPerIP => Config.Get("Accounts.AccountsPerIp", 1);
+        private static bool AutoAccountCreation => Config.Get("Accounts.AutoCreateAccounts", true);
+        private static bool RestrictDeletion => Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled);
+        private static TimeSpan DeleteDelay => Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0));
 
         private static readonly CityInfo[] StartingCities = new CityInfo[]
         {
@@ -50,7 +48,7 @@ namespace Server.Misc
             new CityInfo("Royal City", "Royal City Inn", 1150169, 738, 3486, -19, Map.TerMur)
         };
 
-        private static readonly bool PasswordCommandEnabled = Config.Get("Accounts.PasswordCommandEnabled", false);
+        private static bool PasswordCommandEnabled => Config.Get("Accounts.PasswordCommandEnabled", false);
 
         private static readonly char[] m_ForbiddenChars = new char[]
         {

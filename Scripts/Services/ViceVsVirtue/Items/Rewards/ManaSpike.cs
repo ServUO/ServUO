@@ -53,7 +53,7 @@ namespace Server.Engines.VvV
                         battle.NextManaSpike = DateTime.UtcNow + TimeSpan.FromMinutes(5);
                         battle.ManaSpikeEndEffects = DateTime.UtcNow + TimeSpan.FromMinutes(2); // TODO: Duration?
 
-                        foreach (Mobile mobile in battle.Region.GetEnumeratedMobiles())
+                        foreach (Mobile mobile in battle.Region.AllMobiles)
                         {
                             if (ViceVsVirtueSystem.IsEnemy(mobile, m))
                             {

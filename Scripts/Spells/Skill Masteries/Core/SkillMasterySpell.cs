@@ -487,13 +487,13 @@ namespace Server.Spells.SkillMasteries
             {
                 if (disband)
                 {
-                    spell.PartyList.IterateReverse(mob =>
+					ColUtility.IterateReverse(spell.PartyList, mob =>
+                    {
+                        if (mob != spell.Caster || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != mob))
                         {
-                            if (mob != spell.Caster || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != mob))
-                            {
-                                spell.RemovePartyMember(mob);
-                            }
-                        });
+                            spell.RemovePartyMember(mob);
+                        }
+                    });
                 }
                 else
                 {

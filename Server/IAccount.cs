@@ -1,5 +1,6 @@
 #region References
 using System;
+using System.Collections.Generic;
 #endregion
 
 namespace Server.Accounting
@@ -231,7 +232,7 @@ namespace Server.Accounting
 		bool HasPlatBalance(double amount);
 	}
 
-	public interface IAccount : IGoldAccount, IComparable<IAccount>
+	public interface IAccount : IGoldAccount, IComparable<IAccount>, IEnumerable<Mobile>
 	{
 		[CommandProperty(AccessLevel.Administrator, true)]
 		string Username { get; set; }
@@ -273,6 +274,7 @@ namespace Server.Accounting
 
 		void Delete();
 
+		string GetPassword();
 		void SetPassword(string password);
 		bool CheckPassword(string password);
 	}

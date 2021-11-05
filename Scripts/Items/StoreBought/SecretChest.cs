@@ -180,7 +180,7 @@ namespace Server.Items
                 return false;
             }
 
-            if (!CheckHold(from, dropped, true, true))
+            if (!CheckHold(from, dropped, true, true, true))
             {
                 return false;
             }

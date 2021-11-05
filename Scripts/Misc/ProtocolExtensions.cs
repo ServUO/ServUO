@@ -113,7 +113,7 @@ namespace Server.Misc
 
                 Mobile mob = pmi.Mobile;
 
-                if (Utility.InUpdateRange(from, mob) && from.CanSee(mob))
+                if (from.InUpdateRange(mob) && from.CanSee(mob))
                     continue;
 
                 m_Stream.Write(mob.Serial);
@@ -145,7 +145,7 @@ namespace Server.Misc
                 if (mob == null || mob == from || mob.NetState == null)
                     continue;
 
-                if (locations && Utility.InUpdateRange(from, mob) && from.CanSee(mob))
+                if (locations && from.InUpdateRange(mob) && from.CanSee(mob))
                     continue;
 
                 m_Stream.Write(mob.Serial);

@@ -95,7 +95,7 @@ namespace Server.Engines.Doom
 
         public void OnTick()
         {
-            if (NextRoll < DateTime.UtcNow /*&& (Spawn == null || !Spawn.Alive)*/ && GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => p.Alive).Count() > 0)
+            if (NextRoll < DateTime.UtcNow /*&& (Spawn == null || !Spawn.Alive)*/ && AllPlayers.Any(p => p.Alive))
             {
                 DoRoll();
                 NextRoll = DateTime.UtcNow + RollDelay;
@@ -130,7 +130,7 @@ namespace Server.Engines.Doom
                     }
                     else
                     {
-                        foreach (PlayerMobile m in GetEnumeratedMobiles().OfType<PlayerMobile>())
+                        foreach (Mobile m in AllPlayers)
                         {
                             m.SendMessage("- {0} -", (roll + 1).ToString());
                         }
@@ -308,7 +308,7 @@ namespace Server.Engines.Doom
         {
             if (Dice == null || Dice.Deleted)
             {
-                Sapphired20 dice = GetEnumeratedItems().OfType<Sapphired20>().FirstOrDefault(i => !i.Deleted);
+                Sapphired20 dice = AllItems.OfType<Sapphired20>().FirstOrDefault(i => !i.Deleted);
 
                 if (dice != null)
                 {
@@ -339,7 +339,7 @@ namespace Server.Engines.Doom
             {
                 if (Statues[i] == null || Statues[i].Deleted)
                 {
-                    DisplayStatue s = GetEnumeratedItems().OfType<DisplayStatue>().FirstOrDefault(st => Array.IndexOf(Statues, st) == -1);
+                    DisplayStatue s = AllItems.OfType<DisplayStatue>().FirstOrDefault(st => Array.IndexOf(Statues, st) == -1);
 
                     if (s == null)
                     {
@@ -364,7 +364,7 @@ namespace Server.Engines.Doom
         {
             if (DoorOne == null || DoorOne.Deleted)
             {
-                //BaseDoor door = this.GetEnumeratedItems().OfType<DarkWoodDoor>().FirstOrDefault(d => d.Location == _DoorOneLoc);
+                //BaseDoor door = this.AllItems.OfType<DarkWoodDoor>().FirstOrDefault(d => d.Location == _DoorOneLoc);
                 Point3D p = _DoorOneLoc;
                 BaseDoor door = GetDoor(p);
 
@@ -393,7 +393,7 @@ namespace Server.Engines.Doom
         {
             if (DoorTwo == null || DoorTwo.Deleted)
             {
-                //BaseDoor door = this.GetEnumeratedItems().OfType<DarkWoodDoor>().FirstOrDefault(d => d.Location == _DoorOneLoc);
+                //BaseDoor door = this.AllItems.OfType<DarkWoodDoor>().FirstOrDefault(d => d.Location == _DoorOneLoc);
                 Point3D p = _DoorTwoLoc;
                 BaseDoor door = GetDoor(p);
 

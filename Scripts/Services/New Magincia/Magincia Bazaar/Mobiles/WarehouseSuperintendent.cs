@@ -38,8 +38,8 @@ namespace Server.Engines.NewMagincia
             AddItem(new Tunic(Utility.RandomBlueHue()));
             AddItem(new Boots());
 
-            Utility.AssignRandomHair(this, Utility.RandomHairHue());
-            Utility.AssignRandomFacialHair(this, Utility.RandomHairHue());
+            Utility.AssignRandomHair(this, true);
+            Utility.AssignRandomFacialHair(this, true);
 
             Hue = Race.RandomSkinHue();
         }

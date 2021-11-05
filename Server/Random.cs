@@ -96,11 +96,17 @@ namespace Server
 		public int Next(int c)
 		{
 			if (c <= 0)
+			{
 				return 0;
+			}
 
 			int r;
+
 			lock (m_Random)
+			{
 				r = m_Random.Next(c);
+			}
+
 			return r;
 		}
 
@@ -112,14 +118,20 @@ namespace Server
 		public void NextBytes(byte[] b)
 		{
 			lock (m_Random)
+			{
 				m_Random.NextBytes(b);
+			}
 		}
 
 		public double NextDouble()
 		{
 			double r;
+
 			lock (m_Random)
+			{
 				r = m_Random.NextDouble();
+			}
+
 			return r;
 		}
 	}

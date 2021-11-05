@@ -16,7 +16,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Body = 0x190;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Name = "Mercutio";
             Title = "The Unsavory";
             Female = false;

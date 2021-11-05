@@ -1393,7 +1393,7 @@ namespace Server.Multis
                 foreach (KeyValuePair<Item, DeckItem> kvp in Addons)
                 {
                     writer.Write(kvp.Key);
-                    writer.WriteItem(kvp.Value);
+                    writer.Write(kvp.Value);
                 }
             }
 

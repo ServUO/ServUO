@@ -1676,7 +1676,7 @@ namespace Server.Multis
 
         public static void QueryDesignDetails(NetState state, PacketReader pvSrc)
         {
-            BaseMulti multi = World.FindItem(pvSrc.ReadInt32()) as BaseMulti;
+            BaseMulti multi = World.FindItem(pvSrc.ReadSerial()) as BaseMulti;
 
             if (multi != null)
             {

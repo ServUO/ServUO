@@ -6,7 +6,7 @@ namespace Server.Mobiles
 {
     public class SBAlchemist : SBInfo
     {
-        private readonly List<GenericBuyInfo> m_BuyInfo;
+        private readonly List<IBuyItemInfo> m_BuyInfo;
         private readonly IShopSellInfo m_SellInfo = new InternalSellInfo();
 
         public SBAlchemist(Mobile m)
@@ -18,9 +18,9 @@ namespace Server.Mobiles
         }
 
         public override IShopSellInfo SellInfo => m_SellInfo;
-        public override List<GenericBuyInfo> BuyInfo => m_BuyInfo;
+        public override List<IBuyItemInfo> BuyInfo => m_BuyInfo;
 
-        public class InternalBuyInfo : List<GenericBuyInfo>
+        public class InternalBuyInfo : List<IBuyItemInfo>
         {
             public InternalBuyInfo(Mobile m)
             {

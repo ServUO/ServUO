@@ -65,7 +65,7 @@ namespace Server
 			return 0;
 		}
 
-		private int GetPriority(MethodInfo mi)
+		private static int GetPriority(MethodInfo mi)
 		{
 			var objs = mi.GetCustomAttributes(typeof(CallPriorityAttribute), true);
 
@@ -93,13 +93,11 @@ namespace Server
 	[AttributeUsage(AttributeTargets.Class)]
 	public class TypeAliasAttribute : Attribute
 	{
-		private readonly string[] m_Aliases;
-
-		public string[] Aliases => m_Aliases;
+		public string[] Aliases { get; }
 
 		public TypeAliasAttribute(params string[] aliases)
 		{
-			m_Aliases = aliases;
+			Aliases = aliases;
 		}
 	}
 
@@ -110,13 +108,11 @@ namespace Server
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum)]
 	public class CustomEnumAttribute : Attribute
 	{
-		private readonly string[] m_Names;
-
-		public string[] Names => m_Names;
+		public string[] Names { get; }
 
 		public CustomEnumAttribute(string[] names)
 		{
-			m_Names = names;
+			Names = names;
 		}
 	}
 
@@ -177,20 +173,15 @@ namespace Server
 	[AttributeUsage(AttributeTargets.Property)]
 	public class CommandPropertyAttribute : Attribute
 	{
-		private readonly AccessLevel m_ReadLevel;
-		private readonly AccessLevel m_WriteLevel;
-		private readonly bool m_ReadOnly;
+		public AccessLevel ReadLevel { get; }
+		public AccessLevel WriteLevel { get; }
 
-		public AccessLevel ReadLevel => m_ReadLevel;
-
-		public AccessLevel WriteLevel => m_WriteLevel;
-
-		public bool ReadOnly => m_ReadOnly;
+		public bool ReadOnly { get; }
 
 		public CommandPropertyAttribute(AccessLevel level, bool readOnly)
 		{
-			m_ReadLevel = level;
-			m_ReadOnly = readOnly;
+			ReadLevel = level;
+			ReadOnly = readOnly;
 		}
 
 		public CommandPropertyAttribute(AccessLevel level)
@@ -199,8 +190,8 @@ namespace Server
 
 		public CommandPropertyAttribute(AccessLevel readLevel, AccessLevel writeLevel)
 		{
-			m_ReadLevel = readLevel;
-			m_WriteLevel = writeLevel;
+			ReadLevel = readLevel;
+			WriteLevel = writeLevel;
 		}
 	}
 }

@@ -6,14 +6,11 @@ namespace Server
 {
 	public abstract class BaseHairInfo
 	{
-		private int m_ItemID;
-		private int m_Hue;
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ItemID { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int ItemID { get => m_ItemID; set => m_ItemID = value; }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public int Hue { get => m_Hue; set => m_Hue = value; }
+		public int Hue { get; set; }
 
 		protected BaseHairInfo(int itemid)
 			: this(itemid, 0)
@@ -21,8 +18,8 @@ namespace Server
 
 		protected BaseHairInfo(int itemid, int hue)
 		{
-			m_ItemID = itemid;
-			m_Hue = hue;
+			ItemID = itemid;
+			Hue = hue;
 		}
 
 		protected BaseHairInfo(GenericReader reader)
@@ -33,8 +30,8 @@ namespace Server
 			{
 				case 0:
 					{
-						m_ItemID = reader.ReadInt();
-						m_Hue = reader.ReadInt();
+						ItemID = reader.ReadInt();
+						Hue = reader.ReadInt();
 						break;
 					}
 			}
@@ -43,8 +40,8 @@ namespace Server
 		public virtual void Serialize(GenericWriter writer)
 		{
 			writer.Write(0); //version
-			writer.Write(m_ItemID);
-			writer.Write(m_Hue);
+			writer.Write(ItemID);
+			writer.Write(Hue);
 		}
 	}
 

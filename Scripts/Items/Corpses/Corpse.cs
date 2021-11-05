@@ -1065,7 +1065,7 @@ namespace Server.Items
                         {
                             gathered = true;
                         }
-                        else if (m_RestoreTable != null && pack != null && pack.CheckHold(from, item, false, true) && m_RestoreTable.ContainsKey(item))
+                        else if (m_RestoreTable != null && pack != null && pack.CheckHold(from, item, false, true, true) && m_RestoreTable.ContainsKey(item))
                         {
                             item.Location = loc;
                             pack.AddItem(item);

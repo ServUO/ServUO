@@ -375,7 +375,7 @@ namespace Server.Services.TownCryer
             if (File.Exists(PreLoadedPath))
             {
                 XmlDocument doc = new XmlDocument();
-                Utility.WriteConsoleColor(ConsoleColor.Cyan, "*** Loading Pre-Loaded Town Crier Messages...");
+                Utility.WriteLine(ConsoleColor.Cyan, "*** Loading Pre-Loaded Town Crier Messages...");
 
                 try
                 {
@@ -384,7 +384,7 @@ namespace Server.Services.TownCryer
                 catch (Exception e)
                 {
                     Diagnostics.ExceptionLogging.LogException(e);
-                    Utility.WriteConsoleColor(ConsoleColor.Cyan, "...FAILED! ***");
+                    Utility.WriteLine(ConsoleColor.Cyan, "...FAILED! ***");
                     return;
                 }
 
@@ -449,18 +449,18 @@ namespace Server.Services.TownCryer
 
                 if (expired > 0 || errors > 0)
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Cyan, "...Complete! Loaded {0} Pre-Loaded Messages. {1} expired messages and {2} erroneous messages not loaded! ***", good, expired, errors);
+                    Utility.WriteLine(ConsoleColor.Cyan, "...Complete! Loaded {0} Pre-Loaded Messages. {1} expired messages and {2} erroneous messages not loaded! ***", good, expired, errors);
                 }
                 else
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Cyan, "...Complete! Loaded {0} Pre-Loaded Messages. ***", good);
+                    Utility.WriteLine(ConsoleColor.Cyan, "...Complete! Loaded {0} Pre-Loaded Messages. ***", good);
                 }
             }
         }
 
         public static void ErrorToConsole(string type, int index)
         {
-            Utility.WriteConsoleColor(ConsoleColor.Red, "[TC Pre-Loaded Message]: {0} for pre-loaded Message #{1}", type, index.ToString());
+            Utility.WriteLine(ConsoleColor.Red, "[TC Pre-Loaded Message]: {0} for pre-loaded Message #{1}", type, index.ToString());
         }
 
         public static DateTime GetDateTime(string text)
@@ -485,16 +485,16 @@ namespace Server.Services.TownCryer
         {
             bool clear = false;
 
-            GreetingsEntries.IterateReverse(entry =>
+			ColUtility.IterateReverse(GreetingsEntries, entry =>
+            {
+                if (entry.PreLoaded)
                 {
-                    if (entry.PreLoaded)
-                    {
-                        GreetingsEntries.Remove(entry);
+                    GreetingsEntries.Remove(entry);
 
-                        if (!clear)
-                            clear = true;
-                    }
-                });
+                    if (!clear)
+                        clear = true;
+                }
+            });
 
             LoadPreloadedMessages();
 

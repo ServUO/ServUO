@@ -68,7 +68,7 @@ namespace Server.Engines.Doom
 
         public bool CheckReset()
         {
-            if (GetPlayerCount() == 0 || Guardians == null || Guardians.Count == 0 || !Guardians.Any(x => !x.Deleted))
+            if (Guardians == null || Guardians.Count == 0 || !Guardians.Any(x => !x.Deleted) || PlayerCount == 0)
             {
                 Reset();
                 return true;
@@ -101,7 +101,7 @@ namespace Server.Engines.Doom
                     pm.Corpse.MoveToWorld(KickLoc, Map.Malas);
             }
 
-            if (!GetEnumeratedMobiles().Any(mob => mob is PlayerMobile && mob.Alive))
+            if (!AllPlayers.Any(mob => mob.Alive))
             {
                 Reset();
             }
@@ -126,7 +126,7 @@ namespace Server.Engines.Doom
                 Guardians = new List<DarkGuardian>();
 
             int count = 0;
-            foreach (Mobile mob in GetEnumeratedMobiles().Where(mob => mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != null && !mob.IsDeadBondedPet)))
+            foreach (Mobile mob in AllMobiles.Where(mob => mob is PlayerMobile || (mob is BaseCreature && ((BaseCreature)mob).GetMaster() != null && !mob.IsDeadBondedPet)))
             {
                 if (mob.NetState != null)
                     mob.SendLocalizedMessage(1050000, "", 365); // The locks on the door click loudly and you begin to hear a faint hissing near the walls.
@@ -278,7 +278,7 @@ namespace Server.Engines.Doom
                         Effects.SendLocationEffect(p, Map.Malas, Utility.RandomList(0x113C, 0x1147, 0x11A8) - 2, 16, 3, 0, 0);
                     }
 
-                    foreach (Mobile m in Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && m.Poison == null))
+                    foreach (Mobile m in Region.AllMobiles.Where(m => m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && m.Poison == null))
                     {
                         m.ApplyPoison(m, Poison.Deadly);
                         m.SendSound(0x231);

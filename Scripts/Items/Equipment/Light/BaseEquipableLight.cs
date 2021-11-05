@@ -40,8 +40,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (Burning && parent is Container)
                 Douse();
 

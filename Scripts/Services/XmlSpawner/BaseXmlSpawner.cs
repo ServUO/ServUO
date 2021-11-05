@@ -579,14 +579,7 @@ namespace Server.Mobiles
                 try
                 {
                     // parse out the mobile or item name from the value string
-                    int ispace = value.IndexOf(' ');
-                    string valstr = value.Substring(2);
-                    if (ispace > 0)
-                    {
-                        valstr = value.Substring(2, ispace - 2);
-                    }
-
-                    toSet = World.FindEntity(Convert.ToInt32(valstr, 16));
+                    toSet = World.FindEntity(Utility.ToSerial(value.Trim()));
 
                     // now check to make sure the object returned is consistent with the type
                     if (!((toSet is Mobile && IsMobile(type)) || (toSet is Item && IsItem(type))))
@@ -1551,7 +1544,7 @@ namespace Server.Mobiles
                     // count nearby players
                     if (spawner?.SpawnRegion != null && range < 0)
                     {
-                        foreach (Mobile p in spawner.SpawnRegion.GetPlayers())
+                        foreach (Mobile p in spawner.SpawnRegion.AllPlayers)
                         {
                             if (p.AccessLevel <= spawner.TriggerAccessLevel) nplayers++;
                         }
@@ -2219,13 +2212,7 @@ namespace Server.Mobiles
 
             if (name.StartsWith("0x"))
             {
-                int serial = -1;
-                try
-                {
-                    serial = Convert.ToInt32(name, 16);
-                }
-                catch { }
-                return World.FindEntity(serial) as XmlSpawner;
+                return World.FindEntity(Utility.ToSerial(name)) as XmlSpawner;
             }
 
             // do a quick search through the recent search list to see if it is there
@@ -2858,14 +2845,7 @@ namespace Server.Mobiles
                                 object setitem = null;
                                 if (keywordargs[1].StartsWith("0x"))
                                 {
-                                    int serial = -1;
-                                    try
-                                    {
-                                        serial = Convert.ToInt32(keywordargs[1], 16);
-                                    }
-                                    catch { }
-                                    if (serial >= 0)
-                                        setitem = World.FindEntity(serial);
+									setitem = World.FindEntity(Utility.ToSerial(keywordargs[1]));
                                 }
                                 else
                                 {

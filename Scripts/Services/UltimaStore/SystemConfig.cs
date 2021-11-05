@@ -63,7 +63,7 @@ namespace Server.Engines.UOStore
 
             m.SendMessage(1174, "Currency is not set up for this system. Contact a shard administrator.");
 
-            Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: No custom currency method has been implemented.");
+            Utility.WriteLine(ConsoleColor.Red, "[Ultima Store]: No custom currency method has been implemented.");
 
             return 0;
         }
@@ -77,7 +77,7 @@ namespace Server.Engines.UOStore
 
             m.SendMessage(1174, "Currency is not set up for this system. Contact a shard administrator.");
 
-            Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: No custom currency deduction method has been implemented.");
+            Utility.WriteLine(ConsoleColor.Red, "[Ultima Store]: No custom currency deduction method has been implemented.");
 
             return 0;
         }

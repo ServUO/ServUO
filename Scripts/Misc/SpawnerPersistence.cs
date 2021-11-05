@@ -416,13 +416,13 @@ namespace Server
                 int spawners = 0;
                 int teleporters = 0;
 
-                foreach (XmlSpawner spawner in region.GetEnumeratedItems().OfType<XmlSpawner>())
+                foreach (XmlSpawner spawner in region.AllItems.OfType<XmlSpawner>())
                 {
                     CopyAndPlaceItem(spawner, spawner.Location, Map.Trammel);
                     spawners++;
                 }
 
-                foreach (Teleporter teleporter in region.GetEnumeratedItems().OfType<Teleporter>())
+                foreach (Teleporter teleporter in region.AllItems.OfType<Teleporter>())
                 {
                     CopyAndPlaceItem(teleporter, teleporter.Location, Map.Trammel);
                     teleporters++;
@@ -1100,7 +1100,7 @@ namespace Server
 
             foreach (Region r in Region.Regions.Where(reg => reg.Map == map && reg.Name == region))
             {
-                List<Item> list = r.GetEnumeratedItems().Where(i => i is XmlSpawner || i is Spawner).ToList();
+                List<Item> list = r.AllItems.Where(i => i is XmlSpawner || i is Spawner).ToList();
 
                 foreach (Item item in list)
                 {

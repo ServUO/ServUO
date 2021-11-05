@@ -79,7 +79,7 @@ namespace Server.Commands
             ColUtility.Free(m_List);
             ColUtility.Free(list);
 
-            Utility.WriteConsoleColor(ConsoleColor.Magenta, "[Decoration] Generated decoration from {0} complete, including {1} items!", path, count);
+            Utility.WriteLine(ConsoleColor.Magenta, "[Decoration] Generated decoration from {0} complete, including {1} items!", path, count);
         }
 
         public static void GenerateRestricted(string keyName, string folder, Type restrictType, bool derivesFrom, params Map[] maps)
@@ -106,7 +106,7 @@ namespace Server.Commands
 
             ColUtility.Free(m_List);
 
-            Utility.WriteConsoleColor(ConsoleColor.Magenta, "[Decoration] Added {0} decoration items oftype {1} from folder {2} [{3} files]!", count, restrictType.Name, folder, files.Length);
+            Utility.WriteLine(ConsoleColor.Magenta, "[Decoration] Added {0} decoration items oftype {1} from folder {2} [{3} files]!", count, restrictType.Name, folder, files.Length);
         }
 
         public static Item FindByID(int id)
@@ -532,7 +532,7 @@ namespace Server.Commands
                     switch (m_Type.Name)
                     {
                         default:
-                            Utility.WriteConsoleColor(ConsoleColor.Red, "[Decorate] Warning: {0} addon component has null Addon. Will delete after next server start", m_Type.Name);
+                            Utility.WriteLine(ConsoleColor.Red, "[Decorate] Warning: {0} addon component has null Addon. Will delete after next server start", m_Type.Name);
                             item = (Item)Activator.CreateInstance(m_Type);
                             break;
                         case "ArcheryButte":

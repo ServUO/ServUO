@@ -231,7 +231,7 @@ namespace Server.Network
 
 				while (length > 0 && ns.Running)
 				{
-					int packetID = buffer.GetPacketID();
+					var packetID = buffer.GetPacketID();
 
 					if (CheckEncrypted(ns, packetID))
 					{
@@ -283,14 +283,14 @@ namespace Server.Network
 					{
 						if (ns.Mobile == null)
 						{
-							Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) Requires State Mobile");
+							Utility.WriteLine(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) Requires State Mobile");
 							ns.Dispose();
 							return;
 						}
 
 						if (ns.Mobile.Deleted)
 						{
-							Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) Ivalid State Mobile");
+							Utility.WriteLine(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) Ivalid State Mobile");
 							ns.Dispose();
 							return;
 						}
@@ -300,7 +300,7 @@ namespace Server.Network
 
 					if (throttler != null)
 					{
-						if (!throttler(ns, out var drop))
+						if (!throttler(packetID, ns, out var drop))
 						{
 							if (!drop)
 							{
@@ -363,7 +363,7 @@ namespace Server.Network
 								}
 								else
 								{
-									Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) sliced more than once");
+									Utility.WriteLine(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) sliced more than once");
 									ns.Dispose();
 									return;
 								}
@@ -375,11 +375,11 @@ namespace Server.Network
 
 							if (!reader)
 							{
-								Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) reader fatal exception");
+								Utility.WriteLine(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) reader fatal exception");
 							}
 							else if (!handle)
 							{
-								Utility.WriteConsoleColor(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) handler fatal exception");
+								Utility.WriteLine(ConsoleColor.Red, $"Client: {ns}: Packet (0x{packetID:X2}) handler fatal exception");
 							}
 
 							ns.Dispose();

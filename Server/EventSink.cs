@@ -15,13 +15,23 @@ using Server.Network;
 
 namespace Server
 {
+	public delegate void OnItemLiftEventHandler(OnItemLiftEventArgs e);
+
+	public delegate void OnItemLiftedEventHandler(OnItemLiftedEventArgs e);
+
+	public delegate void OnItemMergedEventHandler(OnItemMergedEventArgs e);
+
 	public delegate void OnItemObtainedEventHandler(OnItemObtainedEventArgs e);
+
+	public delegate void CheckAccessItemEventHandler(CheckAccessItemEventArgs e);
 
 	public delegate void CheckEquipItemEventHandler(CheckEquipItemEventArgs e);
 
 	public delegate void ContextMenuEventHandler(ContextMenuEventArgs e);
 
 	public delegate void WorldBroadcastEventHandler(WorldBroadcastEventArgs e);
+
+	public delegate void CharacterCreationEventHandler(CharacterCreationEventArgs e);
 
 	public delegate void CharacterCreatedEventHandler(CharacterCreatedEventArgs e);
 
@@ -38,6 +48,8 @@ namespace Server
 	public delegate void HungerChangedEventHandler(HungerChangedEventArgs e);
 
 	public delegate void CrashedEventHandler(CrashedEventArgs e);
+
+	public delegate void ClientCrashedEventHandler(ClientCrashedEventArgs e);
 
 	public delegate void ShutdownEventHandler(ShutdownEventArgs e);
 
@@ -117,6 +129,8 @@ namespace Server
 
 	public delegate void OnItemUseEventHandler(OnItemUseEventArgs e);
 
+	public delegate void OnExitRegionEventHandler(OnExitRegionEventArgs e);
+
 	public delegate void OnEnterRegionEventHandler(OnEnterRegionEventArgs e);
 
 	public delegate void OnConsumeEventHandler(OnConsumeEventArgs e);
@@ -142,6 +156,8 @@ namespace Server
 	public delegate void StatCapChangeEventHandler(StatCapChangeEventArgs e);
 
 	public delegate void QuestCompleteEventHandler(QuestCompleteEventArgs e);
+
+	public delegate void RaceChangedEventHandler(RaceChangedEventArgs e);
 
 	public delegate void ItemCreatedEventHandler(ItemCreatedEventArgs e);
 
@@ -195,6 +211,63 @@ namespace Server
 
 	public delegate void MultiDesignQueryHandler(MultiDesignQueryEventArgs e);
 
+	public class OnItemLiftEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Item m_Lifted;
+
+		private bool m_Rejected;
+		private LRReason m_Reason;
+
+		public OnItemLiftEventArgs(Mobile from, Item lifted)
+		{
+			m_Mobile = from;
+			m_Lifted = lifted;
+		}
+
+		public Mobile Mobile => m_Mobile;
+		public Item Lifted => m_Lifted;
+
+		public bool Rejected { get => m_Rejected; set => m_Rejected = value; }
+		public LRReason Reason { get => m_Reason; set => m_Reason = value; }
+	}
+
+	public class OnItemLiftedEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Item m_Lifted;
+		private readonly Item m_OldStack;
+
+		public OnItemLiftedEventArgs(Mobile from, Item lifted, Item oldStack)
+		{
+			m_Mobile = from;
+			m_Lifted = lifted;
+			m_OldStack = oldStack;
+		}
+
+		public Mobile Mobile => m_Mobile;
+		public Item Lifted => m_Lifted;
+		public Item OldStack => m_OldStack;
+	}
+
+	public class OnItemMergedEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Item m_Dropped;
+		private readonly Item m_NewStack;
+
+		public OnItemMergedEventArgs(Mobile from, Item dropped, Item newStack)
+		{
+			m_Mobile = from;
+			m_Dropped = dropped;
+			m_NewStack = newStack;
+		}
+
+		public Mobile Mobile => m_Mobile;
+		public Item Dropped => m_Dropped;
+		public Item NewStack => m_NewStack;
+	}
+
 	public class OnItemObtainedEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
@@ -210,12 +283,28 @@ namespace Server
 		public Item Item => m_Item;
 	}
 
+	public class CheckAccessItemEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; private set; }
+		public Item Item { get; private set; }
+
+		public bool Message { get; set; }
+		public bool Block { get; set; }
+
+		public CheckAccessItemEventArgs(Mobile m, Item item, bool message)
+		{
+			Mobile = m;
+			Item = item;
+			Message = message;
+		}
+	}
+
 	public class CheckEquipItemEventArgs : EventArgs
 	{
 		public Mobile Mobile { get; }
 		public Item Item { get; }
-		public bool Message { get; }
 
+		public bool Message { get; set; }
 		public bool Block { get; set; }
 
 		public CheckEquipItemEventArgs(Mobile m, Item item, bool message)
@@ -674,14 +763,14 @@ namespace Server
 	public class CastSpellRequestEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
-		private readonly Item m_Spellbook;
+		private readonly ISpellbook m_Spellbook;
 		private readonly int m_SpellID;
 
 		public Mobile Mobile => m_Mobile;
-		public Item Spellbook => m_Spellbook;
+		public ISpellbook Spellbook => m_Spellbook;
 		public int SpellID => m_SpellID;
 
-		public CastSpellRequestEventArgs(Mobile m, int spellID, Item book)
+		public CastSpellRequestEventArgs(Mobile m, int spellID, ISpellbook book)
 		{
 			m_Mobile = m;
 			m_Spellbook = book;
@@ -763,14 +852,49 @@ namespace Server
 
 	public class CrashedEventArgs : EventArgs
 	{
-		private readonly Exception m_Exception;
+		public Exception Exception { get; }
 
-		public Exception Exception => m_Exception;
 		public bool Close { get; set; }
 
 		public CrashedEventArgs(Exception e)
 		{
-			m_Exception = e;
+			Exception = e;
+		}
+	}
+
+	public class ClientCrashedEventArgs : EventArgs
+	{
+		public ClientVersion Version { get; }
+		public IPAddress IPAddress { get; }
+
+		public IAccount Account { get; }
+		public Mobile Mobile { get; }
+
+		public Point3D Location { get; }
+		public Map Map { get; }
+
+		public int Exception { get; }
+		public int Address { get; }
+		public int[] Trace { get; }
+		public int Offset { get; }
+
+		public string Process { get; }
+		public string Report { get; }
+
+		public ClientCrashedEventArgs(ClientVersion ver, IPAddress ip, IAccount acc, Mobile mob, Point3D loc, Map map, int ex, int addr, int[] trace, int offset, string process, string report)
+		{
+			Version = ver;
+			IPAddress = ip;
+			Account = acc;
+			Mobile = mob;
+			Location = loc;
+			Map = map;
+			Exception = ex;
+			Address = addr;
+			Trace = trace;
+			Offset = offset;
+			Process = process;
+			Report = report;
 		}
 	}
 
@@ -851,7 +975,7 @@ namespace Server
 
 		public void AddServer(string name, int fullPercent, TimeZone tz, IPEndPoint address)
 		{
-			m_Servers.Add(new ServerInfo(name, fullPercent, tz, address));
+			m_Servers.Add(new ServerInfo(name, fullPercent, (int)tz.GetUtcOffset(DateTime.Now).TotalHours, address));
 		}
 
 		public ServerListEventArgs(NetState state, IAccount account)
@@ -864,128 +988,94 @@ namespace Server
 
 	public struct SkillNameValue
 	{
-		private readonly SkillName m_Name;
-		private readonly int m_Value;
-
-		public SkillName Name => m_Name;
-		public int Value => m_Value;
+		public SkillName Name { get; }
+		public int Value { get; }
 
 		public SkillNameValue(SkillName name, int value)
 		{
-			m_Name = name;
-			m_Value = value;
+			Name = name;
+			Value = value;
+		}
+	}
+
+	public struct StatNameValue
+	{
+		public StatType Name { get; }
+		public int Value { get; }
+
+		public StatNameValue(StatType name, int value)
+		{
+			Name = name;
+			Value = value;
+		}
+	}
+
+	public class CharacterCreationEventArgs : EventArgs
+	{
+		public NetState State { get; }
+
+		public IAccount Account => State?.Account;
+
+		public string Name { get; }
+
+		public CityInfo City { get; }
+
+		public Race Race { get; }
+
+		public StatNameValue[] Stats { get; }
+		public SkillNameValue[] Skills { get; }
+
+		public Profession Profession { get; }
+
+		public bool Female { get; }
+
+		public int SkinHue { get; }
+
+		public int HairID { get; }
+		public int HairHue { get; }
+
+		public int BeardID { get; }
+		public int BeardHue { get; }
+
+		public int FaceID { get; }
+		public int FaceHue { get; }
+
+		public int ShirtHue { get; }
+		public int PantsHue { get; }
+
+		public Mobile Mobile { get; set; }
+
+		public CharacterCreationEventArgs(NetState state, string name, CityInfo city, Race race, Profession prof, StatNameValue[] stats, SkillNameValue[] skills, bool female, int skinHue, int hairID, int hairHue, int beardID, int beardHue, int faceID, int faceHue, int shirtHue, int pantsHue)
+		{
+			State = state;
+			Name = name;
+			City = city;
+			Race = race;
+			Profession = prof;
+			Stats = stats;
+			Skills = skills;
+			Female = female;
+			SkinHue = skinHue;
+			HairID = hairID;
+			HairHue = hairHue;
+			BeardID = beardID;
+			BeardHue = beardHue;
+			FaceID = faceID;
+			FaceHue = faceHue;
+			ShirtHue = shirtHue;
+			PantsHue = pantsHue;
 		}
 	}
 
 	public class CharacterCreatedEventArgs : EventArgs
 	{
-		private readonly NetState m_State;
-		private readonly IAccount m_Account;
-		private readonly CityInfo m_City;
-		private readonly SkillNameValue[] m_Skills;
-		private readonly int m_ShirtHue;
-		private readonly int m_PantsHue;
-		private readonly int m_HairID;
-		private readonly int m_HairHue;
-		private readonly int m_BeardID;
-		private readonly int m_BeardHue;
-		private readonly string m_Name;
-		private readonly bool m_Female;
-		private readonly int m_Hue;
-		private readonly int m_Str;
-		private readonly int m_Dex;
-		private readonly int m_Int;
-		private readonly Race m_Race;
-		private readonly int m_Face;
-		private readonly int m_FaceHue;
+		public NetState State { get; }
+		public Mobile Mobile { get; }
 
-		public NetState State => m_State;
-		public IAccount Account => m_Account;
-		public Mobile Mobile { get; set; }
-		public string Name => m_Name;
-		public bool Female => m_Female;
-		public int Hue => m_Hue;
-		public int Str => m_Str;
-		public int Dex => m_Dex;
-		public int Int => m_Int;
-		public CityInfo City => m_City;
-		public SkillNameValue[] Skills => m_Skills;
-		public int ShirtHue => m_ShirtHue;
-		public int PantsHue => m_PantsHue;
-		public int HairID => m_HairID;
-		public int HairHue => m_HairHue;
-		public int BeardID => m_BeardID;
-		public int BeardHue => m_BeardHue;
-		public int Profession { get; set; }
-		public Race Race => m_Race;
-		public int FaceID => m_Face;
-		public int FaceHue => m_FaceHue;
-
-		public CharacterCreatedEventArgs(
-			NetState state,
-			IAccount a,
-			string name,
-			bool female,
-			int hue,
-			int str,
-			int dex,
-			int intel,
-			CityInfo city,
-			SkillNameValue[] skills,
-			int shirtHue,
-			int pantsHue,
-			int hairID,
-			int hairHue,
-			int beardID,
-			int beardHue,
-			int profession,
-			Race race)
-			: this(state, a, name, female, hue, str, dex, intel, city, skills, shirtHue, pantsHue, hairID, hairHue, beardID, beardHue, profession, race, 0, 0)
+		public CharacterCreatedEventArgs(NetState state, Mobile mobile)
 		{
-		}
-
-		public CharacterCreatedEventArgs(
-			NetState state,
-			IAccount a,
-			string name,
-			bool female,
-			int hue,
-			int str,
-			int dex,
-			int intel,
-			CityInfo city,
-			SkillNameValue[] skills,
-			int shirtHue,
-			int pantsHue,
-			int hairID,
-			int hairHue,
-			int beardID,
-			int beardHue,
-			int profession,
-			Race race,
-			int faceID,
-			int faceHue)
-		{
-			m_State = state;
-			m_Account = a;
-			m_Name = name;
-			m_Female = female;
-			m_Hue = hue;
-			m_Str = str;
-			m_Dex = dex;
-			m_Int = intel;
-			m_City = city;
-			m_Skills = skills;
-			m_ShirtHue = shirtHue;
-			m_PantsHue = pantsHue;
-			m_HairID = hairID;
-			m_HairHue = hairHue;
-			m_BeardID = beardID;
-			m_BeardHue = beardHue;
-			Profession = profession;
-			m_Race = race;
-			m_Face = faceID;
-			m_FaceHue = faceHue;
+			State = state;
+			Mobile = mobile;
 		}
 	}
 
@@ -1070,14 +1160,12 @@ namespace Server
 		}
 	}
 
-
 	public class AfterWorldSaveEventArgs : EventArgs
 	{
 		public AfterWorldSaveEventArgs()
 		{
 		}
 	}
-
 
 	public class FastWalkEventArgs : EventArgs
 	{
@@ -1121,6 +1209,24 @@ namespace Server
 
 		public Mobile From => m_From;
 		public Item Item => m_Item;
+	}
+
+	public class OnExitRegionEventArgs : EventArgs
+	{
+		private readonly Mobile m_From;
+		private readonly Region m_OldRegion;
+		private readonly Region m_NewRegion;
+
+		public OnExitRegionEventArgs(Mobile from, Region oldRegion, Region newRegion)
+		{
+			m_From = from;
+			m_OldRegion = oldRegion;
+			m_NewRegion = newRegion;
+		}
+
+		public Mobile From => m_From;
+		public Region OldRegion => m_OldRegion;
+		public Region NewRegion => m_NewRegion;
 	}
 
 	public class OnEnterRegionEventArgs : EventArgs
@@ -1186,12 +1292,12 @@ namespace Server
 	public class BODUsedEventArgs : EventArgs
 	{
 		public Mobile User { get; }
-		public Item BODItem { get; }
+		public IEntity Deed { get; }
 
-		public BODUsedEventArgs(Mobile m, Item i)
+		public BODUsedEventArgs(Mobile m, IEntity bod)
 		{
 			User = m;
-			BODItem = i;
+			Deed = bod;
 		}
 	}
 
@@ -1323,6 +1429,20 @@ namespace Server
 		}
 	}
 
+	public class RaceChangedEventArgs : EventArgs
+	{
+		public Mobile Mobile { get; private set; }
+		public Race OldRace { get; private set; }
+		public Race NewRace { get; private set; }
+
+		public RaceChangedEventArgs(Mobile from, Race oldRace, Race newRace)
+		{
+			Mobile = from;
+			OldRace = oldRace;
+			NewRace = newRace;
+		}
+	}
+
 	public class ItemCreatedEventArgs : EventArgs
 	{
 		public Item Item { get; set; }
@@ -1438,12 +1558,12 @@ namespace Server
 	public class EquipMacroEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
-		private readonly List<int> m_List;
+		private readonly Serial[] m_List;
 
 		public Mobile Mobile => m_Mobile;
-		public List<int> List => m_List;
+		public Serial[] List => m_List;
 
-		public EquipMacroEventArgs(Mobile mobile, List<int> list)
+		public EquipMacroEventArgs(Mobile mobile, Serial[] list)
 		{
 			m_Mobile = mobile;
 			m_List = list;
@@ -1453,12 +1573,12 @@ namespace Server
 	public class UnequipMacroEventArgs : EventArgs
 	{
 		private readonly Mobile m_Mobile;
-		private readonly List<int> m_List;
+		private readonly Layer[] m_List;
 
 		public Mobile Mobile => m_Mobile;
-		public List<int> List => m_List;
+		public Layer[] List => m_List;
 
-		public UnequipMacroEventArgs(Mobile mobile, List<int> list)
+		public UnequipMacroEventArgs(Mobile mobile, Layer[] list)
 		{
 			m_Mobile = mobile;
 			m_List = list;
@@ -1492,11 +1612,11 @@ namespace Server
 	public class ValidVendorPurchaseEventArgs : EventArgs
 	{
 		public Mobile Mobile { get; set; }
-		public Mobile Vendor { get; set; }
+		public IVendor Vendor { get; set; }
 		public IEntity Bought { get; set; }
 		public int AmountPerUnit { get; set; }
 
-		public ValidVendorPurchaseEventArgs(Mobile m, Mobile vendor, IEntity bought, int costPer)
+		public ValidVendorPurchaseEventArgs(Mobile m, IVendor vendor, IEntity bought, int costPer)
 		{
 			Mobile = m;
 			Vendor = vendor;
@@ -1508,11 +1628,11 @@ namespace Server
 	public class ValidVendorSellEventArgs : EventArgs
 	{
 		public Mobile Mobile { get; set; }
-		public Mobile Vendor { get; set; }
+		public IVendor Vendor { get; set; }
 		public IEntity Sold { get; set; }
 		public int AmountPerUnit { get; set; }
 
-		public ValidVendorSellEventArgs(Mobile m, Mobile vendor, IEntity sold, int costPer)
+		public ValidVendorSellEventArgs(Mobile m, IVendor vendor, IEntity sold, int costPer)
 		{
 			Mobile = m;
 			Vendor = vendor;
@@ -1689,10 +1809,15 @@ namespace Server
 
 	public static class EventSink
 	{
+		public static event OnItemLiftEventHandler OnItemLift;
+		public static event OnItemLiftedEventHandler OnItemLifted;
+		public static event OnItemMergedEventHandler OnItemMerged;
 		public static event OnItemObtainedEventHandler OnItemObtained;
+		public static event CheckAccessItemEventHandler CheckAccessItem;
 		public static event CheckEquipItemEventHandler CheckEquipItem;
 		public static event ContextMenuEventHandler ContextMenu;
 		public static event WorldBroadcastEventHandler WorldBroadcast;
+		public static event CharacterCreationEventHandler CharacterCreation;
 		public static event CharacterCreatedEventHandler CharacterCreated;
 		public static event OpenDoorMacroEventHandler OpenDoorMacroUsed;
 		public static event SpeechEventHandler Speech;
@@ -1701,6 +1826,7 @@ namespace Server
 		public static event MovementEventHandler Movement;
 		public static event HungerChangedEventHandler HungerChanged;
 		public static event CrashedEventHandler Crashed;
+		public static event ClientCrashedEventHandler ClientCrashed;
 		public static event ShutdownEventHandler Shutdown;
 		public static event HelpRequestEventHandler HelpRequest;
 		public static event DisarmRequestEventHandler DisarmRequest;
@@ -1741,6 +1867,7 @@ namespace Server
 		public static event ClientTypeReceivedHandler ClientTypeReceived;
 		public static event OnKilledByEventHandler OnKilledBy;
 		public static event OnItemUseEventHandler OnItemUse;
+		public static event OnExitRegionEventHandler OnExitRegion;
 		public static event OnEnterRegionEventHandler OnEnterRegion;
 		public static event OnConsumeEventHandler OnConsume;
 		public static event OnPropertyChangedEventHandler OnPropertyChanged;
@@ -1754,6 +1881,7 @@ namespace Server
 		public static event SkillCapChangeEventHandler SkillCapChange;
 		public static event StatCapChangeEventHandler StatCapChange;
 		public static event QuestCompleteEventHandler QuestComplete;
+		public static event RaceChangedEventHandler RaceChanged;
 
 		public static event ItemCreatedEventHandler ItemCreated;
 		public static event ItemDeletedEventHandler ItemDeleted;
@@ -1784,740 +1912,512 @@ namespace Server
 		public static event TeleportMovementEventHandler TeleportMovement;
 		public static event MultiDesignQueryHandler MultiDesign;
 
+		public static void InvokeOnItemLift(OnItemLiftEventArgs e)
+		{
+			OnItemLift?.Invoke(e);
+		}
+
+		public static void InvokeOnItemLifted(OnItemLiftedEventArgs e)
+		{
+			OnItemLifted?.Invoke(e);
+		}
+
+		public static void InvokeOnItemMerged(OnItemMergedEventArgs e)
+		{
+			OnItemMerged?.Invoke(e);
+		}
+
 		public static void InvokeOnItemObtained(OnItemObtainedEventArgs e)
 		{
-			if (OnItemObtained != null)
-			{
-				OnItemObtained(e);
-			}
+			OnItemObtained?.Invoke(e);
+		}
+
+		public static void InvokeCheckAccessItem(CheckAccessItemEventArgs e)
+		{
+			CheckAccessItem?.Invoke(e);
 		}
 
 		public static void InvokeCheckEquipItem(CheckEquipItemEventArgs e)
 		{
-			if (CheckEquipItem != null)
-			{
-				CheckEquipItem(e);
-			}
+			CheckEquipItem?.Invoke(e);
 		}
 
 		public static void InvokeContextMenu(ContextMenuEventArgs e)
 		{
-			if (ContextMenu != null)
-			{
-				ContextMenu(e);
-			}
+			ContextMenu?.Invoke(e);
 		}
 
 		public static void InvokeWorldBroadcast(WorldBroadcastEventArgs e)
 		{
-			if (WorldBroadcast != null)
-			{
-				WorldBroadcast(e);
-			}
+			WorldBroadcast?.Invoke(e);
 		}
 
 		public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
 		{
-			if (ClientVersionReceived != null)
-			{
-				ClientVersionReceived(e);
-			}
+			ClientVersionReceived?.Invoke(e);
 		}
 
 		public static void InvokeClientTypeReceived(ClientTypeReceivedArgs e)
 		{
-			if (ClientTypeReceived != null)
-			{
-				ClientTypeReceived(e);
-			}
+			ClientTypeReceived?.Invoke(e);
 		}
 
 		public static void InvokeServerStarted()
 		{
-			if (ServerStarted != null)
-			{
-				ServerStarted();
-			}
+			ServerStarted?.Invoke();
 		}
 
 		public static void InvokeCreateGuild(CreateGuildEventArgs e)
 		{
-			if (CreateGuild != null)
-			{
-				CreateGuild(e);
-			}
+			CreateGuild?.Invoke(e);
 		}
 
 		public static void InvokeSetAbility(SetAbilityEventArgs e)
 		{
-			if (SetAbility != null)
-			{
-				SetAbility(e);
-			}
+			SetAbility?.Invoke(e);
 		}
 
 		public static void InvokeGuildGumpRequest(GuildGumpRequestArgs e)
 		{
-			if (GuildGumpRequest != null)
-			{
-				GuildGumpRequest(e);
-			}
+			GuildGumpRequest?.Invoke(e);
 		}
 
 		public static void InvokeQuestGumpRequest(QuestGumpRequestArgs e)
 		{
-			if (QuestGumpRequest != null)
-			{
-				QuestGumpRequest(e);
-			}
+			QuestGumpRequest?.Invoke(e);
 		}
 
 		public static void InvokeFastWalk(FastWalkEventArgs e)
 		{
-			if (FastWalk != null)
-			{
-				FastWalk(e);
-			}
+			FastWalk?.Invoke(e);
 		}
 
 		public static void InvokeDeleteRequest(DeleteRequestEventArgs e)
 		{
-			if (DeleteRequest != null)
-			{
-				DeleteRequest(e);
-			}
+			DeleteRequest?.Invoke(e);
 		}
 
 		public static void InvokeGameLogin(GameLoginEventArgs e)
 		{
-			if (GameLogin != null)
-			{
-				GameLogin(e);
-			}
+			GameLogin?.Invoke(e);
 		}
 
 		public static void InvokeCommand(CommandEventArgs e)
 		{
-			if (Command != null)
-			{
-				Command(e);
-			}
+			Command?.Invoke(e);
 		}
 
 		public static void InvokeAggressiveAction(AggressiveActionEventArgs e)
 		{
-			if (AggressiveAction != null)
-			{
-				AggressiveAction(e);
-			}
+			AggressiveAction?.Invoke(e);
 		}
 
 		public static void InvokeProfileRequest(ProfileRequestEventArgs e)
 		{
-			if (ProfileRequest != null)
-			{
-				ProfileRequest(e);
-			}
+			ProfileRequest?.Invoke(e);
 		}
 
 		public static void InvokeChangeProfileRequest(ChangeProfileRequestEventArgs e)
 		{
-			if (ChangeProfileRequest != null)
-			{
-				ChangeProfileRequest(e);
-			}
+			ChangeProfileRequest?.Invoke(e);
 		}
 
 		public static void InvokePaperdollRequest(PaperdollRequestEventArgs e)
 		{
-			if (PaperdollRequest != null)
-			{
-				PaperdollRequest(e);
-			}
+			PaperdollRequest?.Invoke(e);
 		}
 
 		public static void InvokeAccountLogin(AccountLoginEventArgs e)
 		{
-			if (AccountLogin != null)
-			{
-				AccountLogin(e);
-			}
+			AccountLogin?.Invoke(e);
 		}
 
 		public static void InvokeVirtueItemRequest(VirtueItemRequestEventArgs e)
 		{
-			if (VirtueItemRequest != null)
-			{
-				VirtueItemRequest(e);
-			}
+			VirtueItemRequest?.Invoke(e);
 		}
 
 		public static void InvokeVirtueGumpRequest(VirtueGumpRequestEventArgs e)
 		{
-			if (VirtueGumpRequest != null)
-			{
-				VirtueGumpRequest(e);
-			}
+			VirtueGumpRequest?.Invoke(e);
 		}
 
 		public static void InvokeVirtueMacroRequest(VirtueMacroRequestEventArgs e)
 		{
-			if (VirtueMacroRequest != null)
-			{
-				VirtueMacroRequest(e);
-			}
+			VirtueMacroRequest?.Invoke(e);
 		}
 
 		public static void InvokePlayerDeath(PlayerDeathEventArgs e)
 		{
-			if (PlayerDeath != null)
-			{
-				PlayerDeath(e);
-			}
+			PlayerDeath?.Invoke(e);
 		}
 
 		public static void InvokeCreatureDeath(CreatureDeathEventArgs e)
 		{
-			if (CreatureDeath != null)
-			{
-				CreatureDeath(e);
-			}
+			CreatureDeath?.Invoke(e);
 		}
 
 		public static void InvokeRenameRequest(RenameRequestEventArgs e)
 		{
-			if (RenameRequest != null)
-			{
-				RenameRequest(e);
-			}
+			RenameRequest?.Invoke(e);
 		}
 
 		public static void InvokeLogout(LogoutEventArgs e)
 		{
-			if (Logout != null)
-			{
-				Logout(e);
-			}
+			Logout?.Invoke(e);
 		}
 
 		public static void InvokeSocketConnect(SocketConnectEventArgs e)
 		{
-			if (SocketConnect != null)
-			{
-				SocketConnect(e);
-			}
+			SocketConnect?.Invoke(e);
 		}
 
 		public static void InvokeConnected(ConnectedEventArgs e)
 		{
-			if (Connected != null)
-			{
-				Connected(e);
-			}
+			Connected?.Invoke(e);
 		}
 
 		public static void InvokeDisconnected(DisconnectedEventArgs e)
 		{
-			if (Disconnected != null)
-			{
-				Disconnected(e);
-			}
+			Disconnected?.Invoke(e);
 		}
 
 		public static void InvokeAnimateRequest(AnimateRequestEventArgs e)
 		{
-			if (AnimateRequest != null)
-			{
-				AnimateRequest(e);
-			}
+			AnimateRequest?.Invoke(e);
 		}
 
 		public static void InvokeCastSpellRequest(CastSpellRequestEventArgs e)
 		{
-			if (CastSpellRequest != null)
-			{
-				CastSpellRequest(e);
-			}
+			CastSpellRequest?.Invoke(e);
 		}
 
 		public static void InvokeBandageTargetRequest(BandageTargetRequestEventArgs e)
 		{
-			if (BandageTargetRequest != null)
-			{
-				BandageTargetRequest(e);
-			}
+			BandageTargetRequest?.Invoke(e);
 		}
 
 		public static void InvokeOpenSpellbookRequest(OpenSpellbookRequestEventArgs e)
 		{
-			if (OpenSpellbookRequest != null)
-			{
-				OpenSpellbookRequest(e);
-			}
+			OpenSpellbookRequest?.Invoke(e);
 		}
 
 		public static void InvokeDisarmRequest(DisarmRequestEventArgs e)
 		{
-			if (DisarmRequest != null)
-			{
-				DisarmRequest(e);
-			}
+			DisarmRequest?.Invoke(e);
 		}
 
 		public static void InvokeStunRequest(StunRequestEventArgs e)
 		{
-			if (StunRequest != null)
-			{
-				StunRequest(e);
-			}
+			StunRequest?.Invoke(e);
 		}
 
 		public static void InvokeHelpRequest(HelpRequestEventArgs e)
 		{
-			if (HelpRequest != null)
-			{
-				HelpRequest(e);
-			}
+			HelpRequest?.Invoke(e);
 		}
 
 		public static void InvokeShutdown(ShutdownEventArgs e)
 		{
-			if (Shutdown != null)
-			{
-				Shutdown(e);
-			}
+			Shutdown?.Invoke(e);
 		}
 
 		public static void InvokeCrashed(CrashedEventArgs e)
 		{
-			if (Crashed != null)
-			{
-				Crashed(e);
-			}
+			Crashed?.Invoke(e);
+		}
+
+		public static void InvokeClientCrashed(ClientCrashedEventArgs e)
+		{
+			ClientCrashed?.Invoke(e);
 		}
 
 		public static void InvokeHungerChanged(HungerChangedEventArgs e)
 		{
-			if (HungerChanged != null)
-			{
-				HungerChanged(e);
-			}
+			HungerChanged?.Invoke(e);
 		}
 
 		public static void InvokeMovement(MovementEventArgs e)
 		{
-			if (Movement != null)
-			{
-				Movement(e);
-			}
+			Movement?.Invoke(e);
 		}
 
 		public static void InvokeServerList(ServerListEventArgs e)
 		{
-			if (ServerList != null)
-			{
-				ServerList(e);
-			}
+			ServerList?.Invoke(e);
 		}
 
 		public static void InvokeLogin(LoginEventArgs e)
 		{
-			if (Login != null)
-			{
-				Login(e);
-			}
+			Login?.Invoke(e);
 		}
 
 		public static void InvokeSpeech(SpeechEventArgs e)
 		{
-			if (Speech != null)
-			{
-				Speech(e);
-			}
+			Speech?.Invoke(e);
+		}
+
+		public static void InvokeCharacterCreation(CharacterCreationEventArgs e)
+		{
+			CharacterCreation?.Invoke(e);
 		}
 
 		public static void InvokeCharacterCreated(CharacterCreatedEventArgs e)
 		{
-			if (CharacterCreated != null)
-			{
-				CharacterCreated(e);
-			}
+			CharacterCreated?.Invoke(e);
 		}
 
 		public static void InvokeOpenDoorMacroUsed(OpenDoorMacroEventArgs e)
 		{
-			if (OpenDoorMacroUsed != null)
-			{
-				OpenDoorMacroUsed(e);
-			}
+			OpenDoorMacroUsed?.Invoke(e);
 		}
 
 		public static void InvokeWorldLoad()
 		{
-			if (WorldLoad != null)
-			{
-				WorldLoad();
-			}
+			WorldLoad?.Invoke();
 		}
 
 		public static void InvokeWorldSave(WorldSaveEventArgs e)
 		{
-			if (WorldSave != null)
-			{
-				WorldSave(e);
-			}
+			WorldSave?.Invoke(e);
 		}
 
 		public static void InvokeBeforeWorldSave(BeforeWorldSaveEventArgs e)
 		{
-			if (BeforeWorldSave != null)
-			{
-				BeforeWorldSave(e);
-			}
+			BeforeWorldSave?.Invoke(e);
 		}
 
 		public static void InvokeAfterWorldSave(AfterWorldSaveEventArgs e)
 		{
-			if (AfterWorldSave != null)
-			{
-				AfterWorldSave(e);
-			}
+			AfterWorldSave?.Invoke(e);
 		}
 
 		public static void InvokeOnKilledBy(OnKilledByEventArgs e)
 		{
-			if (OnKilledBy != null)
-			{
-				OnKilledBy(e);
-			}
+			OnKilledBy?.Invoke(e);
 		}
 
 		public static void InvokeOnItemUse(OnItemUseEventArgs e)
 		{
-			if (OnItemUse != null)
-			{
-				OnItemUse(e);
-			}
+			OnItemUse?.Invoke(e);
+		}
+
+		public static void InvokeOnExitRegion(OnExitRegionEventArgs e)
+		{
+			OnExitRegion?.Invoke(e);
 		}
 
 		public static void InvokeOnEnterRegion(OnEnterRegionEventArgs e)
 		{
-			if (OnEnterRegion != null)
-			{
-				OnEnterRegion(e);
-			}
+			OnEnterRegion?.Invoke(e);
 		}
 
 		public static void InvokeOnConsume(OnConsumeEventArgs e)
 		{
-			if (OnConsume != null)
-			{
-				OnConsume(e);
-			}
+			OnConsume?.Invoke(e);
 		}
 
 		public static void InvokeOnPropertyChanged(OnPropertyChangedEventArgs e)
 		{
-			if (OnPropertyChanged != null)
-			{
-				OnPropertyChanged(e);
-			}
+			OnPropertyChanged?.Invoke(e);
 		}
 
 		public static void InvokeBODUsed(BODUsedEventArgs e)
 		{
-			if (BODUsed != null)
-			{
-				BODUsed(e);
-			}
+			BODUsed?.Invoke(e);
 		}
 
 		public static void InvokeBODOffered(BODOfferEventArgs e)
 		{
-			if (BODOffered != null)
-			{
-				BODOffered(e);
-			}
+			BODOffered?.Invoke(e);
 		}
 
 		public static void InvokeResourceHarvestAttempt(ResourceHarvestAttemptEventArgs e)
 		{
-			if (ResourceHarvestAttempt != null)
-			{
-				ResourceHarvestAttempt(e);
-			}
+			ResourceHarvestAttempt?.Invoke(e);
 		}
 
 		public static void InvokeResourceHarvestSuccess(ResourceHarvestSuccessEventArgs e)
 		{
-			if (ResourceHarvestSuccess != null)
-			{
-				ResourceHarvestSuccess(e);
-			}
+			ResourceHarvestSuccess?.Invoke(e);
 		}
 
 		public static void InvokeCraftSuccess(CraftSuccessEventArgs e)
 		{
-			if (CraftSuccess != null)
-			{
-				CraftSuccess(e);
-			}
+			CraftSuccess?.Invoke(e);
 		}
 
 		public static void InvokeSkillGain(SkillGainEventArgs e)
 		{
-			if (SkillGain != null)
-			{
-				SkillGain(e);
-			}
+			SkillGain?.Invoke(e);
 		}
 
 		public static void InvokeSkillCheck(SkillCheckEventArgs e)
 		{
-			if (SkillCheck != null)
-			{
-				SkillCheck(e);
-			}
+			SkillCheck?.Invoke(e);
 		}
 
 		public static void InvokeSkillCapChange(SkillCapChangeEventArgs e)
 		{
-			if (SkillCapChange != null)
-			{
-				SkillCapChange(e);
-			}
+			SkillCapChange?.Invoke(e);
 		}
 
 		public static void InvokeStatCapChange(StatCapChangeEventArgs e)
 		{
-			if (StatCapChange != null)
-			{
-				StatCapChange(e);
-			}
+			StatCapChange?.Invoke(e);
 		}
 
 		public static void InvokeQuestComplete(QuestCompleteEventArgs e)
 		{
-			if (QuestComplete != null)
-			{
-				QuestComplete(e);
-			}
+			QuestComplete?.Invoke(e);
+		}
+
+		public static void InvokeRaceChanged(RaceChangedEventArgs e)
+		{
+			RaceChanged?.Invoke(e);
 		}
 
 		public static void InvokeItemCreated(ItemCreatedEventArgs e)
 		{
-			if (ItemCreated != null)
-			{
-				ItemCreated(e);
-			}
+			ItemCreated?.Invoke(e);
 		}
 
 		public static void InvokeItemDeleted(ItemDeletedEventArgs e)
 		{
-			if (ItemDeleted != null)
-			{
-				ItemDeleted(e);
-			}
+			ItemDeleted?.Invoke(e);
 		}
 
 		public static void InvokeMobileCreated(MobileCreatedEventArgs e)
 		{
-			if (MobileCreated != null)
-			{
-				MobileCreated(e);
-			}
+			MobileCreated?.Invoke(e);
 		}
 
 		public static void InvokeMobileDeleted(MobileDeletedEventArgs e)
 		{
-			if (MobileDeleted != null)
-			{
-				MobileDeleted(e);
-			}
+			MobileDeleted?.Invoke(e);
 		}
 
 		public static void InvokeTargetedSpell(TargetedSpellEventArgs e)
 		{
-			if (TargetedSpell != null)
-			{
-				TargetedSpell(e);
-			}
+			TargetedSpell?.Invoke(e);
 		}
 
 		public static void InvokeTargetedSkill(TargetedSkillEventArgs e)
 		{
-			if (TargetedSkill != null)
-			{
-				TargetedSkill(e);
-			}
+			TargetedSkill?.Invoke(e);
 		}
 
 		public static void InvokeTargetedItemUse(TargetedItemUseEventArgs e)
 		{
-			if (TargetedItemUse != null)
-			{
-				TargetedItemUse(e);
-			}
+			TargetedItemUse?.Invoke(e);
 		}
 
 		public static void InvokeTargetByResourceMacro(TargetByResourceMacroEventArgs e)
 		{
-			if (TargetByResourceMacro != null)
-			{
-				TargetByResourceMacro(e);
-			}
+			TargetByResourceMacro?.Invoke(e);
 		}
 
 		public static void InvokeEquipMacro(EquipMacroEventArgs e)
 		{
-			if (EquipMacro != null)
-			{
-				EquipMacro(e);
-			}
+			EquipMacro?.Invoke(e);
 		}
 
 		public static void InvokeUnequipMacro(UnequipMacroEventArgs e)
 		{
-			if (UnequipMacro != null)
-			{
-				UnequipMacro(e);
-			}
+			UnequipMacro?.Invoke(e);
 		}
 
 		public static void InvokeJoinGuild(JoinGuildEventArgs e)
 		{
-			if (JoinGuild != null)
-			{
-				JoinGuild(e);
-			}
+			JoinGuild?.Invoke(e);
 		}
 
 		public static void InvokeTameCreature(TameCreatureEventArgs e)
 		{
-			if (TameCreature != null)
-			{
-				TameCreature(e);
-			}
+			TameCreature?.Invoke(e);
 		}
 
 		public static void InvokeValidVendorPurchase(ValidVendorPurchaseEventArgs e)
 		{
-			if (ValidVendorPurchase != null)
-			{
-				ValidVendorPurchase(e);
-			}
+			ValidVendorPurchase?.Invoke(e);
 		}
 
 		public static void InvokeValidVendorSell(ValidVendorSellEventArgs e)
 		{
-			if (ValidVendorSell != null)
-			{
-				ValidVendorSell(e);
-			}
+			ValidVendorSell?.Invoke(e);
 		}
 
 		public static void InvokeCorpseLoot(CorpseLootEventArgs e)
 		{
-			if (CorpseLoot != null)
-			{
-				CorpseLoot(e);
-			}
+			CorpseLoot?.Invoke(e);
 		}
 
 		public static void InvokeRepairItem(RepairItemEventArgs e)
 		{
-			if (RepairItem != null)
-			{
-				RepairItem(e);
-			}
+			RepairItem?.Invoke(e);
 		}
 
 		public static void InvokeAlterItem(AlterItemEventArgs e)
 		{
-			if (AlterItem != null)
-			{
-				AlterItem(e);
-			}
+			AlterItem?.Invoke(e);
 		}
 
 		public static void InvokePlacePlayerVendor(PlacePlayerVendorEventArgs e)
 		{
-			if (PlacePlayerVendor != null)
-			{
-				PlacePlayerVendor(e);
-			}
+			PlacePlayerVendor?.Invoke(e);
 		}
 
 		public static void InvokeFameChange(FameChangeEventArgs e)
 		{
-			if (FameChange != null)
-			{
-				FameChange(e);
-			}
+			FameChange?.Invoke(e);
 		}
 
 		public static void InvokeKarmaChange(KarmaChangeEventArgs e)
 		{
-			if (KarmaChange != null)
-			{
-				KarmaChange(e);
-			}
+			KarmaChange?.Invoke(e);
 		}
 
 		public static void InvokeVirtueLevelChange(VirtueLevelChangeEventArgs e)
 		{
-			if (VirtueLevelChange != null)
-			{
-				VirtueLevelChange(e);
-			}
+			VirtueLevelChange?.Invoke(e);
 		}
 
 		public static void InvokePlayerMurdered(PlayerMurderedEventArgs e)
 		{
-			if (PlayerMurdered != null)
-			{
-				PlayerMurdered(e);
-			}
+			PlayerMurdered?.Invoke(e);
 		}
 
 		public static void InvokeAccountGoldChange(AccountGoldChangeEventArgs e)
 		{
-			if (AccountGoldChange != null)
-			{
-				AccountGoldChange(e);
-			}
+			AccountGoldChange?.Invoke(e);
 		}
 
 		public static void InvokeContainerDroppedTo(ContainerDroppedToEventArgs e)
 		{
-			if (ContainerDroppedTo != null)
-			{
-				ContainerDroppedTo(e);
-			}
+			ContainerDroppedTo?.Invoke(e);
 		}
 
 		public static void InvokeTeleportMovement(TeleportMovementEventArgs e)
 		{
-			if (TeleportMovement != null)
-			{
-				TeleportMovement(e);
-			}
+			TeleportMovement?.Invoke(e);
 		}
 
 		public static void InvokeMultiDesignQuery(MultiDesignQueryEventArgs e)
 		{
-			if (MultiDesign != null)
-			{
-				MultiDesign(e);
-			}
+			MultiDesign?.Invoke(e);
 		}
 
 		public static void Reset()
 		{
+			OnItemLift = null;
+			OnItemLifted = null;
+			OnItemMerged = null;
 			OnItemObtained = null;
+			CheckAccessItem = null;
 			CheckEquipItem = null;
 			ContextMenu = null;
 			WorldBroadcast = null;
+			CharacterCreation = null;
 			CharacterCreated = null;
 			OpenDoorMacroUsed = null;
 			Speech = null;
@@ -2526,6 +2426,7 @@ namespace Server
 			Movement = null;
 			HungerChanged = null;
 			Crashed = null;
+			ClientCrashed = null;
 			Shutdown = null;
 			HelpRequest = null;
 			DisarmRequest = null;
@@ -2559,6 +2460,7 @@ namespace Server
 			QuestGumpRequest = null;
 			OnKilledBy = null;
 			OnItemUse = null;
+			OnExitRegion = null;
 			OnEnterRegion = null;
 			OnConsume = null;
 			OnPropertyChanged = null;
@@ -2569,6 +2471,10 @@ namespace Server
 			CraftSuccess = null;
 			SkillGain = null;
 			SkillCheck = null;
+			SkillCapChange = null;
+			StatCapChange = null;
+			QuestComplete = null;
+			RaceChanged = null;
 
 			ItemCreated = null;
 			ItemDeleted = null;
@@ -2578,6 +2484,9 @@ namespace Server
 			TargetedSpell = null;
 			TargetedSkill = null;
 			TargetedItemUse = null;
+			EquipMacro = null;
+			UnequipMacro = null;
+			TargetByResourceMacro = null;
 
 			JoinGuild = null;
 			TameCreature = null;

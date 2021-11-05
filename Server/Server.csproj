@@ -17,8 +17,12 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<DefineConstants>NEWTIMERS;ServUO;P58</DefineConstants>
+		<DefineConstants>NEWTIMERS;NEWPARENT;ServUO;ServUO58</DefineConstants>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="System.Drawing.Common" Version="4.7.0" />

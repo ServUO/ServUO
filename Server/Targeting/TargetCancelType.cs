@@ -5,6 +5,7 @@ namespace Server.Targeting
 		Overriden,
 		Canceled,
 		Disconnected,
-		Timeout
+		Timeout,
+		Invalid,
 	}
 }

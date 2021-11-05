@@ -75,7 +75,7 @@ namespace Server.Engines.Despise
             if (m is PlayerMobile &&
                 !WispOrb.Orbs.Any(x => x.Owner == m) &&
                 QuestHelper.HasQuest<WhisperingWithWispsQuest>((PlayerMobile)m) &&
-                InRange(m.Location, 5) && !InRange(oldLocation, 5))
+                Utility.InRange(this, m, 5) && !Utility.InRange(this, oldLocation, 5))
             {
                 m.SendLocalizedMessage(1158311); // You have found an ankh. Use the ankh to continue your journey.
             }

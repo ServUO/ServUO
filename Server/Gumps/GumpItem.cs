@@ -48,8 +48,8 @@ namespace Server.Gumps
 		{
 			if (m_Hue == 0)
 				return $"{{ tilepic {m_X} {m_Y} {m_ItemID} }}";
-			else
-				return $"{{ tilepichue {m_X} {m_Y} {m_ItemID} {m_Hue} }}";
+
+			return $"{{ tilepichue {m_X} {m_Y} {m_ItemID} {m_Hue} }}";
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("tilepic");

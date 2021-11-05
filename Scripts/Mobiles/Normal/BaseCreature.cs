@@ -201,7 +201,7 @@ namespace Server.Mobiles
         }
     }
 
-    public class BaseCreature : Mobile, IHonorTarget, IEngravable
+    public class BaseCreature : Mobile, ITamable, IHonorTarget, IEngravable
     {
         public const int MaxLoyalty = 100;
 
@@ -3875,7 +3875,6 @@ namespace Server.Mobiles
             private readonly BaseCreature m_Creature;
 
             public PetRenamePrompt(BaseCreature creature)
-                : base(creature)
             {
                 m_Creature = creature;
             }
@@ -4155,7 +4154,7 @@ namespace Server.Mobiles
                     // not in the list, so we're adding it
                     master.Aggressors.Add(AggressorInfo.Create(aggressor, master, criminal));
 
-                    if (Utility.InUpdateRange(master, aggressor) && master.CanSee(aggressor))
+                    if (master.InUpdateRange(aggressor) && master.CanSee(aggressor))
                     {
                         MobileIncoming.Send(master.NetState, aggressor);
                     }
@@ -4192,7 +4191,7 @@ namespace Server.Mobiles
                     // not in the list, so we're adding it
                     aggressor.Aggressed.Add(AggressorInfo.Create(aggressor, master, criminal));
 
-                    if (Utility.InUpdateRange(master, aggressor) && master.CanSee(aggressor))
+                    if (master.InUpdateRange(aggressor) && master.CanSee(aggressor))
                     {
                         MobileIncoming.Send(master.NetState, aggressor);
                     }
@@ -7072,22 +7071,34 @@ namespace Server.Mobiles
 
             List<Item> items = toRummage.Items;
 
-            bool rejected;
-            LRReason reason;
+			if (items.Count == 0)
+			{
+				return false;
+			}
 
-            for (int i = 0; i < items.Count; ++i)
+			double chance = 0.10 + (0.90 * (items.Count / (double)toRummage.MaxItems));
+
+			int index = items.Count;
+
+			while (--index >= 0)
             {
-                Item item = items[Utility.Random(items.Count)];
+				if (index >= items.Count)
+				{
+					continue;
+				}
 
-                Lift(item, item.Amount, out rejected, out reason);
+				if (Utility.RandomDouble() <= chance)
+				{
+					Item item = Utility.RandomList(items);
 
-                if (!rejected && Drop(pack, new Point3D(-1, -1, 0)))
-                {
-                    // *rummages through a corpse and takes an item*
-                    PublicOverheadMessage(MessageType.Emote, 0x3B2, 1008086);
-                    //TODO: Instancing of Rummaged stuff.
-                    return true;
-                }
+					if (Lift(item, item.Amount) && Drop(pack, new Point3D(-1, -1, 0)))
+					{
+						// *rummages through a corpse and takes an item*
+						PublicOverheadMessage(MessageType.Emote, 0x3B2, 1008086);
+
+						return true;
+					}
+				}
             }
 
             return false;

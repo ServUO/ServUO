@@ -747,11 +747,11 @@ namespace Server.Engines.Doom
                 Region reg = Region.Find(loc, map).GetRegion("Doom Gauntlet");
 
                 if (reg != null)
-                    playerCount = reg.GetEnumeratedMobiles().Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player).Count();
+                    playerCount = reg.AllMobiles.Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player).Count();
             }
 
             if (playerCount == 0 && m_Region != null)
-                playerCount = m_Region.GetEnumeratedMobiles().Where(m => m.AccessLevel == AccessLevel.Player).Count();
+                playerCount = m_Region.AllMobiles.Where(m => m.AccessLevel == AccessLevel.Player).Count();
 
             int count = (playerCount + PlayersPerSpawn - 1) / PlayersPerSpawn;
 
@@ -884,9 +884,9 @@ namespace Server.Engines.Doom
             writer.Write(m_Creatures, false);
 
             writer.Write(m_TypeName);
-            writer.WriteItem(m_Door);
-            writer.WriteItem(m_Addon);
-            writer.WriteItem(m_Sequence);
+            writer.Write(m_Door);
+            writer.Write(m_Addon);
+            writer.Write(m_Sequence);
 
             writer.Write((int)m_State);
         }

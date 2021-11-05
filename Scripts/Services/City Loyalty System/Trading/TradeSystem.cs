@@ -330,7 +330,7 @@ namespace Server.Engines.CityLoyalty
         public static Type GetRandomTrade(City originCity, City dest, ref int worth, ref string name)
         {
             Region region = CityLoyaltySystem.GetCityInstance(originCity).Definition.Region;
-            List<BaseVendor> list = new List<BaseVendor>(region.GetEnumeratedMobiles().OfType<BaseVendor>().Where(bv => bv.GetBuyInfo() != null && bv.GetBuyInfo().Length > 0));
+            List<BaseVendor> list = new List<BaseVendor>(region.AllMobiles.OfType<BaseVendor>().Where(bv => bv.GetBuyInfo() != null && bv.GetBuyInfo().Length > 0));
 
             if (list.Count == 0)
                 return null;
@@ -407,10 +407,8 @@ namespace Server.Engines.CityLoyalty
             if (crate == null || crate.Deleted || crate.Entry == null || crate.Expired || crate.Entry.LastAmbush + TimeSpan.FromMinutes(AmbushWaitDuration) > DateTime.UtcNow)
                 return;
 
-            if (crate.RootParentEntity is Mobile && !((Mobile)crate.RootParentEntity).Region.IsPartOf<GuardedRegion>())
+            if (crate.RootParent is Mobile m && !m.Region.IsPartOf<GuardedRegion>())
             {
-                Mobile m = crate.RootParentEntity as Mobile;
-
                 if (m.NetState != null && m.Map != null && m.Map != Map.Internal)
                 {
                     double chance = crate.Entry.LastAmbush == DateTime.MinValue ? 0.25 : .05;

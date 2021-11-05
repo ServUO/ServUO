@@ -8,7 +8,7 @@ using Server.Network;
 
 namespace Server
 {
-	public class RegionRect : IComparable
+	public class RegionRect : IComparable, IComparable<RegionRect>
 	{
 		private readonly Region m_Region;
 		private Rectangle3D m_Rect;
@@ -22,26 +22,25 @@ namespace Server
 			m_Rect = rect;
 		}
 
-		public bool Contains(Point3D loc)
+		public bool Contains(IPoint3D loc)
 		{
 			return m_Rect.Contains(loc);
 		}
 
 		int IComparable.CompareTo(object obj)
 		{
-			if (obj == null)
-			{
-				return 1;
-			}
+			if (obj is RegionRect regRect)
+				return m_Region.CompareTo(regRect.m_Region);
 
-			var regRect = obj as RegionRect;
+			return -1;
+		}
 
-			if (regRect == null)
-			{
-				throw new ArgumentException("obj is not a RegionRect", "obj");
-			}
+		int IComparable<RegionRect>.CompareTo(RegionRect regRect)
+		{
+			if (regRect != null)
+				return m_Region.CompareTo(regRect.m_Region);
 
-			return ((IComparable)m_Region).CompareTo(regRect.m_Region);
+			return -1;
 		}
 	}
 
@@ -74,7 +73,7 @@ namespace Server
 			m_Active = false;
 		}
 
-		private void Add<T>(ref List<T> list, T value)
+		private static void Add<T>(ref List<T> list, T value)
 		{
 			if (list == null)
 			{
@@ -84,7 +83,7 @@ namespace Server
 			list.Add(value);
 		}
 
-		private void Remove<T>(ref List<T> list, T value)
+		private static void Remove<T>(ref List<T> list, T value)
 		{
 			if (list != null)
 			{
@@ -97,7 +96,7 @@ namespace Server
 			}
 		}
 
-		private void Replace<T>(ref List<T> list, T oldValue, T newValue)
+		private static void Replace<T>(ref List<T> list, T oldValue, T newValue)
 		{
 			if (oldValue != null && newValue != null)
 			{
@@ -190,13 +189,18 @@ namespace Server
 		{
 			if (m_RegionRects != null)
 			{
-				for (var i = m_RegionRects.Count - 1; i >= 0; i--)
-				{
-					var regRect = m_RegionRects[i];
+				var i = m_RegionRects.Count;
 
-					if (regRect.Region == region)
+				while (--i >= 0)
+				{
+					if (i < m_RegionRects.Count)
 					{
-						m_RegionRects.RemoveAt(i);
+						var regRect = m_RegionRects[i];
+
+						if (regRect.Region == region)
+						{
+							m_RegionRects.RemoveAt(i);
+						}
 					}
 				}
 
@@ -213,11 +217,14 @@ namespace Server
 		{
 			if (m_Mobiles != null)
 			{
-				var sandbox = new List<Mobile>(m_Mobiles);
+				var i = m_Mobiles.Count;
 
-				foreach (var mob in sandbox)
+				while (--i >= 0)
 				{
-					mob.UpdateRegion();
+					if (i < m_Mobiles.Count)
+					{
+						m_Mobiles[i]?.UpdateRegion();
+					}
 				}
 			}
 		}
@@ -238,17 +245,27 @@ namespace Server
 			{
 				if (m_Items != null)
 				{
-					foreach (var item in m_Items)
+					var i = m_Items.Count;
+
+					while (--i >= 0)
 					{
-						item.OnSectorActivate();
+						if (i < m_Items.Count)
+						{
+							m_Items[i]?.OnSectorActivate();
+						}
 					}
 				}
 
 				if (m_Mobiles != null)
 				{
-					foreach (var mob in m_Mobiles)
+					var i = m_Mobiles.Count;
+
+					while (--i >= 0)
 					{
-						mob.OnSectorActivate();
+						if (i < m_Mobiles.Count)
+						{
+							m_Mobiles[i]?.OnSectorActivate();
+						}
 					}
 				}
 
@@ -262,17 +279,27 @@ namespace Server
 			{
 				if (m_Items != null)
 				{
-					foreach (var item in m_Items)
+					var i = m_Items.Count;
+
+					while (--i >= 0)
 					{
-						item.OnSectorDeactivate();
+						if (i < m_Items.Count)
+						{
+							m_Items[i]?.OnSectorDeactivate();
+						}
 					}
 				}
 
 				if (m_Mobiles != null)
 				{
-					foreach (var mob in m_Mobiles)
+					var i = m_Mobiles.Count;
+
+					while (--i >= 0)
 					{
-						mob.OnSectorDeactivate();
+						if (i < m_Mobiles.Count)
+						{
+							m_Mobiles[i]?.OnSectorDeactivate();
+						}
 					}
 				}
 

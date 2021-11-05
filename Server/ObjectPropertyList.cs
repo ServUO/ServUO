@@ -1,4 +1,5 @@
 #region References
+using System;
 using System.IO;
 using System.Text;
 
@@ -53,8 +54,15 @@ namespace Server
 			m_Stream.Write((short)0);
 		}
 
+		private bool m_Terminated;
+
 		public void Terminate()
 		{
+			if (m_Terminated)
+				return;
+
+			m_Terminated = true;
+
 			m_Stream.Write(0);
 
 			m_Stream.Seek(11, SeekOrigin.Begin);
@@ -108,26 +116,26 @@ namespace Server
 
 		public void Add(int number, string format, object arg0)
 		{
-			Add(number, System.String.Format(format, arg0));
+			Add(number, String.Format(format, arg0));
 		}
 
 		public void Add(int number, string format, object arg0, object arg1)
 		{
-			Add(number, System.String.Format(format, arg0, arg1));
+			Add(number, String.Format(format, arg0, arg1));
 		}
 
 		public void Add(int number, string format, object arg0, object arg1, object arg2)
 		{
-			Add(number, System.String.Format(format, arg0, arg1, arg2));
+			Add(number, String.Format(format, arg0, arg1, arg2));
 		}
 
 		public void Add(int number, string format, params object[] args)
 		{
-			Add(number, System.String.Format(format, args));
+			Add(number, String.Format(format, args));
 		}
 
 		// Each of these are localized to "~1_NOTHING~" which allows the string argument to be used
-		private static readonly int[] m_StringNumbers = new[] { 1042971, 1070722 };
+		private static readonly int[] m_StringNumbers = { 1042971, 1070722 };
 
 		private int GetStringNumber()
 		{
@@ -141,22 +149,22 @@ namespace Server
 
 		public void Add(string format, string arg0)
 		{
-			Add(GetStringNumber(), System.String.Format(format, arg0));
+			Add(GetStringNumber(), String.Format(format, arg0));
 		}
 
 		public void Add(string format, string arg0, string arg1)
 		{
-			Add(GetStringNumber(), System.String.Format(format, arg0, arg1));
+			Add(GetStringNumber(), String.Format(format, arg0, arg1));
 		}
 
 		public void Add(string format, string arg0, string arg1, string arg2)
 		{
-			Add(GetStringNumber(), System.String.Format(format, arg0, arg1, arg2));
+			Add(GetStringNumber(), String.Format(format, arg0, arg1, arg2));
 		}
 
 		public void Add(string format, params object[] args)
 		{
-			Add(GetStringNumber(), System.String.Format(format, args));
+			Add(GetStringNumber(), String.Format(format, args));
 		}
 	}
 

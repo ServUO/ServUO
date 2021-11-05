@@ -886,10 +886,8 @@ namespace Server.Items
             return true;
         }
 
-        public override void OnAdded(object parent)
-        {
-            base.OnAdded(parent);
-
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -920,10 +918,12 @@ namespace Server.Items
                 from.CheckStatTimers();
                 from.Delta(MobileDelta.WeaponDamage);
             }
+
+            base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile m = (Mobile)parent;
@@ -983,7 +983,9 @@ namespace Server.Items
             }
 
             LastParryChance = 0;
-        }
+
+			base.OnRemoved(parent);
+		}
 
         public void AddMysticMod(Mobile from)
         {

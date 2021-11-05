@@ -6,14 +6,17 @@ namespace Server.Menus.Questions
 {
 	public class QuestionMenu : IMenu
 	{
+		private static int m_NextSerial;
+
 		private readonly string[] m_Answers;
 
 		private readonly int m_Serial;
-		private static int m_NextSerial;
 
 		int IMenu.Serial => m_Serial;
 
 		int IMenu.EntryLength => m_Answers.Length;
+
+		public int GumpID { get; set; }
 
 		public string Question { get; set; }
 
@@ -21,6 +24,8 @@ namespace Server.Menus.Questions
 
 		public QuestionMenu(string question, string[] answers)
 		{
+			//GumpID = 83;
+
 			Question = question;
 			m_Answers = answers;
 

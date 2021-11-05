@@ -572,8 +572,8 @@ namespace Server.Items
         public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
         #endregion
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -613,10 +613,12 @@ namespace Server.Items
                 }
                 #endregion
             }
+
+			base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -636,6 +638,8 @@ namespace Server.Items
                     SetHelper.RemoveSetBonus(from, SetID, this);
                 #endregion
             }
+
+			base.OnRemoved(parent);
         }
 
         public virtual void SetProtection(Type type, TextDefinition name, int amount)

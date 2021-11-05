@@ -375,7 +375,7 @@ namespace Server.Engines.PartySystem
             {
                 Mobile c = m_Members[i].Mobile;
 
-                if (c != m && m.Map == c.Map && Utility.InUpdateRange(c, m) && c.CanSee(m))
+                if (c != m && m.Map == c.Map && c.InUpdateRange(m) && c.CanSee(m))
                 {
                     if (p == null)
                         p = Packet.Acquire(new MobileStamN(m));
@@ -395,7 +395,7 @@ namespace Server.Engines.PartySystem
             {
                 Mobile c = m_Members[i].Mobile;
 
-                if (c != m && m.Map == c.Map && Utility.InUpdateRange(c, m) && c.CanSee(m))
+                if (c != m && m.Map == c.Map && c.InUpdateRange(m) && c.CanSee(m))
                 {
                     if (p == null)
                         p = Packet.Acquire(new MobileManaN(m));
@@ -409,7 +409,7 @@ namespace Server.Engines.PartySystem
 
         public void OnStatsQuery(Mobile beholder, Mobile beheld)
         {
-            if (beholder != beheld && Contains(beholder) && beholder.Map == beheld.Map && Utility.InUpdateRange(beholder, beheld))
+            if (beholder != beheld && Contains(beholder) && beholder.Map == beheld.Map && beholder.InUpdateRange(beheld))
             {
                 if (!beholder.CanSee(beheld))
                     MobileStatus.Send(beholder.NetState, beheld);

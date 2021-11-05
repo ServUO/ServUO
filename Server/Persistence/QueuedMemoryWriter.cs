@@ -1,30 +1,4 @@
-﻿/***************************************************************************
-*                            QueuedMemoryWriter.cs
-*                            -------------------
-*   begin                : December 16, 2010
-*   copyright            : (C) The RunUO Software Team
-*   email                : info@runuo.com
-*
-*   $Id: QueuedMemoryWriter.cs 645 2010-12-23 11:36:25Z asayre $
-*
-***************************************************************************/
-
-
-
-
-
-
-
-
-/***************************************************************************
-*
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
-*
-***************************************************************************/
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Server
@@ -32,7 +6,9 @@ namespace Server
 	public sealed class QueuedMemoryWriter : BinaryFileWriter
 	{
 		private readonly MemoryStream _memStream;
+
 		private readonly List<IndexInfo> _orderedIndexInfo = new List<IndexInfo>();
+
 		public QueuedMemoryWriter()
 			: base(new MemoryStream(1024 * 1024), true)
 		{
@@ -40,6 +16,7 @@ namespace Server
 		}
 
 		protected override int BufferSize => 512;
+
 		public void QueueForIndex(ISerializable serializable, int size)
 		{
 			IndexInfo info;

@@ -553,8 +553,8 @@ namespace Server.Items
             return m_AosClothingAttributes.LowerStatReq;
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             Mobile mob = parent as Mobile;
 
             if (mob != null)
@@ -579,8 +579,8 @@ namespace Server.Items
             base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             Mobile mob = parent as Mobile;
 
             if (mob != null)
@@ -1973,10 +1973,8 @@ namespace Server.Items
                 if (m_SetEnergyBonus != 0)
                     list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%			
             }
-            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParentEntity is Mobile)
+            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParent is Mobile m)
             {
-                Mobile m = (Mobile)RootParentEntity;
-
                 if (m_SetPhysicalBonus != 0)
                     list.Add(1080361, SetHelper.GetSetTotalResist(m, ResistanceType.Physical).ToString()); // physical resist ~1_val~% (total)
 

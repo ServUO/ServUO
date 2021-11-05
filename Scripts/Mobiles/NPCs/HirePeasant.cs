@@ -8,7 +8,7 @@ namespace Server.Mobiles
         public HirePeasant()
         {
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = Utility.RandomBool())
             {

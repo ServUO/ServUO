@@ -1108,18 +1108,15 @@ namespace Server.Items
                                 m_House.MovingCrate = null;
                             }
 
-                            List<Item> items = m_House.GetItems();
-                            List<Mobile> mobiles = m_House.GetMobiles();
-
                             newHouse.MoveToWorld(new Point3D(m_House.X + m_House.ConvertOffsetX, m_House.Y + m_House.ConvertOffsetY, m_House.Z + m_House.ConvertOffsetZ), m_House.Map);
                             m_House.Delete();
 
-                            foreach (Item item in items)
+                            foreach (Item item in m_House.GetItems())
                             {
                                 item.Location = newHouse.BanLocation;
                             }
 
-                            foreach (Mobile mobile in mobiles)
+                            foreach (Mobile mobile in m_House.GetMobiles())
                             {
                                 mobile.Location = newHouse.BanLocation;
                             }

@@ -686,7 +686,7 @@ namespace Server.Engines.CannedEvil
 
             if (TimerRunning && _NextGhostCheck < DateTime.UtcNow)
             {
-                foreach (PlayerMobile ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
+                foreach (PlayerMobile ghost in m_Region.AllPlayers.OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
                 {
                     Map map = ghost.Map;
                     Point3D loc = ExorcismSpell.GetNearestShrine(ghost, ref map);
@@ -1225,7 +1225,7 @@ namespace Server.Engines.CannedEvil
             }
 
             writer.Write(m_ConfinedRoaming);
-            writer.WriteItem(m_Idol);
+            writer.Write(m_Idol);
             writer.Write(m_HasBeenAdvanced);
             writer.Write(m_SpawnArea);
 
@@ -1238,8 +1238,8 @@ namespace Server.Engines.CannedEvil
             writer.Write(m_Creatures, true);
             writer.Write(m_RedSkulls, true);
             writer.Write(m_WhiteSkulls, true);
-            writer.WriteItem(m_Platform);
-            writer.WriteItem(m_Altar);
+            writer.Write(m_Platform);
+            writer.Write(m_Altar);
             writer.Write(m_ExpireDelay);
             writer.WriteDeltaTime(m_ExpireTime);
             writer.Write(m_Champion);

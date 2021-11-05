@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,12 +23,13 @@ namespace Server
 
 			public string Desc { get; set; }
 
-			public string Key { get; set; }
-			public string Value { get; set; }
+			public string Key { get; private set; }
+			public string Value { get; private set; }
+			public object Object { get; private set; }
 
 			public bool UseDefault { get; set; }
 
-			public Entry(string file, int fileIndex, string scope, string desc, string key, string value, bool useDefault)
+			public Entry(string file, int fileIndex, string scope, string desc, string key, string value, object state, bool useDefault)
 			{
 				File = file;
 				FileIndex = fileIndex;
@@ -37,8 +39,17 @@ namespace Server
 
 				Key = key;
 				Value = value;
+				Object = state;
 
 				UseDefault = useDefault;
+			}
+
+			public void Set(string value, object state)
+			{
+				Value = value;
+				Object = state;
+
+				UseDefault = Object == null;
 			}
 
 			public override string ToString()
@@ -62,7 +73,7 @@ namespace Server
 
 			public override bool Equals(object obj)
 			{
-				return obj is Entry && Equals((Entry)obj);
+				return obj is Entry e && Equals(e);
 			}
 
 			public bool Equals(Entry other)
@@ -77,9 +88,7 @@ namespace Server
 					return true;
 				}
 
-				return Insensitive.Equals(File, other.File) && //
-					   Insensitive.Equals(Scope, other.Scope) && //
-					   Insensitive.Equals(Key, other.Key);
+				return Insensitive.Equals(File, other.File) && Insensitive.Equals(Scope, other.Scope) && Insensitive.Equals(Key, other.Key);
 			}
 
 			public int CompareTo(Entry other)
@@ -104,10 +113,61 @@ namespace Server
 
 		private static readonly IFormatProvider _NumFormatter = CultureInfo.InvariantCulture.NumberFormat;
 
-		private static readonly Dictionary<string, Entry> _Entries =
-			new Dictionary<string, Entry>(StringComparer.OrdinalIgnoreCase);
+		private static readonly HashSet<string> _Warned = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+
+		private static readonly Dictionary<string, Entry> _Entries = new Dictionary<string, Entry>(StringComparer.InvariantCultureIgnoreCase);
 
 		public static IEnumerable<Entry> Entries => _Entries.Values;
+
+		public static Entry Find(string key)
+		{
+			Load();
+
+			_Entries.TryGetValue(key, out var e);
+
+			return e;
+		}
+
+		public static void Dump(string scope)
+		{
+			Dump(Console.Out, scope);
+		}
+
+		public static void Dump(TextWriter output, string scope)
+		{
+			Load();
+
+			if (_Entries.Count > 0)
+			{
+				var count = 0;
+
+				foreach (var e in _Entries.Values)
+				{
+					if (String.IsNullOrWhiteSpace(scope) || Insensitive.Equals(e.Scope, scope))
+					{
+						if (++count == 1)
+						{
+							Console.WriteLine();
+						}
+
+						output.WriteLine(e);
+					}
+				}
+
+				if (count > 0)
+				{
+					Console.WriteLine();
+				}
+			}
+		}
+
+		public static void Unload()
+		{
+			_Initialized = false;
+
+			_Warned.Clear();
+			_Entries.Clear();
+		}
 
 		public static void Load()
 		{
@@ -131,7 +191,7 @@ namespace Server
 			}
 			catch (DirectoryNotFoundException)
 			{
-				Console.WriteLine("Warning: No configuration files found!");
+				Utility.WriteLine(ConsoleColor.Yellow, "Config: No configuration files found!");
 				return;
 			}
 
@@ -143,17 +203,15 @@ namespace Server
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine("Warning: Failed to load configuration file:");
-					Console.WriteLine(path);
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine(e.Message);
-					Utility.PopColor();
+					Utility.WriteLine(ConsoleColor.Red, "Config: Failed to load configuration file:");
+					Utility.WriteLine(ConsoleColor.Gray, $"Config: {path}");
+					Utility.WriteLine(ConsoleColor.Red, $"Config: {e.Message}");
 
 					ConsoleKey key;
 
 					do
 					{
-						Console.WriteLine("Ignore this warning? (y/n)");
+						Utility.WriteLine(ConsoleColor.Gray, "Ignore this warning? (y/n)");
 
 						key = Console.ReadKey(true).Key;
 					}
@@ -182,6 +240,33 @@ namespace Server
 
 				Console.WriteLine();
 			}
+		}
+
+		public static bool Load(string scope)
+		{
+			if (!Directory.Exists(_Path))
+			{
+				Directory.CreateDirectory(_Path);
+			}
+
+			var success = false;
+
+			var path = Path.Combine(_Path, $"{scope}.cfg");
+
+			try
+			{
+				LoadFile(path);
+
+				success = true;
+			}
+			catch (Exception e)
+			{
+				Utility.WriteLine(ConsoleColor.Red, "Config: Failed to load configuration file:");
+				Utility.WriteLine(ConsoleColor.Gray, $"Config: {path}");
+				Utility.WriteLine(ConsoleColor.Red, $"Config: {e.Message}");
+			}
+
+			return success;
 		}
 
 		private static void LoadFile(string path)
@@ -245,7 +330,7 @@ namespace Server
 
 				if (io < 0)
 				{
-					throw new FormatException(String.Format("Bad format at line {0}", i + 1));
+					throw new FormatException($"Bad format at line {i + 1}");
 				}
 
 				var key = line.Substring(0, io);
@@ -253,7 +338,7 @@ namespace Server
 
 				if (String.IsNullOrWhiteSpace(key))
 				{
-					throw new NullReferenceException(String.Format("Key can not be null at line {0}", i + 1));
+					throw new NullReferenceException($"Key can not be null at line {i + 1}");
 				}
 
 				key = key.Trim();
@@ -263,9 +348,9 @@ namespace Server
 					val = null;
 				}
 
-				var e = new Entry(info.FullName, idx++, scope, String.Join(String.Empty, desc), key, val, useDef);
+				var e = new Entry(info.FullName, idx++, scope, String.Join("\n", desc), key, val, null, useDef);
 
-				_Entries[String.Format("{0}.{1}", e.Scope, e.Key)] = e;
+				_Entries[$"{e.Scope}.{e.Key}"] = e;
 
 				desc.Clear();
 			}
@@ -273,17 +358,14 @@ namespace Server
 
 		public static void Save()
 		{
-			if (!_Initialized)
-			{
-				Load();
-			}
+			Load();
 
 			if (!Directory.Exists(_Path))
 			{
 				Directory.CreateDirectory(_Path);
 			}
 
-			foreach (var g in _Entries.Values.ToLookup(e => e.File))
+			foreach (var g in _Entries.Values.GroupBy(e => e.File))
 			{
 				try
 				{
@@ -291,11 +373,36 @@ namespace Server
 				}
 				catch (Exception e)
 				{
-					Console.WriteLine("Warning: Failed to save configuration file:");
-					Console.WriteLine(g.Key);
-					Utility.PushColor(ConsoleColor.Red);
-					Console.WriteLine(e.Message);
-					Utility.PopColor();
+					Utility.WriteLine(ConsoleColor.Red, "Config: Failed to save configuration file:");
+					Utility.WriteLine(ConsoleColor.Gray, $"Config: {g.Key}");
+					Utility.WriteLine(ConsoleColor.Red, $"Config: {e.Message}");
+				}
+			}
+		}
+
+		public static void Save(string scope)
+		{
+			if (!_Entries.Values.Any(e => Insensitive.Equals(e.Scope, scope)))
+			{
+				Load(scope);
+			}
+
+			if (!Directory.Exists(_Path))
+			{
+				Directory.CreateDirectory(_Path);
+			}
+
+			foreach (var g in _Entries.Values.Where(e => Insensitive.Equals(e.Scope, scope)).GroupBy(e => e.File))
+			{
+				try
+				{
+					SaveFile(g.Key, g.OrderBy(e => e.FileIndex));
+				}
+				catch (Exception e)
+				{
+					Utility.WriteLine(ConsoleColor.Red, "Config: Failed to save configuration file:");
+					Utility.WriteLine(ConsoleColor.Gray, $"Config: {g.Key}");
+					Utility.WriteLine(ConsoleColor.Red, $"Config: {e.Message}");
 				}
 			}
 		}
@@ -303,7 +410,6 @@ namespace Server
 		private static void SaveFile(string path, IEnumerable<Entry> entries)
 		{
 			var content = new StringBuilder(0x1000);
-			var line = new StringBuilder(0x80);
 
 			foreach (var e in entries)
 			{
@@ -311,518 +417,658 @@ namespace Server
 
 				if (!String.IsNullOrWhiteSpace(e.Desc))
 				{
-					line.Clear();
+					var split = e.Desc.Split('\n');
 
-					foreach (var word in e.Desc.Split(' '))
+					if (split.Length > 0)
 					{
-						if ((line + word).Length > 100)
+						foreach (var line in split)
 						{
-							content.AppendLine(String.Format("# {0}", line));
-							line.Clear();
+							content.AppendLine($"# {line}");
 						}
-
-						line.AppendFormat("{0} ", word);
 					}
-
-					if (line.Length > 0)
+					else
 					{
-						content.AppendLine(String.Format("# {0}", line));
-						line.Clear();
+						content.AppendLine($"# {e.Desc}");
 					}
 				}
 
-				content.AppendLine(String.Format("{0}{1}={2}", e.UseDefault ? "@" : String.Empty, e.Key, e.Value));
+				content.AppendLine($"{(e.UseDefault ? "@" : String.Empty)}{e.Key}={e.Value}");
+			}
+
+			var dir = Path.GetDirectoryName(path);
+
+			if (!Directory.Exists(dir))
+			{
+				Directory.CreateDirectory(dir);
 			}
 
 			File.WriteAllText(path, content.ToString());
 		}
 
-		public static Entry Find(string key)
+		private static string GetFilePath(ref string key, out string scope)
 		{
-			_Entries.TryGetValue(key, out var e);
-			return e;
+			var parts = key.Split('.');
+
+			key = parts[parts.Length - 1];
+
+			Array.Resize(ref parts, parts.Length - 1);
+
+			scope = String.Join(".", parts);
+
+			if (_Gen)
+			{
+				return Path.Combine(_Path, "_GEN", Path.Combine(parts) + ".cfg");
+			}
+
+			return Path.Combine(_Path, Path.Combine(parts) + ".cfg");
 		}
 
-		private static void InternalSet(string key, string value)
-		{
-			var e = Find(key);
+		#region Setters
 
-			if (e != null)
+		private static void InternalSet(string key, string value, object state)
+		{
+			_Warned.Remove(key);
+
+			if (_Entries.TryGetValue(key, out var e) && e != null)
 			{
-				e.Value = value;
-				e.UseDefault = false;
+				e.Set(value, state);
 				return;
 			}
 
-			var parts = key.Split('.');
-			var realKey = parts.Last();
+			var path = GetFilePath(ref key, out var scope);
 
-			parts = parts.Take(parts.Length - 1).ToArray();
+			var idx = _Entries.Values.Where(o => Insensitive.Equals(o.File, path)).Select(o => o.FileIndex).DefaultIfEmpty().Max();
 
-			var file = new FileInfo(Path.Combine(_Path, Path.Combine(parts) + ".cfg"));
-			var idx = _Entries.Values.Where(o => Insensitive.Equals(o.File, file.FullName)).Select(o => o.FileIndex).DefaultIfEmpty().Max();
-
-			_Entries[key] = new Entry(file.FullName, idx, String.Join(".", parts), String.Empty, realKey, value, false);
+			_Entries[key] = new Entry(path, idx, scope, String.Empty, key, value, state, false);
 		}
 
 		public static void Set(string key, string value)
 		{
-			InternalSet(key, value);
+			InternalSet(key, value, value);
 		}
 
 		public static void Set(string key, char value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, sbyte value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, byte value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, short value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, ushort value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, int value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, uint value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, long value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, ulong value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, float value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, double value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, decimal value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter));
+			InternalSet(key, value.ToString(_NumFormatter), value);
 		}
 
 		public static void Set(string key, bool value)
 		{
-			InternalSet(key, value ? "true" : "false");
+			InternalSet(key, value ? Boolean.TrueString : Boolean.FalseString, value);
 		}
 
 		public static void Set(string key, TimeSpan value)
 		{
-			InternalSet(key, value.ToString());
+			InternalSet(key, value.ToString(), value);
 		}
 
 		public static void Set(string key, DateTime value)
 		{
-			InternalSet(key, value.ToString(CultureInfo.InvariantCulture));
+			InternalSet(key, value.ToString(CultureInfo.InvariantCulture), value);
 		}
 
-		public static void SetEnum<T>(string key, T value) where T : struct, IConvertible
+		public static void Set(string key, IPAddress value)
 		{
-			var t = typeof(T);
+			InternalSet(key, value.ToString(), value);
+		}
 
-			if (!t.IsEnum)
-			{
-				throw new ArgumentException("T must be an enumerated type");
-			}
-
-			var vals = Enum.GetValues(t).Cast<T>();
+		public static void SetEnum<T>(string key, T value) where T : Enum
+		{
+			var vals = (T[])Enum.GetValues(typeof(T));
 
 			foreach (var o in vals.Where(o => o.Equals(value)))
 			{
-				InternalSet(key, o.ToString(CultureInfo.InvariantCulture));
+				InternalSet(key, o.ToString(), o);
 				return;
 			}
 
 			throw new ArgumentException("Enumerated value not found");
 		}
 
-		private static void Warn<T>(string key)
+		#endregion
+
+		#region Getters
+
+		private static bool InternalGet(string key, out Entry entry)
 		{
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Config: Warning, '{0}' invalid value for '{1}'", typeof(T), key);
-			Utility.PopColor();
-		}
+			Load();
 
-		private static string InternalGet(string key)
-		{
-			if (!_Initialized)
-			{
-				Load();
-			}
-
-
-			if (_Entries.TryGetValue(key, out var e) && e != null)
-			{
-				return e.UseDefault ? null : e.Value;
-			}
-
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Config: Warning, using default value for {0}", key);
-			Utility.PopColor();
-
-			return null;
-		}
-
-		public static string Get(string key, string defaultValue)
-		{
-			return InternalGet(key) ?? defaultValue;
-		}
-
-		public static sbyte Get(string key, sbyte defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || SByte.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<sbyte>(key);
-
-			return defaultValue;
-		}
-
-		public static byte Get(string key, byte defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || Byte.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<byte>(key);
-
-			return defaultValue;
-		}
-
-		public static short Get(string key, short defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || Int16.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<short>(key);
-
-			return defaultValue;
-		}
-
-		public static ushort Get(string key, ushort defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || UInt16.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<ushort>(key);
-
-			return defaultValue;
-		}
-
-		public static int Get(string key, int defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || Int32.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<int>(key);
-
-			return defaultValue;
-		}
-
-		public static uint Get(string key, uint defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || UInt32.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<uint>(key);
-
-			return defaultValue;
-		}
-
-		public static long Get(string key, long defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || Int64.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<long>(key);
-
-			return defaultValue;
-		}
-
-		public static ulong Get(string key, ulong defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || UInt64.TryParse(value, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<ulong>(key);
-
-			return defaultValue;
-		}
-
-		public static float Get(string key, float defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || Single.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<float>(key);
-
-			return defaultValue;
-		}
-
-		public static double Get(string key, double defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || Double.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<double>(key);
-
-			return defaultValue;
-		}
-
-		public static decimal Get(string key, decimal defaultValue)
-		{
-			var ret = defaultValue;
-			var value = InternalGet(key);
-
-			if (value == null || Decimal.TryParse(value, NumberStyles.Any, _NumFormatter, out ret))
-			{
-				return ret;
-			}
-
-			Warn<decimal>(key);
-
-			return defaultValue;
-		}
-
-		public static bool Get(string key, bool defaultValue)
-		{
-			var value = InternalGet(key);
-
-			if (value == null)
-			{
-				return defaultValue;
-			}
-
-			if (Regex.IsMatch(value, @"(true|yes|on|1|enabled)", RegexOptions.IgnoreCase))
+			if (!_Gen && Core.Debug && _Entries.TryGetValue($"_DEBUG.{key}", out entry) && entry != null)
 			{
 				return true;
 			}
 
-			if (Regex.IsMatch(value, @"(false|no|off|0|disabled)", RegexOptions.IgnoreCase))
+			if (_Entries.TryGetValue(key, out entry) && entry != null)
 			{
-				return false;
+				return true;
 			}
 
-			Warn<bool>(key);
+			return false;
+		}
 
-			return defaultValue;
+		private static T InternalGet<T>(string key, T def, Parser<T> parser)
+		{
+			if (InternalGet(key, out var entry) && !entry.UseDefault)
+			{
+				if (entry.Object is T val)
+				{
+					return val;
+				}
+
+				if (entry.Value != null)
+				{
+					if (parser(entry.Value, out val))
+					{
+						entry.Set(entry.Value, val);
+
+						return val;
+					}
+
+					if (_Warned.Add(key))
+					{
+						Utility.WriteLine(ConsoleColor.Yellow, $"Config: Invalid value '{entry.Value}' for '{key}'");
+					}
+				}
+			}
+
+			return def;
+		}
+
+		public static string Get(string key, string defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static sbyte Get(string key, sbyte defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static byte Get(string key, byte defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static short Get(string key, short defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static ushort Get(string key, ushort defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static int Get(string key, int defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static uint Get(string key, uint defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static long Get(string key, long defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static ulong Get(string key, ulong defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static float Get(string key, float defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static double Get(string key, double defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static decimal Get(string key, decimal defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static bool Get(string key, bool defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
 		}
 
 		public static TimeSpan Get(string key, TimeSpan defaultValue)
 		{
-			var value = InternalGet(key);
-
-
-			if (TimeSpan.TryParse(value, out var ts))
-			{
-				return ts;
-			}
-
-			Warn<TimeSpan>(key);
-
-			return defaultValue;
+			return InternalGet(key, defaultValue, TryParse);
 		}
 
 		public static DateTime Get(string key, DateTime defaultValue)
 		{
-			var value = InternalGet(key);
-
-
-			if (DateTime.TryParse(value, out var dt))
-			{
-				return dt;
-			}
-
-			Warn<DateTime>(key);
-
-			return defaultValue;
+			return InternalGet(key, defaultValue, TryParse);
 		}
 
 		public static Type Get(string key, Type defaultValue)
 		{
-			var value = InternalGet(key);
-
-			var t = FindType(value);
-
-			if (t != null)
-			{
-				return t;
-			}
-
-			Warn<Type>(key);
-
-			return defaultValue;
+			return InternalGet(key, defaultValue, TryParse);
 		}
 
-		public static T GetEnum<T>(string key, T defaultValue) where T : struct, IConvertible
+		public static IPAddress Get(string key, IPAddress defaultValue)
 		{
-			if (!typeof(T).IsEnum)
-			{
-				throw new ArgumentException("T must be an enumerated type");
-			}
-
-			var value = InternalGet(key);
-
-			if (value == null)
-			{
-				return defaultValue;
-			}
-
-			value = value.Trim();
-
-			var vals = Enum.GetValues(typeof(T)).Cast<T>();
-
-			foreach (var o in vals.Where(o => Insensitive.Equals(value, o.ToString(CultureInfo.InvariantCulture))))
-			{
-				return o;
-			}
-
-			Warn<T>(key);
-
-			return defaultValue;
+			return Utility.Intern(InternalGet(key, defaultValue, TryParse));
 		}
 
-		public static T GetDelegate<T>(string key, T defaultValue)
+		public static T GetEnum<T>(string key, T defaultValue) where T : struct, Enum
 		{
-			if (!typeof(MulticastDelegate).IsAssignableFrom(typeof(T).BaseType))
-			{
-				throw new ArgumentException("T must be a delegate type");
-			}
-
-			var value = InternalGet(key);
-
-			if (value == null)
-			{
-				return defaultValue;
-			}
-
-			value = value.Trim();
-
-			var i = value.LastIndexOf('.');
-
-			if (i <= 0)
-			{
-				Warn<T>(key);
-
-				return defaultValue;
-			}
-
-			try
-			{
-				var method = value.Substring(i + 1);
-				var target = FindType(value.Remove(i));
-
-				if (target != null)
-				{
-					var info = target.GetMethod(method, (BindingFlags)0x38);
-
-					if (info != null)
-					{
-						return (T)(object)Delegate.CreateDelegate(typeof(T), info);
-					}
-				}
-			}
-			catch
-			{ }
-
-			Warn<T>(key);
-
-			return defaultValue;
+			return InternalGet(key, defaultValue, TryParseEnum);
 		}
 
-		private static Type FindType(string value)
+		public static T GetDelegate<T>(string key, T defaultValue) where T : Delegate
 		{
-			var type = Type.GetType(value, false);
+			return InternalGet(key, defaultValue, TryParseDelegate);
+		}
+
+		#endregion
+
+		#region Parsers
+
+		private delegate bool Parser<T>(string input, out T val);
+
+		private static bool TryParse(string input, out string value)
+		{
+			return (value = input) != null;
+		}
+
+		private static bool TryParse(string input, out sbyte value)
+		{
+			return SByte.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out byte value)
+		{
+			return Byte.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out short value)
+		{
+			return Int16.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out ushort value)
+		{
+			return UInt16.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out int value)
+		{
+			return Int32.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out uint value)
+		{
+			return UInt32.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out long value)
+		{
+			return Int64.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out ulong value)
+		{
+			return UInt64.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out float value)
+		{
+			return Single.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out double value)
+		{
+			return Double.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out decimal value)
+		{
+			return Decimal.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
+		}
+
+		private static bool TryParse(string input, out bool value)
+		{
+			if (Boolean.TryParse(input, out value))
+			{
+				return true;
+			}
+
+			if (Regex.IsMatch(input, @"(true|yes|on|1|enabled)", RegexOptions.IgnoreCase))
+			{
+				value = true;
+				return true;
+			}
+
+			if (Regex.IsMatch(input, @"(false|no|off|0|disabled)", RegexOptions.IgnoreCase))
+			{
+				value = false;
+				return true;
+			}
+
+			value = false;
+			return false;
+		}
+
+		private static bool TryParse(string input, out TimeSpan value)
+		{
+			return TimeSpan.TryParse(input, out value);
+		}
+
+		private static bool TryParse(string input, out DateTime value)
+		{
+			return DateTime.TryParse(input, out value);
+		}
+
+		private static bool TryParse(string input, out Type value)
+		{
+			var type = Type.GetType(input, false);
 
 			if (type != null)
 			{
-				return type;
+				return (value = type) != null;
 			}
 
-			if (value.IndexOf('.') < 0)
+			if (input.IndexOf('.') < 0)
 			{
-				return ScriptCompiler.FindTypeByName(value);
+				return (value = ScriptCompiler.FindTypeByName(input)) != null;
 			}
 
-			return ScriptCompiler.FindTypeByFullName(value);
+			return (value = ScriptCompiler.FindTypeByFullName(input)) != null;
 		}
+
+		private static bool TryParse(string input, out IPAddress value)
+		{
+			return IPAddress.TryParse(input, out value);
+		}
+
+		private static bool TryParseEnum<T>(string input, out T value) where T : struct, Enum
+		{
+			return Enum.TryParse(input, out value);
+		}
+
+		private static bool TryParseDelegate<T>(string input, out T value) where T : Delegate
+		{
+			var i = input.LastIndexOf('.');
+
+			if (i > 0)
+			{
+				try
+				{
+					if (TryParse(input.Remove(i), out Type target) && target != null)
+					{
+						var info = target.GetMethod(input.Substring(i + 1), (BindingFlags)0x38);
+
+						if (info != null && Delegate.CreateDelegate(typeof(T), info) is T d)
+						{
+							value = d;
+							return true;
+						}
+					}
+				}
+				catch
+				{ }
+			}
+
+			value = null;
+			return false;
+		}
+
+		#endregion
+
+		#region Generation
+
+		private static readonly char[] _InvalidChars = Path.GetInvalidPathChars();
+
+		private static bool _Gen;
+
+		public static void Generate()
+		{
+			Load();
+
+			var files = new HashSet<string>();
+
+			var supportedTypes = new Dictionary<Type, MethodInfo>();
+
+			_Gen = true;
+
+			try
+			{
+				Utility.WriteLine(ConsoleColor.Yellow, "Config: Generating files...");
+
+				foreach (var m in typeof(Config).GetMethods(BindingFlags.Public | BindingFlags.Static))
+				{
+					if (!m.Name.StartsWith("Set"))
+					{
+						continue;
+					}
+
+					var p = m.GetParameters();
+
+					if (p.Length != 2)
+					{
+						continue;
+					}
+
+					var keyArg = p[0];
+
+					if (keyArg.ParameterType != typeof(string))
+					{
+						continue;
+					}
+
+					var valArg = p[1];
+
+					if (valArg.ParameterType.IsGenericParameter)
+					{
+						var a = valArg.ParameterType.GetGenericParameterConstraints();
+
+						if (a != null && a.Length > 0)
+						{
+							supportedTypes[a[0]] = m;
+						}
+					}
+					else
+					{
+						supportedTypes[valArg.ParameterType] = m;
+					}
+				}
+
+				foreach (var asm in ScriptCompiler.Assemblies)
+				{
+					var cache = ScriptCompiler.GetTypeCache(asm);
+
+					foreach (var type in cache.Types)
+					{
+						if (type == typeof(Config) || type == typeof(Entry))
+						{
+							continue;
+						}
+
+						foreach (var field in type.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly))
+						{
+							if (field.IsLiteral)
+							{
+								continue;
+							}
+
+							if (!supportedTypes.TryGetValue(field.FieldType, out var setter))
+							{
+								continue;
+							}
+
+							var key = $"{type.Name}.{field.Name}";
+
+							if (key.IndexOfAny(_InvalidChars) >= 0)
+							{
+								continue;
+							}
+
+							if (!_Entries.TryGetValue(key, out var entry) || entry == null)
+							{
+								var val = field.GetValue(null);
+
+								if (val != null)
+								{
+									setter.Invoke(null, new object[] { key, val });
+								}
+								else
+								{
+									InternalSet(key, null, null);
+								}
+
+								files.Add(GetFilePath(ref key, out _));
+							}
+						}
+
+						foreach (var prop in type.GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly))
+						{
+							if (!prop.CanRead)
+							{
+								continue;
+							}
+
+							if (!supportedTypes.TryGetValue(prop.PropertyType, out var setter))
+							{
+								continue;
+							}
+
+							var key = $"{type.Name}.{prop.Name}";
+
+							if (key.IndexOfAny(_InvalidChars) >= 0)
+							{
+								continue;
+							}
+
+							if (!_Entries.TryGetValue(key, out var entry) || entry == null)
+							{
+								var val = prop.GetValue(null);
+
+								if (val != null)
+								{
+									setter.Invoke(null, new object[] { key, val });
+								}
+								else
+								{
+									InternalSet(key, null, null);
+								}
+
+								files.Add(GetFilePath(ref key, out _));
+							}
+						}
+					}
+				}
+
+				var count = 0;
+
+				foreach (var group in _Entries.Values.GroupBy(e => e.File))
+				{
+					if (files.Contains(group.Key))
+					{
+						foreach (var entry in group)
+						{
+							if (String.IsNullOrWhiteSpace(entry.Desc))
+							{
+								entry.Desc = String.Empty;
+							}
+
+							if (entry.Desc.Length > 0)
+							{
+								entry.Desc += "\n";
+							}
+
+							entry.Desc += $"Default: {entry.Value}";
+
+							if (Core.Debug)
+							{
+								Utility.WriteLine(ConsoleColor.Gray, $"Config: {entry}");
+							}
+						}
+
+						SaveFile(group.Key, group);
+
+						++count;
+					}
+				}
+
+				Utility.WriteLine(ConsoleColor.Yellow, $"Config: Generated {count} new files.");
+			}
+			catch (Exception e)
+			{
+				Utility.WriteLine(ConsoleColor.Red, $"Config: Generation failed:\n{e}");
+			}
+			finally
+			{
+				files.Clear();
+				supportedTypes.Clear();
+
+				_Gen = false;
+			}
+		}
+
+		#endregion
 	}
 }

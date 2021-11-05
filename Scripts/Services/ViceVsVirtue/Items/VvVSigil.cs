@@ -45,7 +45,7 @@ namespace Server.Engines.VvV
 
         public void OnStolen(VvVPlayerEntry entry)
         {
-            if (Battle != null && RootParentEntity == null)
+            if (Battle != null && RootParent == null)
             {
                 Battle.SpawnPriests();
                 Battle.Update(null, entry, UpdateType.Steal);

@@ -698,11 +698,10 @@ namespace Server.Engines.Doom
             protected override void OnTick()
             {
                 ticks++;
-                List<Mobile> mobiles = m_Controller.m_LampRoom.GetMobiles();
 
-                if (ticks >= 71 || m_Controller.m_LampRoom.GetPlayerCount() == 0)
+                if (ticks >= 71 || m_Controller.m_LampRoom.PlayerCount == 0)
                 {
-                    foreach (Mobile mobile in mobiles)
+                    foreach (Mobile mobile in m_Controller.m_LampRoom.AllMobiles)
                     {
                         if (mobile != null && !mobile.Deleted && !mobile.IsDeadBondedPet)
                         {
@@ -718,7 +717,7 @@ namespace Server.Engines.Doom
                     {
                         level++;
                     }
-                    foreach (Mobile mobile in mobiles)
+                    foreach (Mobile mobile in m_Controller.m_LampRoom.AllMobiles)
                     {
                         if (IsValidDamagable(mobile))
                         {

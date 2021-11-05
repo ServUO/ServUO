@@ -34,6 +34,8 @@ namespace Server
 
 	public delegate void TimerStateCallback<in T1, in T2, in T3, in T4>(T1 state1, T2 state2, T3 state3, T4 state4);
 
+	public delegate void TimerStateCallback<in T1, in T2, in T3, in T4, in T5>(T1 state1, T2 state2, T3 state3, T4 state4, T5 state5);
+
 	public class Timer
 	{
 		private long m_Next;
@@ -325,7 +327,7 @@ namespace Server
 				m_Signal.Set();
 			}
 
-			public void TimerMain()
+			public static void TimerMain()
 			{
 				long now;
 				int i, j;
@@ -687,6 +689,35 @@ namespace Server
 		}
 		#endregion
 
+		#region DelayCall<T1, T2, T3, T4, T5>(..)
+		public static Timer DelayCall<T1, T2, T3, T4, T5>(TimerStateCallback<T1, T2, T3, T4, T5> callback, T1 state1, T2 state2, T3 state3, T4 state4, T5 state5)
+		{
+			return DelayCall(TimeSpan.Zero, TimeSpan.Zero, 1, callback, state1, state2, state3, state4, state5);
+		}
+
+		public static Timer DelayCall<T1, T2, T3, T4, T5>(TimeSpan delay, TimerStateCallback<T1, T2, T3, T4, T5> callback, T1 state1, T2 state2, T3 state3, T4 state4, T5 state5)
+		{
+			return DelayCall(delay, TimeSpan.Zero, 1, callback, state1, state2, state3, state4, state5);
+		}
+
+		public static Timer DelayCall<T1, T2, T3, T4, T5>(TimeSpan delay, TimeSpan interval, TimerStateCallback<T1, T2, T3, T4, T5> callback, T1 state1, T2 state2, T3 state3, T4 state4, T5 state5)
+		{
+			return DelayCall(delay, interval, 0, callback, state1, state2, state3, state4, state5);
+		}
+
+		public static Timer DelayCall<T1, T2, T3, T4, T5>(TimeSpan delay, TimeSpan interval, int count, TimerStateCallback<T1, T2, T3, T4, T5> callback, T1 state1, T2 state2, T3 state3, T4 state4, T5 state5)
+		{
+			Timer t = new DelayStateCallTimer<T1, T2, T3, T4, T5>(delay, interval, count, callback, state1, state2, state3, state4, state5)
+			{
+				Priority = ComputePriority(count == 1 ? delay : interval)
+			};
+
+			t.Start();
+
+			return t;
+		}
+		#endregion
+
 		#region DelayCall Timers
 		private class DelayCallTimer : Timer
 		{
@@ -863,6 +894,43 @@ namespace Server
 			protected override void OnTick()
 			{
 				m_Callback?.Invoke(m_State1, m_State2, m_State3, m_State4);
+			}
+
+			public override string ToString()
+			{
+				return String.Format("DelayStateCall[{0}]", FormatDelegate(m_Callback));
+			}
+		}
+
+		private class DelayStateCallTimer<T1, T2, T3, T4, T5> : Timer
+		{
+			private readonly TimerStateCallback<T1, T2, T3, T4, T5> m_Callback;
+			private readonly T1 m_State1;
+			private readonly T2 m_State2;
+			private readonly T3 m_State3;
+			private readonly T4 m_State4;
+			private readonly T5 m_State5;
+
+			public TimerStateCallback<T1, T2, T3, T4, T5> Callback => m_Callback;
+
+			public override bool DefRegCreation => false;
+
+			public DelayStateCallTimer(TimeSpan delay, TimeSpan interval, int count, TimerStateCallback<T1, T2, T3, T4, T5> callback, T1 state1, T2 state2, T3 state3, T4 state4, T5 state5)
+				: base(delay, interval, count)
+			{
+				m_Callback = callback;
+				m_State1 = state1;
+				m_State2 = state2;
+				m_State3 = state3;
+				m_State4 = state4;
+				m_State5 = state5;
+
+				RegCreation();
+			}
+
+			protected override void OnTick()
+			{
+				m_Callback?.Invoke(m_State1, m_State2, m_State3, m_State4, m_State5);
 			}
 
 			public override string ToString()

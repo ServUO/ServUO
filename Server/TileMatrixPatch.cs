@@ -10,9 +10,7 @@ namespace Server
 		private readonly int m_LandBlocks;
 		private readonly int m_StaticBlocks;
 
-		private static bool m_Enabled = true;
-
-		public static bool Enabled { get => m_Enabled; set => m_Enabled = value; }
+		public static bool Enabled { get; set; } = true;
 
 		public int LandBlocks
 		{
@@ -34,7 +32,7 @@ namespace Server
 
 		public TileMatrixPatch(TileMatrix matrix, int index)
 		{
-			if (!m_Enabled)
+			if (!Enabled)
 			{
 				return;
 			}
@@ -60,27 +58,26 @@ namespace Server
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		private unsafe int PatchLand(TileMatrix matrix, string dataPath, string indexPath)
 		{
-			using (var fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (var fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 			{
-				using (var fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 				{
 					var indexReader = new BinaryReader(fsIndex);
 
+					var size = sizeof(LandTile);
 					var count = (int)(indexReader.BaseStream.Length / 4);
 
-					for (var i = 0; i < count; ++i)
+					for (int i = 0, fsOffset = 4; i < count; i++, fsOffset += 4)
 					{
 						var blockID = indexReader.ReadInt32();
 						var x = blockID / matrix.BlockHeight;
 						var y = blockID % matrix.BlockHeight;
 
-						fsData.Seek(4, SeekOrigin.Current);
-
 						var tiles = new LandTile[64];
 
 						fixed (LandTile* pTiles = tiles)
 						{
-							NativeReader.Read(fsData, pTiles, 192);
+							NativeReader.Read(fsData, fsOffset, pTiles, tiles.Length * size);
 						}
 
 						matrix.SetLandBlock(x, y, tiles);
@@ -98,11 +95,11 @@ namespace Server
 		[MethodImpl(MethodImplOptions.Synchronized)]
 		private unsafe int PatchStatics(TileMatrix matrix, string dataPath, string indexPath, string lookupPath)
 		{
-			using (var fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+			using (var fsData = new FileStream(dataPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 			{
-				using (var fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var fsIndex = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 				{
-					using (var fsLookup = new FileStream(lookupPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+					using (var fsLookup = new FileStream(lookupPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 					{
 						var indexReader = new BinaryReader(fsIndex);
 						var lookupReader = new BinaryReader(fsLookup);
@@ -137,8 +134,6 @@ namespace Server
 								continue;
 							}
 
-							fsData.Seek(offset, SeekOrigin.Begin);
-
 							var tileCount = length / 7;
 
 							if (m_TileBuffer.Length < tileCount)
@@ -150,14 +145,15 @@ namespace Server
 
 							fixed (StaticTile* pTiles = staTiles)
 							{
-								NativeReader.Read(fsData, pTiles, length);
+								NativeReader.Read(fsData, offset, pTiles, length);
 
 								StaticTile* pCur = pTiles, pEnd = pTiles + tileCount;
 
 								while (pCur < pEnd)
 								{
 									lists[pCur->m_X & 0x7][pCur->m_Y & 0x7].Add(pCur->m_ID, pCur->m_Z);
-									pCur = pCur + 1;
+
+									++pCur;
 								}
 
 								var tiles = new StaticTile[8][][];

@@ -150,9 +150,9 @@ namespace Server.Items
 
                     m.Target = new InternalTarget(m_Decorator);
                 }
-                else
+                else if (m.Target != null)
                 {
-                    Target.Cancel(m);
+                    m.Target.Cancel(m);
                 }
             }
         }

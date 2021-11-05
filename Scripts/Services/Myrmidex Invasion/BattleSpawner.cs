@@ -281,7 +281,7 @@ namespace Server.Engines.MyrmidexInvasion
             if (BattleRegion == null)
                 return;
 
-            IEnumerable<BaseCreature> list = BattleRegion.GetEnumeratedMobiles().OfType<BaseCreature>();
+            IEnumerable<BaseCreature> list = BattleRegion.AllMobiles.OfType<BaseCreature>();
 
             foreach (BaseCreature bc in list.Where(b => b.Alive && !b.Controlled && !b.Summoned && b.GetMaster() == null))
             {
@@ -471,7 +471,7 @@ namespace Server.Engines.MyrmidexInvasion
             if (BattleRegion == null)
                 return null;
 
-            return BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(p => MyrmidexInvasionSystem.IsAlliedWith(p, allegiance));
+            return BattleRegion.AllPlayers.OfType<PlayerMobile>().Where(p => MyrmidexInvasionSystem.IsAlliedWith(p, allegiance));
         }
 
         public bool HasPlayers(bool ignorestaff = true)
@@ -479,7 +479,7 @@ namespace Server.Engines.MyrmidexInvasion
             if (BattleRegion == null)
                 return false;
 
-            return BattleRegion.GetEnumeratedMobiles().Any(m => m is PlayerMobile && (!ignorestaff || m.AccessLevel == AccessLevel.Player));
+            return BattleRegion.AllMobiles.Any(m => m is PlayerMobile && (!ignorestaff || m.AccessLevel == AccessLevel.Player));
         }
 
         public bool IsInMyrmidexObjective(Point3D p)
@@ -494,7 +494,7 @@ namespace Server.Engines.MyrmidexInvasion
 
         public void RegionMessage(int message)
         {
-            foreach (PlayerMobile pm in BattleRegion.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in BattleRegion.AllPlayers.OfType<PlayerMobile>())
             {
                 pm.SendLocalizedMessage(message);
             }
@@ -830,14 +830,14 @@ namespace Server.Engines.MyrmidexInvasion
         {
             if (BattleRegion != null)
             {
-                BattleFlag flag = BattleRegion.GetEnumeratedItems().OfType<BattleFlag>().FirstOrDefault(i => i != null && i.ItemID == 17099);
+                BattleFlag flag = BattleRegion.AllItems.OfType<BattleFlag>().FirstOrDefault(i => i != null && i.ItemID == 17099);
                 if (flag != null)
                 {
                     TribalFlag = flag;
                     flag.BattleSpawner = this;
                 }
 
-                flag = BattleRegion.GetEnumeratedItems().OfType<BattleFlag>().FirstOrDefault(i => i != null && i.ItemID == 1068);
+                flag = BattleRegion.AllItems.OfType<BattleFlag>().FirstOrDefault(i => i != null && i.ItemID == 1068);
                 if (flag != null)
                 {
                     MyrmidexFlag = flag;
@@ -981,7 +981,7 @@ namespace Server.Engines.MyrmidexInvasion
         {
             if (BattleRegion != null)
             {
-                foreach (Item item in BattleRegion.GetEnumeratedItems())
+                foreach (Item item in BattleRegion.AllItems)
                 {
                     if (item is Static && (item.ItemID == 9))
                     {

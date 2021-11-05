@@ -66,20 +66,20 @@ namespace Server.Items
                 {
                     Timer.DelayCall(TimeSpan.FromMilliseconds(time), () =>
                     {
-                        Point3D p = Location;
+                        Point3D p = GetWorldLocation();
 
-                        for (int j = 0; j < 25; j++)
-                        {
-                            int x = Utility.RandomMinMax(X - 3, X + 3);
-                            int y = Utility.RandomMinMax(Y - 3, Y + 3);
-                            int z = map.GetAverageZ(x, y);
+						for (int j = 0; j < 25; j++)
+						{
+							Point3D xyz = new Point3D(Utility.RandomMinMax(p.X - 3, p.X + 3), Utility.RandomMinMax(p.Y - 3, p.Y + 3), 0);
 
-                            if (map.CanSpawnMobile(x, y, z) && InLOS(new Point3D(x, y, z)))
-                            {
-                                p = new Point3D(x, y, z);
-                                break;
-                            }
-                        }
+							xyz.Z = map.GetAverageZ(xyz.X, xyz.Y);
+
+							if (map.CanSpawnMobile(xyz) && map.LineOfSight(this, xyz))
+							{
+								p = xyz;
+								break;
+							}
+						}
 
                         BaseCreature bc = Activator.CreateInstance(_SpawnList[Utility.Random(_SpawnList.Length)]) as BaseCreature;
 
@@ -204,7 +204,7 @@ namespace Server.Items
 
         public int MaxSpawns { get; }
         public EodonTribe Tribe { get; set; }
-        public int Spawns => GetItemCount(i => i is MyrmidexHill);
+        public int Spawns => AllItems.Count(i => i is MyrmidexHill);
 
         public EodonTribeRegion(EodonTribe tribe, Rectangle2D[] rec, int maxSpawns)
             : base(tribe + " tribe", Map.TerMur, DefaultPriority, rec)

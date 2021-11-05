@@ -1079,7 +1079,7 @@ namespace Server.Mobiles
                             {
                                 text = m_Spawner.SpawnObjects[index].TypeName;
                             }
-                            book.FillTextEntryBook(text);
+                            book.Fill(text);
 
                             // put the book at the location of the player so that it can be opened, but drop it below visible range
                             book.Visible = false;

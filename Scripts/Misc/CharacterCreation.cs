@@ -15,20 +15,7 @@ namespace Server.Misc
         public static void Initialize()
         {
             // Register our event handler
-            EventSink.CharacterCreated += EventSink_CharacterCreated;
-        }
-
-        public static bool VerifyProfession(int profession)
-        {
-            if (profession < 0)
-                return false;
-            if (profession < 4)
-                return true;
-            if (profession < 6)
-                return true;
-            if (profession < 8)
-                return true;
-            return false;
+            EventSink.CharacterCreation += EventSink_CharacterCreation;
         }
 
         private static void AddBackpack(Mobile m)
@@ -126,7 +113,7 @@ namespace Server.Misc
                 EquipItem(new Shoes(Utility.RandomYellowHue()), true);
         }
 
-        private static Mobile CreateMobile(Account a)
+        private static Mobile CreateMobile(IAccount a)
         {
             if (a.Count >= a.Limit)
                 return null;
@@ -140,45 +127,46 @@ namespace Server.Misc
             return null;
         }
 
-        private static void EventSink_CharacterCreated(CharacterCreatedEventArgs args)
-        {
-            if (!VerifyProfession(args.Profession))
-                args.Profession = 0;
+        private static void EventSink_CharacterCreation(CharacterCreationEventArgs args)
+		{
+			NetState state = args.State;
 
-            NetState state = args.State;
+			if (state == null)
+			{
+				return;
+			}
 
-            if (state == null)
-                return;
+			Mobile newChar = args.Mobile ?? CreateMobile(state.Account);
 
-            Mobile newChar = CreateMobile(args.Account as Account);
+			if (newChar == null)
+			{
+				Utility.WriteLine(ConsoleColor.Red, "Login: {0}: Character creation failed, account full", state);
+				return;
+			}
 
-            if (newChar == null)
-            {
-                Utility.PushColor(ConsoleColor.Red);
-                Console.WriteLine("Login: {0}: Character creation failed, account full", state);
-                Utility.PopColor();
-                return;
-            }
-
-            args.Mobile = newChar;
-            m_Mobile = newChar;
+            m_Mobile = args.Mobile = newChar;
 
             newChar.Player = true;
             newChar.AccessLevel = args.Account.AccessLevel;
             newChar.Female = args.Female;
 
-            newChar.Race = args.Race; //Sets body
+			Race race = args.Race;
 
-            newChar.Hue = args.Hue | 0x8000;
+			if (Core.Expansion < race.RequiredExpansion)
+			{
+				race = Race.DefaultRace;
+			}
+
+			newChar.Race = race;
+
+            newChar.Hue = race.ClipSkinHue(args.SkinHue) | 0x8000;
 
             newChar.Hunger = 20;
 
             bool young = false;
 
-            if (newChar is PlayerMobile)
+            if (newChar is PlayerMobile pm)
             {
-                PlayerMobile pm = (PlayerMobile)newChar;
-
                 pm.AutoRenewInsurance = true;
 
                 double skillcap = Config.Get("PlayerCaps.SkillCap", 1000.0d) / 10;
@@ -193,34 +181,30 @@ namespace Server.Misc
 
                 if (pm.IsPlayer() && pm.Account.Young && !Siege.SiegeShard)
                     young = pm.Young = true;
-            }
+			}
 
-            SetName(newChar, args.Name);
+			SetName(newChar, args.Name);
 
-            AddBackpack(newChar);
+			AddBackpack(newChar);
 
-            SetStats(newChar, state, args.Profession, args.Str, args.Dex, args.Int);
-            SetSkills(newChar, args.Skills, args.Profession);
+			SetStats(newChar, state, args.Stats, args.Profession);
+			SetSkills(newChar, args.Skills, args.Profession);
 
-            Race race = newChar.Race;
+			if (race.ValidateHair(newChar, args.HairID))
+			{
+				newChar.HairItemID = args.HairID;
+				newChar.HairHue = race.ClipHairHue(args.HairHue & 0x3FFF);
+			}
 
-            if (race.ValidateHair(newChar, args.HairID))
+			if (race.ValidateFacialHair(newChar, args.BeardID))
+			{
+				newChar.FacialHairItemID = args.BeardID;
+				newChar.FacialHairHue = race.ClipHairHue(args.BeardHue & 0x3FFF);
+			}
+
+            if (race.ValidateFace(newChar.Female, args.FaceID))
             {
-                newChar.HairItemID = args.HairID;
-                newChar.HairHue = args.HairHue;
-            }
-
-            if (race.ValidateFacialHair(newChar, args.BeardID))
-            {
-                newChar.FacialHairItemID = args.BeardID;
-                newChar.FacialHairHue = args.BeardHue;
-            }
-
-            int faceID = args.FaceID;
-
-            if (faceID > 0 && race.ValidateFace(newChar.Female, faceID))
-            {
-                newChar.FaceItemID = faceID;
+                newChar.FaceItemID = args.FaceID;
                 newChar.FaceHue = args.FaceHue;
             }
             else
@@ -229,7 +213,7 @@ namespace Server.Misc
                 newChar.FaceHue = newChar.Hue;
             }
 
-            if (args.Profession <= 3)
+            if (args.Profession <= Profession.Blacksmith)
             {
                 AddShirt(newChar, args.ShirtHue);
                 AddPants(newChar, args.PantsHue);
@@ -254,13 +238,9 @@ namespace Server.Misc
 
             newChar.MoveToWorld(city.Location, map);
 
-            Utility.PushColor(ConsoleColor.Green);
-            Console.WriteLine("Login: {0}: New character being created (account={1})", state, args.Account.Username);
-            Utility.PopColor();
-            Utility.PushColor(ConsoleColor.DarkGreen);
-            Console.WriteLine(" - Character: {0} (serial={1})", newChar.Name, newChar.Serial);
-            Console.WriteLine(" - Started: {0} {1} in {2}", city.City, city.Location, city.Map);
-            Utility.PopColor();
+            Utility.WriteLine(ConsoleColor.Green, "Login: {0}: New character being created (account={1})", state, args.Account.Username);
+            Utility.WriteLine(ConsoleColor.DarkGreen, " - Character: {0} (serial={1})", newChar.Name, newChar.Serial);
+			Utility.WriteLine(ConsoleColor.DarkGreen, " - Started: {0} {1} in {2}", city.City, city.Location, city.Map);
         }
 
         private static void FixStats(ref int str, ref int dex, ref int intel, int max)
@@ -336,173 +316,96 @@ namespace Server.Misc
             m.Name = name;
         }
 
-        private static bool ValidSkills(SkillNameValue[] skills)
-        {
-            int total = 0;
+		private static bool ValidSkills(SkillNameValue[] skills)
+		{
+			if (skills == null || skills.Length < 3)
+			{
+				return false;
+			}
 
-            for (int i = 0; i < skills.Length; ++i)
-            {
-                if (skills[i].Value < 0 || skills[i].Value > 50)
-                    return false;
+			var total = 0;
 
-                total += skills[i].Value;
+			for (var i = 0; i < skills.Length; ++i)
+			{
+				if (skills[i].Value < 0 || skills[i].Value > 50)
+				{
+					return false;
+				}
 
-                for (int j = i + 1; j < skills.Length; ++j)
-                {
-                    if (skills[j].Value > 0 && skills[j].Name == skills[i].Name)
-                        return false;
-                }
-            }
+				total += skills[i].Value;
 
-            return (total == 100 || total == 120);
-        }
+				for (var j = i + 1; j < skills.Length; ++j)
+				{
+					if (skills[j].Value > 0 && skills[j].Name == skills[i].Name)
+					{
+						return false;
+					}
+				}
+			}
 
-        private static void SetStats(Mobile m, NetState state, int prof, int str, int dex, int intel)
-        {
-            switch (prof)
-            {
-                case 1: // Warrior
-                    {
-                        str = 45;
-                        dex = 35;
-                        intel = 10;
-                        break;
-                    }
-                case 2: // Magician
-                    {
-                        str = 25;
-                        dex = 20;
-                        intel = 45;
-                        break;
-                    }
-                case 3: // Blacksmith
-                    {
-                        str = 60;
-                        dex = 15;
-                        intel = 15;
-                        break;
-                    }
-                case 4: // Necromancer
-                    {
-                        str = 25;
-                        dex = 20;
-                        intel = 45;
-                        break;
-                    }
-                case 5: // Paladin
-                    {
-                        str = 45;
-                        dex = 20;
-                        intel = 25;
-                        break;
-                    }
-                case 6: //Samurai
-                    {
-                        str = 40;
-                        dex = 30;
-                        intel = 20;
-                        break;
-                    }
-                case 7: //Ninja
-                    {
-                        str = 40;
-                        dex = 30;
-                        intel = 20;
-                        break;
-                    }
-                default:
-                    {
-                        SetStats(m, state, str, dex, intel);
+			return total <= 150;
+		}
 
-                        return;
-                    }
-            }
+		private static void SetStats(Mobile m, NetState state, StatNameValue[] stats, Profession prof)
+		{
+			var max = 0;
 
-            m.InitStats(str, dex, intel);
-        }
+			int str = 0, dex = 0, intel = 0;
 
-        private static void SetSkills(Mobile m, SkillNameValue[] skills, int prof)
-        {
-            switch (prof)
-            {
-                case 1: // Warrior
-                    {
-                        skills = new[]
-                        {
-                        new SkillNameValue(SkillName.Anatomy, 30), new SkillNameValue(SkillName.Healing, 30),
-                        new SkillNameValue(SkillName.Swords, 30), new SkillNameValue(SkillName.Tactics, 30)
-                    };
+			if (prof != Profession.Advanced)
+			{
+				stats = ProfessionInfo.Professions[(int)prof].Stats ?? stats;
 
-                        break;
-                    }
-                case 2: // Magician
-                    {
-                        skills = new[]
-                        {
-                        new SkillNameValue(SkillName.EvalInt, 30), new SkillNameValue(SkillName.Wrestling, 30),
-                        new SkillNameValue(SkillName.Magery, 30), new SkillNameValue(SkillName.Meditation, 30)
-                    };
+				foreach (var snv in stats)
+				{
+					switch (snv.Name)
+					{
+						case StatType.Str: str = snv.Value; break;
+						case StatType.Dex: dex = snv.Value; break;
+						case StatType.Int: intel = snv.Value; break;
+					}
 
-                        break;
-                    }
-                case 3: // Blacksmith
-                    {
-                        skills = new[]
-                        {
-                        new SkillNameValue(SkillName.Mining, 30), new SkillNameValue(SkillName.ArmsLore, 30),
-                        new SkillNameValue(SkillName.Blacksmith, 30), new SkillNameValue(SkillName.Tinkering, 30)
-                    };
+					max += snv.Value;
+				}
+			}
+			else
+			{
+				max = state.NewCharacterCreation ? 90 : 80;
 
-                        break;
-                    }
-                case 4: // Necromancer
-                    {
-                        skills = new[]
-                        {
-                        new SkillNameValue(SkillName.Necromancy, 30),
-                        new SkillNameValue(SkillName.SpiritSpeak, 30), new SkillNameValue(SkillName.Swords, 30),
-                        new SkillNameValue(SkillName.Meditation, 20)
-                    };
+				foreach (var snv in stats)
+				{
+					switch (snv.Name)
+					{
+						case StatType.Str: str = snv.Value; break;
+						case StatType.Dex: dex = snv.Value; break;
+						case StatType.Int: intel = snv.Value; break;
+					}
+				}
 
-                        break;
-                    }
-                case 5: // Paladin
-                    {
-                        skills = new[]
-                        {
-                        new SkillNameValue(SkillName.Chivalry, 30), new SkillNameValue(SkillName.Swords, 30),
-                        new SkillNameValue(SkillName.Focus, 30), new SkillNameValue(SkillName.Tactics, 30)
-                    };
+				FixStats(ref str, ref dex, ref intel, max);
+			}
 
-                        break;
-                    }
-                case 6: //Samurai
-                    {
-                        skills = new[]
-                        {
-                        new SkillNameValue(SkillName.Bushido, 30), new SkillNameValue(SkillName.Swords, 30),
-                        new SkillNameValue(SkillName.Anatomy, 30), new SkillNameValue(SkillName.Healing, 30)
-                    };
-                        break;
-                    }
-                case 7: //Ninja
-                    {
-                        skills = new[]
-                        {
-                        new SkillNameValue(SkillName.Ninjitsu, 30), new SkillNameValue(SkillName.Hiding, 30),
-                        new SkillNameValue(SkillName.Fencing, 30), new SkillNameValue(SkillName.Stealth, 30)
-                    };
-                        break;
-                    }
-                default:
-                    {
-                        if (!ValidSkills(skills))
-                            return;
+			if (str < 10 || str > 60 || dex < 10 || dex > 60 || intel < 10 || intel > 60 || (str + dex + intel) != max)
+			{
+				str = 10;
+				dex = 10;
+				intel = 10;
+			}
 
-                        break;
-                    }
-            }
+			m.InitStats(str, dex, intel);
+		}
 
+		private static void SetSkills(Mobile m, SkillNameValue[] skills, Profession prof)
+		{
+			if (prof != Profession.Advanced)
+			{
+				skills = ProfessionInfo.Professions[(int)prof].Skills;
+			}
+			else if (!ValidSkills(skills))
+			{
+				return;
+			}
+			
             bool addSkillItems = true;
             bool elf = (m.Race == Race.Elf);
             bool human = (m.Race == Race.Human);
@@ -510,7 +413,7 @@ namespace Server.Misc
 
             switch (prof)
             {
-                case 1: // Warrior
+                case Profession.Warrior: // Warrior
                     {
                         if (elf)
                             EquipItem(new LeafChest());
@@ -523,7 +426,7 @@ namespace Server.Misc
 
                         break;
                     }
-                case 4: // Necromancer
+                case Profession.Necromancer: // Necromancer
                     {
                         Container regs = new BagOfNecroReagents(50);
                         PackItem(regs);
@@ -573,7 +476,7 @@ namespace Server.Misc
                         addSkillItems = false;
                         break;
                     }
-                case 5: // Paladin
+                case Profession.Paladin: // Paladin
                     {
                         if (elf)
                         {
@@ -615,7 +518,7 @@ namespace Server.Misc
                         addSkillItems = false;
                         break;
                     }
-                case 6: // Samurai
+                case Profession.Samurai: // Samurai
                     {
                         if (elf || human)
                         {
@@ -648,7 +551,7 @@ namespace Server.Misc
                         addSkillItems = false;
                         break;
                     }
-                case 7: // Ninja
+                case Profession.Ninja: // Ninja
                     {
                         int[] hues = new[] { 0x1A8, 0xEC, 0x99, 0x90, 0xB5, 0x336, 0x89 };
                         //TODO: Verify that's ALL the hues for that above.
@@ -685,27 +588,35 @@ namespace Server.Misc
                         addSkillItems = false;
                         break;
                     }
-            }
+			}
 
-            for (int i = 0; i < skills.Length; ++i)
-            {
-                SkillNameValue snv = skills[i];
+			for (int i = 0; i < skills.Length; ++i)
+			{
+				SkillNameValue snv = skills[i];
 
-                if (snv.Value > 0 && (snv.Name != SkillName.Stealth || prof == 7) && snv.Name != SkillName.RemoveTrap &&
-                    snv.Name != SkillName.Spellweaving)
-                {
-                    Skill skill = m.Skills[snv.Name];
+				if (snv.Value <= 0 || !Enum.IsDefined(typeof(SkillName), snv.Name))
+				{
+					continue;
+				}
 
-                    if (skill != null)
-                    {
-                        skill.BaseFixedPoint = snv.Value * 10;
+				if ((prof == Profession.Advanced && (snv.Name == SkillName.Stealth || snv.Name == SkillName.RemoveTrap || snv.Name == SkillName.Spellweaving)))
+				{
+					continue;
+				}
 
-                        if (addSkillItems)
-                            AddSkillItems(snv.Name, m);
-                    }
-                }
-            }
-        }
+				Skill skill = m.Skills[snv.Name];
+
+				if (skill != null)
+				{
+					skill.BaseFixedPoint = snv.Value * 10;
+
+					if (addSkillItems)
+					{
+						AddSkillItems(skill.SkillName, m);
+					}
+				}
+			}
+		}
 
         private static void EquipItem(Item item)
         {

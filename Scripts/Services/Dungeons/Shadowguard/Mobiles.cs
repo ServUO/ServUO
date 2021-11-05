@@ -12,7 +12,7 @@ namespace Server.Engines.Shadowguard
             Title = "the Pirate";
 
             Body = 0x190;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             SetStr(386, 400);
             SetDex(151, 165);
@@ -34,9 +34,6 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.MagicResist, 83.5, 92.5);
             SetSkill(SkillName.Wrestling, 125.0);
             SetSkill(SkillName.Tactics, 125.0);
-
-            Fame = 1000;
-            Karma = -1000;
 
             AddItem(new ExecutionersAxe());
 

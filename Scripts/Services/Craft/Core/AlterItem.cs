@@ -359,7 +359,7 @@ namespace Server.Engines.Craft
             return (item.LabelNumber >= 1073505 && item.LabelNumber <= 1073552) || (item.LabelNumber >= 1073111 && item.LabelNumber <= 1075040);
         }
 
-        private static readonly Type[] ArmorType =
+        private static readonly Type[] _ArmorTypes =
         {
             typeof(RingmailGloves),    typeof(RingmailGlovesOfMining),
             typeof(PlateGloves),   typeof(LeatherGloves)
@@ -367,51 +367,40 @@ namespace Server.Engines.Craft
 
         private static bool IsAlterable(Item item)
         {
-            if (item is BaseWeapon)
+            if (item is BaseWeapon weapon)
             {
-                BaseWeapon weapon = (BaseWeapon)item;
-
                 if (weapon.SetID != SetItem.None || !weapon.CanAlter || weapon.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((Race.Gargoyle.ValidateEquipment(weapon) && !weapon.IsArtifact))
+                if (!weapon.IsArtifact && Race.Gargoyle.IsExclusiveEquipment(weapon))
                     return false;
             }
+			else if (item is BaseArmor armor)
+			{
+				if (armor.SetID != SetItem.None || !armor.CanAlter || armor.NegativeAttributes.Antique != 0)
+					return false;
 
-            if (item is BaseArmor)
+				if (!armor.IsArtifact && Race.Gargoyle.IsExclusiveEquipment(armor))
+					return false;
+
+				if (armor.Resource > CraftResource.Iron && Array.IndexOf(_ArmorTypes, armor.GetType()) != -1)
+					return false;
+			}
+			else if (item is BaseClothing cloth)
             {
-                BaseArmor armor = (BaseArmor)item;
-
-                if (armor.SetID != SetItem.None || !armor.CanAlter || armor.NegativeAttributes.Antique != 0)
-                    return false;
-
-                if ((Race.Gargoyle.ValidateEquipment(armor) && !armor.IsArtifact))
-                    return false;
-
-                if (ArmorType.Any(t => t == armor.GetType()) && armor.Resource > CraftResource.Iron)
-                    return false;
-            }
-
-            if (item is BaseClothing)
-            {
-                BaseClothing cloth = (BaseClothing)item;
-
                 if (cloth.SetID != SetItem.None || !cloth.CanAlter || cloth.NegativeAttributes.Antique != 0)
                     return false;
 
-                if ((Race.Gargoyle.ValidateEquipment(cloth) && !cloth.IsArtifact))
-                    return false;
-            }
-
-            if (item is BaseQuiver)
+				if (!cloth.IsArtifact && Race.Gargoyle.IsExclusiveEquipment(cloth))
+					return false;
+			}
+			else if (item is BaseQuiver quiver)
             {
-                BaseQuiver quiver = (BaseQuiver)item;
-
                 if (quiver.SetID != SetItem.None || !quiver.CanAlter)
                     return false;
             }
 
-            if (item is IVvVItem && ((IVvVItem)item).IsVvVItem)
+            if (item is IVvVItem vvv && vvv.IsVvVItem)
                 return false;
 
             if (item is IRewardItem)

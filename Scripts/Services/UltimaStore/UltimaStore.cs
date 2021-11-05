@@ -841,7 +841,7 @@ namespace Server.Engines.UOStore
                                 {
                                     op.WriteLine("Bad Constructor: {0}", entry.Key.ItemType.Name);
 
-                                    Utility.WriteConsoleColor(ConsoleColor.Red, "[Ultima Store]: Bad Constructor: {0}", entry.Key.ItemType.Name);
+                                    Utility.WriteLine(ConsoleColor.Red, "[Ultima Store]: Bad Constructor: {0}", entry.Key.ItemType.Name);
                                 }
                             }
                             catch (Exception e)

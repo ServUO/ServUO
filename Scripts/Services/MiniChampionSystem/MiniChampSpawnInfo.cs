@@ -115,7 +115,7 @@ namespace Server.Engines.MiniChamps
 
         public void Serialize(GenericWriter writer)
         {
-            writer.WriteItem(Owner);
+            writer.Write(Owner);
             writer.Write(Killed);
             writer.Write(Spawned);
             writer.Write(Required);

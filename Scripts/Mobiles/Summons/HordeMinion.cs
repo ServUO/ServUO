@@ -103,24 +103,22 @@ namespace Server.Mobiles
             {
                 Item item = (Item)list[i];
 
-                if (!pack.CheckHold(this, item, false, true))
+                if (!pack.CheckHold(this, item, false))
                 {
                     return;
                 }
 
-                bool rejected;
-                LRReason reject;
-
                 NextActionTime = Core.TickCount;
 
-                Lift(item, item.Amount, out rejected, out reject);
-
-                if (rejected)
+                if (!Lift(item, item.Amount))
                 {
                     continue;
                 }
 
-                Drop(this, Point3D.Zero);
+				if (!Drop(this, Point3D.Zero))
+				{
+					pack.DropItem(item);
+				}
 
                 if (++pickedUp == 3)
                 {

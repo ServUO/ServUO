@@ -54,7 +54,7 @@ namespace Server.Engines.Exodus
             writer.Write(0);
 
             writer.Write(m_Active);
-            writer.WriteMobile(m_Mobile);
+            writer.Write(m_Mobile);
         }
 
         public override void Deserialize(GenericReader reader)

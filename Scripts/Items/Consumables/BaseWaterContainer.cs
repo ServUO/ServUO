@@ -41,7 +41,7 @@ namespace Server.Items
 
                     if (!IsEmpty)
                     {
-                        IEntity rootParent = RootParentEntity;
+                        IEntity rootParent = RootParent;
 
                         if (rootParent != null && rootParent.Map != null && rootParent.Map != Map.Internal)
                             MoveToWorld(rootParent.Location, rootParent.Map);

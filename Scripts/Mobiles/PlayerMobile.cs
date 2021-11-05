@@ -138,63 +138,49 @@ namespace Server.Mobiles
                 BaseMount.SetMountPrevention(this, type, duration);
             }
         }
-        #endregion
+		#endregion
 
-        #region Stygian Abyss
-        public override void ToggleFlying()
-        {
-            if (Race != Race.Gargoyle)
-                return;
+		#region Stygian Abyss
+		public override bool CanBeginFlight()
+		{
+			if (Frozen)
+			{
+				SendLocalizedMessage(1060170); // You cannot use this ability while frozen.
+				return false;
+			}
 
-            if (Frozen)
-            {
-                SendLocalizedMessage(1060170); // You cannot use this ability while frozen.
-                return;
-            }
+			return base.CanBeginFlight();
+		}
 
-            if (!Flying)
-            {
-                if (BeginAction(typeof(FlySpell)))
-                {
-                    if (Spell is Spell)
-                        ((Spell)Spell).Disturb(DisturbType.Unspecified, false, false);
+		public override bool CanEndFlight()
+		{
+			if (!base.CanEndFlight())
+			{
+				LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113081); // You may not land here.
+				return false;
+			}
 
-                    Spell spell = new FlySpell(this);
-                    spell.Cast();
+			return true;
+		}
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(3), () => EndAction(typeof(FlySpell)));
-                }
-                else
-                {
-                    LocalOverheadMessage(MessageType.Regular, 0x3B2, 1075124); // You must wait before casting that spell again.
-                }
-            }
-            else if (IsValidLandLocation(Location, Map))
-            {
-                if (BeginAction(typeof(FlySpell)))
-                {
-                    if (Spell is Spell)
-                        ((Spell)Spell).Disturb(DisturbType.Unspecified, false, false);
+		protected override void OnFlyingChange()
+		{
+			if (Spell is Spell spell && spell.IsCasting)
+				spell.Disturb(DisturbType.Unspecified, false, false);
 
-                    Animate(AnimationType.Land, 0);
-                    Flying = false;
-                    BuffInfo.RemoveBuff(this, BuffIcon.Fly);
+			base.OnFlyingChange();
 
-                    Timer.DelayCall(TimeSpan.FromSeconds(3), () => EndAction(typeof(FlySpell)));
-                }
-                else
-                {
-                    LocalOverheadMessage(MessageType.Regular, 0x3B2, 1075124); // You must wait before casting that spell again.
-                }
-            }
-            else
-                LocalOverheadMessage(MessageType.Regular, 0x3B2, 1113081); // You may not land here.
-        }
-
-        public static bool IsValidLandLocation(Point3D p, Map map)
-        {
-            return map.CanFit(p.X, p.Y, p.Z, 16, false, false);
-        }
+			if (Flying)
+			{
+				SendSpeedControl(SpeedControlType.MountSpeed);
+				BuffInfo.AddBuff(this, new BuffInfo(BuffIcon.Fly, 1112193, 1112567)); // Flying & You are flying.
+			}
+			else
+			{
+				SendSpeedControl(SpeedControlType.Disable);
+				BuffInfo.RemoveBuff(this, BuffIcon.Fly);
+			}
+		}
         #endregion
 
         private class CountAndTimeStamp
@@ -222,7 +208,7 @@ namespace Server.Mobiles
         private TimeSpan m_NpcGuildGameTime;
         private PlayerFlag m_Flags;
         private ExtendedPlayerFlag m_ExtendedFlags;
-        private int m_Profession;
+        private Profession m_Profession;
 
         private int m_NonAutoreinsuredItems;
         // number of items that could not be automaitically reinsured because gold in bank was not enough
@@ -396,7 +382,7 @@ namespace Server.Mobiles
         public int AllianceMessageHue { get { return m_AllianceMessageHue; } set { m_AllianceMessageHue = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int Profession { get { return m_Profession; } set { m_Profession = value; } }
+        public Profession Profession { get { return m_Profession; } set { m_Profession = value; } }
 
         public int StepsTaken { get; set; }
 
@@ -883,13 +869,13 @@ namespace Server.Mobiles
         {
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
-            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
+            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Length > 0)
             {
                 if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
                 {
                     Container pack = pm.Backpack;
 
-                    e.List.ForEach(serial =>
+                    foreach (var serial in e.List)
                     {
                         Item item = pack.Items.FirstOrDefault(i => i.Serial == serial);
 
@@ -915,9 +901,9 @@ namespace Server.Mobiles
                                 pm.EquipItem(item);
                             }
                         }
-                    });
+                    }
 
-                    pm.NextActionTime = Core.TickCount + (ActionDelay * e.List.Count);
+                    pm.NextActionTime = Core.TickCount + (ActionDelay * e.List.Length);
                 }
 	            else
 	            {
@@ -930,7 +916,7 @@ namespace Server.Mobiles
         {
             PlayerMobile pm = e.Mobile as PlayerMobile;
 
-            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Count > 0)
+            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Length > 0)
             {
                 if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
                 {
@@ -940,14 +926,15 @@ namespace Server.Mobiles
 
                     foreach (Item item in worn)
                     {
-                        if (e.List.Contains((int)item.Layer))
+                        if (Array.IndexOf(e.List, item.Layer) >= 0)
                         {
                             pack.TryDropItem(pm, item, false);
                         }
                     }
 
-                    pm.NextActionTime = Core.TickCount + ActionDelay;
                     ColUtility.Free(worn);
+
+                    pm.NextActionTime = Core.TickCount + ActionDelay;
                 }
 	            else
 	            {
@@ -1340,7 +1327,7 @@ namespace Server.Mobiles
                     Item item = items[i];
                     bool drop = false;
 
-                    if (!RaceDefinitions.ValidateEquipment(from, item, false))
+                    if (RaceDefinitions.ValidateEquipment(from, item, false))
                     {
                         drop = true;
                     }
@@ -1578,14 +1565,7 @@ namespace Server.Mobiles
 
             DisguiseTimers.StartTimer(e.Mobile);
 
-            Timer.DelayCall(TimeSpan.Zero, new TimerStateCallback(ClearSpecialMovesCallback), e.Mobile);
-        }
-
-        private static void ClearSpecialMovesCallback(object state)
-        {
-            Mobile from = (Mobile)state;
-
-            SpecialMove.ClearAllMoves(from);
+            Timer.DelayCall(SpecialMove.ClearAllMoves, e.Mobile);
         }
 
         private static void EventSink_Disconnected(DisconnectedEventArgs e)
@@ -3084,8 +3064,7 @@ namespace Server.Mobiles
             return base.OnDragLift(item);
         }
 
-        public override bool CheckTrade(
-            Mobile to, Item item, SecureTradeContainer cont, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckTrade(Mobile to, Item item, SecureTradeContainer cont, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
             int msgNum = 0;
 
@@ -3122,11 +3101,11 @@ namespace Server.Mobiles
                     plusWeight += cont.TotalWeight;
                 }
 
-                if (Backpack == null || !Backpack.CheckHold(this, item, false, checkItems, plusItems, plusWeight))
+                if (Backpack == null || !Backpack.CheckHold(this, item, false, checkItems, checkWeight, plusItems, plusWeight))
                 {
                     msgNum = 1004040; // You would not be able to hold this if the trade failed.
                 }
-                else if (to.Backpack == null || !to.Backpack.CheckHold(to, item, false, checkItems, plusItems, plusWeight))
+                else if (to.Backpack == null || !to.Backpack.CheckHold(to, item, false, checkItems, checkWeight, plusItems, plusWeight))
                 {
                     msgNum = 1004039; // The recipient of this trade would not be able to carry 
                 }
@@ -4465,7 +4444,7 @@ namespace Server.Mobiles
                             }
                         }
 
-                        m_Profession = reader.ReadEncodedInt();
+                        m_Profession = (Profession)reader.ReadEncodedInt();
                         goto case 15;
                     }
                 case 15:
@@ -4615,15 +4594,15 @@ namespace Server.Mobiles
             {
                 m_RewardTitles = new List<object>();
             }
-            #endregion
+			#endregion
 
-            // Professions weren't verified on 1.0 RC0
-            if (!CharacterCreation.VerifyProfession(m_Profession))
-            {
-                m_Profession = 0;
-            }
+			// Professions weren't verified on 1.0 RC0
+			if (!Enum.IsDefined(typeof(Profession), m_Profession))
+			{
+				m_Profession = Profession.Advanced;
+			}
 
-            if (m_PermaFlags == null)
+			if (m_PermaFlags == null)
             {
                 m_PermaFlags = new List<Mobile>();
             }
@@ -4828,8 +4807,8 @@ namespace Server.Mobiles
                     writer.Write(restartInfo.RestartTime);
                 }
             }
-
-            writer.WriteEncodedInt(m_Profession);
+			
+			writer.WriteEncodedInt((int)m_Profession);
 
             writer.WriteDeltaTime(m_LastCompassionLoss);
 
@@ -5529,7 +5508,7 @@ namespace Server.Mobiles
             return (running ? RunFoot : WalkFoot);
         }
 
-        public static bool MovementThrottle_Callback(NetState ns, out bool drop)
+        public static bool MovementThrottle_Callback(byte packetID, NetState ns, out bool drop)
         {
             drop = false;
 

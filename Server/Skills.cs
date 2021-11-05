@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 using Server.Network;
 #endregion
@@ -1092,12 +1091,16 @@ namespace Server
 
 		public IEnumerator<Skill> GetEnumerator()
 		{
-			return m_Skills.Where(s => s != null).GetEnumerator();
+			for (var i = 0; i < m_Skills.Length; i++)
+			{
+				if (m_Skills[i] != null)
+					yield return m_Skills[i];
+			}
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return m_Skills.Where(s => s != null).GetEnumerator();
+			return GetEnumerator();
 		}
 	}
 }

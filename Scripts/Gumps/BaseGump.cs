@@ -83,7 +83,7 @@ namespace Server.Gumps
         {
             AddGumpLayout();
             Open = true;
-            User.SendGump(this, false);
+            User.SendGump(this);
         }
 
         public void Dispose()
@@ -700,7 +700,7 @@ namespace Server.Gumps
             }
 
             public Spoof()
-                : base(NewUID, Point3D.Zero, Map.Internal)
+                : base(new Serial(NewUID), Point3D.Zero, Map.Internal)
             { }
         }
 

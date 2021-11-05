@@ -136,7 +136,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0); // version
 
-            writer.WriteItem(Hatch);
+            writer.Write(Hatch);
         }
 
         public override void Deserialize(GenericReader reader)
@@ -528,7 +528,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0); // version
 
-            writer.WriteItem(Altar);
+            writer.Write(Altar);
         }
 
         public override void Deserialize(GenericReader reader)

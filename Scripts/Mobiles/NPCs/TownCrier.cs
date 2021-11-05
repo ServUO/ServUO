@@ -461,7 +461,7 @@ namespace Server.Mobiles
             InitStats(100, 100, 25);
 
             Title = "the town crier";
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = Utility.RandomBool())
             {

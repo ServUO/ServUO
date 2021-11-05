@@ -117,7 +117,7 @@ namespace Server.Items
 
         public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
         {
-            if (target.RootParentEntity == null)
+            if (target.RootParent == null)
             {
                 var h = BaseHouse.FindHouseAt(target.Location, target.Map, ItemData.Height);
 
@@ -132,7 +132,7 @@ namespace Server.Items
 
         public override bool OnDroppedOnto(Mobile from, Item target)
         {
-            if (target.RootParentEntity == null)
+            if (target.RootParent == null)
             {
                 var h = BaseHouse.FindHouseAt(target.Location, target.Map, ItemData.Height);
 

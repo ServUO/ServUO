@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -156,39 +157,6 @@ namespace Server
 				return false; //Just worry about IPv4 for now
 			}
 
-			/*
-            string[] str = cidr.Split( '/' );
-
-            if ( str.Length != 2 )
-            return false;
-
-            /* **************************************************
-            IPAddress cidrPrefix;
-
-            if ( !IPAddress.TryParse( str[0], out cidrPrefix ) )
-            return false;
-            * */
-
-			/*
-            string[] dotSplit = str[0].Split( '.' );
-
-            if ( dotSplit.Length != 4 )		//At this point and time, and for speed sake, we'll only worry about IPv4
-            return false;
-
-            byte[] bytes = new byte[4];
-
-            for ( int i = 0; i < 4; i++ )
-            {
-            byte.TryParse( dotSplit[i], out bytes[i] );
-            }
-
-            uint cidrPrefix = OrderedAddressValue( bytes );
-
-            int cidrLength = Utility.ToInt32( str[1] );
-            //The below solution is the fastest solution of the three
-
-            */
-
 			var bytes = new byte[4];
 			var split = cidr.Split('.');
 			var cidrBits = false;
@@ -281,8 +249,7 @@ namespace Server
 
 		public static bool IPMatchCIDR(IPAddress cidrPrefix, IPAddress ip, int cidrLength)
 		{
-			if (cidrPrefix == null || ip == null || cidrPrefix.AddressFamily == AddressFamily.InterNetworkV6)
-			//Ignore IPv6 for now
+			if (cidrPrefix == null || ip == null || cidrPrefix.AddressFamily == AddressFamily.InterNetworkV6) //Ignore IPv6 for now
 			{
 				return false;
 			}
@@ -549,9 +516,43 @@ namespace Server
 
 			return i;
 		}
+
+		public static Serial ToSerial(string value)
+		{
+			return new Serial(ToInt32(value));
+		}
+
 		#endregion
 
 		#region Get[Something]
+
+		public static Serial GetXMLSerial(string serialString, Serial defaultValue)
+		{
+			try
+			{
+				return new Serial(XmlConvert.ToInt32(serialString));
+			}
+			catch
+			{
+				if (serialString.StartsWith("0x"))
+				{
+					if (Int32.TryParse(serialString.Substring(2), NumberStyles.HexNumber, null, out var val))
+					{
+						return new Serial(val);
+					}
+				}
+				else
+				{
+					if (Int32.TryParse(serialString, out var val))
+					{
+						return new Serial(val);
+					}
+				}
+
+				return defaultValue;
+			}
+		}
+
 		public static double GetXMLDouble(string doubleString, double defaultValue)
 		{
 			try
@@ -682,58 +683,27 @@ namespace Server
 		#endregion
 
 		#region In[...]Range
-		public static bool InRange(Point3D p1, Point3D p2, int range)
+		public static bool InRange(IPoint2D p1, IPoint2D p2, int range)
 		{
-			return (p1.m_X >= (p2.m_X - range)) && (p1.m_X <= (p2.m_X + range)) && (p1.m_Y >= (p2.m_Y - range)) &&
-				   (p1.m_Y <= (p2.m_Y + range));
-		}
+			if (p1 is Item i1)
+				p1 = i1.GetWorldLocation();
 
-		public static bool InUpdateRange(Point3D p1, Point3D p2)
-		{
-			var range = Core.GlobalUpdateRange;
+			if (p2 is Item i2)
+				p2 = i2.GetWorldLocation();
 
-			return (p1.m_X >= (p2.m_X - range)) && (p1.m_X <= (p2.m_X + range)) && (p1.m_Y >= (p2.m_Y - range)) &&
-				   (p1.m_Y <= (p2.m_Y + range));
-		}
-
-		public static bool InUpdateRange(Point2D p1, Point2D p2)
-		{
-			var range = Core.GlobalUpdateRange;
-
-			return (p1.m_X >= (p2.m_X - range)) && (p1.m_X <= (p2.m_X + range)) && (p1.m_Y >= (p2.m_Y - range)) &&
-				   (p1.m_Y <= (p2.m_Y + range));
-		}
-
-		public static bool InUpdateRange(Mobile m, IPoint3D p)
-		{
-			return InUpdateRange(m, m, p);
-		}
-
-		public static bool InUpdateRange(Mobile m, IPoint3D p1, IPoint3D p2)
-		{
-			var range = Core.GlobalUpdateRange;
-
-			if (m.NetState != null)
-			{
-				range = m.NetState.UpdateRange;
-			}
-
-			if (p1 is Item)
-			{
-				p1 = ((Item)p1).GetWorldLocation();
-			}
-
-			if (p2 is Item)
-			{
-				p2 = ((Item)p2).GetWorldLocation();
-			}
-
-			return (p1.X >= (p2.X - range)) && (p1.X <= (p2.X + range)) && (p1.Y >= (p2.Y - range)) && (p1.Y <= (p2.Y + range));
+			return (p1.X >= (p2.X - range)) && (p1.X <= (p2.X + range))
+				&& (p1.Y >= (p2.Y - range)) && (p1.Y <= (p2.Y + range));
 		}
 		#endregion
 
 		public static Direction GetDirection(IPoint2D from, IPoint2D to)
 		{
+			if (from is Item i1)
+				from = i1.GetWorldLocation();
+
+			if (to is Item i2)
+				to = i2.GetWorldLocation();
+
 			var dx = to.X - from.X;
 			var dy = to.Y - from.Y;
 
@@ -850,6 +820,11 @@ namespace Server
 			return total + bonus;
 		}
 
+		public static T RandomList<T>(List<T> list)
+		{
+			return list[RandomImpl.Next(list.Count)];
+		}
+
 		public static T RandomList<T>(params T[] list)
 		{
 			return list[RandomImpl.Next(list.Length)];
@@ -861,59 +836,75 @@ namespace Server
 		}
 
 #if MONO
-		public static TEnum RandomEnum<TEnum>() where TEnum : struct, IConvertible            
+		private static class EnumCache<T> where T : struct, IConvertible
 #else
-		public static TEnum RandomEnum<TEnum>() where TEnum : Enum
+		private static class EnumCache<T> where T : struct, Enum
 #endif
 		{
-			if (Enum.GetValues(typeof(TEnum)) is TEnum[] values && values.Length > 0)
-				return RandomList(values);
+			public static T[] Values = (T[])Enum.GetValues(typeof(T));
+		}
 
-			return default(TEnum);
+#if MONO
+		public static TEnum RandomEnum<TEnum>() where TEnum : struct, IConvertible            
+#else
+		public static TEnum RandomEnum<TEnum>() where TEnum : struct, Enum
+#endif
+		{
+			return RandomList(EnumCache<TEnum>.Values);
 		}
 
 #if MONO
 		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : struct, IConvertible            
 #else
-		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : Enum
+		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : struct, Enum
 #endif
 		{
-			if (Enum.GetValues(typeof(TEnum)) is TEnum[] values && values.Length > 0)
+			var values = EnumCache<TEnum>.Values;
+
+			if (values.Length == 0)
 			{
-				var curIdx = -1;
-				var minIdx = -1;
-				var maxIdx = -1;
-
-				foreach (var val in values)
-				{
-					++curIdx;
-
-					if (Equals(val, min))
-						minIdx = curIdx;
-					else if (Equals(val, max))
-						maxIdx = curIdx;
-				}
-
-				if (minIdx == 0 && maxIdx == values.Length - 1)
-					return RandomList(values);
-
-				curIdx = -1;
-
-				if (minIdx >= 0)
-				{
-					if (minIdx == maxIdx)
-						curIdx = minIdx;
-					else if (maxIdx > minIdx)
-						curIdx = RandomMinMax(minIdx, maxIdx);
-				}
-
-				if (curIdx >= 0 && curIdx < values.Length)
-					return values[curIdx];
-
-				return RandomList(min, max);
+				return default(TEnum);
 			}
 
-			return default(TEnum);
+			int curIdx = -1, minIdx = -1, maxIdx = -1;
+
+			while (++curIdx < values.Length)
+			{
+				if (Equals(values[curIdx], min))
+				{
+					minIdx = curIdx;
+				}
+				else if (Equals(values[curIdx], max))
+				{
+					maxIdx = curIdx;
+				}
+			}
+
+			if (minIdx == 0 && maxIdx == values.Length - 1)
+			{
+				return RandomList(values);
+			}
+
+			curIdx = -1;
+
+			if (minIdx >= 0)
+			{
+				if (minIdx == maxIdx)
+				{
+					curIdx = minIdx;
+				}
+				else if (maxIdx > minIdx)
+				{
+					curIdx = RandomMinMax(minIdx, maxIdx);
+				}
+			}
+
+			if (curIdx >= 0 && curIdx < values.Length)
+			{
+				return values[curIdx];
+			}
+
+			return RandomList(min, max);
 		}
 
 		public static double RandomMinMax(double min, double max)
@@ -1015,6 +1006,138 @@ namespace Server
 		{
 			FixMin(ref value, min);
 			FixMax(ref value, max);
+		}
+
+		public static void FixRange(ref double min, ref double max)
+		{
+			if (min < max)
+			{
+				var swap = max;
+				max = min;
+				min = swap;
+			}
+		}
+
+		public static void FixRange(ref int min, ref int max)
+		{
+			if (min > max)
+			{
+				var swap = max;
+				max = min;
+				min = swap;
+			}
+		}
+		#endregion
+
+		#region Clamp
+		public static void Clamp(ref sbyte val, sbyte min, sbyte max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static sbyte Clamp(sbyte val, sbyte min, sbyte max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref byte val, byte min, byte max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static byte Clamp(byte val, byte min, byte max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref short val, short min, short max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static short Clamp(short val, short min, short max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref ushort val, ushort min, ushort max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static ushort Clamp(ushort val, ushort min, ushort max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref int val, int min, int max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static int Clamp(int val, int min, int max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref uint val, uint min, uint max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static uint Clamp(uint val, uint min, uint max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref long val, long min, long max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static long Clamp(long val, long min, long max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref ulong val, ulong min, ulong max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static ulong Clamp(ulong val, ulong min, ulong max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref float val, float min, float max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static float Clamp(float val, float min, float max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref decimal val, decimal min, decimal max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static decimal Clamp(decimal val, decimal min, decimal max)
+		{
+			return Math.Max(min, Math.Min(max, val));
+		}
+
+		public static void Clamp(ref double val, double min, double max)
+		{
+			val = Clamp(val, min, max);
+		}
+
+		public static double Clamp(double val, double min, double max)
+		{
+			return Math.Max(min, Math.Min(max, val));
 		}
 		#endregion
 
@@ -1175,55 +1298,9 @@ namespace Server
 
 			return RandomList(0x03, 0x0D, 0x13, 0x1C, 0x21, 0x30, 0x37, 0x3A, 0x44, 0x59);
 		}
-
-		//[Obsolete( "Depreciated, use the methods for the Mobile's race", false )]
-		public static int ClipSkinHue(int hue)
-		{
-			if (hue < 1002)
-			{
-				return 1002;
-			}
-			else if (hue > 1058)
-			{
-				return 1058;
-			}
-			else
-			{
-				return hue;
-			}
-		}
-
-		//[Obsolete( "Depreciated, use the methods for the Mobile's race", false )]
-		public static int RandomSkinHue()
-		{
-			return Random(1002, 57) | 0x8000;
-		}
-
-		//[Obsolete( "Depreciated, use the methods for the Mobile's race", false )]
-		public static int ClipHairHue(int hue)
-		{
-			if (hue < 1102)
-			{
-				return 1102;
-			}
-			else if (hue > 1149)
-			{
-				return 1149;
-			}
-			else
-			{
-				return hue;
-			}
-		}
-
-		//[Obsolete( "Depreciated, use the methods for the Mobile's race", false )]
-		public static int RandomHairHue()
-		{
-			return Random(1102, 48);
-		}
 		#endregion
 
-		private static readonly SkillName[] m_AllSkills = new[]
+		private static readonly SkillName[] m_AllSkills =
 		{
 			SkillName.Alchemy, SkillName.Anatomy, SkillName.AnimalLore, SkillName.ItemID, SkillName.ArmsLore, SkillName.Parry,
 			SkillName.Begging, SkillName.Blacksmith, SkillName.Fletching, SkillName.Peacemaking, SkillName.Camping,
@@ -1238,10 +1315,12 @@ namespace Server
 			SkillName.Ninjitsu, SkillName.Spellweaving, SkillName.Mysticism, SkillName.Imbuing, SkillName.Throwing
 		};
 
-		private static readonly SkillName[] m_CombatSkills = new[]
-		{SkillName.Archery, SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Wrestling};
+		private static readonly SkillName[] m_CombatSkills =
+		{
+			SkillName.Archery, SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Wrestling
+		};
 
-		private static readonly SkillName[] m_CraftSkills = new[]
+		private static readonly SkillName[] m_CraftSkills =
 		{
 			SkillName.Alchemy, SkillName.Blacksmith, SkillName.Fletching, SkillName.Carpentry, SkillName.Cartography,
 			SkillName.Cooking, SkillName.Inscribe, SkillName.Tailoring, SkillName.Tinkering
@@ -1249,7 +1328,7 @@ namespace Server
 
 		public static SkillName RandomSkill()
 		{
-			return m_AllSkills[Random(m_AllSkills.Length)];
+			return m_AllSkills[Random(m_AllSkills.Length - (Core.ML ? 0 : Core.SE ? 1 : Core.AOS ? 3 : 6))];
 		}
 
 		public static SkillName RandomCombatSkill()
@@ -1262,28 +1341,37 @@ namespace Server
 			return m_CraftSkills[Random(m_CraftSkills.Length)];
 		}
 
+		public static void FixPoint(ref int top, ref int bottom)
+		{
+			if (bottom < top)
+			{
+				var swap = top;
+				top = bottom;
+				bottom = swap;
+			}
+		}
+
+		public static void FixPoints(ref int topX, ref int topY, ref int bottomX, ref int bottomY)
+		{
+			FixPoint(ref topX, ref bottomX);
+			FixPoint(ref topY, ref bottomY);
+		}
+
+		public static void FixPoints(ref int topX, ref int topY, ref int topZ, ref int bottomX, ref int bottomY, ref int bottomZ)
+		{
+			FixPoint(ref topX, ref bottomX);
+			FixPoint(ref topY, ref bottomY);
+			FixPoint(ref topZ, ref bottomZ);
+		}
+
+		public static void FixPoints(ref Point2D top, ref Point2D bottom)
+		{
+			FixPoints(ref top.m_X, ref top.m_Y, ref bottom.m_X, ref bottom.m_Y);
+		}
+
 		public static void FixPoints(ref Point3D top, ref Point3D bottom)
 		{
-			if (bottom.m_X < top.m_X)
-			{
-				var swap = top.m_X;
-				top.m_X = bottom.m_X;
-				bottom.m_X = swap;
-			}
-
-			if (bottom.m_Y < top.m_Y)
-			{
-				var swap = top.m_Y;
-				top.m_Y = bottom.m_Y;
-				bottom.m_Y = swap;
-			}
-
-			if (bottom.m_Z < top.m_Z)
-			{
-				var swap = top.m_Z;
-				top.m_Z = bottom.m_Z;
-				bottom.m_Z = swap;
-			}
+			FixPoints(ref top.m_X, ref top.m_Y, ref top.m_Z, ref bottom.m_X, ref bottom.m_Y, ref bottom.m_Z);
 		}
 
 		public static ArrayList BuildArrayList(IEnumerable enumerable)
@@ -1412,58 +1500,157 @@ namespace Server
 			return String.Format("{0}.{1}", callback.Method.DeclaringType.FullName, callback.Method.Name);
 		}
 
+		#region Console
+
 		private static readonly Stack<ConsoleColor> m_ConsoleColors = new Stack<ConsoleColor>();
 
-		public static void WriteConsoleColor(ConsoleColor color, string format, params object[] args)
+		public static void Write(ConsoleColor color, string text, params object[] args)
 		{
-			lock (((ICollection)m_ConsoleColors).SyncRoot)
+			lock (m_ConsoleColors)
 			{
-				PushColor(color);
-				Console.WriteLine(format, args);
-				PopColor();
+				var oldColor = Console.ForegroundColor;
+
+				try { Console.ForegroundColor = color; }
+				catch { return; }
+
+				Console.Write(text, args);
+
+				try { Console.ForegroundColor = oldColor; }
+				catch { }
 			}
 		}
 
-		public static void WriteConsoleColor(ConsoleColor color, string str)
+		public static void WriteLine(ConsoleColor color, string text, params object[] args)
 		{
-			lock (((ICollection)m_ConsoleColors).SyncRoot)
+			lock (m_ConsoleColors)
 			{
-				PushColor(color);
-				Console.WriteLine(str);
-				PopColor();
+				var oldColor = Console.ForegroundColor;
+
+				try { Console.ForegroundColor = color; }
+				catch { return; }
+
+				Console.WriteLine(text, args);
+
+				try { Console.ForegroundColor = oldColor; }
+				catch { }
 			}
 		}
 
 		public static void PushColor(ConsoleColor color)
 		{
-			try
+			lock (m_ConsoleColors)
 			{
-				lock (((ICollection)m_ConsoleColors).SyncRoot)
-				{
-					m_ConsoleColors.Push(Console.ForegroundColor);
+				var oldColor = Console.ForegroundColor;
 
-					Console.ForegroundColor = color;
-				}
-			}
-			catch (Exception e)
-			{
-				Diagnostics.ExceptionLogging.LogException(e);
+				try { Console.ForegroundColor = color; }
+				catch { return; }
+
+				m_ConsoleColors.Push(oldColor);
 			}
 		}
 
 		public static void PopColor()
 		{
-			try
+			lock (m_ConsoleColors)
 			{
-				lock (((ICollection)m_ConsoleColors).SyncRoot)
+				if (m_ConsoleColors.Count > 0)
 				{
-					Console.ForegroundColor = m_ConsoleColors.Pop();
+					var color = m_ConsoleColors.Pop();
+
+					try { Console.ForegroundColor = color; }
+					catch { }
 				}
 			}
-			catch (Exception e)
+		}
+
+		#endregion
+
+		public static Color ToColor(string input)
+		{
+			var color = Color.Empty;
+
+			if (!String.IsNullOrEmpty(input))
+				input = input.Trim();
+
+			if (!String.IsNullOrEmpty(input))
 			{
-				Diagnostics.ExceptionLogging.LogException(e);
+				if (input[0] == '#')
+				{
+					input = input.TrimStart('#').Trim();
+
+					if (input.Length >= 8)
+					{
+						var ap = Byte.TryParse(input.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var a);
+						var rp = Byte.TryParse(input.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var r);
+						var gp = Byte.TryParse(input.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var g);
+						var bp = Byte.TryParse(input.Substring(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var b);
+
+						if (ap && rp && gp && bp)
+							color = Color.FromArgb(a, r, g, b);
+					}
+					else if (input.Length >= 6)
+					{
+						var rp = Byte.TryParse(input.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var r);
+						var gp = Byte.TryParse(input.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var g);
+						var bp = Byte.TryParse(input.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var b);
+
+						if (rp && gp && bp)
+							color = Color.FromArgb(0xFF, r, g, b);
+					}
+					else if (input.Length >= 3)
+					{
+						var rp = Byte.TryParse(input.Substring(0, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var r);
+						var gp = Byte.TryParse(input.Substring(1, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var g);
+						var bp = Byte.TryParse(input.Substring(2, 1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var b);
+
+						if (rp && gp && bp)
+							color = Color.FromArgb(0xFF, r, g, b);
+					}
+				}
+				else if (input.IndexOf(',') >= 0)
+				{
+					var rgba = input.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+					if (rgba.Length >= 4)
+					{
+						var ap = Byte.TryParse(rgba[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var a);
+						var rp = Byte.TryParse(rgba[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var r);
+						var gp = Byte.TryParse(rgba[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var g);
+						var bp = Byte.TryParse(rgba[3], NumberStyles.Integer, CultureInfo.InvariantCulture, out var b);
+
+						if (ap && rp && gp && bp)
+							color = Color.FromArgb(a, r, g, b);
+					}
+					else if (rgba.Length >= 3)
+					{
+						var rp = Byte.TryParse(rgba[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out var r);
+						var gp = Byte.TryParse(rgba[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var g);
+						var bp = Byte.TryParse(rgba[2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var b);
+
+						if (rp && gp && bp)
+							color = Color.FromArgb(0xFF, r, g, b);
+					}
+				}
+
+				if (color.IsEmpty)
+				{
+					var argb = ToInt32(input);
+
+					if (argb != 0)
+						color = Color.FromArgb(argb);
+					else if (Enum.TryParse(input, true, out KnownColor kc))
+						color = Color.FromKnownColor(kc);
+				}
 			}
+
+			return color;
+		}
+
+		public static bool TryParseColor(string input, out Color color)
+		{
+			color = ToColor(input);
+
+			return !color.IsEmpty;
 		}
 
 		public static bool NumberBetween(double num, int bound1, int bound2, double allowance)
@@ -1478,8 +1665,14 @@ namespace Server
 			return num < bound2 + allowance && num > bound1 - allowance;
 		}
 
-		public static double GetDistanceToSqrt(Point3D p1, Point3D p2)
+		public static double GetDistanceToSqrt(IPoint2D p1, IPoint2D p2)
 		{
+			if (p1 is Item i1)
+				p1 = i1.GetWorldLocation();
+
+			if (p2 is Item i2)
+				p2 = i2.GetWorldLocation();
+
 			var xDelta = p1.X - p2.X;
 			var yDelta = p1.Y - p2.Y;
 
@@ -1528,10 +1721,13 @@ namespace Server
 			}
 		}
 
+#if MONO
+		public static List<TOutput> CastConvertList<TInput, TOutput>(List<TInput> list ) where TInput : class where TOutput : class
+#else
 		public static List<TOutput> CastConvertList<TInput, TOutput>(List<TInput> list) where TOutput : TInput
+#endif
 		{
-			return list.ConvertAll(delegate (TInput value)
-			{ return (TOutput)value; });
+			return list.ConvertAll<TOutput>(value => (TOutput)value);
 		}
 
 		public static List<TOutput> SafeConvertList<TInput, TOutput>(List<TInput> list) where TOutput : class
@@ -1540,9 +1736,7 @@ namespace Server
 
 			for (var i = 0; i < list.Count; i++)
 			{
-				var t = list[i] as TOutput;
-
-				if (t != null)
+				if (list[i] is TOutput t)
 				{
 					output.Add(t);
 				}
@@ -1574,6 +1768,24 @@ namespace Server
 
 	public static class ColUtility
 	{
+		public static void Free<T>(HashSet<T> l)
+		{
+			if (l == null)
+				return;
+
+			l.Clear();
+			l.TrimExcess();
+		}
+
+		public static void Free<T>(Queue<T> l)
+		{
+			if (l == null)
+				return;
+
+			l.Clear();
+			l.TrimExcess();
+		}
+
 		public static void Free<T>(List<T> l)
 		{
 			if (l == null)
@@ -1596,8 +1808,7 @@ namespace Server
 			Free(l);
 		}
 
-		public static void ForEach<TKey, TValue>(
-			IDictionary<TKey, TValue> dictionary, Action<KeyValuePair<TKey, TValue>> action)
+		public static void ForEach<TKey, TValue>(IDictionary<TKey, TValue> dictionary, Action<KeyValuePair<TKey, TValue>> action)
 		{
 			if (dictionary == null || dictionary.Count == 0 || action == null)
 				return;
@@ -1649,7 +1860,7 @@ namespace Server
 			Free(l);
 		}
 
-		public static void IterateReverse<T>(this T[] list, Action<T> action)
+		public static void IterateReverse<T>(T[] list, Action<T> action)
 		{
 			if (list == null || action == null)
 			{
@@ -1667,7 +1878,7 @@ namespace Server
 			}
 		}
 
-		public static void IterateReverse<T>(this List<T> list, Action<T> action)
+		public static void IterateReverse<T>(List<T> list, Action<T> action)
 		{
 			if (list == null || action == null)
 			{
@@ -1685,30 +1896,35 @@ namespace Server
 			}
 		}
 
-		public static void IterateReverse<T>(this IEnumerable<T> list, Action<T> action)
+		public static void IterateReverse<T>(IEnumerable<T> list, Action<T> action)
 		{
 			if (list == null || action == null)
 			{
 				return;
 			}
 
-			if (list is T[])
+			if (list is T[] a)
 			{
-				IterateReverse((T[])list, action);
+				IterateReverse(a, action);
 				return;
 			}
 
-			if (list is List<T>)
+			if (list is List<T> l)
 			{
-				IterateReverse((List<T>)list, action);
+				IterateReverse(l, action);
 				return;
 			}
 
 			var toList = list.ToList();
 
-			foreach (var o in toList)
+			var i = toList.Count;
+
+			while (--i >= 0)
 			{
-				action(o);
+				if (i < toList.Count)
+				{
+					action(toList[i]);
+				}
 			}
 
 			Free(toList);

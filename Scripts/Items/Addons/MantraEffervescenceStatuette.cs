@@ -4,9 +4,10 @@ namespace Server.Items
     {
         [Constructable]
         public MantraEffervescenceStatuette()
-            : base(0x2D94)
         {
-            Weight = 1.0;
+			ItemID = 0x2D94;
+
+			Weight = 1.0;
         }
 
         public MantraEffervescenceStatuette(Serial serial)

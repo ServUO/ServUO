@@ -55,12 +55,12 @@ namespace Server.Items
             return base.IsAccessibleTo(m);
         }
 
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
-            if (IsSecure && !BaseHouse.CheckHold(m, this, item, message, checkItems, plusItems, plusWeight))
+            if (IsSecure && !BaseHouse.CheckHold(m, this, item, message, checkItems, checkWeight, plusItems, plusWeight))
                 return false;
 
-            return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+            return base.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight);
         }
 
         public override bool CheckItemUse(Mobile from, Item item)
@@ -119,7 +119,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (!CheckHold(from, dropped, sendFullMessage, !CheckStack(from, dropped)))
+            if (!CheckHold(from, dropped, sendFullMessage, !CheckStack(from, dropped), true))
                 return false;
 
             if (dropped.QuestItem && from.Backpack != this)
@@ -166,7 +166,7 @@ namespace Server.Items
 
         public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
         {
-            if (!CheckHold(from, item, true, true))
+            if (!CheckHold(from, item, true))
                 return false;
 
             if (item.QuestItem && from.Backpack != this)
@@ -416,9 +416,9 @@ namespace Server.Items
         }
 
         public override int DefaultMaxWeight => 1600;
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
-            return base.CheckHold(m, item, false, checkItems, plusItems, plusWeight);
+            return base.CheckHold(m, item, false, checkItems, checkWeight, plusItems, plusWeight);
         }
 
         public override bool CheckContentDisplay(Mobile from)
@@ -468,17 +468,17 @@ namespace Server.Items
         {
             get
             {
-                Mobile m = ParentEntity as Mobile;
+                Mobile m = Parent as Mobile;
+
                 if (m != null && m.Player && m.Backpack == this)
                 {
                     return 550;
                 }
-                else
-                {
-                    return base.DefaultMaxWeight;
-                }
+				
+				return base.DefaultMaxWeight;
             }
         }
+
         public bool Dye(Mobile from, DyeTub sender)
         {
             if (Deleted)

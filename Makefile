@@ -7,7 +7,7 @@ SRVPATH=${CURPATH}/Server
 APPPATH=${CURPATH}/Application
 ICOPATH=${CURPATH}/Application
 REFS=System.Drawing.dll,System.Web.dll,System.Data.dll,System.IO.Compression.FileSystem.dll
-DEFS=-d:MONO -d:ServUO -d:P58 -d:NEWTIMERS
+DEFS=-d:MONO -d:ServUO -d:ServUO58 -d:NEWTIMERS -d:NEWPARENT
 NOWARNS=0618,0219,0414,1635
 
 PHONY : default build clean run

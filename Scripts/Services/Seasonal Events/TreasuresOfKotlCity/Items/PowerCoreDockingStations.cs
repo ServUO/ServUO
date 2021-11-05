@@ -133,7 +133,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
                     if (r != null)
                     {
-                        foreach (PlayerMobile pm in r.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                        foreach (PlayerMobile pm in r.AllPlayers.OfType<PlayerMobile>())
                             pm.SendLocalizedMessage(1157026); // [Kotl City Hologenerator]:  Great Battle simulation now active! Proceed to city center!
                     }
                 }

@@ -161,7 +161,7 @@ namespace Server.Regions
             if (r == null)
                 return;
 
-            foreach (Mobile player in r.GetEnumeratedMobiles().Where(p => p is PlayerMobile &&
+            foreach (Mobile player in r.AllMobiles.Where(p => p is PlayerMobile &&
                                                                        p.Alive))
             {
                 IPooledEnumerable eable = player.GetMobilesInRange(4);
@@ -201,7 +201,7 @@ namespace Server.Regions
         {
             List<BaseBoat> list = new List<BaseBoat>();
 
-            foreach (BaseBoat boat in GetEnumeratedMultis().OfType<BaseBoat>())
+            foreach (BaseBoat boat in AllMultis.OfType<BaseBoat>())
                 list.Add(boat);
 
             return list;

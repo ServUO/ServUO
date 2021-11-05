@@ -44,6 +44,8 @@ namespace Server
 		public abstract Rectangle3D ReadRect3D();
 		public abstract Map ReadMap();
 
+		public abstract Serial ReadSerial();
+
 		public abstract Item ReadItem();
 		public abstract Mobile ReadMobile();
 		public abstract BaseGuild ReadGuild();
@@ -107,6 +109,7 @@ namespace Server
 		public abstract void Write(bool value);
 		public abstract void WriteEncodedInt(int value);
 		public abstract void Write(IPAddress value);
+		public abstract void Write(Serial value);
 
 		public abstract void WriteDeltaTime(DateTime value);
 
@@ -119,10 +122,6 @@ namespace Server
 		public abstract void Write(Item value);
 		public abstract void Write(Mobile value);
 		public abstract void Write(BaseGuild value);
-
-		public abstract void WriteItem<T>(T value) where T : Item;
-		public abstract void WriteMobile<T>(T value) where T : Mobile;
-		public abstract void WriteGuild<T>(T value) where T : BaseGuild;
 
 		public abstract void Write(Race value);
 
@@ -177,7 +176,7 @@ namespace Server
 		private readonly bool PrefixStrings;
 		private readonly Stream m_File;
 
-		protected virtual int BufferSize => 64 * 1024;
+		protected virtual int BufferSize => 81920;
 
 		private readonly byte[] m_Buffer;
 
@@ -188,16 +187,31 @@ namespace Server
 		public BinaryFileWriter(Stream strm, bool prefixStr)
 		{
 			PrefixStrings = prefixStr;
+
 			m_Encoding = Utility.UTF8;
 			m_Buffer = new byte[BufferSize];
 			m_File = strm;
 		}
 
 		public BinaryFileWriter(string filename, bool prefixStr)
+			: this(filename, prefixStr, false)
+		{ }
+
+		public BinaryFileWriter(string filename, bool prefixStr, bool async)
 		{
 			PrefixStrings = prefixStr;
+
 			m_Buffer = new byte[BufferSize];
-			m_File = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
+
+			if (async)
+			{
+				m_File = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, BufferSize, true);
+			}
+			else
+			{
+				m_File = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, BufferSize, FileOptions.WriteThrough);
+			}
+
 			m_Encoding = Utility.UTF8WithEncoding;
 		}
 
@@ -628,6 +642,11 @@ namespace Server
 			}
 		}
 
+		public override void Write(Serial value)
+		{
+			Write(value.Value);
+		}
+
 		public override void Write(Item value)
 		{
 			if (value == null || value.Deleted)
@@ -662,21 +681,6 @@ namespace Server
 			{
 				Write(value.Id);
 			}
-		}
-
-		public override void WriteItem<T>(T value)
-		{
-			Write(value);
-		}
-
-		public override void WriteMobile<T>(T value)
-		{
-			Write(value);
-		}
-
-		public override void WriteGuild<T>(T value)
-		{
-			Write(value);
 		}
 
 		public override void WriteMobileList(ArrayList list)
@@ -1112,34 +1116,21 @@ namespace Server
 
 		public override DateTime ReadDeltaTime()
 		{
-			var ticks = m_File.ReadInt64();
-			var now = DateTime.UtcNow.Ticks;
-
-			if (ticks > 0 && (ticks + now) < 0)
-			{
-				return DateTime.MaxValue;
-			}
-			else if (ticks < 0 && (ticks + now) < 0)
-			{
-				return DateTime.MinValue;
-			}
+			var offset = ReadTimeSpan();
 
 			try
 			{
-				return new DateTime(now + ticks);
+				return DateTime.UtcNow + offset;
 			}
-			catch (Exception e)
+			catch
 			{
-				Diagnostics.ExceptionLogging.LogException(e);
-
-				if (ticks > 0)
-				{
-					return DateTime.MaxValue;
-				}
-				else
-				{
+				if (offset <= TimeSpan.MinValue)
 					return DateTime.MinValue;
-				}
+
+				if (offset >= TimeSpan.MaxValue)
+					return DateTime.MaxValue;
+
+				return DateTime.UtcNow;
 			}
 		}
 
@@ -1290,14 +1281,19 @@ namespace Server
 			return Map.Maps[ReadByte()];
 		}
 
+		public override Serial ReadSerial()
+		{
+			return new Serial(ReadInt());
+		}
+
 		public override Item ReadItem()
 		{
-			return World.FindItem(ReadInt());
+			return World.FindItem(ReadSerial());
 		}
 
 		public override Mobile ReadMobile()
 		{
-			return World.FindMobile(ReadInt());
+			return World.FindMobile(ReadSerial());
 		}
 
 		public override BaseGuild ReadGuild()
@@ -1413,9 +1409,7 @@ namespace Server
 
 				for (var i = 0; i < count; ++i)
 				{
-					var item = ReadItem() as T;
-
-					if (item != null)
+					if (ReadItem() is T item)
 					{
 						list.Add(item);
 					}
@@ -1444,9 +1438,7 @@ namespace Server
 
 				for (var i = 0; i < count; ++i)
 				{
-					var item = ReadItem() as T;
-
-					if (item != null)
+					if (ReadItem() is T item)
 					{
 						set.Add(item);
 					}
@@ -1475,9 +1467,7 @@ namespace Server
 
 				for (var i = 0; i < count; ++i)
 				{
-					var m = ReadMobile() as T;
-
-					if (m != null)
+					if (ReadMobile() is T m)
 					{
 						list.Add(m);
 					}
@@ -1506,11 +1496,9 @@ namespace Server
 
 				for (var i = 0; i < count; ++i)
 				{
-					var item = ReadMobile() as T;
-
-					if (item != null)
+					if (ReadMobile() is T m)
 					{
-						set.Add(item);
+						set.Add(m);
 					}
 				}
 
@@ -1537,9 +1525,7 @@ namespace Server
 
 				for (var i = 0; i < count; ++i)
 				{
-					var g = ReadGuild() as T;
-
-					if (g != null)
+					if (ReadGuild() is T g)
 					{
 						list.Add(g);
 					}
@@ -1568,11 +1554,9 @@ namespace Server
 
 				for (var i = 0; i < count; ++i)
 				{
-					var item = ReadGuild() as T;
-
-					if (item != null)
+					if (ReadGuild() is T g)
 					{
-						set.Add(item);
+						set.Add(g);
 					}
 				}
 
@@ -1597,8 +1581,7 @@ namespace Server
 
 	public sealed class AsyncWriter : GenericWriter
 	{
-		private static int m_ThreadCount;
-		public static int ThreadCount => m_ThreadCount;
+		public static int ThreadCount { get; private set; }
 
 		private readonly int BufferSize;
 
@@ -1624,7 +1607,7 @@ namespace Server
 			m_WriteQueue = Queue.Synchronized(new Queue());
 			BufferSize = buffSize;
 
-			m_File = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
+			m_File = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None, BufferSize, FileOptions.Asynchronous);
 			m_Mem = new MemoryStream(BufferSize + 1024);
 			m_Bin = new BinaryWriter(m_Mem, Utility.UTF8WithEncoding);
 		}
@@ -1654,7 +1637,8 @@ namespace Server
 
 			public void Worker()
 			{
-				m_ThreadCount++;
+				ThreadCount++;
+
 				while (m_Owner.m_WriteQueue.Count > 0)
 				{
 					var mem = (MemoryStream)m_Owner.m_WriteQueue.Dequeue();
@@ -1670,9 +1654,7 @@ namespace Server
 					m_Owner.m_File.Close();
 				}
 
-				m_ThreadCount--;
-
-				if (m_ThreadCount <= 0)
+				if (--ThreadCount <= 0)
 				{
 					World.NotifyDiskWriteComplete();
 				}
@@ -1946,6 +1928,11 @@ namespace Server
 			}
 		}
 
+		public override void Write(Serial value)
+		{
+			Write(value.Value);
+		}
+
 		public override void Write(Item value)
 		{
 			if (value == null || value.Deleted)
@@ -1980,21 +1967,6 @@ namespace Server
 			{
 				Write(value.Id);
 			}
-		}
-
-		public override void WriteItem<T>(T value)
-		{
-			Write(value);
-		}
-
-		public override void WriteMobile<T>(T value)
-		{
-			Write(value);
-		}
-
-		public override void WriteGuild<T>(T value)
-		{
-			Write(value);
 		}
 
 		public override void WriteMobileList(ArrayList list)
@@ -2392,6 +2364,7 @@ namespace Server
 	{
 		int TypeReference { get; }
 		int SerialIdentity { get; }
+
 		void Serialize(GenericWriter writer);
 	}
 }

@@ -10,6 +10,7 @@ namespace Server
 	public sealed class ParallelSaveStrategy : SaveStrategy
 	{
 		private readonly int processorCount;
+
 		private readonly Queue<Item> _decayQueue;
 
 		private SaveMetrics metrics;
@@ -19,7 +20,9 @@ namespace Server
 		private SequentialFileWriter guildData, guildIndex;
 
 		private Consumer[] consumers;
+
 		private int cycle;
+
 		private bool finished;
 
 		public ParallelSaveStrategy(int pc)
@@ -30,6 +33,7 @@ namespace Server
 		}
 
 		public override string Name => "Parallel";
+
 		public override void Save(SaveMetrics mt, bool permitBackgroundWrite)
 		{
 			metrics = mt;
@@ -60,13 +64,7 @@ namespace Server
 
 			SaveTypeDatabases();
 
-			WaitHandle.WaitAll(
-				Array.ConvertAll<Consumer, WaitHandle>(
-					consumers,
-					delegate (Consumer input)
-					{
-						return input.completionEvent;
-					}));
+			WaitHandle.WaitAll(Array.ConvertAll<Consumer, WaitHandle>(consumers, input => input.completionEvent));
 
 			Commit();
 
@@ -215,7 +213,7 @@ namespace Server
 			{
 				var consumer = consumers[cycle++ % consumers.Length];
 
-				if ((consumer.tail - consumer.head) < consumer.buffer.Length)
+				if (consumer.tail - consumer.head < consumer.buffer.Length)
 				{
 					consumer.buffer[consumer.tail % consumer.buffer.Length].value = value;
 					consumer.tail++;
@@ -238,6 +236,7 @@ namespace Server
 				while (consumer.head < consumer.done)
 				{
 					OnSerialized(consumer.buffer[consumer.head % consumer.buffer.Length]);
+
 					consumer.head++;
 
 					committed = true;
@@ -287,9 +286,13 @@ namespace Server
 		private sealed class Consumer
 		{
 			public readonly ManualResetEvent completionEvent;
+
 			public readonly ConsumableEntry[] buffer;
+
 			public int head, done, tail;
+
 			private readonly ParallelSaveStrategy owner;
+
 			private readonly Thread thread;
 
 			public Consumer(ParallelSaveStrategy ow, int bufferSize)
@@ -320,6 +323,7 @@ namespace Server
 					while (!owner.finished)
 					{
 						Process();
+
 						Thread.Sleep(0);
 					}
 

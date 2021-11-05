@@ -96,10 +96,10 @@ namespace Server.Engines.Quests
             SetDex(90, 100);
             SetInt(15, 25);
 
-            Hue = Utility.RandomSkinHue();
+            Race = Race.Human;
+            Hue = Race.RandomSkinHue();
             Female = Utility.RandomBool();
             Name = NameList.RandomName(Female ? "female" : "male");
-            Race = Race.Human;
 
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this);

@@ -317,13 +317,13 @@ namespace Server.Engines.SeasonalEvents
         {
             if (Running && !IsActive())
             {
-                Utility.WriteConsoleColor(ConsoleColor.Green, string.Format("Disabling {0}", Name));
+                Utility.WriteLine(ConsoleColor.Green, string.Format("Disabling {0}", Name));
 
                 Remove();
             }
             else if (!Running && IsActive())
             {
-                Utility.WriteConsoleColor(ConsoleColor.Green, string.Format("Enabling {0}", Name));
+                Utility.WriteLine(ConsoleColor.Green, string.Format("Enabling {0}", Name));
 
                 Generate();
             }

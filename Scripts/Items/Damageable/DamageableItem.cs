@@ -27,6 +27,7 @@ namespace Server.Items
             Insane
         }
 
+		private bool m_Blessed;
         private int m_Hits;
         private int m_HitsMax;
         private int m_StartID;
@@ -47,8 +48,8 @@ namespace Server.Items
 
                 double bonus = ((int)m_ItemLevel * 100.0) * ((int)m_ItemLevel * 5);
 
-                HitsMax = ((int)(100 + bonus));
-                Hits = ((int)(100 + bonus));
+                HitsMax = (int)(100 + bonus);
+                Hits = (int)(100 + bonus);
             }
         }
 
@@ -176,9 +177,25 @@ namespace Server.Items
                 if (Hits > m_HitsMax)
                     Hits = m_HitsMax;
             }
-        }
+		}
 
-        [CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty(AccessLevel.Decorator)]
+		public bool Blessed
+		{
+			get => m_Blessed;
+			set
+			{
+				if (m_Blessed != value)
+				{
+					m_Blessed = value;
+					Delta(ItemDelta.Update);
+				}
+			}
+		}
+
+		bool IDamageable.Invulnerable { get => Blessed; set => Blessed = value; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
         public bool Destroyed { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -203,7 +220,7 @@ namespace Server.Items
         public virtual double IDChange => 0.5;
         public virtual bool DeleteOnDestroy => true;
         public virtual bool Alive => !Destroyed;
-        public virtual bool CanDamage => true;
+        public virtual bool CanDamage => !Blessed;
 
         public override int PhysicalResistance => ResistBasePhys;
         public override int FireResistance => ResistBaseFire;
@@ -239,7 +256,14 @@ namespace Server.Items
             IDDestroyed = destroyID;
         }
 
-        public override void OnDoubleClick(Mobile m)
+		int IDamageable.ComputeNotoriety(Mobile viewer) => GetNotoriety(viewer);
+
+		public virtual int GetNotoriety(Mobile beholder)
+		{
+			return Notoriety.Compute(beholder, this);
+		}
+		
+		public override void OnDoubleClick(Mobile m)
         {
             if (m.Warmode)
                 m.Attack(this);
@@ -261,7 +285,7 @@ namespace Server.Items
 
         public override void OnStatsQuery(Mobile from)
         {
-            if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
+            if (from.Map == Map && from.InUpdateRange(this) && from.CanSee(this))
             {
                 MobileStatus.Send(from.NetState, this);
             }
@@ -294,7 +318,7 @@ namespace Server.Items
 
         public virtual bool OnBeforeDestroyed()
         {
-            return true;
+            return !Blessed;
         }
 
         public virtual void OnAfterDestroyed()
@@ -303,13 +327,15 @@ namespace Server.Items
 
         public virtual int Damage(int amount, Mobile from)
         {
-            if (!CanDamage && from.Combatant == this)
-            {
-                from.Combatant = null;
-                return 0;
-            }
+			if (!CanDamage || Blessed)
+			{
+				if (from.Combatant == this)
+					from.Combatant = null;
 
-            Hits -= amount;
+				return 0;
+			}
+
+			Hits -= amount;
 
             if (amount > 0)
                 RegisterDamage(from, amount);
@@ -595,9 +621,11 @@ namespace Server.Items
         {
             base.Serialize(writer);
 
-            writer.Write(0); // version
+            writer.Write(1); // version
 
-            writer.Write(m_StartID);
+			writer.Write(m_Blessed);
+			
+			writer.Write(m_StartID);
             writer.Write(m_HalfHitsID);
             writer.Write(m_DestroyedID);
             writer.Write((int)m_ItemLevel);
@@ -617,6 +645,8 @@ namespace Server.Items
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
+
+			m_Blessed = version >= 1 && reader.ReadBool();
 
             m_StartID = reader.ReadInt();
             m_HalfHitsID = reader.ReadInt();

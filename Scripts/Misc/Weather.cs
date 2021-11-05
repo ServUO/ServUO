@@ -351,7 +351,8 @@ namespace Server.Misc
                 if (m_Stage > 0 && m_MoveSpeed > 0)
                     MoveForward();
 
-                int type, density, temperature;
+				WeatherType type;
+				int density, temperature;
 
                 temperature = m_Temperature;
 
@@ -372,14 +373,14 @@ namespace Server.Misc
                         density = 70;
                 }
 
-                if (density == 0)
-                    type = 0xFE;
-                else if (temperature > 0)
-                    type = 0;
-                else
-                    type = 2;
+				if (density == 0)
+					type = WeatherType.Disable;
+				else if (temperature > 0)
+					type = WeatherType.Raining;
+				else
+					type = WeatherType.Snowing;
 
-                List<NetState> states = NetState.Instances;
+				List<NetState> states = NetState.Instances;
 
                 Packet weatherPacket = null;
 

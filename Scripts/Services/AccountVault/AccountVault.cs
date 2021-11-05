@@ -111,7 +111,7 @@ namespace Server.AccountVault
 
             var pm = from as PlayerMobile;
 
-            if (pm == null || pm.Account == null || !InRange(from.Location, 3))
+            if (pm == null || pm.Account == null || !pm.InRange(this, 3))
             {
                 return;
             }
@@ -124,7 +124,7 @@ namespace Server.AccountVault
 
             if (Account == null && !HasVault(from))
             {
-                TryRentVault(from as PlayerMobile, this);
+                TryRentVault(pm, this);
             }
             else if (from.Criminal)
             {
@@ -142,7 +142,7 @@ namespace Server.AccountVault
                 {
                     Container.DisplayTo(pm);
 
-                    var manager = FindNearest<VaultManager>(pm, m => m.InRange(pm.Location, Core.GlobalUpdateRange));
+                    var manager = FindNearest<VaultManager>(pm, m => m.InUpdateRange(pm));
 
                     if (manager != null)
                     {
@@ -162,7 +162,7 @@ namespace Server.AccountVault
             base.Serialize(writer);
             writer.Write(1);
 
-            writer.WriteItem(_Container);
+            writer.Write(_Container);
             writer.Write(PastDue);
             writer.Write(Index);
 
@@ -561,7 +561,7 @@ namespace Server.AccountVault
                 {
                     if (!ValidateLocation(vault))
                     {
-                        Utility.WriteConsoleColor(ConsoleColor.Red, "Invalid Account Vault Location: {0} [{1}]", vault.Location.ToString(), vault.Map != null ? vault.Map.ToString() : "null map");
+                        Utility.WriteLine(ConsoleColor.Red, "Invalid Account Vault Location: {0} [{1}]", vault.Location.ToString(), vault.Map != null ? vault.Map.ToString() : "null map");
                         pm.SendMessage("You cannot rent an account vault in this location!");
                     }
                     else if (!SystemSettings.HasBalance(pm))

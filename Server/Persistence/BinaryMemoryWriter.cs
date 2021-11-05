@@ -5,14 +5,17 @@ namespace Server
 	public sealed class BinaryMemoryWriter : BinaryFileWriter
 	{
 		private static byte[] indexBuffer;
+
 		private readonly MemoryStream stream;
+
+		protected override int BufferSize => 512;
+
 		public BinaryMemoryWriter()
 			: base(new MemoryStream(512), true)
 		{
 			stream = UnderlyingStream as MemoryStream;
 		}
 
-		protected override int BufferSize => 512;
 		public int CommitTo(SequentialFileWriter dataFile, SequentialFileWriter indexFile, int typeCode, int serial)
 		{
 			Flush();

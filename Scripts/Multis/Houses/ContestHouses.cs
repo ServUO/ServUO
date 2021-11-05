@@ -181,7 +181,7 @@ namespace Server.Multis
             {
                 foreach (BaseDoor check in Doors.OfType<BaseDoor>().Where(d => d != door))
                 {
-                    if (door.InRange(check.Location, 1))
+                    if (Utility.InRange(door, check, 1))
                     {
                         door.Link = check;
                         check.Link = door;
@@ -193,11 +193,11 @@ namespace Server.Multis
             {
                 if (kvp.Value.Count > 2)
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Yellow, string.Format("Warning: More than 2 teleporters detected for {0}!", kvp.Key.ToString("X")));
+                    Utility.WriteLine(ConsoleColor.Yellow, string.Format("Warning: More than 2 teleporters detected for {0}!", kvp.Key.ToString("X")));
                 }
                 else if (kvp.Value.Count <= 1)
                 {
-                    Utility.WriteConsoleColor(ConsoleColor.Yellow, string.Format("Warning: 1 or less teleporters detected for {0}!", kvp.Key.ToString("X")));
+                    Utility.WriteLine(ConsoleColor.Yellow, string.Format("Warning: 1 or less teleporters detected for {0}!", kvp.Key.ToString("X")));
 
                     continue;
                 }

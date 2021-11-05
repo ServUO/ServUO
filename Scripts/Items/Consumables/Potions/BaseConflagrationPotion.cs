@@ -89,7 +89,7 @@ namespace Server.Items
                 ThrowTarget targ = m_Users[i].Target as ThrowTarget;
 
                 if (targ != null && targ.Potion == this)
-                    Target.Cancel(from);
+					targ.Cancel(from, TargetCancelType.Timeout);
             }
 
             // Effects

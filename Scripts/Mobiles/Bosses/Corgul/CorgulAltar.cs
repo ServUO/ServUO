@@ -270,7 +270,7 @@ namespace Server.Items
             if (m_BossRegion == null)
                 return;
 
-            foreach (Mobile m in m_BossRegion.GetMobiles())
+            foreach (Mobile m in m_BossRegion.AllPlayers)
             {
                 if (m is PlayerMobile)
                     m.SendLocalizedMessage(1072681); // The master of this realm has been slain! You may only stay here so long.
@@ -282,7 +282,7 @@ namespace Server.Items
             if (m_BossRegion == null)
                 return;
 
-            foreach (Mobile m in m_BossRegion.GetMobiles())
+            foreach (Mobile m in m_BossRegion.AllPlayers)
             {
                 if (m is PlayerMobile)
                     m.SendMessage("You have failed to slay Corgul in time.");

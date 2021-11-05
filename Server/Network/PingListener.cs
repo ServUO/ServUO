@@ -13,6 +13,11 @@ namespace Server.Network
 
 		private static UdpClient Bind(IPEndPoint ipep)
 		{
+			if (Core.Closing || Core.Crashed)
+			{
+				return null;
+			}
+
 			ipep = new IPEndPoint(ipep.Address, Port);
 
 			var s = new UdpClient
@@ -58,6 +63,11 @@ namespace Server.Network
 
 		private void BeginReceive()
 		{
+			if (Core.Closing || Core.Crashed)
+			{
+				return;
+			}
+
 			if (_Listener != null)
 			{
 				_Listener.BeginReceive(EndReceive, _Listener);
@@ -66,18 +76,32 @@ namespace Server.Network
 
 		private void EndReceive(IAsyncResult r)
 		{
-			var ripep = new IPEndPoint(IPAddress.Any, Port);
-			var recvd = _Listener.EndReceive(r, ref ripep);
+			if (Core.Closing || Core.Crashed)
+			{
+				return;
+			}
 
-			//Console.WriteLine("[PING]: \"{0}\" Received from {1}", Encoding.UTF8.GetString(recvd), ripep);
+			try
+			{
+				var ripep = new IPEndPoint(IPAddress.Any, Port);
+				var recvd = _Listener.EndReceive(r, ref ripep);
 
-			BeginSend(recvd, ripep);
+				//Console.WriteLine("[PING]: \"{0}\" Received from {1}", Encoding.UTF8.GetString(recvd), ripep);
+
+				BeginSend(recvd, ripep);
+			}
+			catch { }
 
 			BeginReceive();
 		}
 
 		private void BeginSend(byte[] data, IPEndPoint ipep)
 		{
+			if (Core.Closing || Core.Crashed)
+			{
+				return;
+			}
+
 			//Console.WriteLine("[PONG]: \"{0}\" Sent to {1}", Encoding.UTF8.GetString(data), ipep);
 
 			_Listener.BeginSend(data, data.Length, ipep, EndSend, _Listener);
@@ -90,8 +114,11 @@ namespace Server.Network
 
 		public void Dispose()
 		{
-			_Listener.Close();
-			_Listener = null;
+			if (_Listener != null)
+			{
+				_Listener.Close();
+				_Listener = null;
+			}
 		}
 	}
 }

@@ -1178,8 +1178,8 @@ namespace Server.Items
             return v;
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -1974,8 +1974,8 @@ namespace Server.Items
             return base.OnEquip(from);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile m = (Mobile)parent;
@@ -2234,16 +2234,9 @@ namespace Server.Items
 
             AddDamageTypeProperty(list);
 
-            if (RaceDefinitions.GetRequiredRace(this) == Race.Elf)
-            {
-                list.Add(1075086); // Elves Only
-            }
-            else if (RaceDefinitions.GetRequiredRace(this) == Race.Gargoyle)
-            {
-                list.Add(1111709); // Gargoyles Only
-            }
+			RaceDefinitions.AddRaceProperty(this, list);
 
-            if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
+			if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
                 list.Add(1116176 + ((int)((SurgeShield)this).Surge));
 
             m_NegativeAttributes.GetProperties(list, this);

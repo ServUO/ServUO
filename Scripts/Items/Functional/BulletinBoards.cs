@@ -106,7 +106,7 @@ namespace Server.Items
             Mobile from = state.Mobile;
 
             int packetID = pvSrc.ReadByte();
-            BaseBulletinBoard board = World.FindItem(pvSrc.ReadInt32()) as BaseBulletinBoard;
+            BaseBulletinBoard board = World.FindItem(pvSrc.ReadSerial()) as BaseBulletinBoard;
 
             if (board == null || !board.CheckRange(from))
                 return;
@@ -130,7 +130,7 @@ namespace Server.Items
 
         public static void BBRequestContent(Mobile from, BaseBulletinBoard board, PacketReader pvSrc)
         {
-            BulletinMessage msg = World.FindItem(pvSrc.ReadInt32()) as BulletinMessage;
+            BulletinMessage msg = World.FindItem(pvSrc.ReadSerial()) as BulletinMessage;
 
             if (msg == null || msg.Parent != board)
                 return;
@@ -140,7 +140,7 @@ namespace Server.Items
 
         public static void BBRequestHeader(Mobile from, BaseBulletinBoard board, PacketReader pvSrc)
         {
-            BulletinMessage msg = World.FindItem(pvSrc.ReadInt32()) as BulletinMessage;
+            BulletinMessage msg = World.FindItem(pvSrc.ReadSerial()) as BulletinMessage;
 
             if (msg == null || msg.Parent != board)
                 return;
@@ -150,7 +150,7 @@ namespace Server.Items
 
         public static void BBPostMessage(Mobile from, BaseBulletinBoard board, PacketReader pvSrc)
         {
-            BulletinMessage thread = World.FindItem(pvSrc.ReadInt32()) as BulletinMessage;
+            BulletinMessage thread = World.FindItem(pvSrc.ReadSerial()) as BulletinMessage;
 
             if (thread != null && thread.Parent != board)
                 thread = null;
@@ -193,7 +193,7 @@ namespace Server.Items
 
         public static void BBRemoveMessage(Mobile from, BaseBulletinBoard board, PacketReader pvSrc)
         {
-            BulletinMessage msg = World.FindItem(pvSrc.ReadInt32()) as BulletinMessage;
+            BulletinMessage msg = World.FindItem(pvSrc.ReadSerial()) as BulletinMessage;
 
             if (msg == null || msg.Parent != board)
                 return;

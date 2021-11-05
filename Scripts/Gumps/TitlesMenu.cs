@@ -1158,7 +1158,7 @@ namespace Server.Gumps
             }
 
             User.CloseGump(GetType());
-            User.SendGump(this, false);
+            User.SendGump(this);
         }
 
         private string Color(string color, string str)

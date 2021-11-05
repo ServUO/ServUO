@@ -379,7 +379,10 @@ namespace Server.Engines.ArenaSystem
                 ((Spell)pm.Spell).Disturb(DisturbType.Hurt);
             }
 
-            Targeting.Target.Cancel(pm);
+			if (pm.Target != null)
+			{
+				pm.Target.Cancel(pm);
+			}
 
             bool allin = true;
 
@@ -842,7 +845,7 @@ namespace Server.Engines.ArenaSystem
 
                     if (!SummonSpellsAllowed)
                     {
-                        foreach (Mobile mob in Arena.Region.GetEnumeratedMobiles())
+                        foreach (Mobile mob in Arena.Region.AllMobiles)
                         {
                             if (mob is BaseCreature && ((BaseCreature)mob).Summoned)
                             {

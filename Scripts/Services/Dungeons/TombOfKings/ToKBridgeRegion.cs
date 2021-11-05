@@ -1,6 +1,7 @@
 using Server.Items;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 namespace Server.Regions
@@ -67,7 +68,7 @@ namespace Server.Regions
 
         public void OnTick()
         {
-            m_HuePointer += GetPlayerCount() > 0 ? 1 : -1;
+            m_HuePointer += AllPlayers.Any() ? 1 : -1;
 
             Utility.FixMinMax(ref m_HuePointer, 0, m_Hues.Length - 1);
 

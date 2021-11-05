@@ -101,10 +101,8 @@ namespace Server.Items
             return base.OnEquip(from);
         }
 
-        public override void OnRemoved(object parent)
-        {
-            base.OnRemoved(parent);
-
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile && Transformed)
             {
                 DeMask((Mobile)parent);

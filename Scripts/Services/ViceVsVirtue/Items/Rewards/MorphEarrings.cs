@@ -13,29 +13,36 @@ namespace Server.Items
         {
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
-            if (parent is Mobile)
+            if (parent is Mobile m)
             {
-                ValidateEquipment((Mobile)parent);
+                ValidateEquipment(m);
             }
         }
 
         private void ValidateEquipment(Mobile m)
         {
-            if (m == null)
+            if (m == null || !m.Player)
                 return;
 
             Race race = m.Race;
             bool didDrop = false;
 
-            List<Item> list = new List<Item>(m.Items);
+            List<Item> list = m.Items;
 
-            foreach (Item item in list)
-            {
-                if (!race.ValidateEquipment(item))
+			int index = list.Count;
+
+            while(--index >= 0)
+			{
+				if (index >= list.Count)
+					continue;
+
+				Item item = list[index];
+
+                if (!race.ValidateEquipment(m, item, false))
                 {
                     if (!didDrop)
                     {
@@ -48,8 +55,6 @@ namespace Server.Items
                     }
                 }
             }
-
-            ColUtility.Free(list);
 
             if (didDrop)
             {

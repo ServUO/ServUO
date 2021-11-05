@@ -457,7 +457,7 @@ namespace Server.Multis
             }
             else if (!IsMoveOver)
             {
-                if (Target != null && !Target.Deleted && InRange(m, 1))
+                if (Target != null && !Target.Deleted && m.InRange(this, 1))
                 {
                     if (CheckAccess(m))
                     {

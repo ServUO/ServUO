@@ -24,11 +24,15 @@ namespace Server
 {
 	public interface IVendor
 	{
+		IShopSellInfo[] GetSellInfo();
+		IBuyItemInfo[] GetBuyInfo();
+
 		bool OnBuyItems(Mobile from, List<BuyItemResponse> list);
 		bool OnSellItems(Mobile from, List<SellItemResponse> list);
 
 		DateTime LastRestock { get; set; }
 		TimeSpan RestockDelay { get; }
+
 		void Restock();
 	}
 
@@ -106,6 +110,8 @@ namespace Server
 
 	public interface IDamageable : IEntity
 	{
+		bool Invulnerable { get; set; }
+
 		int Hits { get; set; }
 		int HitsMax { get; }
 		bool Alive { get; }
@@ -117,6 +123,8 @@ namespace Server
 		int EnergyResistance { get; }
 
 		int Damage(int amount, Mobile attacker);
+
+		int ComputeNotoriety(Mobile viewer);
 
 		void PlaySound(int soundID);
 
@@ -141,5 +149,36 @@ namespace Server
 	public interface IArtifact
 	{
 		int ArtifactRarity { get; }
+	}
+
+	public interface ISpellbook
+	{
+		int BookOffset { get; }
+		int BookCount { get; }
+
+		int SpellCount { get; }
+
+		ulong Content { get; set; }
+
+		void DisplayTo(Mobile to);
+	}
+
+	public interface ITamable : IEntity
+	{
+		bool IsDeadPet { get; }
+
+		bool Tamable { get; set; }
+
+		bool Controlled { get; set; }
+
+		double MinTameSkill { get; set; }
+
+		int ControlSlots { get; set; }
+
+		Mobile ControlMaster { get; set; }
+
+		Point3D ControlDest { get; set; }
+
+		IDamageable ControlTarget { get; set; }
 	}
 }

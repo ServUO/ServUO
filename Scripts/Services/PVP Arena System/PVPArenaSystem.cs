@@ -111,7 +111,7 @@ namespace Server.Engines.ArenaSystem
 
             if (!IsBlocked(arena.Definition))
             {
-                Utility.WriteConsoleColor(ConsoleColor.Green, "Adding blocked EA PVP Arena: {0}", arena.Definition.Name);
+                Utility.WriteLine(ConsoleColor.Green, "Adding blocked EA PVP Arena: {0}", arena.Definition.Name);
                 BlockedArenas.Add(arena.Definition.Name);
                 Unregister(arena);
             }
@@ -133,7 +133,7 @@ namespace Server.Engines.ArenaSystem
 
             PVPArena arena = new PVPArena(def);
             Instance.Register(arena);
-            Utility.WriteConsoleColor(ConsoleColor.Green, "Removing blocked EA PVP Arena: {0}", arena.Definition.Name);
+            Utility.WriteLine(ConsoleColor.Green, "Removing blocked EA PVP Arena: {0}", arena.Definition.Name);
             arena.ConfigureArena();
         }
 

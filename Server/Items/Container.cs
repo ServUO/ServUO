@@ -11,8 +11,11 @@ using Server.Network;
 namespace Server.Items
 {
 	public delegate void OnItemConsumed(Item item, int amount);
+
 	public delegate int CheckItemGroup(Item a, Item b);
+
 	public delegate bool ResValidator(Item item);
+
 	public delegate void ContainerSnoopHandler(Container cont, Mobile from);
 
 	public class Container : Item
@@ -80,21 +83,20 @@ namespace Server.Items
 		}
 		#endregion
 
-		private static ContainerSnoopHandler m_SnoopHandler;
+		public static List<Container> AllContainers { get; } = new List<Container>(0x2000);
 
-		public static ContainerSnoopHandler SnoopHandler { get => m_SnoopHandler; set => m_SnoopHandler = value; }
+		public static ContainerSnoopHandler SnoopHandler { get; set; }
 
 		private ContainerData m_ContainerData;
 
 		private int m_DropSound;
 		private int m_GumpID;
-		private int m_MaxItems;
+		private int m_MaxItems = -1;
+		private int m_MaxWeight = -1;
 
-		private int m_TotalItems;
-		private int m_TotalWeight;
-		private int m_TotalGold;
-
-		private bool m_LiftOverride;
+		protected int m_TotalItems;
+		protected int m_TotalWeight;
+		protected int m_TotalGold;
 
 		internal List<Item> m_Items;
 
@@ -151,19 +153,24 @@ namespace Server.Items
 		{
 			get
 			{
-				if (Parent is Container && ((Container)Parent).MaxWeight == 0)
+				if (Parent is Container c && c.MaxWeight == 0)
 				{
 					return 0;
 				}
-				else
-				{
-					return DefaultMaxWeight;
-				}
+
+				return m_MaxWeight == -1 ? DefaultMaxWeight : m_MaxWeight;
+			}
+			set
+			{
+				m_MaxWeight = value;
+				InvalidateProperties();
 			}
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool LiftOverride { get => m_LiftOverride; set => m_LiftOverride = value; }
+		public bool LiftOverride { get; set; }
+
+		public virtual Type[] SupportedContents => Type.EmptyTypes;
 
 		public virtual void UpdateContainerData()
 		{
@@ -174,10 +181,14 @@ namespace Server.Items
 		public virtual int DefaultGumpID => ContainerData.GumpID;
 		public virtual int DefaultDropSound => ContainerData.DropSound;
 
-		public virtual int DefaultMaxItems => m_GlobalMaxItems;
-		public virtual int DefaultMaxWeight => m_GlobalMaxWeight;
+		public virtual int DefaultMaxItems => GlobalMaxItems;
+		public virtual int DefaultMaxWeight => GlobalMaxWeight;
 
-		public virtual bool IsDecoContainer => !Movable && !IsLockedDown && !IsSecure && Parent == null && !m_LiftOverride;
+		public virtual bool CheckHoldCount => true;
+		public virtual bool CheckHoldWeight => true;
+		public virtual bool CheckHoldParent => true;
+
+		public virtual bool IsDecoContainer => !Movable && !IsLockedDown && !IsSecure && Parent == null && !LiftOverride;
 
 		public virtual int GetDroppedSound(Item item)
 		{
@@ -186,12 +197,22 @@ namespace Server.Items
 			return dropSound != -1 ? dropSound : DropSound;
 		}
 
+		public override void OnAfterDuped(Item newItem)
+		{
+			base.OnAfterDuped(newItem);
+
+			var cont = newItem as Container;
+
+			if (cont != null)
+			{
+				cont.m_MaxItems = m_MaxItems;
+				cont.m_MaxWeight = m_MaxWeight;
+			}
+		}
+
 		public override void OnSnoop(Mobile from)
 		{
-			if (m_SnoopHandler != null)
-			{
-				m_SnoopHandler(this, from);
-			}
+			SnoopHandler?.Invoke(this, from);
 		}
 
 		public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
@@ -216,23 +237,43 @@ namespace Server.Items
 			return base.CheckItemUse(from, item);
 		}
 
+		public bool CheckHold(Item item)
+		{
+			return CheckHold(null, item, false);
+		}
+
 		public bool CheckHold(Mobile m, Item item, bool message)
 		{
-			return CheckHold(m, item, message, true, 0, 0);
+			return CheckHold(m, item, message, true, true, 0, 0);
 		}
 
 		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems)
 		{
-			return CheckHold(m, item, message, checkItems, 0, 0);
+			return CheckHold(m, item, message, checkItems, true, 0, 0);
 		}
 
-		public virtual bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight)
 		{
-			if (!m.IsStaff())
+			return CheckHold(m, item, message, checkItems, checkWeight, 0, 0);
+		}
+
+		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems)
+		{
+			return CheckHold(m, item, message, checkItems, true, plusItems, 0);
+		}
+
+		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+		{
+			return CheckHold(m, item, message, checkItems, true, plusItems, plusWeight);
+		}
+
+		public virtual bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
+		{
+			if (m == null || !m.IsStaff())
 			{
 				if (IsDecoContainer)
 				{
-					if (message)
+					if (m != null && message)
 					{
 						SendCantStoreMessage(m, item);
 					}
@@ -240,25 +281,38 @@ namespace Server.Items
 					return false;
 				}
 
-				var maxItems = MaxItems;
-
-				if (checkItems && maxItems != 0 &&
-					(TotalItems + plusItems + item.TotalItems + (item.IsVirtualItem ? 0 : 1)) > maxItems)
+				if (checkItems && CheckHoldCount)
 				{
-					if (message)
+					if (!CanHold(m, item))
 					{
-						SendFullItemsMessage(m, item);
+						if (m != null && message)
+						{
+							SendDisallowedMessage(m, item);
+						}
+
+						return false;
 					}
 
-					return false;
+					var maxItems = MaxItems;
+
+					if (maxItems != 0 && (TotalItems + plusItems + item.TotalItems + (item.IsVirtualItem ? 0 : 1)) > maxItems)
+					{
+						if (m != null && message)
+						{
+							SendFullItemsMessage(m, item);
+						}
+
+						return false;
+					}
 				}
-				else
+
+				if (checkWeight && CheckHoldWeight)
 				{
 					var maxWeight = MaxWeight;
 
 					if (maxWeight != 0 && (TotalWeight + plusWeight + item.TotalWeight + item.PileWeight) > maxWeight)
 					{
-						if (message)
+						if (m != null && message)
 						{
 							SendFullWeightMessage(m, item);
 						}
@@ -268,17 +322,23 @@ namespace Server.Items
 				}
 			}
 
+			if (!CheckHoldParent)
+			{
+				return true;
+			}
+
 			var parent = Parent;
 
 			while (parent != null)
 			{
-				if (parent is Container)
+				if (parent is Container cp)
 				{
-					return ((Container)parent).CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+					return cp.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight);
 				}
-				else if (parent is Item)
+
+				if (parent is Item ip)
 				{
-					parent = ((Item)parent).Parent;
+					parent = ip.Parent;
 				}
 				else
 				{
@@ -287,6 +347,43 @@ namespace Server.Items
 			}
 
 			return true;
+		}
+
+		public bool CanHold(Item item)
+		{
+			return CanHold(null, item);
+		}
+
+		public virtual bool CanHold(Mobile m, Item item)
+		{
+			if (item == null || item.Deleted)
+			{
+				return false;
+			}
+
+			if (m != null && m.AccessLevel >= AccessLevel.GameMaster)
+			{
+				return true;
+			}
+
+			var types = SupportedContents;
+
+			if (types == null || types.Length <= 0)
+			{
+				return true;
+			}
+
+			var type = item.GetType();
+
+			foreach (var t in types)
+			{
+				if (t.IsAssignableFrom(type))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public virtual bool CheckStack(Mobile from, Item item)
@@ -322,9 +419,14 @@ namespace Server.Items
 			to.SendLocalizedMessage(500176); // That is not your container, you can't store things here.
 		}
 
+		public virtual void SendDisallowedMessage(Mobile to, Item item)
+		{
+			to.SendMessage("This item can't be stored in that container.");
+		}
+
 		public virtual bool OnDragDropInto(Mobile from, Item item, Point3D p)
 		{
-			if (!CheckHold(from, item, true, true))
+			if (!CheckHold(from, item, true, true, true))
 			{
 				return false;
 			}
@@ -417,7 +519,6 @@ namespace Server.Items
 			for (var i = 0; i < groups.Count; ++i)
 			{
 				items[i] = groups[i].ToArray();
-				//items[i] = (Item[])(((ArrayList)groups[i]).ToArray( typeof( Item ) ));
 
 				for (var j = 0; j < items[i].Length; ++j)
 				{
@@ -476,14 +577,12 @@ namespace Server.Items
 			return true;
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
 		{
 			return ConsumeTotalGrouped(types, amounts, recurse, null, callback, grouper);
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
 		{
 			if (types.Length != amounts.Length)
 			{
@@ -548,7 +647,6 @@ namespace Server.Items
 				for (var j = 0; j < groups.Count; ++j)
 				{
 					items[i][j] = groups[j].ToArray();
-					//items[i][j] = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
 
 					for (var k = 0; k < items[i][j].Length; ++k)
 					{
@@ -611,14 +709,12 @@ namespace Server.Items
 			return -1;
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[][] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
 		{
 			return ConsumeTotalGrouped(types, amounts, recurse, null, callback, grouper);
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[][] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
 		{
 			if (types.Length != amounts.Length)
 			{
@@ -1054,7 +1150,6 @@ namespace Server.Items
 			{
 				var items = groups[i].ToArray();
 
-				//Item[] items = (Item[])(((ArrayList)groups[i]).ToArray( typeof( Item ) ));
 				var total = 0;
 
 				for (var j = 0; j < items.Length; ++j)
@@ -1116,7 +1211,6 @@ namespace Server.Items
 			for (var j = 0; j < groups.Count; ++j)
 			{
 				var items = groups[j].ToArray();
-				//Item[] items = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
 				var total = 0;
 
 				for (var k = 0; k < items.Length; ++k)
@@ -1180,7 +1274,6 @@ namespace Server.Items
 				for (var j = 0; j < groups.Count; ++j)
 				{
 					var items = groups[j].ToArray();
-					//Item[] items = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
 					var total = 0;
 
 					for (var k = 0; k < items.Length; ++k)
@@ -1549,7 +1642,8 @@ namespace Server.Items
 			GumpID = 0x00000002,
 			DropSound = 0x00000004,
 			LiftOverride = 0x00000008,
-			GridPositions = 0x00000010
+			GridPositions = 0x00000010,
+			MaxWeight = 0x00000080,
 		}
 
 		public override void Serialize(GenericWriter writer)
@@ -1561,26 +1655,21 @@ namespace Server.Items
 			var flags = SaveFlag.None;
 
 			SetSaveFlag(ref flags, SaveFlag.MaxItems, m_MaxItems != -1);
+			SetSaveFlag(ref flags, SaveFlag.MaxWeight, m_MaxWeight != -1);
 			SetSaveFlag(ref flags, SaveFlag.GumpID, m_GumpID != -1);
 			SetSaveFlag(ref flags, SaveFlag.DropSound, m_DropSound != -1);
-			SetSaveFlag(ref flags, SaveFlag.LiftOverride, m_LiftOverride);
+			SetSaveFlag(ref flags, SaveFlag.LiftOverride, LiftOverride);
 
 			writer.Write((byte)flags);
-
-			/*if (GetSaveFlag(flags, SaveFlag.GridPositions))
-            {
-                writer.Write(_Positions.Count);
-
-                foreach (var kvp in _Positions)
-                {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
-                }
-            }*/
 
 			if (GetSaveFlag(flags, SaveFlag.MaxItems))
 			{
 				writer.WriteEncodedInt(m_MaxItems);
+			}
+
+			if (GetSaveFlag(flags, SaveFlag.MaxWeight))
+			{
+				writer.WriteEncodedInt(m_MaxWeight);
 			}
 
 			if (GetSaveFlag(flags, SaveFlag.GumpID))
@@ -1616,6 +1705,15 @@ namespace Server.Items
 							m_MaxItems = -1;
 						}
 
+						if (GetSaveFlag(flags, SaveFlag.MaxWeight))
+						{
+							m_MaxWeight = reader.ReadEncodedInt();
+						}
+						else
+						{
+							m_MaxWeight = -1;
+						}
+
 						if (GetSaveFlag(flags, SaveFlag.GumpID))
 						{
 							m_GumpID = reader.ReadEncodedInt();
@@ -1634,7 +1732,7 @@ namespace Server.Items
 							m_DropSound = -1;
 						}
 
-						m_LiftOverride = GetSaveFlag(flags, SaveFlag.LiftOverride);
+						LiftOverride = GetSaveFlag(flags, SaveFlag.LiftOverride);
 
 						break;
 					}
@@ -1647,7 +1745,8 @@ namespace Server.Items
 					{
 						if (version < 1)
 						{
-							m_MaxItems = m_GlobalMaxItems;
+							m_MaxItems = GlobalMaxItems;
+							m_MaxWeight = GlobalMaxWeight;
 						}
 
 						m_GumpID = reader.ReadInt();
@@ -1668,7 +1767,11 @@ namespace Server.Items
 							m_MaxItems = -1;
 						}
 
-						//m_Bounds = new Rectangle2D( reader.ReadPoint2D(), reader.ReadPoint2D() );
+						if (m_MaxWeight == DefaultMaxWeight)
+						{
+							m_MaxWeight = -1;
+						}
+
 						reader.ReadPoint2D();
 						reader.ReadPoint2D();
 
@@ -1679,11 +1782,8 @@ namespace Server.Items
 			UpdateContainerData();
 		}
 
-		private static int m_GlobalMaxItems = 125;
-		private static int m_GlobalMaxWeight = 400;
-
-		public static int GlobalMaxItems { get => m_GlobalMaxItems; set => m_GlobalMaxItems = value; }
-		public static int GlobalMaxWeight { get => m_GlobalMaxWeight; set => m_GlobalMaxWeight = value; }
+		public static int GlobalMaxItems { get; set; } = 125;
+		public static int GlobalMaxWeight { get; set; } = 400;
 
 		public Container(int itemID)
 			: base(itemID)
@@ -1691,6 +1791,9 @@ namespace Server.Items
 			m_GumpID = -1;
 			m_DropSound = -1;
 			m_MaxItems = -1;
+			m_MaxWeight = -1;
+
+			AllContainers.Add(this);
 
 			UpdateContainerData();
 		}
@@ -1769,11 +1872,13 @@ namespace Server.Items
 
 		public Container(Serial serial)
 			: base(serial)
-		{ }
+		{
+			AllContainers.Add(this);
+		}
 
 		public virtual bool OnStackAttempt(Mobile from, Item stack, Item dropped)
 		{
-			if (!CheckHold(from, dropped, true, false))
+			if (!CheckHold(from, dropped, true, false, true))
 			{
 				return false;
 			}
@@ -1799,7 +1904,7 @@ namespace Server.Items
 		{
 			if (CheckStack(from, dropped))
 			{
-				if (!CheckHold(from, dropped, sendFullMessage, false))
+				if (!CheckHold(from, dropped, sendFullMessage, false, true))
 				{
 					return false;
 				}
@@ -1817,7 +1922,7 @@ namespace Server.Items
 				}
 			}
 
-			if (!CheckHold(from, dropped, sendFullMessage, true))
+			if (!CheckHold(from, dropped, sendFullMessage, true, true))
 			{
 				return false;
 			}
@@ -1825,30 +1930,6 @@ namespace Server.Items
 			DropItem(dropped);
 
 			return true;
-		}
-
-		public override void AddItem(Item item)
-		{
-			ValidateGridLocation(item);
-
-			base.AddItem(item);
-		}
-
-		public virtual void Destroy()
-		{
-			var loc = GetWorldLocation();
-			var map = Map;
-
-			for (var i = Items.Count - 1; i >= 0; --i)
-			{
-				if (i < Items.Count)
-				{
-					Items[i].SetLastMoved();
-					Items[i].MoveToWorld(loc, map);
-				}
-			}
-
-			Delete();
 		}
 
 		public virtual void DropItem(Item dropped)
@@ -1890,6 +1971,47 @@ namespace Server.Items
 			y -= bounds.Y;
 
 			dropped.Location = new Point3D(x, y, 0);
+		}
+
+		public override void AddItem(Item item)
+		{
+			ValidateGridLocation(item);
+
+			base.AddItem(item);
+		}
+
+		public virtual void Destroy()
+		{
+			var loc = GetWorldLocation();
+			var map = Map;
+
+			if (map != null && map != Map.Internal)
+			{
+				var items = Items;
+
+				for (var i = items.Count - 1; i >= 0; --i)
+				{
+					if (i < items.Count)
+					{
+						items[i].SetLastMoved();
+						items[i].MoveToWorld(loc, map);
+					}
+				}
+			}
+
+			Delete();
+		}
+
+		public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
+		{
+			if (!base.AllowSecureTrade(from, to, newOwner, accepted))
+			{
+				return false;
+			}
+
+			var allItems = FindItemsByType<Item>(true);
+
+			return allItems.All(o => o.AllowSecureTrade(from, to, newOwner, accepted));
 		}
 
 		public override void OnDoubleClickSecureTrade(Mobile from)
@@ -1958,6 +2080,15 @@ namespace Server.Items
 			base.OnDelete();
 
 			Openers = null;
+
+			AllContainers.Remove(this);
+		}
+
+		public override void OnAfterDelete()
+		{
+			base.OnAfterDelete();
+
+			AllContainers.Remove(this);
 		}
 
 		public virtual void DisplayTo(Mobile to)
@@ -1978,9 +2109,7 @@ namespace Server.Items
 
 			if (to.ViewOPL)
 			{
-				var items = Items;
-
-				foreach (var o in items)
+				foreach (var o in Items)
 				{
 					to.Send(o.OPLPacket);
 				}
@@ -1995,7 +2124,6 @@ namespace Server.Items
 
 				if (Openers != null)
 				{
-					var worldLoc = GetWorldLocation();
 					var map = Map;
 
 					for (var i = 0; i < Openers.Count; ++i)
@@ -2006,14 +2134,9 @@ namespace Server.Items
 						{
 							contains = true;
 						}
-						else
+						else if (mob.Map != map || !mob.InUpdateRange(this))
 						{
-							var range = GetUpdateRange(mob);
-
-							if (mob.Map != map || !mob.InRange(worldLoc, range))
-							{
-								Openers.RemoveAt(i--);
-							}
+							Openers.RemoveAt(i--);
 						}
 					}
 				}
@@ -2042,7 +2165,7 @@ namespace Server.Items
 			{
 				if (Core.ML)
 				{
-					if (ParentsContain<Item>() || IsLockedDown || IsSecure) //Root Parent is the Mobile.  Parent could be another containter.
+					if (MaxWeight <= 0 || IsLockedDown || IsSecure || ParentsContain<Item>()) //Root Parent is the Mobile.  Parent could be another containter.
 					{
 						list.Add(1073841, "{0}\t{1}\t{2}", TotalItems, MaxItems, TotalWeight);
 						// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~ stones
@@ -2083,7 +2206,7 @@ namespace Server.Items
 
 			if (!File.Exists(path))
 			{
-				m_Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
+				Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
 				return;
 			}
 
@@ -2125,9 +2248,9 @@ namespace Server.Items
 
 							var data = new ContainerData(gumpID, bounds, dropSound);
 
-							if (m_Default == null)
+							if (Default == null)
 							{
-								m_Default = data;
+								Default = data;
 							}
 
 							if (split.Length >= 4)
@@ -2155,16 +2278,15 @@ namespace Server.Items
 				}
 			}
 
-			if (m_Default == null)
+			if (Default == null)
 			{
-				m_Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
+				Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
 			}
 		}
 
-		private static ContainerData m_Default;
 		private static readonly Dictionary<int, ContainerData> m_Table;
 
-		public static ContainerData Default { get => m_Default; set => m_Default = value; }
+		public static ContainerData Default { get; set; }
 
 		public static ContainerData GetData(int itemID)
 		{
@@ -2174,25 +2296,19 @@ namespace Server.Items
 			{
 				return data;
 			}
-			else
-			{
-				return m_Default;
-			}
+
+			return Default;
 		}
 
-		private readonly int m_GumpID;
-		private readonly Rectangle2D m_Bounds;
-		private readonly int m_DropSound;
-
-		public int GumpID => m_GumpID;
-		public Rectangle2D Bounds => m_Bounds;
-		public int DropSound => m_DropSound;
+		public int GumpID { get; }
+		public Rectangle2D Bounds { get; }
+		public int DropSound { get; }
 
 		public ContainerData(int gumpID, Rectangle2D bounds, int dropSound)
 		{
-			m_GumpID = gumpID;
-			m_Bounds = bounds;
-			m_DropSound = dropSound;
+			GumpID = gumpID;
+			Bounds = bounds;
+			DropSound = dropSound;
 		}
 	}
 }

@@ -11,11 +11,18 @@ namespace Server.Network
 
 		private int m_Index, m_Size, m_Slice;
 
-		public int Index => m_Index;
+		public int Index
+		{
+			get => m_Index;
+			set => Seek(value, SeekOrigin.Begin);
+		}
+
 		public int Size => m_Size;
 		public int Chop => m_Slice;
 
 		public byte[] Buffer => m_Data;
+
+		public byte ID => m_Data[0];
 
 		public PacketReader(byte[] data, int size, bool fixedSize)
 		{
@@ -34,7 +41,7 @@ namespace Server.Network
 
 					if (buffer.Length > 0)
 					{
-						sw.WriteLine("Client: {0}: Unhandled packet 0x{1:X2}", state, buffer[0]);
+						sw.WriteLine($"Client: {state}: Unhandled packet 0x{buffer[0]:X2}");
 					}
 
 					using (var ms = new MemoryStream(buffer))
@@ -80,6 +87,48 @@ namespace Server.Network
 			}
 
 			return m_Index;
+		}
+
+		public void Skip(int size)
+		{
+			m_Index = Utility.Clamp(m_Index + size, 0, m_Size);
+		}
+
+		public byte[] ReadBytes(int count)
+		{
+			var buffer = new byte[count];
+
+			ReadBytes(buffer);
+
+			return buffer;
+		}
+
+		public void ReadBytes(byte[] buffer)
+		{
+			for (var i = 0; i < buffer.Length; i++)
+			{
+				buffer[i] = ReadByte();
+			}
+		}
+
+		public Mobile ReadMobile()
+		{
+			return World.FindMobile(ReadSerial());
+		}
+
+		public Item ReadItem()
+		{
+			return World.FindItem(ReadSerial());
+		}
+
+		public IEntity ReadEntity()
+		{
+			return World.FindEntity(ReadSerial());
+		}
+
+		public Serial ReadSerial()
+		{
+			return new Serial(ReadInt32());
 		}
 
 		public int ReadInt32()

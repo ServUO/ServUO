@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServerRegions>
+	<Facet name="Tokuno">
+		<region type="GuardedRegion" priority="50" name="Moongates">
+			<rect x="1167" y="996" width="4" height="4" />
+			<rect x="799" y="1201" width="6" height="6" />
+			<rect x="267" y="625" width="7" height="7" />
+		</region>
+		<region type="TownRegion" priority="50" name="Zento">
+			<rect x="656" y="1192" width="160" height="128" />
+			<go x="736" y="1256" z="30" />
+			<music name="Zento" />
+			<region>
+				<rect x="674" y="1203" width="25" height="16" />
+				<logoutDelay active="false" />
+			</region>
+		</region>
+		<region type="NoHousingRegion" priority="50" name="Fan Dancer's Dojo">
+			<rect x="969" y="194" width="23" height="30" />
+			<go x="977" y="223" z="23" />
+			<smartNoHousing active="true" />
+		</region>
+		<region type="NoHousingRegion" priority="50" name="Bushido Dojo">
+			<rect x="283" y="361" width="68" height="102" />
+			<go x="320" y="408" z="32" />
+			<smartNoHousing active="true" />
+		</region>
+		<region type="TokunoDocksRegion" priority="50" name="Tokuno Docks">
+			<rect x="650" y="1350" width="100" height="50" />
+			<go x="713" y="1360" z="26" />
+		</region>
+	</Facet>
+</ServerRegions>

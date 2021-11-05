@@ -98,7 +98,7 @@ namespace Server.Misc
 
         public static string[] IPServices =
         {
-            "http://services.servuo.com/ip.php", "http://api.ipify.org",
+            "http://api.ipify.org",
             "http://checkip.dyndns.org/"
         };
 
@@ -159,7 +159,7 @@ namespace Server.Misc
                     ip => !IPAddress.IsLoopback(ip) && ip.AddressFamily != AddressFamily.InterNetworkV6 && !IsPrivateNetwork(ip));
         }
 
-        private static bool IsPrivateNetwork(IPAddress ip)
+        public static bool IsPrivateNetwork(IPAddress ip)
         {
             // 10.0.0.0/8
             // 172.16.0.0/12

@@ -8,11 +8,12 @@ namespace Server
 	public class StandardSaveStrategy : SaveStrategy
 	{
 		public static SaveOption SaveType = SaveOption.Normal;
-		private readonly Queue<Item> _decayQueue;
+
+		private readonly Queue<Item> _DecayQueue;
 
 		public StandardSaveStrategy()
 		{
-			_decayQueue = new Queue<Item>();
+			_DecayQueue = new Queue<Item>();
 		}
 
 		public enum SaveOption
@@ -24,6 +25,7 @@ namespace Server
 		public override string Name => "Standard";
 
 		protected bool PermitBackgroundWrite { get; set; }
+
 		protected bool UseSequentialWriters => SaveType == SaveOption.Normal || !PermitBackgroundWrite;
 
 		public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
@@ -40,9 +42,9 @@ namespace Server
 
 		public override void ProcessDecay()
 		{
-			while (_decayQueue.Count > 0)
+			while (_DecayQueue.Count > 0)
 			{
-				var item = _decayQueue.Dequeue();
+				var item = _DecayQueue.Dequeue();
 
 				if (item.OnDecay())
 				{
@@ -73,6 +75,7 @@ namespace Server
 			}
 
 			idx.Write(mobiles.Count);
+
 			foreach (var m in mobiles.Values)
 			{
 				var start = bin.Position;
@@ -125,11 +128,12 @@ namespace Server
 			}
 
 			idx.Write(items.Count);
+
 			foreach (var item in items.Values)
 			{
 				if (item.Decays && item.Parent == null && item.Map != Map.Internal && (item.LastMoved + item.DecayTime) <= DateTime.UtcNow)
 				{
-					_decayQueue.Enqueue(item);
+					_DecayQueue.Enqueue(item);
 				}
 
 				var start = bin.Position;
@@ -151,6 +155,7 @@ namespace Server
 			}
 
 			tdb.Write(World.m_ItemTypes.Count);
+
 			for (var i = 0; i < World.m_ItemTypes.Count; ++i)
 				tdb.Write(World.m_ItemTypes[i].FullName);
 
@@ -176,6 +181,7 @@ namespace Server
 			}
 
 			idx.Write(BaseGuild.List.Count);
+
 			foreach (var guild in BaseGuild.List.Values)
 			{
 				var start = bin.Position;

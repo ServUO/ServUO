@@ -247,9 +247,17 @@ namespace Server.Multis
 
         public virtual void KillVendors()
         {
-            PlayerVendors.OfType<PlayerVendor>().IterateReverse(o => o.Destroy(true));
+			ColUtility.IterateReverse(PlayerVendors, o =>
+			{
+				if (o is PlayerVendor v)
+					v.Destroy(true);
+			});
 
-            PlayerBarkeepers.IterateReverse(o => o.Delete());
+			ColUtility.IterateReverse(PlayerBarkeepers, o =>
+			{
+				if (o != null)
+					o.Delete();
+			});
         }
 
         public virtual void Decay_Sandbox()
@@ -945,40 +953,28 @@ namespace Server.Multis
             MovingCrate.DropItem(item);
         }
 
-        public List<Item> GetItems()
+        public IEnumerable<Item> GetItems()
         {
-            if (Map == null || Map == Map.Internal)
-                return new List<Item>();
+			if (Map == null || Map == Map.Internal)
+				yield break;
 
-            Point2D start = new Point2D(X + Components.Min.X, Y + Components.Min.Y);
-            Point2D end = new Point2D(X + Components.Max.X + 1, Y + Components.Max.Y + 1);
-            Rectangle2D rect = new Rectangle2D(start, end);
-
-            List<Item> list = new List<Item>();
-
-            IPooledEnumerable eable = Map.GetItemsInBounds(rect);
-
-            foreach (Item item in eable)
-                if (item.Movable && IsInside(item))
-                    list.Add(item);
-
-            eable.Free();
-
-            return list;
+			foreach (Item item in Region.AllItems)
+			{
+				if (item.Movable && IsInside(item))
+					yield return item;
+			}
         }
 
-        public List<Mobile> GetMobiles()
+        public IEnumerable<Mobile> GetMobiles()
         {
-            if (Map == null || Map == Map.Internal)
-                return new List<Mobile>();
+			if (Map == null || Map == Map.Internal)
+				yield break;
 
-            List<Mobile> list = new List<Mobile>();
-
-            foreach (Mobile mobile in Region.GetMobiles())
-                if (IsInside(mobile))
-                    list.Add(mobile);
-
-            return list;
+			foreach (Mobile mobile in Region.AllMobiles)
+			{
+				if (IsInside(mobile))
+					yield return mobile;
+			}
         }
 
         public virtual bool CheckAosLockdowns(int need)
@@ -1059,7 +1055,7 @@ namespace Server.Multis
             return list;
         }
 
-        public static bool CheckHold(Mobile m, Container cont, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public static bool CheckHold(Mobile m, Container cont, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
             BaseHouse house = FindHouseAt(cont);
 
@@ -3215,7 +3211,7 @@ namespace Server.Multis
                                 m = Owner;
 
                             Point3D relLocation = reader.ReadPoint3D();
-                            IEntity entity = World.FindEntity(reader.ReadInt());
+                            IEntity entity = World.FindEntity(reader.ReadSerial());
 
                             if (entity != null)
                                 RelocatedEntities.Add(new RelocatedEntity(entity, relLocation, m));
@@ -3460,18 +3456,24 @@ namespace Server.Multis
             if (Region == null || Addons == null)
                 return;
 
-            foreach (Item item in Region.GetEnumeratedItems().Where(i => i is IAddon))
+            foreach (Item item in Region.AllItems)
             {
-                if (Addons.ContainsKey(item))
-                    continue;
-
-                Addons[item] = Owner;
-            }
-
-            foreach (Item item in Region.GetEnumeratedItems().Where(i => i is AddonComponent && ((AddonComponent)i).Addon == null))
-            {
-                item.Delete();
-            }
+				if (item is IAddon)
+				{
+					if ((!Addons.TryGetValue(item, out Mobile owner) || owner == null || owner.Deleted || !owner.Player))
+						Addons[item] = Owner;
+				}
+				else if (item is AddonComponent ac)
+				{
+					if (ac.Addon == null || ac.Addon.Deleted)
+						ac.Delete();
+				}
+				else if (item is AddonContainerComponent acc)
+				{
+					if (acc.Addon == null || acc.Addon.Deleted)
+						acc.Delete();
+				}
+			}
         }
 
         private void FixLockdowns_Sandbox()
@@ -3973,9 +3975,15 @@ namespace Server.Multis
                 }
             }
 
-            VendorInventories.IterateReverse(o => o.Delete());
+            ColUtility.IterateReverse(VendorInventories, o =>
+			{
+				if (o != null)
+					o.Delete();
+			});
 
-            if (MovingCrate != null)
+			VendorInventories.Clear();
+
+			if (MovingCrate != null)
                 MovingCrate.Delete();
 
             KillVendors();

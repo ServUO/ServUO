@@ -103,7 +103,7 @@ namespace Server.Multis
             }
         }
 
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
             if (m.AccessLevel < AccessLevel.GameMaster)
             {
@@ -111,7 +111,7 @@ namespace Server.Multis
                 return false;
             }
 
-            return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+            return base.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight);
         }
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)

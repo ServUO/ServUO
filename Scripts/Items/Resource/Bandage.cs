@@ -96,8 +96,7 @@ namespace Server.Items
 
                 if (t != null)
                 {
-                    Target.Cancel(from);
-                    from.Target = null;
+                    t.Cancel(from, TargetCancelType.Overriden);
                 }
 
                 from.RevealingAction();

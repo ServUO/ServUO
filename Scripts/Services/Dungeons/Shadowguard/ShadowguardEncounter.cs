@@ -100,7 +100,7 @@ namespace Server.Engines.Shadowguard
             if (PartyLeader == null || Region == null)
                 return 0;
 
-            int inRegion = Region.GetPlayerCount();
+            int inRegion = Region.PlayerCount;
 
             if (inRegion > 0)
                 return inRegion;
@@ -185,7 +185,7 @@ namespace Server.Engines.Shadowguard
         {
             if (HasBegun)
             {
-                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
                 {
                     pm.SendLocalizedMessage(cliloc, null, hue);
                 }
@@ -208,7 +208,7 @@ namespace Server.Engines.Shadowguard
         {
             if (HasBegun)
             {
-                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
                 {
                     pm.SendMessage(hue, message);
                 }
@@ -244,7 +244,7 @@ namespace Server.Engines.Shadowguard
 
         public void DoWarning()
         {
-            ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
+            ColUtility.ForEach(Region.AllMobiles.Where(m => m is PlayerMobile), m =>
             {
                 m.SendLocalizedMessage(1156252); // You have 5 minutes remaining in the encounter!
             });
@@ -256,7 +256,7 @@ namespace Server.Engines.Shadowguard
         {
             if (message)
             {
-                ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(m => m is PlayerMobile), m =>
+                ColUtility.ForEach(Region.AllMobiles.Where(m => m is PlayerMobile), m =>
                 {
                     m.SendLocalizedMessage(1156253, "", 0x32); // The encounter timer has expired!
                 });
@@ -311,7 +311,7 @@ namespace Server.Engines.Shadowguard
 
         private void RemovePlayers()
         {
-            ColUtility.ForEach(Region.GetEnumeratedMobiles().Where(
+            ColUtility.ForEach(Region.AllMobiles.Where(
                 m => m is PlayerMobile ||
                     (m is BaseCreature &&
                     ((BaseCreature)m).GetMaster() is PlayerMobile)),
@@ -372,7 +372,7 @@ namespace Server.Engines.Shadowguard
         {
             if (m is PlayerMobile)
             {
-                foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
                 {
                     if (pm.Alive && pm.NetState != null)
                     {

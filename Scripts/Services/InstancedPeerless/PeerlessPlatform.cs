@@ -229,7 +229,7 @@ namespace Server.Engines.InstancedPeerless
             writer.Write(m_Braziers.Count);
 
             for (int i = 0; i < m_Braziers.Count; i++)
-                writer.WriteItem(m_Braziers[i]);
+                writer.Write(m_Braziers[i]);
 
             writer.Write(m_Instances.Count);
 

@@ -55,8 +55,8 @@ namespace Server.Items
             return name;
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile m = (Mobile)parent as Mobile;

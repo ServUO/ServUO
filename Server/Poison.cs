@@ -12,6 +12,7 @@ namespace Server
 		public abstract int RealLevel { get; }
 		public abstract string Name { get; }
 		public abstract int Level { get; }
+
 		public abstract Timer ConstructTimer(Mobile m);
 
 		public override string ToString()
@@ -19,25 +20,23 @@ namespace Server
 			return Name;
 		}
 
-		private static readonly List<Poison> m_Poisons = new List<Poison>();
-
 		public static void Register(Poison reg)
 		{
 			var regName = reg.Name.ToLower();
 
-			for (var i = 0; i < m_Poisons.Count; i++)
+			for (var i = 0; i < Poisons.Count; i++)
 			{
-				if (reg.Level == m_Poisons[i].Level)
+				if (reg.Level == Poisons[i].Level)
 				{
 					throw new Exception("A poison with that level already exists.");
 				}
-				else if (regName == m_Poisons[i].Name.ToLower())
+				else if (regName == Poisons[i].Name.ToLower())
 				{
 					throw new Exception("A poison with that name already exists.");
 				}
 			}
 
-			m_Poisons.Add(reg);
+			Poisons.Add(reg);
 		}
 
 		public static Poison Lesser => GetPoison("Lesser");
@@ -45,15 +44,27 @@ namespace Server
 		public static Poison Greater => GetPoison("Greater");
 		public static Poison Deadly => GetPoison("Deadly");
 		public static Poison Lethal => GetPoison("Lethal");
-		public static Poison Parasitic => GetPoison("DeadlyParasitic");
-		public static Poison DarkGlow => GetPoison("GreaterDarkglow");
 
-		public static List<Poison> Poisons => m_Poisons;
+		public static Poison Parasitic => DeadlyParasitic;
+		public static Poison DarkGlow => GreaterDarkglow;
+
+		public static Poison LesserDarkglow => GetPoison("LesserDarkglow");
+		public static Poison RegularDarkglow => GetPoison("RegularDarkglow");
+		public static Poison GreaterDarkglow => GetPoison("GreaterDarkglow");
+		public static Poison DeadlyDarkglow => GetPoison("DeadlyDarkglow");
+		public static Poison LethalDarkglow => GetPoison("LethalDarkglow");
+
+		public static Poison LesserParasitic => GetPoison("LesserParasitic");
+		public static Poison RegularParasitic => GetPoison("RegularParasitic");
+		public static Poison GreaterParasitic => GetPoison("GreaterParasitic");
+		public static Poison DeadlyParasitic => GetPoison("DeadlyParasitic");
+		public static Poison LethalParasitic => GetPoison("LethalParasitic");
+
+		public static List<Poison> Poisons { get; } = new List<Poison>();
 
 		public static Poison Parse(string value)
 		{
 			Poison p = null;
-
 
 			if (Int32.TryParse(value, out var plevel))
 			{
@@ -70,9 +81,9 @@ namespace Server
 
 		public static Poison GetPoison(int level)
 		{
-			for (var i = 0; i < m_Poisons.Count; ++i)
+			for (var i = 0; i < Poisons.Count; ++i)
 			{
-				var p = m_Poisons[i];
+				var p = Poisons[i];
 
 				if (p.Level == level)
 				{
@@ -85,9 +96,9 @@ namespace Server
 
 		public static Poison GetPoison(string name)
 		{
-			for (var i = 0; i < m_Poisons.Count; ++i)
+			for (var i = 0; i < Poisons.Count; ++i)
 			{
-				var p = m_Poisons[i];
+				var p = Poisons[i];
 
 				if (Utility.InsensitiveCompare(p.Name, name) == 0)
 				{
@@ -115,16 +126,9 @@ namespace Server
 		{
 			switch (reader.ReadByte())
 			{
-				case 1:
-				return GetPoison(reader.ReadByte());
-				case 2:
-				//no longer used, safe to remove?
-				reader.ReadInt();
-				reader.ReadDouble();
-				reader.ReadInt();
-				reader.ReadTimeSpan();
-				break;
+				case 1: return GetPoison(reader.ReadByte());
 			}
+
 			return null;
 		}
 	}

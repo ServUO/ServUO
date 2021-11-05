@@ -184,7 +184,7 @@ namespace Server.Gumps
             }
 
             User.CloseGump(GetType());
-            User.SendGump(this, false);
+            User.SendGump(this);
         }
     }
 

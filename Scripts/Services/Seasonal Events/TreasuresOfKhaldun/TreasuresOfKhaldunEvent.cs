@@ -114,10 +114,11 @@ namespace Server.Engines.Khaldun
 
         protected override void Remove()
         {
-            ChampionSystem.AllSpawns.Where(s => s.Type == ChampionSpawnType.Khaldun && Region.Find(s.Location, s.Map).IsPartOf("Khaldun")).IterateReverse(s =>
-            {
-                s.Delete();
-            });
+			ColUtility.IterateReverse(ChampionSystem.AllSpawns, s =>
+			{
+				if (s.Type == ChampionSpawnType.Khaldun && Region.Find(s.Location, s.Map).IsPartOf("Khaldun"))
+					s.Delete();
+			});
 
             if (ChestSpawner.InstanceFel != null)
             {

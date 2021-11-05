@@ -497,12 +497,12 @@ namespace Server.Engines.VendorSearching
 
         public static bool IsGargoyle(Item item)
         {
-            return Race.Gargoyle.ValidateEquipment(item);
+            return Race.Gargoyle.IsExclusiveEquipment(item);
         }
 
         public static bool IsElf(Item item)
         {
-            return Race.Elf.ValidateEquipment(item);
+            return Race.Elf.IsExclusiveEquipment(item);
         }
 
         public static SearchCriteria AddNewContext(PlayerMobile pm)

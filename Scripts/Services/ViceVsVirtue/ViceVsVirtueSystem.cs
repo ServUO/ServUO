@@ -673,13 +673,13 @@ namespace Server.Engines.VvV
                 StopTempCombatantTimer();
             }
 
-            TempCombatants.IterateReverse(c =>
+            ColUtility.IterateReverse(TempCombatants, c =>
+            {
+                if (c.Expired)
                 {
-                    if (c.Expired)
-                    {
-                        TempCombatants.Remove(c);
-                    }
-                });
+                    TempCombatants.Remove(c);
+                }
+            });
         }
 
         public static TemporaryCombatant GetTempCombatant(Mobile from, Mobile to)
@@ -726,10 +726,11 @@ namespace Server.Engines.VvV
             if (TempCombatants == null || pm.Map == Map.Internal || pm.Map == null)
                 return;
 
-            TempCombatants.Where(t => t.From == pm).IterateReverse(temp =>
-                {
-                    RemoveTempCombatant(temp);
-                });
+			ColUtility.IterateReverse(TempCombatants, temp =>
+			{
+				if (temp.From == pm)
+					RemoveTempCombatant(temp);
+			});
         }
 
         public static void RemoveTempCombatant(TemporaryCombatant tempCombatant)

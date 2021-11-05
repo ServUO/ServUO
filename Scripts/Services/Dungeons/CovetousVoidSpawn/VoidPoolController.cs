@@ -187,7 +187,7 @@ namespace Server.Engines.VoidPool
 
         private void OnTick()
         {
-            if (!OnGoing && DateTime.UtcNow > NextStart && Region != null && Region.GetPlayerCount() > 0)
+            if (!OnGoing && DateTime.UtcNow > NextStart && Region != null && Region.PlayerCount > 0)
             {
                 NextStart = DateTime.MaxValue;
                 OnGoing = true;
@@ -417,28 +417,27 @@ namespace Server.Engines.VoidPool
 
             Region.SendRegionMessage(1152526, RestartSpan.ToString()); // The battle for the Void Pool will begin in ~1_VALUE~ minutes.
 
-            List<Mobile> list = Region.GetPlayers();
+			foreach (Mobile m in Region.AllPlayers)
+			{
+				PointsSystem.VoidPool.AwardPoints(m, GetCurrentPoints(m));
 
-            foreach (Mobile m in list.Where(m => GetCurrentPoints(m) > 0))
-                PointsSystem.VoidPool.AwardPoints(m, GetCurrentPoints(m));
+				if (CurrentScore.ContainsKey(m))
+				{
+					m.SendLocalizedMessage(1152650, string.Format("{0}\t{1}\t{2}\t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m]));
+					// During the battle, you helped fight back ~1_COUNT~ out of ~2_TOTAL~ waves of enemy forces. Your final wave was ~3_MAX~. Your total score for the battle was ~4_SCORE~ points.
 
-            foreach (Mobile m in list.Where(m => CurrentScore.ContainsKey(m)))
-            {
-                m.SendLocalizedMessage(1152650, string.Format("{0}\t{1}\t{2}\t{3}", GetTotalWaves(m), Wave.ToString(), Wave.ToString(), CurrentScore[m]));
-                // During the battle, you helped fight back ~1_COUNT~ out of ~2_TOTAL~ waves of enemy forces. Your final wave was ~3_MAX~. Your total score for the battle was ~4_SCORE~ points.
+					if (m is PlayerMobile)
+					{
+						AForcedSacraficeQuest quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
 
-                if (m is PlayerMobile)
-                {
-                    AForcedSacraficeQuest quest = QuestHelper.GetQuest<AForcedSacraficeQuest>((PlayerMobile)m);
+						if (quest != null)
+						{
+							quest.CompleteQuest();
+						}
+					}
+				}
+			}
 
-                    if (quest != null)
-                    {
-                        quest.CompleteQuest();
-                    }
-                }
-            }
-
-            ColUtility.Free(list);
             ClearSpawn(true);
         }
 
@@ -504,7 +503,7 @@ namespace Server.Engines.VoidPool
             if (Region == null)
                 return;
 
-            foreach (Item item in Region.GetEnumeratedItems().Where(i => i is ISpawner))
+            foreach (Item item in Region.AllItems.Where(i => i is ISpawner))
             {
                 if (item is XmlSpawner)
                 {
@@ -528,7 +527,7 @@ namespace Server.Engines.VoidPool
         {
             Region r = Server.Region.Find(new Point3D(5574, 1859, 0), map);
 
-            foreach (Item item in r.GetEnumeratedItems().Where(i => i is ISpawner
+            foreach (Item item in r.AllItems.Where(i => i is ISpawner
                 && i.X >= 5501 && i.X <= 5627 && i.Y >= 1799 && i.Y <= 1927))
             {
                 if (item is XmlSpawner)
@@ -553,7 +552,7 @@ namespace Server.Engines.VoidPool
             if (Region == null)
                 return;
 
-            foreach (Mobile m in Region.GetEnumeratedMobiles().Where(m => m is CovetousCreature))
+            foreach (Mobile m in Region.AllMobiles.Where(m => m is CovetousCreature))
             {
                 if (effects)
                     Effects.SendLocationEffect(m.Location, m.Map, 0xDDA, 30, 10, 0, 0);

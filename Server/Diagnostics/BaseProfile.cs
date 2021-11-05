@@ -13,8 +13,7 @@ namespace Server.Diagnostics
 		{
 			var list = new List<T>(profiles);
 
-			list.Sort(delegate (T a, T b)
-			{ return -a.TotalTime.CompareTo(b.TotalTime); });
+			list.Sort((a, b) => -a.TotalTime.CompareTo(b.TotalTime));
 
 			foreach (var prof in list)
 			{
@@ -23,20 +22,16 @@ namespace Server.Diagnostics
 			}
 		}
 
-		private readonly string _name;
-
-		private long _count;
-
 		private TimeSpan _totalTime;
 		private TimeSpan _peakTime;
 
 		private readonly Stopwatch _stopwatch;
 
-		public string Name => _name;
+		public string Name { get; }
 
-		public long Count => _count;
+		public long Count { get; private set; }
 
-		public TimeSpan AverageTime => TimeSpan.FromTicks(_totalTime.Ticks / Math.Max(1, _count));
+		public TimeSpan AverageTime => TimeSpan.FromTicks(_totalTime.Ticks / Math.Max(1, Count));
 
 		public TimeSpan PeakTime => _peakTime;
 
@@ -44,7 +39,7 @@ namespace Server.Diagnostics
 
 		protected BaseProfile(string name)
 		{
-			_name = name;
+			Name = name;
 
 			_stopwatch = new Stopwatch();
 		}
@@ -70,7 +65,7 @@ namespace Server.Diagnostics
 				_peakTime = elapsed;
 			}
 
-			_count++;
+			Count++;
 
 			_stopwatch.Reset();
 		}

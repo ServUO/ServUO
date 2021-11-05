@@ -20,7 +20,7 @@ namespace Server.Misc
 
         static TestCenter()
         {
-            Enabled = Config.Get("TestCenter.Enabled", false);
+            Enabled = Config.Get("Server.TestCenter", false);
         }
 
         public static void Initialize()

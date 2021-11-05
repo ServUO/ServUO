@@ -30,7 +30,7 @@ namespace Server.Mobiles
         {
             Name = "a soulbound pirate raider";
             Body = 0x190;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Utility.AssignRandomHair(this);
 
             SetStr(150, 200);

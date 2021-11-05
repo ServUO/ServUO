@@ -463,7 +463,7 @@ namespace Server.Items
         public static void OldHeaderChange(NetState state, PacketReader pvSrc)
         {
             Mobile from = state.Mobile;
-            BaseBook book = World.FindItem(pvSrc.ReadInt32()) as BaseBook;
+            BaseBook book = World.FindItem(pvSrc.ReadSerial()) as BaseBook;
 
             if (book == null || !book.Writable || !from.InRange(book.GetWorldLocation(), 1) || !book.IsAccessibleTo(from))
                 return;
@@ -480,7 +480,7 @@ namespace Server.Items
         public static void HeaderChange(NetState state, PacketReader pvSrc)
         {
             Mobile from = state.Mobile;
-            BaseBook book = World.FindItem(pvSrc.ReadInt32()) as BaseBook;
+            BaseBook book = World.FindItem(pvSrc.ReadSerial()) as BaseBook;
 
             if (book == null || !book.Writable || !from.InRange(book.GetWorldLocation(), 1) || !book.IsAccessibleTo(from))
                 return;
@@ -508,7 +508,7 @@ namespace Server.Items
         public static void ContentChange(NetState state, PacketReader pvSrc)
         {
             Mobile from = state.Mobile;
-            BaseBook book = World.FindItem(pvSrc.ReadInt32()) as BaseBook;
+            BaseBook book = World.FindItem(pvSrc.ReadSerial()) as BaseBook;
 
             if (book == null || !book.Writable || !from.InRange(book.GetWorldLocation(), 1) || !book.IsAccessibleTo(from))
                 return;

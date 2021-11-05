@@ -15,10 +15,10 @@ namespace Server.Gumps
 		private int m_Hue;
 		private int m_Width;
 		private int m_Height;
-
 		private int m_LocalizedTooltip;
 
-		public GumpImageTileButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param, int itemID, int hue, int width, int height) : this(x, y, normalID, pressedID, buttonID, type, param, itemID, hue, width, height, -1)
+		public GumpImageTileButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param, int itemID, int hue, int width, int height)
+			: this(x, y, normalID, pressedID, buttonID, type, param, itemID, hue, width, height, -1)
 		{
 		}
 
@@ -122,15 +122,15 @@ namespace Server.Gumps
 		public int LocalizedTooltip
 		{
 			get => m_LocalizedTooltip;
-			set => m_LocalizedTooltip = value;
+			set => Delta(ref m_LocalizedTooltip, value);
 		}
 
 		public override string Compile()
 		{
 			if (m_LocalizedTooltip > 0)
 				return $"{{ buttontileart {m_X} {m_Y} {m_ID1} {m_ID2} {(int)m_Type} {m_Param} {m_ButtonID} {m_ItemID} {m_Hue} {m_Width} {m_Height} }}{{ tooltip {m_LocalizedTooltip} }}";
-			else
-				return $"{{ buttontileart {m_X} {m_Y} {m_ID1} {m_ID2} {(int)m_Type} {m_Param} {m_ButtonID} {m_ItemID} {m_Hue} {m_Width} {m_Height} }}";
+
+			return $"{{ buttontileart {m_X} {m_Y} {m_ID1} {m_ID2} {(int)m_Type} {m_Param} {m_ButtonID} {m_ItemID} {m_Hue} {m_Width} {m_Height} }}";
 		}
 
 		private static readonly byte[] m_LayoutName = Gump.StringToBuffer("buttontileart");

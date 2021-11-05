@@ -219,7 +219,7 @@ namespace Server.Engines.ArenaSystem
         {
             CurrentDuel = null;
 
-            foreach (Corpse corpse in Region.GetEnumeratedItems().OfType<Corpse>())
+            foreach (Corpse corpse in Region.AllItems.OfType<Corpse>())
             {
                 if (corpse.Owner != null && corpse.Owner.InRange(corpse.Location, 30))
                 {

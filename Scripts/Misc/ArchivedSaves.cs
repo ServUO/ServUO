@@ -5,295 +5,253 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Server.Misc
 {
-    public static class ArchivedSaves
-    {
-        public enum MergeType
-        {
-            Months,
-            Days,
-            Hours,
-            Minutes
-        }
+	public static class ArchivedSaves
+	{
+		public enum MergeType
+		{
+			Months,
+			Days,
+			Hours,
+			Minutes
+		}
+
+		private static readonly string _DefaultDestination = Path.Combine(Core.BaseDirectory, "Backups", "Archived");
+
+		public static string Destination
+		{
+			get
+			{
+				var dest = Config.Get("AutoSave.ArchivesPath", (string)null);
+
+				if (String.IsNullOrWhiteSpace(dest) || dest.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
+					return _DefaultDestination;
 
-        private static readonly string _DefaultDestination;
+				return dest;
+			}
+			set
+			{
+				Config.Set("AutoSave.ArchivesPath", value);
+
+				if (Enabled)
+					Utility.WriteLine(ConsoleColor.Cyan, $"Archives: {value}");
+			}
+		}
 
-        private static string _Destination;
+		public static bool Enabled
+		{
+			get => Config.Get("AutoSave.ArchivesEnabled", false);
+			set
+			{
+				Config.Set("AutoSave.ArchivesEnabled", value);
 
-        public static string Destination
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_Destination) || _Destination.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
-                    return _DefaultDestination;
+				var dest = value ? Destination : "Disabled";
 
-                return _Destination;
-            }
-            set
-            {
-                if (_Destination == value)
-                    return;
+				Utility.WriteLine(ConsoleColor.Cyan, $"Archives: {dest}");
+			}
+		}
 
-                _Destination = value;
+		public static bool Async { get => Config.Get("AutoSave.ArchivesAsync", true); set => Config.Set("AutoSave.ArchivesAsync", value); }
 
-                if (_Enabled)
-                    Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: {0}", Destination);
-            }
-        }
+		public static TimeSpan ExpireAge { get => Config.Get("AutoSave.ArchivesExpire", TimeSpan.Zero); set => Config.Set("AutoSave.ArchivesExpire", value); }
 
-        private static bool _Enabled;
+		public static MergeType Merge { get => Config.GetEnum("AutoSave.ArchivesMerging", MergeType.Minutes); set => Config.SetEnum("AutoSave.ArchivesMerging", value); }
 
-        public static bool Enabled
-        {
-            get { return _Enabled; }
-            set
-            {
-                if (_Enabled == value)
-                    return;
+		private static readonly List<Task> _Tasks = new List<Task>(0x40);
 
-                _Enabled = value;
+		private static readonly object _TaskRoot = ((ICollection)_Tasks).SyncRoot;
 
-                string dest = _Enabled ? Destination : "Disabled";
+		private static readonly AutoResetEvent _Sync = new AutoResetEvent(true);
 
-                Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: {0}", dest);
-            }
-        }
+		public static int PendingTasks
+		{
+			get
+			{
+				lock (_TaskRoot)
+					return _Tasks.Count - _Tasks.RemoveAll(t => t.IsCompleted);
+			}
+		}
 
-        public static bool Async { get; set; }
+		[CallPriority(Int32.MaxValue - 10)]
+		public static void Configure()
+		{
+			EventSink.Shutdown += Wait;
+			EventSink.WorldSave += Wait;
+		}
 
-        public static TimeSpan ExpireAge { get; set; }
+		public static bool Process(string source)
+		{
+			if (!Enabled)
+				return false;
 
-        public static MergeType Merge { get; set; }
+			if (!Directory.Exists(Destination))
+				Directory.CreateDirectory(Destination);
 
-        private static readonly List<IAsyncResult> _Tasks = new List<IAsyncResult>(0x40);
+			if (ExpireAge > TimeSpan.Zero)
+				BeginPrune(DateTime.UtcNow - ExpireAge);
 
-        private static readonly object _TaskRoot = ((ICollection)_Tasks).SyncRoot;
+			if (!String.IsNullOrWhiteSpace(source))
+				BeginPack(source);
 
-        private static readonly AutoResetEvent _Sync = new AutoResetEvent(true);
+			return true;
+		}
 
-        private static readonly Action<string> _Pack = InternalPack;
-        private static readonly Action<DateTime> _Prune = InternalPrune;
+		private static void Wait(WorldSaveEventArgs e)
+		{
+			WaitForTaskCompletion();
+		}
 
-        public static int PendingTasks
-        {
-            get
-            {
-                lock (_TaskRoot)
-                    return _Tasks.Count - _Tasks.RemoveAll(t => t.IsCompleted);
-            }
-        }
+		private static void Wait(ShutdownEventArgs e)
+		{
+			WaitForTaskCompletion();
+		}
 
-        static ArchivedSaves()
-        {
-            _DefaultDestination = Path.Combine(Core.BaseDirectory, "Backups", "Archived");
+		private static void WaitForTaskCompletion()
+		{
+			if (!Core.Crashed && !Core.Closing)
+				return;
 
-            _Destination = Config.Get("AutoSave.ArchivesPath", (string)null);
+			var pending = PendingTasks;
 
-            Enabled = Config.Get("AutoSave.ArchivesEnabled", false);
+			if (pending <= 0)
+				return;
 
-            Async = Config.Get("AutoSave.ArchivesAsync", true);
+			Utility.WriteLine(ConsoleColor.Cyan, $"Archives: Waiting for {pending:#,0} pending tasks...");
 
-            ExpireAge = Config.Get("AutoSave.ArchivesExpire", TimeSpan.Zero);
+			while (pending > 0)
+			{
+				_Sync.WaitOne(10);
 
-            Merge = Config.GetEnum("AutoSave.ArchivesMerging", MergeType.Minutes);
-        }
+				pending = PendingTasks;
+			}
 
-        [CallPriority(int.MaxValue - 10)]
-        public static void Configure()
-        {
-            EventSink.Shutdown += Wait;
-            EventSink.WorldSave += Wait;
-        }
+			Utility.WriteLine(ConsoleColor.Cyan, "Archives: All tasks completed.");
+		}
 
-        public static bool Process(string source)
-        {
-            if (!Enabled)
-                return false;
+		private static void EndTask(Task t)
+		{
+			lock (_TaskRoot)
+				_Tasks.Remove(t);
 
-            if (!Directory.Exists(Destination))
-                Directory.CreateDirectory(Destination);
-
-            if (ExpireAge > TimeSpan.Zero)
-                BeginPrune(DateTime.UtcNow - ExpireAge);
+			_Sync.Set();
+		}
 
-            if (!string.IsNullOrWhiteSpace(source))
-                BeginPack(source);
+		private static void InternalPack(string source)
+		{
+			Utility.WriteLine(ConsoleColor.Cyan, "Archives: Packing started...");
 
-            return true;
-        }
+			var sw = Stopwatch.StartNew();
 
-        private static void Wait(WorldSaveEventArgs e)
-        {
-            WaitForTaskCompletion();
-        }
+			var dest = Destination;
 
-        private static void Wait(ShutdownEventArgs e)
-        {
-            WaitForTaskCompletion();
-        }
+			try
+			{
+				var now = DateTime.Now;
 
-        private static void WaitForTaskCompletion()
-        {
-            if (!Core.Crashed && !Core.Closing)
-                return;
+				var ampm = now.Hour < 12 ? "AM" : "PM";
+				var hour12 = now.Hour > 12 ? now.Hour - 12 : now.Hour <= 0 ? 12 : now.Hour;
 
-            int pending = PendingTasks;
+				string date;
 
-            if (pending <= 0)
-                return;
+				switch (Merge)
+				{
+					case MergeType.Months: date = $"{now.Month}-{now.Year}"; break;
+					case MergeType.Days: date = $"{now.Day}-{now.Month}-{now.Year}"; break;
+					case MergeType.Hours: date = $"{now.Day}-{now.Month}-{now.Year} {hour12:D2} {ampm}"; break;
+					case MergeType.Minutes: default: date = $"{now.Day}-{now.Month}-{now.Year} {hour12:D2}-{now.Minute:D2} {ampm}"; break;
+				}
 
-            Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: Waiting for {0:#,0} pending tasks...", pending);
+				var file = $"{ServerList.ServerName} Saves ({date}).zip";
 
-            while (pending > 0)
-            {
-                _Sync.WaitOne(10);
+				dest = Path.Combine(Destination, file);
 
-                pending = PendingTasks;
-            }
+				try { File.Delete(dest); }
+				catch { }
 
-            Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: All tasks completed.");
-        }
+				ZipFile.CreateFromDirectory(source, dest, CompressionLevel.Optimal, false);
+			}
+			catch (Exception e)
+			{
+				Utility.WriteLine(ConsoleColor.Yellow, $"Archives: Failed to create archive '{source}' -> '{dest}':\n{e}");
+			}
 
-        private static void InternalPack(string source)
-        {
-            Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: Packing started...");
-
-            Stopwatch sw = Stopwatch.StartNew();
-
-            try
-            {
-                DateTime now = DateTime.Now;
-
-                string ampm = now.Hour < 12 ? "AM" : "PM";
-                int hour12 = now.Hour > 12 ? now.Hour - 12 : now.Hour <= 0 ? 12 : now.Hour;
-
-                string date;
-
-                switch (Merge)
-                {
-                    case MergeType.Months: date = string.Format("{0}-{1}", now.Month, now.Year); break;
-                    case MergeType.Days: date = string.Format("{0}-{1}-{2}", now.Day, now.Month, now.Year); break;
-                    case MergeType.Hours: date = string.Format("{0}-{1}-{2} {3:D2} {4}", now.Day, now.Month, now.Year, hour12, ampm); break;
-                    case MergeType.Minutes: default: date = string.Format("{0}-{1}-{2} {3:D2}-{4:D2} {5}", now.Day, now.Month, now.Year, hour12, now.Minute, ampm); break;
-                }
-
-                string file = string.Format("{0} Saves ({1}).zip", ServerList.ServerName, date);
-                string dest = Path.Combine(Destination, file);
-
-                try { File.Delete(dest); }
-                catch (Exception e)
-                {
-                    Diagnostics.ExceptionLogging.LogException(e);
-                }
-
-                ZipFile.CreateFromDirectory(source, dest, CompressionLevel.Optimal, false);
-            }
-            catch (Exception e)
-            {
-                Diagnostics.ExceptionLogging.LogException(e);
-            }
-
-            try { Directory.Delete(source, true); }
-            catch (Exception e)
-            {
-                Diagnostics.ExceptionLogging.LogException(e);
-            }
-
-            sw.Stop();
-
-            Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: Packing done in {0:F1} seconds.", sw.Elapsed.TotalSeconds);
-        }
-
-        private static void BeginPack(string source)
-        {
-            // Do not use async packing during a crash state or when closing.
-            if (!Async || Core.Crashed || Core.Closing)
-            {
-                _Pack.Invoke(source);
-                return;
-            }
-
-            _Sync.Reset();
-
-            IAsyncResult t = _Pack.BeginInvoke(source, EndPack, source);
-
-            lock (_TaskRoot)
-                _Tasks.Add(t);
-        }
-
-        private static void EndPack(IAsyncResult r)
-        {
-            _Pack.EndInvoke(r);
-
-            lock (_TaskRoot)
-                _Tasks.Remove(r);
-
-            _Sync.Set();
-        }
-
-        private static void InternalPrune(DateTime threshold)
-        {
-            if (!Directory.Exists(Destination))
-                return;
-
-            Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: Pruning started...");
-
-            Stopwatch sw = Stopwatch.StartNew();
-
-            try
-            {
-                DirectoryInfo root = new DirectoryInfo(Destination);
-
-                foreach (FileInfo archive in root.GetFiles("*.zip", SearchOption.AllDirectories))
-                {
-                    try
-                    {
-                        if (archive.LastWriteTimeUtc < threshold)
-                            archive.Delete();
-                    }
-                    catch (Exception e)
-                    {
-                        Diagnostics.ExceptionLogging.LogException(e);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Diagnostics.ExceptionLogging.LogException(e);
-            }
-
-            sw.Stop();
-
-            Utility.WriteConsoleColor(ConsoleColor.Cyan, "Archives: Pruning done in {0:F1} seconds.", sw.Elapsed.TotalSeconds);
-        }
-
-        private static void BeginPrune(DateTime threshold)
-        {
-            // Do not use async pruning during a crash state or when closing.
-            if (!Async || Core.Crashed || Core.Closing)
-            {
-                _Prune.Invoke(threshold);
-                return;
-            }
-
-            _Sync.Reset();
-
-            IAsyncResult t = _Prune.BeginInvoke(threshold, EndPrune, threshold);
-
-            lock (_TaskRoot)
-                _Tasks.Add(t);
-        }
-
-        private static void EndPrune(IAsyncResult r)
-        {
-            _Prune.EndInvoke(r);
-
-            lock (_TaskRoot)
-                _Tasks.Remove(r);
-
-            _Sync.Set();
-        }
-    }
+			try { Directory.Delete(source, true); }
+			catch { }
+
+			sw.Stop();
+
+			Utility.WriteLine(ConsoleColor.Cyan, $"Archives: Packing done in {sw.Elapsed.TotalSeconds:F1} seconds.");
+		}
+
+		private static void BeginPack(string source)
+		{
+			// Do not use async packing during a crash state or when closing.
+			if (!Async || Core.Crashed || Core.Closing)
+			{
+				InternalPack(source);
+				return;
+			}
+
+			_Sync.Reset();
+
+			var t = Task.Factory.StartNew(o => InternalPack((string)o), source, TaskCreationOptions.LongRunning);
+
+			lock (_TaskRoot)
+				_Tasks.Add(t);
+
+			t.ContinueWith(EndTask);
+		}
+
+		private static void InternalPrune(DateTime threshold)
+		{
+			if (!Directory.Exists(Destination))
+				return;
+
+			Utility.WriteLine(ConsoleColor.Cyan, "Archives: Pruning started...");
+
+			var sw = Stopwatch.StartNew();
+
+			try
+			{
+				var root = new DirectoryInfo(Destination);
+
+				foreach (var archive in root.GetFiles("*.zip", SearchOption.AllDirectories))
+				{
+					try
+					{
+						if (archive.LastWriteTimeUtc < threshold)
+							archive.Delete();
+					}
+					catch { }
+				}
+			}
+			catch { }
+
+			sw.Stop();
+
+			Utility.WriteLine(ConsoleColor.Cyan, $"Archives: Pruning done in {sw.Elapsed.TotalSeconds:F1} seconds.");
+		}
+
+		private static void BeginPrune(DateTime threshold)
+		{
+			// Do not use async pruning during a crash state or when closing.
+			if (!Async || Core.Crashed || Core.Closing)
+			{
+				InternalPrune(threshold);
+				return;
+			}
+
+			_Sync.Reset();
+
+			var t = Task.Factory.StartNew(o => InternalPrune((DateTime)o), threshold, TaskCreationOptions.LongRunning);
+
+			lock (_TaskRoot)
+				_Tasks.Add(t);
+
+			t.ContinueWith(EndTask);
+		}
+	}
 }

@@ -118,11 +118,8 @@ namespace Server.Gumps
                         {
                             var item = Contents[index];
 
-                            bool rejected;
-                            LRReason reject;
-
                             // TODO: We will need a server side gump to break apart amount for stacked items
-                            User.Lift(item, item.Amount, out rejected, out reject);
+                            User.Lift(item, item.Amount);
                         }
                     }
                     Refresh();

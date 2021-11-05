@@ -22,7 +22,7 @@ namespace Server.Engines.Blackthorn
 
             Name = NameList.RandomName("male");
 
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Body = 0x190;
             HairItemID = 0x2047;
             HairHue = 0x46D;

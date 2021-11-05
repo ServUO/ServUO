@@ -75,7 +75,7 @@ namespace Server.Network
 			{
 				throw new ArgumentOutOfRangeException("count");
 			}
-			else if ((input.Length - offset) < count)
+			else if (input.Length - offset < count)
 			{
 				throw new ArgumentException();
 			}
@@ -158,7 +158,6 @@ namespace Server.Network
 						}
 
 						length = (int)(pOutput - pOutputBuffer);
-						return;
 					}
 				}
 			}
@@ -226,8 +225,7 @@ namespace Server.Network
 			static internal extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
 
 			[DllImport("zlibwapi32")]
-			static internal extern ZLibError compress2(
-				byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
+			static internal extern ZLibError compress2(byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
 
 			[DllImport("zlibwapi32")]
 			static internal extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
@@ -262,8 +260,7 @@ namespace Server.Network
 			static internal extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
 
 			[DllImport("zlibwapi64")]
-			static internal extern ZLibError compress2(
-				byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
+			static internal extern ZLibError compress2(byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
 
 			[DllImport("zlibwapi64")]
 			static internal extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);
@@ -298,8 +295,7 @@ namespace Server.Network
 			static internal extern ZLibError compress(byte[] dest, ref int destLength, byte[] source, int sourceLength);
 
 			[DllImport("libz")]
-			static internal extern ZLibError compress2(
-				byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
+			static internal extern ZLibError compress2(byte[] dest, ref int destLength, byte[] source, int sourceLength, ZLibQuality quality);
 
 			[DllImport("libz")]
 			static internal extern ZLibError uncompress(byte[] dest, ref int destLen, byte[] source, int sourceLen);

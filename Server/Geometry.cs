@@ -431,44 +431,10 @@ namespace Server
 		[CommandProperty(AccessLevel.Counselor)]
 		public int Height { get => m_End.m_Y - m_Start.m_Y; set => m_End.m_Y = m_Start.m_Y + value; }
 
-		public void MakeHold(Rectangle2D r)
-		{
-			if (r.m_Start.m_X < m_Start.m_X)
-			{
-				m_Start.m_X = r.m_Start.m_X;
-			}
-
-			if (r.m_Start.m_Y < m_Start.m_Y)
-			{
-				m_Start.m_Y = r.m_Start.m_Y;
-			}
-
-			if (r.m_End.m_X > m_End.m_X)
-			{
-				m_End.m_X = r.m_End.m_X;
-			}
-
-			if (r.m_End.m_Y > m_End.m_Y)
-			{
-				m_End.m_Y = r.m_End.m_Y;
-			}
-		}
-
-		public bool Contains(Point3D p)
-		{
-			return m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y;
-			//return ( m_Start <= p && m_End > p );
-		}
-
-		public bool Contains(Point2D p)
-		{
-			return m_Start.m_X <= p.m_X && m_Start.m_Y <= p.m_Y && m_End.m_X > p.m_X && m_End.m_Y > p.m_Y;
-			//return ( m_Start <= p && m_End > p );
-		}
-
 		public bool Contains(IPoint2D p)
 		{
-			return m_Start <= p && m_End > p;
+			return p.X >= m_Start.m_X && p.X < m_End.m_X
+				&& p.Y >= m_Start.m_Y && p.Y < m_End.m_Y;
 		}
 
 		public override string ToString()
@@ -480,10 +446,10 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = 1 + Math.Abs(Start.X + Start.Y) + Math.Abs(End.X + End.Y);
+				var hash = 1 + Math.Abs(m_Start.X + m_Start.Y) + Math.Abs(m_End.X + m_End.Y);
 
-				hash = (hash * 397) ^ Start.GetHashCode();
-				hash = (hash * 397) ^ End.GetHashCode();
+				hash = (hash * 397) ^ m_Start.GetHashCode();
+				hash = (hash * 397) ^ m_End.GetHashCode();
 
 				return hash;
 			}
@@ -571,16 +537,17 @@ namespace Server
 		[CommandProperty(AccessLevel.Counselor)]
 		public int Depth => m_End.Z - m_Start.Z;
 
-		public bool Contains(Point3D p)
+		public bool Contains(IPoint2D p)
 		{
-			return (p.m_X >= m_Start.m_X) && (p.m_X < m_End.m_X) && (p.m_Y >= m_Start.m_Y) && (p.m_Y < m_End.m_Y) &&
-				   (p.m_Z >= m_Start.m_Z) && (p.m_Z < m_End.m_Z);
+			return p.X >= m_Start.m_X && p.X < m_End.m_X
+				&& p.Y >= m_Start.m_Y && p.Y < m_End.m_Y;
 		}
 
 		public bool Contains(IPoint3D p)
 		{
-			return (p.X >= m_Start.m_X) && (p.X < m_End.m_X) && (p.Y >= m_Start.m_Y) && (p.Y < m_End.m_Y) && (p.Z >= m_Start.m_Z) &&
-				   (p.Z < m_End.m_Z);
+			return p.X >= m_Start.m_X && p.X < m_End.m_X
+				&& p.Y >= m_Start.m_Y && p.Y < m_End.m_Y
+				&& p.Z >= m_Start.m_Z && p.Z < m_End.m_Z;
 		}
 
 		public override string ToString()
@@ -592,10 +559,10 @@ namespace Server
 		{
 			unchecked
 			{
-				var hash = 1 + Math.Abs(Start.X + Start.Y + Start.Z) + Math.Abs(End.X + End.Y + End.Z);
+				var hash = 1 + Math.Abs(m_Start.X + m_Start.Y + m_Start.Z) + Math.Abs(m_End.X + m_End.Y + m_End.Z);
 
-				hash = (hash * 397) ^ Start.GetHashCode();
-				hash = (hash * 397) ^ End.GetHashCode();
+				hash = (hash * 397) ^ m_Start.GetHashCode();
+				hash = (hash * 397) ^ m_End.GetHashCode();
 
 				return hash;
 			}

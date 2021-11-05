@@ -24,7 +24,7 @@ namespace Server.Mobiles
             Name = "Hepler Paulson";
             Race = Race.Human;
             CantWalk = true;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Blessed = true;
 
             Utility.AssignRandomHair(this);

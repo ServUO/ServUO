@@ -37,7 +37,7 @@ namespace Server.Items
             return total;
         }
 
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
             if (!CheckType(item))
             {
@@ -47,7 +47,7 @@ namespace Server.Items
                 return false;
             }
 
-            return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+            return base.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight);
         }
 
         public bool CheckType(Item item)

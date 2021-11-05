@@ -40,9 +40,10 @@ namespace Server.Network
 			_PingListener = new PingListener(ipep);
 
 			m_OnAccept = OnAccept;
+
 			try
 			{
-				var res = m_Listener.BeginAccept(m_OnAccept, m_Listener);
+				m_Listener.BeginAccept(m_OnAccept, m_Listener);
 			}
 			catch (SocketException ex)
 			{
@@ -52,12 +53,13 @@ namespace Server.Network
 			{ }
 		}
 
-		private Socket Bind(IPEndPoint ipep)
+		private static Socket Bind(IPEndPoint ipep)
 		{
 			var s = new Socket(ipep.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
 			try
 			{
+				s.NoDelay = true;
 				s.LingerState.Enabled = false;
 
 				// Default is 'false' starting Windows Vista and Server 2008. Source: https://msdn.microsoft.com/en-us/library/system.net.sockets.socket.exclusiveaddressuse(v=vs.110).aspx?f=255&MSPPError=-2147217396
@@ -113,9 +115,11 @@ namespace Server.Network
 			if (ipep.Address.Equals(IPAddress.Any) || ipep.Address.Equals(IPAddress.IPv6Any))
 			{
 				var adapters = NetworkInterface.GetAllNetworkInterfaces();
+
 				foreach (var adapter in adapters)
 				{
 					var properties = adapter.GetIPProperties();
+
 					foreach (var unicast in properties.UnicastAddresses)
 					{
 						if (ipep.AddressFamily == unicast.Address.AddressFamily)
@@ -126,16 +130,6 @@ namespace Server.Network
 						}
 					}
 				}
-				/*
-                try {
-                Console.WriteLine( "Listening: {0}:{1}", IPAddress.Loopback, ipep.Port );
-                IPHostEntry iphe = Dns.GetHostEntry( Dns.GetHostName() );
-                IPAddress[] ip = iphe.AddressList;
-                for ( int i = 0; i < ip.Length; ++i )
-                Console.WriteLine( "Listening: {0}:{1}", ip[i], ipep.Port );
-                }
-                catch { }
-                */
 			}
 			else
 			{
