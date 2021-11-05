@@ -4495,9 +4495,17 @@ namespace Server
 			rejected = false;
 		}
 
+		public static Func<Item, int, Item> LiftItemDupeHandler { get; set; }
+
 		public static Item LiftItemDupe(Item oldItem, int amount)
 		{
-			Item item;
+			var item = LiftItemDupeHandler?.Invoke(oldItem, amount);
+
+			if (item != null)
+			{
+				return item;
+			}
+
 			try
 			{
 				item = (Item)Activator.CreateInstance(oldItem.GetType());
