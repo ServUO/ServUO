@@ -1,8 +1,7 @@
-using Server.Items;
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -78,19 +77,15 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				int ecoInc = 0;
+				var ecoInc = 0;
 
 				if (EconomyItem)
 				{
 					if (TotalBought >= BaseVendor.BuyItemChange)
-					{
 						ecoInc += TotalBought / BaseVendor.BuyItemChange;
-					}
 
 					if (TotalSold >= BaseVendor.SellItemChange)
-					{
 						ecoInc -= TotalSold / BaseVendor.SellItemChange;
-					}
 				}
 
 				if (PriceScalar != 0)
@@ -103,13 +98,11 @@ namespace Server.Mobiles
 						price += 50;
 						price /= 100;
 
-						if (price > int.MaxValue)
-							price = int.MaxValue;
+						if (price > Int32.MaxValue)
+							price = Int32.MaxValue;
 
 						if (EconomyItem && (int)price + ecoInc < 2)
-						{
-							return 2;
-						}
+							return 2;						
 
 						return (int)price + ecoInc;
 					}
@@ -125,13 +118,10 @@ namespace Server.Mobiles
 
 				return m_Price + ecoInc;
 			}
-			set
-			{
-				m_Price = value;
-			}
+			set => m_Price = value;
 		}
 
-		public virtual int PriceBase { get { return m_Price; } set { m_Price = value; } }
+		public virtual int PriceBase { get => m_Price; set => m_Price = value; }
 
 		public virtual int ItemID { get; set; }
 
@@ -139,10 +129,7 @@ namespace Server.Mobiles
 
 		public virtual int Amount
 		{
-			get
-			{
-				return m_Amount;
-			}
+			get => m_Amount;
 			set
 			{
 				if (EconomyItem)
@@ -164,10 +151,7 @@ namespace Server.Mobiles
 
 				return m_MaxAmount;
 			}
-			set
-			{
-				m_MaxAmount = value;
-			}
+			set => m_MaxAmount = value;
 		}
 
 		public virtual object[] Args { get; set; }
@@ -186,7 +170,7 @@ namespace Server.Mobiles
 			if (m_DisplayEntity != null && !m_DisplayEntity.Deleted)
 				return m_DisplayEntity;
 
-			bool canCache = CanCacheDisplay;
+			var canCache = CanCacheDisplay;
 
 			if (canCache)
 				m_DisplayEntity = DisplayCache.Cache.Lookup(Type);
@@ -203,10 +187,8 @@ namespace Server.Mobiles
 		public virtual IEntity GetEntity()
 		{
 			if (Args == null || Args.Length == 0)
-			{
 				return (IEntity)Activator.CreateInstance(Type);
-			}
-
+			
 			return (IEntity)Activator.CreateInstance(Type, Args);
 		}
 
@@ -232,7 +214,7 @@ namespace Server.Mobiles
                 * of the maximum quantity was bought. That is, if more than half is sold, then
                 * there's clearly a demand and we should not cut down on the stock.
                 */
-				int halfQuantity = m_MaxAmount;
+				var halfQuantity = m_MaxAmount;
 
 				if (halfQuantity >= 999)
 					halfQuantity = 640;
@@ -250,9 +232,9 @@ namespace Server.Mobiles
 		{
 			if (EconomyItem)
 			{
-				IBuyItemInfo[] buyList = vendor.GetBuyInfo();
+				var buyList = vendor.GetBuyInfo();
 
-				foreach (IBuyItemInfo bii in buyList)
+				foreach (var bii in buyList)
 				{
 					if (bii.Type == Type || (Type == typeof(UncutCloth) && bii.Type == typeof(Cloth)) || (Type == typeof(Cloth) && bii.Type == typeof(UncutCloth)))
 						bii.TotalBought += amount;
@@ -265,16 +247,15 @@ namespace Server.Mobiles
 		public static bool IsDisplayCache(IEntity e)
 		{
 			if (e is Mobile)
-			{
 				return DisplayCache.Cache.Mobiles != null && DisplayCache.Cache.Mobiles.Contains((Mobile)e);
-			}
-
+			
 			return DisplayCache.Cache.Table != null && DisplayCache.Cache.Table.ContainsValue(e);
 		}
 
 		private class DisplayCache : Container
 		{
 			private static DisplayCache m_Cache;
+
 			private Dictionary<Type, IEntity> m_Table;
 			private List<Mobile> m_Mobiles;
 
@@ -303,10 +284,10 @@ namespace Server.Mobiles
 					return m_Cache;
 				}
 			}
+
 			public IEntity Lookup(Type key)
 			{
-				IEntity e = null;
-				m_Table.TryGetValue(key, out e);
+				m_Table.TryGetValue(key, out var e);
 				return e;
 			}
 
@@ -325,14 +306,16 @@ namespace Server.Mobiles
 			{
 				base.OnAfterDelete();
 
-				for (int i = 0; i < m_Mobiles.Count; ++i)
+				for (var i = 0; i < m_Mobiles.Count; ++i)
 					m_Mobiles[i].Delete();
 
 				m_Mobiles.Clear();
 
-				for (int i = Items.Count - 1; i >= 0; --i)
+				for (var i = Items.Count - 1; i >= 0; --i)
+				{
 					if (i < Items.Count)
 						Items[i].Delete();
+				}
 
 				if (m_Cache == this)
 					m_Cache = null;
@@ -351,18 +334,20 @@ namespace Server.Mobiles
 			{
 				base.Deserialize(reader);
 
-				int version = reader.ReadInt();
+				var version = reader.ReadInt();
 
 				m_Mobiles = reader.ReadStrongMobileList();
 
-				for (int i = 0; i < m_Mobiles.Count; ++i)
+				for (var i = 0; i < m_Mobiles.Count; ++i)
 					m_Mobiles[i].Delete();
 
 				m_Mobiles.Clear();
 
-				for (int i = Items.Count - 1; i >= 0; --i)
+				for (var i = Items.Count - 1; i >= 0; --i)
+				{
 					if (i < Items.Count)
 						Items[i].Delete();
+				}
 
 				if (m_Cache == null)
 					m_Cache = this;
@@ -404,9 +389,7 @@ namespace Server.Mobiles
 			var entity = base.GetEntity();
 
 			if (CreateCallback != null)
-			{
 				CreateCallback((T)entity, this);
-			}
 
 			return entity;
 		}

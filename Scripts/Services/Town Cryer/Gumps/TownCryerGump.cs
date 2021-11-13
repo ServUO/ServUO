@@ -174,7 +174,7 @@ namespace Server.Services.TownCryer
 
             int y = 300;
 
-            for (int i = 0; i < TownCryerSystem.CityEntries.Count && i < TownCryerSystem.MaxPerCityGoverrnorEntries; i++)
+            for (int i = 0; i < TownCryerSystem.CityEntries.Count && i < TownCryerSystem.MaxPerCityGovernorEntries; i++)
             {
                 TownCryerCityEntry entry = TownCryerSystem.CityEntries[i];
 

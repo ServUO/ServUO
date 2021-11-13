@@ -29,21 +29,8 @@ namespace Server
     }
 
     public class AOS
-    {
-        public static void DisableStatInfluences()
-        {
-            for (int i = 0; i < SkillInfo.Table.Length; ++i)
-            {
-                SkillInfo info = SkillInfo.Table[i];
-
-                info.StrScale = 0.0;
-                info.DexScale = 0.0;
-                info.IntScale = 0.0;
-                info.StatTotal = 0.0;
-            }
-        }
-
-        public static int Damage(IDamageable m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
+	{
+		public static int Damage(IDamageable m, int damage, bool ignoreArmor, int phys, int fire, int cold, int pois, int nrgy)
         {
             return Damage(m, null, damage, ignoreArmor, phys, fire, cold, pois, nrgy);
         }

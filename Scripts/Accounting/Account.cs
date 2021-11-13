@@ -1527,11 +1527,7 @@ namespace Server.Accounting
         ///     By default, when 1,000,000,000 Gold is accumulated, it will transform
         ///     into 1 Platinum.
         /// </summary>
-        public static int CurrencyThreshold
-        {
-            get { return AccountGold.CurrencyThreshold; }
-            set { AccountGold.CurrencyThreshold = value; }
-        }
+        public static int CurrencyThreshold => AccountGold.CurrencyThreshold;
 
         /// <summary>
         ///     This amount represents the total amount of currency owned by the player.

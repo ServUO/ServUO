@@ -14,6 +14,8 @@ namespace Server.Engines.CannedEvil
     {
         public static readonly int MaxStrayDistance = 250;
 
+		public static List<ChampionSpawn> AllSpawns { get; } = new List<ChampionSpawn>();
+
         private bool m_Active;
         private bool m_RandomizeType;
         private ChampionSpawnType m_Type;
@@ -97,6 +99,8 @@ namespace Server.Engines.CannedEvil
         public ChampionSpawn()
             : base(0xBD2)
         {
+			AllSpawns.Add(this);
+
             Movable = false;
             Visible = false;
 
@@ -120,7 +124,7 @@ namespace Server.Engines.CannedEvil
             Timer.DelayCall(TimeSpan.Zero, SetInitialSpawnArea);
         }
 
-        public void SetInitialSpawnArea()
+		public void SetInitialSpawnArea()
         {
             //Previous default used to be 24;
             SpawnArea = new Rectangle2D(new Point2D(X - SpawnRadius, Y - SpawnRadius),
@@ -1072,7 +1076,14 @@ namespace Server.Engines.CannedEvil
             UpdateRegion();
         }
 
-        public override void OnAfterDelete()
+		public override void OnDelete()
+		{
+			base.OnDelete();
+
+			AllSpawns.Remove(this);
+		}
+		
+		public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
@@ -1106,14 +1117,17 @@ namespace Server.Engines.CannedEvil
             Stop();
 
             UpdateRegion();
+
+			AllSpawns.Remove(this);
         }
 
         public ChampionSpawn(Serial serial)
             : base(serial)
-        {
-        }
+		{
+			AllSpawns.Add(this);
+		}
 
-        public virtual void RegisterDamageTo(Mobile m)
+		public virtual void RegisterDamageTo(Mobile m)
         {
             if (m == null)
                 return;

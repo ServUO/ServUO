@@ -404,7 +404,7 @@ namespace Server.Mobiles
                 killer = creature.GetMaster();
             }
 
-            if (killer is PlayerMobile && Utility.RandomDouble() < ChampionSystem.ScrollChance * 10)
+            if (killer is PlayerMobile && Utility.RandomDouble() < ChampionSystem.ScrollChance)
             {
                 PlayerMobile pm = (PlayerMobile)killer;
 

@@ -647,6 +647,65 @@ namespace Server
 		};
 
 		public static SkillInfo[] Table { get => m_Table; set => m_Table = value; }
+
+		private static double[,] m_CachedStatInfluences;
+
+		public static bool UseStatInfluences
+		{
+			get => m_CachedStatInfluences == null;
+			set
+			{
+				if (value)
+					EnableStatInfluences();
+				else
+					DisableStatInfluences();
+			}
+		}
+
+		public static void DisableStatInfluences()
+		{
+			if (m_CachedStatInfluences != null)
+			{
+				return;
+			}
+
+			m_CachedStatInfluences = new double[m_Table.Length, 4];
+
+			for (int i = 0; i < m_Table.Length; ++i)
+			{
+				SkillInfo info = m_Table[i];
+
+				m_CachedStatInfluences[i, 0] = info.StrScale;
+				m_CachedStatInfluences[i, 1] = info.DexScale;
+				m_CachedStatInfluences[i, 2] = info.IntScale;
+				m_CachedStatInfluences[i, 3] = info.StatTotal;
+
+				info.StrScale = 0.0;
+				info.DexScale = 0.0;
+				info.IntScale = 0.0;
+				info.StatTotal = 0.0;
+			}
+		}
+
+		public static void EnableStatInfluences()
+		{
+			if (m_CachedStatInfluences == null)
+			{
+				return;
+			}
+
+			for (int i = 0; i < m_Table.Length; ++i)
+			{
+				SkillInfo info = m_Table[i];
+
+				info.StrScale = m_CachedStatInfluences[i, 0];
+				info.DexScale = m_CachedStatInfluences[i, 1];
+				info.IntScale = m_CachedStatInfluences[i, 2];
+				info.StatTotal = m_CachedStatInfluences[i, 3];
+			}
+
+			m_CachedStatInfluences = null;
+		}
 	}
 
 	[PropertyObject]
@@ -1093,8 +1152,7 @@ namespace Server
 		{
 			for (var i = 0; i < m_Skills.Length; i++)
 			{
-				if (m_Skills[i] != null)
-					yield return m_Skills[i];
+				yield return this[i];
 			}
 		}
 

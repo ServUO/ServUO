@@ -84,7 +84,7 @@ namespace Server
 
 		public static Assembly Assembly { get; private set; }
 
-		public static Version Version => Assembly.GetName().Version;
+		public static Version Version { get; } = new Version(ServUO.Constants.Assembly.Version);
 
 		public static Process Process { get; private set; }
 		public static Thread Thread { get; private set; }
@@ -124,26 +124,28 @@ namespace Server
 
 		public static string FindDataFile(string path)
 		{
-			if (DataDirectories.Count == 0)
-			{
-				throw new InvalidOperationException("Attempted to FindDataFile before DataDirectories list has been filled.");
-			}
-
-			string fullPath = null;
-
 			foreach (var p in DataDirectories)
 			{
-				fullPath = Path.Combine(p, path);
+				var fullPath = Path.Combine(p, path);
 
 				if (File.Exists(fullPath))
 				{
-					break;
+					return fullPath;
 				}
-
-				fullPath = null;
 			}
 
-			return fullPath;
+			var dataPath = Path.Combine(BaseDirectory, "Data");
+			var fileName = Path.GetFileName(path);
+
+			foreach (var file in Directory.EnumerateFiles(dataPath, fileName, SearchOption.AllDirectories))
+			{
+				if (Insensitive.Equals(Path.GetFileName(path), fileName))
+				{
+					return file;
+				}
+			}
+
+			return null;
 		}
 
 		public static string FindDataFile(string format, params object[] args)
@@ -152,9 +154,22 @@ namespace Server
 		}
 
 		#region Expansions
+
 		private static readonly Expansion[] _Expansions = Enum.GetValues(typeof(Expansion)).Cast<Expansion>().ToArray();
 
-		public static Expansion Expansion => Config.GetEnum("Server.Expansion", _Expansions[_Expansions.Length - 1]);
+		public static Expansion Expansion 
+		{ 
+			get => Config.GetEnum("Server.Expansion", _Expansions[_Expansions.Length - 1]);
+			set
+			{
+				if (Expansion != value)
+				{
+					Config.SetEnum("Server.Expansion", value);
+
+					OnExpansionChanged?.Invoke();
+				}
+			}
+		}
 
 		public static bool T2A => Expansion >= Expansion.T2A;
 		public static bool UOR => Expansion >= Expansion.UOR;
@@ -167,6 +182,24 @@ namespace Server
 		public static bool HS => Expansion >= Expansion.HS;
 		public static bool TOL => Expansion >= Expansion.TOL;
 		public static bool EJ => Expansion >= Expansion.EJ;
+
+		public static bool IsSiege
+		{
+			get => Config.Get("Siege.IsSiege", false);
+			set
+			{
+				if (IsSiege != value)
+				{
+					Config.Set("Siege.IsSiege", value); 
+					
+					OnSiegeStateChanged?.Invoke();
+				}
+			}
+		}
+
+		public static event Action OnSiegeStateChanged;
+		public static event Action OnExpansionChanged;
+
 		#endregion
 
 		public static string ExePath => _ExePath ?? (_ExePath = Assembly.Location);
@@ -618,15 +651,13 @@ namespace Server
 				Name = "Timer Thread"
 			};
 
-			var ver = new Version(ServUO.Constants.Assembly.Version);
-
-			Console.Title = $"{ServUO.Constants.Assembly.Title} {ver}";
+			Console.Title = $"{ServUO.Constants.Assembly.Title} {Version}";
 
 			Utility.PushColor(Console.ForegroundColor);
 
 			BeginColor(ConsoleColor.Blue);
 
-			Console.WriteLine($"{ServUO.Constants.Assembly.Product} {ver}");
+			Console.WriteLine($"{ServUO.Constants.Assembly.Product} {Version}");
 			Console.WriteLine($"{ServUO.Constants.Assembly.Description}");
 			Console.WriteLine($"{ServUO.Constants.Assembly.Company} [{ServUO.Constants.Website}]");
 

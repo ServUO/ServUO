@@ -8,6 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 #endregion
 
 namespace Server
@@ -16,6 +17,11 @@ namespace Server
 	{
 		public sealed class Entry : IEquatable<Entry>, IComparable<Entry>
 		{
+			private readonly string m_InitialValue;
+			private readonly bool m_InitialDefault;
+
+			private int? m_Hash;
+
 			public int FileIndex { get; private set; }
 
 			public string File { get; private set; }
@@ -25,12 +31,16 @@ namespace Server
 
 			public string Key { get; private set; }
 			public string Value { get; private set; }
+
 			public object Object { get; private set; }
 
 			public bool UseDefault { get; set; }
 
 			public Entry(string file, int fileIndex, string scope, string desc, string key, string value, object state, bool useDefault)
 			{
+				m_InitialValue = value;
+				m_InitialDefault = useDefault;
+
 				File = file;
 				FileIndex = fileIndex;
 
@@ -46,10 +56,22 @@ namespace Server
 
 			public void Set(string value, object state)
 			{
+				var oldValue = Value;
+				var oldObject = Object;
+
 				Value = value;
 				Object = state;
 
-				UseDefault = Object == null;
+				if (m_InitialValue == value)
+				{
+					UseDefault = m_InitialDefault;
+				}
+				else if (oldValue != value)
+				{
+					UseDefault = false;
+				}
+
+				OnEntryChanged?.Invoke(this, oldValue, oldObject);
 			}
 
 			public override string ToString()
@@ -59,6 +81,11 @@ namespace Server
 
 			public override int GetHashCode()
 			{
+				if (m_Hash != null)
+				{
+					return m_Hash.Value;
+				}
+
 				unchecked
 				{
 					var hash = -1;
@@ -66,6 +93,8 @@ namespace Server
 					hash = (hash * 397) ^ File.GetHashCode();
 					hash = (hash * 397) ^ Scope.GetHashCode();
 					hash = (hash * 397) ^ Key.GetHashCode();
+
+					m_Hash = hash;
 
 					return hash;
 				}
@@ -119,6 +148,8 @@ namespace Server
 
 		public static IEnumerable<Entry> Entries => _Entries.Values;
 
+		public static event Action<Entry, string, object> OnEntryChanged;
+
 		public static Entry Find(string key)
 		{
 			Load();
@@ -130,7 +161,9 @@ namespace Server
 
 		public static void Dump(string scope)
 		{
+			Utility.PushColor(ConsoleColor.DarkYellow);
 			Dump(Console.Out, scope);
+			Utility.PopColor();
 		}
 
 		public static void Dump(TextWriter output, string scope)
@@ -147,7 +180,7 @@ namespace Server
 					{
 						if (++count == 1)
 						{
-							Console.WriteLine();
+							output.WriteLine();
 						}
 
 						output.WriteLine(e);
@@ -156,7 +189,7 @@ namespace Server
 
 				if (count > 0)
 				{
-					Console.WriteLine();
+					output.WriteLine();
 				}
 			}
 		}
@@ -567,6 +600,16 @@ namespace Server
 			InternalSet(key, value.ToString(), value);
 		}
 
+		public static void Set(string key, Version value)
+		{
+			InternalSet(key, value.ToString(), value);
+		}
+
+		public static void Set(string key, ClientVersion value)
+		{
+			InternalSet(key, value.ToString(), value);
+		}
+
 		public static void SetEnum<T>(string key, T value) where T : Enum
 		{
 			var vals = (T[])Enum.GetValues(typeof(T));
@@ -578,6 +621,73 @@ namespace Server
 			}
 
 			throw new ArgumentException("Enumerated value not found");
+		}
+
+		public static void SetDelegate<T>(string key, T value) where T : Delegate
+		{
+			InternalSet(key, $"{value.Method.DeclaringType.FullName}.{value.Method.Name}", value);
+		}
+
+		public static void SetArray<T>(string key, T[] value)
+		{
+			if (value == null)
+			{
+				InternalSet(key, String.Empty, value);
+			}
+			else if (value.Length == 0)
+			{
+				InternalSet(key, "[]", value);
+			}
+			else
+			{
+				var encoded = new StringBuilder();
+
+				for (var i = 0; i < value.Length; i++)
+				{
+					var val = value[i];
+
+					if (i > 0)
+					{
+						encoded.Append(", ");
+					}
+
+					var str = val.ToString();
+
+					encoded.Append('"');
+
+					foreach (var c in str)
+					{
+						switch (c)
+						{
+							case '"': encoded.Append("\\\""); break;
+							case '\\': encoded.Append("\\\\"); break;
+							case '\b': encoded.Append("\\b"); break;
+							case '\f': encoded.Append("\\f"); break;
+							case '\n': encoded.Append("\\n"); break;
+							case '\r': encoded.Append("\\r"); break;
+							case '\t': encoded.Append("\\t"); break;
+							default:
+								{
+									var sur = Convert.ToInt32(c);
+
+									if (sur >= 32 && sur <= 126)
+									{
+										encoded.Append(c);
+									}
+									else
+									{
+										encoded.Append("\\u" + Convert.ToString(sur, 16).PadLeft(4, '0'));
+									}
+								}
+								break;
+						}
+					}
+
+					encoded.Append('"');
+				}
+
+				InternalSet(key, $"[{encoded}]", value);
+			}
 		}
 
 		#endregion
@@ -714,6 +824,16 @@ namespace Server
 			return Utility.Intern(InternalGet(key, defaultValue, TryParse));
 		}
 
+		public static Version Get(string key, Version defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
+		public static ClientVersion Get(string key, ClientVersion defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
+		}
+
 		public static T GetEnum<T>(string key, T defaultValue) where T : struct, Enum
 		{
 			return InternalGet(key, defaultValue, TryParseEnum);
@@ -722,6 +842,16 @@ namespace Server
 		public static T GetDelegate<T>(string key, T defaultValue) where T : Delegate
 		{
 			return InternalGet(key, defaultValue, TryParseDelegate);
+		}
+
+		public static T[] GetArray<T>(string key, T[] defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParseArray);
+		}
+
+		public static T[] GetArray<T>(string key, bool defaultEmpty)
+		{
+			return GetArray(key, defaultEmpty ? Array.Empty<T>() : null);
 		}
 
 		#endregion
@@ -845,6 +975,16 @@ namespace Server
 			return IPAddress.TryParse(input, out value);
 		}
 
+		private static bool TryParse(string input, out Version value)
+		{
+			return Version.TryParse(input, out value);
+		}
+
+		private static bool TryParse(string input, out ClientVersion value)
+		{
+			return ClientVersion.TryParse(input, out value);
+		}
+
 		private static bool TryParseEnum<T>(string input, out T value) where T : struct, Enum
 		{
 			return Enum.TryParse(input, out value);
@@ -874,6 +1014,259 @@ namespace Server
 			}
 
 			value = null;
+			return false;
+		}
+
+		private static bool TryParseArray<T>(string input, out T[] value)
+		{
+			if (!input.StartsWith("[") || !input.EndsWith("]"))
+			{
+				value = null;
+				return false;
+			}
+
+			input = input.Trim('[', ']');
+
+			if (typeof(T) == typeof(string))
+			{
+				var output = new List<string>();
+
+				var build = new StringBuilder(0x20);
+
+				var idx = 0;
+
+				while (idx < input.Length)
+				{
+					idx = input.IndexOf('"', idx);
+
+					if (idx < 0)
+					{
+						break;
+					}
+
+					var dump = false;
+
+					var o = input[idx++];
+
+					while (idx < input.Length)
+					{
+						var c = input[idx++];
+
+						if (c == o)
+						{
+							dump = true;
+							break;
+						}
+
+						if (c == '\\')
+						{
+							if (idx == input.Length)
+							{
+								dump = true;
+								break;
+							}
+
+							c = input[idx++];
+
+							var found = true;
+
+							switch (c)
+							{
+								case '"': build.Append('"'); break;
+								case '\\': build.Append('\\'); break;
+								case '/': build.Append('/'); break;
+								case 'b': build.Append('\b'); break;
+								case 'f': build.Append('\f'); break;
+								case 'n': build.Append('\n'); break;
+								case 'r': build.Append('\r'); break;
+								case 't': build.Append('\t'); break;
+								default: found = false; break;
+							}
+
+							if (!found && c == 'u')
+							{
+								var length = input.Length - idx;
+
+								if (length < 4)
+								{
+									value = null;
+									return false;
+								}
+
+								if (!UInt32.TryParse(input.Substring(idx, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var sur))
+								{
+									value = null;
+									return false;
+								}
+
+								build.Append(Char.ConvertFromUtf32((int)sur));
+
+								idx += 4;
+							}
+						}
+						else
+						{
+							build.Append(c);
+						}
+					}
+
+					if (dump)
+					{
+						output.Add(build.ToString());
+					}
+
+					build.Clear();
+				}
+
+				value = output.Cast<T>().ToArray();
+
+				ColUtility.Free(output);
+
+				return true;
+			}
+
+			var vals = input.Split(',');
+
+			value = new T[vals.Length];
+
+			for (var i = 0; i < vals.Length; i++)
+			{
+				if (!GenericTryParse(vals[i], out T obj))
+				{
+					value = null;
+					return false;
+				}
+
+				value[i] = obj;
+			}
+
+			return true;
+		}
+
+		private static readonly ThreadLocal<Type[]> _GenericParserParams = new ThreadLocal<Type[]>(() => new Type[] { typeof(string) });
+		private static readonly ThreadLocal<Type[]> _GenericTryParserParams = new ThreadLocal<Type[]>(() => new Type[] { typeof(string), null });
+
+		private static readonly ThreadLocal<object[]> _GenericParserArgs = new ThreadLocal<object[]>(() => new object[] { null });
+		private static readonly ThreadLocal<object[]> _GenericTryParserArgs = new ThreadLocal<object[]>(() => new object[] { null, null });
+
+		private static bool GenericTryParse<T>(string input, out T value)
+		{
+			try
+			{
+				var type = typeof(T);
+
+				if (type == typeof(string))
+				{
+					if (input == null)
+					{
+						value = default(T);
+					}
+					else if (input.Length == 0)
+					{
+						value = (T)(object)String.Empty;
+					}
+					else
+					{
+						value = (T)(object)input.Trim().Trim('"');
+					}
+
+					return true;
+				}
+
+				if (String.IsNullOrEmpty(input))
+				{
+					value = default(T);
+					return false;
+				}
+
+				Type[] types;
+				object[] args;
+
+				types = _GenericTryParserParams.Value;
+				args = _GenericTryParserArgs.Value;
+
+				try
+				{
+					var search = type.IsEnum ? "TryParseEnum" : type.IsAssignableFrom(typeof(Delegate)) ? "TryParseDelegate" : "TryParse";
+
+					types[1] = type;
+
+					args[0] = input;
+					args[1] = null;
+
+					var tryParse = typeof(Config).GetMethod(search, types);
+
+					if (tryParse != null && (bool)tryParse.Invoke(null, args))
+					{
+						value = (T)args[1];
+						return true;
+					}
+				}
+				catch
+				{ }
+				finally
+				{
+					types[1] = null;
+
+					args[0] = null;
+					args[1] = null;
+				}
+
+				try
+				{
+					var search = "TryParse";
+
+					types[1] = type;
+
+					args[0] = input;
+					args[1] = null;
+
+					var tryParse = type.GetMethod(search, types);
+
+					if (tryParse != null && (bool)tryParse.Invoke(null, args))
+					{
+						value = (T)args[1];
+						return true;
+					}
+				}
+				catch
+				{ }
+				finally
+				{
+					types[1] = null;
+
+					args[0] = null;
+					args[1] = null;
+				}
+
+				types = _GenericParserParams.Value;
+				args = _GenericParserArgs.Value;
+
+				try
+				{
+					var search = "Parse";
+
+					args[0] = input.Trim();
+
+					var parse = type.GetMethod(search, types);
+
+					if (parse != null)
+					{
+						value = (T)parse.Invoke(null, args);
+						return true;
+					}
+				}
+				catch
+				{ }
+				finally
+				{
+					args[0] = null;
+				}
+			}
+			catch
+			{ }
+
+			value = default(T);
 			return false;
 		}
 

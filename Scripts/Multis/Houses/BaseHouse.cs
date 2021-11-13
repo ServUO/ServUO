@@ -18,7 +18,7 @@ namespace Server.Multis
 {
     public abstract class BaseHouse : BaseMulti
     {
-        public static int AccountHouseLimit { get; } = Config.Get("Housing.AccountHouseLimit", 1);
+        public static int AccountHouseLimit { get => Config.Get("Housing.AccountHouseLimit", 1); set => Config.Set("Housing.AccountHouseLimit", value); }
 
         public static double GlobalBonusStorageScalar => 1.4;
 

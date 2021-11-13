@@ -14,9 +14,18 @@ namespace Server.Misc
 			"Most Recent"
 		};
 
-		private static readonly Timer m_Timer;
+		public static Timer Timer { get; private set; }
 
-		public static bool SavesEnabled { get => Config.Get("AutoSave.Enabled", true); set => Config.Set("AutoSave.Enabled", value); }
+		public static bool SavesEnabled
+		{
+			get => Config.Get("AutoSave.Enabled", true);
+			set
+			{
+				Config.Set("AutoSave.Enabled", value);
+
+				Initialize();
+			}
+		}
 
 		public static TimeSpan Delay
 		{
@@ -25,29 +34,45 @@ namespace Server.Misc
 			{
 				Config.Set("AutoSave.Frequency", value);
 
-				if (m_Timer != null)
-				{
-					m_Timer.Stop();
-					m_Timer.Delay = Delay - Warning;
-					m_Timer.Interval = Delay;
-					m_Timer.Start();
-				}
+				StartTimer();
 			}
 		}
 
-		public static TimeSpan Warning { get => Config.Get("AutoSave.WarningTime", TimeSpan.Zero); set => Config.Set("AutoSave.WarningTime", value); }
-
-		static AutoSave()
+		public static TimeSpan Warning
 		{
-			m_Timer = Timer.DelayCall(Delay - Warning, Delay, Tick);
-			m_Timer.Stop();
+			get => Config.Get("AutoSave.WarningTime", TimeSpan.Zero);
+			set
+			{
+				Config.Set("AutoSave.WarningTime", value);
+
+				StartTimer();
+			}
+		}
+
+		public static void Configure()
+		{
+			CommandSystem.Register("SetSaves", AccessLevel.Administrator, SetSaves_OnCommand);
 		}
 
 		public static void Initialize()
 		{
-			m_Timer.Start();
+			StartTimer();
+		}
 
-			CommandSystem.Register("SetSaves", AccessLevel.Administrator, SetSaves_OnCommand);
+		private static void StartTimer()
+		{
+			StopTimer();
+
+			Timer = Timer.DelayCall(Delay - Warning, Delay, Tick);
+		}
+
+		private static void StopTimer()
+		{
+			if (Timer != null)
+			{
+				Timer.Stop();
+				Timer = null;
+			}
 		}
 
 		[Usage("SetSaves <true | false>")]
@@ -58,10 +83,12 @@ namespace Server.Misc
 			{
 				SavesEnabled = e.GetBoolean(0);
 
-				e.Mobile.SendMessage("Saves have been {0}.", SavesEnabled ? "enabled" : "disabled");
+				e.Mobile.SendMessage($"Saves have been {(SavesEnabled ? "enabled" : "disabled")}.");
 			}
 			else
+			{
 				e.Mobile.SendMessage("Format: SetSaves <true | false>");
+			}
 		}
 
 		public static void Save()
@@ -72,18 +99,22 @@ namespace Server.Misc
 		public static void Save(bool permitBackgroundWrite)
 		{
 			if (AutoRestart.Restarting || CreateWorld.WorldCreating)
+			{
 				return;
+			}
 
 			World.WaitForWriteCompletion();
 
 			try
 			{
 				if (!Backup())
+				{
 					Console.WriteLine("WARNING: Automatic backup FAILED");
+				}
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("WARNING: Automatic backup FAILED:\n{0}", e);
+				Console.WriteLine($"WARNING: Automatic backup FAILED:\n{e}");
 
 				Diagnostics.ExceptionLogging.LogException(e);
 			}
@@ -94,10 +125,14 @@ namespace Server.Misc
 		private static void Tick()
 		{
 			if (!SavesEnabled || AutoRestart.Restarting || CreateWorld.WorldCreating)
+			{
 				return;
+			}
 
-			if (Warning == TimeSpan.Zero)
+			if (Warning <= TimeSpan.Zero)
+			{
 				Save();
+			}
 			else
 			{
 				var s = (int)Warning.TotalSeconds;
@@ -106,11 +141,17 @@ namespace Server.Misc
 				s %= 60;
 
 				if (m > 0 && s > 0)
-					World.Broadcast(0x35, false, "The world will save in {0} minute{1} and {2} second{3}.", m, m != 1 ? "s" : "", s, s != 1 ? "s" : "");
+				{
+					World.Broadcast(0x35, false, $"The world will save in {m} minute{(m != 1 ? "s" : "")} and {s} second{(s != 1 ? "s" : "")}.");
+				}
 				else if (m > 0)
-					World.Broadcast(0x35, false, "The world will save in {0} minute{1}.", m, m != 1 ? "s" : "");
+				{
+					World.Broadcast(0x35, false, $"The world will save in {m} minute{(m != 1 ? "s" : "")}.");
+				}
 				else
-					World.Broadcast(0x35, false, "The world will save in {0} second{1}.", s, s != 1 ? "s" : "");
+				{
+					World.Broadcast(0x35, false, $"The world will save in {s} second{(s != 1 ? "s" : "")}.");
+				}
 
 				Timer.DelayCall(Warning, Save);
 			}
@@ -119,17 +160,23 @@ namespace Server.Misc
 		private static bool Backup()
 		{
 			if (m_Backups.Length == 0)
+			{
 				return false;
+			}
 
-			var root = Path.Combine(Core.BaseDirectory, "Backups/Automatic");
+			var root = Path.Combine(Core.BaseDirectory, "Backups", "Automatic");
 
 			if (!Directory.Exists(root))
+			{
 				Directory.CreateDirectory(root);
+			}
 
-			var tempRoot = Path.Combine(Core.BaseDirectory, "Backups/Temp");
+			var tempRoot = Path.Combine(Core.BaseDirectory, "Backups", "Temp");
 
 			if (Directory.Exists(tempRoot))
+			{
 				Directory.Delete(tempRoot, true);
+			}
 
 			var existing = Directory.GetDirectories(root);
 
@@ -140,7 +187,9 @@ namespace Server.Misc
 				var dir = Match(existing, m_Backups[i]);
 
 				if (dir == null)
+				{
 					continue;
+				}
 
 				if (i > 0)
 				{
@@ -187,7 +236,9 @@ namespace Server.Misc
 			var saves = Path.Combine(Core.BaseDirectory, "Saves");
 
 			if (Directory.Exists(saves))
+			{
 				Directory.Move(saves, Path.Combine(root, m_Backups[m_Backups.Length - 1]));
+			}
 
 			return anySuccess;
 		}
@@ -199,7 +250,9 @@ namespace Server.Misc
 				var info = new DirectoryInfo(paths[i]);
 
 				if (info.Name.StartsWith(match))
+				{
 					return info;
+				}
 			}
 
 			return null;

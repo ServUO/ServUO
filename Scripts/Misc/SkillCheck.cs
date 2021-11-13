@@ -357,13 +357,13 @@ namespace Server.Misc
             {
                 Skills skills = from.Skills;
 
-                if (from is PlayerMobile && Siege.SiegeShard)
+                if (from is PlayerMobile pm)
                 {
-                    int minsPerGain = Siege.MinutesPerGain(from, skill);
+                    int minsPerGain = Siege.MinutesPerGain(pm, skill);
 
                     if (minsPerGain > 0)
                     {
-                        if (Siege.CheckSkillGain((PlayerMobile)from, minsPerGain, skill))
+                        if (Siege.CheckSkillGain(pm, minsPerGain, skill))
                         {
                             CheckReduceSkill(skills, toGain, skill);
 

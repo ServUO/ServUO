@@ -1623,8 +1623,6 @@ namespace Server.Network
 			}
 		}
 
-		public static bool SingleClickProps { get; set; } = true;
-
 		public static Func<Mobile, Mobile, bool> MobileClickOverride;
 		public static Func<Mobile, Item, bool> ItemClickOverride;
 
@@ -1641,7 +1639,7 @@ namespace Server.Network
 				{
 					if (ItemClickOverride == null || !ItemClickOverride(m, ti))
 					{
-						if (SingleClickProps && m.ViewOPL)
+						if (ObjectPropertyList.Enabled && m.ViewOPL)
 						{
 							ti.OnAosSingleClick(m);
 						}
@@ -1663,7 +1661,7 @@ namespace Server.Network
 				{
 					if (MobileClickOverride == null || !MobileClickOverride(m, tm))
 					{
-						if (SingleClickProps && m.ViewOPL)
+						if (ObjectPropertyList.Enabled && m.ViewOPL)
 						{
 							tm.OnAosSingleClick(m);
 						}
@@ -2826,7 +2824,7 @@ namespace Server.Network
 		public static bool GetAuth(NetState state, out TimeSpan age, out CV version)
 		{
 			age = TimeSpan.Zero;
-			version = null;
+			version = CV.Zero;
 
 			if (AuthIDWindow.TryGetValue(state.AuthID, out var ap))
 			{

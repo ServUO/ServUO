@@ -21,14 +21,14 @@ namespace Server.Misc
 
     public class AccountHandler
     {
-		public static PasswordProtection ProtectPasswords => Config.GetEnum("Accounts.ProtectPasswords", PasswordProtection.SHA512);
+		public static PasswordProtection ProtectPasswords { get => Config.GetEnum("Accounts.ProtectPasswords", PasswordProtection.SHA512); set => Config.SetEnum("Accounts.ProtectPasswords", value); }
 
-        private static int MaxAccountsPerIP => Config.Get("Accounts.AccountsPerIp", 1);
-        private static bool AutoAccountCreation => Config.Get("Accounts.AutoCreateAccounts", true);
-        private static bool RestrictDeletion => Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled);
-        private static TimeSpan DeleteDelay => Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0));
+        private static int MaxAccountsPerIP { get => Config.Get("Accounts.AccountsPerIp", 1); set => Config.Set("Accounts.AccountsPerIp", value); }
+		private static bool AutoAccountCreation { get => Config.Get("Accounts.AutoCreateAccounts", true); set => Config.Set("Accounts.AutoCreateAccounts", value); }
+		private static bool RestrictDeletion { get => Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled); set => Config.Set("Accounts.RestrictDeletion", value); }
+		private static TimeSpan DeleteDelay { get => Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0)); set => Config.Set("Accounts.DeleteDelay", value); }
 
-        private static readonly CityInfo[] StartingCities = new CityInfo[]
+		private static readonly CityInfo[] StartingCities = new CityInfo[]
         {
             new CityInfo("New Haven",   "New Haven Bank",   1150168, 3503,  2574,   14),
             new CityInfo("Yew", "The Empath Abbey", 1075072, 633,   858,    0),
@@ -48,9 +48,9 @@ namespace Server.Misc
             new CityInfo("Royal City", "Royal City Inn", 1150169, 738, 3486, -19, Map.TerMur)
         };
 
-        private static bool PasswordCommandEnabled => Config.Get("Accounts.PasswordCommandEnabled", false);
+        private static bool PasswordCommandEnabled  { get => Config.Get("Accounts.PasswordCommandEnabled", false); set => Config.Set("Accounts.PasswordCommandEnabled", value); }
 
-        private static readonly char[] m_ForbiddenChars = new char[]
+		private static readonly char[] m_ForbiddenChars = new char[]
         {
             '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' '
         };

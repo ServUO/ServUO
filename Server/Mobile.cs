@@ -4112,7 +4112,7 @@ namespace Server
 			return true;
 		}
 
-		public static bool InsuranceEnabled { get; set; }
+		public static bool InsuranceEnabled { get => Config.Get("Loot.InsuranceEnabled", Core.AOS && !Core.IsSiege); set => Config.Get("Loot.InsuranceEnabled", value); }
 
 		public virtual void Use(Item item)
 		{
@@ -12343,15 +12343,17 @@ namespace Server
 
 		private static readonly string[] m_GuildTypes = { "", " (Chaos)", " (Order)" };
 
-		public static bool DisableHiddenSelfClick { get; set; } = true;
-		public static bool AsciiClickMessage { get; set; } = true;
-		public static bool GuildClickMessage { get; set; } = true;
-		public static bool OldPropertyTitles { get; set; } = false;
+		public static bool DisableHiddenSelfClick => Core.AOS;
+
+		public static bool AsciiClickMessage => !Core.AOS;
+		public static bool GuildClickMessage => !Core.AOS;
+
+		public static bool OldPropertyTitles => !Core.AOS;
 
 		public virtual bool CanTarget => true;
 		public virtual bool ClickTitle => true;
 
-		public virtual bool PropertyTitle => OldPropertyTitles ? ClickTitle : true;
+		public virtual bool PropertyTitle => !OldPropertyTitles || ClickTitle;
 
 		public virtual bool ShowFameTitle => true;
 		public virtual bool ShowAccessTitle => false;

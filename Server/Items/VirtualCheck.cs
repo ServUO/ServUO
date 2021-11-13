@@ -11,7 +11,7 @@ namespace Server
 {
 	public sealed class VirtualCheck : Item
 	{
-		public static bool UseEditGump = false;
+		public static bool UseEditGump = true;
 
 		public override bool IsVirtualItem => true;
 

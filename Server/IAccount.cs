@@ -7,7 +7,7 @@ namespace Server.Accounting
 {
 	public static class AccountGold
 	{
-		public static bool Enabled = false;
+		public static bool Enabled { get => Config.Get("Accounts.VirtualGold", Core.TOL); set => Config.Set("Accounts.VirtualGold", value); }
 
 		/// <summary>
 		/// This amount specifies the value at which point Gold turns to Platinum.
@@ -17,19 +17,19 @@ namespace Server.Accounting
 		/// The client is designed to perceive the currency threashold at 1,000,000,000
 		/// if you change this, it may cause unexpected results when using secure trading.
 		/// </summary>
-		public static int CurrencyThreshold = 1000000000;
+		public const int CurrencyThreshold = 1000000000;
 
 		/// <summary>
 		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
 		/// when they are added to a bank box container.
 		/// </summary>
-		public static bool ConvertOnBank = true;
+		public static bool ConvertOnBank { get => Config.Get("Accounts.ConvertGoldOnBank", true); set => Config.Set("Accounts.ConvertGoldOnBank", value); }
 
 		/// <summary>
 		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
 		/// when they are added to a secure trade container.
 		/// </summary>
-		public static bool ConvertOnTrade = false;
+		public static bool ConvertOnTrade { get => Config.Get("Accounts.ConvertGoldOnTrade", true); set => Config.Set("Accounts.ConvertGoldOnTrade", value); }
 
 		public static double GetGoldTotal(Mobile m)
 		{
