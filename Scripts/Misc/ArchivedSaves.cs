@@ -21,17 +21,10 @@ namespace Server.Misc
 
 		private static readonly string _DefaultDestination = Path.Combine(Core.BaseDirectory, "Backups", "Archived");
 
+		[ConfigProperty("AutoSave.ArchivesPath")]
 		public static string Destination
 		{
-			get
-			{
-				var dest = Config.Get("AutoSave.ArchivesPath", (string)null);
-
-				if (String.IsNullOrWhiteSpace(dest) || dest.IndexOfAny(Path.GetInvalidPathChars()) >= 0)
-					return _DefaultDestination;
-
-				return dest;
-			}
+			get => Config.Get("AutoSave.ArchivesPath", _DefaultDestination);
 			set
 			{
 				Config.Set("AutoSave.ArchivesPath", value);
@@ -41,6 +34,7 @@ namespace Server.Misc
 			}
 		}
 
+		[ConfigProperty("AutoSave.ArchivesEnabled")]
 		public static bool Enabled
 		{
 			get => Config.Get("AutoSave.ArchivesEnabled", false);
@@ -54,10 +48,13 @@ namespace Server.Misc
 			}
 		}
 
+		[ConfigProperty("AutoSave.ArchivesAsync")]
 		public static bool Async { get => Config.Get("AutoSave.ArchivesAsync", true); set => Config.Set("AutoSave.ArchivesAsync", value); }
 
+		[ConfigProperty("AutoSave.ArchivesExpire")]
 		public static TimeSpan ExpireAge { get => Config.Get("AutoSave.ArchivesExpire", TimeSpan.Zero); set => Config.Set("AutoSave.ArchivesExpire", value); }
 
+		[ConfigProperty("AutoSave.ArchivesMerging")]
 		public static MergeType Merge { get => Config.GetEnum("AutoSave.ArchivesMerging", MergeType.Minutes); set => Config.SetEnum("AutoSave.ArchivesMerging", value); }
 
 		private static readonly List<Task> _Tasks = new List<Task>(0x40);

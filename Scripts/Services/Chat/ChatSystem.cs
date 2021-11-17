@@ -6,15 +6,20 @@ namespace Server.Engines.Chat
 {
 	public class ChatSystem
 	{
+		[ConfigProperty("Chat.Enabled")]
 		public static bool Enabled { get => Config.Get("Chat.Enabled", true); set => Config.Set("Chat.Enabled", value); }
 
+		[ConfigProperty("Chat.AllowCreateChannels")]
 		public static bool AllowCreateChannels { get => Config.Get("Chat.AllowCreateChannels", true); set => Config.Set("Chat.AllowCreateChannels", value); }
 
+		[ConfigProperty("Chat.DefaultChannel")]
 		public static string DefaultChannel { get => Config.Get("Chat.DefaultChannel", "Help"); set => Config.Set("Chat.DefaultChannel", value); }
 
+		[ConfigProperty("Chat.MessageInterval")]
 		public static long ChatDelay { get => Config.Get("Chat.MessageInterval", 5000); set => Config.Set("Chat.MessageInterval", value); }
 
-		public static bool LoggingEnabled { get => ChatLogging.Enabled; set => ChatLogging.Enabled = value; }
+		[ConfigProperty("Chat.Logging")]
+		public static bool LoggingEnabled { get => Config.Get("Chat.Logging", false); set => Config.Set("Chat.Logging", value); }
 
 		public static void Configure()
 		{

@@ -646,34 +646,77 @@ namespace Server
 			new SkillInfo(57, "Throwing", 0.0, 0.0, 0.0, "Bladeweaver", null, 0.0, 0.0, 0.0, 1.0, StatCode.Dex, StatCode.Str, true ),
 		};
 
-		public static SkillInfo[] Table { get => m_Table; set => m_Table = value; }
+		public static SkillInfo[] Table
+		{
+			get => m_Table; set
+			{
+				if (m_Table == value)
+				{
+					return;
+				}
+
+				var si = UseStatInfluences;
+
+				if (si)
+				{
+					DisableStatInfluences();
+				}
+
+				m_Table = value;
+
+				if (!si)
+				{
+					DisableStatInfluences();
+				}
+			}
+		}
 
 		private static double[,] m_CachedStatInfluences;
 
 		public static bool UseStatInfluences
 		{
-			get => m_CachedStatInfluences == null;
+			get => Config.Get("Gains.UseStatInfluences", !Core.AOS);
 			set
 			{
-				if (value)
-					EnableStatInfluences();
-				else
-					DisableStatInfluences();
+				Config.Set("Gains.UseStatInfluences", value);
+
+				Invalidate();
 			}
 		}
 
-		public static void DisableStatInfluences()
+		static SkillInfo()
+		{
+			Core.OnExpansionChanged += Invalidate;
+
+			Invalidate();
+		}
+
+		public static void Invalidate()
+		{
+			if (UseStatInfluences)
+			{
+				EnableStatInfluences();
+			}
+			else
+			{
+				DisableStatInfluences();
+			}
+		}
+
+		private static void DisableStatInfluences()
 		{
 			if (m_CachedStatInfluences != null)
 			{
 				return;
 			}
 
-			m_CachedStatInfluences = new double[m_Table.Length, 4];
+			var table = Table;
 
-			for (int i = 0; i < m_Table.Length; ++i)
+			m_CachedStatInfluences = new double[table.Length, 4];
+
+			for (var i = 0; i < table.Length; ++i)
 			{
-				SkillInfo info = m_Table[i];
+				var info = table[i];
 
 				m_CachedStatInfluences[i, 0] = info.StrScale;
 				m_CachedStatInfluences[i, 1] = info.DexScale;
@@ -687,16 +730,18 @@ namespace Server
 			}
 		}
 
-		public static void EnableStatInfluences()
+		private static void EnableStatInfluences()
 		{
 			if (m_CachedStatInfluences == null)
 			{
 				return;
 			}
 
-			for (int i = 0; i < m_Table.Length; ++i)
+			var table = Table;
+
+			for (var i = 0; i < table.Length; ++i)
 			{
-				SkillInfo info = m_Table[i];
+				var info = table[i];
 
 				info.StrScale = m_CachedStatInfluences[i, 0];
 				info.DexScale = m_CachedStatInfluences[i, 1];

@@ -16,6 +16,7 @@ namespace Server.Misc
 
 		public static Timer Timer { get; private set; }
 
+		[ConfigProperty("AutoSave.Enabled")]
 		public static bool SavesEnabled
 		{
 			get => Config.Get("AutoSave.Enabled", true);
@@ -27,6 +28,7 @@ namespace Server.Misc
 			}
 		}
 
+		[ConfigProperty("AutoSave.Frequency")]
 		public static TimeSpan Delay
 		{
 			get => Config.Get("AutoSave.Frequency", TimeSpan.FromMinutes(5.0));
@@ -38,6 +40,7 @@ namespace Server.Misc
 			}
 		}
 
+		[ConfigProperty("AutoSave.WarningTime")]
 		public static TimeSpan Warning
 		{
 			get => Config.Get("AutoSave.WarningTime", TimeSpan.Zero);

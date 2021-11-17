@@ -29,11 +29,22 @@ namespace Server.Mobiles
 
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
+		[ConfigProperty("Vendors.UseVendorEconomy")]
 		public static bool UseVendorEconomy { get => Config.Get("Vendors.UseVendorEconomy", !Siege.SiegeShard); set => Config.Set("Housing.UseVendorEconomy", value); }
+
+		[ConfigProperty("Vendors.BuyItemChange")]
 		public static int BuyItemChange { get => Config.Get("Vendors.BuyItemChange", 1000); set => Config.Set("Housing.BuyItemChange", value); }
+
+		[ConfigProperty("Vendors.SellItemChange")]
 		public static int SellItemChange { get => Config.Get("Vendors.SellItemChange", 1000); set => Config.Set("Housing.SellItemChange", value); }
+
+		[ConfigProperty("Vendors.EconomyStockAmount")]
 		public static int EconomyStockAmount { get => Config.Get("Vendors.EconomyStockAmount", 500); set => Config.Set("Housing.EconomyStockAmount", value); }
-		public static TimeSpan DelayRestock { get => TimeSpan.FromMinutes(Config.Get("Vendors.RestockDelay", 60)); set => Config.Set("Housing.RestockDelay", value); }
+
+		[ConfigProperty("Vendors.RestockDelay")]
+		public static TimeSpan DelayRestock { get => TimeSpan.FromMinutes(Config.Get("Vendors.RestockDelay", 60.0)); set => Config.Set("Housing.RestockDelay", value.TotalMinutes); }
+
+		[ConfigProperty("Vendors.MaxSell")]
 		public static int MaxSell { get => Config.Get("Vendors.MaxSell", 500); set => Config.Set("Housing.MaxSell", value); }
 
 		public static List<BaseVendor> AllVendors { get; } = new List<BaseVendor>(0x4000);
@@ -66,7 +77,8 @@ namespace Server.Mobiles
 
 		public override bool IsInvulnerable => true;
 
-		public virtual DateTime NextTrickOrTreat { get; set; }
+		public DateTime NextTrickOrTreat { get; set; }
+
 		public virtual double GetMoveDelay => Utility.RandomMinMax(30, 120);
 
 		public override bool ShowFameTitle => false;
@@ -1300,7 +1312,10 @@ namespace Server.Mobiles
 
 		#region BOD Bribing
 
+		[ConfigProperty("Vendors.BribeDecayMinTime")]
 		public static int BribeDecayMin { get => Config.Get("Vendors.BribeDecayMinTime", 25); set => Config.Set("Vendors.BribeDecayMinTime", value); }
+
+		[ConfigProperty("Vendors.BribeDecayMaxTime")]
 		public static int BribeDecayMax { get => Config.Get("Vendors.BribeDecayMaxTime", 30); set => Config.Set("Vendors.BribeDecayMaxTime", value); }
 
 		[CommandProperty(AccessLevel.GameMaster)]

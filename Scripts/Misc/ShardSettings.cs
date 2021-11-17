@@ -20,19 +20,11 @@ namespace Server
 			{
 				Mobile.VisibleDamageType = VisibleDamageType.Related;
 
-				ObjectPropertyList.Enabled = true;
-
-				SkillInfo.UseStatInfluences = false;
-
 				Mobile.AOSStatusHandler = AOS.GetStatus;
 			}
 			else
 			{
 				Mobile.VisibleDamageType = VisibleDamageType.None;
-
-				ObjectPropertyList.Enabled = false;
-
-				SkillInfo.UseStatInfluences = true;
 
 				Mobile.AOSStatusHandler = null;
 			}

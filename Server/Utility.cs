@@ -78,19 +78,24 @@ namespace Server
 
 		public static IPAddress Intern(IPAddress ipAddress)
 		{
-			if (_ipAddressTable == null)
+			if (ipAddress != null)
 			{
-				_ipAddressTable = new Dictionary<IPAddress, IPAddress>();
+				if (_ipAddressTable == null)
+				{
+					_ipAddressTable = new Dictionary<IPAddress, IPAddress>();
+				}
+
+				if (_ipAddressTable.TryGetValue(ipAddress, out var interned))
+				{
+					ipAddress = interned;
+				}
+				else
+				{
+					_ipAddressTable[ipAddress] = ipAddress;
+				}
 			}
 
-
-			if (!_ipAddressTable.TryGetValue(ipAddress, out var interned))
-			{
-				interned = ipAddress;
-				_ipAddressTable[ipAddress] = interned;
-			}
-
-			return interned;
+			return ipAddress;
 		}
 
 		public static void Intern(ref IPAddress ipAddress)

@@ -22,25 +22,46 @@ namespace Server.Engines.CannedEvil
 
 		private static DateTime m_LastRotate;
 
+		[ConfigProperty("Champions.Enabled")]
 		public static bool Enabled { get => Config.Get("Champions.Enabled", true); set => Config.Set("Champions.Enabled", value); }
 
+		[ConfigProperty("Champions.RotateDelay")]
 		public static TimeSpan RotateDelay { get => Config.Get("Champions.RotateDelay", TimeSpan.FromDays(1.0d)); set => Config.Set("Champions.RotateDelay", value); }
 
+		[ConfigProperty("Champions.GoldPiles")]
 		public static int GoldShowerPiles { get => Config.Get("Champions.GoldPiles", 50); set => Config.Set("Champions.GoldPiles", value); }
+
+		[ConfigProperty("Champions.GoldMin")]
 		public static int GoldShowerMinAmount { get => Config.Get("Champions.GoldMin", 4000); set => Config.Set("Champions.GoldMin", value); }
+
+		[ConfigProperty("Champions.GoldMax")]
 		public static int GoldShowerMaxAmount { get => Config.Get("Champions.GoldMax", 5500); set => Config.Set("Champions.GoldMax", value); }
 
+		[ConfigProperty("Champions.HarrowerGoldPiles")]
 		public static int HarrowerGoldShowerPiles { get => Config.Get("Champions.HarrowerGoldPiles", 75); set => Config.Set("Champions.HarrowerGoldPiles", value); }
+
+		[ConfigProperty("Champions.HarrowerGoldMin")]
 		public static int HarrowerGoldShowerMinAmount { get => Config.Get("Champions.HarrowerGoldMin", 5000); set => Config.Set("Champions.HarrowerGoldMin", value); }
+
+		[ConfigProperty("Champions.HarrowerGoldMax")]
 		public static int HarrowerGoldShowerMaxAmount { get => Config.Get("Champions.HarrowerGoldMax", 10000); set => Config.Set("Champions.HarrowerGoldMax", value); }
 
+		[ConfigProperty("Champions.PowerScrolls")]
 		public static int PowerScrollAmount { get => Config.Get("Champions.PowerScrolls", 6); set => Config.Set("Champions.PowerScrolls", value); }
+
+		[ConfigProperty("Champions.StatScrolls")]
 		public static int StatScrollAmount { get => Config.Get("Champions.StatScrolls", 16); set => Config.Set("Champions.StatScrolls", value); }
 
+		[ConfigProperty("Champions.ScrollChance")]
 		public static double ScrollChance { get => Config.Get("Champions.ScrollChance", 0.01); set => Config.Set("Champions.ScrollChance", value); }
+
+		[ConfigProperty("Champions.TranscendenceChance")]
 		public static double TranscendenceChance { get => Config.Get("Champions.TranscendenceChance", 0.50); set => Config.Set("Champions.TranscendenceChance", value); }
 
+		[ConfigProperty("Champions.RankRedSkulls")]
 		public static int[] RankRedSkulls { get => Config.GetArray("Champions.RankRedSkulls", m_DefaultRankRedSkulls); set => Config.SetArray("Champions.RankRedSkulls", value); }
+
+		[ConfigProperty("Champions.RankMaxKills")]
 		public static int[] RankMaxKills { get => Config.GetArray("Champions.RankMaxKills", m_DefaultRankMaxKills); set => Config.SetArray("Champions.RankMaxKills", value); }
 
 		public static List<ChampionSpawn> AllSpawns => ChampionSpawn.AllSpawns;

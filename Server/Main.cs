@@ -157,6 +157,7 @@ namespace Server
 
 		private static readonly Expansion[] _Expansions = Enum.GetValues(typeof(Expansion)).Cast<Expansion>().ToArray();
 
+		[ConfigProperty("Server.Expansion")]
 		public static Expansion Expansion 
 		{ 
 			get => Config.GetEnum("Server.Expansion", _Expansions[_Expansions.Length - 1]);
@@ -183,6 +184,7 @@ namespace Server
 		public static bool TOL => Expansion >= Expansion.TOL;
 		public static bool EJ => Expansion >= Expansion.EJ;
 
+		[ConfigProperty("Siege.IsSiege")]
 		public static bool IsSiege
 		{
 			get => Config.Get("Siege.IsSiege", false);
@@ -804,9 +806,37 @@ namespace Server
 			NetState.Initialize();
 		}
 
+		[ConfigProperty("Server.DataPath")]
+		public static string DataDirectory 
+		{
+			get => Config.Get("Server.DataPath", DataDirectories.FirstOrDefault()); 
+			set
+			{
+				var old = DataDirectory;
+
+				if (old != value)
+				{
+					if (value == null)
+					{
+						DataDirectories.Remove(old);
+
+						Config.Set("Server.DataPath", value);
+					}
+					else if (!String.IsNullOrWhiteSpace(value) && File.Exists(Path.Combine(value, "client.exe")))
+					{
+						DataDirectories.Remove(old);
+
+						Config.Set("Server.DataPath", value);
+
+						DataDirectories.Add(value);
+					}
+				}
+			}
+		}
+
 		private static void InitDataDirectories()
 		{
-			var path = Config.Get("Server.DataPath", default(string));
+			var path = DataDirectory;
 
 			if (!String.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "client.exe")))
 			{

@@ -18,23 +18,40 @@ namespace Server.Misc
 
 	public class ClientVerification
 	{
+		[ConfigProperty("Client.OldClientResponse")]
 		public static OutdatedClientAction OldClientResponse { get => Config.GetEnum("Client.OldClientResponse", OutdatedClientAction.LenientKick); set => Config.SetEnum("Client.OldClientResponse", value); }
 
+		[ConfigProperty("Client.AgeLeniency")]
 		public static TimeSpan AgeLeniency { get => TimeSpan.FromDays(Config.Get("Client.AgeLeniency", 10.0)); set => Config.Set("Client.AgeLeniency", value.TotalDays); }
+
+		[ConfigProperty("Client.GameTimeLeniency")]
 		public static TimeSpan GameTimeLeniency { get => TimeSpan.FromHours(Config.Get("Client.GameTimeLeniency", 25.0)); set => Config.Set("Client.GameTimeLeniency", value.TotalHours); }
+
+		[ConfigProperty("Client.KickDelay")]
 		public static TimeSpan KickDelay { get => TimeSpan.FromSeconds(Config.Get("Client.KickDelay", 20.0)); set => Config.Set("Client.KickDelay", value.TotalSeconds); }
 
+		[ConfigProperty("Client.UpdateNote")]
 		public static string UpdateNote { get => Config.Get("Client.UpdateNote", default(string)); set => Config.Set("Client.UpdateNote", value); }
 
+		[ConfigProperty("Client.AllowRegular")]
 		public static bool AllowRegular { get => Config.Get("Client.AllowRegular", true); set => Config.Set("Client.AllowRegular", value); }
+
+		[ConfigProperty("Client.AllowUOTD")]
 		public static bool AllowUOTD { get => Config.Get("Client.AllowUOTD", true); set => Config.Set("Client.AllowUOTD", value); }
+
+		[ConfigProperty("Client.AllowGod")]
 		public static bool AllowGod { get => Config.Get("Client.AllowGod", true); set => Config.Set("Client.AllowGod", value); }
+
+		[ConfigProperty("Client.AllowEC")]
 		public static bool AllowEC { get => Config.Get("Client.AllowEC", true); set => Config.Set("Client.AllowEC", value); }
 
 		private static readonly ClientVersion DefaultRequiredVersion = ClientVersion.Zero;
 		private static readonly ClientVersion DefaultRequiredVersionEC = new ClientVersion(67, 0, 59, 0, ClientType.SA);
 
+		[ConfigProperty("Client.RequiredVersion")]
 		public static ClientVersion Required { get => Config.Get("Client.RequiredVersion", DefaultRequiredVersion); set => Config.Set("Client.RequiredVersion", value); }
+
+		[ConfigProperty("Client.RequiredVersionEC")]
 		public static ClientVersion RequiredEC { get => Config.Get("Client.RequiredVersionEC", DefaultRequiredVersionEC); set => Config.Set("Client.RequiredVersionEC", value); }
 
 		static ClientVerification()

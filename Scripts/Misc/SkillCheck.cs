@@ -39,18 +39,18 @@ namespace Server.Misc
 
         static SkillCheck()
         {
-            _AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", false);
+            _AntiMacroCode = Config.Get("Gains.EnableAntiMacro", false);
 
-            _StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
-            _PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
+            _StatGainDelay = Config.Get("Gains.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
+            _PetStatGainDelay = Config.Get("Gains.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
 
-            _PlayerChanceToGainStats = Config.Get("PlayerCaps.PlayerChanceToGainStats", 5);
-            _PetChanceToGainStats = Config.Get("PlayerCaps.PetChanceToGainStats", 5);
+            _PlayerChanceToGainStats = Config.Get("Gains.PlayerChanceToGainStats", 5);
+            _PetChanceToGainStats = Config.Get("Gains.PetChanceToGainStats", 5);
 
-            if (!Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false))
+            if (!Config.Get("Gains.EnablePlayerStatTimeDelay", false))
                 _StatGainDelay = TimeSpan.FromSeconds(0.5);
 
-            if (!Config.Get("PlayerCaps.EnablePetStatTimeDelay", false))
+            if (!Config.Get("Gains.EnablePetStatTimeDelay", false))
                 _PetStatGainDelay = TimeSpan.FromSeconds(0.5);
         }
 
@@ -341,7 +341,7 @@ namespace Server.Misc
 
         public static void Gain(Mobile from, Skill skill, int toGain)
 		{
-			if (!from.Region.OnSkillGain(from, ref toGain) || toGain <= 0)
+			if (!from.Region.OnSkillGain(from, skill.SkillID, ref toGain) || toGain <= 0)
 				return;
 
 			if (from.Region.IsPartOf<Jail>())

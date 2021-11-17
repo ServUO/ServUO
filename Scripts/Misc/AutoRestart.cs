@@ -16,26 +16,34 @@ namespace Server.Misc
         public static bool Restarting { get; private set; }
         public static bool DoneWarning { get; private set; }
 
-        public static bool Enabled
+		[ConfigProperty("AutoRestart.Enabled")]
+		public static bool Enabled
 		{
 			get => Config.Get("AutoRestart.Enabled", false);
 			set
 			{
 				Config.Set("AutoRestart.Enabled", value);
 
-				Initialize();
+				Invalidate();
 			}
 		}
 
+		[ConfigProperty("AutoRestart.Hour")]
 		public static int Hour { get => Config.Get("AutoRestart.Hour", 12); set => Config.Set("AutoRestart.Hour", value); }
+
+		[ConfigProperty("AutoRestart.Minute")]
 		public static int Minute { get => Config.Get("AutoRestart.Minute", 0); set => Config.Set("AutoRestart.Minute", value); }
 
+		[ConfigProperty("AutoRestart.Frequency")]
 		public static int Frequency { get => Config.Get("AutoRestart.Frequency", 24); set => Config.Set("AutoRestart.Frequency", value); }
 
+		[ConfigProperty("AutoRestart.RestartDelay")]
 		public static TimeSpan RestartDelay { get => Config.Get("AutoRestart.RestartDelay", TimeSpan.FromSeconds(10.0)); set => Config.Set("AutoRestart.RestartDelay", value); }
+
+		[ConfigProperty("AutoRestart.WarningDelay")]
 		public static TimeSpan WarningDelay { get => Config.Get("AutoRestart.WarningDelay", TimeSpan.FromMinutes(1.0)); set => Config.Set("AutoRestart.WarningDelay", value); }
 
-		public static string RecompilePath => Path.Combine(Core.BaseDirectory, $"_win{(Core.Debug ? "debug" : "release")}.bat");
+		public static string RecompilePath => Path.Combine(Core.BaseDirectory, Core.Unix ? "Makefile" : $"_win{(Core.Debug ? "debug" : "release")}.bat");
 
 		public static void Configure()
 		{
@@ -44,6 +52,11 @@ namespace Server.Misc
 		}
 
 		public static void Initialize()
+		{
+			Invalidate();
+		}
+
+		private static void Invalidate()
 		{
 			if (Enabled)
 			{

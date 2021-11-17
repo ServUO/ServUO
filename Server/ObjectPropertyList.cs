@@ -10,7 +10,8 @@ namespace Server
 {
 	public sealed class ObjectPropertyList : Packet
 	{
-		public static bool Enabled { get; set; } = true;
+		[ConfigProperty("General.Tooltips")]
+		public static bool Enabled { get => Config.Get("General.Tooltips", Core.AOS); set => Config.Set("General.Tooltips", value); }
 
 		private int m_Hash;
 		private int m_Strings;

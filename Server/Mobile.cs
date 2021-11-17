@@ -4112,6 +4112,7 @@ namespace Server
 			return true;
 		}
 
+		[ConfigProperty("Loot.InsuranceEnabled")]
 		public static bool InsuranceEnabled { get => Config.Get("Loot.InsuranceEnabled", Core.AOS && !Core.IsSiege); set => Config.Get("Loot.InsuranceEnabled", value); }
 
 		public virtual void Use(Item item)
@@ -5034,9 +5035,10 @@ namespace Server
 			}
 		}
 
-		private static VisibleDamageType m_VisibleDamageType;
+		public static VisibleDamageType DefaultVisibleDamageType => Core.AOS ? VisibleDamageType.Related : VisibleDamageType.None;
 
-		public static VisibleDamageType VisibleDamageType { get => m_VisibleDamageType; set => m_VisibleDamageType = value; }
+		[ConfigProperty("General.VisibleDamage")]
+		public static VisibleDamageType VisibleDamageType { get => Config.GetEnum("General.VisibleDamage", DefaultVisibleDamageType); set => Config.SetEnum("General.VisibleDamage", value); }
 
 		private List<DamageEntry> m_DamageEntries;
 
@@ -5372,7 +5374,7 @@ namespace Server
 
 		public virtual void SendDamagePacket(Mobile from, int amount)
 		{
-			switch (m_VisibleDamageType)
+			switch (VisibleDamageType)
 			{
 				case VisibleDamageType.Related:
 					{

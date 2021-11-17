@@ -14,7 +14,8 @@ namespace Server
 {
 	public static class World
 	{
-		private static readonly bool m_Metrics = Config.Get("General.Metrics", false);
+		[ConfigProperty("General.Metrics")]
+		public static bool Metrics { get => Config.Get("General.Metrics", false); set => Config.Set("General.Metrics", value); }
 
 		private static readonly Dictionary<Serial, IEntity> m_AddQueue = new Dictionary<Serial, IEntity>();
 		private static readonly Queue<IEntity> m_DeleteQueue = new Queue<IEntity>();
@@ -895,7 +896,7 @@ namespace Server
 				throw new Exception("FATAL: Exception in EventSink.BeforeWorldSave", e);
 			}
 
-			if (m_Metrics)
+			if (Metrics)
 			{
 				using (var metrics = new SaveMetrics())
 				{

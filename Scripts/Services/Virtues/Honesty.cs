@@ -15,13 +15,23 @@ using Server.Regions;
 namespace Server.Services.Virtues
 {
     public static class HonestyVirtue
-    {
-        public static bool Enabled { get => Config.Get("Honesty.Enabled", true); set => Config.Set("Honesty.Enabled", value); }
+	{
+		[ConfigProperty("Honesty.VirtualGold")]
+		public static bool Enabled { get => Config.Get("Honesty.Enabled", true); set => Config.Set("Honesty.Enabled", value); }
+
+		[ConfigProperty("Honesty.VirtualGold")]
 		public static int MaxGeneration { get => Config.Get("Honesty.MaxGeneration", 1000); set => Config.Set("Honesty.MaxGeneration", value); }
-		public static bool TrammelGeneration { get => !Siege.SiegeShard && Config.Get("Honesty.TrammelGeneration", true); set => Config.Set("Honesty.TrammelGeneration", value); }
+
+		[ConfigProperty("Honesty.TrammelGeneration")]
+		public static bool TrammelGeneration { get => Config.Get("Honesty.TrammelGeneration", !Core.IsSiege); set => Config.Set("Honesty.TrammelGeneration", value); }
+
+		[ConfigProperty("Honesty.UseSpawnArea")]
 		public static bool UseSpawnArea { get => Config.Get("Honesty.UseSpawnArea", true); set => Config.Set("Honesty.UseSpawnArea", value); }
 
-		private static readonly string[] _Regions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
+		private static readonly string[] _DefaultRegions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
+
+		[ConfigProperty("Honesty.Regions")]
+		public static string[] Regions { get => Config.GetArray("Honesty.Regions", _DefaultRegions); set => Config.SetArray("Honesty.Regions", value); }
 
         private const TileFlag _Filter = TileFlag.Wet | TileFlag.Roof | TileFlag.Impassable;
 
@@ -312,7 +322,7 @@ namespace Server.Services.Virtues
         {
             if (socket != null)
             {
-                socket.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
+                socket.HonestyRegion = Utility.RandomList(Regions);
 
                 if (!string.IsNullOrWhiteSpace(socket.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
                 {

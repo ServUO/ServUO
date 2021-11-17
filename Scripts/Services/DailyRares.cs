@@ -3,10 +3,25 @@ using System;
 namespace Server.Items
 {
     public class DailyRaresSpawner
-    {
-        public static readonly bool Enabled = Config.Get("DailyRares.Enabled", true);
+	{
+		[ConfigProperty("Shadowguard.ReadyDuration")]
+		public static bool Enabled
+		{
+			get => Config.Get("DailyRares.Enabled", true); 
+			set
+			{
+				Config.Set("DailyRares.Enabled", value);
 
-        public static void Initialize()
+				Invalidate();
+			}
+		}
+
+		public static void Initialize()
+		{
+			Invalidate();
+		}
+
+        public static void Invalidate()
         {
             if (!Enabled)
             {

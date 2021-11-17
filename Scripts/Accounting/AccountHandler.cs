@@ -20,15 +20,26 @@ namespace Server.Misc
     }
 
     public class AccountHandler
-    {
+	{
+		[ConfigProperty("Accounts.ProtectPasswords")]
 		public static PasswordProtection ProtectPasswords { get => Config.GetEnum("Accounts.ProtectPasswords", PasswordProtection.SHA512); set => Config.SetEnum("Accounts.ProtectPasswords", value); }
 
-        private static int MaxAccountsPerIP { get => Config.Get("Accounts.AccountsPerIp", 1); set => Config.Set("Accounts.AccountsPerIp", value); }
-		private static bool AutoAccountCreation { get => Config.Get("Accounts.AutoCreateAccounts", true); set => Config.Set("Accounts.AutoCreateAccounts", value); }
-		private static bool RestrictDeletion { get => Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled); set => Config.Set("Accounts.RestrictDeletion", value); }
-		private static TimeSpan DeleteDelay { get => Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0)); set => Config.Set("Accounts.DeleteDelay", value); }
+		[ConfigProperty("Accounts.AccountsPerIp")]
+		public static int MaxAccountsPerIP { get => Config.Get("Accounts.AccountsPerIp", 1); set => Config.Set("Accounts.AccountsPerIp", value); }
 
-		private static readonly CityInfo[] StartingCities = new CityInfo[]
+		[ConfigProperty("Accounts.AutoCreateAccounts")]
+		public static bool AutoAccountCreation { get => Config.Get("Accounts.AutoCreateAccounts", true); set => Config.Set("Accounts.AutoCreateAccounts", value); }
+
+		[ConfigProperty("Accounts.RestrictDeletion")]
+		public static bool RestrictDeletion { get => Config.Get("Accounts.RestrictDeletion", !TestCenter.Enabled); set => Config.Set("Accounts.RestrictDeletion", value); }
+
+		[ConfigProperty("Accounts.DeleteDelay")]
+		public static TimeSpan DeleteDelay { get => Config.Get("Accounts.DeleteDelay", TimeSpan.FromDays(7.0)); set => Config.Set("Accounts.DeleteDelay", value); }
+
+		[ConfigProperty("Accounts.PasswordCommandEnabled")]
+		public static bool PasswordCommandEnabled  { get => Config.Get("Accounts.PasswordCommandEnabled", false); set => Config.Set("Accounts.PasswordCommandEnabled", value); }
+
+		public static readonly CityInfo[] StartingCities = new CityInfo[]
         {
             new CityInfo("New Haven",   "New Haven Bank",   1150168, 3503,  2574,   14),
             new CityInfo("Yew", "The Empath Abbey", 1075072, 633,   858,    0),
@@ -48,29 +59,16 @@ namespace Server.Misc
             new CityInfo("Royal City", "Royal City Inn", 1150169, 738, 3486, -19, Map.TerMur)
         };
 
-        private static bool PasswordCommandEnabled  { get => Config.Get("Accounts.PasswordCommandEnabled", false); set => Config.Set("Accounts.PasswordCommandEnabled", value); }
+		public static AccessLevel LockdownLevel { get; set; }
 
 		private static readonly char[] m_ForbiddenChars = new char[]
         {
             '<', '>', ':', '"', '/', '\\', '|', '?', '*', ' '
         };
 
-        private static AccessLevel m_LockdownLevel;
-        private static Dictionary<IPAddress, int> m_IPTable;
+		private static Dictionary<IPAddress, int> m_IPTable;
 
-        public static AccessLevel LockdownLevel
-        {
-            get
-            {
-                return m_LockdownLevel;
-            }
-            set
-            {
-                m_LockdownLevel = value;
-            }
-        }
-
-        public static Dictionary<IPAddress, int> IPTable
+		public static Dictionary<IPAddress, int> IPTable
         {
             get
             {
@@ -255,7 +253,7 @@ namespace Server.Misc
                 Utility.PushColor(ConsoleColor.Red);
                 Console.WriteLine("Login: {0}: Access denied for '{1}'", e.State, un);
                 Utility.PopColor();
-                e.RejectReason = (m_LockdownLevel > AccessLevel.VIP ? ALRReason.BadComm : ALRReason.BadPass);
+                e.RejectReason = (LockdownLevel > AccessLevel.VIP ? ALRReason.BadComm : ALRReason.BadPass);
             }
             else if (!acct.CheckPassword(pw))
             {

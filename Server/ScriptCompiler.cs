@@ -18,10 +18,10 @@ namespace Server
 		{
 			try
 			{
-				var assemblies = new List<Assembly>
+				var assemblies = new HashSet<Assembly>
 				{
+					typeof(ScriptCompiler).Assembly,
 					Assembly.LoadFrom("Scripts.dll"),
-					typeof(ScriptCompiler).Assembly
 				};
 
 				Assemblies = assemblies.ToArray();

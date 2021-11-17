@@ -10,6 +10,7 @@ namespace Server.Engines.Help
     public class ContainedMenu : QuestionMenu
     {
         private readonly Mobile m_From;
+
         public ContainedMenu(Mobile from)
             : base("You already have an open help request. We will have someone assist you as soon as possible.  What would you like to do?", new string[] { "Leave my old help request like it is.", "Remove my help request from the queue." })
         {
@@ -45,8 +46,52 @@ namespace Server.Engines.Help
     }
 
     public class HelpGump : Gump
-    {
-        public static readonly string SupportWebsite = Config.Get("General.SupportWebsite", default(string));
+	{
+		[ConfigProperty("General.SupportWebsite")]
+		public static string SupportWebsite { get => Config.Get("General.SupportWebsite", default(string)); set => Config.Set("General.SupportWebsite", value); }
+
+        public static void Configure()
+        {
+            EventSink.HelpRequest += EventSink_HelpRequest;
+        }
+
+        private static void EventSink_HelpRequest(HelpRequestEventArgs e)
+        {
+            foreach (Gump g in e.Mobile.NetState.Gumps)
+            {
+                if (g is HelpGump)
+                    return;
+            }
+
+            if (!PageQueue.CheckAllowedToPage(e.Mobile))
+                return;
+
+            if (PageQueue.Contains(e.Mobile))
+                e.Mobile.SendMenu(new ContainedMenu(e.Mobile));
+            else
+                e.Mobile.SendGump(new HelpGump(e.Mobile));
+        }
+
+        private static bool IsYoung(Mobile m)
+        {
+            if (m is PlayerMobile)
+                return ((PlayerMobile)m).Young;
+
+            return false;
+        }
+
+        private static bool CheckCombat(Mobile m)
+        {
+            for (int i = 0; i < m.Aggressed.Count; ++i)
+            {
+                AggressorInfo info = m.Aggressed[i];
+
+                if (DateTime.UtcNow - info.LastCombatTime < TimeSpan.FromSeconds(30.0))
+                    return true;
+            }
+
+            return false;
+        }
 
         public HelpGump(Mobile from)
             : base(0, 0)
@@ -160,24 +205,6 @@ namespace Server.Engines.Help
             AddHtmlLocalized(180, 390, 335, 40, 1001015, false, false); // NO  - I meant to ask for help with another matter.
         }
 
-        public static void Initialize()
-        {
-            EventSink.HelpRequest += EventSink_HelpRequest;
-        }
-
-        public static bool CheckCombat(Mobile m)
-        {
-            for (int i = 0; i < m.Aggressed.Count; ++i)
-            {
-                AggressorInfo info = m.Aggressed[i];
-
-                if (DateTime.UtcNow - info.LastCombatTime < TimeSpan.FromSeconds(30.0))
-                    return true;
-            }
-
-            return false;
-        }
-
         public override void OnResponse(NetState state, RelayInfo info)
         {
             Mobile from = state.Mobile;
@@ -286,31 +313,6 @@ namespace Server.Engines.Help
 
             if (type != (PageType)(-1) && PageQueue.CheckAllowedToPage(from))
                 from.SendGump(new PagePromptGump(from, type));
-        }
-
-        private static void EventSink_HelpRequest(HelpRequestEventArgs e)
-        {
-            foreach (Gump g in e.Mobile.NetState.Gumps)
-            {
-                if (g is HelpGump)
-                    return;
-            }
-
-            if (!PageQueue.CheckAllowedToPage(e.Mobile))
-                return;
-
-            if (PageQueue.Contains(e.Mobile))
-                e.Mobile.SendMenu(new ContainedMenu(e.Mobile));
-            else
-                e.Mobile.SendGump(new HelpGump(e.Mobile));
-        }
-
-        private static bool IsYoung(Mobile m)
-        {
-            if (m is PlayerMobile)
-                return ((PlayerMobile)m).Young;
-
-            return false;
         }
     }
 }

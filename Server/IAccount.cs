@@ -7,6 +7,7 @@ namespace Server.Accounting
 {
 	public static class AccountGold
 	{
+		[ConfigProperty("Accounts.VirtualGold")]
 		public static bool Enabled { get => Config.Get("Accounts.VirtualGold", Core.TOL); set => Config.Set("Accounts.VirtualGold", value); }
 
 		/// <summary>
@@ -23,12 +24,14 @@ namespace Server.Accounting
 		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
 		/// when they are added to a bank box container.
 		/// </summary>
+		[ConfigProperty("Accounts.ConvertGoldOnBank")]
 		public static bool ConvertOnBank { get => Config.Get("Accounts.ConvertGoldOnBank", true); set => Config.Set("Accounts.ConvertGoldOnBank", value); }
 
 		/// <summary>
 		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
 		/// when they are added to a secure trade container.
 		/// </summary>
+		[ConfigProperty("Accounts.ConvertGoldOnTrade")]
 		public static bool ConvertOnTrade { get => Config.Get("Accounts.ConvertGoldOnTrade", true); set => Config.Set("Accounts.ConvertGoldOnTrade", value); }
 
 		public static double GetGoldTotal(Mobile m)

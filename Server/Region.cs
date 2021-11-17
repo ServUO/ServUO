@@ -909,9 +909,9 @@ namespace Server
 			return Parent?.OnSkillUse(m, skill) != false;
 		}
 
-		public virtual bool OnSkillGain(Mobile m, ref int toGain)
+		public virtual bool OnSkillGain(Mobile m, int skill, ref int toGain)
 		{
-			return Parent?.OnSkillGain(m, ref toGain) != false;
+			return Parent?.OnSkillGain(m, skill, ref toGain) != false;
 		}
 
 		public virtual bool OnBeginSpellCast(Mobile m, ISpell s)

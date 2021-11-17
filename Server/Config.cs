@@ -13,6 +13,17 @@ using System.Threading;
 
 namespace Server
 {
+	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+	public class ConfigPropertyAttribute : Attribute
+	{
+		public string Scope { get; }
+
+		public ConfigPropertyAttribute(string scope)
+		{
+			Scope = scope;
+		}
+	}
+
 	public static class Config
 	{
 		public sealed class Entry : IEquatable<Entry>, IComparable<Entry>
@@ -56,20 +67,20 @@ namespace Server
 
 			public void Set(string value, object state)
 			{
+				if (m_InitialValue == value)
+				{
+					UseDefault = m_InitialDefault;
+				}
+				else if (Value != value)
+				{
+					UseDefault = state == null;
+				}
+
 				var oldValue = Value;
 				var oldObject = Object;
 
 				Value = value;
 				Object = state;
-
-				if (m_InitialValue == value)
-				{
-					UseDefault = m_InitialDefault;
-				}
-				else if (oldValue != value)
-				{
-					UseDefault = false;
-				}
 
 				OnEntryChanged?.Invoke(this, oldValue, oldObject);
 			}

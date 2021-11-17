@@ -19,8 +19,10 @@ namespace Server
 
 		public static bool SiegeShard { get => Core.IsSiege; set => Core.IsSiege = value; }
 
+		[ConfigProperty("Siege.CharacterSlots")]
 		public static int CharacterSlots { get => Config.Get("Siege.CharacterSlots", 1); set => Config.Set("Siege.CharacterSlots", value); }
 
+		[ConfigProperty("Siege.StatsPerDay")]
 		public static int StatsPerDay { get => Config.Get("Siege.StatsPerDay", 15); set => Config.Set("Siege.StatsPerDay", value); }
 
 		public static Dictionary<PlayerMobile, Dictionary<SkillName, DateTime>> ROTTable { get; } = new Dictionary<PlayerMobile, Dictionary<SkillName, DateTime>>();
@@ -30,7 +32,7 @@ namespace Server
 
 		public static void Configure()
 		{
-			Core.OnSiegeStateChanged += OnStateChanged;
+			Core.OnSiegeStateChanged += Invalidate;
 
 			EventSink.Login += OnLogin;
 
@@ -97,10 +99,10 @@ namespace Server
 		[CallPriority(Int32.MaxValue - 1)]
 		public static void Initialize()
 		{
-			OnStateChanged();
+			Invalidate();
 		}
 
-		private static void OnStateChanged()
+		public static void Invalidate()
 		{
 			if (!SiegeShard)
 			{

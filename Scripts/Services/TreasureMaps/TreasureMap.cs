@@ -15,11 +15,12 @@ using System.Collections.Generic;
 namespace Server.Items
 {
     public class TreasureMap : MapItem
-    {
-        public static bool NewSystem => false;
+	{
+		[ConfigProperty("TreasureMaps.LootChance")]
+		public static double LootChance { get => Config.Get("TreasureMaps.LootChance", 0.01); set => Config.Set("TreasureMaps.LootChance", value); }
 
-        public static double LootChance = Config.Get("TreasureMaps.LootChance", .01);
-        private static TimeSpan ResetTime = TimeSpan.FromDays(Config.Get("TreasureMaps.ResetTime", 30.0));
+		[ConfigProperty("TreasureMaps.ResetTime")]
+		public static TimeSpan ResetTime { get => TimeSpan.FromDays(Config.Get("TreasureMaps.ResetTime", 30.0)); set => Config.Set("TreasureMaps.ResetTime", value.TotalDays); }
 
         #region Forgotten Treasures
         private TreasurePackage _Package;
