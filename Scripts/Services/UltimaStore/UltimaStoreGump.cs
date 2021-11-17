@@ -824,11 +824,11 @@ namespace Server.Engines.UOStore
             {
                 TextRelay text = info.GetTextEntry(1);
 
-                if (text != null && !string.IsNullOrEmpty(text.Text))
-                {
-                    // execute code here
-                }
-            }
+				if (!PromoCodes.TryRedeem(User, text?.Text))
+				{
+					Refresh(true, false);
+				}
+			}
         }
     }
 
