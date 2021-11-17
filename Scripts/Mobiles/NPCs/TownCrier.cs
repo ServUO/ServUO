@@ -118,7 +118,7 @@ namespace Server.Mobiles
         }
 
         #region Serialization
-        public static string FilePath = Path.Combine("Saves/Misc", "TownCrierGlobalEntries.bin");
+        public static string FilePath = Path.Combine("Saves", "Misc", "TownCrierGlobalEntries.bin");
 
         public static void Configure()
         {

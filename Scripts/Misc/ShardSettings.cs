@@ -1,6 +1,4 @@
-#region References
 using System;
-#endregion
 
 namespace Server
 {
@@ -18,14 +16,10 @@ namespace Server
 		{
 			if (Core.AOS)
 			{
-				Mobile.VisibleDamageType = VisibleDamageType.Related;
-
 				Mobile.AOSStatusHandler = AOS.GetStatus;
 			}
 			else
 			{
-				Mobile.VisibleDamageType = VisibleDamageType.None;
-
 				Mobile.AOSStatusHandler = null;
 			}
 		}

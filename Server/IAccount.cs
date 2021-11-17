@@ -1,6 +1,7 @@
 #region References
 using System;
 using System.Collections.Generic;
+using System.Net;
 #endregion
 
 namespace Server.Accounting
@@ -260,6 +261,9 @@ namespace Server.Accounting
 
 		[CommandProperty(AccessLevel.Administrator, true)]
 		DateTime LastLogin { get; set; }
+
+		[CommandProperty(AccessLevel.Administrator, true)]
+		IPAddress[] LoginIPs { get; set; }
 
 		[CommandProperty(AccessLevel.Administrator)]
 		TimeSpan Age { get; }
