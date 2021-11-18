@@ -7,16 +7,14 @@ using System.Collections.Generic;
 namespace Server.Items
 {
     public class CustomizableSquaredDoorMatAddon : BaseAddon, ICustomizableMessageItem
-    {
-        public string[] Lines { get; set; }
+	{
+		public string[] Lines => TooltipsBase;
 
-        public override BaseAddonDeed Deed => new CustomizableSquaredDoorMatDeed();
+		public override BaseAddonDeed Deed => new CustomizableSquaredDoorMatDeed();
 
         [Constructable]
         public CustomizableSquaredDoorMatAddon(DirectionType type)
         {
-            Lines = new string[3];
-
             switch (type)
             {
                 case DirectionType.South:
@@ -38,23 +36,23 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // version
 
-            writer.Write(Lines.Length);
-
-            for (int i = 0; i < Lines.Length; i++)
-                writer.Write(Lines[i]);
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
 
-            Lines = new string[reader.ReadInt()];
+			if (version < 1)
+			{
+				int lines = reader.ReadInt();
 
-            for (int i = 0; i < Lines.Length; i++)
-                Lines[i] = reader.ReadString();
+				for (int i = 0; i < lines && i < Lines.Length; i++)
+					Lines[i] = reader.ReadString();
+			}
         }
     }
 

@@ -1040,7 +1040,7 @@ namespace Server.Mobiles
         public virtual bool AttacksFocus => false;
         public virtual bool ShowSpellMantra => false;
         public virtual bool FreezeOnCast => ShowSpellMantra;
-        public virtual bool CanFly => false;
+        public override bool CanFly => false;
 
         public virtual bool CanAutoStable
         {

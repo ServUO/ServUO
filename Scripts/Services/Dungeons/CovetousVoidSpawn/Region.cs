@@ -9,7 +9,7 @@ namespace Server.Engines.VoidPool
 {
     public class VoidPoolRegion : BaseRegion
     {
-        private static readonly Rectangle2D[] Bounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(5383, 1960, 236, 80),
             new Rectangle2D(5429, 1948, 12, 10),
@@ -17,7 +17,7 @@ namespace Server.Engines.VoidPool
 
         public VoidPoolController Controller { get; private set; }
 
-        public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, DefaultPriority, Bounds)
+        public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, DefaultPriority, m_Bounds)
         {
             Controller = controller;
         }

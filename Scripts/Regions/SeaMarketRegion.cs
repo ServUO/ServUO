@@ -18,13 +18,8 @@ namespace Server.Regions
         private static SeaMarketRegion m_Region1;
         private static SeaMarketRegion m_Region2;
 
-        private Timer m_Timer;
-
         private static Timer m_BlabTimer;
         private static bool m_RestrictBoats;
-
-        private readonly Dictionary<BaseBoat, DateTime> m_BoatTable = new Dictionary<BaseBoat, DateTime>();
-        public Dictionary<BaseBoat, DateTime> BoatTable => m_BoatTable;
 
         public static bool RestrictBoats
         {
@@ -52,11 +47,18 @@ namespace Server.Regions
             }
         }
 
-        public static Rectangle2D[] Bounds => m_Bounds;
+        public static Rectangle2D[] MarketBounds => m_Bounds;
+
         private static readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(4529, 2296, 45, 112),
         };
+
+        private Timer m_Timer;
+
+        private readonly Dictionary<BaseBoat, DateTime> m_BoatTable = new Dictionary<BaseBoat, DateTime>();
+
+        public Dictionary<BaseBoat, DateTime> BoatTable => m_BoatTable;
 
         public SeaMarketRegion(XmlElement xml, Map map, Region parent)
             : base(xml, map, parent)
@@ -99,8 +101,11 @@ namespace Server.Regions
         }
 
         #region Pirate Blabbing
-        public static Dictionary<Mobile, DateTime> m_PirateBlabTable = new Dictionary<Mobile, DateTime>();
-        private static readonly TimeSpan BlabDuration = TimeSpan.FromMinutes(1);
+        private static readonly Dictionary<Mobile, DateTime> m_PirateBlabTable = new Dictionary<Mobile, DateTime>();
+
+		public static Dictionary<Mobile, DateTime> PirateBlabTable => m_PirateBlabTable;
+
+		private static readonly TimeSpan m_BlabDuration = TimeSpan.FromMinutes(1);
 
         public static void TryPirateBlab(Mobile from, Mobile npc)
         {
@@ -142,7 +147,7 @@ namespace Server.Regions
                     int cliloc = Utility.RandomMinMax(1149856, 1149865);
                     npc.SayTo(from, cliloc, combine);
 
-                    m_PirateBlabTable[from] = DateTime.UtcNow + BlabDuration;
+                    m_PirateBlabTable[from] = DateTime.UtcNow + m_BlabDuration;
                 }
             }
 

@@ -1451,7 +1451,7 @@ namespace Server
 				AddQuestItemProperty(list);
 			}
 
-			AddExtraLineProperties(list);
+			AddExtraTooltipProperties(list);
 
 			AppendChildNameProperties(list);
 		}
@@ -1533,14 +1533,14 @@ namespace Server
 			1114776, // 5 lines
 		};
 
-		public virtual void AddExtraLineProperties(ObjectPropertyList list)
+		public virtual void AddExtraTooltipProperties(ObjectPropertyList list)
 		{
 			var aggregate = new StringBuilder();
 
 			var count = 0;
 
-			var lines = Lines;
-			var colors = LineColors;
+			var lines = Tooltips;
+			var colors = TooltipColors;
 
 			for (var index = 0; index < 5; index++)
 			{
@@ -2714,13 +2714,13 @@ namespace Server
 				writer.Write(false);
 			}
 
-			if (LinesBase != null)
+			if (TooltipsBase != null)
 			{
-				writer.Write(LinesBase.Length);
+				writer.Write(TooltipsBase.Length);
 
-				for (var i = 0; i < LinesBase.Length; i++)
+				for (var i = 0; i < TooltipsBase.Length; i++)
 				{
-					writer.Write(LinesBase[i]);
+					writer.Write(TooltipsBase[i]);
 				}
 			}
 			else
@@ -2728,13 +2728,13 @@ namespace Server
 				writer.Write(0);
 			}
 
-			if (LineColorsBase != null)
+			if (TooltipColorsBase != null)
 			{
-				writer.Write(LineColorsBase.Length);
+				writer.Write(TooltipColorsBase.Length);
 
-				for (var i = 0; i < LineColorsBase.Length; i++)
+				for (var i = 0; i < TooltipColorsBase.Length; i++)
 				{
-					writer.WriteEncodedInt(LineColorsBase[i].ToArgb());
+					writer.WriteEncodedInt(TooltipColorsBase[i].ToArgb());
 				}
 			}
 			else
@@ -3274,8 +3274,8 @@ namespace Server
 						{
 							var line = reader.ReadString();
 
-							if (i < LineColorsBase.Length)
-								LinesBase[i] = line;
+							if (i < TooltipColorsBase.Length)
+								TooltipsBase[i] = line;
 						}
 
 						var colors = reader.ReadInt();
@@ -3284,13 +3284,13 @@ namespace Server
 						{
 							var color = reader.ReadEncodedInt();
 
-							if (i < LineColorsBase.Length)
-								LineColorsBase[i] = Color.FromArgb(color);
+							if (i < TooltipColorsBase.Length)
+								TooltipColorsBase[i] = Color.FromArgb(color);
 						}
 
-						for (var i = 0; i < LinesBase.Length; i++)
+						for (var i = 0; i < TooltipsBase.Length; i++)
 						{
-							var line = LinesBase[i];
+							var line = TooltipsBase[i];
 
 							if (!String.IsNullOrWhiteSpace(line) && line.Length > 24)
 							{
@@ -3307,8 +3307,8 @@ namespace Server
 									if (rgb < 0x080808 || rgb >= 0xFFFFFF)
 										color = Color.Empty;
 
-									LinesBase[i] = line;
-									LineColorsBase[i] = color;
+									TooltipsBase[i] = line;
+									TooltipColorsBase[i] = color;
 								}
 							}
 						}
@@ -4790,27 +4790,27 @@ namespace Server
 			newItem.QuestItem = false;
 			newItem.NoMoveHS = false;
 
-			for (var i = 0; i < newItem.LinesBase.Length; i++)
+			for (var i = 0; i < newItem.TooltipsBase.Length; i++)
 			{
-				if (i < LinesBase.Length)
+				if (i < TooltipsBase.Length)
 				{
-					newItem.LinesBase[i] = LinesBase[i];
+					newItem.TooltipsBase[i] = TooltipsBase[i];
 				}
 				else
 				{
-					newItem.LinesBase[i] = null;
+					newItem.TooltipsBase[i] = null;
 				}
 			}
 
-			for (var i = 0; i < newItem.LineColorsBase.Length; i++)
+			for (var i = 0; i < newItem.TooltipColorsBase.Length; i++)
 			{
-				if (i < LineColorsBase.Length)
+				if (i < TooltipColorsBase.Length)
 				{
-					newItem.LineColorsBase[i] = LineColorsBase[i];
+					newItem.TooltipColorsBase[i] = TooltipColorsBase[i];
 				}
 				else
 				{
-					newItem.LineColorsBase[i] = Color.Empty;
+					newItem.TooltipColorsBase[i] = Color.Empty;
 				}
 			}
 
@@ -5114,43 +5114,43 @@ namespace Server
 			set => Name = value;
 		}
 
-		#region Property Lines
+		#region Property Tooltips
 
-		public string[] LinesBase { get; } = new string[5];
-		public Color[] LineColorsBase { get; } = new Color[5];
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual string Line1 { get => LinesBase[0]; set { LinesBase[0] = value; InvalidateProperties(); } }
+		public string[] TooltipsBase { get; } = new string[5];
+		public Color[] TooltipColorsBase { get; } = new Color[5];
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual Color Line1Color { get => LineColorsBase[0]; set { LineColorsBase[0] = value; InvalidateProperties(); } }
+		public virtual string Tooltip1 { get => TooltipsBase[0]; set { TooltipsBase[0] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual string Line2 { get => LinesBase[1]; set { LinesBase[1] = value; InvalidateProperties(); } }
+		public virtual Color Tooltip1Color { get => TooltipColorsBase[0]; set { TooltipColorsBase[0] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual Color Line2Color { get => LineColorsBase[1]; set { LineColorsBase[1] = value; InvalidateProperties(); } }
+		public virtual string Tooltip2 { get => TooltipsBase[1]; set { TooltipsBase[1] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual string Line3 { get => LinesBase[2]; set { LinesBase[2] = value; InvalidateProperties(); } }
+		public virtual Color Tooltip2Color { get => TooltipColorsBase[1]; set { TooltipColorsBase[1] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual Color Line3Color { get => LineColorsBase[2]; set { LineColorsBase[2] = value; InvalidateProperties(); } }
+		public virtual string Tooltip3 { get => TooltipsBase[2]; set { TooltipsBase[2] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual string Line4 { get => LinesBase[3]; set { LinesBase[3] = value; InvalidateProperties(); } }
+		public virtual Color Tooltip3Color { get => TooltipColorsBase[2]; set { TooltipColorsBase[2] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual Color Line4Color { get => LineColorsBase[3]; set { LineColorsBase[3] = value; InvalidateProperties(); } }
+		public virtual string Tooltip4 { get => TooltipsBase[3]; set { TooltipsBase[3] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual string Line5 { get => LinesBase[4]; set { LinesBase[4] = value; InvalidateProperties(); } }
+		public virtual Color Tooltip4Color { get => TooltipColorsBase[3]; set { TooltipColorsBase[3] = value; InvalidateProperties(); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public virtual Color Line5Color { get => LineColorsBase[4]; set { LineColorsBase[4] = value; InvalidateProperties(); } }
+		public virtual string Tooltip5 { get => TooltipsBase[4]; set { TooltipsBase[4] = value; InvalidateProperties(); } }
 
-		public string[] Lines => new[] { Line1, Line2, Line3, Line4, Line5 };
-		public Color[] LineColors => new[] { Line1Color, Line2Color, Line3Color, Line4Color, Line5Color };
+		[CommandProperty(AccessLevel.GameMaster)]
+		public virtual Color Tooltip5Color { get => TooltipColorsBase[4]; set { TooltipColorsBase[4] = value; InvalidateProperties(); } }
+
+		public string[] Tooltips => new[] { Tooltip1, Tooltip2, Tooltip3, Tooltip4, Tooltip5 };
+		public Color[] TooltipColors => new[] { Tooltip1Color, Tooltip2Color, Tooltip3Color, Tooltip4Color, Tooltip5Color };
 
 		#endregion
 

@@ -8,15 +8,11 @@ namespace Server.Regions
 {
     public class CorgulWarpRegion : Region
     {
-        private Rectangle2D m_Bounds;
         private List<Item> m_Markers;
-
-        public Rectangle2D Bounds => m_Bounds;
 
         public CorgulWarpRegion(CorgulAltar ped, Rectangle2D rec)
             : base("Corgul Warp Region", ped.Map, DefaultPriority, rec)
         {
-            m_Bounds = rec;
         }
 
         public void MarkBounds(Rectangle2D rec)
@@ -91,8 +87,8 @@ namespace Server.Regions
 
             if (hasMap)
             {
-                int x = boat.X - m_Bounds.X;
-                int y = boat.Y - m_Bounds.Y;
+                int x = boat.X - Bounds.Start.X;
+                int y = boat.Y - Bounds.Start.Y;
                 int z = map.GetAverageZ(x, y);
 
                 Point3D ePnt = new Point3D(CorgulAltar.CorgulBounds.X + x, CorgulAltar.CorgulBounds.Y + y, 0);

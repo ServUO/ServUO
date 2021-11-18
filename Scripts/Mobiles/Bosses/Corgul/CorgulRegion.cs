@@ -144,13 +144,13 @@ namespace Server.Regions
             if (boat.Map != null && boat.Map != Map.Internal && m_Altar != null && m_Altar.WarpRegion != null)
             {
                 Map map = boat.Map;
-                Rectangle2D rec = m_Altar.WarpRegion.Bounds;
+                Rectangle3D rec = m_Altar.WarpRegion.Bounds;
 
                 int x = boat.X - m_Bounds.X;
                 int y = boat.Y - m_Bounds.Y;
                 int z = map.GetAverageZ(x, y);
 
-                Point3D ePnt = new Point3D(rec.X + x, rec.Y + y, -5);
+                Point3D ePnt = new Point3D(rec.Start.X + x, rec.Start.Y + y, -5);
 
                 int offsetX = ePnt.X - boat.X;
                 int offsetY = ePnt.Y - boat.Y;
