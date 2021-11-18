@@ -822,7 +822,7 @@ namespace Server.Engines.UOStore
         {
             if (info.ButtonID == 1)
             {
-                TextRelay text = info.GetTextEntry(1);
+                TextRelay text = info.GetTextEntry(0);
 
 				if (!PromoCodes.TryRedeem(User, text?.Text))
 				{

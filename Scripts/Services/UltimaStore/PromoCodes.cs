@@ -22,14 +22,13 @@ namespace Server.Engines.UOStore
 
 			EventSink.WorldSave += OnSave;
 			EventSink.WorldLoad += OnLoad;
+
+#if DEBUG
+			Register("TEST-1234", TestCodeRedeem);
+#endif
 		}
 
 #if DEBUG
-		public static void Initialize()
-		{
-			Register("TEST-1234", TestCodeRedeem);
-		}
-
 		private static bool TestCodeRedeem(Mobile user, string code)
 		{
 			if (user.AccessLevel > AccessLevel.Counselor)
