@@ -212,7 +212,7 @@ namespace Server.Engines.UOStore
 		{
 			writer.Write(0);
 
-			writer.Write(Codes.Count);
+			writer.Write(Redeemed.Count);
 
 			foreach (var kvp in Redeemed)
 			{
