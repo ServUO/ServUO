@@ -15,13 +15,16 @@
 #### Requirements
 
 [.NET 4.8] Runtime and Developer Pack
+
 [.NET 5.0] Runtime and SDK
+
 [Visual Studio] for editing and compiling.
 
 
 #### Windows
 
 Run `_windebug.bat` for development environments.
+
 Run `_winrelease.bat` for production environments.
 
 
@@ -31,7 +34,7 @@ brew install mono
 brew install dotnet
 dotnet build
 ```
-To run `mono ServUO.exe`
+To run: `mono ServUO.exe`
 
 
 #### Ubuntu / Debian
@@ -39,7 +42,7 @@ To run `mono ServUO.exe`
 apt-get install zlib1g-dev mono-complete dotnet-sdk-5.0 
 dotnet build
 ```
-To run `mono ServUO.exe`
+To run: `mono ServUO.exe`
 
 
 #### Summary
@@ -49,6 +52,33 @@ To run `mono ServUO.exe`
 3. For Windows, run `_windebug.bat` to produce `ServUO.exe`, Linux users may run `Makefile`.
 4. Run `ServUO.exe` to make sure everything boots up, if everything went well, you should see your IP adress being listened on the port you specified.
 5. Load up UO and login! - If you require instructions on setting up your particular client, visit the Discord and ask!
+
+
+#### Extra Credit
+
+Special thanks to these contributors and sponsors!
+
+Projects:
+
+[ModernUO] [![Discord](https://img.shields.io/discord/751317910504603701.svg)](https://discord.gg/DHkNUsq)
+
+[TrueUO] [![Discord](https://img.shields.io/discord/205015541977579520.svg)](https://discord.gg/Hk53j9s2)
+
+Shards:
+
+[Alive], [Heritage], [Kingdom], [Legends of Sosaria], [Outlands], [Pandora], [Paragon], [Sprituality]
+
+   [Alive]: <https://www.uoalive.com>
+   [Heritage]: <https://www.trueuo.com>
+   [Kingdom]: <https://tbewley10310.wixsite.com/uokingdom>
+   [Legends of Sosaria]: <https://www.legendsofsosaria.com>
+   [Outlands]: <https://www.uooutlands.com>
+   [Pandora]: <https://www.pandorauo.com>
+   [Paragon]: <https://www.paragonuo.com>
+   [Sprituality]: <http://www.uospirituality.com>
+   
+   [ModernUO]: <https://github.com/modernuo/modernuo>
+   [TrueUO]: <https://github.com/trueuo/trueuo>
 
    [ServUO]: <https://www.servuo.com>
    [.NET 4.8]: <https://dotnet.microsoft.com/download/dotnet-framework/net48>
