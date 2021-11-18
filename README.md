@@ -66,9 +66,10 @@ Projects:
 
 Shards:
 
-[Alive], [Heritage], [Kingdom], [Legends of Sosaria], [Outlands], [Pandora], [Paragon], [Sprituality]
+[Alive], [Elemental], [Heritage], [Kingdom], [Legends of Sosaria], [Outlands], [Pandora], [Paragon], [Sprituality]
 
    [Alive]: <https://www.uoalive.com>
+   [Elemental]: <https://uoelemental.com/>
    [Heritage]: <https://www.trueuo.com>
    [Kingdom]: <https://tbewley10310.wixsite.com/uokingdom>
    [Legends of Sosaria]: <https://www.legendsofsosaria.com>
