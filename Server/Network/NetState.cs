@@ -313,7 +313,6 @@ namespace Server.Network
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool IsSAClient => m_Version != null && m_Version.Type >= ClientType.SA;
 
-
 		[CommandProperty(AccessLevel.Administrator, true)]
 		public bool IsEnhancedClient => IsUOTDClient || (m_Version != null && m_Version.Major >= 67);
 
