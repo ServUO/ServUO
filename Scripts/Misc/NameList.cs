@@ -59,12 +59,14 @@ namespace Server
 
 		public static NameList GetRandomNameList()
 		{
-			return m_Table.Values.GetRandom();
+			return m_Table.Values.ElementAtOrDefault(Utility.Random(m_Table.Count));
 		}
 
 		public static NameList GetNameList(string type)
 		{
-			return m_Table.GetValue(type);
+			m_Table.TryGetValue(type, out var list);
+
+			return list;
 		}
 
 		public static string RandomName()
