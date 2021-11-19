@@ -506,7 +506,19 @@ namespace Server.Movement
 
             bool moveIsOk = Check(map, p, itemsForward, mobsForward, xForward, yForward, startTop, startZ, m != null && m.CanSwim, m != null && m.CantWalk, out newZ);
 
-            if (moveIsOk && checkDiagonals)
+			if (moveIsOk && m != null && !m.Player && startZ - newZ >= 20) // fall height
+			{
+				if (m.Flying)
+				{
+					newZ = startZ;
+				}
+				else
+				{
+					moveIsOk = false;
+				}
+			}
+
+			if (moveIsOk && checkDiagonals)
             {
                 int hold;
 
