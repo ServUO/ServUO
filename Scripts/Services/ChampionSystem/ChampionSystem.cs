@@ -68,16 +68,23 @@ namespace Server.Engines.CannedEvil
 
 		public static int RankForLevel(int l)
 		{
-			var list = RankMaxKills;
+			var list = RankRedSkulls;
 
-			if (list != null && l >= 0)
+			if (list != null)
 			{
-				if (l < list.Length)
+				var rank = 0;
+
+				while (rank < list.Length)
 				{
-					return list[l];
+					if (l <= list[rank])
+					{
+						break;
+					}
+
+					++rank;
 				}
 
-				return 3;
+				return rank;
 			}
 
 			return 0;
@@ -87,12 +94,17 @@ namespace Server.Engines.CannedEvil
 		{
 			var list = RankMaxKills;
 
-			if (list != null && list.Length > 0)
+			if (list != null)
 			{
 				var rank = RankForLevel(l);
 
-				if (rank >= 0 && rank < list.Length)
+				if (rank >= 0)
 				{
+					if (rank >= list.Length)
+					{
+						rank = list.Length - 1;
+					}
+
 					return list[rank];
 				}
 			}
