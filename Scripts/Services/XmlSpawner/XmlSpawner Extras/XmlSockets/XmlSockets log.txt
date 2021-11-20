@@ -1,0 +1,403 @@
+updated for xmlspawner 3.26
+
+
+XmlSockets v1.08a
+updated 4/13/05
+ArteGordon
+
+[b]SUMMARY[/b]
+This set of attachments provides a system for adding sockets and socket augmentations to items and mobs.  The XmlSockets attachment adds sockets that can be filled with augmentations that will enhance specific abilities.  The XmlSocketable attachment enables player-addable sockets that can be added to the target object by players meeting customizable skill and resources requirements.
+
+[b]New to v1.08a[/b]
+updated 4/13/05
+- added a new powerscroll transmutation recipe to the BoxOfTransmutation that takes any 3 powerscrolls of the same level, along with a legendary diamond, legendary ruby, and legendary emerald, and creates a new random powerscroll of the same level.
+
+- added some recipes for transmuting large and small BODs.  Transmuting a small BOD and 2000 gp will give you a new random small BOD of the same type.  Transmuting 20000 gp and a large BOD will give you a random large BOD of the same type.
+
+- the XmlMobFactions recipes are now properly commented out.
+
+[b]New to v1.08[/b]
+updated 3/10/05
+[b]- slightly modified the transmutation rules so that a recipe that specifies an ingredient in any quantity (quantity requirement of 0) still requires at least one of that ingredient.[/b]
+
+[b]- added the option to specify a second skill requirement for socketing[/b] (thanks to Greystar for the suggestion). The XmlSocketable attachment now has 2 additional properties, RequiredSkill2 and MinSkillLevel2.  By default MinSkillLevel2 is 0 so there is no second skill requirement.
+To support the requirement for a second skill, several new methods and constructors have been added.  You can spawn an object with a second socketable skill requirement like this
+
+buckler/ATTACH/xmlsocketable,2,Tinkering,115,ArmsLore,70,gold,2000
+
+You can also randomly configure a socketed/socketable object with two skill requirements in scripts using the new ConfigureRandom overload method, like this
+
+XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0, SkillName.Veterinary, 100.0, SkillName.AnimalLore, 90.0, typeof(Emerald), 30);
+
+which will add a random socketable/socketed configuration to the target with a minimum 100 veterinary skill as well as a minimum 90 animal lore skill on socketing.
+
+There is also a new XmlSocketable constructor that accepts the additional skill requirements if you wish to add socketing to items in your own scripts.
+
+public XmlSocketable(int maxsockets, SkillName skillname, double minskilllevel, SkillName skillname2, double minskilllevel2, Type resource, int quantity)
+
+[b]- added the ability to recover augmentations from sockets.[/b]  Specific augmentations must have the ability to be recovered enabled by defining the CanRecover and OnRecover override methods in their scripts.  If these are not defined for a particular augmentation, then they will not be recoverable. 
+Augmentations that can be recovered and are already socketed into an item will be identified as such by clicking on their socket in the socket display gump.  If the augmentation can be recovered you will see "Can be recovered" at the end of the description.
+Note that it is possible for an augmentation to be recoverable in certain items and not others if you wish, or even dependent on the individual trying to do the recovery (based on karma, fame, etc.).  Just put the desired conditions in the CanRecover override method for the given augmentation.
+A version argument has been added to the CanRecover and OnRecover calls to allow you to make changes to augmentations but still control how older versions are handled.
+If you do make changes to existing augmentations you should override the Version property for that augmentation and return an updated value (the default is zero).
+If you make changes to the number of sockets used by an augmentation and previous versions of the augmentation been used, and you make the augmentation recoverable, then you should override the RecoverableSockets method and return the proper value based on the version number.
+
+[b]- added a new recipe to the BoxOfTransmutation for recovering augmentations from items.[/b] Transmuting an augmented item and an AncientRuby will allow a random augmentation from the item to be recovered.
+
+[b]- added the new HammerOfRecovery item that can be used to recover augmentations from a target.[/b]  This can be used to recover augmentations from items or creatures.
+
+[b]- added a new recipe to the BoxofTransmutation for creating a single use HammerOfRecovery from a regular hammer and an AncientRuby [/b]  This allows players with the proper skills and resources to create a hammer that could be given to other players to allow them to remove augmentations.
+
+[b]- updated the crystal, radiant crystal, gem, and skull augments to support recovery.[/b]
+
+
+[b]New to v1.07[/b]
+updated 2/13/05
+- fixed a possible crash bug involving the display of Socket properties on items that are on the generic vendor buy lists.
+
+- added a new transmutation container item, the BagOfResources that takes the arrow/bolt recipes and the hides/bandage recipe out of the BoxOfTransmutation.  The BoxOfTransmutation now just contains augmentation related recipes.
+
+[b]New to v1.06[/b]
+updated 1/31/05
+
+[b]- added an interface specification to some of the existing augments to facilitate their use in the new transmutation system.[/b]
+
+[b]- added the new items BoxOfTransmutation and MagicBasket.[/b]  They can be made with limited or unlimited uses (setting the UsesRemaining property to a value less than zero gives unlimited use).
+
+[b]- added the new BaseTransmutationContainer class that allows you to make containers that can magically create objects based upon specifiable recipes.[/b]  The recipes are made up of lists of ingredients that when placed into the container in exactly the right quantity and with the correct properties, can be transformed into other objects.  
+Each recipe can also optionally have multiple minimum skill and stat requirements.
+
+Two examples of transmutation devices are included. To test them out just [add magicbasket, or [add boxoftransmutation.  They can also be made with limited uses with e.g. [add magicbasket 50 for a 50 use basket.
+
+The transmutation gump can be opened either by placing objects into the container, or by selecting the 'Use this device' context menu option.
+ 
+[b]The MagicBasket[/b] has one recipe defined that requires cooking skill and makes a meat pie out when the following ingredients are used: 2 raw ribs, 1 garlic, 1 bowl of flour, 1 full pitcher of milk, 4 carrots.  It requires 30 cooking skill, 30 dex, and 20 int.
+
+[b]The BoxOfTransmutation[/b] has recipes for manipulating augments, and socketed weapons/armor, and a few other things.  
+Here are the recipes that it has defined:
+
+[b]HidesToBandages:[/b] will change any amount of hides into bandages
+Req - 50 str, 30 dex
+
+[b]BoltsToArrows:[/b] will change any amount of bolts into half the quantity of arrows
+Req - 50 ArmsLore, 70 str, 30 dex
+
+[b]ArrowsToBolts:[/b] will change any amount of arrows into half the quantity of bolts
+Req - 50 ArmsLore, 70 str, 30 dex
+
+[b]UpgradeAncientAugment:[/b] will take 6 Ancient augments and convert them to a Legendary augment of the same type.
+Req - 50 Alchemy, 70 str, 30 dex, 40 int
+ 
+[b]UpgradeLegendaryAugment:[/b] will take 3 Legendary augments and convert them to a Mythic augment of the same type.
+Req - 70 Alchemy, 70 str, 30 dex, 40 int
+
+[b]UpgradeCrystalAugment: will take 3 Crystal augments and convert them to a Radiant augment of the same type.[/b]
+Req - 70 Alchemy, 70 str, 30 dex, 40 int
+
+[b]SocketWeapon:[/b] will take any unsocketed weapon and a Rho rune augment and add a single socket to the weapon.
+Req - 50 Blacksmith, 70 str, 30 dex, 40 int
+
+[b]SocketArmor:[/b] will take any unsocketed armor and a Rho rune augment and add a single socket to the armor.
+Req - 50 Blacksmith, 70 str, 30 dex, 40 int
+
+some additional recipes that allow various mob faction bonuses to be granted with recipes that use a combination of glimmering stone augments and gold are included.  These require the XmlMobFactions system to be installed.
+These are commented out by default.  If you have XmlMobFactions installed and you wish to use these, just uncomment them.
+
+An arbitrary number of additional recipes can be specified.  You could also construct different transmutation container classes (derived from the BaseTransmutationContainer class) that implemented different recipe sets.
+
+
+[b]New to v1.05[/b]
+updated 1/22/05
+[b]- made an adjustment to the default gump art hues for augments so that they match the item hues.[/b]
+
+[b]- added another gem augment (tourmaline) and updated the optional Loot.cs to reflect this.[/b]
+
+[b]- added a set of glimmering stone augments that grant various skill bonuses.[/b]
+
+[b]- updated installation instructions for 1.0.0[/b]
+
+[b]- updated the optional modified lootpack.cs/loot.cs files to 1.0.0[/b]
+
+
+[b]INSTALLATION:[/b]
+for RC0.
+
+[u]STEP 1:[/u]
+Install the latest XmlSpawner2 package (must be at least version 2.70. You can find it here [URL=http://www.runuo.com/forum/showthread.php?t=30848]XmlSpawner2[/URL]).  Make sure that you perform installation step 8 from that thread. I would also strongly suggest performing step 11 from that thread to allow socket properties to be automatically displayed. 
+
+[u]STEP 2: [/u]
+Place the scripts from this package into your custom scripts directory, or into the XmlAttachments area of your XmlSpawner2 installation.  (anywhere in your Scripts folder is fine, these locations are suggested for organizational purposes only).
+Place the optional .xml example in the top level of your RunUO installation directory if you would like to try it out.
+If you have also installed the custom attacks/defenses system ([URL=http://www.runuo.com/forum/showthread.php?t=46761]XmlCustomAttacks[/URL]) then you can extract the runeaugments.cs file.  If you do not have that system, then do not extract that file.
+
+[u]STEP 3: (optional)[/u]
+To automatically add sockets and socketability to dropped weapons and armor and tamable creatures with some probability, you can make these changes to BaseArmor.cs, BaseWeapon.cs, BaseJewel.cs, and BaseCreature.cs.  If you make this modification, all weapons/armor/tamable creatures will have some chance of having sockets when they are made.  If you would rather put the modifications somewhere else, such as in LootPack.cs, that would work as well. 
+
+First, place the following line at the beginning of the files BaseArmor.cs, BaseWeapon.cs, BaseJewel.cs, and BaseCreature.cs
+
+using Server.Engines.XmlSpawner2;
+
+then, at the end of the BaseArmor constructor around line 1121 in Scripts/Items/Armor/BaseArmor.cs
+change this
+
+	m_AosSkillBonuses = new AosSkillBonuses( this );
+			
+to this
+
+	m_AosSkillBonuses = new AosSkillBonuses( this );			
+
+	// mod to randomly add sockets and socketability features to armor. These settings will yield
+	// 2% drop rate of socketed/socketable items
+	// 0.1% chance of 5 sockets
+	// 0.5% of 4 sockets
+	// 3% chance of 3 sockets
+	// 15% chance of 2 sockets
+	// 50% chance of 1 socket
+	// the remainder will be 0 socket (31.4% in this case)
+	// uncomment the next line to prevent artifacts from being socketed
+	// if(ArtifactRarity == 0)
+	XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
+
+at the end of the BaseWeapon constructor around line 2525 in Scripts/Items/Weapons/BaseWeapon.cs
+change this
+			
+	m_AosSkillBonuses = new AosSkillBonuses( this );
+			
+to this
+
+	m_AosSkillBonuses = new AosSkillBonuses( this );	
+
+	// mod to randomly add sockets and socketability features to weapons. These settings will yield
+	// 2% drop rate of socketed/socketable items
+	// 0.1% chance of 5 sockets
+	// 0.5% of 4 sockets
+	// 3% chance of 3 sockets
+	// 15% chance of 2 sockets
+	// 50% chance of 1 socket
+	// the remainder will be 0 socket (31.4% in this case)
+	// uncomment the next line to prevent artifacts from being socketed
+	// if(ArtifactRarity == 0)
+	XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
+
+at the end of the BaseJewel constructor around line 93 in Scripts/Items/Jewels/BaseJewel.cs
+change this
+
+	Layer = layer;
+
+to this
+
+	Layer = layer;
+
+	// mod to randomly add sockets and socketability features to weapons. These settings will yield
+	// 2% drop rate of socketed/socketable items
+	// 0.1% chance of 5 sockets
+	// 0.5% of 4 sockets
+	// 3% chance of 3 sockets
+	// 15% chance of 2 sockets
+	// 50% chance of 1 socket
+	// the remainder will be 0 socket (31.4% in this case)
+	// uncomment the next line to prevent artifacts from being socketed
+	// if(ArtifactRarity == 0)
+	XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0);
+
+make this change in the BaseCreature class around line 743 in Scripts/Engines/AI/Creature/BaseCreature.cs change
+
+
+public override void OnBeforeSpawn( Point3D location, Map m )
+	{
+		if ( Paragon.CheckConvert( this, location, m ) )
+			IsParagon = true;
+
+		base.OnBeforeSpawn( location, m );
+	}
+to this
+
+public override void OnBeforeSpawn( Point3D location, Map m )
+	{
+		if ( Paragon.CheckConvert( this, location, m ) )
+			IsParagon = true;
+
+
+            // mod to randomly add socket features to tamable creatures. These settings will yield
+            // 2% drop rate of socketed/socketable items
+            // 0.1% chance of 5 sockets
+            // 0.5% of 4 sockets
+            // 3% chance of 3 sockets
+            // 15% chance of 2 sockets
+            // 50% chance of 1 socket
+            // the remainder will be 0 socket (31.4% in this case)
+	    // Adding new sockets will require a minimum of 100 Veterinary skill and 30 emeralds
+            if(Tamable)
+                XmlSockets.ConfigureRandom(this, 2.0, 0.1, 0.5, 3.0, 15.0, 50.0, SkillName.Veterinary, 100.0, typeof(Emerald), 30);
+
+		base.OnBeforeSpawn( location, m );
+	}
+
+STEP 4: (optional)
+I have added modified distro 1.0.0 versions of Loot.cs and LootPack.cs that will give random lootpack drops of augmentations. The frequency of drop is low (about the same as instruments), and the definitions include the rune augmentations (if you dont have runeaugments.cs installed then comment out the sections referring to the runes). To use them, either replace the distro Scripts/Misc/LootPack.cs and Scripts/Misc/Loot.cs with the versions in the SocketsLootMod.zip file (always make backups of your original scripts), or just look in those files for the changes marked "ARTEGORDONMOD", and incorporate them into your existing lootpack.cs and loot.cs files.
+Note, I intentionally renamed the files with ._cs extensions so that they wouldnt cause problems if you extracted them into your scripts area. The extensions need to be changed to .cs if you wish to use them as replacements for the distro loot.cs and lootpack.cs scripts.
+
+
+[b]DESCRIPTION:[/b]
+
+This system makes use of the XmlSpawner2 attachment system and the XmlSpawner2 package must be installed to support it.  You dont need to use the xmlspawners themselves, and it doesnt matter whether you use the standard distribution spawners or any other spawning system but you do need the XmlSpawner2 package installed.
+
+Because the attachment system neither requires nor makes any changes to serialization/deserializations of any item or mobile, it can be safely added and removed at any time now or in the future without interfering with any other systems that you might have installed.
+
+Note, this is intended as more of a development system for people to add custom content to their shards than just a drop-and-play system with a full complement of socket augmentations.  While I have included a number of augmentations in the package that can be used as-is, they are intended to illustrate its features so that users can extend them with additional content.
+
+[b][u]Features:[/u][/b]
+
+Note that ANY object can in principle be socketed - weapons, armor, jewelry, clothing, tools, trees, doors, fruit, creatures, players, gems - anything.  You just have to tag them with the sockets/socketable attachments using one of the methods described below. It is then the responsibility of the augment to determine what it can affect and what effect it has on the socketed object.
+
+[u]Sockets[/u]
+Sockets allow target objects to be enhanced by providing slots in which specially designed augmentations can be placed.  Different augmentations will confer different abilities to the target.
+Sockets can either come pre-existing on a target, or can be added by an individual with sufficient skill and resources.
+
+[u]Socketability[/u]
+Individual objects can be flagged as being "socketable", by adding the XmlSocketable attachment which allows the maximum number of sockets, the type of skill and minimum skill level required to socket, and the resources used in socketing, to be specified.  By default 100 Blacksmithing and 50 Valorite ingots are required to add a socket to a target.
+
+[u]Augmenting[/u]
+To add an augmentation to a socket, both the augmentation and the item to be augmented must be in the players pack.  To bring up the socket gump you must use the item identification skill on the item.  In the gump, click on the socket and target the augmentation.  By default,  augmenting requires no resources and will always succeed.  This behavior can be changed in the ConsumeOnAugment and OnAugment override methods for individual augmentations.  
+After a socket has been filled with an augmentation, clicking on the socket will display the augmentation properties.
+
+[u]Item Identification.[/u]  This skill is used to display the sockets and socketability of target objects.  Just use the skill and target an object (either items or creatures).
+
+[u]Examples.[/u] Examples of socketed/socketable objects including tamable creatures such as a socketable dragon are included in the example .xml file socket1.xml.  To try this out, place the file "socket1.xml" in your top level RunUO directory and execute the command "[xmlloadhere socket1.xml" 
+It creates several bags of augmentations and various socketed and socketable items.  The dragon can be socketed after it is tamed.
+
+
+[b][u]Commands/Control Items:[/u][/b]
+
+[u][addsocket[/u] - To add a socket to a socketable object the player issues the "[addsocket" command and targets an object.  If the target is an item, then the item must  be in the players backpack.  If the target is a creature, then the creature must be under the players control. If socketing is successful, you will see the new socket in the socket gump.  On each failure resources will still be consumed and there is a 10% chance that the target will be destroyed (this probability can be set by the static DefaultDestructionProbability variable in XmlSocket.cs).
+The difficulty of adding a socket depends on the minimum skill required by the object, the skill level of the player, and the existing number of sockets.
+The chance of succeeding in adding a socket can be displayed by using the Item Identification skill on a socketable object.
+
+[u]SocketHammer[/u] -  an item that provides the same functionality as the [addsocket command.  Just double-click to use and target the object to be socketed.  It can be given either limited (set UsesRemaining to a value > 0) or unlimited number of uses (set UsesRemaining to a value < 0).
+
+
+[b][u]Adding sockets to items/mobs[/u][/b]
+
+[u]Manually to individual item/mobs [/u]
+
+- the xmlSockets attachment can be added to objects in several ways.  It can be manually attached to any existing object with the "[addatt" command.
+
+For example
+
+"[addatt xmlsockets 4"
+
+will add 4 sockets to a targeted object.
+
+
+[u]To scripts[/u]
+
+- Sockets can also be added to scripted objects. See the included script TestSocketedWeapon.cs for an example of this.
+
+[u]To spawned objects[/u]
+
+- To add sockets to spawned objects use the ATTACH keyword in spawn entries such as this
+
+katana/ATTACH/xmlsockets,4
+
+which would spawn a katana with 4 sockets.  
+
+or
+
+orc/ADD/<katana/ATTACH/xmlsockets,4>
+
+would spawn an orc carrying the socketd katana.
+
+To try out the included example spawner .xml file, place the file "socket1.xml" in your top level RunUO directory and execute the command 
+
+"[xmlloadhere socket1.xml"
+
+
+[b][u]Making items/mobs socketable by players[/u][/b]
+
+[u]Manually to individual item/mobs [/u]
+
+- the xmlSocketable attachment can be added to objects in several ways.  It can be manually attached to any existing object with the "[addatt" command.
+
+For example
+
+"[addatt xmlsocketable 4"
+
+will flag the target object as socketable and supporting a maximum of 4 player-added sockets.
+
+
+[u]To scripts[/u]
+
+- Socketability can also be added to scripted objects. See the included script TestSocketedWeapon.cs for an example of this.
+
+[u]To spawned objects[/u]
+
+- To add sockets to spawned objects use the ATTACH keyword in spawn entries such as this
+
+katana/ATTACH/xmlsocketable,4
+
+which would spawn a katana supporting a maximum of 4 player-added sockets.  
+
+buckler/ATTACH/xmlsocketable,2,Tinkering,115,gold,2000
+
+which would spawn a buckler supporting a maximum of 2 player-added sockets that require a minimum of 115 Tinkering and 2000 gold to add.  
+
+
+Changelog
+
+Version 1.04
+updated 12/26/04
+
+- added support for adding augments via scripts instead of just via player targeting (thanks to sUpplier1 for the suggestion).
+
+- added a new example of this feature in testsocketedweapon.cs (case 3)
+
+- minor change in reporting of objects that have already reached their maximum number of allowed sockets.  It no longer describes the requirements and socketing chance for such objects.
+
+- minor change in property list display of socketable objects.  The resource and skill requirements will no longer be displayed on mouseover.  That info can still be obtained by using the Item Identification skill on the object.
+
+- the random socket/socketable configuration method "ConfigureRandom" will no longer create 0-socketable configurations (thanks to sUpplier1 for pointing this out).
+
+- added jewelry support to the crystal and radiant crystal augments.
+
+- modified installation step 3 to support randomly socketed jewelry drops and to allow you to exclude the possibility of socketed artifacts if you like.
+
+
+
+Version 1.03
+updated 12/07/04
+
+- added 29 new augmentations in two sets, Crystals (2 socket) and RadiantCrystals (4 socket).
+
+- modified the optional Loot.cs file to support lootpack drops of these augments. 
+
+- updated the socket1.xml example to include a bags of the new augments.
+
+Version 1.02
+updated 12/03/04
+
+- added an additional XmlSockets constructor that allows the default requirement for socketed items to be in the players pack when augmenting to be overridden.  "[addatt xmlsockets 1 false" for example would allow you to attach a single socket that did not require the socketed item to be in the players pack when augmenting. 
+This can be useful for allowing items in the world such as doors to be augmented.
+
+- added a new augmentation called a "keyaugment".  This can be used to open doors and chests by assigning it a KeyValue that matches the KeyValue of the door/chest, and then using it to augment a socket on the door/chest.  A skill requirement can also be assigned to it as can the number of uses.  This is an example of placing additional constraints on the use of augmentations in the OnAugment method.
+
+- added an example of a socketed door and socketed chest that open when a master thief places the proper keyaugment into the socket.  This can be tested by loading the keyaugment.xml example.  Use item identify on the door named "Sesame" to bring up the socket gump, and then augment it with the special "Sesame" rune (you must have at least 100 lockpicking).   After opening, the door resockets itself so that it has to be augmented again to be opened.  The chest can be opened in the same way with the "Sesame's treasure" keyaugment that has the form of a skull.  That one requires 100 Stealing to use.  Notice how the keyaugment to open the door does not get destroyed after it is used, while the one to the chest does.  This is due to the UsesRemaining property that has been set on it.  Setting this to a value < 0, gives it unlimited uses.  Setting it to a value > 0 gives it the specified number of uses (a value of 1 would be the default single-use case).
+
+- shifted the SocketAugmentations entries in the optional LootPack.cs mods to the ends of each lootpack list to reduce luck-enhanced chance of dropping augments.  The way lootpacks work, entries near the top of the list have the greatest chance of being added due to luck, and the luck-computed drop probability is generally much higher than the drop chance specified for each entry (particularly if the entry chance is supposed to be low which is why you get so many luck-related magic item drops on poor lootpack mobs). 
+
+- added a range check for socketing creatures (maximum distance 2)
+
+version 1.01
+updated 12/1/04
+
+- added a set of Mythic augments that are 3 socket augmentations in addition to the Ancient (1 socket) and Legendary (2 socket) types. Loot.cs was modified to reflect the change.
+
+- the augments have been organized into a separate folder replacing the previous files otheraugments.cs, gemaugments.cs (you should get rid of those if you had them from an earlier installation or your will get errors about things being already defined).
+
+- added the SocketHammer item as an alternative to the [addsocket command to add sockets to target objects.  Just double click the hammer and target the object to be socketed.  Setting the number of uses to a value greater than zero will give it limited uses.  Setting it less than zero makes it unlimited.
+
+- having an item with an existing socket number that exceeds the maxsockets indicated in its XmlSocketable attachment will now automatically have that max adjusted to match the current number of existing sockets.  It is basically just a cosmetic change to avoid confusion in the way the available sockets are reported.  Some players were getting confused by items that indicated the maxsockets allowed as 1, and the available sockets as 2 for example.  This just meant that the item already had 2 sockets, but that you could not add any additional sockets beyond 1.
+
+
+
+
+

@@ -1,0 +1,167 @@
+STEP 1:  (RECOMMENDED)
+-------------------------------------------
+To automatically add mob faction support to newly created characters, 
+add the following line to the end of the EventSink_CharacterCreated method in CharacterCreation.cs
+around line 709 of Scripts/Misc/CharacterCreation.cs change
+
+Find:
+	
+	new WelcomeTimer( newChar ).Start();
+
+Replace with This:
+
+	new WelcomeTimer( newChar ).Start();
+	// Xml Spawner 3.26c XmlPoints, XmlMobFaction - SOF
+	XmlAttach.AttachTo(newChar, new XmlPoints());
+	XmlAttach.AttachTo(newChar, new XmlMobFactions());
+	// Xml Spawner 3.26c XmlPoints, XmlMobFaction - EOF
+
+
+===============================================
+
+
+STEP 2: (RECOMMENDED)
+-----------------------------------------------------
+To make the speed with which mobs acquire players as combat targets depend on the players faction 
+with that mobs group, make the following changes
+around line 2471 of Scripts/Engines/AI/AI/BaseAI.cs in the AcquireFocusMobmethod, change
+
+Find:
+
+	// Can't acquire a target we can't see.
+ 	if ( !m_Mobile.CanSee( m ) )
+        	continue;
+
+Replace with This:
+
+	// Can't acquire a target we can't see.
+	if ( !m_Mobile.CanSee( m ) )
+		continue;
+
+	// Xml Spawner 3.26c XmlMobFactions - SOF
+ 	if (!Server.Engines.XmlSpawner2.XmlMobFactions.CheckAcquire(m_Mobile, m))
+  		continue;
+	// Xml Spawner 3.26c XmlMobFactions - EOF
+
+
+=====================================================
+
+
+STEP: 3  (RECOMMENDED)
+---------------------------------------------------
+To make the speed with which mobs acquire players as combat targets depend on the players faction.
+around line 2471 of Scripts/Engines/AI/AI/BaseAI.cs in the AcquireFocusMobmethod, change
+
+Find:
+
+	public virtual TimeSpan ReacquireDelay { get { return TimeSpan.FromSeconds(2.0); } }
+
+Replace with This:
+
+	// Xml Spawner 2.36c XmlMobFactions - SOF
+	public virtual TimeSpan ReacquireDelay { get { return TimeSpan.FromSeconds(2.0); } }
+	// Xml Spawner 2.36c XmlMobFactions - SOF
+	
+
+=========================================================
+
+
+STEP 4: (RECOMMENDED)
+---------------------------------------------
+To make the chance of controlling a creature depend on the players faction with that creatures group, 
+around line 832 of BaseCreature.cs 
+at the end of the GetControlChance method, change
+
+Find:
+
+	return ( (double)chance / 1000 );
+
+Replace with This:
+
+	// Xml Spawner 3.26c XmlMobFactions - SOF
+	chance += (int)XmlMobFactions.GetScaledFaction(m, this, -250, 250, 0.001);
+	// Xml Spawner 3.26c XmlMobFactions - SOF
+	return ((double)chance / 1000);
+
+
+======================================================
+
+
+STEP 5:  (RECOMMENDED)
+------------------------------------------------
+To make the chance of taming a creature depend on the players faction with that creatures group, 
+around line 323 of Scripts/Skills/AnimalTaming.cs in the OnTick method, change
+
+Find:
+
+		minSkill += 24.9;
+
+Replace with This:
+
+		minSkill += 24.9;
+		// Xml Spawner 3.26c XmlMobFactions - SOF
+		minSkill += XmlMobFactions.GetScaledFaction(m_Tamer, m_Creature, -25, 25, -0.001);
+		// Xml Spawner 3.26c XmlMobFactions - EOF
+
+
+==============================================================
+
+
+STEP 6:  (RECOMMENDED, FOLLOW CLOSELY)
+-----------------------------------------------------
+To make the chance of barding a creature depend on the players faction with that creatures group, 
+make the following changes to Peacemaking.cs, Discordance.cs, and Provocation.cs. 
+You dont have to do them all if you dont want to. For instance, 
+if you just wanted to mod peacemaking, that would be fine.
+
+
+
+#6A) around line 148 of Scripts/Skills/Peacemaking.cs in the OnTarget method, change
+
+Find:
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+
+Replace with This:
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+	// Xml Spawner 3.26c XmlFactionMob - SOF
+	diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
+	// Xml Spawner 3.26c XmlFactionMob - SOF
+
+
+#6B)  around line 111 of Scripts/Skills/Provocation.cs in the OnTarget method, change
+
+Find:
+
+	double diff = ((m_Instrument.GetDifficultyFor( m_Creature ) + m_Instrument.GetDifficultyFor( creature )) * 0.5) - 5.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+
+Replace with This:
+
+	double diff = ((m_Instrument.GetDifficultyFor( m_Creature ) + m_Instrument.GetDifficultyFor( creature )) * 0.5) - 5.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+	// Xml Spawner 2.36c XmlFactionMob - SOF
+	diff += (XmlMobFactions.GetScaledFaction(from, m_Creature, -25, 25, -0.001) + XmlMobFactions.GetScaledFaction(from, creature, -25, 25, -0.001))*0.5;
+	// Xml Spawner 2.36c XmlFaction Mob - EOF
+
+
+#6C) around line 145 of Scripts/Skills/Discordance.cs in the OnTarget method, change
+
+Find:
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+
+Replace with This:
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+	// Xml Spawner 3.26c XmlFactionMob - SOF
+	diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
+	// Xml Spawner 3.26c XmlFactionMob - EOF
+
+
+==============================================================================

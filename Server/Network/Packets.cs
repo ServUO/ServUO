@@ -2113,8 +2113,8 @@ namespace Server.Network
 		{
 			return ns != null && Send(ns, Instantiate(ns, c));
 		}
-
-		public static ContainerDisplay Instantiate(NetState ns, Container c)
+		
+        public static ContainerDisplay Instantiate(NetState ns, Container c)
 		{
 			if (ns.HighSeas)
 			{
@@ -2124,7 +2124,7 @@ namespace Server.Network
 			return new ContainerDisplay(c, null);
 		}
 
-		private ContainerDisplay(Container c, short? unk)
+		public ContainerDisplay(Container c, short? unk)
 			: base(0x24, unk != null ? 9 : 7)
 		{
 			m_Stream.Write(c.Serial);
@@ -2202,7 +2202,7 @@ namespace Server.Network
 			return new ContainerContent(ns.Mobile, c, false);
 		}
 
-		private ContainerContent(Mobile beholder, Item beheld, bool gridLocs)
+		public ContainerContent(Mobile beholder, Item beheld, bool gridLocs)
 			: base(0x3C)
 		{
 			var items = beheld.Items;
@@ -2557,7 +2557,7 @@ namespace Server.Network
 			}
 		}
 
-		private MobileMoving(Mobile m, int noto, int flags)
+		public MobileMoving(Mobile m, int noto, int flags)
 			: base(0x77, 17)
 		{
 			var loc = m.Location;

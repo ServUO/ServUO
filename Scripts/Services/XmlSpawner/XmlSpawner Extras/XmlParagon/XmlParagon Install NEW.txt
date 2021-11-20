@@ -1,0 +1,193 @@
+
+
+STEP 1:
+------------------------------------------------------------------------------
+
+Add the following line at the top of Scripts/Engines/AI/Creature/BaseCreature.cs
+
+
+
+Find:
+
+		public bool IsParagon
+		{
+			get{ return m_Paragon; }
+			set
+			{
+				if ( m_Paragon == value )
+					return;
+				else if ( value )
+					Paragon.Convert( this );
+				else
+					Paragon.UnConvert( this );
+
+				m_Paragon = value;
+
+				InvalidateProperties();
+			}
+		}
+
+Replace with This:
+
+	public bool IsParagon
+        {
+            get { return m_Paragon; }
+            set
+            {
+                // Xml Spawner 3.26c XmlParagon - SOF
+                if (m_Paragon == value)
+                    return;
+                else if (value)
+                    XmlParagon.Convert(this);
+                else
+                    XmlParagon.UnConvert(this);
+                // Xml Spawner 3.26c XmlParagon - EOF
+
+                m_Paragon = value;
+
+                InvalidateProperties();
+            }
+        }
+
+
+#1A)
+-------------------------------------------------------
+
+Find:
+
+		public virtual int BreathComputeDamage()
+		{
+			int damage = (int)(Hits * BreathDamageScalar);
+
+			if ( IsParagon )
+				damage = (int)(damage / Paragon.HitsBuff);
+
+			return damage;
+		}
+
+Replace with This:
+
+        public virtual int BreathComputeDamage()
+        {
+            int damage = (int)(Hits * BreathDamageScalar);
+
+            // Xml Spawner 2.36c XmlParagon - SOF
+            if (IsParagon)
+                damage = (int)(damage / XmlParagon.GetHitsBuff(this));
+            // Xml Spawner 2.36c XmlParagon - EOF
+
+            return damage;
+        }
+
+
+#1B)
+-------------------------------------
+around line 770 change this
+
+		public override string ApplyNameSuffix( string suffix )
+		{
+			if ( IsParagon )
+			{
+				if ( suffix.Length == 0 )
+					suffix = "(Paragon)";
+				else
+					suffix = String.Concat( suffix, " (Paragon)" );
+			}
+
+			return base.ApplyNameSuffix( suffix );
+		}
+
+Replace with This:
+
+	public override string ApplyNameSuffix(string suffix)
+	{
+	// Xml Spawner 3.26c XmlParagon - SOF
+	 XmlData customtitle = (XmlData)XmlAttach.FindAttachment(this, typeof(XmlData),"ParagonTitle");
+
+	if (customtitle != null)
+	{
+	suffix = customtitle.Data;
+	} else
+	if (IsParagon)
+	{
+	if (suffix.Length == 0)
+	suffix = XmlParagon.GetParagonLabel(this);
+	else
+	suffix = String.Concat(suffix, " " + XmlParagon.GetParagonLabel(this));
+
+	XmlAttach.AttachTo(this, new XmlData("ParagonTitle", suffix));
+	// Xml Spawner 3.26c XmlParagon - EOF
+	}
+
+
+#1C)
+---------------------------------
+Find:
+
+		public override void OnBeforeSpawn( Point3D location, Map m )
+		{
+			if ( Paragon.CheckConvert( this, location, m ) )
+				IsParagon = true;
+
+			base.OnBeforeSpawn( location, m );
+		}
+
+Replace with This:
+
+        public override void OnBeforeSpawn(Point3D location, Map m)
+        {
+            // Xml Spawner 3.26c XmlParagon - SOF
+            if (XmlParagon.CheckConvert(this, location, m))
+            // Xml Spawner 3.26c XmlParagon - EOF
+                IsParagon = true;
+
+            base.OnBeforeSpawn(location, m);
+        }
+
+#1D)
+---------------------------------------
+
+Find:
+
+			if ( !Summoned && !NoKillAwards && !IsBonded && treasureLevel >= 0 )
+			{
+				if ( m_Paragon && Paragon.ChestChance > Utility.RandomDouble() )
+					PackItem( new ParagonChest( this.Name, treasureLevel ) );
+				else if ( (Map == Map.Felucca || Map == Map.Trammel) && TreasureMap.LootChance >= Utility.RandomDouble() )
+					PackItem( new TreasureMap( treasureLevel, Map ) );
+			}	
+
+to this
+
+			if (!Summoned && !NoKillAwards && !IsBonded && treasureLevel >= 0)
+			{
+				// Xml Spawner 3.26c XmlParagon - SOF
+				if (m_Paragon && XmlParagon.GetChestChance(this) > Utility.RandomDouble())
+                    XmlParagon.AddChest(this,treasureLevel);
+				// Xml Spawner 3.26c XmlParagon - EOF
+				else if ((Map == Map.Felucca || Map == Map.Trammel) && TreasureMap.LootChance >= Utility.RandomDouble())
+					PackItem(new TreasureMap(treasureLevel, Map));
+			}
+
+#1E)
+--------------------------------------
+
+Find:
+
+		public virtual void OnKilledBy( Mobile mob )
+		{
+			if ( m_Paragon && Paragon.CheckArtifactChance( mob, this ) )
+				Paragon.GiveArtifactTo( mob );
+
+		
+Replace with This:
+
+       		public virtual void OnKilledBy(Mobile mob)
+		{
+			// Xml Spawner 3.26c XmlParagon - SOF
+			if (m_Paragon && XmlParagon.CheckArtifactChance(mob, this))
+                XmlParagon.GiveArtifactTo(mob, this);
+			// Xml Spawner 3.26c XmlParagon - EOF
+
+
+=============================================================

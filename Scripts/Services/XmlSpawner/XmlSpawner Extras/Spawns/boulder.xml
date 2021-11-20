@@ -1,0 +1,43 @@
+<Spawns>
+  <Points>
+    <Name>BoulderTrap</Name>
+    <UniqueId>ed497247-be40-4f8b-a114-9cae8cb32de5</UniqueId>
+    <Map>Trammel</Map>
+    <X>2351</X>
+    <Y>804</Y>
+    <Width>4</Width>
+    <Height>4</Height>
+    <CentreX>2353</CentreX>
+    <CentreY>806</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>8</MaxCount>
+    <MinDelay>0</MinDelay>
+    <MaxDelay>0</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>8</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0.5</MinRefractory>
+    <MaxRefractory>0.5</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>1</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <AllowNPCTriggering>False</AllowNPCTriggering>
+    <SpawnOnTrigger>False</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>static,4952:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONTHIS/basepriority/3/freerun/true:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=IF/GETONSPAWN,1,X&gt;2363/22:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONSPAWN,1/OFFSET,1,0,0:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=IF/GETONTRIGMOB,x=GETONSPAWN,1,x &amp; GETONTRIGMOB,y=GETONSPAWN,1,y/33:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=GOTO/1:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONTHIS/dorespawn/true/freerun/false:MX=1:SB=22:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONTRIGMOB/MSG/You have been crushed!/KILL:MX=1:SB=33:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+  </Points>
+</Spawns>

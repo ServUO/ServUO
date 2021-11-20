@@ -1,0 +1,45 @@
+<Spawns>
+  <Points>
+    <Name>TakeArms</Name>
+    <UniqueId>c3e99f49-eede-47cd-bdb4-e0c9d3b8fe37</UniqueId>
+    <Map>Felucca</Map>
+    <X>5459</X>
+    <Y>1141</Y>
+    <Width>6</Width>
+    <Height>6</Height>
+    <CentreX>5462</CentreX>
+    <CentreY>1144</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>3</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>3</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <ProximityTriggerMessage>No armed weapons allowed!</ProximityTriggerMessage>
+    <ItemTriggerName>*,baseweapon,EQUIPPED</ItemTriggerName>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>2</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <AllowNPCTriggering>False</AllowNPCTriggering>
+    <SpawnOnTrigger>True</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>metalbox/name/Weapons Storage:MX=1:SB=1:RT=0:TO=0:KL=0:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SETONNEARBY,5,Weapons Storage,container/ADD/ITEM,{GETONCARRIED,*,baseweapon,true,serial}/MSG/* Clunk *:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1:OBJ=SENDMSG/Your weapon has been taken for safe keeping:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=0:DN=-1:DX=-1:SP=1:PR=-1</Objects2>
+  </Points>
+</Spawns>

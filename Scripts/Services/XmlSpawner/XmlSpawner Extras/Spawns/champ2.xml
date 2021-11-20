@@ -1,0 +1,43 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>CustomChamp#1</Name>
+    <UniqueId>ccf1787d-a526-4376-9b91-31a523a10520</UniqueId>
+    <Map>Felucca</Map>
+    <X>5428</X>
+    <Y>1152</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5433</CentreX>
+    <CentreY>1157</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>15</MaxCount>
+    <MinDelay>10</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>True</DelayInSec>
+    <Duration>0</Duration>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>100</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>1</SequentialSpawning>
+    <RegionName />
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>ancientlich/name/UdderMaster/damagemin/21/damagemax/32/hitsmaxseed/2000/hue/500/int/1200/physicalresistanceseed/75/hits/2000/poisondamage/50/bodyvalue/231/ADD/&lt;WEAPON,4,5/name/BarnStormer/slayer/silver&gt;:MX=1:SB=5:RT=0:TO=0:KL=1:OBJ=ghoul/bodyvalue/203:MX=5:SB=1:RT=15:TO=0:KL=25:OBJ=wraith/bodyvalue/231:MX=5:SB=1:RT=0:TO=0:KL=0:OBJ=mummy/bodyvalue/205:MX=4:SB=2:RT=15:TO=1:KL=20:OBJ=skeletalmage/bodyvalue/208:MX=4:SB=2:RT=0:TO=0:KL=0:OBJ=lich/bodyvalue/233:MX=3:SB=3:RT=15:TO=2:KL=15:OBJ=lichlord/bodyvalue/232:MX=3:SB=4:RT=15:TO=3:KL=10:OBJ=skeletaldragon/bodyvalue/203/hue/10:MX=2:SB=4:RT=0:TO=0:KL=0:OBJ=simplenote/titlestring/Hail to the Conqueror/notestring/Congratulations on defeating the Farm champion UdderMaster!  Take this note to start the battle anew./name/The Conqueror:MX=1:SB=7:RT=0:TO=0:KL=1:OBJ=bonemagi/bodyvalue/209:MX=2:SB=2:RT=0:TO=0:KL=0:OBJ=poisonelemental/bodyvalue/190/name/methanefury:MX=2:SB=3:RT=0:TO=0:KL=0:OBJ=spectre/bodyvalue/207:MX=3:SB=1:RT=0:TO=0:KL=0:OBJ=shade/bodyvalue/228:MX=3:SB=1:RT=0:TO=0:KL=0:OBJ=gold/amount/20000:MX=1:SB=6:RT=0:TO=0:KL=0:OBJ=powerscroll,herding,115:MX=1:SB=6:RT=0:TO=0:KL=0:OBJ=platehelm/hue/200/name/Milk Bucket/skillbonuses.skill_1_name/veterinary/skillbonuses.skill_1_value/10/skillbonuses.skill_2_name/animaltaming/skillbonuses.skill_2_value/10/attributes.bonusstr/4:MX=1:SB=6:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>

@@ -1118,9 +1118,170 @@ namespace Server.Mobiles
         public virtual void OnDrainLife(Mobile victim)
         {
         }
+		#region Breath ability, like dragon fire breath
+		private long m_NextBreathTime;
 
-        #region Flee!!!
-        public virtual bool CanFlee => !m_Paragon && !GivesMLMinorArtifact && !SlayerGroup.GetEntryByName(SlayerName.Silver).Slays(this);
+		// Must be overriden in subclass to enable
+		public virtual bool HasBreath { get => false; }
+
+		// Base damage given is: CurrentHitPoints * BreathDamageScalar
+		public virtual double BreathDamageScalar { get { return (Core.AOS ? 0.16 : 0.05); } }
+
+		// Min/max seconds until next breath
+		public virtual double BreathMinDelay { get { return 30.0; } }
+		public virtual double BreathMaxDelay { get { return 45.0; } }
+
+		// Creature stops moving for 1.0 seconds while breathing
+		public virtual double BreathStallTime { get { return 1.0; } }
+
+		// Effect is sent 1.3 seconds after BreathAngerSound and BreathAngerAnimation is played
+		public virtual double BreathEffectDelay { get { return 1.3; } }
+
+		// Damage is given 1.0 seconds after effect is sent
+		public virtual double BreathDamageDelay { get { return 1.0; } }
+
+		public virtual int BreathRange { get { return RangePerception; } }
+
+		// Damage types
+		public virtual int BreathChaosDamage { get { return 0; } }
+		public virtual int BreathPhysicalDamage { get { return 0; } }
+		public virtual int BreathFireDamage { get { return 100; } }
+		public virtual int BreathColdDamage { get { return 0; } }
+		public virtual int BreathPoisonDamage { get { return 0; } }
+		public virtual int BreathEnergyDamage { get { return 0; } }
+
+
+
+		// Effect details and sound
+		public virtual int BreathEffectItemID { get { return 0x36D4; } }
+		public virtual int BreathEffectSpeed { get { return 5; } }
+		public virtual int BreathEffectDuration { get { return 0; } }
+		public virtual bool BreathEffectExplodes { get { return false; } }
+		public virtual bool BreathEffectFixedDir { get { return false; } }
+		public virtual int BreathEffectHue { get { return 0; } }
+		public virtual int BreathEffectRenderMode { get { return 0; } }
+
+		public virtual int BreathEffectSound { get { return 0x227; } }
+
+		// Anger sound/animations
+		public virtual int BreathAngerSound { get { return GetAngerSound(); } }
+		public virtual int BreathAngerAnimation { get { return 12; } }
+
+		public virtual void BreathStart(Mobile target)
+		{
+			BreathStallMovement();
+			BreathPlayAngerSound();
+			BreathPlayAngerAnimation();
+
+			this.Direction = this.GetDirectionTo(target);
+
+			Timer.DelayCall(TimeSpan.FromSeconds(BreathEffectDelay), new TimerStateCallback(BreathEffect_Callback), target);
+		}
+
+		public virtual void BreathStallMovement()
+		{
+			if (m_AI != null)
+				m_AI.NextMove = Core.TickCount + (int)(BreathStallTime * 1000);
+		}
+
+		public virtual void BreathPlayAngerSound()
+		{
+			PlaySound(BreathAngerSound);
+		}
+
+		public virtual void BreathPlayAngerAnimation()
+		{
+			Animate(BreathAngerAnimation, 5, 1, true, false, 0);
+		}
+
+		public virtual void BreathEffect_Callback(object state)
+		{
+			Mobile target = (Mobile)state;
+
+			if (!target.Alive || !CanBeHarmful(target))
+				return;
+
+			BreathPlayEffectSound();
+			BreathPlayEffect(target);
+
+			Timer.DelayCall(TimeSpan.FromSeconds(BreathDamageDelay), new TimerStateCallback(BreathDamage_Callback), target);
+		}
+
+		public virtual void BreathPlayEffectSound()
+		{
+			PlaySound(BreathEffectSound);
+		}
+
+		public virtual void BreathPlayEffect(Mobile target)
+		{
+			Effects.SendMovingEffect(this, target, BreathEffectItemID,
+				BreathEffectSpeed, BreathEffectDuration, BreathEffectFixedDir,
+				BreathEffectExplodes, BreathEffectHue, BreathEffectRenderMode);
+		}
+
+		public virtual void BreathDamage_Callback(object state)
+		{
+			Mobile target = (Mobile)state;
+
+			if (target is BaseCreature && ((BaseCreature)target).BreathImmune)
+				return;
+
+			if (CanBeHarmful(target))
+			{
+				DoHarmful(target);
+				BreathDealDamage(target);
+			}
+		}
+
+		public virtual void BreathDealDamage(Mobile target)
+		{
+			if (!Evasion.CheckSpellEvasion(target))
+			{
+				int physDamage = BreathPhysicalDamage;
+				int fireDamage = BreathFireDamage;
+				int coldDamage = BreathColdDamage;
+				int poisDamage = BreathPoisonDamage;
+				int nrgyDamage = BreathEnergyDamage;
+
+				if (BreathChaosDamage > 0)
+				{
+					switch (Utility.Random(5))
+					{
+						case 0: physDamage += BreathChaosDamage; break;
+						case 1: fireDamage += BreathChaosDamage; break;
+						case 2: coldDamage += BreathChaosDamage; break;
+						case 3: poisDamage += BreathChaosDamage; break;
+						case 4: nrgyDamage += BreathChaosDamage; break;
+					}
+				}
+
+				if (physDamage == 0 && fireDamage == 0 && coldDamage == 0 && poisDamage == 0 && nrgyDamage == 0)
+				{
+					target.Damage(BreathComputeDamage(), this);// Unresistable damage even in AOS
+				}
+				else
+				{
+					AOS.Damage(target, this, BreathComputeDamage(), physDamage, fireDamage, coldDamage, poisDamage, nrgyDamage);
+				}
+			}
+		}
+
+		public virtual int BreathComputeDamage()
+		{
+			int damage = (int)(Hits * BreathDamageScalar);
+
+			if (IsParagon)
+				damage = (int)(damage / Paragon.HitsBuff);
+
+			if (damage > 200)
+				damage = 200;
+
+			return damage;
+		}
+
+		#endregion
+		#region Flee!!!
+		public virtual bool CanFlee => !m_Paragon && !GivesMLMinorArtifact && !SlayerGroup.GetEntryByName(SlayerName.Silver).Slays(this);
         public virtual double FleeChance => 0.25;
         public virtual double BreakFleeChance => 0.85;
 
@@ -1390,8 +1551,8 @@ namespace Server.Mobiles
             Loyalty -= 3;
             return false;
         }
-
-        public virtual bool CanBeControlledBy(Mobile m)
+		
+		public virtual bool CanBeControlledBy(Mobile m)
         {
             return (GetControlChance(m) > 0.0);
         }
