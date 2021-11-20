@@ -771,6 +771,7 @@ namespace Server
 		SaveFlag = 0x040,
 		Weight = 0x080,
 		Spawner = 0x100,
+		VisList = 0x200,
 	}
 
 	public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
@@ -943,31 +944,8 @@ namespace Server
 		[CommandProperty(AccessLevel.Counselor, true)]
 		public Mobile LastHeldByStaff { get; private set; }
 
-		private byte m_GridLocation; // Default 0
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		public byte GridLocation
-		{
-			get => m_GridLocation;
-			set
-			{
-				if (Parent is Container)
-				{
-					if (value < 0 || value > 0x7C || !((Container)Parent).IsFreePosition(value))
-					{
-						m_GridLocation = ((Container)Parent).GetNewPosition(0);
-					}
-					else
-					{
-						m_GridLocation = value;
-					}
-				}
-				else
-				{
-					m_GridLocation = value;
-				}
-			}
-		}
+		[CommandProperty(AccessLevel.GameMaster, true)]
+		public byte GridLocation { get; internal set; } = Byte.MaxValue;
 
 		[Flags]
 		private enum ImplFlag
@@ -999,6 +977,8 @@ namespace Server
 			public int m_SavedFlags;
 
 			public double m_Weight = -1;
+
+			public Dictionary<Mobile, bool> m_VisibilityList;
 		}
 
 		private CompactInfo m_CompactInfo;
@@ -1055,6 +1035,11 @@ namespace Server
 				{
 					flags |= ExpandFlag.Weight;
 				}
+
+				if (info.m_VisibilityList != null)
+				{
+					flags |= ExpandFlag.VisList;
+				}
 			}
 
 			return flags;
@@ -1089,8 +1074,17 @@ namespace Server
 				return;
 			}
 
-			var isValid = info.m_Name != null || info.m_Items != null || info.m_Bounce != null || info.m_HeldBy != null || info.m_BlessedFor != null ||
-						  info.m_Spawner != null || info.m_TempFlags != 0 || info.m_SavedFlags != 0 || info.m_Weight != -1;
+			var isValid = info.m_Name != null 
+					   || info.m_Items != null 
+					   || info.m_Bounce != null 
+					   || info.m_HeldBy != null 
+					   || info.m_BlessedFor != null 
+					   || info.m_Spawner != null 
+					   || info.m_TempFlags != 0 
+					   || info.m_SavedFlags != 0 
+					   || info.m_Weight != -1 
+					   || info.m_VisibilityList != null
+					   ;
 
 			if (!isValid)
 			{
@@ -1137,6 +1131,95 @@ namespace Server
 			}
 
 			return info.m_Items;
+		}
+
+		public Dictionary<Mobile, bool> LookupVisibility()
+		{
+			var info = LookupCompactInfo();
+
+			if (info != null)
+			{
+				return info.m_VisibilityList;
+			}
+
+			return null;
+		}
+
+		public Dictionary<Mobile, bool> AcquireVisibility()
+		{
+			var info = AcquireCompactInfo();
+
+			if (info.m_VisibilityList == null)
+			{
+				info.m_VisibilityList = new Dictionary<Mobile, bool>();
+			}
+
+			return info.m_VisibilityList;
+		}
+
+		public void ClearVisibility()
+		{
+			var info = AcquireCompactInfo();
+
+			if (info.m_VisibilityList != null)
+			{
+				info.m_VisibilityList.Clear();
+				info.m_VisibilityList = null;
+
+				VerifyCompactInfo();
+			}
+		}
+
+		public void ClearVisibility(Mobile m)
+		{
+			SetVisibility(m, null);
+		}
+
+		public void SetVisibility(Mobile m, bool? state)
+		{
+			if (m == null || m.IsStaff())
+			{
+				return;
+			}
+
+			CompactInfo info;
+
+			if (state != null)
+			{
+				info = AcquireCompactInfo();
+			}
+			else
+			{
+				info = LookupCompactInfo();
+			}
+
+			if (info == null)
+			{
+				return;
+			}
+
+			var vis = info.m_VisibilityList;
+
+			if (vis == null)
+			{
+				if (state == null)
+				{
+					return;
+				}
+
+				info.m_VisibilityList = vis = new Dictionary<Mobile, bool>();
+			}
+
+			if (state != null)
+			{
+				vis[m] = state.Value;
+			}
+			else if (vis.Remove(m) && vis.Count == 0)
+			{
+				info.m_VisibilityList = null;
+
+				VerifyCompactInfo();
+			}
 		}
 
 		public static Bitmap GetBitmap(int itemID)
@@ -1451,7 +1534,7 @@ namespace Server
 				AddQuestItemProperty(list);
 			}
 
-			AddExtraTooltipProperties(list);
+			AddExtraProperties(list);
 
 			AppendChildNameProperties(list);
 		}
@@ -1533,7 +1616,7 @@ namespace Server
 			1114776, // 5 lines
 		};
 
-		public virtual void AddExtraTooltipProperties(ObjectPropertyList list)
+		public virtual void AddExtraProperties(ObjectPropertyList list)
 		{
 			var aggregate = new StringBuilder();
 
@@ -1676,6 +1759,8 @@ namespace Server
 
 			if (bounce != null)
 			{
+				GridLocation = bounce.m_GridLocation;
+
 				if (bounce.m_ParentStack is Item ps && !ps.Deleted && ps.IsAccessibleTo(from) && ps.StackWith(from, this))
 				{
 					ClearBounce();
@@ -2455,6 +2540,41 @@ namespace Server
 			}
 		}
 
+		private bool m_VisibleFlag = true;
+
+		public bool VisibleFlag
+		{
+			get => m_VisibleFlag;
+			set
+			{
+				if (m_VisibleFlag != value)
+				{
+					m_VisibleFlag = value;
+
+					ReleaseWorldPackets();
+
+					if (m_Map != null && m_Map != Map.Internal)
+					{
+						var eable = GetClientsInRange(Core.GlobalMaxUpdateRange);
+
+						foreach (var state in eable)
+						{
+							var m = state.Mobile;
+
+							if (m != null && !m.CanSee(this) && m.InUpdateRange(this))
+							{
+								state.Send(RemovePacket);
+							}
+						}
+
+						eable.Free();
+					}
+
+					Delta(ItemDelta.Update);
+				}
+			}
+		}
+
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool Visible
 		{
@@ -2500,6 +2620,29 @@ namespace Server
 				return true;
 			}
 
+			var vis = LookupVisibility();
+
+			if (vis != null && vis.Count > 0)
+			{
+				if (vis.TryGetValue(m, out var state))
+				{
+					return state;
+				}
+
+				var a = m.Account;
+
+				if (a != null && a.Length > 1)
+				{
+					for (var i = 0; i < a.Length; i++)
+					{
+						if (a[i] != null && a[i] != m && vis.TryGetValue(a[i], out state))
+						{
+							return state;
+						}
+					}
+				}
+			}
+
 			return Visible;
 		}
 
@@ -2529,7 +2672,7 @@ namespace Server
 		{
 			var flags = 0;
 
-			if (!Visible)
+			if (!Visible && VisibleFlag)
 			{
 				flags |= 0x80;
 			}
@@ -2670,6 +2813,8 @@ namespace Server
 			SavedFlags = 0x02000000,
 			NullWeight = 0x04000000,
 			Light = 0x08000000,
+			VisibilityList = 0x10000000,
+			VisibilityFlag = 0x20000000,
 		}
 
 		private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)
@@ -2763,7 +2908,7 @@ namespace Server
 			// 12: Light no longer backed by Direction
 
 			// 11
-			writer.Write(m_GridLocation);
+			writer.Write(GridLocation);
 
 			// 10: Honesty moved to ItemSockets
 
@@ -2802,6 +2947,7 @@ namespace Server
 
 			var info = LookupCompactInfo();
 			var items = LookupItems();
+			var vis = LookupVisibility();
 
 			if (m_Direction != Direction.North)
 			{
@@ -2861,6 +3007,16 @@ namespace Server
 			if (m_Map != Map.Internal)
 			{
 				flags |= SaveFlag.Map;
+			}
+
+			if (m_VisibleFlag)
+			{
+				flags |= SaveFlag.VisibilityFlag;
+			}
+
+			if (vis != null && vis.Count > 0)
+			{
+				flags |= SaveFlag.VisibilityList;
 			}
 
 			if (info != null && info.m_BlessedFor != null && !info.m_BlessedFor.Deleted)
@@ -3069,6 +3225,17 @@ namespace Server
 				writer.Write(info.m_HeldBy);
 			}
 
+			if (GetSaveFlag(flags, SaveFlag.VisibilityList))
+			{
+				writer.Write(vis.Count);
+
+				foreach (var o in vis)
+				{
+					writer.Write(o.Key);
+					writer.Write(o.Value);
+				}
+			}
+
 			if (GetSaveFlag(flags, SaveFlag.SavedFlags))
 			{
 				writer.WriteEncodedInt(info.m_SavedFlags);
@@ -3274,7 +3441,7 @@ namespace Server
 						{
 							var line = reader.ReadString();
 
-							if (i < TooltipColorsBase.Length)
+							if (i < TooltipsBase.Length)
 								TooltipsBase[i] = line;
 						}
 
@@ -3337,7 +3504,7 @@ namespace Server
 				case 12:
 				case 11:
 					{
-						m_GridLocation = reader.ReadByte();
+						GridLocation = reader.ReadByte();
 						goto case 10;
 					}
 				case 10:
@@ -3582,6 +3749,30 @@ namespace Server
 						if (GetSaveFlag(flags, SaveFlag.HeldBy))
 						{
 							AcquireCompactInfo().m_HeldBy = reader.ReadMobile();
+						}
+
+						if (GetSaveFlag(flags, SaveFlag.VisibilityFlag))
+						{
+							m_VisibleFlag = true;
+						}
+
+						if (GetSaveFlag(flags, SaveFlag.VisibilityList))
+						{
+							var count = reader.ReadInt();
+							var vis = new Dictionary<Mobile, bool>(count);
+
+							while (--count >= 0)
+							{
+								var key = reader.ReadMobile();
+								var val = reader.ReadBool();
+
+								if (key != null && !key.Deleted)
+								{
+									vis[key] = val;
+								}
+							}
+
+							AcquireCompactInfo().m_VisibilityList = vis;
 						}
 
 						if (GetSaveFlag(flags, SaveFlag.SavedFlags))
@@ -5201,6 +5392,18 @@ namespace Server
 
 		protected virtual void OnParentChanged(IEntity oldParent)
 		{
+			if (m_Parent is Container c)
+			{
+				if (GridLocation == Byte.MaxValue)
+				{
+					GridLocation = (byte)(c.Items.Count % Byte.MaxValue);
+				}
+			}
+			else
+			{
+				GridLocation = Byte.MaxValue;
+			}
+
 			if (m_Map != null)
 			{
 				if (oldParent != null && m_Parent == null)

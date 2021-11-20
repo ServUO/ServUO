@@ -1098,19 +1098,18 @@ namespace Server.Network
 			int y = pvSrc.ReadInt16();
 			int z = pvSrc.ReadSByte();
 
+			var gridloc = Byte.MaxValue;
+
 			if (state.ContainerGridLines)
 			{
-				var gridloc = pvSrc.ReadByte();
+				gridloc = pvSrc.ReadByte();
+			}
 
-				if (serial.IsItem)
-				{
-					var dropped = World.FindItem(serial);
+			var dropped = World.FindItem(serial);
 
-					if (dropped != null)
-					{
-						dropped.GridLocation = gridloc;
-					}
-				}
+			if (dropped != null)
+			{
+				dropped.GridLocation = gridloc;
 			}
 
 			var dest = pvSrc.ReadSerial();
