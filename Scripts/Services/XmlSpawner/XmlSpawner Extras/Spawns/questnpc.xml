@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>QuestNPC#1</Name>
+    <UniqueId>3cd5d0e9-3ad6-442d-9459-c654cce5661e</UniqueId>
+    <Map>Felucca</Map>
+    <X>5437</X>
+    <Y>1153</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5442</CentreX>
+    <CentreY>1158</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>2</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>True</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>xmlquestnpc/configfile/testnpc/loadconfig/true:MX=1:SB=2:RT=0:TO=0:KL=0:OBJ=metalchest/name/checkitout/movable/false:MX=1:SB=2:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>

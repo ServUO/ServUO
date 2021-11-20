@@ -1,0 +1,149 @@
+using Server.Engines.XmlSpawner2;
+
+
+STEP: 1 (RECOMMENDED)
+-----------------------------------------
+To automatically add xmlpoints support to newly created characters, 
+around line 709 of Scripts/Misc/CharacterCreation.cs change
+
+
+Find:  
+
+			new WelcomeTimer( newChar ).Start();
+		}
+
+Replace with This:
+
+			new WelcomeTimer( newChar ).Start();
+			// Xml Spawner 3.26c XmlPoints - SOF
+			XmlAttach.AttachTo(newChar, new XmlPoints());
+			// Xml Spawner 3.26c XmlPoints - EOF
+		}
+
+
+==================================================
+
+
+STEP: 2 (RECOMMENDED)
+-----------------------------------------
+and in the MobileNotoriety method around line 279 make the following change.
+
+
+Find:
+	
+		if ( target.Criminal )
+ 			return Notoriety.Criminal;
+
+Replace with This:
+
+		if( target.Criminal )
+			return Notoriety.Criminal;
+
+		// Xml Spawner 3.26c XmlPoints - SOF
+		if(XmlPoints.AreTeamMembers(source,target))
+                	return Notoriety.Ally;
+		else
+		if(XmlPoints.AreChallengers(source,target))
+                	return Notoriety.Enemy;
+		// Xml Spawner 3.26c XmlPoints - EOF
+
+
+=============================================
+
+
+STEP :3 (RECOMMENDED)
+-----------------------------------------------
+To support overriding insurance fees/award during challenge games 
+In PlayerMobile.cs in the CheckInsuranceOnDeath method around line 1825 change
+
+Find:
+
+	private bool CheckInsuranceOnDeath( Item item )
+	{
+	if ( InsuranceEnabled && item.Insured )
+	{
+
+Replaces with This:
+
+        private bool CheckInsuranceOnDeath(Item item)
+        {
+            if (InsuranceEnabled && item.Insured)
+            {
+                // Xml Spawner 3.26c XmlPoints - EOF
+               if(XmlPoints.InsuranceIsFree(this, m_InsuranceAward))
+               {
+                   item.PayedInsurance = true;
+                   return true;
+               }
+		// Xml Spawner 3.26c XmlPoints - EOF
+                if (AutoRenewInsurance)
+
+====================================================
+
+
+STEP: 4 (RECOMMENDED)
+-----------------------------------------------
+to allow beneficial acts between team members.
+in Notoriety.cs in the Mobile_AllowBeneficial method around line 82 change
+
+Find:
+	
+	if ( target is BaseCreature && !((BaseCreature)target).Controlled )
+ 		return false; // Players cannot heal uncontroled mobiles
+
+Replace with This:
+
+	if ( target is BaseCreature && !((BaseCreature)target).Controlled )
+ 		return false; // Players cannot heal uncontroled mobiles
+   
+	// Xml Spawner 2.36c XmlPoints - SOF
+	if (XmlPoints.AreInAnyGame(target))
+                return XmlPoints.AreTeamMembers(from,target);
+	// Xml Spawner 2.36c XmlPoints - EOF
+
+
+=============================================================
+
+
+STEP 8: (RECOMMENDED)
+---------------------------------------------------------
+to prevent faction skill loss when participating in challenge games.
+in PlayerMobile.cs the OnDeath method around line 1990 change.
+
+Find:	
+
+	Faction.HandleDeath( this, killer );
+
+Replaces with This:
+
+        // Xml Spawner 3.26c XmlPoints - SOF
+	if(!XmlPoints.AreChallengers(this, killer))
+	// Xml Spawner 3.26c XmlPoints - EOF
+        Faction.HandleDeath(this, killer);
+
+
+===============================================================
+
+
+STEP 9: (RECOMMENDED)
+--------------------------------------------------
+to display kills and deaths below the players name on mouseover add this to playermobile.cs.
+*I Put this just after another. SINCE PlayerMobile.cs has no AddNameProperties Method.
+
+
+public override void AddNameProperties( ObjectPropertyList list )
+  {
+   base.AddNameProperties(list);
+
+   XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
+
+   if (a != null)
+   {
+    list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
+   }
+  }
+
+		
+========================================================
+
+

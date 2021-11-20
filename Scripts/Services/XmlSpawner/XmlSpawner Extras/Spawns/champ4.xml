@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>Champ#4</Name>
+    <UniqueId>62d233e5-921f-4b0f-a119-8135f45b577c</UniqueId>
+    <Map>Felucca</Map>
+    <X>5435</X>
+    <Y>1155</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5440</CentreX>
+    <CentreY>1160</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>8</MaxCount>
+    <MinDelay>20</MinDelay>
+    <MaxDelay>20</MaxDelay>
+    <DelayInSec>True</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>0</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <SmartSpawning>False</SmartSpawning>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>harpy/SAY/I guard the master:MX=5:SB=0:RT=2:TO=3:KL=1:RK=0:CA=1:DN=2:DX=3:OBJ=orc/SAY/I think I'll hang out here:MX=2:SB=1:RT=0:TO=0:KL=1:RK=1:CA=0:DN=1:DX=2:OBJ=troll:MX=3:SB=1:RT=0:TO=0:KL=0:RK=0:CA=1:DN=0.5:DX=1:OBJ=ogre/SAY/Just stopping by...:MX=1:SB=2:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:OBJ=lich/SAY/You will never get past me!:MX=1:SB=3:RT=10:TO=0:KL=1:RK=1:CA=0:DN=-1:DX=-1:OBJ=gold,500/MSG/Here is your reward:MX=1:SB=4:RT=0:TO=0:KL=1:RK=0:CA=1:DN=-1:DX=-1</Objects2>
+  </Points>
+</Spawns>

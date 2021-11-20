@@ -1,0 +1,281 @@
+updated for xmlspawner 3.26
+
+XmlMobFactions v1.06
+RunUO 2.0 version
+updated 6/23/06
+ArteGordon
+
+SUMMARY
+A system that keeps track of a players faction with user-definable mob groups.  Faction can be gained and lost by killing mobs that are allied or opposed to each faction group.  Additional scripts that are included provide additional features such as giving out faction for completing quests, making equipment that requires faction to equip, or weapons that have damage bonuses based upon faction levels with certain groups. By following the recommended installation steps, additional faction-dependent features can be added such as making mob taming, control, and how long it takes for mobs to acquire a player as a target dependent on faction standing with a given mobs group.
+Also supports mob faction rewards that can be purchased using mob kill Credits.
+
+[b]New to version 1.06[/b]
+update 2/1/05
+
+[b]- added a new MobFactionRegion feature that allows you to define a region which restricts entry based upon a minimum mob faction level.[/b] This could be placed in front of dungeons, or buildings, for example, to limit access to those with sufficient mob faction.
+Players that try to recall, gate, or teleport into the region will be automatically ejected to a location that can be specified via props.  By default, this location is the location of the MobFactionRegionStone that controls the region, but it can be set to anywhere.
+Desired faction type and faction level can be set via [props along with some other properties.
+Note, if this is placed within existing regions, you may have to raise the MobFactionRegion priority via the MobFactionRegionStone in order for it to function.
+
+[b]- added a MobFactionRegionStone that allows staff to define MobFactionRegions.[/b] It can either be setup as a simple single rectangular region by double clicking the flag and defining a bounding box, or you can give it the name of an existing region in the CopyRegion property and it will copy that regions bounding areas.  That way you can use other tools to make more complicated regions and then just put the MobFactionRegion on top of them.  Note, this doesnt have any effect on the region that you copy. 
+For example, if you wanted to make the Britain Graveyard accessible only to players with sufficient Undead faction, you would just set the CopyRegion to "Britain Graveyard", the FactionType to "Undead", and the FactionLevel to whatever you wanted. 
+
+New to Version 1.05a
+- added optional installation step 8 that allows you to make barding dependent on mob faction.
+
+New to Version 1.05
+- updated the installation instructions for 1.0.0
+
+
+INSTALLATION:
+for RunUO 2.0
+
+STEP 1:
+Install the latest XmlSpawner2 package (must be at least version 2.67. You can find it here).  Make sure that you perform installation steps 2 and 6, and optionally step 9, from that thread.  If you decide not to perform step 9, everything in the system will work except for the XmlFactionEquip attachment.
+
+STEP 2: 
+Place the scripts in this package into your custom scripts directory, or into the XmlAttachments directory of your XmlSpawner2 installation. Place the optional .xml examples in the top level of your RunUO installation directory.
+
+STEP 3:
+Add mob faction support to all existing players while ingame using the command "[addallmobfactions".  If you change your mind and decide to remove it, you can use the "[removeallmobfactions" command.  If you would just like to try it out on one player you can use the "[addatt xmlmobfactions" command and target a player.
+
+STEP 4: 
+To automatically add mob faction support to newly created characters, add the following line to the end of the EventSink_CharacterCreated method in CharacterCreation.cs 
+
+around line 709 of Scripts/Misc/CharacterCreation.cs change
+
+	new WelcomeTimer( newChar ).Start();
+
+to
+
+	new WelcomeTimer( newChar ).Start();
+
+	// mod to attach the MobFactions attachment automatically to new chars
+	XmlAttach.AttachTo(newChar, new XmlMobFactions());
+
+also at the top of the file add the line
+
+using Server.Engines.XmlSpawner2;
+
+STEP 5: (optional)
+To make the speed with which mobs acquire players as combat targets depend on the players faction with that mobs group, make the following changes
+
+around line 2471 of Scripts/Engines/AI/AI/BaseAI.cs in the AcquireFocusMobmethod, change
+
+
+		// Can't acquire a target we can't see.
+		if ( !m_Mobile.CanSee( m ) )
+						continue;
+
+to
+
+
+		// Can't acquire a target we can't see.
+		if ( !m_Mobile.CanSee( m ) )
+						continue;
+
+		// Mob faction dependent target acquisition
+		if (!Server.Engines.XmlSpawner2.XmlMobFactions.CheckAcquire(m_Mobile, m))
+			continue;
+
+
+around line 4236 of Scripts/Engines/AI/Creature/BaseCreature.cs	change
+
+	public virtual TimeSpan ReacquireDelay{ get{ return TimeSpan.FromSeconds( 10.0 ); } }
+
+to
+
+	public virtual TimeSpan ReacquireDelay{ get{ return TimeSpan.FromSeconds( 2.0 ); } }
+
+You set it to whatever you like, but 2 seconds is a good value to start with.  See the CheckAcquire method XmlMobFactions.cs for more details.
+
+
+STEP 6: (optional)
+To make the chance of controlling a creature depend on the players faction with that creatures group, make the following change to BaseCreature.cs  
+
+around line 832 of Scripts/Engines/AI/Creature/BaseCreature.cs at the end of the GetControlChance method, change
+
+
+	return ( (double)chance / 1000 );
+
+to
+
+	// faction mod for mob control.  This will add +- 25% chance for control over a range of +-25K faction.
+	// using a positive scaling factor means that positive faction will increase control chance
+	chance += (int)XmlMobFactions.GetScaledFaction(m, this, -250, 250, 0.001);
+
+	return ( (double)chance / 1000 );
+
+
+STEP 7: (optional)
+To make the chance of taming a creature depend on the players faction with that creatures group, make the following change to AnimalTaming.cs
+
+around line 323 of Scripts/Skills/AnimalTaming.cs in the OnTick method, change
+
+	minSkill += 24.9;
+
+to
+
+	minSkill += 24.9;
+						
+	// faction mod for taming change.  This will modify min taming skill required by +-25 over a range of +-25K faction.
+	// using a negative scaling factor means that positive faction will reduce skill requirement
+	minSkill += XmlMobFactions.GetScaledFaction(m_Tamer, m_Creature, -25, 25, -0.001);
+
+STEP 8: (optional)
+To make the chance of barding a creature depend on the players faction with that creatures group, make the following changes to Peacemaking.cs, Discordance.cs, and Provocation.cs.  You dont have to do them all if you dont want to.  For instance, if you just wanted to mod peacemaking.cs, that would be fine.
+
+around line 148 of Scripts/Skills/Peacemaking.cs in the OnTarget method, change
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+
+to
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+							
+	// Adjust min peacemaking skill required by +-25 over a range of +-25K faction.
+	// using a negative scaling factor means that positive faction will reduce skill requirement (make it easier)
+	diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);  
+
+
+around line 111 of Scripts/Skills/Provocation.cs in the OnTarget method, change
+
+	double diff = ((m_Instrument.GetDifficultyFor( m_Creature ) + m_Instrument.GetDifficultyFor( creature )) * 0.5) - 5.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+
+to
+
+	double diff = ((m_Instrument.GetDifficultyFor( m_Creature ) + m_Instrument.GetDifficultyFor( creature )) * 0.5) - 5.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+
+	// Adjust min provocation skill required by +-25 over a range of +-25K faction.
+	// using a negative scaling factor means that positive faction will reduce skill requirement (make it easier)
+	diff += (XmlMobFactions.GetScaledFaction(from, m_Creature, -25, 25, -0.001) + XmlMobFactions.GetScaledFaction(from, creature, -25, 25, -0.001))*0.5;
+
+
+around line 145 of Scripts/Skills/Discordance.cs in the OnTarget method, change
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+
+to
+
+	double diff = m_Instrument.GetDifficultyFor( targ ) - 10.0;
+	double music = from.Skills[SkillName.Musicianship].Value;
+						
+	// Adjust min discordance skill required by +-25 over a range of +-25K faction.
+	// using a negative scaling factor means that positive faction will reduce skill requirement (make it easier)
+	diff += XmlMobFactions.GetScaledFaction(from, targ, -25, 25, -0.001);
+
+
+and at the top of each of the files add
+
+using Server.Engines.XmlSpawner2;
+
+
+
+
+DESCRIPTION:
+
+This system makes use of the XmlSpawner2 attachment system and the XmlSpawner2 package must be installed to support it.
+
+Because the attachment system does not require any changes to serialization/deserializations on any item or mobile, it can be safely added and removed without interfering with any other systems that you might have installed. 
+
+Note, this has nothing to do with the upcoming release of the official player faction system and will not interfere with that system in any way.
+
+Commands supported:
+[addallmobfactions - this command will add the mob factions attachment to all current players and can only be run by an administrator
+[removeallmobfactions - this command will remove the mob factions attachment from all current players and can only be run by an administrator
+[checkmobfactions - this command can be run by players to report their current standing with all existing mob factions (this is the same as using the item identification skill on themselves)
+[verbosemobfactions true/false - this command toggles the verbose reporting of faction gained and lost for each kill.
+
+
+The system comes configured with a set of default factions based around the slayer opponent groups with some modifications.  These include
+
+            Player,
+            Humanoid,
+            Undead,
+            Reptilian,
+            Arachnid,
+            Elemental,
+            Abyss,
+            DragonLords,
+            NecroMasters,
+            Fairie,
+            Plant
+
+Killing a mob that belongs to one of these factions will cause a loss in faction with that group and its allies (the amount can be scaled for each ally), and a gain in faction with the groups opponents (the amount can be scaled for each opponent).
+Additionally, factions such as the DragonLords or NecroMasters which dont have any default members can be set up as quest factions, or can have members dynamically assigned by using the XmlDynamicFaction attachment to assign/spawn a mob into that faction.
+
+For example, here are some of the ally/opponent relationships for a few of the default groups
+
+	Player: Allies=Player, Fairies: Opponents=Arachnid, Humanoid, Undead, Reptilian, Elemental, Abyss
+	Humanoid: Allies=Humanoid: Opponents=Undead, Player, Plant
+	Undead: Allies=Undead, Abyss: Opponents=Humanoid, Player, Fairie
+
+The groups, their members, allies, and opponents can be configured in the XmlMobFactions.cs file and new factions, such as the Fairie, and Plant factions can be easily added into the faction group definitions in that script.  The groups also do not have to remain static.  They can be changed and new factions can be added transparently at any time after the system is installed and they will be automatically reflected in each players faction list.
+
+
+Changelog
+
+Version 1.04
+updated 1/14/05
+- added page scrolling buttons to the faction rewards gump.
+
+- a few minor modifications to the default factions lists.
+
+Version 1.03
+updated 12/04/04
+- minor display change on mouseover for items with XmlFactionMastery attachment.  The properties will no longer attempt to display the %damage increase (which it could not do because it did not know who the player was performing the mouseover).  The correct damage information will still be displayed when using the Item Identification skill.
+
+- added a checkbox to the mob factions gump to toggle the verbosemobfactions setting that can be used instead of the "[verbosemobfactions true/false"command
+
+Version 1.02
+updated 11/13/04
+
+- modified [addallmobfactions command to ignore players that already have XmlMobFactions attachments instead of resetting them.
+
+- added several significant performance optimizations.
+
+- modified some of the default factions.
+
+
+Version 1.01
+updated 11/09/04
+
+- added kill Credits that are added for each kill and can be use to purchase items from the MobFactionsRewardStone.   The m_CreditScale factor determines how many credits are gained per kill based on the fame of the mob (default 0.1%).
+
+- added the MobFactionsRewardStone that can be used to purchase rewards using kill Credits.  Just "[add MobFactionsRewardStone to place it.  Rewards can have specific faction requirements as well as Credit requirements. (see the examples of rewards in XmlMobFactionsRewards.cs)
+
+- added the XmlMobFactionsRewards class that lets you specify the rewards their costs and optionally, minimum faction requirements. Items, Mobiles, and Attachments can be specified as rewards.
+
+- added the static methods int XmlMobFactions.GetCredits(Mobile m), bool XmlMobFactions.TakeCredits(Mobile m, int credits), and bool XmlMobFactions.HasCredits(Mobile m, int credits) which external scripts can use to interface with the Credits system.  Note, if a negative credits argument is passed to TakeCredits, it will add to the players Credit total.  HasCredits and TakeCredits return a bool depending on whether player has sufficient credits.
+
+- modified the mob factions gump to report available kill Credits.
+
+
+Version 1.0
+updated 11/06/04
+
+- added the XmlMobFactions attachment.  This is the main attachment that supports mob factions.
+
+- added the XmlFactionMastery attachment that will increase damage by the some percentage when members of the specified faction are hit with a weapon.  The percentage increase depends on the owners total faction with opponents of the target faction.  For example, attaching Undead XmlFactionMastery to a weapon (e.g. [addatt XmlFactionMastery Undead) will cause it to do bonus damage against any mob in the undead faction depending on the owners faction with its opponents (e.g. Humanoid). Using the ItemIdentification skill on the weapon will reveal the current bonus level. This can be attached to mobiles or weapons.  If attached directly to a player, then the bonus will apply to any weapon the player uses.  
+This can also be added directly to a weapon in its constructor (just as any other attachment can) by including a line like
+
+XmlAttach.AttachTo(this, new XmlFactionMastery("Undead"));
+
+in the weapons script. (note, you will also have to add a "using Server.Engines.XmlSpawner2;" to the top of the script).  Other overloads are available as well that allow you to specify the damage bonus, duration of effect, etc. in addition to the faction type.
+
+Faction Opponents and Allies can be modified by the user in the XmlMobFactions.cs script.
+An example of spawning a weapon with this attachment is given in factionmastery.xml (place the .xml file in the top level of your RunUO installation and use the "[xmlloadhere factionmastery.xml" command to load the .xml spawner file)
+
+
+- added the XmlDynamicFaction attachment that allows you to place any mob (or player) into the specified faction. Added an example of spawning a mob with a specified faction in factionspawn.xml (place the .xml file in the top level of your RunUO installation and use the "[xmlloadhere factionspawn.xml" command to load the .xml spawner file).
+
+- added the XmlAddFaction attachment that can be used to give a specified amount of faction if attached directly to a player.  It can be also used to give faction as a quest reward by specifying it as the AttachmentString in a questholder or questnote.  If attached to a mob, then that faction will be given to the player when the mob is killed (in addition to any faction that is normally given for killing the mob). Added an example of spawning a quest with a specified faction in questfaction.xml (place the .xml file in the top level of your RunUO installation and use the "[xmlloadhere questfaction.xml" command to load the .xml spawner file).
+
+- added the XmlFactionEquip attachment that can be applied to weapons, jewelry, or armor to add a minimum mob faction requirement to equip.  This allows you to make faction-dependent weapons/armor (must go through installation step 9 in order to take advantage of this). Added an example of spawning a weapon with a specified faction requirement in equipfaction.xml (place the .xml file in the top level of your RunUO installation and use the "[xmlloadhere equipfaction.xml" command to load the .xml spawner file). Note, using the Item Identification skill on an item with this attachment will display the faction requirement.
+
+

@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>JulesSpawner</Name>
+    <UniqueId>a60abeae-8e20-4404-acd9-389328fa3444</UniqueId>
+    <Map>Felucca</Map>
+    <X>5440</X>
+    <Y>1148</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5445</CentreX>
+    <CentreY>1153</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>2</MaxCount>
+    <MinDelay>5</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>questnote/name/Exceptional armor/notestring/Give Jules 3 exceptional platehelms/objective1/GIVE,Jules,platehelm,3,quality=#Exceptional/description1/Give Jules 3 exceptional platehelms:MX=1:SB=0:RT=0:TO=0:KL=0:OBJ=talkingjeweler/configfile/jeweler2/loadconfig/true:MX=1:SB=0:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>

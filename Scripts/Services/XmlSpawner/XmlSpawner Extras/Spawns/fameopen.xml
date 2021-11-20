@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>FAMEOPEN#1</Name>
+    <UniqueId>acdcfa7c-12e9-4c70-9ae5-ab8c5bc39d5f</UniqueId>
+    <Map>Felucca</Map>
+    <X>5436</X>
+    <Y>1155</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5441</CentreX>
+    <CentreY>1160</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>6</MaxCount>
+    <MinDelay>0</MinDelay>
+    <MaxDelay>0</MaxDelay>
+    <DelayInSec>False</DelayInSec>
+    <Duration>0</Duration>
+    <ProximityRange>5</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <SetPropertyItemName>blahblah</SetPropertyItemName>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>IF/GETONTRIGMOB,fame&gt;1000/77/66:MX=1:SB=1:RT=0:TO=0:KL=0:OBJ=GOTO/1:MX=1:SB=2:RT=0:TO=0:KL=0:OBJ=SET/locked/true:MX=1:SB=66:RT=0:TO=0:KL=0:OBJ=troll:MX=1:SB=77:RT=0:TO=0:KL=0:OBJ=SET/locked/false:MX=1:SB=77:RT=0:TO=0:KL=0:OBJ=gold/amount/GETONTRIGMOB,fame/amount/MUL,.1:MX=1:SB=77:RT=0:TO=0:KL=0</Objects2>
+  </Points>
+</Spawns>

@@ -1,0 +1,42 @@
+<Spawns>
+  <Points>
+    <Name>GangUp#1</Name>
+    <UniqueId>619af665-b81d-4b75-be97-630245a2f27a</UniqueId>
+    <Map>Felucca</Map>
+    <X>5438</X>
+    <Y>1152</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5443</CentreX>
+    <CentreY>1157</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>20</MaxCount>
+    <MinDelay>10</MinDelay>
+    <MaxDelay>15</MaxDelay>
+    <DelayInSec>True</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>1</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>-1</SequentialSpawning>
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <SpawnOnTrigger>False</SpawnOnTrigger>
+    <SmartSpawning>False</SmartSpawning>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>True</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>orc/SAY/two for you:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=2:OBJ=harpy/SAY/four is more:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=4:OBJ=troll/SAY/three for me:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=3:OBJ=ogre/SAY/one is fun:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=1:OBJ=ratman/SAY/thrive on five:MX=10:SB=0:RT=0:TO=0:KL=0:RK=0:CA=1:DN=-1:DX=-1:SP=5</Objects2>
+  </Points>
+</Spawns>

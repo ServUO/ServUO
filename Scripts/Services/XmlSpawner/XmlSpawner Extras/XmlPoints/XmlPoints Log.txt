@@ -1,0 +1,723 @@
+
+Update to version 3.26 for orbsydia.com
+
+XmlPoints v1.24
+RunUO 2.0 version
+updated 6/23/05
+ArteGordon
+
+SUMMARY:
+A system that supports player-vs-player kill tracking, 1-on-1 challenge dueling, multi-player challenge games, shardwide pvp ranking, and pvp rewards.
+
+new to version 1.24
+updated 6/23/05
+- fixed a potential exploit in challenge games involving autores.  Games now check when a player is killed to make sure the killer was a participant in the game before autoresing the victim. The exploit allowed players to start a challenge game, and then go out and pvp, and when killed it would be considered a game kill and they could be autores'd because they were still in a challenge game. This was only an issue with challenge games, not 1-on-1 duels. (thanks to newbies13 for pointing this out).
+
+- added in automatic cancellation of any precast spells once a 1-on-1 challenge has been accepted (thanks to Rhivan Legacy for the suggestion).
+
+- after cancellation of a duel, the participants will be teleported back to their starting point (if Teleport on Duel has been enabled) just as if the duel had been successfully completed.  
+
+- added portuguese language support (thanks to ShadowCrow for the translation).
+
+- the deathball in the deathball challenge game is now cursed to prevent people from insuring it (thanks to okyzan for pointing this out).
+
+- added restrictions to the teleport-on-duel feature.  Teleport duel locations will not be available if the players are in a location that restricts recalling.
+
+- blocked duel challenges in jail regions (thanks to ambak for the suggestion)
+
+- fixed a problem with people losing points when killed by the same person within the protected kill delay period (default is 6 hours).  The killer wouldnt gain points but the killed person could lose points.
+
+- better formatting of the timeranked string in the html leaderboard save file.
+
+- players in CTF challenge games automatically teleported to the base location when the game starts.
+
+- added an option to log all kills that award points to a file called kills.log (default is disabled).  This can be enabled/disabled by setting the LogKills flag at the beginning of xmlpoints.cs (thanks to Shadow1980 for the suggestion).
+
+version 1.23
+updated 4/15/05
+- another slight modification to the points-decay-with-pvp-inactivity system. Points decay is now capped so that it wont drop below the default starting level (e.g. 100 points). 
+
+- disabled the ClearArena call in StartGame() in BaseChallegeGame.cs that moved all mobs that were not participating in challenge games out of the challenge arena at the start of a challenge game.  It was causing problems by moving mobs that really shouldnt be moved. 
+
+version 1.22a
+updated 3/28/05
+- added the option to gain Honor virtue points from duels. (thanks to LordHogFred for the idea)  Just set the static bool GainHonorFromDuel (false by default) to true at the beginning of xmlpoints.cs (around line 121)
+
+- fixed a bug that could lead to people being teleported back to former locations after duels carried out in place ("Duel here" location).
+
+[b]New to version 1.22[/b]
+updated 3/22/05
+[b]- disallow challenges to players that do not have XmlPoints support instead of just saying that they would result in no points.[/b]
+
+[b]- added the ability to specify multiple locations for the TeleportOnDuel feature.[/b]  The duel location can be selected by the challenger when a challenge is issued.  Locations that are currently occupied (any player found within the DuelRange of the location) are indicated in red.  Occupied locations cannot be teleported to.
+Entries can be added to the DuelLocations list that is found in the beginning of XmlPoints.cs.  The DuelRange is the range used to determine if the location is occupied.  
+
+[b]- Players that have recently been in combat will not be allowed to duel or to teleport on duel to prevent the use of challenges to escape battle.[/b]
+
+[b]- after a duel, a players' nearby pets/mounts (16 tiles by default) will be teleported back along with player if TeleportOnDuel is enabled.(thanks to sh1ny for the suggestion) [/b]
+
+[b]New to version 1.21[/b]
+updated 3/10/05
+
+[b]- fixed a possible crash bug when trying to use the [topplayers when no players have points attachments[/b] (thanks to asmoug for pointing this out).
+
+[b]- missing language or language text entries will now appear as error strings instead of simply returning null values that could produce server crashes[/b] (thanks to Kai for pointing this out).
+
+[b]- modified the points-decay-with-pvp-inactivity system to stop deducting when the points drop below the default starting level (e.g. 100 points).[/b] 
+
+[b]- added the option for automatically teleporting to a specified location upon accepting a duel, and then automatically returning when the duel is over.[/b] This feature can be enabled by setting the static bool TeleportOnDuel to true (it is false by default). You should also set the DuelLocation and DuelMap static variables to the spot where you want people teleported if you use this feature. These can be found at the beginning of XmlPoints.cs
+
+[b]New to version 1.20[/b]
+updated 2/10/05
+[b]- slight modification to the leaderboard ranking system.[/b]  Previously, players with the same points totals were assigned tied rankings.  Now ties are resolved by comparing kills, deaths, and previous ranking (in that order).  So if two players have the same points total, the player with more kills will be ranked higher.  Players with the same points and kills, will be ordered by deaths (fewer deaths means higher rank). So in the modified system, there are no tied ranks.
+
+[b]- added an optional player faction listing to the leaderboard.[/b] This can be enabled by uncommenting the #define FACTIONS statement at the top of XmlPoints.cs.  If enabled, faction affiliation will be displayed in the leaderboard gump as well as saved to the .xml and .html leaderboard files. (thanks to sage707a for the suggestion)
+
+[b]New to version 1.19a[/b]
+updated 2/5/05
+- added Spanish translation text thanks to Darkness_PR. This adds the file SpanishText.cs and adds the SPANISH language option to XmlPoints.cs.
+To change to this language in-game, just issue the command "[pointslanguage spanish".
+I'll be looking at some of the gump text issues to see about improving spacing and appearance with variable length text in the game gumps.
+
+[b]New to version 1.19[/b]
+updated 2/5/05
+
+[b]- added a language translation system that allows individual players to see points-related text in their selected language.[/b]  The default language for a shard can be specified in XmlPoints in the SystemLanguage static variable (ENGLISH by default).  Individual players can change their language by issuing the "[pointslanguage language" command.  Presently only english is available.  Anyone who is willing to provide additional language translations, simply make a copy of the EnglishText.cs file, translate the text that it contains into the target language, and send it to me.  I will include it with full acknowledgements. (thanks to sUpplier1 for the suggestion).
+
+[b]- the game and gump scripts have been streamlined with a number of common methods moved to BaseChallengeGame.[/b]  
+
+[b]- added checks for newbie and young status to the challenge system.  Experienced players will be prohibited from challenging either players with Young status, or players with insufficient experience (skills and stats).[/b]  This can be customized by modifying the tests in the YoungProtection() method in XmlPoints.cs. (thanks to sUpplier1 for the suggestion).
+
+[b]- changed the default value for AllowPoints for challenge games to false.[/b] This means that by default, there will be no points gained or lost by participating in challenge games.  This can be turned back on again if you like.
+
+
+New to version 1.18
+updated 1/24/05
+- leaderboard stats are now saved in both XMl and HTML formats.  The html file can be used directly to display leaderboard stats on a website.
+
+- added total Kills and Deaths to the leaderboard stats and in-game leaderboard display.
+
+
+New to version 1.17
+- For games created within a ChallengeGameRegion when a participant is no longer within a ChallengeGameRegion they will be flagged as out-of-bounds.  This is true even if no arena size has been specified or an arena size has been specified that might extend out of any ChallengeGameRegion so the ChallengeGameRegion bounds also serve as the maximum arena size. (thanks to Trying for the suggestion).
+
+- updated the installation instructions for 1.0.0 
+
+
+new to version 1.16a
+updated 1/14/05
+
+- fixed a crash bug in the ChallengeGameRegion involving harmful actions with non-participants (thanks to sUpplier1 for pointing this out).
+
+New to version 1.16
+updated 1/13/05
+
+[b]- the installation now comes in two zip files. XmlPoints-vxxx-1of2.zip and XmlPoints-vxxx-2of2.zip[/b]
+
+[b]- non-participants are now automatically cleared from the arena area at the start of a challenge game.[/b] (thanks to sUpplier1 for the suggestion)  The arena area is defined by the arena size setting in each challenge game.
+
+[b]- all combat between participants is now automatically terminated when a game ends to avoid accidental attacks that could make players gray.[/b] (thanks to sUpplier1 for pointing this out).
+
+[b]- added the new Capture the Flag (CTF) challenge game.[/b]
+This supports any combination of team numbers and sizes.  
+[u][b]Capture the Flag rules[/b][/u]
+The game organizer is responsible for assigning teams and for placing the home bases for each team.
+
+Home bases are placed by clicking the button next to each team entry in the Team Status gump, and then targeting a location.  Bases can be placed/repositioned at any time prior to starting a match.
+
+Players capture opponents flags by moving to within 1 tile of the opponents home base when the flag is present.  The flag will then be placed in the players backpack and the player will be surrounded with a particle effect in the color of the flag they are carrying.
+
+Flags cannot be placed in containers, given to other players, or placed on the ground.
+
+A player can only carry one flag at a time.
+
+Players score a point by returning to their home base while carrying an opponents flag.  
+
+If a player is killed, any flag that they are carrying is returned to its home base.  Players will then be autores'd after the specified RespawnTime (default 6 seconds).
+
+If a player remains out of bounds (defined by the arena size) for longer than the allowed time , remains hidden past the allowed hiding time, is offline for longer than the allowed time, or changes maps, any flag they are carrying will be returned to its base.
+
+The game ends when either the target score is reached or when the match timer counts down to zero.  The team with the highest score at that point wins and the total purse is divided equally among winning team players.
+
+
+[b]- added the new Team King of the Hill game.[/b]
+This supports any combination of team numbers and sizes.  
+The rules are the same as regular KotH with the team with team reaching the target score first being the winner.
+
+[b]- added the new Team Deathball game.[/b]
+This supports any combination of team numbers and sizes.  
+The rules are the same as regular Deathball with the team with team reaching the target score first being the winner.
+
+[b]- added the "[teamkoth" command and XmlPoints gump button which creates a new Team KotH challenge game.[/b]
+
+[b]- added the "[teamdeathball" command and XmlPoints gump button which creates a new Team Deathball challenge game.[/b]
+
+[b]- added the "[ctfchallenge" command and XmlPoints gump button which creates a new Capture the Flag challenge game.[/b]
+
+[b]- the disableguards setting in the ChallengeGameRegion is now saved on server restarts[/b] (thanks to sUpplier1 for pointing this out).
+
+[b]- ghosts are now automatically teleported to their corpses on autores[/b] (thanks to Vento Divino for the suggestion).
+
+[b]- the m_SystemBroadcast setting that allows GMs systemwide control over kill broadcasts is now saved on the LBSstone across server restarts when changed by the [systembroadcastkills command.[/b]  If you dont have an LBSstone placed somewhere, the changes from the default setting will not be saved (thanks to Vento Divino for the suggestion).
+
+[b] fixed a bug in the new team games setup where assigning teams on one page of the game setup gump would reset team assignments on other pages.[/b]  (thanks to Vento Divino for pointing this out)
+
+[b]- the post-game decay of gauntlets is now controlled by the PostGameDecayTime property[/b] that is set to 5 mins by default in BaseChallengeGame.cs and can be overridden in individual challenge games.  This eliminates the possibility of a gauntlet decaying immediately after a game is completed due to a world save and guarantees that all gauntlets will remain for the specified amount of time.
+
+[b]New to version 1.15[/b]
+updated 1/08/05
+
+[b]- added support for team challenge games. [/b] 
+
+[b]- added a new installation step 7 to allow beneficial acts between team members. [/b] 
+
+[b]- added the new Team LMS challenge game.[/b]  
+This supports any combination of team numbers and sizes, such as 2 vs 2, or 4 vs 3, or 2 vs 3 vs 10, etc.
+The game organizer makes team assignments for each participant.  
+The rules are the same as regular LMS with the last team with remaining players being the winner.
+The purse is divided equally among winning team members.
+Players assigned to teams will have their NameHue changed to their team color for the duration of the game.
+
+[b]- added the new Team Deathmatch challenge game. [/b]
+This supports any combination of team numbers and sizes.  
+The rules are the same as regular Deathmatch with the team with the highest score being the winner.
+
+[b]- added the "[teamlmschallenge" command and XmlPoints gump button which creates a new Team LMS challenge game.[/b]
+
+[b]- added the "[teamdeathmatch" command and XmlPoints gump button which creates a new Team Deathmatch challenge game.[/b]
+
+[b]- minor change to the regular LMS challenge game gump behavior.[/b]  During the game the gumps now automatically update on any player death to reflect the new status.
+
+[b]- modified the ChallengeGameRegion to restrict beneficial acts to team-members-only for game participants.[/b]  This means that non-participants cannot interfere with participants either in a negative or positive way during a game held in the region.
+
+[b]- modified the ChallengeGameRegion to block all harmful acts on non-participants during a game.[/b]  This allows observers to watch matches safely.
+
+[b]- slight modification to corpse looting restrictions in ChallengeGameRegions. [/b]Restrictions now only apply while a challenge game is present (gauntlet is down), so before, during, and after a game player looting of other players corpses will be blocked, but at any other time, default rules apply.
+
+[b]- simplified individual challenge game scripts by consolidating functions into the BaseChallengeGame class.[/b]
+
+new to version 1.14
+updated 12/30/04
+
+- blocked the ability to issue 1-on-1 challenges while already in a challenge game.
+
+- fixed a bug in leaderboard saving in which leaderboard saves immediately after a restart might not correctly reflect the most recent rankings (it wasnt refreshing the rankings just before doing a save). This had no effect on the ingame rankings that players would see, but it was messing up the time-at-rank and delta-rank info.
+
+- added page scrolling buttons to the pvp rewards gump.
+
+New to version 1.13b
+updated 12/27/04
+
+- slight change to the DeathBall game.  Scoring now increases even if the ball is not in the players pack but just being held.
+
+New to version 1.13a
+updated 12/26/04
+
+[b]- added a new item, the top players bulletin board.[/b]  Just "[add topplayersboard" and double click the board to open the leaderboard gump.  Same as running the [topplayers command or using the topplayers button on the points gump. 
+
+New to version 1.13
+updated 12/26/04
+[b]- added a new "AllowPoints" override to individual challenge games that allows them to completely disable awarding pvp points on kills during a match.[/b]  This is set to true by default in each game. Set it to false to disable points.  This allows you to separate game events from normal ranked pvp activity.  Note, this has no effect on 1-on-1 duels.
+
+[b]- modified the king of the hill game to prevent players from scoring while hidden.[/b]
+
+[b]- added the static variable "RespawnTime" in each of the challenge games that allows control over the delay until autores in those games that have autores enabled.[/b] (default is 6 seconds).
+
+[b]- modified the ChallengeGameRegion to block corpse looting by other players.[/b]
+
+[b]- added a new DeathBall Challenge game.[/b] This can be accessed through the points gump.  Initiating a game will create an Challenge Gauntlet that is placed on the ground under the player.
+
+[b]- added the "[deathball" command which creates a new DeathBall Challenge game. [/b] This is identical to creating one from the points gump.
+
+[b][u]DeathBall Rules[/u][/b] 
+
+- The general rules are similar to a Deathmatch with the following differences.
+
+- A target score can be specified, which is the total number of seconds a player must spend carrying the deathball to win.
+
+- When a player picks up the deathball their score will be increased by 1 per second for as long as they carry it.  The score will be displayed over the players head and updated in the game gump.   
+
+- The first player to reach the target score wins the match.
+
+- If a player is killed, they drop the ball at the location of their death, and are automatically resurrected and returned to the game after the respawn delay (6 sec default), 
+
+- Non-participants cannot pick up the Deathball.
+
+- scores do not increase while a player is hidden or out of bounds.
+
+- if a player is disqualified the ball is returned to the gauntlet location and the player is dropped from the match.
+
+
+
+New to version 1.12
+updated 12/21/04
+
+[b]- added a new King of the Hill Challenge game (KotH).[/b] This can be accessed through the points gump.  Initiating a game will create an Challenge Gauntlet (the Hill) that is placed on the ground under the player.
+
+[b]- added the "[kingofthehill" command which creates a new King of the Hill Challenge game. [/b] This is identical to creating one from the points gump.
+
+[b][u]King of the Hill Rules[/u][/b] 
+
+- The general rules are the same as a Last Man Standing match with the following differences.
+
+- A target score can be specified, which is the number of seconds a player must spend as king of the hill to win.
+
+- When a single player occupies the tile on which the KotH challenge gauntlet is placed, their score will be increased by 1 per second.  The score will be displayed overhead and updated in the game gump. If more than one player occupies the tile, no scores are incremented.  
+
+- The first player to reach the target score wins the match.
+
+- Once a participant is killed, they are out of the game.  If only one participant remains, they are declared the winner. 
+
+- Any non-participant that tries to occupy the KotH tile will be automatically moved off to a random nearby location to prevent attempts to block the tile.
+
+
+New to version 1.11
+updated 12/19/04
+
+- added a new leaderboardsave stone that will allow you to preserve leaderboard save settings across server restarts.   (thanks to sUpplier1 for the suggestion).  Just do an "[add lbsstone" and you are done.  Note, you can only have one stone at a time.  Making another will cause any existing one to be removed. Double clicking the stone will report the current leaderboard save settings.  I may add some gumpwork to this.
+
+- added a new ChallengeGameRegion feature that allows you to define a region in which challenge games can be setup.  In this guarded region, no harmful acts will be allowed while a game is being prepared or following a game (basically, as long as a gauntlet is present and no game is in progress, no harmful acts are allowed). Only one challenge game is allowed at a time within a region. You can also configure each game so that it can only be setup in a ChallengeGameRegion. Just change the static flag "OnlyInChallengeGameRegion" which is false by default (thanks to sUpplier1 for the suggestion).
+
+
+- added a ChallengeRegionStone that allows staff to define ChallengeGameRegions.  It can either be setup as a simple single rectangular region by double clicking the stone and defining a bounding box, or you can give it the name of an existing region in the CopyRegion property and it will copy that regions bounding areas.  That way you can use other tools to make more complicated regions and then just put the ChallengeGame on top of them.  Note, this doesnt have any effect on the region that you copy. I may add some gumpwork to this in the future, but for now just set things via [props.
+
+- added a new installation step 6 to support overriding insurance penalties in games.
+
+- added a new override method in each game "public virtual bool InsuranceIsFree(Mobile from, Mobile awardto)" that allows insurance penalties to be turned off for challenge games.  To support this feature you must go through the new installation step 6.  Insurance will only be ignored for deaths during a game that are a result of damage by another participant in the game.  Deaths by any other means, even during a game, still incur normal insurance costs. (thanks to stormwolff for the suggestion)  You could also add additional tests into the method to allow more advanced conditions under which insurance could still be applied.
+This is now enabled by default.  Set the return value to false in each game to go back to insurance penalties for that game.  Note, this does not affect 1 on 1 duels.  They still have normal insurance penalties regardless of these settings.
+
+
+- fixed a bug that prevented non-participants from scrolling the participants list in the game gumps.
+
+
+
+New to version 1.10
+updated 12/14/04
+
+[b]- added a new Deathmatch Challenge game[/b] This can be accessed through the points gump.  Initiating a game will create an Challenge Gauntlet that is placed on the ground under the player.
+
+[b]- added the "[deathmatch" command which creates a a new Deathmatch Challenge game. [/b] This is identical to creating one from the points gump.
+
+[b]- added a timer to automatically check disqualification status during Challenge games[/b], so players no longer have to manually refresh the gump to "catch" players for rules violations.
+
+
+[b][u]Deathmatch Rules[/u][/b] 
+
+- The player that initiates the game is responsible for adding/removing players, setting game conditions, and is responsible for starting the game.
+
+- Individual participants must accept the challenge by selecting the accept button in the LMS gump.  
+
+- An optional entry fee in gold that each player must pay in order to participate can be specified. The entry fee will be taken from the players bank account when the game starts.
+
+- The match completion conditions can be specified as a target score or a match length, or both.  If a target score > 0 is specified, then the first player to reach that score is the winner.  If a match length > 0 is specified, then the player with the highest score at the end of the match is the winner. In the case of a tie, the purse is split between them.  If both target score and match length are specified, then the game continues until one of those conditions is met.
+
+- When a participant is killed, their score is reduced by one and they are resurrected with full health/mana/stam. The killer has their score increased by one. 
+
+- An optional arena size that defines the valid playing area can be specified.  
+
+- Players that leave the arena area, defined by the distance from the challenge gauntlet, will have a specified amount of time to return in bounds before they will be penalized and respawned at the gauntlet location.  This time is 15 seconds by default but can be adjusted with the DeathmatchGauntlet static variable MaximumOutOfBoundsDuration.
+
+- Players that become hidden will have a certain amount of time to become visible before they are penalized and made visible.  This time is set to 10 seconds by default but can be adjusted with the DeathmatchGauntlet static variable MaximumHiddenDuration. 
+
+- Players that are offline will have a certain amount of time to return before they are penalized.  This time is set to 60 seconds by default but can be adjusted with the DeathmatchGauntlet static variable MaximumOfflineDuration. 
+
+- Players that change maps are immediately penalized and respawned at the gauntlet location.
+
+- While a game is being set up, players can accept or withdraw at any time prior to the game starting.
+
+- Once a game has been started, individual players can drop out of the game by pressing the forfeit button (X) next to their name in the LMS challenge gump.
+
+- Completed challenge gauntlets will remain for a short period before they decay so that players or observers can see the results.  The default decay time is 5 minutes but can be adjusted with the DeathmatchGauntlet DecayTime property.
+
+- Players are automatically resurrected with full stats after being killed in the match by default.  This can be changed by setting the DeathmatchGauntlet AutoRes property.
+
+- The default interval between killing the same player for points is enforced by default during the match.  This can be overridden by changing the DeathmatchGauntlet UseKillDelay property.  While you can change this, I would not recommend it due to potential for exploits unless you are running a small non-pvp oriented shard where you dont really care about rankings.
+
+- Note that the organizer of a Challenge game does not have to actually participate in it.  This makes it easy for staff to organize matches.
+
+- Players can only participate in one Challenge game or 1 on 1 challenge duel at a time.
+
+- Players can only organize 1 challenge game at a time.  Attempting to organize a second challenge game while one is still being set up will result in the first being cancelled.
+
+- Note that changing game conditions after players have already accepted, such as adding/removing players, changing the entry fee, or arena size, will require that players must reaccept the new conditions.
+
+- There is no limit to the number of players that can participate in a Deathmatch game by default.  This can be changed with the DeathmatchGump constant MaxTeamSize.
+
+
+New to version 1.09
+updated 12/13/04
+
+- added a new LastManStanding (LMS) Challenge game. This can be accessed through the points gump. Initiating a game will create an Challenge Gauntlet that is placed on the ground under the player.
+
+- added the "[lmschallenge" command which creates a a new LastManStanding (LMS) Challenge game. This is identical to creating one from the points gump.
+
+- the challenge game gump can opened by double clicking the challenge gauntlet. 
+
+- Any ongoing challenge match is listed in the points gump, and the challenge gump for that game can be opened by pressing the ? button next to the status message.
+
+- Version 1.08 disabled within-guild 1 on 1 challenge duels for points. The ability of within-guild duels to give points can now be set with the static bool AllowWithinGuildPoints which is set to false by default.
+
+- 1 on 1 Challenge duels can now ignore the required minimum time between kills of the same player for points. This is false by default but can be enabled by setting the static bool UnrestrictedChallenges to true. I do not recommend enabling this unless you have a small non-pvp oriented shard and dont care about pvp ranking due to the possibility of points exploiting.
+
+- Players can be automatically resurrected after 1 on 1 challenge duels by setting the XmlPoints static variable AutoResAfterDuel. This is false by default.
+
+
+[b][u]Last Man Standing Rules[/u][/b] 
+
+- The player that initiates the game is responsible for adding/removing players, setting game conditions, and is responsible for starting the game.
+
+- Individual participants must accept the challenge by selecting the accept button in the LMS gump.  
+
+- An optional entry fee in gold that each player must pay in order to participate can be specified. The entry fee will be taken from the players bank account when the game starts.
+
+- Once a participant is killed, they are out of the game.  The last remaining participant is the winner. That player takes the purse which is the total of all entry fees.
+
+- An optional arena size that defines the valid playing area can be specified.  
+
+- Players that leave the arena area, defined by the distance from the challenge gauntlet, will have a specified amount of time to return in bounds before they can be disqualified.  This time is 15 seconds by default but can be adjusted with the LastManStandingGauntlet static variable MaximumOutOfBoundsDuration.
+
+- Players that become hidden will have a certain amount of time to become visible before they will be disqualified.  This time is set to 10 seconds by default but can be adjusted with the LastManStandingGauntlet static variable MaximumHiddenDuration. 
+
+- Players that are offline will have a certain amount of time to return before they will be disqualified.  This time is set to 60 seconds by default but can be adjusted with the LastManStandingGauntlet static variable MaximumOfflineDuration. 
+
+- Players that change maps can be immediately disqualified.
+
+- While a game is being set up, players can accept or withdraw at any time prior to the game starting.
+
+- Once a game has been started, individual players can drop out of the game by pressing the forfeit button (X) next to their name in the LMS challenge gump.
+
+- Completed challenge gauntlets will remain for a short period before they decay so that players or observers can see the results.  The default decay time is 5 minutes but can be adjusted with the LastManStandingGauntlet DecayTime property.
+
+- Players are automatically resurrected after being killed in the match by default.  This can be changed by setting the LastManStandingGauntlet AutoRes property.
+
+- The default interval between killing the same player for points is enforced by default during the match.  This can be overridden by changing the LastManStandingGauntlet UseKillDelay property.  While you can change this, I would not recommend it due to potential for exploits unless you are running a small non-pvp oriented shard where you dont really care about rankings.
+
+- Note that the organizer of a Challenge game does not have to actually participate in it.  This makes it easy for staff to organize matches.
+
+- Players can only participate in one Challenge game or 1 on 1 challenge duel at a time.
+
+- Players can only organize 1 challenge game at a time.  Attempting to organize a second challenge game while one is still being set up will result in the first being cancelled.
+
+- Note that changing game conditions after players have already accepted, such as adding/removing players, changing the entry fee, or arena size, will require that players must reaccept the new conditions.
+
+- There is no limit to the number of players that can participate in an LMS match by default.  This can be changed with the LastManStandingGump constant MaxTeamSize.
+
+- The challenge gump lists the total number of participants in the Players: field, and the number of remaining participants in the Active: field.
+
+
+
+
+New to version 1.08a
+- added some additional checks to handle the cases of multiple simultaneous challenges
+
+New to version 1.08
+
+- expanded the Challenge feature to support challenges between any players rather than just within guild.  Challengers will be set to Enemy notoriety during the challenge.  Corpses will be given the notoriety they would normally receive for innocent death.  Challenge battles are allowed under both Fel and Tram rules.  Insurance is handled as in any other pvp situation.
+
+- a confirmation gump for issuing a challenge has been added, and in both the issue and accept confirmation gumps, the player is informed if the result of the challenge would yield no points to allow such challenges to be rejected.
+
+- challenges can be cancelled by issuing another challenge and targeting another player (self-target is allowed for this purpose).  There is a 15 minute timeout from the time the cancellation request is made.  This default time can be changed in the static variable CancelTimeout.
+
+- Ongoing challenges will be displayed in green in the points gump.  Challenges in the process of being cancelled show up red.
+
+- added a new installation step (Step 5) to support the expanded pvp Challenge system. 
+
+- points and top players gumps are now refreshed automatically on kills and other status changes if they are open.
+
+- added some more bulletproofing for the topplayers gump.
+
+
+
+INSTALLATION:
+for RunUO 2.0
+
+STEP 1:
+Install the latest XmlSpawner2 package. You can find it here (http://www.runuo.com/forum/showthread.php?t=69750). You must perform installation step 6 from the XmlSpawner2 thread otherwise the system wont recognize kills.
+
+STEP 2: 
+Place the scripts from this package into your custom scripts directory.
+
+STEP 3:
+Add points support to all existing players while ingame using the command "[addallpoints".  If you change your mind and decide to remove it, you can use the "[removeallpoints" command.  If you would just like to try it out on one player you can use the "[addatt xmlpoints" command and target a player.
+
+STEP 4: 
+To automatically add xmlpoints support to newly created characters, add the following line to the end of the EventSink_CharacterCreated method in CharacterCreation.cs 
+
+around line 709 of Scripts/Misc/CharacterCreation.cs change
+
+	new WelcomeTimer( newChar ).Start();
+
+to
+
+	new WelcomeTimer( newChar ).Start();
+
+	// mod to attach the XmlPoints attachment automatically to new chars
+	XmlAttach.AttachTo(newChar, new XmlPoints());
+
+also at the top of the file add the line
+
+using Server.Engines.XmlSpawner2;
+
+STEP 5:
+To support consensual pvp between players for points through the use of Challenges, make the following two changes in Scripts/Misc/Notoriety.cs
+
+in the Mobile_AllowHarmful method around line 112 change
+
+		return true; // Uncontroled NPCs are only restricted by the young system
+	}
+				
+to
+
+		return true; // Uncontroled NPCs are only restricted by the young system
+	}
+				
+	// XmlPoints challenge mod
+	if(XmlPoints.AreChallengers(from,target))
+                return true;
+
+and in the MobileNotoriety method around line 279 change
+
+	if ( target.Criminal )
+		return Notoriety.Criminal;
+
+to
+
+	if ( target.Criminal )
+		return Notoriety.Criminal;
+
+	// XmlPoints challenge mod
+	if(XmlPoints.AreTeamMembers(source,target))
+                return Notoriety.Ally;
+	else	
+	if(XmlPoints.AreChallengers(source,target))
+                return Notoriety.Enemy;
+
+also at the top of the file add the line
+
+using Server.Engines.XmlSpawner2;
+
+STEP 6:
+To support overriding insurance fees/award during challenge games, make the following change in Scripts/Mobiles/PlayerMobile.cs
+
+in the CheckInsuranceOnDeath method around line 1825 change
+
+private bool CheckInsuranceOnDeath( Item item )
+{
+	if ( InsuranceEnabled && item.Insured )
+	{
+                
+				
+to
+
+private bool CheckInsuranceOnDeath( Item item )
+{
+	if ( InsuranceEnabled && item.Insured )
+	{
+                // XmlPoints mod to support overriding insurance fees/awards during challenge games
+                if(XmlPoints.InsuranceIsFree(this, m_InsuranceAward))
+                {
+                    item.PayedInsurance = true;
+                    return true;
+                }
+
+also at the top of the file add the line
+
+using Server.Engines.XmlSpawner2;
+
+STEP 7:
+to allow beneficial acts between team members make the following change in Scripts/Misc/Notoriety.cs
+
+in the Mobile_AllowBeneficial method around line 82 change
+
+	if ( target is BaseCreature && !((BaseCreature)target).Controlled )
+		return false; // Players cannot heal uncontroled mobiles
+				
+to
+
+	if ( target is BaseCreature && !((BaseCreature)target).Controlled )
+		return false; // Players cannot heal uncontroled mobiles
+				
+	// XmlPoints challenge mod
+	if(XmlPoints.AreInAnyGame(target))
+                return XmlPoints.AreTeamMembers(from,target);
+
+STEP 8:
+to prevent faction skill loss when participating in challenge games make the following change in Scripts/Mobiles/PlayerMobile.cs
+
+in the OnDeath method around line 1990 change
+
+			Faction.HandleDeath( this, killer );
+
+to
+
+			// block faction skill loss during challenge games
+			if(!XmlPoints.AreChallengers(this, killer))
+				Faction.HandleDeath( this, killer );
+
+STEP 9:
+to display kills and deaths below the players name on mouseover add this to playermobile.cs
+
+
+			public override void AddNameProperties( ObjectPropertyList list )
+			{
+				base.AddNameProperties(list);
+
+				XmlPoints a = (XmlPoints)XmlAttach.FindAttachment(this, typeof(XmlPoints));
+
+				if (a != null)
+				{
+					list.Add(1070722, "Kills {0} / Deaths {1} : Rank={2}", a.Kills, a.Deaths, a.Rank);
+				}
+			}
+
+DESCRIPTION:
+
+This system makes use of the XmlSpawner2 attachment system and the XmlSpawner2 package must be installed to support it. You dont need to use the xmlspawners themselves, and it doesnt matter whether you use the standard distribution spawners or any other spawning system but you do need the XmlSpawner2 package installed.
+
+Because the attachment system neither requires nor makes any changes to serialization/deserializations of any item or mobile (including the playermobile), it can be safely added and removed at any time now or in the future without interfering with any other systems that you might have installed and that includes any existing points system. 
+
+Features:
+
+Points - accumulated or lost based upon PvP kills or deaths, these are used to rank players.  Individual and shard-wide standings can be displayed.  Amount of Point loss or gain can be made dependent upon the relative Point difference between the players, providing additional incentives for taking on players with higher ranking, and penalties for losing to players of lower ranking. The system can also be configured for automatic point loss if the player does not engage in pvp activity over the specified time window.
+
+Rankings - relative Points standing of players on a shard is maintained and can be displayed for individuals as well as for the entire shard (the top 20).  If the Item Identification feature of the XmlSpawner2 installation is enabled (installation step 8), the skill can be used to examine the points and standing of other players as well.  Using the [leaderboardsave command, shardwide ranking information can also be periodically saved to a specified xml file.
+
+Duels - The challenge system allows 1-on-1 consensual pvp between players for points.
+
+Challenge Games - the challenge game system supports multi-player consensual pvp games.
+
+Credits - accumulated through PvP kills, these are used to purchase PvP rewards.
+
+Rewards - the PointsRewardStone allows players to exchange kill credits that are accumulated through PvP activity for rewards including items, mobiles, or attachments.  These can be defined in XmlPointReward.cs.  Minimum points requirements can also be specified in addition to credit requirements for each reward. To place this just do an "[add pointsrewardstone"
+
+
+
+Commands supported:
+[getatt - this is the general command from the XmlSpawner2 package for displaying/modifying/deleting attachments on a target. Just execute the command and target a player to open the attachment list. From there you can open the xmlpoints properties by finding the xmlpoints attachment on the list, and selecting the button on the left, or display the points gump by pressing the question mark button on the right. This command is available to GMs or higher only.
+
+[addallpoints - this command will add the xmlpoints attachment to all current players that dont have it yet and can only be run by an administrator. 
+
+[removeallpoints - this command will remove the xmlpoints attachment from all current players and can only be run by an administrator.
+
+[checkpoints - this command can be run by players to report their current points standing including rank, available credits, number of kills, number of deaths, and recent kill list (this is the same as using the item identification skill on themselves if that feature has been enabled through XmlSpawner2 installation step 8)
+
+showpoints - when players type this it publicly displays their points overhead.
+
+[topplayers - this command can be run by players to list the current top 20 players ranked by points.
+
+[challenge - this command can be run by players to allow challenge duels players for points. Just issue the command and target another player. The targeted player can then accept or decline the challenge.
+
+[lmschallenge - this command can be run by players to create a last man standing challenge game.
+
+[seekills - this command can be run by players to allow them to control whether or not they see the broadcast results of pvp kills.
+
+[broadcastkill - this command can be run by players to toggle system-wide broadcasts of their pvp-kills. Broadcast is determined by the winners setting.
+
+[systembroadcastkill - this command can be run by GMs to allow system-wide GM override of player BroadcastKill settings. When set to false, no results will be broadcast. When set to true, results will again be broadcast based on players BroadcastKill settings.
+
+[leaderboardsave - this command can be run by administrators to enable/disable the periodic saving of xml leaderboard information to a specified file.
+
+
+Default settings that can be modified:
+
+The system comes configured with a set of default settings that can be modified:
+- There is a 6 hour minimum time between kills of the same player for point gain.  This is set by the static variable m_KillDelay.
+
+- There is a 60 second minimum time between deaths of a player for point loss.  This is set by the static variable m_DeathDelay.
+
+- Points gained/lost can depend upon the point difference between the players.  Default setting is 5% of the point difference. The percentage gain/loss is set by the m_WinScale and m_LoseScale static variables and this can be changed to whatever you like.  If it is set to zero then gain/loss will be fixed at 1 point per kill.
+For example, if a player1 with 500 points killed player2 with 100 points, player1 would only gain the minimum of 1 point and player2 would lose the minimum of 1 point.  But if player2 killed player1, player2 would gain 20 points (5% of 400) and player1 would lose 20 points.
+
+- Credits gained can depend upon the point difference between the players.  Default setting is 5% of the point difference. Set by the m_CreditScale 
+
+- Players start off with a default of 100 points.
+
+- broadcasting of kills is on by default. This is set by the m_Broadcast (for players) and m_SystemBroadcast (for GM override) variables.
+
+- rewards can be specified by adding/removing entries to the PointsRewardList in the Initialize method in XmlPointsReward.cs.
+
+- leaderboard save settings can be specified on the command line to the [leaderboardsave command, with default values set in the m_LeaderboardSaveInterval (default 15 mins), m_LeaderboardSaveDirectory (default "Leaderboard"), and m_LeaderboardSaveRanks (default 20) static variables.
+
+- for automatic point loss if the player does not engage in pvp activity the amount of loss and time period can be configured by setting the m_PointsDecay (10 points default) and m_PointsDecayTime ( 15 days default) static variables.
+
+- receiving kill broadcasts is on by default set by the m_ReceiveBroadcasts variable.
+
+- challenges can be cancelled by issuing another challenge and targeting another player (self-target is allowed for this purpose).  There is a 15 minute timeout from the time the cancellation request is made.  This default time can be changed in the static variable CancelTimeout.
+
+
+CHANGELOG:
+
+Version 1.07
+12/04/04
+- added checkboxes to the points gump to toggle the seekills and broadcast kills settings. These can be used instead of the "[seekills [true/false]" and "[broadcastkill [true/false]" commands.
+
+- added topplayers and challenge buttons to the points gump that are equivalent to issuing the "[topplayers" and "[challenge" commands.
+
+
+Version 1.06
+updated 12/01/04
+- added some additional bulletproofing to the [topplayers gump to deal with a potential crash bug.
+
+
+Version 1.05
+updated 11/15/04
+- added the ability to filter/search the leaderboard by player names or guildnames.  A comma separated list of guildnames can be entered into "Filter by guild" and all guilds that match the entries in the list will be displayed. Similarly, entering a comma separated list of names, or partial names into "Filter by name" will display all entries with matching player names.
+
+
+Version v1.04
+updated 11/10/04
+- added the ability to publicly display your points overhead by saying "showpoints", similar to the OSI showscore command.  As on OSI, players will see you actually say showpoints, although unlike OSI the points appear before, instead of after the words. (thanks to AHappyAdmin for the suggestion)
+
+- added in some optional newbie protection code in the OnKill and OnKilled methods in XmlPoints.cs that can be uncommented in the OnKill and OnKilled methods to help keep experienced players from killing newbies for points. (thanks to sUpplier1 for the suggestion).
+
+- fixed a crash bug with the [broadcastkill command (thanks to stormwolff for pointing this out).
+
+- added the [seekills [true/false]" command that lets players control whether or not they see the broadcast results of pvp kills (thanks to sUpplier1 for the suggestion).
+
+
+Version 1.03
+updated 11/10/04
+- improved the leaderboard display to track change in rank (who is moving up or down the board), and length of time at present rank.
+
+- modified [addallpoints command to ignore players that already have XmlPoints attachments instead of resetting their points.
+
+- added support for minimum points requirements for points rewards.  A new argument was added to the XmlPointsReward constructor that allows you to specify a minimum points requirement in the reward entries in XmlPointsReward.  Players will be required to have at least that many points before the reward will become available for purchase.  Unavailable rewards are indicated in red in the reward gump brought up by the PointsRewardStone.  This allows different tiers of rewards to be set up based on Points standings.  Things are still purchased with credits, and purchases have no effect on points regardless of any points requirements.
+
+- added the "[LeaderboardSave [filename [minutes [nentries]]][off]" command that can be run by administrators to enable/disable the periodic saving of xml leaderboard information to the specified file (thanks to stormwolff for the idea).  Once turned on, it will continue to save the updated leaderboard at regular intervals. The number of ranked players to be saved can optionally be specified (default is 20). Setting this to zero saves all players. Leaderboard saving is off by default.
+
+- implemented a system for automatic point loss if the player does not engage in pvp activity over the specified time window (default 10 points every 15 days).  Both the amount of loss and time period can be configured by setting the m_PointsDecay and m_PointsDecayTime static variables.  This feature can also be disabled.
+
+
+Version 1.02
+11/08/04
+
+- added kill Credits that are added for each kill and can be use to purchase items from the PointsRewardStone.  Credits are gained for kills but not lost (like Points) on deaths.  The m_CreditScale factor determines how many credits are gained per kill based on the point difference between killer and killed (works just like the m_WinScale).
+
+- added the PointsRewardStone that can be used to purchase rewards using kill Credits.  Just "[add PointsRewardStone" to place it.
+
+- added the XmlPointsRewards class that lets you specify the rewards and their costs. Items, Mobiles, and Attachments can be specified as rewards.
+
+- added the static methods int GetCredits(Mobile m), bool TakeCredits(Mobile m, int credits), and bool HasCredits(Mobile m, int credits) which external scripts can use to interface with the Credits system.  Note, if a negative credits argument is passed to TakeCredits, it will add to the players Credit total.  HasCredits and TakeCredits return a bool depending on whether player has sufficient credits.
+
+
+Version 1.01
+11/07/04
+- added the [BroadcastKill command that allows players to toggle system-wide broadcasts of their pvp-kills.
+
+- added the [SystemBroadcastKill command that allows system-wide GM override of player BroadcastKill settings. When set to false, no results will be broadcast. When set to true, results will again be broadcast based on players BroadcastKill settings.
+
+
+Version 1.0
+11/06/04
+- added basic points system
+
+
+
+
+
+
+
+
+
+
+

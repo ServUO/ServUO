@@ -1,0 +1,118 @@
+<?xml version="1.0" standalone="yes"?>
+<XmlQuestNPC>
+  <NPC>
+    <Name>Bugwort</Name>
+    <Running>True</Running>
+    <ProximityRange>3</ProximityRange>
+    <AllowGhost>False</AllowGhost>
+    <ResetTime>0.25</ResetTime>
+    <ConfigFile>testnpc</ConfigFile>
+    <SpeechEntries>14</SpeechEntries>
+  </NPC>
+  <SpeechEntry>
+    <EntryNumber>0</EntryNumber>
+    <ID>0</ID>
+    <Text>Greetings stranger.</Text>
+    <Keywords>hello,greetings,stranger,new</Keywords>
+    <Action>SETONTHIS/SOUND,1055/</Action>
+    <DependsOn>3</DependsOn>
+    <Pause>1</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>1</EntryNumber>
+    <ID>1</ID>
+    <Text>Glad to hear you are a friend. I have left you a simple gift in the nearby chest. </Text>
+    <Keywords>friend</Keywords>
+    <Action>SET,checkitout/ADD/&lt;longsword/hue/500&gt;/EFFECT,14662,15/</Action>
+    <DependsOn>4</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>2</EntryNumber>
+    <ID>2</ID>
+    <Text>Then we fight to the death!</Text>
+    <Keywords>enemy</Keywords>
+    <Action>SETONTHIS/combatant/TRIGMOB/DAMAGE,80,10,10,10,70,5,playeronly/EFFECT,14000,15/POISON,greater,5,playeronly/</Action>
+    <DependsOn>4</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>3</EntryNumber>
+    <ID>3</ID>
+    <Text>Are you new here?</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>4</EntryNumber>
+    <ID>4</ID>
+    <Text>It is so hard to tell who is a friend and who is an enemy these days!</Text>
+    <DependsOn>0</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>5</EntryNumber>
+    <ID>3</ID>
+    <Text>A fine day!</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>6</EntryNumber>
+    <ID>6</ID>
+    <Text>Hmmm, what's that smell?</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>2</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>7</EntryNumber>
+    <ID>3</ID>
+    <Text>Oh, its just you.</Text>
+    <DependsOn>6</DependsOn>
+    <Pause>1</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>8</EntryNumber>
+    <ID>8</ID>
+    <Text>Ah, I didnt recognize you m'lord!</Text>
+    <Keywords>master,lord,king</Keywords>
+    <DependsOn>4</DependsOn>
+    <Pause>1</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>9</EntryNumber>
+    <ID>9</ID>
+    <Text>Please accept this generous gift!</Text>
+    <Action>GIVE/LOOTPACK,filthyrich</Action>
+    <DependsOn>8</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>10</EntryNumber>
+    <ID>3</ID>
+    <Text>It looks like rain.</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>11</EntryNumber>
+    <ID>3</ID>
+    <Text>I wish I hadn't drunk so much last night. hic!</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>12</EntryNumber>
+    <ID>3</ID>
+    <Text>Who says my hump is unattractive.</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>13</EntryNumber>
+    <ID>3</ID>
+    <Text>My, you are an ugly one.</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+</XmlQuestNPC>
