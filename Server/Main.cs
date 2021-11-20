@@ -841,7 +841,6 @@ namespace Server
 			if (!String.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "client.exe")))
 			{
 				DataDirectories.Add(path);
-				return;
 			}
 
 			while (DataDirectories.Count == 0 && !Service)

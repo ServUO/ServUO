@@ -775,20 +775,33 @@ namespace Server.Engines.Harvest
 
         #region HighSeas
         public static int[] LavaTiles => m_LavaTiles;
-        private static readonly int[] m_LavaTiles = new int[]
-        {
-            0x1F4, 0x1F5,
-            0x1F6, 0x1F7,
+		private static readonly int[] m_LavaTiles = new int[]
+		{
+			0x1F4, 0x1F5,
+			0x1F6, 0x1F7,
 
-            4846, 4847, 4848, 4849, 4850,
-            4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4560, 4561, 4562,
-            4864, 4865, 4866, 4867, 4868,
-            4870, 4871, 4872, 4873, 4874,
-            4876, 4877, 4878, 4879, 4880,
-            4882, 4883, 4884, 4885, 4886,
-            4888, 4889, 4890, 4891, 4892,
-
-        };
+			4846, 4847,
+			4848, 4849,
+			4850, 4852,
+			4853, 4854,
+			4855, 4856,
+			4857, 4858,
+			4859, 4560,
+			4561, 4562,
+			4864, 4865,
+			4866, 4867,
+			4868, 4870,
+			4871, 4872,
+			4873, 4874,
+			4876, 4877,
+			4878, 4879,
+			4880, 4882,
+			4883, 4884,
+			4885, 4886,
+			4888, 4889,
+			4890, 4891,
+			4892,
+		};
 
         public override bool GetHarvestDetails(Mobile from, Item tool, object toHarvest, out int tileID, out Map map, out Point3D loc)
         {
