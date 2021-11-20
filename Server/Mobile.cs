@@ -4220,7 +4220,8 @@ namespace Server
 			}
 		}
 
-		public static int ActionDelay { get; set; } = 750;
+		[ConfigProperty("General.ActionDelay")]
+		public static int ActionDelay { get => Config.Get("General.ActionDelay", Core.EJ ? 750 : Core.TOL ? 500 : Core.AOS ? 1000 : 500); set => Config.Set("General.ActionDelay", value); }
 
 		public bool Lift(Item item, int amount)
 		{
