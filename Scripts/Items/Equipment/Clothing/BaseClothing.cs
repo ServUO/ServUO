@@ -376,18 +376,20 @@ namespace Server.Items
         public virtual int BaseDexBonus => 0;
         public virtual int BaseIntBonus => 0;
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        public override bool CanEquip(Mobile from)
+			return value;
+		}
+
+		public override bool CanEquip(Mobile from)
         {
             if (from.IsPlayer())
             {

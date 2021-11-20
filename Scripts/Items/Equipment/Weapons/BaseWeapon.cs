@@ -195,19 +195,21 @@ namespace Server.Items
         public override int PoisonResistance => m_AosWeaponAttributes.ResistPoisonBonus;
         public override int EnergyResistance => m_AosWeaponAttributes.ResistEnergyBonus;
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        #region Personal Bless Deed
-        private Mobile m_BlessedBy;
+			return value;
+		}
+
+		#region Personal Bless Deed
+		private Mobile m_BlessedBy;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BlessedBy

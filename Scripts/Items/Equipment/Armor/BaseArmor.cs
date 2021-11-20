@@ -867,18 +867,20 @@ namespace Server.Items
             set { m_TalismanProtection = value; InvalidateProperties(); }
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        public int ComputeStatReq(StatType type)
+			return value;
+		}
+
+		public int ComputeStatReq(StatType type)
         {
             int v;
 
