@@ -23,6 +23,16 @@ namespace Server
 
 		static ProfessionInfo()
 		{
+			Load();
+		}
+
+		public static void Configure()
+		{
+			Core.OnExpansionChanged += Load;
+		}
+
+		public static void Load()
+		{
 			var profs = new List<ProfessionInfo>
 			{
 				new ProfessionInfo
@@ -30,15 +40,20 @@ namespace Server
 					ID = Profession.Advanced,
 					Name = "Advanced",
 					TopLevel = false,
-					GumpID = 5571
+					GumpID = 5571,
+					Skills = new SkillNameValue[4],
+					Stats = new StatNameValue[3]
 				}
 			};
 
-			var file = Core.FindDataFile("prof.txt");
+			var skillsBuffer = new List<SkillNameValue>();
+			var statsBuffer = new List<StatNameValue>();
+
+			var file = Core.FindDataFile("Prof.txt");
 
 			if (String.IsNullOrWhiteSpace(file) || !File.Exists(file))
 			{
-				file = Path.Combine(Core.BaseDirectory, "Data", "prof.txt");
+				file = Path.Combine(Core.BaseDirectory, "Data", "Prof.txt");
 			}
 
 			if (!String.IsNullOrWhiteSpace(file) && File.Exists(file))
@@ -103,73 +118,86 @@ namespace Server
 							switch (cols[0].ToLower())
 							{
 								case "truename":
+								{
+									prof.Name = cols[1].Trim('"');
+
+									++valid;
+								}
+								break;
+								case "nameid":
+									prof.NameID = Utility.ToInt32(cols[1]);
+									break;
+								case "descid":
+									prof.DescID = Utility.ToInt32(cols[1]);
+									break;
+								case "desc":
+								{
+									if (Enum.TryParse(cols[1], out Profession id))
 									{
-										prof.Name = cols[1].Trim('"');
+										prof.ID = id;
 
 										++valid;
 									}
-									break;
-								case "nameid":
-								prof.NameID = Utility.ToInt32(cols[1]);
+								}
 								break;
-								case "descid":
-								prof.DescID = Utility.ToInt32(cols[1]);
-								break;
-								case "desc":
-									{
-										if (Enum.TryParse(cols[1], out Profession id))
-										{
-											prof.ID = id;
-
-											++valid;
-										}
-									}
-									break;
 								case "toplevel":
-								prof.TopLevel = Utility.ToBoolean(cols[1]);
-								break;
+									prof.TopLevel = Utility.ToBoolean(cols[1]);
+									break;
 								case "gump":
-								prof.GumpID = Utility.ToInt32(cols[1]);
-								break;
+									prof.GumpID = Utility.ToInt32(cols[1]);
+									break;
 								case "skill":
+								{
+									if (!Enum.TryParse(cols[1].Replace(" ", String.Empty), out SkillName skill))
 									{
-										if (!Enum.TryParse(cols[1].Replace(" ", String.Empty), out SkillName skill))
+										if (Insensitive.Equals(cols[1], "Evaluate Intelligence"))
+										{
+											info = SkillInfo.Table[(int)SkillName.EvalInt];
+										}
+										else
 										{
 											info = SkillInfo.Table.FirstOrDefault(o => Insensitive.Contains(o.Name, cols[1]) || Insensitive.Contains(cols[1], o.Name));
-
-											if (info == null)
-											{
-												break;
-											}
-
-											skill = (SkillName)info.SkillID;
 										}
 
-										prof.Skills[skills++] = new SkillNameValue(skill, Utility.ToInt32(cols[2]));
-
-										if (skills == prof.Skills.Length)
-										{
-											++valid;
-										}
-									}
-									break;
-								case "stat":
-									{
-										if (!Enum.TryParse(cols[1], out StatType stat))
+										if (info == null)
 										{
 											break;
 										}
 
-										prof.Stats[stats++] = new StatNameValue(stat, Utility.ToInt32(cols[2]));
-
-										if (stats == prof.Stats.Length)
-										{
-											++valid;
-										}
+										skill = (SkillName)info.SkillID;
 									}
-									break;
+
+									skillsBuffer.Add(new SkillNameValue(skill, Utility.ToInt32(cols[2])));
+
+									if (++skills == 1)
+									{
+										++valid;
+									}
+								}
+								break;
+								case "stat":
+								{
+									if (!Enum.TryParse(cols[1], out StatType stat))
+									{
+										break;
+									}
+
+									statsBuffer.Add(new StatNameValue(stat, Utility.ToInt32(cols[2])));
+
+									if (++stats == 1)
+									{
+										++valid;
+									}
+								}
+								break;
 							}
 						}
+
+						prof.Skills = skillsBuffer.ToArray();
+						prof.Stats = statsBuffer.ToArray();
+
+						skillsBuffer.Clear();
+						statsBuffer.Clear();
 					}
 				}
 			}
@@ -181,6 +209,19 @@ namespace Server
 				Professions[(int)p.ID] = p;
 			}
 
+			for (var i = 0; i < Professions.Length; i++)
+			{
+				if (Professions[i] == null)
+				{
+					Professions[i] = new ProfessionInfo
+					{
+						ID = (Profession)i,
+						Name = $"Undefined-{i}",
+						TopLevel = true
+					};
+				}
+			}
+
 			profs.Clear();
 			profs.TrimExcess();
 		}
@@ -189,8 +230,8 @@ namespace Server
 		{
 			Name = String.Empty;
 
-			Skills = new SkillNameValue[4];
-			Stats = new StatNameValue[3];
+			Skills = Array.Empty<SkillNameValue>();
+			Stats = Array.Empty<StatNameValue>();
 		}
 
 		public Profession ID { get; private set; }

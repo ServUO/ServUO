@@ -2483,7 +2483,7 @@ namespace Server.Network
 
 					m.NetState = state;
 
-					if (state.Version == null)
+					if (state.Version == CV.Zero)
 					{
 						ClientVersionReq.Send(state);
 
@@ -2559,7 +2559,7 @@ namespace Server.Network
 			}
 
 			bool female;
-			int raceID;
+			var raceID = 0;
 
 			if (isEC)
 			{
@@ -2576,17 +2576,9 @@ namespace Server.Network
 
 				female = genderRace % 2 != 0;
 
-				if (state.StygianAbyss)
-				{
-					raceID = genderRace / 2;
-				}
-				else if (genderRace >= 4)
+				if (genderRace >= 4)
 				{
 					raceID = (genderRace / 2) - 1;
-				}
-				else
-				{
-					raceID = 0;
 				}
 			}
 
@@ -2721,7 +2713,7 @@ namespace Server.Network
 			Utility.Clamp(ref shirtHue, 0, 1001);
 			Utility.Clamp(ref pantsHue, 0, 1001);
 
-			if (state.Version == null)
+			if (state.Version == CV.Zero)
 			{
 				ClientVersionReq.Send(state);
 
@@ -2747,7 +2739,7 @@ namespace Server.Network
 
 			EventSink.InvokeCharacterCreated(new CharacterCreatedEventArgs(state, m));
 
-			if (state.Version == null)
+			if (state.Version == CV.Zero)
 			{
 				new LoginTimer(state).Start();
 			}
