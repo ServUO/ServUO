@@ -7,15 +7,37 @@ using System.Linq;
 
 namespace Server.Commands
 {
-    public class Dupe
+    public static class Dupe
     {
-        public static void Initialize()
-        {
-            CommandSystem.Register("Dupe", AccessLevel.GameMaster, Dupe_OnCommand);
-            CommandSystem.Register("DupeInBag", AccessLevel.GameMaster, DupeInBag_OnCommand);
-        }
+        public static void Configure()
+		{
+			Mobile.LiftItemDupeHandler = LiftItemDupe;
 
-        [Usage("Dupe [amount]")]
+			CommandSystem.Register("Dupe", AccessLevel.GameMaster, Dupe_OnCommand);
+            CommandSystem.Register("DupeInBag", AccessLevel.GameMaster, DupeInBag_OnCommand);
+		}
+
+		private static Item LiftItemDupe(Item oldItem, int amount)
+		{
+			if (oldItem?.Deleted != false)
+			{
+				return null;
+			}
+
+			var item = DupeItem(oldItem);
+
+			if (item?.Deleted == false)
+			{
+				item.Amount = oldItem.Amount - amount;
+				oldItem.Amount = amount;
+
+				return item;
+			}
+
+			return null;
+		}
+
+		[Usage("Dupe [amount]")]
         [Description("Dupes a targeted item.")]
         private static void Dupe_OnCommand(CommandEventArgs e)
         {

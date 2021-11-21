@@ -4319,7 +4319,7 @@ namespace Server
 				return;
 			}
 
-			if (item.QuestItem && amount < item.Amount && !IsStaff())
+			if (item.QuestItem && amount < item.Amount && AccessLevel < AccessLevel.GameMaster)
 			{
 				reject = LRReason.Inspecific;
 				SendLocalizedMessage(1074868); // Stacks of quest items cannot be unstacked.
@@ -4332,14 +4332,10 @@ namespace Server
 				return;
 			}
 
-			if (item.Nontransferable && amount < item.Amount)
+			if (item.Nontransferable && amount < item.Amount && AccessLevel < AccessLevel.GameMaster)
 			{
-				if (item.QuestItem)
-				{
-					SendMessage("That cannot be unstacked.");
-				}
-
 				reject = LRReason.CannotLift;
+				SendMessage("That cannot be unstacked.");
 				return;
 			}
 
@@ -4503,37 +4499,35 @@ namespace Server
 		{
 			var item = LiftItemDupeHandler?.Invoke(oldItem, amount);
 
-			if (item != null)
+			if (item?.Deleted != false)
 			{
-				return item;
+				try
+				{
+					item = (Item)Activator.CreateInstance(oldItem.GetType());
+				}
+				catch
+				{
+					Console.WriteLine("Warning: 0x{0:X}: Item must have a zero paramater constructor to be separated from a stack. '{1}'.", oldItem.Serial.Value, oldItem.GetType().Name);
+					return null;
+				}
+
+				item.Visible = oldItem.Visible;
+				item.Movable = oldItem.Movable;
+				item.LootType = oldItem.LootType;
+				item.Direction = oldItem.Direction;
+				item.Hue = oldItem.Hue;
+				item.ItemID = oldItem.ItemID;
+				item.Location = oldItem.Location;
+				item.Layer = oldItem.Layer;
+				item.Name = oldItem.Name;
+				item.Weight = oldItem.Weight;
+				item.Map = oldItem.Map;
+
+				item.Amount = oldItem.Amount - amount;
+				oldItem.Amount = amount;
+
+				oldItem.OnAfterDuped(item);
 			}
-
-			try
-			{
-				item = (Item)Activator.CreateInstance(oldItem.GetType());
-			}
-			catch
-			{
-				Console.WriteLine("Warning: 0x{0:X}: Item must have a zero paramater constructor to be separated from a stack. '{1}'.", oldItem.Serial.Value, oldItem.GetType().Name);
-				return null;
-			}
-
-			item.Visible = oldItem.Visible;
-			item.Movable = oldItem.Movable;
-			item.LootType = oldItem.LootType;
-			item.Direction = oldItem.Direction;
-			item.Hue = oldItem.Hue;
-			item.ItemID = oldItem.ItemID;
-			item.Location = oldItem.Location;
-			item.Layer = oldItem.Layer;
-			item.Name = oldItem.Name;
-			item.Weight = oldItem.Weight;
-
-			item.Amount = oldItem.Amount - amount;
-			item.Map = oldItem.Map;
-
-			oldItem.Amount = amount;
-			oldItem.OnAfterDuped(item);
 
 			if (oldItem.Parent is Mobile mobileParent)
 			{
