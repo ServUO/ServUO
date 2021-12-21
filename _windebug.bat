@@ -26,5 +26,5 @@ dotnet build -c Debug
 
 @ECHO OFF
 
-"%CURPATH%%EXENAME%.exe"
+"%CURPATH%%EXENAME%.exe" -debug
 

@@ -1355,7 +1355,7 @@ namespace Server.Network
 				{
 					var info = ExpansionInfo.Table[i];
 
-					if ((info.RequiredClient != null && Version >= info.RequiredClient) || (Flags & info.ClientFlags) != 0)
+					if ((info.RequiredClient != ClientVersion.Zero && Version >= info.RequiredClient) || (Flags & info.ClientFlags) != 0)
 					{
 						return info;
 					}
@@ -1375,7 +1375,7 @@ namespace Server.Network
 				return false;
 			}
 
-			if (info.RequiredClient != null)
+			if (info.RequiredClient != ClientVersion.Zero)
 			{
 				return IsEnhancedClient || Version >= info.RequiredClient;
 			}

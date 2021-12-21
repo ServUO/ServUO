@@ -305,9 +305,17 @@ namespace Server.Misc
 
 			int str = 0, dex = 0, intel = 0;
 
+			var idx = (int)prof;
+
+			if (idx < 0 || idx >= ProfessionInfo.Professions.Length)
+			{
+				idx = 0;
+				prof = Profession.Advanced;
+			}
+
 			if (prof != Profession.Advanced)
 			{
-				stats = ProfessionInfo.Professions[(int)prof].Stats ?? stats;
+				stats = ProfessionInfo.Professions[idx]?.Stats;
 
 				foreach (var snv in stats)
 				{
@@ -380,9 +388,17 @@ namespace Server.Misc
 
 		private static void SetSkills(Mobile m, SkillNameValue[] skills, Profession prof)
 		{
+			var idx = (int)prof;
+
+			if (idx < 0 || idx >= ProfessionInfo.Professions.Length)
+			{
+				idx = 0;
+				prof = Profession.Advanced;
+			}
+
 			if (prof != Profession.Advanced)
 			{
-				skills = ProfessionInfo.Professions[(int)prof].Skills;
+				skills = ProfessionInfo.Professions[idx]?.Skills;
 			}
 			else if (!ValidSkills(skills))
 			{

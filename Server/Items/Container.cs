@@ -20,69 +20,6 @@ namespace Server.Items
 
 	public class Container : Item
 	{
-		#region Enhanced Client Support
-		public virtual void ValidateGridLocation(Item item)
-		{
-			var pos = item.GridLocation;
-
-			if (!IsFreePosition(pos))
-			{
-				item.GridLocation = GetNewPosition(pos);
-			}
-		}
-
-		public virtual bool IsFreePosition(byte pos)
-		{
-			if (pos < 0 || pos > 0x7C)
-			{
-				return false;
-			}
-
-			return Items.All(i => i.GridLocation != pos);
-		}
-
-		public virtual byte GetNewPosition(byte current)
-		{
-			var index = 0;
-			var next = (byte)(current + 1);
-
-			while (++index < 0x7D)
-			{
-				if (!IsFreePosition(next))
-				{
-					if (next == 0x7C)
-					{
-						next = 0;
-
-						if (IsFreePosition(next))
-						{
-							return next;
-						}
-					}
-				}
-				else
-				{
-					return next;
-				}
-
-				next++;
-			}
-
-			return 0;
-		}
-
-		public virtual void ValidatePositions()
-		{
-			foreach (var item in Items)
-			{
-				if (IsFreePosition(item.GridLocation))
-				{
-					item.GridLocation = GetNewPosition(item.GridLocation);
-				}
-			}
-		}
-		#endregion
-
 		public static List<Container> AllContainers { get; } = new List<Container>(0x2000);
 
 		public static ContainerSnoopHandler SnoopHandler { get; set; }
@@ -1973,13 +1910,6 @@ namespace Server.Items
 			dropped.Location = new Point3D(x, y, 0);
 		}
 
-		public override void AddItem(Item item)
-		{
-			ValidateGridLocation(item);
-
-			base.AddItem(item);
-		}
-
 		public virtual void Destroy()
 		{
 			var loc = GetWorldLocation();
@@ -2101,8 +2031,6 @@ namespace Server.Items
 			{
 				return;
 			}
-
-			ValidatePositions();
 
 			ContainerDisplay.Send(ns, this);
 			ContainerContent.Send(ns, this);

@@ -1098,19 +1098,18 @@ namespace Server.Network
 			int y = pvSrc.ReadInt16();
 			int z = pvSrc.ReadSByte();
 
+			var gridloc = Byte.MaxValue;
+
 			if (state.ContainerGridLines)
 			{
-				var gridloc = pvSrc.ReadByte();
+				gridloc = pvSrc.ReadByte();
+			}
 
-				if (serial.IsItem)
-				{
-					var dropped = World.FindItem(serial);
+			var dropped = World.FindItem(serial);
 
-					if (dropped != null)
-					{
-						dropped.GridLocation = gridloc;
-					}
-				}
+			if (dropped != null)
+			{
+				dropped.GridLocation = gridloc;
 			}
 
 			var dest = pvSrc.ReadSerial();
@@ -2484,7 +2483,7 @@ namespace Server.Network
 
 					m.NetState = state;
 
-					if (state.Version == null)
+					if (state.Version == CV.Zero)
 					{
 						ClientVersionReq.Send(state);
 
@@ -2560,7 +2559,7 @@ namespace Server.Network
 			}
 
 			bool female;
-			int raceID;
+			var raceID = 0;
 
 			if (isEC)
 			{
@@ -2577,17 +2576,9 @@ namespace Server.Network
 
 				female = genderRace % 2 != 0;
 
-				if (state.StygianAbyss)
-				{
-					raceID = genderRace / 2;
-				}
-				else if (genderRace >= 4)
+				if (genderRace >= 4)
 				{
 					raceID = (genderRace / 2) - 1;
-				}
-				else
-				{
-					raceID = 0;
 				}
 			}
 
@@ -2722,7 +2713,7 @@ namespace Server.Network
 			Utility.Clamp(ref shirtHue, 0, 1001);
 			Utility.Clamp(ref pantsHue, 0, 1001);
 
-			if (state.Version == null)
+			if (state.Version == CV.Zero)
 			{
 				ClientVersionReq.Send(state);
 
@@ -2748,7 +2739,7 @@ namespace Server.Network
 
 			EventSink.InvokeCharacterCreated(new CharacterCreatedEventArgs(state, m));
 
-			if (state.Version == null)
+			if (state.Version == CV.Zero)
 			{
 				new LoginTimer(state).Start();
 			}

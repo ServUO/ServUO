@@ -42,7 +42,7 @@ namespace Server.Gumps
             AddHtml(70, 36 + (line++ * 20), 200, 20, Color(state.ToString(), LabelColor32), false, false);
 
             AddHtml(14, 36 + (line * 20), 200, 20, Color("Client:", LabelColor32), false, false);
-            AddHtml(70, 36 + (line++ * 20), 200, 20, Color(state.Version == null ? "(null)" : state.Version.ToString(), LabelColor32), false, false);
+            AddHtml(70, 36 + (line++ * 20), 200, 20, Color(state.Version.ToString(), LabelColor32), false, false);
 
             AddHtml(14, 36 + (line * 20), 200, 20, Color("Version:", LabelColor32), false, false);
 

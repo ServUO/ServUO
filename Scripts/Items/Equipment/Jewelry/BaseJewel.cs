@@ -354,20 +354,22 @@ namespace Server.Items
 
                 return BaseGemTypeNumber + (int)m_GemType - 1;
             }
-        }
+		}
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        public override void OnAfterDuped(Item newItem)
+			return value;
+		}
+
+		public override void OnAfterDuped(Item newItem)
         {
             BaseJewel jewel = newItem as BaseJewel;
 
