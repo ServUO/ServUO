@@ -628,7 +628,7 @@ namespace Server.Engines.Craft
                         SkillLock sl = from.Skills[SkillName.Tinkering].Lock;
                         from.Skills[SkillName.Tinkering].SetLockNoRelay(SkillLock.Locked);
 
-                        if (!from.CheckSkill(SkillName.Tinkering, 0.0, 100.0))
+                        if (!from.CheckSkill(SkillName.Tinkering, 0.0, from.Skills[SkillName.Tinkering].Cap))
                             damage /= 6;
 
                         from.Skills[SkillName.Tinkering].SetLockNoRelay(sl);

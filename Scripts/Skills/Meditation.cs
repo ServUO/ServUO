@@ -78,7 +78,7 @@ namespace Server.SkillHandlers
 
             if (chance > Utility.RandomDouble())
             {
-                m.CheckSkill(SkillName.Meditation, 0.0, 100.0);
+                m.CheckSkill(SkillName.Meditation, 0.0, m.Skills[SkillName.Meditation].Cap);
 
                 m.SendLocalizedMessage(501851); // You enter a meditative trance.
                 m.Meditating = true;

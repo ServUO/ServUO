@@ -202,7 +202,7 @@ namespace Server.Engines.Quests
         {
             if (QuestHelper.HasQuest<TheTreasureChaseQuest>((PlayerMobile)from))
             {
-                from.CheckSkill(SkillName.Cartography, 0, 100);
+                from.CheckSkill(SkillName.Cartography, 0, from.Skills[SkillName.Cartography].Cap);
                 Decoder = from;
 
                 DisplayTo(from);
@@ -382,7 +382,7 @@ namespace Server.Engines.Quests
                     {
                         if (item.Locked && from.InRange(chest.GetWorldLocation(), 1))
                         {
-                            from.CheckTargetSkill(SkillName.Lockpicking, item, 0, 100);
+                            from.CheckTargetSkill(SkillName.Lockpicking, item, 0);
 
                             // Success! Pick the lock!
                             from.PrivateOverheadMessage(MessageType.Regular, 1154, 1158252, from.NetState); // *Your recent study of Treasure Hunting helps you pick the lock...*

@@ -765,7 +765,7 @@ namespace Server.SkillHandlers
                     return false;
                 }
 
-                if (from.CheckSkill(SkillName.Imbuing, 90.1, 120.0))
+                if (from.CheckSkill(SkillName.Imbuing, 90.1, from.Skills[SkillName.Imbuing].Cap))
                 {
                     success = true;
                     resType = typeof(RelicFragment);

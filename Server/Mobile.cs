@@ -11899,14 +11899,9 @@ namespace Server
 			return m_SkillCheckTargetHandler(this, skill, target, minSkill, maxSkill);
 		}
 
-		public bool CheckTargetSkill(SkillName skill, object target, double chance)
+		public bool CheckTargetSkill(SkillName skill, object target, double minSkill)
 		{
-			if (m_SkillCheckDirectTargetHandler == null)
-			{
-				return false;
-			}
-
-			return m_SkillCheckDirectTargetHandler(this, skill, target, chance);
+			return CheckTargetSkill(skill, target, minSkill, this.Skills[skill].Cap);
 		}
 
 		public virtual void DisruptiveAction()

@@ -560,8 +560,8 @@ namespace Server.Items
 
             if (checkSkills)
             {
-                m_Healer.CheckSkill(secondarySkill, 0.0, 120.0);
-                m_Healer.CheckSkill(primarySkill, 0.0, 120.0);
+                m_Healer.CheckSkill(secondarySkill, 0.0, m_Healer.Skills[secondarySkill].Cap);
+                m_Healer.CheckSkill(primarySkill, 0.0, m_Healer.Skills[primarySkill].Cap);
             }
 
             if (m_Patient is PlayerMobile)

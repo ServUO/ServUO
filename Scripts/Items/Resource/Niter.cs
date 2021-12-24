@@ -79,7 +79,7 @@ namespace Server.Items
             Mobile from = (Mobile)os[0];
             Item tool = (Item)os[1];
 
-            if (from != null && from.CheckSkill(SkillName.Mining, 60.0, 100.0))
+            if (from != null && from.CheckSkill(SkillName.Mining, 60.0, from.Skills[SkillName.Mining].Cap))
             {
                 Container pack = from.Backpack;
                 int count = 1;

@@ -354,6 +354,14 @@ namespace Server.Items
                     double minSkill = difficulty - 25.0;
                     double maxSkill = difficulty + 25.0;
 
+					//if the ore type would cause leveling for what was the max skill cap then allow those
+					//types to level the skill no matter the cap.  This could be adjusted if new ore types
+					//are added.
+					if(m_Ore.Resource == CraftResource.Verite || m_Ore.Resource == CraftResource.Valorite)
+					{
+						maxSkill = from.Skills[SkillName.Mining].Cap;
+					}
+
                     if (difficulty > 50.0 && difficulty > from.Skills[SkillName.Mining].Value && !talisman)
                     {
                         from.SendLocalizedMessage(501986); // You have no idea how to smelt this strange ore!

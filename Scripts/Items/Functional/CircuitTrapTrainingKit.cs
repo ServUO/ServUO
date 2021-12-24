@@ -82,7 +82,7 @@ namespace Server.Items
         {
             m.SendLocalizedMessage(1159009); // You successfully disarm the trap!
 
-            m.CheckTargetSkill(SkillName.RemoveTrap, this, 0, 100);
+            m.CheckTargetSkill(SkillName.RemoveTrap, this, 0);
         }
 
         public override void OnDelete()

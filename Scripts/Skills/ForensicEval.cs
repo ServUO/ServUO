@@ -90,7 +90,7 @@ namespace Server.SkillHandlers
                     {
                         from.SendLocalizedMessage(501003);//You notice nothing unusual.
                     }
-                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 36.0, 100.0))
+                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 36.0))
                     {
                         if (target is PlayerMobile && ((PlayerMobile)target).NpcGuild == NpcGuild.ThievesGuild)
                         {
@@ -112,7 +112,7 @@ namespace Server.SkillHandlers
                     {
                         from.SendLocalizedMessage(501003); //You notice nothing unusual.
                     }
-                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
+                    else if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0))
                     {
                         ILockpickable p = (ILockpickable)target;
 
@@ -151,7 +151,7 @@ namespace Server.SkillHandlers
                         if (honestySocket.HonestyOwner == null)
                             Services.Virtues.HonestyVirtue.AssignOwner(honestySocket);
 
-                        if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0, 100.0))
+                        if (from.CheckTargetSkill(SkillName.Forensics, target, 41.0))
                         {
                             string region = honestySocket.HonestyRegion == null ? "an unknown place" : honestySocket.HonestyRegion;
 

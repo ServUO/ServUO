@@ -131,7 +131,7 @@ namespace Server.Items
 
         public virtual bool CheckReveal(Mobile m)
         {
-            return m.CheckTargetSkill(SkillName.DetectHidden, this, 80.0, 100.0);
+            return m.CheckTargetSkill(SkillName.DetectHidden, this, 80.0);
         }
 
         public virtual void OnRevealed(Mobile m)

@@ -88,7 +88,7 @@ namespace Server.SkillHandlers
 
                             from.NextSkillTime = Core.TickCount + (10000 - ((masteryBonus / 5) * 1000));
                         }
-                        else if (!from.CheckSkill(SkillName.Peacemaking, 0.0, 120.0))
+                        else if (!from.CheckSkill(SkillName.Peacemaking, 0.0, from.Skills[SkillName.Peacemaking].Cap))
                         {
                             from.SendLocalizedMessage(500613); // You attempt to calm everyone, but fail.
                             m_Instrument.PlayInstrumentBadly(from);

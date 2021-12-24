@@ -152,7 +152,7 @@ namespace Server.SkillHandlers
                 }
                 else
                 {
-                    Caster.CheckSkill(SkillName.SpiritSpeak, 0.0, 120.0);
+                    Caster.CheckSkill(SkillName.SpiritSpeak, 0.0, Caster.Skills[SkillName.SpiritSpeak].Cap);
 
                     if (Utility.RandomDouble() > (Caster.Skills[SkillName.SpiritSpeak].Value / 100.0))
                     {

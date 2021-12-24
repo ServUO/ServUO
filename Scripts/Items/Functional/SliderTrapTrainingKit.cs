@@ -141,7 +141,7 @@ namespace Server.Items
         {
             from.SendLocalizedMessage(1159009); // You successfully disarm the trap!
 
-            from.CheckTargetSkill(SkillName.RemoveTrap, this, 0, 100);
+            from.CheckTargetSkill(SkillName.RemoveTrap, this, 0);
 
             Reset();
         }

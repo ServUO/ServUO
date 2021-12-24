@@ -31,7 +31,7 @@ namespace Server.SkillHandlers
         {
             private static void SendGump(Mobile from, BaseCreature c)
             {
-                from.CheckTargetSkill(SkillName.AnimalLore, c, 0.0, 120.0);
+                from.CheckTargetSkill(SkillName.AnimalLore, c, 0.0);
 
                 if (from is PlayerMobile)
                 {
@@ -44,7 +44,7 @@ namespace Server.SkillHandlers
 
             private static void Check(Mobile from, BaseCreature c, double min)
             {
-                if (from.CheckTargetSkill(SkillName.AnimalLore, c, min, 120.0))
+                if (from.CheckTargetSkill(SkillName.AnimalLore, c, min))
                     SendGump(from, c);
                 else
                     from.SendLocalizedMessage(500334); // You can't think of anything you know offhand.
