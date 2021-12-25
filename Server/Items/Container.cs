@@ -174,8 +174,8 @@ namespace Server.Items
 		public virtual int DefaultGumpID => ContainerData.GumpID;
 		public virtual int DefaultDropSound => ContainerData.DropSound;
 
-		public virtual int DefaultMaxItems => m_GlobalMaxItems;
-		public virtual int DefaultMaxWeight => m_GlobalMaxWeight;
+		public virtual int DefaultMaxItems => GlobalMaxItems;
+		public virtual int DefaultMaxWeight => GlobalMaxWeight;
 
 		public virtual bool IsDecoContainer => !Movable && !IsLockedDown && !IsSecure && Parent == null && !m_LiftOverride;
 
@@ -1647,7 +1647,7 @@ namespace Server.Items
 					{
 						if (version < 1)
 						{
-							m_MaxItems = m_GlobalMaxItems;
+							m_MaxItems = GlobalMaxItems;
 						}
 
 						m_GumpID = reader.ReadInt();
@@ -1679,11 +1679,42 @@ namespace Server.Items
 			UpdateContainerData();
 		}
 
-		private static int m_GlobalMaxItems = 125;
-		private static int m_GlobalMaxWeight = 400;
+		private static int? m_GlobalMaxItems;
+		private static int? m_GlobalMaxWeight;
 
-		public static int GlobalMaxItems { get => m_GlobalMaxItems; set => m_GlobalMaxItems = value; }
-		public static int GlobalMaxWeight { get => m_GlobalMaxWeight; set => m_GlobalMaxWeight = value; }
+		public static int GlobalMaxItems 
+		{
+			get
+			{
+				if (!m_GlobalMaxItems.HasValue)
+				{
+					m_GlobalMaxItems = Config.Get("CarryWeight.GlobalMaxItems", 125);
+				}
+
+				return m_GlobalMaxItems.Value;
+			}
+			set
+			{
+				m_GlobalMaxItems = value;
+			}
+		}
+
+		public static int GlobalMaxWeight
+		{
+			get
+			{
+				if (!m_GlobalMaxWeight.HasValue)
+				{
+					m_GlobalMaxWeight = Config.Get("CarryWeight.GlobalMaxWeight", 400);
+				}
+
+				return m_GlobalMaxWeight.Value;
+			}
+			set
+			{
+				m_GlobalMaxWeight = value;
+			}
+		}
 
 		public Container(int itemID)
 			: base(itemID)
