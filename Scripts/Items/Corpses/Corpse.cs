@@ -561,7 +561,7 @@ namespace Server.Items
 						{
 							if (players.Count() > 1)
 							{
-								player.SendMessage($"You share of the gold from killing {corpse.Owner.Name} is {goldPerPlayer} gold.");
+								player.SendMessage($"Your share of the gold from killing {corpse.Owner.Name} is {goldPerPlayer} gold.");
 							}
 							else
 							{

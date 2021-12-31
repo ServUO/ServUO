@@ -4268,7 +4268,7 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
-				case 43: // auto look flags
+				case 43: // auto loot flags
 					m_AllowAutoLoot = reader.ReadInt();
 					m_ShowAutoLootMessages = reader.ReadInt();
 					m_ShareAutoLootWithParty = reader.ReadInt();
