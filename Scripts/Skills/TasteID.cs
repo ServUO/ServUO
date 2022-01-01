@@ -40,7 +40,7 @@ namespace Server.SkillHandlers
                 {
                     Food food = (Food)targeted;
 
-                    if (from.CheckTargetSkill(SkillName.TasteID, food, 0, 100))
+                    if (from.CheckTargetSkill(SkillName.TasteID, food, 0))
                     {
                         if (food.Poison != null)
                         {

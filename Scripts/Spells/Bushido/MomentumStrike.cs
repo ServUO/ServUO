@@ -80,7 +80,7 @@ namespace Server.Spells.Bushido
 
         public override void CheckGain(Mobile m)
         {
-            m.CheckSkill(MoveSkill, RequiredSkill, 120.0);
+            m.CheckSkill(MoveSkill, RequiredSkill, m.Skills[MoveSkill].Cap);
         }
     }
 }

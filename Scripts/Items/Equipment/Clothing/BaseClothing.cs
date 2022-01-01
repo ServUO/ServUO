@@ -1727,7 +1727,7 @@ namespace Server.Items
                     }
                 }
 
-                from.CheckSkill(SkillName.ArmsLore, 0, 100);
+                from.CheckSkill(SkillName.ArmsLore, 0, from.Skills[SkillName.ArmsLore].Cap);
             }
 
             PhysNonImbuing = PhysicalResistance;

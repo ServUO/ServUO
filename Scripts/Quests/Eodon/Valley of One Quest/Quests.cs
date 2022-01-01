@@ -369,7 +369,7 @@ namespace Server.Engines.Quests
 
                         if (quest != null && !quest.Completed && 0.05 > Utility.RandomDouble())
                         {
-                            if (m.CheckSkill(SkillName.Mining, 90, 100))
+                            if (m.CheckSkill(SkillName.Mining, 90, m.Skills[SkillName.Mining].Cap))
                             {
                                 double chance = Utility.RandomDouble();
 

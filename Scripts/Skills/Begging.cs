@@ -124,7 +124,7 @@ namespace Server.SkillHandlers
                         m_Target.PublicOverheadMessage(MessageType.Regular, m_Target.SpeechHue, 500406);
                         // Thou dost not look trustworthy... no gold for thee today!
                     }
-                    else if (m_From.CheckTargetSkill(SkillName.Begging, m_Target, 0.0, 100.0))
+                    else if (m_From.CheckTargetSkill(SkillName.Begging, m_Target, 0.0))
                     {
                         if (m_Target.Race != Race.Elf)
                         {

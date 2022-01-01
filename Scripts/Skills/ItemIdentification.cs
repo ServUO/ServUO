@@ -42,7 +42,7 @@ namespace Server.Items
                     return;
                 }
 
-                if (!from.CheckTargetSkill(SkillName.ItemID, o, 0, 100))
+                if (!from.CheckTargetSkill(SkillName.ItemID, o, 0))
                 {
                     from.PrivateOverheadMessage(MessageType.Emote, 0x3B2, 1041352, from.NetState); // You have no idea how much it might be worth.
                     return;

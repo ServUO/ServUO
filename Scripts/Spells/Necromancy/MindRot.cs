@@ -103,7 +103,7 @@ namespace Server.Spells.Necromancy
             m.FixedParticles(0x373A, 1, 17, 9903, 15, 4, EffectLayer.Head);
 
             TimeSpan duration = TimeSpan.FromSeconds(((((GetDamageSkill(Caster) - GetResistSkill(m)) / 5.0) + 20.0) * (m.Player ? 1.0 : 2.0)) * strength);
-            m.CheckSkill(SkillName.MagicResist, 0.0, 120.0);	//Skill check for gain
+            m.CheckSkill(SkillName.MagicResist, 0.0, m.Skills[SkillName.MagicResist].Cap);	//Skill check for gain
 
             if (m.Player)
                 SetMindRotScalar(Caster, m, 1.25 * strength, duration);

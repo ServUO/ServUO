@@ -429,7 +429,7 @@ namespace Server.Spells
             if (!blockSkill)
             {
                 if (curse)
-                    target.CheckSkill(SkillName.MagicResist, 0.0, 120.0);
+                    target.CheckSkill(SkillName.MagicResist, 0.0, target.Skills[SkillName.MagicResist].Cap);
             }
 
             double percent = GetOffsetScalar(caster, target, curse);

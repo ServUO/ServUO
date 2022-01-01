@@ -71,7 +71,7 @@ namespace Server.SkillHandlers
                     else
                         body = 22;
 
-                    if (from.CheckTargetSkill(SkillName.EvalInt, targ, 0.0, 120.0))
+                    if (from.CheckTargetSkill(SkillName.EvalInt, targ, 0.0))
                     {
                         targ.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1038169 + intMod + body, from.NetState); // He/She/It looks [slighly less intelligent than a rock.]  [Of Average intellect] [etc...]
 

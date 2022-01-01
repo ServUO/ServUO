@@ -75,7 +75,7 @@ namespace Server.SkillHandlers
                 if (from.IsPlayer())
                     Titles.AwardKarma(from, -4, true);
 
-                if (from.IsStaff() || from.CheckTargetSkill(SkillName.Snooping, cont, 0.0, 100.0))
+                if (from.IsStaff() || from.CheckTargetSkill(SkillName.Snooping, cont, 0.0))
                 {
                     if (cont is TrapableContainer && ((TrapableContainer)cont).ExecuteTrap(from))
                         return;

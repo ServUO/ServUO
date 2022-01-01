@@ -3112,7 +3112,7 @@ namespace Server.Items
 
                 if (Type == WeaponType.Axe)
                 {
-                    attacker.CheckSkill(SkillName.Lumberjacking, 0.0, 100.0); // Passively check Lumberjacking for gain
+                    attacker.CheckSkill(SkillName.Lumberjacking, 0.0, attacker.Skills[SkillName.Lumberjacking].Cap); // Passively check Lumberjacking for gain
                 }
             }
 
@@ -5204,7 +5204,7 @@ namespace Server.Items
                 double div = Siege.SiegeShard ? 12.5 : 20;
 
                 Attributes.WeaponDamage += (int)(from.Skills.ArmsLore.Value / div);
-                from.CheckSkill(SkillName.ArmsLore, 0, 100);
+                from.CheckSkill(SkillName.ArmsLore, 0, from.Skills[SkillName.ArmsLore].Cap);
             }
 
             if (craftItem != null && !craftItem.ForceNonExceptional)

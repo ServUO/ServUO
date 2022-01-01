@@ -2553,7 +2553,7 @@ namespace Server.Items
                     }
                 }
 
-                from.CheckSkill(SkillName.ArmsLore, 0, 100);
+                from.CheckSkill(SkillName.ArmsLore, 0, from.Skills[SkillName.ArmsLore].Cap);
             }
 
             // Imbuing needs to keep track of what is natrual, what is imbued bonuses

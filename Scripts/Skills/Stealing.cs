@@ -129,7 +129,7 @@ namespace Server.SkillHandlers
                         {
                             m_Thief.SendLocalizedMessage(1063222); // You cannot steal the sigil while mimicking an animal.
                         }
-                        else if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, 100.0, 120.0))
+                        else if (m_Thief.CheckTargetSkill(SkillName.Stealing, toSteal, 100.0))
                         {
                             if (m_Thief.Backpack == null || !m_Thief.Backpack.CheckHold(m_Thief, sig, false, true))
                             {
