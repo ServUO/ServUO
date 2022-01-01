@@ -458,11 +458,13 @@ namespace Server.Items
         {
             var c = new Corpse(owner, hair, facialhair, equipItems);
 
-            owner.Corpse = c;
+			var corpseContent = AutoLootGold(initialContent, c);
 
-            for (int i = 0; i < initialContent.Count; ++i)
+			owner.Corpse = c;
+
+            for (int i = 0; i < corpseContent.Count; ++i)
             {
-                Item item = initialContent[i];
+                Item item = corpseContent[i];
 
                 if (owner.Player && item.Parent == owner.Backpack)
                 {
@@ -506,7 +508,76 @@ namespace Server.Items
             return c;
         }
 
-        public override bool IsPublicContainer => false;
+		private static List<Item> AutoLootGold(List<Item> initialContent, Corpse corpse)
+		{
+			if (initialContent == null)
+			{
+				return null;
+			}
+
+			var remainingContent = new List<Item>();
+			remainingContent.AddRange(initialContent);
+
+			if (Config.Get("QualityOfLifeFeatures.AllowGoldAutoLoot", false) && !(corpse.Owner is PlayerMobile))
+			{
+				var goldAmount = initialContent?.FindAll(i => i is Gold)?.Sum(i => i.Amount) ?? 0;
+				var players = corpse?.Aggressors?.FindAll(a => a is PlayerMobile)?.Select(a => a as PlayerMobile)?.ToList() ?? new List<PlayerMobile>();
+
+				if (goldAmount > 0 && players.All(p => p.AllowAutoLoot))
+				{
+					if (players.All(p => p.ShareAutoLootWithParty))
+					{
+						var parties = new List<Party>();
+
+						foreach (var player in players)
+						{
+							Party party = Party.Get(player);
+
+							if (party != null && parties.Contains(party))
+							{
+								parties.Add(party);
+							}
+						}
+
+						foreach (var party in parties)
+						{
+							var partyPlayers = party?.Members?.FindAll(m => m.Mobile is PlayerMobile &&
+																	   !players.Contains(m.Mobile as PlayerMobile))
+															 ?.Select(m => m.Mobile as PlayerMobile)?.ToList()
+															 ?? new List<PlayerMobile>();
+							players.AddRange(partyPlayers);
+						}
+					}
+
+					//every player gets the same amount so the remainder is lost
+					int goldPerPlayer = (goldAmount - (goldAmount % players.Count())) / players.Count();
+
+					foreach (var player in players)
+					{
+						var gold = new Gold(goldPerPlayer);
+						player.AddToBackpack(gold);
+
+						if (player.ShowAutoLootMessages)
+						{
+							if (players.Count() > 1)
+							{
+								player.SendMessage($"Your share of the gold from killing {corpse.Owner.Name} is {goldPerPlayer} gold.");
+							}
+							else
+							{
+								player.SendMessage($"You loot the corpse of {corpse.Owner.Name} and place {goldPerPlayer} gold in your backpack.");
+							}
+						}
+					}
+
+					remainingContent = remainingContent.FindAll(i => !(i is Gold));
+				}
+			}
+
+			return remainingContent;
+		}
+
+		public override bool IsPublicContainer => false;
 
         public Corpse(Mobile owner, List<Item> equipItems)
             : this(owner, null, null, equipItems)
