@@ -1,0 +1,223 @@
+Updated for Xmlspawner 3.26
+
+XmlParagon v1.00
+updated 2/25/08
+ArteGordon
+
+SUMMARY
+An Xmlspawner attachment that can be applied to individual xmlspawners to customize paragon spawns from that spawner.  Various paragon spawning properties can be set such as buff factors, conversion rate, artifact drop rate, chest drop rate, hue, labels.  Paragon spawning on the spawner can also be entirely disabled.
+
+
+DESCRIPTION
+To use this system, add the XmlParagon attachment to any xmlspawner by using the command 
+
+[addatt xmlparagon
+
+and then targeting an xmlspawner. You can then edit the xmlparagon properties by using the command
+
+[getatt
+
+and targeting the xmlspawner to open the attachments gump and then selecting the properties button on the XmlParagon attachment.
+Paragon spawning on any spawner with this attachment will be controlled by the attachment settings.  Normal paragon settings such as map restrictions will not apply.  This means that you can enable paragon spawning on any spawner on any map regardless of the default Paragon settings by adding the attachment to the spawner.
+
+To disable paragon spawning on any spawner, just set the EnableParagon property on the attachment to false.
+
+Custom paragon attachments can also be scripted with different default behavior.  Some simple examples have been included.  MLParagon.cs changes the artifact drops to ML artifacts.  WeakParagon.cs is an XmlParagon attachment with weaker default buff factors.
+Custom attachments derived from the XmlParagon attachment can also be scripted and with the following methods that can be overridden for further customization
+
+        public virtual void XmlAddChest(BaseCreature bc, int treasureLevel)
+        public virtual double XmlChestChance(BaseCreature bc)
+        public virtual string XmlGetParagonLabel(BaseCreature bc)
+        public virtual void XmlConvert(BaseCreature bc)
+        public virtual void XmlUnConvert(BaseCreature bc)
+        public virtual bool XmlCheckConvert(BaseCreature bc, Point3D location, Map m)
+        public virtual bool XmlCheckArtifactChance(Mobile m, BaseCreature bc)
+        public virtual void XmlGiveArtifactTo(Mobile m, BaseCreature bc)
+
+
+INSTALLATION
+This system involves making six modifications to the BaseCreature script.  No other scripts are affected.  No changes to any serialization are made so the system can be safely added and removed at any time.  Standard paragon spawning on spawners that do not have this attachment is not affected by this system.
+
+STEP 1:
+Install the latest XmlSpawner2 package.  This system only works with xmlspawners. Other spawning systems will not be affected.
+
+STEP 2:
+Add the following line at the top of Scripts/Engines/AI/Creature/BaseCreature.cs
+
+using Server.Engines.XmlSpawner2;
+
+and make the following additional modifications
+
+around line 368 change this
+
+		public bool IsParagon
+		{
+			get{ return m_Paragon; }
+			set
+			{
+				if ( m_Paragon == value )
+					return;
+				else if ( value )
+					Paragon.Convert( this );
+				else
+					Paragon.UnConvert( this );
+
+				m_Paragon = value;
+
+				InvalidateProperties();
+			}
+		}
+
+to this
+
+        public bool IsParagon
+        {
+            get { return m_Paragon; }
+            set
+            {
+                // ARTEGORDONMOD
+                // add custom paragon conversion support
+                if (m_Paragon == value)
+                    return;
+                else if (value)
+                    XmlParagon.Convert(this);
+                else
+                    XmlParagon.UnConvert(this);
+                // end custom paragon conversion support
+
+                m_Paragon = value;
+
+                InvalidateProperties();
+            }
+        }
+
+
+STEP 3:
+around line 542 change this
+
+		public virtual int BreathComputeDamage()
+		{
+			int damage = (int)(Hits * BreathDamageScalar);
+
+			if ( IsParagon )
+				damage = (int)(damage / Paragon.HitsBuff);
+
+			return damage;
+		}
+
+to this
+
+        public virtual int BreathComputeDamage()
+        {
+            int damage = (int)(Hits * BreathDamageScalar);
+
+            // ARTEGORDONMOD
+            // custom paragon support
+            if (IsParagon)
+                damage = (int)(damage / XmlParagon.GetHitsBuff(this));
+
+            return damage;
+        }
+
+
+
+STEP 4:
+around line 770 change this
+
+		public override string ApplyNameSuffix( string suffix )
+		{
+			if ( IsParagon )
+			{
+				if ( suffix.Length == 0 )
+					suffix = "(Paragon)";
+				else
+					suffix = String.Concat( suffix, " (Paragon)" );
+			}
+
+			return base.ApplyNameSuffix( suffix );
+		}
+
+to this
+
+        public override string ApplyNameSuffix(string suffix)
+        {
+            if (IsParagon)
+            {
+                // ARTEGORDONMOD
+                // allow custom paragon labels
+                if (suffix.Length == 0)
+                    suffix = XmlParagon.GetParagonLabel(this);
+                else
+                    suffix = String.Concat(suffix, " " + XmlParagon.GetParagonLabel(this));
+                // end mod to allow custom paragon labels
+            }
+
+            return base.ApplyNameSuffix(suffix);
+        }
+
+STEP 5:
+around line 915 change this
+
+		public override void OnBeforeSpawn( Point3D location, Map m )
+		{
+			if ( Paragon.CheckConvert( this, location, m ) )
+				IsParagon = true;
+
+			base.OnBeforeSpawn( location, m );
+		}
+
+to this
+
+        public override void OnBeforeSpawn(Point3D location, Map m)
+        {
+            // ARTEGORDONMOD
+            // add custom paragon conversion support
+            if (XmlParagon.CheckConvert(this, location, m))
+                IsParagon = true;
+
+            base.OnBeforeSpawn(location, m);
+        }
+
+STEP 6:
+around line 3903 in the OnBeforeDeath method change this
+
+			if ( !Summoned && !NoKillAwards && !IsBonded && treasureLevel >= 0 )
+			{
+				if ( m_Paragon && Paragon.ChestChance > Utility.RandomDouble() )
+					PackItem( new ParagonChest( this.Name, treasureLevel ) );
+				else if ( (Map == Map.Felucca || Map == Map.Trammel) && TreasureMap.LootChance >= Utility.RandomDouble() )
+					PackItem( new TreasureMap( treasureLevel, Map ) );
+			}	
+
+to this
+
+            if (!Summoned && !NoKillAwards && !IsBonded && treasureLevel >= 0)
+            {
+                //ARTEGORDONMOD
+                // mod to allow custom paragon chest drops
+                if (m_Paragon && XmlParagon.GetChestChance(this) > Utility.RandomDouble())
+                    XmlParagon.AddChest(this,treasureLevel);
+                    // end mod to allow custom paragon chest drops
+                else if ((Map == Map.Felucca || Map == Map.Trammel) && TreasureMap.LootChance >= Utility.RandomDouble())
+                    PackItem(new TreasureMap(treasureLevel, Map));
+            }
+
+STEP 7:
+around line 4324 change this
+
+		public virtual void OnKilledBy( Mobile mob )
+		{
+			if ( m_Paragon && Paragon.CheckArtifactChance( mob, this ) )
+				Paragon.GiveArtifactTo( mob );
+		}
+
+to this
+
+        public virtual void OnKilledBy(Mobile mob)
+        {
+            // ARTEGORDONMOD
+            // begin custom paragon artifact drops
+            if (m_Paragon && XmlParagon.CheckArtifactChance(mob, this))
+                XmlParagon.GiveArtifactTo(mob, this);
+            // end custom paragon artifact drops
+        }

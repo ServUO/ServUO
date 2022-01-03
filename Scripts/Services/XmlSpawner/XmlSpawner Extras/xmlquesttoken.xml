@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<XmlQuestToken>
+	<Properties>
+		<Name>The Quest</Name>
+		<Title>Do some quest stuff</Title>
+		<PartyEnabled>true</PartyEnabled>
+		<PartyRange>30</PartyRange>
+		<Objective1>KILL,balron,10</Objective1>
+		<Objective2>COLLECT,ginseng,100</Objective2>
+		<Objective3>Go talk to the man</Objective3>
+		<Objective4>KILL,harpy,5</Objective4>
+		<Objective5>Return to collect your reward</Objective5>
+		<Expiration>20</Expiration>
+		<Reward>GIVE/&lt;longsword/name/Blazer/weaponattributes.hitfireball/RND,30,70&gt;</Reward>
+	</Properties>
+</XmlQuestToken>

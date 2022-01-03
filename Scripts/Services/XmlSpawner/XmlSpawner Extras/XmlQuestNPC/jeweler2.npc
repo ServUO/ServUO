@@ -1,0 +1,156 @@
+<?xml version="1.0" standalone="yes"?>
+
+<XmlQuestNPC>
+
+----------------------------
+This sets up the NPC named Jules.
+Banter is triggered by a player coming within 3 tiles.
+Each conversational branch is triggered by a different condition of fame and karma
+The conversation will automatically reset after 12 seconds of idle time.
+----------------------------
+  <NPC>
+    <Name>Jules</Name>
+    <Running>True</Running>
+    <ProximityRange>3</ProximityRange>
+    <AllowGhost>False</AllowGhost>
+    <ResetTime>0.20</ResetTime>
+    <ConfigFile>jeweler2</ConfigFile>
+  </NPC>
+
+----------------------------
+This is just the default starting point when the conversation resets.  It is just a placeholder.  All of the real conversation 
+branches from the banter
+----------------------------
+<SpeechEntry>
+<EntryNumber>0</EntryNumber>
+    <ID>0</ID>
+    <DependsOn>9999</DependsOn>
+  </SpeechEntry>
+
+----------------------------
+Here is the banter section
+----------------------------
+<SpeechEntry>
+    <EntryNumber>1</EntryNumber>
+    <ID>400</ID>
+    <Text>Get out, vile creature!</Text>
+    <Condition>GETONTRIGMOB,karma&lt;0</Condition>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>4</EntryNumber>
+    <ID>401</ID>
+    <Text>Would you like to hear a rumor?</Text>
+    <Condition>GETONTRIGMOB,fame&gt;10000&amp; GETONTRIGMOB,karma&gt;0</Condition>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>5</EntryNumber>
+    <ID>402</ID>
+    <SpeechStyle>Emote</SpeechStyle>
+    <Text>Oh no, not another beggar.</Text>
+   <Condition>GETONTRIGMOB,totalgold&lt;100</Condition>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>6</EntryNumber>
+    <ID>402</ID>
+    <SpeechStyle>Emote</SpeechStyle>
+    <Text>Ah, a man of wealth.</Text>
+   <Condition>GETONTRIGMOB,totalgold&gt;1000</Condition>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+
+
+<SpeechEntry>
+    <EntryNumber>7</EntryNumber>
+    <ID>403</ID>
+    <Text>I can give you a few tips or some help.</Text>
+    <Condition>GETONTRIGMOB,fame&lt;5000&amp; GETONTRIGMOB,karma&gt;0</Condition>
+    <DependsOn>-1</DependsOn>
+  </SpeechEntry>
+
+
+----------------------------
+Here is the tips section
+Can only get here if you have fame less than 5000 and karma greater than zero
+----------------------------
+<SpeechEntry>
+    <EntryNumber>22</EntryNumber>
+    <ID>22</ID>
+    <Text>I hear that gargoyles are an excellent source of gems.</Text>
+    <Keywords>tip</Keywords>
+    <DependsOn>403</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>23</EntryNumber>
+    <ID>23</ID>
+    <Text>Dont place diamonds up your nose. They are difficult to dislodge.</Text>
+    <Keywords>tip</Keywords>
+    <DependsOn>403</DependsOn>
+  </SpeechEntry>
+
+----------------------------
+Here is the rumor section
+Can only get here if your fame is over 10000 and your karma is greater than zero and you use the proper keyword
+----------------------------
+<SpeechEntry>
+    <EntryNumber>33</EntryNumber>
+    <ID>33</ID>
+    <Text>Well let me tell you. Come closer.</Text>
+    <Keywords>yes</Keywords>
+    <DependsOn>401</DependsOn>
+    <Pause>2</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>34</EntryNumber>
+    <ID>34</ID>
+    <Text>Do you know the Dweezle boys? I think they are up to something.</Text>
+    <SpeechStyle>Whisper</SpeechStyle>
+    <DependsOn>33</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>35</EntryNumber>
+    <ID>35</ID>
+    <Text>The king keeps a rabbits foot in his pocket.</Text>
+    <SpeechStyle>Whisper</SpeechStyle>
+    <DependsOn>33</DependsOn>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>36</EntryNumber>
+    <ID>36</ID>
+    <Text>Call Sheila the barkeep for a good time.</Text>
+    <SpeechStyle>Whisper</SpeechStyle>
+    <DependsOn>33</DependsOn>
+  </SpeechEntry>
+
+----------------------------
+Here is the help section
+----------------------------
+<SpeechEntry>
+    <EntryNumber>44</EntryNumber>
+    <ID>44</ID>
+    <Text>I am happy to help you.</Text>
+    <Keywords>help</Keywords>
+    <DependsOn>403</DependsOn>
+    <Pause>2</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>55</EntryNumber>
+    <ID>55</ID>
+    <Text>You can buy and sell your jewelry here.</Text>
+    <DependsOn>44</DependsOn>
+    <Pause>2</Pause>
+  </SpeechEntry>
+<SpeechEntry>
+    <EntryNumber>66</EntryNumber>
+    <ID>66</ID>
+    <Text>Simply ask me to buy or sell, whichever you prefer.</Text>
+    <DependsOn>55</DependsOn>
+  </SpeechEntry>
+
+
+</XmlQuestNPC>

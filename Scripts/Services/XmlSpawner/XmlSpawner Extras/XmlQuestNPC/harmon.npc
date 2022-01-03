@@ -1,0 +1,110 @@
+<?xml version="1.0" standalone="yes"?>
+<XmlQuestNPC>
+  <NPC>
+    <Name>Harmon</Name>
+    <Running>True</Running>
+    <ProximityRange>3</ProximityRange>
+    <NoTriggerOnCarried>Harmon's Quest</NoTriggerOnCarried>
+    <AllowGhost>False</AllowGhost>
+    <ResetTime>0.5</ResetTime>
+    <ConfigFile>harmon</ConfigFile>
+  </NPC>
+
+----------------------------
+Default starting point
+----------------------------
+<SpeechEntry>
+    <EntryNumber>0</EntryNumber>
+    <ID>0</ID>
+    <DependsOn>999</DependsOn>
+  </SpeechEntry>
+
+  <SpeechEntry>
+    <EntryNumber>1</EntryNumber>
+    <ID>1</ID>
+    <Gump>GUMP,Harmon,4/You see a sad old man holding a small tin cup. His hands are trembling and he mumbles something incoherently.  You come closer.;Help him out with a few coins as a responsible citizen of Britannia;help;Kick him and tell him to move along;kick;Distract him and pick his pockets;steal;Ask him to repeat what he said;ask</Gump>
+    <Keywords>help,hail,wrong</Keywords>
+    <DependsOn>33</DependsOn>
+    <Pause>1</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>3</EntryNumber>
+    <ID>3</ID>
+    <PrePause>2</PrePause>
+    <Text>I am penniless...</Text>
+    <DependsOn>1</DependsOn>
+    <Keywords>steal</Keywords>
+    <Pause>2</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>4</EntryNumber>
+    <ID>4</ID>
+    <PrePause>2</PrePause>
+    <Text>I cannot take your money.. </Text>
+    <DependsOn>1</DependsOn>
+    <Keywords>help</Keywords>
+    <Pause>2</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>5</EntryNumber>
+    <ID>5</ID>
+    <PrePause>2</PrePause>
+    <Text>I deserve worse..</Text>
+    <DependsOn>1</DependsOn>
+    <Keywords>kick</Keywords>
+    <Pause>2</Pause>
+  </SpeechEntry>
+
+<SpeechEntry>
+    <EntryNumber>6</EntryNumber>
+    <ID>6</ID>
+    <PrePause>2</PrePause>
+    <Gump>GUMP,Harmon's Quest,3/Please find my son...</Gump>
+    <DependsOn>1</DependsOn>
+    <Keywords>ask</Keywords>
+    <Pause>1</Pause>
+  </SpeechEntry>
+
+
+<SpeechEntry>
+    <EntryNumber>10</EntryNumber>
+    <ID>10</ID>
+    <PrePause>1</PrePause>
+    <Action>GIVE/&lt;questholder/name/Harmon's Quest/titlestring/Locate Harmon's son./objective1/Search the depths of Hythloth.</Action>
+    <DependsOn>6</DependsOn>
+    <Keywords>accept</Keywords>
+    <Pause>2</Pause>
+  </SpeechEntry>
+
+
+----------------------------
+Here is the banter section
+----------------------------
+
+  <SpeechEntry>
+    <EntryNumber>33</EntryNumber>
+    <ID>33</ID>
+    <Text>How could it have happened..</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>34</EntryNumber>
+    <ID>33</ID>
+    <Text>*sob*</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  <SpeechEntry>
+    <EntryNumber>35</EntryNumber>
+    <ID>33</ID>
+    <Text>I will never forgive myself</Text>
+    <DependsOn>-1</DependsOn>
+    <Pause>5</Pause>
+  </SpeechEntry>
+  
+
+</XmlQuestNPC>

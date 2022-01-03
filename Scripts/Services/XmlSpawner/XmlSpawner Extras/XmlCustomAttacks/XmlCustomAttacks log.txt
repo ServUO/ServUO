@@ -1,0 +1,171 @@
+updated for xmlspawner 3.26c - Zagros
+
+XmlCustomAttacks v1.02
+updated 11/29/04
+ArteGordon
+
+[b]SUMMARY[/b]
+This set of attachments provides a system for adding custom special attacks to weapons and defenses to shields including combos that require a series of specific special moves to be executed in a timed sequence.  Any number of special moves can be enabled on a given weapon/shield, and combos can be made up of sequences of arbitrary length and complexity.
+
+
+New to v1.02
+updated 11/29/04
+- added support for the new XmlSockets system.
+
+
+[b]INSTALLATION:[/b]
+for RunUO 2.0
+
+[u]STEP 1:[/u]
+Install the latest XmlSpawner2 package (must be at least version 2.69. You can find it here [URL=http://www.runuo.com/forum/showthread.php?t=69750]XmlSpawner2[/URL]).  Make sure that you perform installation steps 7, 9, and 10 from that thread.  
+
+[u]STEP 2: [/u]
+Place the scripts from this package into your custom scripts directory, or into the XmlAttachments area of your XmlSpawner2 installation.  (anywhere in your Scripts folder is fine, these locations are suggested for organizational purposes only).
+Place the optional .xml example in the top level of your RunUO installation directory if you would like to try it out.
+
+
+[b]DESCRIPTION:[/b]
+
+This system makes use of the XmlSpawner2 attachment system and the XmlSpawner2 package must be installed to support it.  You dont need to use the xmlspawners themselves, and it doesnt matter whether you use the standard distribution spawners or any other spawning system but you do need the XmlSpawner2 package installed.
+
+Because the attachment system neither requires nor makes any changes to serialization/deserializations of any item or mobile, it can be safely added and removed at any time now or in the future without interfering with any other systems that you might have installed.
+
+Note, this is intended as more of a development system for people to add custom content to their shards than a full drop-and-play system with a full complement of attacks and combos.  While I have included some attacks and combos in the package, they are largely intended to illustrate its features, and are not necessarily balanced for drop-and-play use (although you could certainly do that if you wanted to).  Add, fiddle, and most importantly, have fun.
+
+[b][u]Features:[/u][/b]
+
+When a weapon with this attachment is equipped, a gump containing icons for the special attacks that it has available will be displayed.
+Attacks can be selected by pressing one of the attack icons.  When selected, the icon will turn red until it is activated by a successful hit.
+The description and requirements for an attack can be viewed by pressing the small blue button to the right of the attack selection button.
+Secret combination attacks can be unleashed by executing the proper sequence of special moves.
+
+Several special attacks and combos have been added to , but the system can be extended with any number of additional moves.
+
+[b][u]Examples of included special attacks/combos:[/u][/b]
+
+Gift of Health - Restores attacker to full health
+Requires - 30 int, 60 Healing
+Uses - 40 mana, 20 stamina, 2 ginseng, 2 mandrake, 50 gold.
+
+Puff of Smoke - Makes the attacker invisible
+Requires - 40 dex, 50 Stealth, 50 Hiding
+Uses - 20 mana, 40 stamina, 2 spiderssilk.
+
+Paralyzing Fear - Paralyzes the target then causes it to flee
+Requires - 40 int, 30 Necromancy
+Uses - 10 mana, 10 stamina, 5 hits, 10 karma, 1 Head 
+
+Thunder Strike - a combo attack activated by the following sequence of custom attacks
+TripleSlash + MindDrain + ParalyzingFear + TripleSlash + StamDrain
+
+
+[b][u]Customizable special attacks:[/u][/b]
+
+- user-definable special attacks can be designed and added to weapons in any combination and number.
+
+- special attacks can be given requirements that include minimum str, dex, int, and skills.
+
+- executing an attack can be defined to consume mana, stamina, hits, karma, and any number and type of reagent.  
+
+
+[b][u]Customizable combo attacks:[/u][/b]
+
+- special combo attacks can be created that are executed when a definable sequence of special attacks has been carried out in the proper order and without interruption. 
+
+- The custom attacks gump has an indicator at the top of the gump that signals when a combo sequence has been started and is still in progress.  When it goes out, that means that it has been interrupted either due to executing a special move out of sequence, or taking too long between moves.
+
+- Because the end of one combo could be the beginning of another, it is possible to chain multiple combos together.
+Combos that share moves can even be executed together for multiple simultaneous combos.
+
+
+[b][u]Adding custom attacks to weapons:[/u][/b]
+
+[u]Manually to individual weapons[/u]
+
+- the custom attacks attachment can be added to weapons in several ways.  It can be manually attached to any existing weapon with the "[addatt" command.
+
+For example
+
+"[addatt xmlcustomattacks random 4"
+
+will attach 4 randomly selected custom attacks to a targeted weapon.
+
+"[addatt xmlcustomattacks tartan"
+
+Will add a predefined custom attack configuration that was named "tartan" in the attachment constructor in XmlCustomAttacks.cs
+
+[u]To weapon scripts[/u]
+
+- Special attacks can also be added to scripted weapons.  See the included script TestCustomWeapon.cs for an example of this.
+
+[u]To spawned weapons[/u]
+
+- To add special attacks to spawned weapons use the ATTACH keyword in spawn entries such as this
+
+katana/ATTACH/xmlcustomattacks,random,4
+
+which would spawn a katana with 4 randomly selected custom attacks.  
+
+or
+
+orc/ADD/<katana/ATTACH/xmlcustomattacks,random,4>
+
+would spawn an orc carrying the katana with custom attacks.
+
+To try out the included example spawner .xml file, place the file "customattacks.xml" in your top level RunUO directory and execute the command 
+
+"[xmlloadhere customattacks.xml"
+
+
+
+[b][u]Adding custom defenses to shields:[/u][/b]
+
+[u]Manually to individual shields[/u]
+
+- the custom defenses attachment can be added to shields in several ways.  It can be manually attached to any existing shield with the "[addatt" command.
+
+For example
+
+"[addatt xmlcustomdefenses random 4"
+
+will attach 4 randomly selected custom defenses to a targeted shield
+
+"[addatt xmlcustomdefenses brogan"
+
+Will add a predefined custom defense configuration that was named "brogan" in the attachment constructor in XmlCustomDefenses.cs
+
+[u]To shield scripts[/u]
+
+- Special defenses can also be added to scripted shields.  See the included script TestCustomShield.cs for an example of this.
+
+[u]To spawned shields[/u]
+
+- To add special defenses to spawned shields use the ATTACH keyword in spawn entries such as this
+
+buckler/ATTACH/xmlcustomdefenses,random,4
+
+which would spawn a buckler with 4 randomly selected custom defenses
+
+or
+
+orc/ADD/<buckler/ATTACH/xmlcustomdefenses,random,4>
+
+would spawn an orc carrying the buckler with custom defenses.
+
+To try out the included example spawner .xml file, place the file "customattacks.xml" in your top level RunUO directory and execute the command 
+
+"[xmlloadhere customattacks.xml"
+
+
+Changelog
+
+Version 1.01
+updated 11/26/04
+
+- added the option to use item art instead of gump art for the button icons when calling AddSpecialAttack with a new overload of that method.  An example of a new attack using item art is included in XmlCustomAttacks.cs.  Look at the AddSpecialAttack call for the new VortexWave attack in the Initialize() method.
+
+- added the new XmlCustomDefenses attachment that can be used with shields to enable special defensive moves and combos that are activated when the shield is hit.  This attachment has a separate special moves gump and combo indicator, and both attack and defense gumps can be used at the same time.  Special defense moves and combos are added into XmlCustomDefenses.cs-
+
+- to support the new defensive moves, version 2.69 or higher of the XmlSpawner2 package must be installed.
+
+- updated the .xml example customattacks.xml to include the new defensive attachment, and added a new example script for defensive attachments called TestCustomShield.cs

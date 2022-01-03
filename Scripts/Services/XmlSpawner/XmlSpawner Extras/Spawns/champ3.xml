@@ -1,0 +1,46 @@
+<?xml version="1.0" standalone="yes"?>
+<Spawns>
+  <Points>
+    <Name>ArachnidChamp#2</Name>
+    <UniqueId>ccf1787d-a526-4376-9b91-31a523a10520</UniqueId>
+    <Map>Felucca</Map>
+    <X>5434</X>
+    <Y>1150</Y>
+    <Width>10</Width>
+    <Height>10</Height>
+    <CentreX>5439</CentreX>
+    <CentreY>1155</CentreY>
+    <CentreZ>0</CentreZ>
+    <Range>5</Range>
+    <MaxCount>11</MaxCount>
+    <MinDelay>10</MinDelay>
+    <MaxDelay>10</MaxDelay>
+    <DelayInSec>True</DelayInSec>
+    <Duration>0</Duration>
+    <DespawnTime>0</DespawnTime>
+    <ProximityRange>-1</ProximityRange>
+    <ProximityTriggerSound>500</ProximityTriggerSound>
+    <TriggerProbability>1</TriggerProbability>
+    <InContainer>False</InContainer>
+    <ContainerX>0</ContainerX>
+    <ContainerY>0</ContainerY>
+    <ContainerZ>0</ContainerZ>
+    <MinRefractory>0</MinRefractory>
+    <MaxRefractory>0</MaxRefractory>
+    <TODStart>0</TODStart>
+    <TODEnd>0</TODEnd>
+    <TODMode>0</TODMode>
+    <KillReset>100</KillReset>
+    <ExternalTriggering>False</ExternalTriggering>
+    <SequentialSpawning>1</SequentialSpawning>
+    <RegionName />
+    <AllowGhostTriggering>False</AllowGhostTriggering>
+    <SmartSpawning>False</SmartSpawning>
+    <Team>0</Team>
+    <Amount>1</Amount>
+    <IsGroup>False</IsGroup>
+    <IsRunning>False</IsRunning>
+    <IsHomeRangeRelative>True</IsHomeRangeRelative>
+    <Objects2>giantspider:MX=5:SB=1:RT=15:TO=0:KL=25:RK=1:CA=0:DN=-1:DX=-1:OBJ=scorpion:MX=5:SB=1:RT=0:TO=0:KL=0:RK=1:CA=0:DN=-1:DX=-1:OBJ=terathandrone:MX=4:SB=2:RT=15:TO=1:KL=20:RK=1:CA=0:DN=-1:DX=-1:OBJ=terathanwarrior:MX=4:SB=2:RT=0:TO=0:KL=0:RK=1:CA=0:DN=0.3:DX=0.3:OBJ=dreadspider:MX=3:SB=3:RT=15:TO=2:KL=15:RK=1:CA=0:DN=-1:DX=-1:OBJ=terathanmatriarch:MX=3:SB=3:RT=0:TO=0:KL=0:RK=1:CA=0:DN=0.3:DX=0.3:OBJ=poisonelemental:MX=2:SB=4:RT=15:TO=3:KL=10:RK=1:CA=0:DN=-1:DX=-1:OBJ=terathanavenger:MX=2:SB=4:RT=0:TO=0:KL=0:RK=1:CA=0:DN=0.3:DX=0.3:OBJ=mephitis:MX=1:SB=5:RT=0:TO=0:KL=1:RK=1:CA=0:DN=-1:DX=-1:OBJ=simplenote/titlestring/Hail to the Conqueror/notestring/Congratulations on defeating the Venom champion Mephistis!  Take this note to start the battle anew./name/The Conqueror:MX=1:SB=6:RT=0:TO=0:KL=1:RK=1:CA=0:DN=-1:DX=-1</Objects2>
+  </Points>
+</Spawns>
