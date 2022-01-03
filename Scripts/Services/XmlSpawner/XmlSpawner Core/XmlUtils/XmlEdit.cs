@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Data;
 using System.IO;
-using System.Collections.Generic;
+using System.Collections;
 using Server;
 using Server.Items;
 using Server.Multis;
@@ -45,7 +45,7 @@ namespace Server.Engines.XmlSpawner2
 
 		private bool SelectAll = false;
 
-		private List<XmlDialog.SpeechEntry> m_SearchList;
+		private ArrayList m_SearchList;
 
 		public static void Initialize()
 		{
@@ -83,6 +83,7 @@ namespace Server.Engines.XmlSpawner2
 				{
 					from.SendMessage("Target has no XmlDialog attachment");
 
+					// TODO: ask whether they would like to add one
 					from.SendGump( new XmlConfirmAddGump(from, targeted));
 
 					return;
@@ -235,7 +236,7 @@ namespace Server.Engines.XmlSpawner2
 			AddLabelCropped( x, y, w, 21, 0, Name );
 
 
-			x += w + lw + 5;
+			x += w + lw + 20;
 			w = 40;
 			lw = 90;
 			// add the proximity range
@@ -243,7 +244,7 @@ namespace Server.Engines.XmlSpawner2
 			AddImageTiled( x+lw, y, w, 21, 0xBBC );
 			AddTextEntry( x+lw, y, w, 21, 0, 140, m_Dialog.ProximityRange.ToString() );
 
-			x += w + lw + 5;
+			x += w + lw + 20;
 			w = 100;
 			lw = 60;
 			// reset time
@@ -251,7 +252,7 @@ namespace Server.Engines.XmlSpawner2
 			AddImageTiled( x+lw, y, w, 21, 0xBBC );
 			AddTextEntry( x+lw, y, w, 21, 0, 141, m_Dialog.ResetTime.ToString() );
 
-			x += w + lw + 5;
+			x += w + lw + 20;
 			w = 40;
 			lw = 65;
 			// speech pace
@@ -259,20 +260,12 @@ namespace Server.Engines.XmlSpawner2
 			AddImageTiled( x+lw, y, w, 21, 0xBBC );
 			AddTextEntry( x+lw, y, w, 21, 0, 142, m_Dialog.SpeechPace.ToString() );
 
-			x += w + lw + 5;
-			w = 20;
+			x += w + lw + 20;
+			w = 30;
 			lw = 55;
 			// allow ghost triggering
 			AddLabel( x, y, 0x384, "GhostTrig" );
 			AddCheck( x+lw, y, 0xD2, 0xD3, m_Dialog.AllowGhostTrig, 260);
-
-			x += w + lw + 5;
-			w = 30;
-			lw = 70;
-			// allow ghost triggering
-			AddLabel( x, y, 0x384, "ResetRange" );
-			AddImageTiled( x+lw, y, w, 21, 0xBBC );
-			AddTextEntry( x+lw, y, w, 21, 0, 143, m_Dialog.ResetRange.ToString() );
 
 			// add the triggeroncarried
 			y += 27;
@@ -328,7 +321,7 @@ namespace Server.Engines.XmlSpawner2
 				AddImageTiled( 236, y + 22 * (i%MaxEntriesPerPage) + 31, 384, 21, 0xBBC );
 
 
-				XmlDialog.SpeechEntry s = m_SearchList[index];
+				XmlDialog.SpeechEntry s = (XmlDialog.SpeechEntry)m_SearchList[index];
 
 				if(s == null) continue;
 
@@ -410,7 +403,7 @@ namespace Server.Engines.XmlSpawner2
 			XmlDialog.SpeechEntry sentry = null;
 			if(Selected >= 0 && Selected + DisplayFrom >= 0 && Selected + DisplayFrom < m_SearchList.Count)
 			{
-				sentry = m_SearchList[Selected+ DisplayFrom];
+				sentry = (XmlDialog.SpeechEntry)m_SearchList[Selected+ DisplayFrom];
 			}
 
 			if(sentry != null)
@@ -421,8 +414,8 @@ namespace Server.Engines.XmlSpawner2
 				// add the entry parameters
 				lw = 15;
 				w = 40;
-				x = 4;
-				int spacing = 4;
+				x = 10;
+				int spacing = 11;
 
 				// entry number
 				AddLabel( x, y, 0x384, "#" );
@@ -438,7 +431,7 @@ namespace Server.Engines.XmlSpawner2
 				AddTextEntry( x+lw, y, w, 21, 0, 201, sentry.ID.ToString() );
 
 				x += w + lw + spacing;
-				w = 100;
+				w = 40;
 				lw = 65;
 				// depends on 
 				AddLabel( x, y, 0x384, "DependsOn" );
@@ -537,8 +530,9 @@ namespace Server.Engines.XmlSpawner2
 			AddImageTiled( 50, y , 120, 19, 0x23F4 );
 			AddLabel( 50, y, 0, m_Dialog.ConfigFile );
 
-			if(from.AccessLevel >= AccessLevel.GameMaster)
+			if(from.AccessLevel >= XmlSpawner.DiskAccessLevel)
 			{
+				
 				// add the save entry
 				AddButton( 185, y , 0xFA8, 0xFAA, 159, GumpButtonType.Reply, 0 );
 				AddLabel( 218, y , 0x384, "Save to file:" );
@@ -615,22 +609,22 @@ namespace Server.Engines.XmlSpawner2
 			}
 		}
 
-		private class ListSorter : IComparer<XmlDialog.SpeechEntry>
+		private class ListSorter : IComparer
 		{
 			private bool Dsort;
 			public ListSorter(bool descend) : base ()
 			{
 				Dsort = descend;
 			}
-			public int Compare( XmlDialog.SpeechEntry x, XmlDialog.SpeechEntry y )
+			public int Compare( object x, object y )
 			{
 				int xn = 0;
 				int yn = 0;
 
 
-				xn = x.EntryNumber;
+				xn = ((XmlDialog.SpeechEntry)x).EntryNumber;
 
-				yn = y.EntryNumber;
+				yn = ((XmlDialog.SpeechEntry)y).EntryNumber;
 
 				
 				if(Dsort)
@@ -714,28 +708,33 @@ namespace Server.Engines.XmlSpawner2
 					break;
 			}
 
+
 			from.CloseGump(typeof(XmlEditDialogGump));
 
 			//from.SendGump( new XmlEditDialogGump(from, false, m_Dialog, selected, displayfrom, savefilename, false, null, X, Y) );
 			from.SendGump( new XmlEditDialogGump(from, true, dialog, selected, displayfrom, savefile, false, null, 0, 0));
 		}
 
+
 		public override void OnResponse( NetState state, RelayInfo info )
 		{
 			if(info == null || state == null || state.Mobile == null || m_Dialog == null) return;
-			int check;
+            
 			int radiostate = -1;
 			if(info.Switches.Length > 0)
 			{
 				radiostate = info.Switches[0];
 			}
 
+
+
 			TextRelay tr = info.GetTextEntry( 400 );        // displayfrom info
-			if(tr!=null)
+			try
 			{
-				if(int.TryParse(tr.Text, out check))
-					DisplayFrom = check;
-			}
+				DisplayFrom = int.Parse(tr.Text);
+			} 
+			catch{}
+
 
 			tr = info.GetTextEntry( 300 );        // savefilename info
 			if(tr != null)
@@ -746,32 +745,29 @@ namespace Server.Engines.XmlSpawner2
 				tr = info.GetTextEntry( 140 );        // proximity range
 				if(tr != null)
 				{
-					if(int.TryParse(tr.Text, out check))
-						m_Dialog.ProximityRange = check;
-					/*try
+					try
 					{
 						m_Dialog.ProximityRange = int.Parse(tr.Text);
 					} 
-					catch{}*/
+					catch{}
 				}
 				tr = info.GetTextEntry( 141 );        // reset time
 				if(tr != null)
 				{
-					TimeSpan ts;
-					if(TimeSpan.TryParse(tr.Text, out ts))
-						m_Dialog.ResetTime = ts;
+					try
+					{
+						m_Dialog.ResetTime = TimeSpan.Parse(tr.Text);
+					} 
+					catch{}
 				}
 				tr = info.GetTextEntry( 142 );        // speech pace
 				if(tr != null)
 				{
-					if(int.TryParse(tr.Text, out check))
-						m_Dialog.SpeechPace = check;
-				}
-				tr = info.GetTextEntry( 143 ); // reset-range
-				if(tr!=null)
-				{
-					if(int.TryParse(tr.Text, out check))
-						m_Dialog.ResetRange=check;
+					try
+					{
+						m_Dialog.SpeechPace = int.Parse(tr.Text);
+					} 
+					catch{}
 				}
 
 				tr = info.GetTextEntry( 150 );        // trig on carried
@@ -806,20 +802,26 @@ namespace Server.Engines.XmlSpawner2
 			if(m_SearchList != null && Selected >= 0 && Selected + DisplayFrom >= 0 && Selected + DisplayFrom < m_SearchList.Count)
 			{
 				// entry information
-				XmlDialog.SpeechEntry entry = m_SearchList[Selected + DisplayFrom]; 
+				XmlDialog.SpeechEntry entry = (XmlDialog.SpeechEntry)m_SearchList[Selected + DisplayFrom]; 
 
 				tr = info.GetTextEntry( 200 );        // entry number
 				if(tr != null)
 				{
-					if(int.TryParse(tr.Text, out check))
-						entry.EntryNumber = check;
+					try
+					{
+						entry.EntryNumber = int.Parse(tr.Text);
+					} 
+					catch {}
 				}
 
 				tr = info.GetTextEntry( 201 );        // entry id
 				if(tr != null)
 				{
-					if(int.TryParse(tr.Text, out check))
-						entry.ID = check;
+					try
+					{
+						entry.ID = int.Parse(tr.Text);
+					} 
+					catch {}
 				}
 
 				tr = info.GetTextEntry( 202 );        // depends on
@@ -835,22 +837,31 @@ namespace Server.Engines.XmlSpawner2
 				tr = info.GetTextEntry( 203 );        // prepause
 				if(tr != null)
 				{
-					if(int.TryParse(tr.Text, out check))
-						entry.PrePause = check;
+					try
+					{
+						entry.PrePause = int.Parse(tr.Text);
+					} 
+					catch {}
 				}
 
 				tr = info.GetTextEntry( 204 );        // pause
 				if(tr != null)
 				{
-					if(int.TryParse(tr.Text, out check))
-						entry.Pause = check;
+					try
+					{
+						entry.Pause = int.Parse(tr.Text);
+					} 
+					catch {}
 				}
 
 				tr = info.GetTextEntry( 205 );        // hue
 				if(tr != null)
 				{
-					if(int.TryParse(tr.Text, out check))
-						entry.SpeechHue = check;
+					try
+					{
+						entry.SpeechHue = int.Parse(tr.Text);
+					} 
+					catch {}
 				}
 
 				tr = info.GetTextEntry( 101 );        // keywords
@@ -924,10 +935,14 @@ namespace Server.Engines.XmlSpawner2
 				entry.IgnoreCarried = info.IsSwitched(252);	// ignorecarried
 			}
 
+
+
 			switch ( info.ButtonID )
 			{
+
 				case 0: // Close
 				{
+
 					m_Dialog.DeleteTextEntryBook();
 
 					return;
@@ -973,6 +988,7 @@ namespace Server.Engines.XmlSpawner2
 
 				case 159: // save to a .npc file
 				{           
+
 					// Create a new gump
 					Refresh(state);
 					// try to save
@@ -1103,7 +1119,7 @@ namespace Server.Engines.XmlSpawner2
 
 						if(m_SearchList != null && Selected >= 0 && Selected + DisplayFrom >= 0 && Selected + DisplayFrom < m_SearchList.Count)
 						{
-							entry = m_SearchList[Selected + DisplayFrom]; 
+							entry = (XmlDialog.SpeechEntry)m_SearchList[Selected + DisplayFrom]; 
 						}
 
 						string text = String.Empty;
@@ -1155,10 +1171,12 @@ namespace Server.Engines.XmlSpawner2
 						args[5] = SaveFilename;
 
 						XmlTextEntryBook book = new XmlTextEntryBook(0, String.Empty, m_Dialog.Name, 20, true);
-						
-						if(m_Dialog.m_TextEntryBook == null)
+						#region OLD METHOD
+							//XmlTextEntryBook book = new XmlTextEntryBook(0, String.Empty, m_Dialog.Name, 20, true, new XmlTextEntryBookCallback(ProcessXmlEditBookEntry), args);
+							#endregion
+							if (m_Dialog.m_TextEntryBook == null)
 						{
-							m_Dialog.m_TextEntryBook = new List<XmlTextEntryBook>();
+							m_Dialog.m_TextEntryBook = new ArrayList();
 						}
 						m_Dialog.m_TextEntryBook.Add(book);
 
@@ -1166,7 +1184,7 @@ namespace Server.Engines.XmlSpawner2
 						book.Author = Name;
 
 						// fill the contents of the book with the current text entry data
-						book.Fill(text);
+						book.FillTextEntryBook(text);
 
 						// put the book at the location of the player so that it can be opened, but drop it below visible range
 						book.Visible = false;
@@ -1180,6 +1198,7 @@ namespace Server.Engines.XmlSpawner2
 						book.OnDoubleClick(state.Mobile);
 
 						return;
+
 					}
 					break;
 				}
@@ -1187,17 +1206,18 @@ namespace Server.Engines.XmlSpawner2
 			// Create a new gump
 			Refresh(state);
 		}
-
+        
+        
 		public class XmlConfirmDeleteGump : Gump
 		{
-			private List<XmlDialog.SpeechEntry> SearchList;
+			private ArrayList SearchList;
 			private bool [] SelectedList;
 			private Mobile From;
 			private int DisplayFrom;
 			private bool selectAll;
 			XmlEditDialogGump m_Gump;
 
-			public XmlConfirmDeleteGump(Mobile from, XmlEditDialogGump gump, List<XmlDialog.SpeechEntry> searchlist, bool [] selectedlist, int displayfrom, bool selectall, int allcount) : base ( 0, 0 )
+			public XmlConfirmDeleteGump(Mobile from, XmlEditDialogGump gump, ArrayList searchlist, bool [] selectedlist, int displayfrom, bool selectall, int allcount) : base ( 0, 0 )
 			{
 				SearchList = searchlist;
 				SelectedList = selectedlist;
@@ -1246,21 +1266,21 @@ namespace Server.Engines.XmlSpawner2
 					{
 						if(radiostate == 1 && SearchList != null && SelectedList != null)
 						{    // accept
-							List<XmlDialog.SpeechEntry> dlist = new List<XmlDialog.SpeechEntry>();
+							ArrayList dlist = new ArrayList();
 							for(int i = 0;i < SearchList.Count;i++)
 							{
 								int index = i-DisplayFrom;
 								if((index >= 0 && index < SelectedList.Length && SelectedList[index] == true) || selectAll)
 								{
-									XmlDialog.SpeechEntry se = SearchList[i];
+									object o = SearchList[i];
 									// delete the entry;
-									dlist.Add(se);
+									dlist.Add(o);
 								}
 							}
 
-							foreach(XmlDialog.SpeechEntry se in dlist)
+							foreach(object o in dlist)
 							{
-								SearchList.Remove(se);
+								SearchList.Remove(o);
 							}
 
 							// clear the selections

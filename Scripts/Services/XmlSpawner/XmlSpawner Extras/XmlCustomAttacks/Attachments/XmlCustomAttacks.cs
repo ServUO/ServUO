@@ -239,9 +239,7 @@ namespace Server.Engines.XmlSpawner2
                     // flee
                     if(defender is BaseCreature)
                     {
-                    	((BaseCreature)defender).ForceFleeUntil = DateTime.UtcNow.AddSeconds(6);
-                        ((BaseCreature)defender).CheckCanFlee();
-
+	                    ((BaseCreature)defender).ForceFleeUntil = DateTime.Now.AddSeconds(6);
                     }
                     // and become paralyzed
                     defender.Freeze( TimeSpan.FromSeconds(3) );

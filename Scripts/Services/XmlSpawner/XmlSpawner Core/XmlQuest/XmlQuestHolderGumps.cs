@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using Server;
 using Server.Items;
 using Server.Network;
@@ -353,9 +353,9 @@ namespace Server.Gumps
                     for (int i = 0; i < questitem.Journal.Count; i++)
                     {
                         journaltext += "<u>";
-                        journaltext += questitem.Journal[i].EntryID;
+                        journaltext += ((XmlQuest.JournalEntry)questitem.Journal[i]).EntryID;
                         journaltext += ":</u><br>";
-                        journaltext += questitem.Journal[i].EntryText;
+                        journaltext += ((XmlQuest.JournalEntry)questitem.Journal[i]).EntryText;
                         journaltext += "<br><br>";
                     }
                     AddHtml(100, 90, 270, 300, journaltext, true, true);
@@ -451,10 +451,10 @@ namespace Server.Gumps
                             }
                             else
                             {
-                                List<XmlAttachment> a = XmlAttach.FindAttachments(questitem.Owner, typeof(XmlQuestAttachment), questitem.Name);
+                                ArrayList a = XmlAttach.FindAttachments(questitem.Owner, typeof(XmlQuestAttachment), questitem.Name);
                                 if (a != null && a.Count > 0)
                                 {
-                                    AddLabel(100, 392, 33, String.Format("Repeatable in {0}", a[0].Expiration));
+                                    AddLabel(100, 392, 33, String.Format("Repeatable in {0}", ((XmlQuestAttachment)a[0]).Expiration));
                                 }
                                 else
                                 {
@@ -502,7 +502,6 @@ namespace Server.Gumps
                     state.Mobile.SendGump(new XmlQuestStatusGump(m_questitem, m_gumptitle, m_X, m_Y, m_solid, m_screen));
                     break;
                 case 800:
-                    if(!m_questitem.CanSeeReward) return;
                     if (m_questitem.RewardItem != null || m_questitem.RewardAttachment != null)
                     {
                         // open a new status gump

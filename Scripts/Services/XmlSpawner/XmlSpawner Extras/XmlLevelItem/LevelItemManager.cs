@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Server;
 using Server.Mobiles;
 using Server.Engines.XmlSpawner2;
@@ -58,8 +59,8 @@ namespace Server.Items
 		{
 			if ( bc == null )
 				return false;
-
-			return bc.HasBreath;
+			var prof = PetTrainingHelper.GetAbilityProfile(bc);
+			return prof.SpecialAbilities.Any(ability => ability == SpecialAbility.DragonBreath);
 		}
 
 		private static bool IsPoisonImmune( BaseCreature bc )

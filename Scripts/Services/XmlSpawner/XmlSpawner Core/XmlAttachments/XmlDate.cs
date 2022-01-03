@@ -26,14 +26,14 @@ namespace Server.Engines.XmlSpawner2
 		public XmlDate(string name)
 		{
 			Name = name;
-			Date = DateTime.UtcNow;
+			Date = DateTime.Now;
 		}
         
 		[Attachable]
 		public XmlDate(string name, double expiresin)
 		{
 			Name = name;
-			Date = DateTime.UtcNow;
+			Date = DateTime.Now;
 			Expiration = TimeSpan.FromMinutes(expiresin);
 
 		}

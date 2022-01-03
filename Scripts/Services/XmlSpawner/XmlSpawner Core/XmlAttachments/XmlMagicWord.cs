@@ -81,7 +81,7 @@ namespace Server.Engines.XmlSpawner2
 			writer.Write(Charges);
 			writer.Write(Duration);
 			writer.Write(Refractory);
-			writer.Write(m_EndTime - DateTime.UtcNow);
+			writer.Write(m_EndTime - DateTime.Now);
 			writer.Write(m_RequireIdentification);
 			writer.Write(m_Identified);
 		}
@@ -97,7 +97,7 @@ namespace Server.Engines.XmlSpawner2
 			Duration = reader.ReadTimeSpan();
 			Refractory = reader.ReadTimeSpan();
 			TimeSpan remaining = reader.ReadTimeSpan();
-			m_EndTime = DateTime.UtcNow + remaining;
+			m_EndTime = DateTime.Now + remaining;
 			m_RequireIdentification = reader.ReadBool();
 			m_Identified = reader.ReadBool();
 		}
@@ -185,7 +185,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			if(m == null || Word == null || (RequireIdentification && !m_Identified)) return;
 
-			if(DateTime.UtcNow < m_EndTime) return;
+			if(DateTime.Now < m_EndTime) return;
 
 			string msgstr = "Activating the power of " + Word;
 
@@ -260,7 +260,7 @@ namespace Server.Engines.XmlSpawner2
 			} 
 			else
 			{
-				m_EndTime = DateTime.UtcNow + Refractory;
+				m_EndTime = DateTime.Now + Refractory;
 			}
 		}
 	}

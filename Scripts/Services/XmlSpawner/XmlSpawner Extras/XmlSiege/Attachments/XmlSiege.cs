@@ -78,7 +78,6 @@ namespace Server.Engines.XmlSpawner2
 				: base(EffectType.Moving, from.Serial, to == null ? new Serial(-1) : to.Serial, itemID, fromPoint, toPoint, speed, duration, fixedDirection, explode, hue, 0)
 			{
 			}
-
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]

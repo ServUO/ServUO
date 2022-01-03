@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml;
 
@@ -47,10 +48,11 @@ namespace Server.Mobiles
                     trigLocation = m.Location;
             }
         }
-        #endregion
+		#endregion
 
-        #region Constant declarations
-        public const byte MaxLoops = 10; //maximum number of recursive calls from spawner to itself. this is to prevent stack overflow from xmlspawner scripting
+		#region Constant declarations
+		public const string Version = "5.0"; // RUADUCK's EDIT
+		public const byte MaxLoops = 10; //maximum number of recursive calls from spawner to itself. this is to prevent stack overflow from xmlspawner scripting
         private const int ShowBoundsItemId = 14089;             // 14089 Fire Column // 3555 Campfire // 8708 Skull Pole
         private const string SpawnDataSetName = "Spawns";
         private const string SpawnTablePointName = "Points";
@@ -74,7 +76,7 @@ namespace Server.Mobiles
         #region Static variable declarations
         // specifies the level at which smartspawning will be triggered.  Players with AccessLevel above this will not trigger smartspawning unless unhidden.
         public static AccessLevel SmartSpawnAccessLevel = AccessLevel.Player;
-        public const string Version = "4.1"; // ruaduck edit
+
         // define the default values used in making spawners
         private static TimeSpan defMinDelay = TimeSpan.FromMinutes(5);
         private static TimeSpan defMaxDelay = TimeSpan.FromMinutes(10);
@@ -239,11 +241,15 @@ namespace Server.Mobiles
         // is not counted in the normal item count
         public override bool IsVirtualItem => true;
 
-        #endregion
+		#endregion
 
-        #region Properties
-
-        public TimerPriority BasePriority { get; set; } = TimerPriority.OneSecond;
+		#region Properties
+		private bool m_skillTriggerActivated;
+		private SkillName m_SkillTriggerName;
+		private double m_SkillTriggerMin;
+		private double m_SkillTriggerMax;
+		private int m_SkillTriggerSuccess;
+		public TimerPriority BasePriority { get; set; } = TimerPriority.OneSecond;
 
         public bool DebugThis { get; set; } = false;
 
@@ -411,8 +417,12 @@ namespace Server.Mobiles
                 // is this a region spawner?
                 if (m_Region != null)
                 {
+                    var players = m_Region.AllPlayers;
+
+                    if (players == null || players.Count() == 0) return false;
+
                     // confirm that players with the proper access level are present
-                    foreach (Mobile m in m_Region.AllPlayers)
+                    foreach (Mobile m in players)
                     {
                         if (m != null && (m.AccessLevel <= SmartSpawnAccessLevel || !m.Hidden))
                         {
@@ -2591,8 +2601,34 @@ namespace Server.Mobiles
                 }
             }
         }
+        public bool HandlesOnSkillUse { get { return (m_Running && m_SkillTrigger != null && m_SkillTrigger.Length > 0); } }
 
-        public override bool HandlesOnSpeech => (m_Running && !string.IsNullOrEmpty(m_SpeechTrigger));
+        // this is the handler for skill use
+        public void OnSkillUse(Mobile m, Skill skill, bool success)
+        {
+
+	        if (m_Running && m_ProximityRange >= 0 && ValidPlayerTrig(m) && CanSpawn && !m_refractActivated && TODInRange)
+	        {
+
+		        if (!Utility.InRange(m.Location, this.Location, m_ProximityRange))
+			        return;
+
+		        m_skillTriggerActivated = false;
+
+		        // check the skill trigger conditions, Skillname[+/-][,min,max]
+		        if (m_SkillTrigger != null && (skill.SkillName == m_SkillTriggerName) &&
+		            ((m_SkillTriggerMin < 0) || (skill.Value >= m_SkillTriggerMin)) &&
+		            ((m_SkillTriggerMax < 0) || (skill.Value <= m_SkillTriggerMax)) &&
+		            ((m_SkillTriggerSuccess == 3) || ((m_SkillTriggerSuccess == 1) && success) || ((m_SkillTriggerSuccess == 2) && !success)))
+		        {
+			        // have a skill trigger so flag it and test it
+			        m_skillTriggerActivated = true;
+
+			        CheckTriggers(m, skill, true);
+		        }
+	        }
+        }
+		public override bool HandlesOnSpeech => (m_Running && !string.IsNullOrEmpty(m_SpeechTrigger));
 
         public override void OnSpeech(SpeechEventArgs e)
         {
@@ -3397,7 +3433,7 @@ namespace Server.Mobiles
         public static void XmlLoadDefaults(string filePath, Mobile m)
         {
             if (m == null || m.Deleted) return;
-            if (filePath != null && filePath.Length >= 1)
+            if (!string.IsNullOrEmpty(filePath))
             {
 
                 if (File.Exists(filePath))
@@ -7078,7 +7114,7 @@ namespace Server.Mobiles
 
         public static void XmlTrace_OnCommand(CommandEventArgs e)
         {
-            System.Diagnostics.Process currentprocess = System.Diagnostics.Process.GetCurrentProcess();
+            Process currentprocess = Process.GetCurrentProcess();
             TimeSpan runningtime = DateTime.UtcNow - XmlSpawner._traceStartTime;
             double processtime = currentprocess.UserProcessorTime.TotalMilliseconds - _startProcessTime;
             double sysload = 0;
@@ -8489,7 +8525,7 @@ namespace Server.Mobiles
                     string status_str = null;
 
                     bool completedtypespawn = BaseXmlSpawner.SpawnTypeKeyword(this, TheSpawn, typeName, substitutedtypeName,
-                        m_mob_who_triggered, packcoord,Map, out status_str,loops);
+                        m_mob_who_triggered, Map, out status_str, loops);
 
                     if (status_str != null)
                     {
@@ -9114,10 +9150,18 @@ namespace Server.Mobiles
                         // look it up by serial
                         if (wayargs.Length > 1)
                         {
-                            IEntity e = World.FindEntity(Utility.ToSerial(wayargs[1]));
+                            int sernum = -1;
+                            try { sernum = (int)Convert.ToUInt64(wayargs[1].Substring(2), 16); }
+                            catch { }
 
-                            if (e is WayPoint)
-                                waypoint = e as WayPoint;
+                            if (sernum > -1)
+                            {
+                                IEntity e = World.FindEntity(new Serial(sernum));
+
+                                if (e is WayPoint)
+                                    waypoint = e as WayPoint;
+
+                            }
                         }
                     }
                     else
@@ -11439,7 +11483,7 @@ namespace Server.Mobiles
 
                             for (int x = 0; x < SpawnedCount; ++x)
                             {
-                                Serial serial = reader.ReadSerial();
+                                int serial = reader.ReadInt();
                                 if (serial < -1)
                                 {
                                     // minusone is reserved for unknown types by default
@@ -11454,7 +11498,7 @@ namespace Server.Mobiles
                                 }
                                 else
                                 {
-                                    IEntity e = World.FindEntity(serial);
+                                    IEntity e = World.FindEntity(new Serial(serial));
 
                                     if (e != null)
                                         TheSpawnObject.SpawnedObjects.Add(e);

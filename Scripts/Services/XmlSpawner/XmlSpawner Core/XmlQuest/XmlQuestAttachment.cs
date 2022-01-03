@@ -11,6 +11,7 @@ namespace Server.Engines.XmlSpawner2
 	{
 		private DateTime m_DataValue;
 
+
 		public DateTime Date { get { return m_DataValue; } set { m_DataValue = value; } }
 
 		// These are the various ways in which the message attachment can be constructed.  
@@ -27,14 +28,14 @@ namespace Server.Engines.XmlSpawner2
 		public XmlQuestAttachment(string name)
 		{
 			Name = name;
-			Date = DateTime.UtcNow;
+			Date = DateTime.Now;
 		}
 
 		[Attachable]
 		public XmlQuestAttachment(string name, double expiresin)
 		{
 			Name = name;
-			Date = DateTime.UtcNow;
+			Date = DateTime.Now;
 			Expiration = TimeSpan.FromMinutes(expiresin);
 
 		}

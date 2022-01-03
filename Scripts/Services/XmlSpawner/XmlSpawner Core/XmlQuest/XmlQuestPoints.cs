@@ -3,7 +3,7 @@ using Server;
 using Server.Items;
 using Server.Network;
 using Server.Mobiles;
-using System.Collections.Generic;
+using System.Collections;
 using Server.Gumps;
 using Server.Commands;
 using Server.Commands.Generic;
@@ -16,7 +16,7 @@ namespace Server.Engines.XmlSpawner2
 		private int m_Completed;
 		private int m_Credits;
 
-		private List<XmlQuestPoints.QuestEntry> m_QuestList = new List<XmlQuestPoints.QuestEntry>();
+		private ArrayList m_QuestList = new ArrayList();
 
 		private DateTime m_WhenRanked;
 		private int m_Rank;
@@ -26,7 +26,7 @@ namespace Server.Engines.XmlSpawner2
 		public string nameFilter;
         
 
-		public List<XmlQuestPoints.QuestEntry> QuestList { get{ return m_QuestList; } set { m_QuestList = value; }}
+		public ArrayList QuestList { get{ return m_QuestList; } set { m_QuestList = value; }}
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int Rank { get{ return m_Rank; } set { m_Rank = value; } }
@@ -66,7 +66,7 @@ namespace Server.Engines.XmlSpawner2
 				if(quest != null)
 				{
 					WhenStarted = quest.TimeCreated;
-					WhenCompleted = DateTime.UtcNow;
+					WhenCompleted = DateTime.Now;
 					Difficulty = quest.Difficulty;
 					Name = quest.Name;
 				}
@@ -118,7 +118,7 @@ namespace Server.Engines.XmlSpawner2
 				if(p == null) return;
 
 				// look through the list of quests and see if it is one that has already been done
-				if(p.QuestList == null) p.QuestList = new List<XmlQuestPoints.QuestEntry>();
+				if(p.QuestList == null) p.QuestList = new ArrayList();
 
 				bool found = false;
 				foreach(QuestEntry e in p.QuestList)
@@ -128,7 +128,7 @@ namespace Server.Engines.XmlSpawner2
 						// found a match, so just change the number and dates
 						e.TimesCompleted++;
 						e.WhenStarted = quest.TimeCreated;
-						e.WhenCompleted = DateTime.UtcNow;
+						e.WhenCompleted = DateTime.Now;
 						// and update the difficulty and party status
 						e.Difficulty = quest.Difficulty;
 						e.PartyEnabled = quest.PartyEnabled;
@@ -190,8 +190,8 @@ namespace Server.Engines.XmlSpawner2
 		{
 			if(e == null || e.Mobile == null) return;
 
-			e.Mobile.CloseGump(typeof(XMLQuestLogGump));
-			e.Mobile.SendGump(new XMLQuestLogGump(e.Mobile));
+			e.Mobile.CloseGump(typeof(QuestLogGump));
+			e.Mobile.SendGump(new QuestLogGump(e.Mobile));
 		}
 
 
@@ -257,7 +257,7 @@ namespace Server.Engines.XmlSpawner2
 			return val;
 		}
 
-		public static bool HasCredits(Mobile m, int credits, int minpoints)
+		public static bool HasCredits(Mobile m, int credits)
 		{
 			if(m == null || m.Deleted) return false;
 
@@ -265,7 +265,7 @@ namespace Server.Engines.XmlSpawner2
 
 			if(p != null)
 			{
-				if(p.Credits >= credits && p.Points >= minpoints)
+				if(p.Credits >= credits)
 				{
 					return true;
 				}
@@ -349,7 +349,7 @@ namespace Server.Engines.XmlSpawner2
 
 					if(nquests > 0)
 					{
-						QuestList = new List<XmlQuestPoints.QuestEntry>(nquests);
+						QuestList = new ArrayList(nquests);
 						for(int i = 0; i< nquests;i++)
 						{
 							QuestEntry e = new QuestEntry();
@@ -358,6 +358,8 @@ namespace Server.Engines.XmlSpawner2
 							QuestList.Add(e);
 						}
 					}
+
+
 
 					// get the owner of this in order to rebuild the rankings
 					Mobile quester = reader.ReadMobile();

@@ -919,8 +919,8 @@ namespace Server.Engines.XmlSpawner2
                 {
                     if(entry.Participant != from)
                     {
-                        from.Send( new MobileMoving( entry.Participant, Notoriety.Compute( from, entry.Participant ),entry.Participant.GetPacketFlags() ) );
-                        entry.Participant.Send( new MobileMoving( from, Notoriety.Compute( entry.Participant, from ), from.GetPacketFlags() ) );
+                        from.Send( new MobileMoving( entry.Participant, Notoriety.Compute( from, entry.Participant ), entry.Participant.GetPacketFlags()) );
+                        entry.Participant.Send( new MobileMoving( from, Notoriety.Compute( entry.Participant, from ), from.GetPacketFlags()) );
                     }
                 }
             }

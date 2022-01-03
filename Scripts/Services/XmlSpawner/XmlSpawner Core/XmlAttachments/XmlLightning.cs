@@ -61,7 +61,7 @@ namespace Server.Engines.XmlSpawner2
 		public override void OnWeaponHit(Mobile attacker, Mobile defender, BaseWeapon weapon, int damageGiven)
 		{
 			// if it is still refractory then return
-			if(DateTime.UtcNow < m_EndTime) return;
+			if(DateTime.Now < m_EndTime) return;
 
 			int damage = 0;
 
@@ -74,7 +74,7 @@ namespace Server.Engines.XmlSpawner2
 
 				SpellHelper.Damage( TimeSpan.Zero, defender, attacker, damage, 0, 0, 0, 0, 100 );
 
-				m_EndTime = DateTime.UtcNow + Refractory;
+				m_EndTime = DateTime.Now + Refractory;
 			}
 		}
         
@@ -119,7 +119,7 @@ namespace Server.Engines.XmlSpawner2
 			// version 0
 			writer.Write(m_Damage);
 			writer.Write(m_Refractory);
-			writer.Write(m_EndTime - DateTime.UtcNow);
+			writer.Write(m_EndTime - DateTime.Now);
 
 		}
 
@@ -138,7 +138,7 @@ namespace Server.Engines.XmlSpawner2
 					m_Damage = reader.ReadInt();
 					Refractory = reader.ReadTimeSpan();
 					TimeSpan remaining = reader.ReadTimeSpan();
-					m_EndTime = DateTime.UtcNow + remaining;
+					m_EndTime = DateTime.Now + remaining;
 					break;
 			}
 		}
@@ -169,7 +169,7 @@ namespace Server.Engines.XmlSpawner2
 			if(m == null ) return;
 
 			// if it is still refractory then return
-			if(DateTime.UtcNow < m_EndTime) return;
+			if(DateTime.Now < m_EndTime) return;
 
 			int damage = 0;
 
@@ -183,7 +183,7 @@ namespace Server.Engines.XmlSpawner2
 				SpellHelper.Damage( TimeSpan.Zero, m, damage, 0, 0, 0, 0, 100 );
 			}
 
-			m_EndTime = DateTime.UtcNow + Refractory;
+			m_EndTime = DateTime.Now + Refractory;
 
 		}    
 	}

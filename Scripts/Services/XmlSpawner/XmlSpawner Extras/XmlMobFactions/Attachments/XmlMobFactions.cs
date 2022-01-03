@@ -424,7 +424,7 @@ namespace Server.Engines.XmlSpawner2
 				}
 
 				// does this mob have dynamic faction assignments?
-				List<XmlAttachment> dlist = XmlAttach.FindAttachments(mob, typeof(XmlDynamicFaction));
+				var dlist = XmlAttach.FindAttachments(mob, typeof(XmlDynamicFaction));
 				if(dlist != null && dlist.Count > 0)
 				{
 
@@ -733,7 +733,7 @@ namespace Server.Engines.XmlSpawner2
 			{
 				if(m.Player)
 				{
-					List<XmlAttachment> list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments,  m, typeof(XmlMobFactions), "Standard");
+					var list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments,  m, typeof(XmlMobFactions), "Standard");
 					if(list != null && list.Count > 0)
 					{
 						foreach(XmlAttachment x in list)
@@ -985,9 +985,6 @@ namespace Server.Engines.XmlSpawner2
 
 						// look up the enum by name
 						GroupTypes gtype = GroupTypes.End_Unused;
-						if(!BaseXmlSpawner.TryParse(gname, out gtype))
-							gtype=GroupTypes.End_Unused;
-
 						// try to find the matching entry in the recently constructed faction status list
 						if(gtype != GroupTypes.End_Unused)
 						{

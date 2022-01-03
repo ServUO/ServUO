@@ -208,7 +208,7 @@ namespace Server.Engines.XmlSpawner2
 								// if so then create it
 								if (type != null && type.IsSubclassOf(typeof(XmlAttachment)))
 								{
-									object newo = XmlSpawner.CreateObject(type, attachstring);
+									object newo = XmlSpawner.CreateObject(type, attachstring, false);
 									if (newo is XmlAttachment)
 									{
 										// add the attachment to the target

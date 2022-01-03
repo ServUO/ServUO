@@ -95,7 +95,7 @@ namespace Server.Engines.XmlSpawner2
                 if (g != XmlMobFactions.GroupTypes.End_Unused)
                 {
                     // get XmlMobFaction type attachments and add the faction
-                    List<XmlAttachment> list = XmlAttach.FindAttachments(this.AttachedTo, typeof(XmlMobFactions));
+                    var list = XmlAttach.FindAttachments(this.AttachedTo, typeof(XmlMobFactions));
                     if (list != null && list.Count > 0)
                     {
                         foreach (XmlMobFactions x in list)
@@ -140,7 +140,7 @@ namespace Server.Engines.XmlSpawner2
             {
                 // give the killer the faction
                 // get XmlMobFaction type attachments and add the faction
-                List<XmlAttachment> list = XmlAttach.FindAttachments(killer, typeof(XmlMobFactions));
+                var list = XmlAttach.FindAttachments(killer, typeof(XmlMobFactions));
                 if (list != null && list.Count > 0)
                 {
                     foreach (XmlMobFactions x in list)

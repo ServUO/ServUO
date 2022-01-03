@@ -160,7 +160,7 @@ namespace Server.Engines.XmlSpawner2
             if (defender != null && attacker != null && this.m_EnemyType != XmlMobFactions.GroupTypes.End_Unused)
             {
                 // check to the owner's faction levels
-                List<XmlAttachment> list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments, attacker, typeof(XmlMobFactions), "Standard");
+                var list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments, attacker, typeof(XmlMobFactions), "Standard");
 
                 if (list != null && list.Count > 0)
                 {
@@ -278,7 +278,7 @@ namespace Server.Engines.XmlSpawner2
             int percentincrease = 0;
 
             // compute the damage increase based upon the owner's faction level for the specified enemy type
-            List<XmlAttachment> list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments, from, typeof(XmlMobFactions), "Standard");
+            var list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments, from, typeof(XmlMobFactions), "Standard");
             if (list != null && list.Count > 0)
             {
                 XmlMobFactions x = list[0] as XmlMobFactions;

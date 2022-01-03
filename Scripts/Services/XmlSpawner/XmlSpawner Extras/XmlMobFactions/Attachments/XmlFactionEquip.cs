@@ -78,7 +78,7 @@ namespace Server.Engines.XmlSpawner2
         public override bool CanEquip(Mobile from)
         {
             // check to see if the owners faction is sufficient
-            List<XmlAttachment> list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments, from, typeof(XmlMobFactions), "Standard");
+            var list = XmlAttach.FindAttachments(XmlAttach.MobileAttachments, from, typeof(XmlMobFactions), "Standard");
             if (list != null && list.Count > 0)
             {
                 int faclevel = 0;

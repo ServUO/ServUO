@@ -58,7 +58,7 @@ namespace Server.Engines.XmlSpawner2
         }
         public static void AddTitles(object o, ObjectPropertyList list)
         {
-            List<XmlAttachment> alist = XmlAttach.FindAttachments(o, typeof(XmlTitle));
+            var alist = XmlAttach.FindAttachments(o, typeof(XmlTitle));
 
             if (alist != null && alist.Count > 0)
             {

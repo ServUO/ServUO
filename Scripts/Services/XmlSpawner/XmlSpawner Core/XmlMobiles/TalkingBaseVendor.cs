@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.IO;
 using System.Collections;
@@ -26,6 +26,7 @@ using Server.Engines.XmlSpawner2;
 
 namespace Server.Mobiles
 {
+	
 	public abstract class TalkingBaseVendor : BaseVendor
 	{
 
@@ -110,7 +111,7 @@ namespace Server.Mobiles
 			if(EItemID > 0)
 			{
 				Effects.SendLocationEffect(new Point3D(Location.X + EOffset.X, Location.Y + EOffset.Y, Location.Z + EOffset.Z), Map, EItemID, EDuration, EHue, 0);
-				lasteffect = DateTime.UtcNow;
+				lasteffect = DateTime.Now;
 			}
 		}
 
@@ -118,7 +119,7 @@ namespace Server.Mobiles
 		{
 			base.OnThink();
 
-			if(lasteffect + TimeSpan.FromSeconds(1) < DateTime.UtcNow)
+			if(lasteffect + TimeSpan.FromSeconds(1) < DateTime.Now)
 			{
 				DisplayHighlight();
 			}			
@@ -157,7 +158,7 @@ namespace Server.Mobiles
 			}
 		}
 
-		public List<XmlDialog.SpeechEntry> SpeechEntries 
+		public ArrayList SpeechEntries 
 		{
 			get 
 			{
@@ -182,7 +183,7 @@ namespace Server.Mobiles
 				int minutes;
 
 				Server.Items.Clock.GetTime(this.Map, this.Location.X, this.Location.Y, out  hours, out  minutes);
-				return (new DateTime(DateTime.UtcNow.Year,DateTime.UtcNow.Month,DateTime.UtcNow.Day,hours, minutes,0).TimeOfDay);
+				return (new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,hours, minutes,0).TimeOfDay);
 			}
 		}
 
@@ -191,7 +192,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.TimeOfDay;
+				return DateTime.Now.TimeOfDay;
 			}
 		}
 
@@ -200,7 +201,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.Day;
+				return DateTime.Now.Day;
 			}
 		}
 
@@ -209,7 +210,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.Month;
+				return DateTime.Now.Month;
 			}
 		}
 
@@ -218,7 +219,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.DayOfWeek;
+				return DateTime.Now.DayOfWeek;
 			}
 		}
 
@@ -232,6 +233,7 @@ namespace Server.Mobiles
 			}
 
 		}
+
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public AccessLevel TriggerAccessLevel 
@@ -722,7 +724,10 @@ namespace Server.Mobiles
         
 		public override bool OnDragDrop( Mobile from, Item item)
 		{
-			return XmlQuest.RegisterGive(from, this, item) || base.OnDragDrop(from, item);
+
+			return XmlQuest.RegisterGive(from, this, item);
+
+			//return base.OnDragDrop(from, item);
 		}
 
 		private class TalkEntry : ContextMenuEntry
@@ -814,7 +819,7 @@ namespace Server.Mobiles
 				{
 					int count = reader.ReadInt();
 
-					SpeechEntries = new List<XmlDialog.SpeechEntry>();
+					SpeechEntries = new ArrayList();
 					for(int i = 0; i<count;i++)
 					{
 						XmlDialog.SpeechEntry newentry = new XmlDialog.SpeechEntry();
@@ -839,7 +844,7 @@ namespace Server.Mobiles
 					int count = reader.ReadInt();
 					if(version < 4)
 					{
-						SpeechEntries = new List<XmlDialog.SpeechEntry>();
+						SpeechEntries = new ArrayList();
 					}
 					for(int i = 0; i<count;i++)
 					{
@@ -856,7 +861,7 @@ namespace Server.Mobiles
 						} 
 						else 
 						{
-							XmlDialog.SpeechEntry newentry = SpeechEntries[i];
+							XmlDialog.SpeechEntry newentry = (XmlDialog.SpeechEntry)SpeechEntries[i];
 
 							newentry.PrePause = reader.ReadInt();
 							newentry.LockConversation = reader.ReadBool();
@@ -883,7 +888,7 @@ namespace Server.Mobiles
 					int count = reader.ReadInt();
 					if(version < 2)
 					{
-						SpeechEntries = new List<XmlDialog.SpeechEntry>();
+						SpeechEntries = new ArrayList();
 					}
 					for(int i = 0; i<count;i++)
 					{
@@ -904,7 +909,7 @@ namespace Server.Mobiles
 						} 
 						else
 						{
-							XmlDialog.SpeechEntry newentry = SpeechEntries[i];
+							XmlDialog.SpeechEntry newentry = (XmlDialog.SpeechEntry)SpeechEntries[i];
 
 							newentry.EntryNumber = reader.ReadInt();
 							newentry.ID = reader.ReadInt();

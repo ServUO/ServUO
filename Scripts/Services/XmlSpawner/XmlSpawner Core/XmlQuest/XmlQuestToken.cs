@@ -4,6 +4,7 @@ using Server.Gumps;
 using Server.Network;
 using Server.Mobiles;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using Server.Targeting;
 using Server.Engines.PartySystem;
@@ -90,11 +91,7 @@ namespace Server.Items
             return false;
         }
 
-#if(NEWPARENT)
-		public override void OnAdded(IEntity target)
-#else
-		public override void OnAdded(object target)
-#endif
+        public override void OnAdded(IEntity target)
         {
             base.OnAdded(target);
 
@@ -154,16 +151,15 @@ namespace Server.Items
         {
             if (to == null) return;
 
-            to.Send(new ContainerDisplay(this,9));
+            to.Send(new ContainerDisplay(this, null));
             to.Send(new ForcedContainerContent(to, this));
 
-            if (ObjectPropertyList.Enabled)
-            {
+            
                 List<Item> items = this.Items;
 
                 for (int i = 0; i < items.Count; ++i)
                     to.Send(((Item)items[i]).OPLPacket);
-            }
+            
         }
 
         public XmlQuestTokenPack()
@@ -251,14 +247,14 @@ namespace Server.Items
         public XmlQuestToken()
         {
             //LootType = LootType.Blessed;
-            TimeCreated = DateTime.UtcNow;
+            TimeCreated = DateTime.Now;
         }
 
         public XmlQuestToken(int itemID)
         {
             ItemID = itemID;
             //LootType = LootType.Blessed;
-            TimeCreated = DateTime.UtcNow;
+            TimeCreated = DateTime.Now;
         }
 
         public override void Serialize(GenericWriter writer)
@@ -355,7 +351,7 @@ namespace Server.Items
 
                         if (nentries > 0)
                         {
-                            m_Journal = new List<XmlQuest.JournalEntry>();
+                            m_Journal = new ArrayList();
                             for (int i = 0; i < nentries; i++)
                             {
                                 string entryID = reader.ReadString();
@@ -556,11 +552,7 @@ namespace Server.Items
                 }
         }
 
-#if(NEWPARENT)
-		public override void OnAdded(IEntity target)
-#else
-		public override void OnAdded(object target)
-#endif
+        public override void OnAdded(IEntity target)
         {
             base.OnAdded(target);
 
@@ -662,8 +654,8 @@ namespace Server.Items
             }
         }
 
-        private List<XmlQuest.JournalEntry> m_Journal;
-        public List<XmlQuest.JournalEntry> Journal { get { return m_Journal; } set { m_Journal = value; } }
+        private ArrayList m_Journal;
+        public ArrayList Journal { get { return m_Journal; } set { m_Journal = value; } }
         private static char[] colondelim = new char[1] { ':' };
 
         public string AddJournalEntry
@@ -693,7 +685,7 @@ namespace Server.Items
 
 
                 // allocate a new journal if none exists
-                if (m_Journal == null) m_Journal = new List<XmlQuest.JournalEntry>();
+                if (m_Journal == null) m_Journal = new ArrayList();
 
                 // go through the existing journal to find a matching ID
                 XmlQuest.JournalEntry foundEntry = null;
@@ -1368,10 +1360,10 @@ namespace Server.Items
                     /*
                      if(PlayerMade && ((Owner == Creator) || (Owner == null)))
                      {
-                         m_TimeCreated = DateTime.UtcNow;
+                         m_TimeCreated = DateTime.Now;
                      }
                      */
-                    return (m_TimeCreated + TimeSpan.FromHours(m_ExpirationDuration) - DateTime.UtcNow);
+                    return (m_TimeCreated + TimeSpan.FromHours(m_ExpirationDuration) - DateTime.Now);
                 }
                 else
                 {
@@ -1540,7 +1532,7 @@ namespace Server.Items
             {
                 // need to check to see if any other questtoken items are owned
                 // search the Owners top level pack for an xmlquesttoken
-                List<Item> list = XmlQuest.FindXmlQuest(Owner);
+                ArrayList list = XmlQuest.FindXmlQuest(Owner);
 
                 if (list == null || list.Count == 0)
                 {

@@ -1636,7 +1636,7 @@ namespace Server.Engines.XmlSpawner2
 			{
 				if(m.Player)
 				{
-					List<XmlAttachment> list = XmlAttach.FindAttachments(m, typeof(XmlPoints));
+					var list = XmlAttach.FindAttachments(m, typeof(XmlPoints));
 					if(list != null && list.Count > 0)
 					{
 						foreach(XmlAttachment x in list)
@@ -3162,7 +3162,7 @@ namespace Server.Engines.XmlSpawner2
 
 							// notify the challenger and set up noto
 							SendText(m_From, 100263, m_Target.Name);   // "{0} accepted your challenge!"
-							m_From.Send( new MobileMoving( m_Target, Notoriety.Compute( m_From, m_Target ),m_Target.GetPacketFlags() ) );
+							m_From.Send( new MobileMoving( m_Target, Notoriety.Compute( m_From, m_Target ), m_Target.GetPacketFlags() ) );
 
 							// update the points gump if it is open
 							if(m_From.HasGump(typeof(PointsGump)))

@@ -1,23 +1,10 @@
-﻿using System.Linq;
 using System;
-using System.Data;
-using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using Server.ContextMenus;
-using Server;
 using Server.Items;
 using Server.Network;
-using Server.Gumps;
-using Server.Targeting;
-using System.Reflection;
-using Server.Commands;
 using CPA = Server.CommandPropertyAttribute;
-using System.Xml;
-using Server.Spells;
-using System.Text;
-using Server.Accounting;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using Server.Engines.XmlSpawner2;
 
 /*
@@ -29,37 +16,13 @@ using Server.Engines.XmlSpawner2;
 */
 namespace Server.Mobiles
 {
-	public class TalkingBaseCreature : BaseCreature, ISpawnObjectFinderList
+	public class TalkingBaseCreature : BaseCreature
 	{ 
 
 		private XmlDialog m_DialogAttachment;
 
-		
+        
 		public XmlDialog DialogAttachment {get { return m_DialogAttachment; } set {m_DialogAttachment = value; }}
-		public List<ISpawnObjectFinder> i_SpawnObjects
-		{
-			get
-			{
-				if(m_DialogAttachment==null)
-					return new List<ISpawnObjectFinder>();
-				return m_DialogAttachment.SpeechEntries.ToList<ISpawnObjectFinder>();
-			}
-		}
-		public string status_str
-		{
-			get
-			{
-				if(m_DialogAttachment==null)
-					return null;
-				return m_DialogAttachment.status_str;
-			}
-		}
-		public void ISpawnObjectDoGump(Mobile to)
-		{
-			if(m_DialogAttachment==null)
-				return;
-			to.SendGump( new XmlEditDialogGump(to, true, m_DialogAttachment, -1, 0, null, false, null, 0, 0));
-		}
 
 		private DateTime lasteffect;		
 		private int m_EItemID = 0;  // 0 = disable, 14202 = sparkle, 6251 = round stone, 7885 = light pyramid
@@ -111,7 +74,7 @@ namespace Server.Mobiles
 				 //SendOffsetTargetEffect(this, new Point3D(Location.X + EOffset.X, Location.Y + EOffset.Y, Location.Z + EOffset.Z), EItemID, 10, EDuration, EHue, 0);
 				Effects.SendLocationEffect(new Point3D(Location.X + EOffset.X, Location.Y + EOffset.Y, Location.Z + EOffset.Z), Map, EItemID, EDuration, EHue, 0);
 
-				lasteffect = DateTime.UtcNow;
+				lasteffect = DateTime.Now;
 
 			}
 		}
@@ -136,12 +99,12 @@ namespace Server.Mobiles
 		{
 			base.OnThink();
 
-			if(lasteffect + TimeSpan.FromSeconds(1) < DateTime.UtcNow)
+			if(lasteffect + TimeSpan.FromSeconds(1) < DateTime.Now)
 			{
 				DisplayHighlight();
 			}
 		}
-		
+        
 		public override bool Move( Direction d )
 		{
 			bool didmove = base.Move( d );
@@ -175,7 +138,7 @@ namespace Server.Mobiles
 			}
 		}
 
-		public List<XmlDialog.SpeechEntry> SpeechEntries 
+		public ArrayList SpeechEntries 
 		{
 			get 
 			{
@@ -200,7 +163,7 @@ namespace Server.Mobiles
 				int minutes;
 
 				Server.Items.Clock.GetTime(this.Map, this.Location.X, this.Location.Y, out  hours, out  minutes);
-				return (new DateTime(DateTime.UtcNow.Year,DateTime.UtcNow.Month,DateTime.UtcNow.Day,hours, minutes,0).TimeOfDay);
+				return (new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,hours, minutes,0).TimeOfDay);
 			}
 		}
 
@@ -209,7 +172,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.TimeOfDay;
+				return DateTime.Now.TimeOfDay;
 			}
 		}
 
@@ -218,7 +181,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.Day;
+				return DateTime.Now.Day;
 			}
 		}
 
@@ -227,7 +190,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.Month;
+				return DateTime.Now.Month;
 			}
 		}
 
@@ -236,7 +199,7 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				return DateTime.UtcNow.DayOfWeek;
+				return DateTime.Now.DayOfWeek;
 			}
 		}
 
@@ -350,7 +313,7 @@ namespace Server.Mobiles
 					DialogAttachment.Running = value;
 			}
 		}
-		
+        
 		[CommandProperty( AccessLevel.GameMaster )]
 		public TimeSpan ResetTime
 		{
@@ -367,7 +330,7 @@ namespace Server.Mobiles
 					DialogAttachment.ResetTime = value;
 			}
 		}
-		
+        
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int SpeechPace
 		{
@@ -484,7 +447,7 @@ namespace Server.Mobiles
 			}
 
 		}
-		
+        
 		[CommandProperty( AccessLevel.GameMaster )]
 		public bool LockConversation
 		{
@@ -504,7 +467,7 @@ namespace Server.Mobiles
 			}
 
 		}
-		
+        
 		[CommandProperty( AccessLevel.GameMaster )]
 		public MessageType SpeechStyle
 		{
@@ -550,7 +513,7 @@ namespace Server.Mobiles
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int Pause
 		{
-		
+        
 			get
 			{
 				if(DialogAttachment != null && DialogAttachment.CurrentEntry != null)
@@ -623,7 +586,7 @@ namespace Server.Mobiles
 				}
 			}
 		}
-		
+        
 		[CommandProperty( AccessLevel.GameMaster )]
 		public int ProximityRange
 		{
@@ -662,15 +625,15 @@ namespace Server.Mobiles
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool LoadConfig
+		[CommandProperty( AccessLevel.GameMaster )]
+		public  bool LoadConfig
 		{
 			get{return false;}
 			set{ if(value == true && DialogAttachment != null) DialogAttachment.DoLoadNPC(null,ConfigFile);}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public bool SaveConfig
+		[CommandProperty( AccessLevel.GameMaster )]
+		public  bool SaveConfig
 		{
 			get{return false;}
 			set
@@ -679,7 +642,7 @@ namespace Server.Mobiles
 					DialogAttachment.DoSaveNPC(null,ConfigFile, false);
 			}
 		}
-		
+        
 		[CommandProperty( AccessLevel.GameMaster )]
 		public string TriggerOnCarried
 		{
@@ -737,10 +700,13 @@ namespace Server.Mobiles
 			}
 
 		}
-		
+        
 		public override bool OnDragDrop( Mobile from, Item item)
 		{
+
 			return XmlQuest.RegisterGive(from, this, item);
+
+			//return base.OnDragDrop(from, item);
 		}
 
 		private class TalkEntry : ContextMenuEntry
@@ -778,6 +744,8 @@ namespace Server.Mobiles
 			base.GetContextMenuEntries( from, list );
 		}
 
+
+
 		public TalkingBaseCreature(AIType ai,
 			FightMode mode,
 			int iRangePerception,
@@ -794,7 +762,7 @@ namespace Server.Mobiles
 		public TalkingBaseCreature( Serial serial ) : base( serial )
 		{
 		}
-		
+        
 		public static void Initialize()
 		{
 			// reestablish the DialogAttachment assignment
@@ -862,7 +830,7 @@ namespace Server.Mobiles
 				{
 					int count = reader.ReadInt();
 
-					SpeechEntries = new List<XmlDialog.SpeechEntry>();
+					SpeechEntries = new ArrayList();
 					for(int i = 0; i<count;i++)
 					{
 						XmlDialog.SpeechEntry newentry = new XmlDialog.SpeechEntry();
@@ -887,24 +855,24 @@ namespace Server.Mobiles
 					int count = reader.ReadInt();
 					if(version < 4)
 					{
-						SpeechEntries = new List<XmlDialog.SpeechEntry>();
+						SpeechEntries = new ArrayList();
 					}
 					for(int i = 0; i<count;i++)
 					{
 						if(version < 4)
 						{
 							XmlDialog.SpeechEntry newentry = new XmlDialog.SpeechEntry();
-	
+    
 							newentry.PrePause = reader.ReadInt();
 							newentry.LockConversation = reader.ReadBool();
 							newentry.AllowNPCTrigger = reader.ReadBool();
 							newentry.SpeechStyle = (MessageType)reader.ReadInt();
-	
+    
 							SpeechEntries.Add(newentry);
 						} 
 						else 
 						{
-							XmlDialog.SpeechEntry newentry = SpeechEntries[i];
+							XmlDialog.SpeechEntry newentry = (XmlDialog.SpeechEntry)SpeechEntries[i];
 
 							newentry.PrePause = reader.ReadInt();
 							newentry.LockConversation = reader.ReadBool();
@@ -931,7 +899,7 @@ namespace Server.Mobiles
 					int count = reader.ReadInt();
 					if(version < 2)
 					{
-						SpeechEntries = new List<XmlDialog.SpeechEntry>();
+						SpeechEntries = new ArrayList();
 					}
 					for(int i = 0; i<count;i++)
 					{
@@ -952,7 +920,7 @@ namespace Server.Mobiles
 						} 
 						else
 						{
-							XmlDialog.SpeechEntry newentry = SpeechEntries[i];
+							XmlDialog.SpeechEntry newentry = (XmlDialog.SpeechEntry)SpeechEntries[i];
 
 							newentry.EntryNumber = reader.ReadInt();
 							newentry.ID = reader.ReadInt();

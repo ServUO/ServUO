@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Server;
 using Server.Items;
 using Server.Network;
@@ -30,7 +31,7 @@ namespace Server.Engines.XmlSpawner2
 			if(o == null || name == null) return false;
 
 			// look for any attachments on the object that match this one
-			List<XmlAttachment> list = XmlAttach.FindAttachments(o, typeof(XmlDynamicFaction));
+			var list = XmlAttach.FindAttachments(o, typeof(XmlDynamicFaction));
 			
 			if(list != null && list.Count > 0)
 			{
@@ -49,7 +50,7 @@ namespace Server.Engines.XmlSpawner2
 			StringBuilder title = new StringBuilder();
 
 			// look for any attachments on the object that match this one
-			List<XmlAttachment> list = XmlAttach.FindAttachments(o, typeof(XmlDynamicFaction));
+			var list = XmlAttach.FindAttachments(o, typeof(XmlDynamicFaction));
 			
 			if(list != null && list.Count > 0)
 			{

@@ -4,7 +4,7 @@ using Server.Gumps;
 using Server.Network;
 using Server.Mobiles;
 using System.IO;
-using System.Collections.Generic;
+using System.Collections;
 using Server.Targeting;
 using Server.Engines.PartySystem;
 using System.Data;
@@ -142,7 +142,7 @@ namespace Server.Items
             {
                 // need to check to see if any other questtoken items are owned
                 // search the Owners top level pack for an xmlquest
-                List<Item> list = XmlQuest.FindXmlQuest(Owner);
+                ArrayList list = XmlQuest.FindXmlQuest(Owner);
 
                 if(list == null || list.Count == 0)
                 {
@@ -178,11 +178,7 @@ namespace Server.Items
         }
 
 
-#if(NEWPARENT)
-		public override void OnAdded(IEntity parent)
-#else
-		public override void OnAdded(object parent)
-#endif
+        public override void OnAdded(IEntity parent)
         {
             base.OnAdded(parent);
     

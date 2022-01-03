@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Server;
 using Server.Network;
 using Server.Items;
@@ -95,7 +96,7 @@ namespace Server.Gumps
   			m_QuestItem.CanSeeReward = info.IsSwitched(301);
   			
   			// refresh the time created
-  			m_QuestItem.TimeCreated = DateTime.UtcNow;
+  			m_QuestItem.TimeCreated = DateTime.Now;
 
 
 			switch ( info.ButtonID )

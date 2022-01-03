@@ -51,7 +51,7 @@ namespace Server.Mobiles
 			AddLoot( LootPack.MedScrolls, 2 );
 		}
 
-		public override bool HasBreath{ get{ return true; } } // fire breath enabled
+		//public override bool HasBreath{ get{ return true; } } // fire breath enabled
 		public override int TreasureMapLevel{ get{ return 2; } }
 		public override int Meat{ get{ return 10; } }
 		public override int Hides{ get{ return 20; } }

@@ -14,19 +14,9 @@ using System.Threading;
 
 namespace Server.Mobiles
 {
-	public interface ISpawnObjectFinderList : IEntity
-	{
-		void ISpawnObjectDoGump(Mobile to);
-		List<ISpawnObjectFinder> i_SpawnObjects { get; }
-		string status_str { get; }
-	}
-	public interface ISpawnObjectFinder
-	{
-		string TypeName { get; }
-	}
-	public class XmlFindGump : Gump
+    public class XmlFindGump : Gump
     {
-		public class XmlFindThread
+        public class XmlFindThread
         {
             readonly SearchCriteria m_SearchCriteria;
             readonly Mobile m_From;

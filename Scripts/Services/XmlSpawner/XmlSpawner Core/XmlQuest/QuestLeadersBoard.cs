@@ -22,13 +22,16 @@ namespace Server.Items
         
         public override void OnDoubleClick( Mobile from )
         {
+
             from.SendGump( new XmlQuestLeaders.TopQuestPlayersGump( XmlAttach.FindAttachment(from,typeof(XmlQuestPoints)) as XmlQuestPoints) );
+
         }
         
         public override void Serialize( GenericWriter writer )
         {
             base.Serialize( writer );
             writer.Write( (int) 0 ); // version
+
         }
 
         public override void Deserialize( GenericReader reader )
@@ -36,6 +39,8 @@ namespace Server.Items
             base.Deserialize( reader );
 
             int version = reader.ReadInt();
+
         }
     }
 }
+

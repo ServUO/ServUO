@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using Server;
 using Server.Gumps;
 using Server.Items;
@@ -13,11 +13,11 @@ using Server.Engines.XmlSpawner2;
 //
 namespace Server.Gumps
 {
-	public class XMLQuestLogGump : Gump
+	public class QuestLogGump : Gump
 	{
 		private Mobile m_From;
 
-		private List<object> m_List;
+		private ArrayList m_List;
 
 		private int m_Page;
 
@@ -38,7 +38,7 @@ namespace Server.Gumps
 			int slots = 0;
 			int count = 0;
 
-			List<object> list = m_List;
+			ArrayList list = m_List;
 
 			for ( int i = index; i >= 0 && i < list.Count; ++i )
 			{
@@ -60,7 +60,7 @@ namespace Server.Gumps
 		}
 
 
-		public XMLQuestLogGump( Mobile from ) : this( from, 0, null )
+		public QuestLogGump( Mobile from ) : this( from, 0, null )
 		{
 		}
 
@@ -78,14 +78,14 @@ namespace Server.Gumps
 				case 2: // Previous page
 				{
 					if ( m_Page > 0 )
-						m_From.SendGump( new XMLQuestLogGump( m_From, m_Page - 1, m_List ) );
+						m_From.SendGump( new QuestLogGump( m_From, m_Page - 1, m_List ) );
 
 					return;
 				}
 				case 3: // Next page
 				{
 					if ( GetIndexForPage( m_Page + 1 ) < m_List.Count )
-						m_From.SendGump( new XMLQuestLogGump( m_From, m_Page + 1, m_List ) );
+						m_From.SendGump( new QuestLogGump( m_From, m_Page + 1, m_List ) );
 
 					break;
 				}
@@ -115,7 +115,7 @@ namespace Server.Gumps
                             IXmlQuest o = m_List[index] as IXmlQuest;
     
                             if(o != null && !o.Deleted){
-                                m_From.SendGump( new XMLQuestLogGump( m_From, m_Page, null ) );
+                                m_From.SendGump( new QuestLogGump( m_From, m_Page, null ) );
                                 m_From.CloseGump( typeof( XmlQuestStatusGump ) );
                                 m_From.SendGump( new XmlQuestStatusGump(o, o.TitleString, 320, 0, true) );
                             }
@@ -128,11 +128,11 @@ namespace Server.Gumps
 		}
 
 
-		public XMLQuestLogGump( Mobile from, int page, List<object> list ) : base( 12, 24 )
+		public QuestLogGump( Mobile from, int page, ArrayList list ) : base( 12, 24 )
 		{
 			if(from == null) return;
 
-			from.CloseGump( typeof( XMLQuestLogGump ) );
+			from.CloseGump( typeof( QuestLogGump ) );
 
 			XmlQuestPoints p = (XmlQuestPoints)XmlAttach.FindAttachment(from, typeof(XmlQuestPoints));
 
@@ -143,7 +143,7 @@ namespace Server.Gumps
 			{
 				// make a new list based on the number of items in the book
 				int nquests = 0;
-				list = new List<object>( );
+				list = new ArrayList( );
 
 				// find all quest items in the players pack
 				if(from.Backpack != null)
@@ -399,7 +399,7 @@ namespace Server.Gumps
 						} 
 						else
 						{
-							DateTime nexttime = DateTime.UtcNow + qa.Expiration;
+							DateTime nexttime = DateTime.Now + qa.Expiration;
 							AddLabel( 560 - xoffset, y, color, nexttime.ToString() );
 						}
 					} 

@@ -82,7 +82,7 @@ namespace Server.Engines.XmlSpawner2
 			writer.Write(m_Word);
 			writer.Write(m_Charges);
 			writer.Write(m_Refractory);
-			writer.Write(m_EndTime - DateTime.UtcNow);
+			writer.Write(m_EndTime - DateTime.Now);
 		}
 
 		public override void Deserialize(GenericReader reader)
@@ -102,7 +102,7 @@ namespace Server.Engines.XmlSpawner2
 					Charges = reader.ReadInt();
 					Refractory = reader.ReadTimeSpan();
 					TimeSpan remaining = reader.ReadTimeSpan();
-					m_EndTime = DateTime.UtcNow + remaining;
+					m_EndTime = DateTime.Now + remaining;
 					break;
 			}
 		}
@@ -173,7 +173,7 @@ namespace Server.Engines.XmlSpawner2
 		{
 			if(m == null ) return;
 
-			if(DateTime.UtcNow < m_EndTime) return;
+			if(DateTime.Now < m_EndTime) return;
 
 
 			// display a message over the item it was attached to
@@ -196,7 +196,7 @@ namespace Server.Engines.XmlSpawner2
 			} 
 			else
 			{
-				m_EndTime = DateTime.UtcNow + Refractory;
+				m_EndTime = DateTime.Now + Refractory;
 			}
 		}
 	}

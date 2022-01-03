@@ -1,4 +1,4 @@
-
+#define FACTIONS
 using System;
 using System.IO;
 using System.Xml;
@@ -6,12 +6,13 @@ using Server;
 using Server.Items;
 using Server.Network;
 using Server.Mobiles;
-using System.Collections.Generic;
+using System.Collections;
 using Server.Targeting;
 using Server.Gumps;
 using System.Text;
 using Server.Commands;
 using Server.Commands.Generic;
+
 
 namespace Server.Engines.XmlSpawner2
 {
@@ -25,14 +26,16 @@ namespace Server.Engines.XmlSpawner2
 
 		private static QuestLeaderboardTimer m_QuestLeaderboardTimer;
 		private static string m_QuestLeaderboardFile;
-		private static List<XmlQuestLeaders.QuestRankEntry> QuestRankList = new List<XmlQuestLeaders.QuestRankEntry>();
+		private static ArrayList QuestRankList = new ArrayList();
 		private static bool needsupdate = true;
 
-		public class QuestRankEntry : IComparable<XmlQuestLeaders.QuestRankEntry>
+
+
+		public class QuestRankEntry : IComparable
 		{
-			public Mobile Quester;
-			public int Rank;
-			public XmlQuestPoints QuestPointsAttachment;
+			public Mobile      Quester;
+			public int    Rank;
+			public XmlQuestPoints    QuestPointsAttachment;
 
 			public QuestRankEntry(Mobile m, XmlQuestPoints attachment)
 			{
@@ -40,17 +43,19 @@ namespace Server.Engines.XmlSpawner2
 				QuestPointsAttachment = attachment;
 			}
 
-			public int CompareTo( QuestRankEntry p )
+			public int CompareTo( object obj )
 			{
+				QuestRankEntry p = (QuestRankEntry)obj;
+
 				if(p.QuestPointsAttachment == null || QuestPointsAttachment == null) return 0;
 
 				// break points ties with quests completed (more quests means higher rank)
 				if(p.QuestPointsAttachment.Points - QuestPointsAttachment.Points == 0)
 				{
-					// if kills are the same then compare previous rank
+					// if kills are the same then compare previous rank 
 					if(p.QuestPointsAttachment.QuestsCompleted - QuestPointsAttachment.QuestsCompleted == 0)
-					{
-						return p.QuestPointsAttachment.Rank - QuestPointsAttachment.Rank;
+					{						
+						return p.QuestPointsAttachment.Rank - QuestPointsAttachment.Rank;					
 					}
 
 					return p.QuestPointsAttachment.QuestsCompleted - QuestPointsAttachment.QuestsCompleted;
@@ -65,13 +70,13 @@ namespace Server.Engines.XmlSpawner2
 			if(needsupdate && QuestRankList != null)
 			{
 				QuestRankList.Sort();
-
+                
 				int rank = 0;
 				//int prevpoints = 0;
 				for(int i= 0; i<QuestRankList.Count;i++)
 				{
-					QuestRankEntry p = QuestRankList[i];
-
+					QuestRankEntry p = QuestRankList[i] as QuestRankEntry;
+    
 					// bump the rank for every change in point level
 					// this means that people with the same points score will have the same rank
 					/*
@@ -82,12 +87,13 @@ namespace Server.Engines.XmlSpawner2
 
 					prevpoints = p.QuestPointsAttachment.Points;
 					*/
-
+    
 					// bump the rank for every successive player in the list.  Players with the same points total will be
 					// ordered by quests completed
 					rank++;
 
 					p.Rank = rank;
+    
 				}
 				needsupdate = false;
 			}
@@ -103,7 +109,7 @@ namespace Server.Engines.XmlSpawner2
 
 			for(int i= 0; i<QuestRankList.Count;i++)
 			{
-				QuestRankEntry p = QuestRankList[i];
+				QuestRankEntry p = QuestRankList[i] as QuestRankEntry;
 				// found the person?
 				if(p.Quester == m)
 				{
@@ -117,7 +123,7 @@ namespace Server.Engines.XmlSpawner2
 
 		public static void UpdateQuestRanking(Mobile m, XmlQuestPoints attachment)
 		{
-			if(QuestRankList == null) QuestRankList = new List<XmlQuestLeaders.QuestRankEntry>();
+			if(QuestRankList == null) QuestRankList = new ArrayList();
 
 			// flag the rank list for updating on the next attempt to retrieve a rank
 			needsupdate = true;
@@ -127,8 +133,8 @@ namespace Server.Engines.XmlSpawner2
 			// rank the entries
 			for(int i= 0; i<QuestRankList.Count;i++)
 			{
-				QuestRankEntry p = QuestRankList[i];
-				
+				QuestRankEntry p = QuestRankList[i] as QuestRankEntry;
+                
 				// found a match
 				if(p != null && p.Quester == m)
 				{
@@ -147,13 +153,15 @@ namespace Server.Engines.XmlSpawner2
 			}
 		}
 
+
+
 		public static void Initialize()
 		{
 
 			CommandSystem.Register( "QuestLeaderboardSave", AccessLevel.Administrator, new CommandEventHandler( QuestLeaderboardSave_OnCommand ) );
 			CommandSystem.Register( "QuestRanking", AccessLevel.Player, new CommandEventHandler( QuestRanking_OnCommand ) );
 		}
-		
+        
 		
 		[Usage( "QuestRanking" )]
 		[Description( "Displays the top players in quest points" )]
@@ -199,7 +207,7 @@ namespace Server.Engines.XmlSpawner2
 			{
 				if(nranks > 0 && i >= nranks) break;
 
-				QuestRankEntry r = QuestRankList[i];
+				QuestRankEntry r = QuestRankList[i] as QuestRankEntry;
 				XmlQuestPoints a = r.QuestPointsAttachment;
 
 
@@ -207,28 +215,22 @@ namespace Server.Engines.XmlSpawner2
 				{
 					string guildname = null;
 
-					if(r.Quester.Guild != null)
+					if(r.Quester.Guild != null) 
 						guildname = r.Quester.Guild.Abbreviation;
-#if(FACTIONS)
-					string factionname = null;
-
-					if(r.Quester is PlayerMobile && ((PlayerMobile)r.Quester).FactionPlayerState != null) 
-						factionname = ((PlayerMobile)r.Quester).FactionPlayerState.Faction.ToString();
-#endif
 					// check for any ranking change and update rank date
 					if(r.Rank != a.Rank)
 					{
-						a.WhenRanked = DateTime.UtcNow;
+						a.WhenRanked = DateTime.Now;
 						if(a.Rank > 0)
 							a.DeltaRank = a.Rank - r.Rank;
 						a.Rank = r.Rank;
 
 					}
 
-					TimeSpan timeranked = DateTime.UtcNow - a.WhenRanked;
+					TimeSpan timeranked = DateTime.Now - a.WhenRanked;
 
 					// write out the entry information
-					
+                    
 					xf.WriteStartElement( "Entry" );
 					xf.WriteAttributeString( "number", i.ToString() );
 
@@ -239,11 +241,6 @@ namespace Server.Engines.XmlSpawner2
 					xf.WriteStartElement( "Guild" );
 					xf.WriteString( guildname );
 					xf.WriteEndElement();
-#if(FACTIONS)
-					xf.WriteStartElement( "Faction" );
-					xf.WriteString( factionname );
-					xf.WriteEndElement();
-#endif
 					xf.WriteStartElement( "Points" );
 					xf.WriteString( a.Points.ToString() );
 					xf.WriteEndElement();
@@ -252,7 +249,7 @@ namespace Server.Engines.XmlSpawner2
 					try
 					{
 						quests = a.QuestsCompleted.ToString();
-					}
+					} 
 					catch{}
 					xf.WriteStartElement( "Quests" );
 					xf.WriteString( quests );
@@ -280,7 +277,7 @@ namespace Server.Engines.XmlSpawner2
 
 			xf.Close();
 		}
-		
+        
 		public static void WriteQuestLeaderboardHtml(string filename, int nranks)
 		{
 			string dirname = Path.Combine( m_QuestLeaderboardSaveDirectory, filename );
@@ -305,7 +302,7 @@ namespace Server.Engines.XmlSpawner2
 			{
 				if(nranks > 0 && i >= nranks) break;
 
-				QuestRankEntry r = QuestRankList[i];
+				QuestRankEntry r = QuestRankList[i] as QuestRankEntry;
 				XmlQuestPoints a = r.QuestPointsAttachment;
 
 				if(r.Quester != null && !r.Quester.Deleted && r.Rank > 0 && a != null && !a.Deleted)
@@ -314,29 +311,23 @@ namespace Server.Engines.XmlSpawner2
 
 					if(r.Quester.Guild != null)
 						guildname = r.Quester.Guild.Abbreviation;
-#if(FACTIONS)
-					string factionname = null;
-
-					if(r.Quester is PlayerMobile && ((PlayerMobile)r.Quester).FactionPlayerState != null) 
-						factionname = ((PlayerMobile)r.Quester).FactionPlayerState.Faction.ToString();
-#endif
 					// check for any ranking change and update rank date
 					if(r.Rank != a.Rank)
 					{
-						a.WhenRanked = DateTime.UtcNow;
+						a.WhenRanked = DateTime.Now;
 						if(a.Rank > 0)
 							a.DeltaRank = a.Rank - r.Rank;
 						a.Rank = r.Rank;
 
 					}
 
-					TimeSpan timeranked = DateTime.UtcNow - a.WhenRanked;
-					
+					TimeSpan timeranked = DateTime.Now - a.WhenRanked;
+                    
 					string quests = "???";
 					try
 					{
 						quests = a.QuestsCompleted.ToString();
-					}
+					} 
 					catch{}
 
 #if(FACTIONS)
@@ -344,7 +335,6 @@ namespace Server.Engines.XmlSpawner2
 					sw.WriteLine( "<TR><TH><TD>{0}<TD>{1}<TD>{2}<TD>{3}<TD>{4}<TD>{5}<TD>{6}<TD>{7}",
 						r.Quester.Name,
 						guildname,
-						factionname,
 						a.Points,
 						quests,
 						a.Rank,
@@ -353,15 +343,15 @@ namespace Server.Engines.XmlSpawner2
 						);
 #else
                     // write out the entry information
-					sw.WriteLine( "<TR><TH><TD>{0}<TD>{1}<TD>{2}<TD>{3}<TD>{4}<TD>{5}<TD>{6}",
-					r.Quester.Name,
-					guildname,
-					a.Points,
-					quests,
-					a.Rank,
-					a.DeltaRank,
-					timeranked
-					);
+                    sw.WriteLine( "<TR><TH><TD>{0}<TD>{1}<TD>{2}<TD>{3}<TD>{4}<TD>{5}<TD>{6}",
+                    r.Quester.Name,
+                    guildname,
+                    a.Points,
+                    quests,
+                    a.Rank,
+                    a.DeltaRank,
+                    timeranked
+                    );
 
 #endif
 
@@ -407,16 +397,16 @@ namespace Server.Engines.XmlSpawner2
 						try
 						{
 							m_QuestLeaderboardSaveInterval = TimeSpan.FromMinutes(double.Parse(e.Arguments[1]));
-						}
+						} 
 						catch{}
 					}
-					
+                    
 					if(e.Arguments.Length > 2)
 					{
 						try
 						{
 							m_QuestLeaderboardSaveRanks = int.Parse(e.Arguments[2]);
-						}
+						} 
 						catch{}
 					}
 
@@ -431,7 +421,7 @@ namespace Server.Engines.XmlSpawner2
 			{
 				e.Mobile.SendMessage("Quest Leaderboard is saving to {0} every {1} minutes. Nranks = {2}",
 					m_QuestLeaderboardFile, m_QuestLeaderboardSaveInterval.TotalMinutes, m_QuestLeaderboardSaveRanks);
-			}
+			} 
 			else
 			{
 				e.Mobile.SendMessage("Quest Leaderboard saving is off.");
@@ -498,13 +488,18 @@ namespace Server.Engines.XmlSpawner2
 			}
 		}
 
+
+		private string guildFilter = null;
+		private string nameFilter = null;
+
 		public class TopQuestPlayersGump : Gump
 		{
 			private XmlQuestPoints m_attachment;
 
 			public TopQuestPlayersGump(XmlQuestPoints attachment) : base( 0,0)
 			{
-				if(QuestRankList == null) return;
+
+				if(QuestRankList == null || attachment == null) return;
 
 				m_attachment = attachment;
 
@@ -564,7 +559,7 @@ namespace Server.Engines.XmlSpawner2
 				xloc += 50;
 				//AddLabel( xloc, 20, 0, "" );
 				xloc += 70;
-				AddLabel( xloc, 20, 0, "Rank" );
+				AddLabel( xloc, 20, 0, "Rank" );     
 				xloc += 45;
 				AddLabel( xloc, 20, 0, "Change" );  
 				xloc += 45;
@@ -578,7 +573,7 @@ namespace Server.Engines.XmlSpawner2
 				{
 					if(count >= numberToDisplay) break;
 
-					QuestRankEntry r = QuestRankList[i];
+					QuestRankEntry r = QuestRankList[i] as QuestRankEntry;
 
 					if(r == null) continue;
 
@@ -592,16 +587,10 @@ namespace Server.Engines.XmlSpawner2
 
 						if(r.Quester.Guild != null) guildname = r.Quester.Guild.Abbreviation;
 
-#if(FACTIONS)
-						string factionname = null;
-    
-						if(r.Quester is PlayerMobile && ((PlayerMobile)r.Quester).FactionPlayerState != null) 
-							factionname = ((PlayerMobile)r.Quester).FactionPlayerState.Faction.ToString();
-#endif
 						// check for any ranking change and update rank date
 						if(r.Rank != a.Rank)
 						{
-							a.WhenRanked = DateTime.UtcNow;
+							a.WhenRanked = DateTime.Now;
 							if(a.Rank > 0)
 								a.DeltaRank = a.Rank - r.Rank;
 							a.Rank = r.Rank;
@@ -651,7 +640,7 @@ namespace Server.Engines.XmlSpawner2
 
 						count++;
 
-						TimeSpan timeranked = DateTime.UtcNow - a.WhenRanked;
+						TimeSpan timeranked = DateTime.Now - a.WhenRanked;
 
 						int days = (int)timeranked.TotalDays;
 						int hours = (int)(timeranked.TotalHours - days*24);
@@ -661,18 +650,13 @@ namespace Server.Engines.XmlSpawner2
 						try
 						{
 							quests = a.QuestsCompleted.ToString();
-						}
+						} 
 						catch{}
 
 						xloc = 23;
 						AddLabel( xloc, y, 0, r.Quester.Name );
 						xloc += 177;
 						AddLabel( xloc, y, 0, guildname );
-#if(FACTIONS)
-						xloc += 35;
-						AddLabelCropped( xloc, y, 60, 21, 0, factionname );
-						xloc += 15;
-#endif
 						xloc += 50;
 						AddLabel( xloc, y, 0, a.Points.ToString() );
 						xloc += 50;
@@ -702,7 +686,7 @@ namespace Server.Engines.XmlSpawner2
 						{
 							deltalabel = String.Format("+{0}",a.DeltaRank);
 							deltahue = 68;
-						}
+						} 
 						else
 							if(a.DeltaRank < 0)
 						{
@@ -727,12 +711,12 @@ namespace Server.Engines.XmlSpawner2
 					TextRelay entry = info.GetTextEntry( 200 );
 					if(entry != null)
 						m_attachment.guildFilter = entry.Text;
-						
+                        
 					entry = info.GetTextEntry( 100 );
 					if(entry != null)
 						m_attachment.nameFilter = entry.Text;
 				}
-				
+                
 				switch(info.ButtonID)
 				{
 					case 100:
