@@ -7,6 +7,8 @@ using Server.Guilds;
 using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
+using Server.Services.ContainerSort;
+using Server.Services.ContainerSort.ItemIdentification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +109,11 @@ namespace Server.Items
 
         public static readonly TimeSpan InstancedCorpseTime = TimeSpan.FromMinutes(3.0);
 
-        [CommandProperty(AccessLevel.GameMaster)]
+		private static readonly bool AllowItemAutoLoot = Config.Get("QualityOfLifeFeatures.AllowItemAutoLoot", false);
+
+		private static readonly bool AllowGoldAutoLoot = Config.Get("QualityOfLifeFeatures.AllowGoldAutoLoot", false);
+
+		[CommandProperty(AccessLevel.GameMaster)]
         public virtual bool InstancedCorpse => DateTime.UtcNow < TimeOfDeath + InstancedCorpseTime;
 
         private Dictionary<Item, InstancedItemInfo> m_InstancedItems;
@@ -459,6 +465,7 @@ namespace Server.Items
             var c = new Corpse(owner, hair, facialhair, equipItems);
 
 			var corpseContent = AutoLootGold(initialContent, c);
+			corpseContent = AutoLootItems(corpseContent, c);
 
 			owner.Corpse = c;
 
@@ -508,6 +515,38 @@ namespace Server.Items
             return c;
         }
 
+		private static List<Item> AutoLootItems(List<Item> initialContent, Corpse corpse)
+		{
+			if (initialContent == null)
+			{
+				return null;
+			}
+
+			var remainingContent = new List<Item>();
+			remainingContent.AddRange(initialContent);
+
+			if (AllowItemAutoLoot && !(corpse.Owner is PlayerMobile))
+			{
+				var players = corpse?.Aggressors?.FindAll(a => a is PlayerMobile)?.Select(a => a as PlayerMobile)?.ToList() ?? new List<PlayerMobile>();
+
+				if (players.Count == 1)
+				{
+					var sortItems = players[0].Backpack.GetAllSortItemTypesIncludingSubcontainers();
+
+					foreach(var item in initialContent)
+					{
+						if (ItemIdentificationRulesFactory.IsItemOfSortItemTypes(item, sortItems))
+						{
+							players[0].AddToBackpack(item);
+							remainingContent = remainingContent.FindAll(i => i != item);
+						}
+					}
+				}
+			}
+
+			return remainingContent;
+		}
+
 		private static List<Item> AutoLootGold(List<Item> initialContent, Corpse corpse)
 		{
 			if (initialContent == null)
@@ -518,7 +557,7 @@ namespace Server.Items
 			var remainingContent = new List<Item>();
 			remainingContent.AddRange(initialContent);
 
-			if (Config.Get("QualityOfLifeFeatures.AllowGoldAutoLoot", false) && !(corpse.Owner is PlayerMobile))
+			if (AllowGoldAutoLoot && !(corpse.Owner is PlayerMobile))
 			{
 				var goldAmount = initialContent?.FindAll(i => i is Gold)?.Sum(i => i.Amount) ?? 0;
 				var players = corpse?.Aggressors?.FindAll(a => a is PlayerMobile)?.Select(a => a as PlayerMobile)?.ToList() ?? new List<PlayerMobile>();

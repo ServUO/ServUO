@@ -98,6 +98,10 @@ namespace Server.Items
 
 		internal List<Item> m_Items;
 
+		private List<int> m_SortItems;
+
+		public List<int> SortItems { get => m_SortItems ?? new List<int>(); set => m_SortItems = value; }
+
 		public ContainerData ContainerData
 		{
 			get
@@ -1556,7 +1560,13 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(3); // version
+			writer.Write(4); // version
+
+			writer.Write(SortItems.Count);
+			foreach (var item in SortItems)
+			{
+				writer.Write(item);
+			}
 
 			var flags = SaveFlag.None;
 
@@ -1602,6 +1612,14 @@ namespace Server.Items
 
 			switch (version)
 			{
+				case 4:
+					m_SortItems = new List<int>();
+					int itemCount = reader.ReadInt();
+					for (int i = 0; i < itemCount; i++)
+					{
+						m_SortItems.Add(reader.ReadInt());
+					}
+					goto case 3;
 				case 3:
 				case 2:
 					{
@@ -1921,6 +1939,11 @@ namespace Server.Items
 			y -= bounds.Y;
 
 			dropped.Location = new Point3D(x, y, 0);
+		}
+
+		public virtual void DisplaySortSettingsTo(Mobile to)
+		{
+			EventSink.InvokeContainerSortSettingsRequest(new ContainerSortSettingsRequestEventArgs(to, this));
 		}
 
 		public override void OnDoubleClickSecureTrade(Mobile from)

@@ -79,6 +79,8 @@ namespace Server
 
 	public delegate void PaperdollRequestEventHandler(PaperdollRequestEventArgs e);
 
+	public delegate void ContainerSortSettingsRequestEventHandler(ContainerSortSettingsRequestEventArgs e);
+
 	public delegate void ProfileRequestEventHandler(ProfileRequestEventArgs e);
 
 	public delegate void ChangeProfileRequestEventHandler(ChangeProfileRequestEventArgs e);
@@ -459,6 +461,21 @@ namespace Server
 		{
 			m_Beholder = beholder;
 			m_Beheld = beheld;
+		}
+	}
+
+	public class ContainerSortSettingsRequestEventArgs : EventArgs
+	{
+		private readonly Mobile m_Mobile;
+		private readonly Container m_Container;
+
+		public Mobile Mobile => m_Mobile;
+		public Container Container => m_Container;
+
+		public ContainerSortSettingsRequestEventArgs(Mobile mobile, Container container)
+		{
+			m_Mobile = mobile;
+			m_Container = container;
 		}
 	}
 
@@ -1721,6 +1738,7 @@ namespace Server
 		public static event VirtueMacroRequestEventHandler VirtueMacroRequest;
 		public static event AccountLoginEventHandler AccountLogin;
 		public static event PaperdollRequestEventHandler PaperdollRequest;
+		public static event ContainerSortSettingsRequestEventHandler ContainerSortSettingsRequest;
 		public static event ProfileRequestEventHandler ProfileRequest;
 		public static event ChangeProfileRequestEventHandler ChangeProfileRequest;
 		public static event AggressiveActionEventHandler AggressiveAction;
@@ -1933,6 +1951,14 @@ namespace Server
 			if (PaperdollRequest != null)
 			{
 				PaperdollRequest(e);
+			}
+		}
+
+		public static void InvokeContainerSortSettingsRequest(ContainerSortSettingsRequestEventArgs e)
+		{
+			if (ContainerSortSettingsRequest != null)
+			{
+				ContainerSortSettingsRequest(e);
 			}
 		}
 
@@ -2546,6 +2572,7 @@ namespace Server
 			VirtueMacroRequest = null;
 			AccountLogin = null;
 			PaperdollRequest = null;
+			ContainerSortSettingsRequest = null;
 			ProfileRequest = null;
 			ChangeProfileRequest = null;
 			AggressiveAction = null;
