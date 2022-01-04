@@ -10,7 +10,7 @@ namespace Server.Gumps
 	{
 		private readonly Mobile m_Mobile;
 		private readonly Container m_Container;
-		private readonly ItemSortCategoryType m_InitialCategory;
+		private readonly ItemSortType m_InitialItem;
 
 		private static readonly int GumpWidth = 750;
 		private static readonly int GumpHeight = 550;
@@ -18,12 +18,12 @@ namespace Server.Gumps
 		private static readonly int YDistanceBetweenButtons = 75;
 		private static readonly int NumberOfButtonColumns = 5;
 
-		public ContainerSortSettingsGump(Mobile mobile, Container container, int category = 0)
+		public ContainerSortSettingsGump(Mobile mobile, Container container, int item = 0)
 			: base(50, 50)
 		{
 			m_Mobile = mobile;
 			m_Container = container;
-			m_InitialCategory = (ItemSortCategoryType)category;
+			m_InitialItem = (ItemSortType)item;
 
 			AddPage(0);
 
@@ -53,36 +53,80 @@ namespace Server.Gumps
 
 			AddPage(1);
 
-			if (m_InitialCategory != ItemSortCategoryType.Unknown && SortItemMap.Map.Any(kvp => kvp.Key.CategoryType == m_InitialCategory))
-			{
-				PopulateCategoryPage(SortItemMap.Map.FirstOrDefault(kvp => kvp.Key.CategoryType == m_InitialCategory).Value);
-			}
+			PopulateInitalPage();
 
-			foreach(var kvp in SortItemMap.Map)
+			foreach (var kvp in SortItemMap.Map)
 			{
-				AddPage((int)kvp.Key.CategoryType + 1);
-				PopulateCategoryPage(kvp.Value);
+				PopulateCategoryInfo(kvp.Value, kvp.Key.CategoryType);
 			}
 		}
 
-		public void PopulateCategoryPage(List<SortItemEntry> items)
+		public void PopulateInitalPage()
+		{
+			if (m_InitialItem != ItemSortType.Unknown)
+			{
+				int? page = GetPageNumberBySortItemType(m_InitialItem);
+
+				if (page.HasValue)
+				{
+					foreach (var kvp in SortItemMap.Map)
+					{
+						for (int pageIndex = 0; pageIndex < kvp.Value.Count; pageIndex++)
+						{
+							int pageNumber = GetPageNumber(pageIndex, kvp.Key.CategoryType);
+
+							if (pageNumber == page.Value)
+							{
+								if (pageIndex < (kvp.Value.Count + 1))
+								{
+									AddButton(GumpWidth - 135, GumpHeight - 35, 0xFA5, 0xFA7, 0, GumpButtonType.Page, pageNumber + 100);
+									AddHtml(GumpWidth - 100, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {kvp.Value[pageIndex + 1].DisplayName}</BASEFONT>", false, false);
+								}
+
+								if (pageIndex > 0)
+								{
+									AddButton(GumpWidth - 285, GumpHeight - 35, 0xFAE, 0xFA7, 0, GumpButtonType.Page, pageNumber + 100);
+									AddHtml(GumpWidth - 250, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {kvp.Value[pageIndex - 1].DisplayName}</BASEFONT>", false, false);
+								}
+
+								PopulatePage(kvp.Value[pageIndex].Items);
+
+								return;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		public void PopulateCategoryInfo(List<SortPageEntry> pageEntries, ItemSortCategoryType categoryType)
+		{
+			for(int pageIndex = 0; pageIndex < pageEntries.Count; pageIndex++)
+			{
+				int pageNumber = GetPageNumber(pageIndex, categoryType);
+
+				AddPage(pageNumber);
+
+				if (pageIndex < (pageEntries.Count - 1))
+				{
+					AddButton(GumpWidth - 165, GumpHeight - 35, 0xFA5, 0xFA7, 0, GumpButtonType.Page, pageNumber + 100);
+					AddHtml(GumpWidth - 130, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {pageEntries[pageIndex + 1].DisplayName}</BASEFONT>", false, false);
+				}
+
+				if(pageIndex > 0)
+				{
+					AddButton(GumpWidth - 315, GumpHeight - 35, 0xFAE, 0xFA7, 0, GumpButtonType.Page, pageNumber - 100);
+					AddHtml(GumpWidth - 280, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {pageEntries[pageIndex - 1].DisplayName}</BASEFONT>", false, false);
+				}
+
+				PopulatePage(pageEntries[pageIndex].Items);
+			}
+		}
+
+		public void PopulatePage(List<SortItemEntry> items)
 		{
 			int row = 0;
-			int column = 0;
-
-			//if (page > 1)
-			//{
-			//	AddButton(400, 374, 0xFA5, 0xFA7, 0, GumpButtonType.Page, page);
-			//	AddHtmlLocalized(440, 376, 60, 20, 1043353, 0x7FFF, false, false); // Next
-			//}
-
-			//AddPage(page);
-
-			//if (page > 1)
-			//{
-			//	AddButton(300, 374, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
-			//	AddHtmlLocalized(340, 376, 60, 20, 1011393, 0x7FFF, false, false); // Back
-			//}
+			int column = 0;			
 
 			for (int i = 0; i < items.Count; i++)
 			{
@@ -122,8 +166,9 @@ namespace Server.Gumps
 		public override void OnResponse(NetState sender, RelayInfo info)
 		{
 			var sortType = (ItemSortType)info.ButtonID;
+			int? pageNumber = GetPageNumberBySortItemType(sortType);
 
-			if(SortItemMap.Map.Any(kvp => kvp.Value.Any(item => item.SortType == sortType)))
+			if (pageNumber.HasValue)
 			{
 				if (IsItemSelected(sortType))
 				{
@@ -134,9 +179,29 @@ namespace Server.Gumps
 					AddItemSelected(sortType);
 				}
 
-				var initialCategory = (int)SortItemMap.Map.FirstOrDefault(kvp => kvp.Value.Any(item => item.SortType == sortType)).Key.CategoryType;
-				m_Mobile.SendGump(new ContainerSortSettingsGump(m_Mobile, m_Container, initialCategory));
+				m_Mobile.SendGump(new ContainerSortSettingsGump(m_Mobile, m_Container, info.ButtonID));
 			}
+		}
+
+		private int? GetPageNumberBySortItemType(ItemSortType itemSortType)
+		{
+			foreach(var mapItem in SortItemMap.Map)
+			{
+				for(int pageIndex = 0; pageIndex < mapItem.Value.Count; pageIndex++)
+				{
+					if (mapItem.Value[pageIndex].Items.Any(i => i.SortType == itemSortType))
+					{
+						return GetPageNumber(pageIndex, mapItem.Key.CategoryType);
+					}
+				}
+			}
+
+			return null;
+		}
+
+		private int GetPageNumber(int indexOfMapPage, ItemSortCategoryType categoryType)
+		{
+			return ((int)categoryType + 1) + (100 * indexOfMapPage);
 		}
 
 		private bool IsItemSelected(ItemSortType itemSortType)

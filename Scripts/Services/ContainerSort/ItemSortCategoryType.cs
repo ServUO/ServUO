@@ -7,18 +7,12 @@
 		Gems = 2,
 		Reagents = 3,
 		MagicLevel = 4,
-		Weapons = 5,
-		Armor = 6,
-		LumberAndBoards = 7,
-		ImbuingIngredients = 8,
-		LeatherAndScales = 9,
-		Potions = 10,
-		FirstAndSecondCircleScrolls = 11,
-		ThirdAndForthCircleScrolls = 12,
-		FifthAndSixthCircleScrolls = 13,
-		SeventhAndEighthCircleScrolls = 14,
-		MysticismScrolls = 15,
-		NecromancyScrolls = 16,
-		Miscellaneous = 17
+		WeaponsAndArmor = 5,
+		LumberAndBoards = 6,
+		ImbuingIngredients = 7,
+		LeatherAndScales = 8,
+		Potions = 9,
+		Scrolls = 10,
+		Miscellaneous = 11
 	}
 }
