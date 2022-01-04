@@ -609,6 +609,7 @@ namespace Server.Items
 						}
 					}
 
+					initialContent.FindAll(i => i is Gold).ForEach(i => i.Delete());
 					remainingContent = remainingContent.FindAll(i => !(i is Gold));
 				}
 			}

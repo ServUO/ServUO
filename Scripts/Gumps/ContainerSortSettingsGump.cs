@@ -14,8 +14,9 @@ namespace Server.Gumps
 
 		private static readonly int GumpWidth = 750;
 		private static readonly int GumpHeight = 550;
-		private static readonly int XDistanceBetweenButtons = 120;
+		private static readonly int XDistanceBetweenButtons = 100;
 		private static readonly int YDistanceBetweenButtons = 75;
+		private static readonly int NumberOfButtonColumns = 5;
 
 		public ContainerSortSettingsGump(Mobile mobile, Container container, int category = 0)
 			: base(50, 50)
@@ -46,8 +47,8 @@ namespace Server.Gumps
 
 				int height = i * 26 + 68;
 
-				AddButton(25, height, 0xFA5, 0xFA7, 0, GumpButtonType.Page, ((int)categoryEntry.CategoryType) + 1);
-				AddHtml(60, height + 2, 440, 20, $"<BASEFONT COLOR=#FFFFFF>{ categoryEntry.DisplayName }</BASEFONT>", false, false);
+				AddButton(20, height, 0xFA5, 0xFA7, 0, GumpButtonType.Page, ((int)categoryEntry.CategoryType) + 1);
+				AddHtml(55, height + 2, 440, 20, $"<BASEFONT COLOR=#FFFFFF>{ categoryEntry.DisplayName }</BASEFONT>", false, false);
 			}
 
 			AddPage(1);
@@ -69,17 +70,31 @@ namespace Server.Gumps
 			int row = 0;
 			int column = 0;
 
+			//if (page > 1)
+			//{
+			//	AddButton(400, 374, 0xFA5, 0xFA7, 0, GumpButtonType.Page, page);
+			//	AddHtmlLocalized(440, 376, 60, 20, 1043353, 0x7FFF, false, false); // Next
+			//}
+
+			//AddPage(page);
+
+			//if (page > 1)
+			//{
+			//	AddButton(300, 374, 0xFAE, 0xFB0, 0, GumpButtonType.Page, 1);
+			//	AddHtmlLocalized(340, 376, 60, 20, 1011393, 0x7FFF, false, false); // Back
+			//}
+
 			for (int i = 0; i < items.Count; i++)
 			{
 				var entry = items[i];
 
-				if (column > 3)
+				if (column >= NumberOfButtonColumns)
 				{
 					column = 0;
 					row++;
 				}
 
-				int x = column * XDistanceBetweenButtons + 260;
+				int x = column * XDistanceBetweenButtons + 240;
 
 				int y = row * YDistanceBetweenButtons + 58;
 

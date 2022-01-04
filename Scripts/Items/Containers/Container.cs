@@ -222,7 +222,12 @@ namespace Server.Items
 			{
 				foreach (var existingItem in Items)
 				{
-					if(existingItem is BaseContainer existingContainer)
+					if (!(item is Container) && existingItem.StackWith(null, item, false))
+					{
+						return;
+					}						
+
+					if (existingItem is BaseContainer existingContainer)
 					{
 						var sortItems = existingContainer.GetAllSortItemTypesIncludingSubcontainers();
 
