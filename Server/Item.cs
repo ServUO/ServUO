@@ -718,6 +718,22 @@ namespace Server
 		private ObjectPropertyList m_PropertyList;
 		#endregion
 
+		private Dictionary<string, object> m_PropertyBag;
+
+		public Dictionary<string, object> PropertyBag
+		{ 
+			get
+			{
+				if(m_PropertyBag == null)
+				{
+					m_PropertyBag = new Dictionary<string, object>();
+				}
+
+				return m_PropertyBag;
+			}
+			set { m_PropertyBag = value; }
+		}
+
 		public int TempFlags
 		{
 			get

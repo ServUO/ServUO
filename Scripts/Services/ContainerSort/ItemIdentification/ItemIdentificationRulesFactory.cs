@@ -7,14 +7,30 @@ namespace Server.Services.ContainerSort.ItemIdentification
 	//Not actually a factory pattern but it is kinda close and naming things is hard
 	public class ItemIdentificationRulesFactory
 	{
+		public const string ITEM_SORT_TYPES_LOOKUP_KEY = "SortTypesItemIs";
 		public static bool IsItemOfSortItemType(Item item, ItemSortType sortType)
 		{
-			if (Map.ContainsKey(sortType))
+			//If the item instance has the list of sort items it qualifes for then use it to help pref
+			if (item.PropertyBag.ContainsKey(ITEM_SORT_TYPES_LOOKUP_KEY) &&
+				item.PropertyBag[ITEM_SORT_TYPES_LOOKUP_KEY] is List<ItemSortType> itemTypes)
 			{
-				return Map[sortType].DoesItemQualifyForSortFilter(item);
+				return itemTypes.Contains(sortType);
 			}
 
-			return false;
+			//If this list of sort items itsnt populated then populated it and store it for further use.
+			var sortTypes = new List<ItemSortType>();
+
+			foreach (var kvp in Map)
+			{
+				if (kvp.Value.DoesItemQualifyForSortFilter(item))
+				{
+					sortTypes.Add(kvp.Key);
+				}
+			}
+
+			item.PropertyBag[ITEM_SORT_TYPES_LOOKUP_KEY] = sortTypes;
+
+			return sortTypes.Contains(sortType); ;
 		}
 
 		public static bool IsItemOfSortItemTypes(Item item, List<ItemSortType> sortTypes)
@@ -164,7 +180,7 @@ namespace Server.Services.ContainerSort.ItemIdentification
 			{ ItemSortType.YewBoard, new ObjectTypeIdentificationRule<YewBoard>() },
 			{ ItemSortType.HeartwoodBoard, new ObjectTypeIdentificationRule<HeartwoodBoard>() },
 			{ ItemSortType.BloodwoodBoard, new ObjectTypeIdentificationRule<BloodwoodBoard>() },
-			{ ItemSortType.FrostwoodBoard, new ObjectTypeIdentificationRule<FrostwoodBoard>() }			
+			{ ItemSortType.FrostwoodBoard, new ObjectTypeIdentificationRule<FrostwoodBoard>() }
 		};
 	}
 }
