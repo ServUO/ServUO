@@ -572,7 +572,7 @@ namespace Server.Items
 						{
 							Party party = Party.Get(player);
 
-							if (party != null && parties.Contains(party))
+							if (party != null && !parties.Contains(party))
 							{
 								parties.Add(party);
 							}
@@ -588,29 +588,32 @@ namespace Server.Items
 						}
 					}
 
-					//every player gets the same amount so the remainder is lost
-					int goldPerPlayer = (goldAmount - (goldAmount % players.Count())) / players.Count();
-
-					foreach (var player in players)
+					if((players?.Count() ?? 0) > 0)
 					{
-						var gold = new Gold(goldPerPlayer);
-						player.AddToBackpack(gold);
+						//every player gets the same amount so the remainder is lost
+						int goldPerPlayer = (goldAmount - (goldAmount % players.Count())) / players.Count();
 
-						if (player.ShowAutoLootMessages)
+						foreach (var player in players)
 						{
-							if (players.Count() > 1)
+							var gold = new Gold(goldPerPlayer);
+							player.AddToBackpack(gold);
+
+							if (player.ShowAutoLootMessages)
 							{
-								player.SendMessage($"Your share of the gold from killing {corpse.Owner.Name} is {goldPerPlayer} gold.");
-							}
-							else
-							{
-								player.SendMessage($"You loot the corpse of {corpse.Owner.Name} and place {goldPerPlayer} gold in your backpack.");
+								if (players.Count() > 1)
+								{
+									player.SendMessage($"Your share of the gold from killing {corpse.Owner.Name} is {goldPerPlayer} gold.");
+								}
+								else
+								{
+									player.SendMessage($"You loot the corpse of {corpse.Owner.Name} and place {goldPerPlayer} gold in your backpack.");
+								}
 							}
 						}
-					}
 
-					initialContent.FindAll(i => i is Gold).ForEach(i => i.Delete());
-					remainingContent = remainingContent.FindAll(i => !(i is Gold));
+						initialContent.FindAll(i => i is Gold).ForEach(i => i.Delete());
+						remainingContent = remainingContent.FindAll(i => !(i is Gold));
+					}					
 				}
 			}
 
