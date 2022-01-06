@@ -3,6 +3,8 @@ using Server.ContextMenus;
 using Server.Mobiles;
 using Server.Multis;
 using Server.Network;
+using Server.Services.ContainerSort;
+using Server.Services.ContainerSort.ItemIdentification;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,7 +35,9 @@ namespace Server.Items
 
         private string m_EngravedText = string.Empty;
 
-        [CommandProperty(AccessLevel.GameMaster)]
+		private static readonly bool AllowContainerAutoSort = Config.Get("QualityOfLifeFeatures.AllowContainerAutoSort", false);
+
+		[CommandProperty(AccessLevel.GameMaster)]
         public string EngravedText
         {
             get { return m_EngravedText; }
@@ -77,13 +81,18 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (Security)
+			if (AllowContainerAutoSort && from.OwnsContainer(this))
+			{
+				list.Add(new ContainerSortSettingsMenu(this));
+			}
+
+			if (Security)
             {
                 SetSecureLevelEntry.AddTo(from, this, list);
             }
         }
 
-        public override void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
+		public override void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
         {
             if (IsLockedDown)
             {
@@ -191,7 +200,7 @@ namespace Server.Items
 
             item.Location = new Point3D(p.X, p.Y, 0);
 
-            AddItem(item);
+			base.AddItem(item);
 
             from.SendSound(GetDroppedSound(item), GetWorldLocation());
 
@@ -205,7 +214,36 @@ namespace Server.Items
             return true;
         }
 
-        public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
+		public override void AddItem(Item item)
+		{
+			ValidateGridLocation(item);
+
+			if (AllowContainerAutoSort && !(item is BaseContainer))
+			{
+				foreach (var existingItem in Items)
+				{
+					if (!(item is Container) && existingItem.StackWith(null, item, false))
+					{
+						return;
+					}						
+
+					if (existingItem is BaseContainer existingContainer)
+					{
+						var sortItems = existingContainer.GetAllSortItemTypesIncludingSubcontainers();
+
+						if (ItemIdentificationRulesFactory.IsItemOfSortItemTypes(item, sortItems))
+						{
+							existingContainer.AddItem(item);
+							return;
+						}
+					}					
+				}
+			}
+
+			base.AddItem(item);
+		}
+
+		public override bool OnDroppedInto(Mobile from, Container target, Point3D p)
         {
             bool canDrop = base.OnDroppedInto(from, target, p);
 
