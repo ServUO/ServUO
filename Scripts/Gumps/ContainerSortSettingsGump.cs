@@ -77,16 +77,16 @@ namespace Server.Gumps
 
 							if (pageNumber == page.Value)
 							{
-								if (pageIndex < (kvp.Value.Count + 1))
+								if (pageIndex < (kvp.Value.Count - 1))
 								{
-									AddButton(GumpWidth - 135, GumpHeight - 35, 0xFA5, 0xFA7, 0, GumpButtonType.Page, pageNumber + 100);
-									AddHtml(GumpWidth - 100, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {kvp.Value[pageIndex + 1].DisplayName}</BASEFONT>", false, false);
+									AddButton(GumpWidth - 165, GumpHeight - 35, 0xFA5, 0xFA7, 0, GumpButtonType.Page, pageNumber + 100);
+									AddHtml(GumpWidth - 130, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {kvp.Value[pageIndex + 1].DisplayName}</BASEFONT>", false, false);
 								}
 
 								if (pageIndex > 0)
 								{
-									AddButton(GumpWidth - 285, GumpHeight - 35, 0xFAE, 0xFA7, 0, GumpButtonType.Page, pageNumber + 100);
-									AddHtml(GumpWidth - 250, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {kvp.Value[pageIndex - 1].DisplayName}</BASEFONT>", false, false);
+									AddButton(GumpWidth - 315, GumpHeight - 35, 0xFAE, 0xFA7, 0, GumpButtonType.Page, pageNumber - 100);
+									AddHtml(GumpWidth - 280, GumpHeight - 33, 100, 20, $"<BASEFONT COLOR=#FFFFFF>To {kvp.Value[pageIndex - 1].DisplayName}</BASEFONT>", false, false);
 								}
 
 								PopulatePage(kvp.Value[pageIndex].Items);
