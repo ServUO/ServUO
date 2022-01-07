@@ -962,8 +962,11 @@ namespace Server.Commands.Generic
     public class KillCommand : BaseCommand
     {
         private readonly bool m_Value;
+		private static readonly bool AllowItemAutoLoot = Config.Get("QualityOfLifeFeatures.AllowItemAutoLoot", false);
 
-        public KillCommand(bool value)
+		private static readonly bool AllowGoldAutoLoot = Config.Get("QualityOfLifeFeatures.AllowGoldAutoLoot", false);
+
+		public KillCommand(bool value)
         {
             m_Value = value;
 
@@ -1007,6 +1010,24 @@ namespace Server.Commands.Generic
                         from.AccessLevel,
                         CommandLogging.Format(from),
                         CommandLogging.Format(mob));
+
+					//If auto looting is enabled add the invoker of the command as the aggressor so auto loot works
+					if((AllowItemAutoLoot || AllowGoldAutoLoot) && 
+						(mob.Aggressed.Count == 0 && mob.Aggressors.Count == 0) &&
+						mob is BaseCreature creature)
+					{
+						if (creature.LootingRights == null)
+						{
+							creature.LootingRights = new List<DamageStore>();
+						}
+
+						var damageStore = new DamageStore(from, creature.HitsMax) { m_HasRight = true};
+
+						creature.LootingRights.Add(damageStore);
+						
+						mob.Aggressors.Add(AggressorInfo.Create(from, mob, false));
+					}
+
                     mob.Kill();
 
                     AddResponse("They have been killed.");
