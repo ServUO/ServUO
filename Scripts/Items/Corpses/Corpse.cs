@@ -206,7 +206,9 @@ namespace Server.Items
                 return;
             }
 
-            if (m_InstancedItems == null)
+			items = AutoLootItems(items.ToList(), this);
+
+			if (m_InstancedItems == null)
             {
                 m_InstancedItems = new Dictionary<Item, InstancedItemInfo>();
             }
