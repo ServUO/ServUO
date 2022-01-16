@@ -1327,7 +1327,7 @@ namespace Server.Mobiles
                     Item item = items[i];
                     bool drop = false;
 
-                    if (RaceDefinitions.ValidateEquipment(from, item, false))
+                    if (!RaceDefinitions.ValidateEquipment(from, item, false))
                     {
                         drop = true;
                     }
