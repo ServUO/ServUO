@@ -9999,10 +9999,10 @@ namespace Server
 							else if (o != this && o is Mobile m)
 							{
 								// Will we enter their update range? (Y: Update)
-								var update = m.InUpdateRange(newLocation, m);
+								var update = m.InUpdateRange(newLocation);
 
 								// Were we already in their update range? (Y: Cancel Update)
-								if (update && m.InUpdateRange(oldLocation, m))
+								if (update && m.InUpdateRange(oldLocation))
 								{
 									update = false;
 								}
@@ -10084,9 +10084,9 @@ namespace Server
 							if (mobile == null)
 								continue;
 
-							var update = mobile.InUpdateRange(newLocation, this);
+							var update = mobile.InUpdateRange(newLocation);
 
-							if (update && mobile.InUpdateRange(oldLocation, this))
+							if (update && mobile.InUpdateRange(oldLocation))
 							{
 								update = false;
 							}
