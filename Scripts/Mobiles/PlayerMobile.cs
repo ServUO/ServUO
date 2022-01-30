@@ -1161,7 +1161,21 @@ namespace Server.Mobiles
             UpdateResistances();
         }
 
-        public override int MaxWeight => ((Race == Race.Human ? 100 : 40) + (int)(3.5 * Str));
+		public override int MaxWeight
+		{
+			get
+			{
+				int baseCarryWeight = Config.Get("CarryWeight.BasePlayerCarryWeight", 40);
+
+				if (Race == Race.Human)
+				{
+					baseCarryWeight += Config.Get("CarryWeight.HumanBonusToCarryWeight", 60);
+
+				}
+
+				return baseCarryWeight + (int)(Config.Get("CarryWeight.CarryWeightPerStr", 3.5) * Str);
+			}
+		}
 
         private int m_LastGlobalLight = -1, m_LastPersonalLight = -1;
 

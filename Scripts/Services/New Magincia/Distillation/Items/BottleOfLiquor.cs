@@ -40,7 +40,7 @@ namespace Server.Engines.Distillation
 
         public override void AddNameProperty(ObjectPropertyList list)
         {
-            if (m_Label != null && m_Label.Length > 0)
+            if (!string.IsNullOrEmpty(m_Label))
                 list.Add(1049519, m_Label); // a bottle of ~1_DRINK_NAME~
             else
                 list.Add(1049519, string.Format("#{0}", DistillationSystem.GetLabel(m_Liquor, m_IsStrong))); // a bottle of ~1_DRINK_NAME~

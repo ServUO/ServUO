@@ -5,6 +5,7 @@ namespace Server.Mobiles.MannequinProperty
 {
     public abstract class SkillBonusAttr : ValuedProperty
     {
+        public override bool IsMagical => true;
         public override Catalog Catalog => Catalog.SkillBonusGear;
         public override int Description => 1159316;  // Increases your skill points in a particular skill, up to, but not exceeding your cap in that skill.
         public abstract SkillName Skill { get; }

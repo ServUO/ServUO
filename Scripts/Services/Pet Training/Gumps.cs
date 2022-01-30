@@ -1272,7 +1272,7 @@ namespace Server.Mobiles
                 Value = StartValue + (int)(profile.TrainingPoints / weight);
             }
 
-            if (StartValue > 0)
+            if (StartValue > 0 || TrainingPoint.TrainPoint is ResistanceType)
             {
                 double valueWeight = (Value * weight);
                 double maxWeight = max * weight;

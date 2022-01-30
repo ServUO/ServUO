@@ -172,19 +172,23 @@ namespace Server
 
         public static string GetLocationString(Point3D p, Map map)
         {
+            if (map == null)
+                return "an unknown location";
+
             Region r = Region.Find(p, map);
-
-            if (r.Name != null && r is TownRegion)
-            {
-                return string.Format("somewhere near {0}.", r.Name);
-            }
-            else if (r.Name != null && r is DungeonRegion)
-            {
-                return string.Format("somewhere in dungeon {0}.", r.Name);
-            }
-
+		
+            if (r != null && r.Name != null)
+	    {
+		if (r is TownRegion)
+                    return string.Format("somewhere near {0}.", r.Name);
+    
+                if (r is DungeonRegion)
+                    return string.Format("somewhere in dungeon {0}.", r.Name);
+	    }
+		
             int mapID = map.MapID;
-            if (mapID < 0 || mapID > m_Locations.Length)
+		
+            if (mapID < 0 || mapID >= m_Locations.Length)
                 return "an unknown location";
 
             WorldLocationInfo[] infos = m_Locations[mapID];

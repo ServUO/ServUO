@@ -29,7 +29,7 @@ namespace Server.Items
         public override int InitMaxHits => 60;
         public override SkillName DefSkill => SkillName.Fencing;
         public override WeaponType DefType => WeaponType.Piercing;
-        public override WeaponAnimation DefAnimation => WeaponAnimation.Pierce1H;
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Bash1H;
 
         public override void Serialize(GenericWriter writer)
         {

@@ -472,7 +472,7 @@ namespace Server.Items
 
                 if (m != null && m.Player && m.Backpack == this)
                 {
-                    return 550;
+                    return Config.Get("CarryWeight.PlayerBackbackMax", 550);
                 }
 				
 				return base.DefaultMaxWeight;

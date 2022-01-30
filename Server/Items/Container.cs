@@ -1719,8 +1719,42 @@ namespace Server.Items
 			UpdateContainerData();
 		}
 
-		public static int GlobalMaxItems { get; set; } = 125;
-		public static int GlobalMaxWeight { get; set; } = 400;
+		private static int? m_GlobalMaxItems;
+		private static int? m_GlobalMaxWeight;
+
+		public static int GlobalMaxItems 
+		{
+			get
+			{
+				if (!m_GlobalMaxItems.HasValue)
+				{
+					m_GlobalMaxItems = Config.Get("CarryWeight.GlobalMaxItems", 125);
+				}
+
+				return m_GlobalMaxItems.Value;
+			}
+			set
+			{
+				m_GlobalMaxItems = value;
+			}
+		}
+
+		public static int GlobalMaxWeight
+		{
+			get
+			{
+				if (!m_GlobalMaxWeight.HasValue)
+				{
+					m_GlobalMaxWeight = Config.Get("CarryWeight.GlobalMaxWeight", 400);
+				}
+
+				return m_GlobalMaxWeight.Value;
+			}
+			set
+			{
+				m_GlobalMaxWeight = value;
+			}
+		}
 
 		public Container(int itemID)
 			: base(itemID)

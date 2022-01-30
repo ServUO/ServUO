@@ -3397,7 +3397,7 @@ namespace Server.Mobiles
         public static void XmlLoadDefaults(string filePath, Mobile m)
         {
             if (m == null || m.Deleted) return;
-            if (filePath != null && filePath.Length >= 1)
+            if (!string.IsNullOrEmpty(filePath))
             {
 
                 if (File.Exists(filePath))

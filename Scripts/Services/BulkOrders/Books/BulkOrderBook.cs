@@ -280,7 +280,7 @@ namespace Server.Engines.BulkOrders
 
             list.Add(1062344, m_Entries.Count.ToString()); // Deeds in book: ~1_val~
 
-            if (m_BookName != null && m_BookName.Length > 0)
+            if (!string.IsNullOrEmpty(m_BookName))
                 list.Add(1062481, m_BookName); // Book Name: ~1_val~
         }
 

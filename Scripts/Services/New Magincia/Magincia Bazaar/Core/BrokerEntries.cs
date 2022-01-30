@@ -176,7 +176,7 @@ namespace Server.Engines.NewMagincia
 
         public static void AddToBuffer(Type type, string s)
         {
-            if (s != null && s.Length > 0 && !m_NameBuffer.ContainsKey(type))
+            if (!string.IsNullOrEmpty(s) && !m_NameBuffer.ContainsKey(type))
                 m_NameBuffer[type] = s;
         }
 

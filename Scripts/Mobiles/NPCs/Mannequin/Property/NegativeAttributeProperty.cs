@@ -4,11 +4,12 @@ namespace Server.Mobiles.MannequinProperty
 {
     public abstract class NegativeAttr : ValuedProperty
     {
+        public override bool IsMagical => true;
         public abstract NegativeAttribute Attribute { get; }
 
         public double GetPropertyValue(Item item)
         {
-            return item is BaseWeapon ? ((BaseWeapon)item).NegativeAttributes[Attribute] : 0;
+            return item is BaseWeapon weapon ? weapon.NegativeAttributes[Attribute] : 0;
         }
 
         public override bool Matches(Item item)

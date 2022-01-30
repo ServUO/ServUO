@@ -19,6 +19,7 @@ namespace Server.Items
 
         public override WeaponAbility PrimaryAbility => WeaponAbility.BleedAttack;
         public override WeaponAbility SecondaryAbility => WeaponAbility.WhirlwindAttack;
+        public override WeaponAnimation DefAnimation => WeaponAnimation.Bash1H;
         public override int StrengthReq => 20;
         public override int MinDamage => 13;
         public override int MaxDamage => 17;
