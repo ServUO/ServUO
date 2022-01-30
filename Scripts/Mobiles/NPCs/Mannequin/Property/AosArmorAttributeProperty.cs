@@ -5,18 +5,19 @@ namespace Server.Mobiles.MannequinProperty
 {
     public abstract class AosArmorAttr : ValuedProperty
     {
+        public override bool IsMagical => true;
         public abstract AosArmorAttribute Attribute { get; }
 
         public double GetPropertyValue(Item item)
         {
-            if (item is BaseArmor)
+            if (item is BaseArmor armor)
             {
-                return ((BaseArmor)item).ArmorAttributes[Attribute];
+                return armor.ArmorAttributes[Attribute];
             }
 
-            if (item is BaseClothing)
+            if (item is BaseClothing clothing)
             {
-                return ((BaseClothing)item).ClothingAttributes[Attribute];
+                return clothing.ClothingAttributes[Attribute];
             }
 
             return 0;
@@ -84,5 +85,12 @@ namespace Server.Mobiles.MannequinProperty
         public override int Hue => 0x1FF;
         public override int SpriteW => 240;
         public override int SpriteH => 60;
+    }
+
+    public class MageArmorProperty : AosArmorAttr
+    {
+        public override Catalog Catalog => Catalog.None;
+        public override int LabelNumber => 1079758;  // Mage Armor
+        public override AosArmorAttribute Attribute => AosArmorAttribute.MageArmor;
     }
 }
