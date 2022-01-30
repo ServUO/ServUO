@@ -23,6 +23,10 @@ namespace Server
 	public class NoSortAttribute : Attribute
 	{ }
 
+	[AttributeUsage(AttributeTargets.Property)]
+	public class NoDupeAttribute : Attribute
+	{ }
+
 	[AttributeUsage(AttributeTargets.Method)]
 	public class CallPriorityAttribute : Attribute
 	{

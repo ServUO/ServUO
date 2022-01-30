@@ -108,6 +108,12 @@ namespace Server.Accounting
 		[CommandProperty(AccessLevel.Administrator)]
 		int TotalPlat { get; }
 
+		void SetCurrency(double amount);
+
+		void SetGold(int amount);
+
+		void SetPlat(int amount);
+
 		/// <summary>
 		/// Attempts to deposit the given amount of Gold and Platinum into this account.
 		/// </summary>

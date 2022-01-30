@@ -810,7 +810,6 @@ namespace Server
 		private int m_Hue;
 		private int m_Amount;
 		private Layer m_Layer;
-		private IEntity m_Parent; // Mobile, Item, or null=World
 		private Map m_Map;
 		private LootType m_LootType;
 		private DateTime m_LastMovedTime;
@@ -883,7 +882,7 @@ namespace Server
 		/// <summary>
 		///     The <see cref="Mobile" /> who is currently <see cref="Mobile.Holding">holding</see> this item.
 		/// </summary>
-		[CommandProperty(AccessLevel.Counselor, true)]
+		[NoDupe, CommandProperty(AccessLevel.Counselor, true)]
 		public Mobile HeldBy
 		{
 			get
@@ -944,7 +943,7 @@ namespace Server
 		[CommandProperty(AccessLevel.Counselor, true)]
 		public Mobile LastHeldByStaff { get; private set; }
 
-		[CommandProperty(AccessLevel.GameMaster, true)]
+		[NoDupe, CommandProperty(AccessLevel.GameMaster, true)]
 		public byte GridLocation { get; internal set; } = Byte.MaxValue;
 
 		[Flags]
@@ -1701,11 +1700,11 @@ namespace Server
 		/// </summary>
 		public virtual void GetChildProperties(ObjectPropertyList list, Item item)
 		{
-			if (m_Parent is Item itemParent)
+			if (Parent is Item itemParent)
 			{
 				itemParent.GetChildProperties(list, item);
 			}
-			else if (m_Parent is Mobile mobileParent)
+			else if (Parent is Mobile mobileParent)
 			{
 				mobileParent.GetChildProperties(list, item);
 			}
@@ -1724,11 +1723,11 @@ namespace Server
 		/// </summary>
 		public virtual void GetChildNameProperties(ObjectPropertyList list, Item item)
 		{
-			if (m_Parent is Item itemParent)
+			if (Parent is Item itemParent)
 			{
 				itemParent.GetChildNameProperties(list, item);
 			}
-			else if (m_Parent is Mobile mobileParent)
+			else if (Parent is Mobile mobileParent)
 			{
 				mobileParent.GetChildNameProperties(list, item);
 			}
@@ -1741,16 +1740,16 @@ namespace Server
 
 		public void Bounce(Mobile from)
 		{
-			if (m_Parent is Item oip)
+			if (Parent is Item oip)
 			{
 				oip.RemoveItem(this);
 			}
-			else if (m_Parent is Mobile omp)
+			else if (Parent is Mobile omp)
 			{
 				omp.RemoveItem(this);
 			}
 
-			m_Parent = null;
+			Parent = null;
 
 			if (Deleted)
 				return;
@@ -1882,11 +1881,11 @@ namespace Server
 
 		public virtual void GetChildContextMenuEntries(Mobile from, List<ContextMenuEntry> list, Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.GetChildContextMenuEntries(from, list, item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.GetChildContextMenuEntries(from, list, item);
 			}
@@ -1894,11 +1893,11 @@ namespace Server
 
 		public virtual void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
 		{
-			if (m_Parent is Item item)
+			if (Parent is Item item)
 			{
 				item.GetChildContextMenuEntries(from, list, this);
 			}
-			else if (m_Parent is Mobile mobile)
+			else if (Parent is Mobile mobile)
 			{
 				mobile.GetChildContextMenuEntries(from, list, this);
 			}
@@ -2039,7 +2038,7 @@ namespace Server
 
 		public bool AtWorldPoint(int x, int y)
 		{
-			return m_Parent == null && m_Location.m_X == x && m_Location.m_Y == y;
+			return Parent == null && m_Location.m_X == x && m_Location.m_Y == y;
 		}
 
 		public bool AtPoint(int x, int y)
@@ -2487,11 +2486,11 @@ namespace Server
 
 		public virtual void AppendChildProperties(ObjectPropertyList list)
 		{
-			if (m_Parent is Item item)
+			if (Parent is Item item)
 			{
 				item.GetChildProperties(list, this);
 			}
-			else if (m_Parent is Mobile mobile)
+			else if (Parent is Mobile mobile)
 			{
 				mobile.GetChildProperties(list, this);
 			}
@@ -2499,11 +2498,11 @@ namespace Server
 
 		public virtual void AppendChildNameProperties(ObjectPropertyList list)
 		{
-			if (m_Parent is Item item)
+			if (Parent is Item item)
 			{
 				item.GetChildNameProperties(list, this);
 			}
-			else if (m_Parent is Mobile mobile)
+			else if (Parent is Mobile mobile)
 			{
 				mobile.GetChildNameProperties(list, this);
 			}
@@ -2745,7 +2744,7 @@ namespace Server
 				{
 					var old = m_Map;
 
-					if (m_Map != null && m_Parent == null)
+					if (m_Map != null && Parent == null)
 					{
 						m_Map.OnLeave(this);
 						SendRemovePacket();
@@ -2763,7 +2762,7 @@ namespace Server
 
 					m_Map = value;
 
-					if (m_Map != null && m_Parent == null)
+					if (m_Map != null && Parent == null)
 					{
 						m_Map.OnEnter(this);
 					}
@@ -2994,7 +2993,7 @@ namespace Server
 				flags |= SaveFlag.Name;
 			}
 
-			if (m_Parent != null)
+			if (Parent != null)
 			{
 				flags |= SaveFlag.Parent;
 			}
@@ -3172,11 +3171,11 @@ namespace Server
 
 			if (GetSaveFlag(flags, SaveFlag.Parent))
 			{
-				if (m_Parent is Mobile mobile && !mobile.Deleted)
+				if (Parent is Mobile mobile && !mobile.Deleted)
 				{
 					writer.Write(mobile.Serial);
 				}
-				else if (m_Parent is Item item && !item.Deleted)
+				else if (Parent is Item item && !item.Deleted)
 				{
 					writer.Write(item.Serial);
 				}
@@ -3251,7 +3250,7 @@ namespace Server
 				return Map.NullEnumerable<IEntity>.Instance;
 			}
 
-			if (m_Parent == null)
+			if (Parent == null)
 			{
 				return map.GetObjectsInRange(m_Location, range);
 			}
@@ -3268,7 +3267,7 @@ namespace Server
 				return Map.NullEnumerable<Item>.Instance;
 			}
 
-			if (m_Parent == null)
+			if (Parent == null)
 			{
 				return map.GetItemsInRange(m_Location, range);
 			}
@@ -3285,7 +3284,7 @@ namespace Server
 				return Map.NullEnumerable<Mobile>.Instance;
 			}
 
-			if (m_Parent == null)
+			if (Parent == null)
 			{
 				return map.GetMobilesInRange(m_Location, range);
 			}
@@ -3302,7 +3301,7 @@ namespace Server
 				return Map.NullEnumerable<NetState>.Instance;
 			}
 
-			if (m_Parent == null)
+			if (Parent == null)
 			{
 				return map.GetClientsInRange(m_Location, range);
 			}
@@ -3310,19 +3309,16 @@ namespace Server
 			return map.GetClientsInRange(GetWorldLocation(), range);
 		}
 
-		private static int m_LockedDownFlag;
-		private static int m_SecureFlag;
+		public static int LockedDownFlag { get; set; } = 0x1;
+		public static int SecureFlag { get; set; } = 0x2;
 
-		public static int LockedDownFlag { get => m_LockedDownFlag; set => m_LockedDownFlag = value; }
-
-		public static int SecureFlag { get => m_SecureFlag; set => m_SecureFlag = value; }
-
+		[NoDupe, CommandProperty(AccessLevel.GameMaster)]
 		public bool IsLockedDown
 		{
-			get => GetTempFlag(m_LockedDownFlag);
+			get => GetTempFlag(LockedDownFlag);
 			set
 			{
-				SetTempFlag(m_LockedDownFlag, value);
+				SetTempFlag(LockedDownFlag, value);
 				InvalidateProperties();
 
 				OnLockDownChange();
@@ -3333,12 +3329,13 @@ namespace Server
 		{
 		}
 
+		[NoDupe, CommandProperty(AccessLevel.GameMaster)]
 		public bool IsSecure
 		{
-			get => GetTempFlag(m_SecureFlag);
+			get => GetTempFlag(SecureFlag);
 			set
 			{
-				SetTempFlag(m_SecureFlag, value);
+				SetTempFlag(SecureFlag, value);
 				InvalidateProperties();
 
 				OnSecureChange();
@@ -3640,18 +3637,18 @@ namespace Server
 
 							if (parent.IsMobile)
 							{
-								m_Parent = World.FindMobile(parent);
+								Parent = World.FindMobile(parent);
 							}
 							else if (parent.IsItem)
 							{
-								m_Parent = World.FindItem(parent);
+								Parent = World.FindItem(parent);
 							}
 							else
 							{
-								m_Parent = null;
+								Parent = null;
 							}
 
-							if (m_Parent == null && (parent.IsMobile || parent.IsItem))
+							if (Parent == null && (parent.IsMobile || parent.IsItem))
 							{
 								Delete();
 							}
@@ -3780,7 +3777,7 @@ namespace Server
 							AcquireCompactInfo().m_SavedFlags = reader.ReadEncodedInt();
 						}
 
-						if (m_Map != null && m_Parent == null)
+						if (m_Map != null && Parent == null)
 						{
 							m_Map.OnEnter(this);
 						}
@@ -3853,18 +3850,18 @@ namespace Server
 
 							if (parent.IsMobile)
 							{
-								m_Parent = World.FindMobile(parent);
+								Parent = World.FindMobile(parent);
 							}
 							else if (parent.IsItem)
 							{
-								m_Parent = World.FindItem(parent);
+								Parent = World.FindItem(parent);
 							}
 							else
 							{
-								m_Parent = null;
+								Parent = null;
 							}
 
-							if (m_Parent == null && (parent.IsMobile || parent.IsItem))
+							if (Parent == null && (parent.IsMobile || parent.IsItem))
 							{
 								Delete();
 							}
@@ -3940,7 +3937,7 @@ namespace Server
 							SetFlag(ImplFlag.Stackable, reader.ReadBool());
 						}
 
-						if (m_Map != null && m_Parent == null)
+						if (m_Map != null && Parent == null)
 						{
 							m_Map.OnEnter(this);
 						}
@@ -3986,18 +3983,18 @@ namespace Server
 
 						if (parent.IsMobile)
 						{
-							m_Parent = World.FindMobile(parent);
+							Parent = World.FindMobile(parent);
 						}
 						else if (parent.IsItem)
 						{
-							m_Parent = World.FindItem(parent);
+							Parent = World.FindItem(parent);
 						}
 						else
 						{
-							m_Parent = null;
+							Parent = null;
 						}
 
-						if (m_Parent == null && (parent.IsMobile || parent.IsItem))
+						if (Parent == null && (parent.IsMobile || parent.IsItem))
 						{
 							Delete();
 						}
@@ -4054,7 +4051,7 @@ namespace Server
 
 						Stackable = reader.ReadBool();
 
-						if (m_Map != null && m_Parent == null)
+						if (m_Map != null && Parent == null)
 						{
 							m_Map.OnEnter(this);
 						}
@@ -4141,11 +4138,11 @@ namespace Server
 		{
 			if (!IsVirtualItem)
 			{
-				if (m_Parent is Item item)
+				if (Parent is Item item)
 				{
 					item.UpdateTotal(sender, type, delta);
 				}
-				else if (m_Parent is Mobile mobile)
+				else if (Parent is Mobile mobile)
 				{
 					mobile.UpdateTotal(sender, type, delta);
 				}
@@ -4262,7 +4259,7 @@ namespace Server
 			}
 		}
 
-		[Hue, CommandProperty(AccessLevel.GameMaster)]
+		[Hue, NoDupe, CommandProperty(AccessLevel.GameMaster)]
 		public virtual int Hue
 		{
 			get
@@ -4327,16 +4324,16 @@ namespace Server
 		{
 			get
 			{
-				var p = m_Parent;
+				var p = Parent;
 
 				while (p is Item item)
 				{
-					if (item.m_Parent == null)
+					if (item.Parent == null)
 					{
 						break;
 					}
 
-					p = item.m_Parent;
+					p = item.Parent;
 				}
 
 				return p;
@@ -4345,7 +4342,7 @@ namespace Server
 
 		public bool ParentsContain<T>() where T : Item
 		{
-			var p = m_Parent;
+			var p = Parent;
 
 			while (p is Item item)
 			{
@@ -4354,12 +4351,12 @@ namespace Server
 					return true;
 				}
 
-				if (item.m_Parent == null)
+				if (item.Parent == null)
 				{
 					break;
 				}
 
-				p = item.m_Parent;
+				p = item.Parent;
 			}
 
 			return false;
@@ -4367,7 +4364,7 @@ namespace Server
 
 		public virtual void AddItem(Item item)
 		{
-			if (item == null || item.Deleted || item.m_Parent == this)
+			if (item == null || item.Deleted || item.Parent == this)
 			{
 				return;
 			}
@@ -4386,11 +4383,11 @@ namespace Server
 				return;
 			}
 
-			if (item.m_Parent is Mobile mParent)
+			if (item.Parent is Mobile mParent)
 			{
 				mParent.RemoveItem(item);
 			}
-			else if (item.m_Parent is Item iParent)
+			else if (item.Parent is Item iParent)
 			{
 				iParent.RemoveItem(item);
 			}
@@ -4399,7 +4396,8 @@ namespace Server
 				item.SendRemovePacket();
 			}
 
-			item.Parent = this;
+			item.SetParent(this);
+
 			item.Map = m_Map;
 
 			var items = AcquireItems();
@@ -4453,6 +4451,7 @@ namespace Server
 			}
 		}
 
+		[NoDupe]
 		public bool NoMoveHS { get; set; }
 
 		public void ProcessDelta()
@@ -4471,7 +4470,7 @@ namespace Server
 
 				if ((flags & ItemDelta.Update) != 0)
 				{
-					var contParent = m_Parent as Container;
+					var contParent = Parent as Container;
 
 					if (contParent != null && !contParent.IsPublicContainer)
 					{
@@ -4596,7 +4595,7 @@ namespace Server
 
 						if (m != null && m.CanSee(this) && m.InUpdateRange(this))
 						{
-							if (m_Parent == null)
+							if (Parent == null)
 							{
 								SendInfoTo(state, sendOPLUpdate && m.ViewOPL);
 							}
@@ -4604,11 +4603,11 @@ namespace Server
 							{
 								if (p == null)
 								{
-									if (m_Parent is Item)
+									if (Parent is Item)
 									{
 										ContainerContentUpdate.Send(state, this);
 									}
-									else if (m_Parent is Mobile)
+									else if (Parent is Mobile)
 									{
 										p = new EquipUpdate(this);
 										p.Acquire();
@@ -4637,7 +4636,7 @@ namespace Server
 				}
 				else if ((flags & ItemDelta.EquipOnly) != 0)
 				{
-					if (m_Parent is Mobile)
+					if (Parent is Mobile)
 					{
 						Packet p = null;
 
@@ -4791,7 +4790,7 @@ namespace Server
 
 			if (m_Map != null)
 			{
-				if (m_Parent == null)
+				if (Parent == null)
 				{
 					m_Map.OnLeave(this);
 				}
@@ -4962,7 +4961,7 @@ namespace Server
 					UpdateTotal(item, TotalType.Weight, -(item.TotalWeight + item.PileWeight));
 				}
 
-				item.Parent = null;
+				item.SetParent(null);
 
 				item.OnRemoved(this);
 
@@ -5026,6 +5025,7 @@ namespace Server
 			return true;
 		}
 
+		[CommandProperty(AccessLevel.Decorator)]
 		public ISpawner Spawner
 		{
 			get
@@ -5115,7 +5115,7 @@ namespace Server
 				{
 					if (m_Map != null)
 					{
-						if (m_Parent == null)
+						if (Parent == null)
 						{
 							IPooledEnumerable<NetState> eable;
 
@@ -5158,7 +5158,7 @@ namespace Server
 
 							RemDelta(ItemDelta.Update);
 						}
-						else if (m_Parent is Item)
+						else if (Parent is Item)
 						{
 							m_Location = value;
 							ReleaseWorldPackets();
@@ -5171,7 +5171,7 @@ namespace Server
 							ReleaseWorldPackets();
 						}
 
-						if (m_Parent == null)
+						if (Parent == null)
 						{
 							m_Map.OnMove(oldLocation, this);
 						}
@@ -5187,13 +5187,13 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+		[NoDupe, CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public int X { get => m_Location.m_X; set => Location = new Point3D(value, m_Location.m_Y, m_Location.m_Z); }
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+		[NoDupe, CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public int Y { get => m_Location.m_Y; set => Location = new Point3D(m_Location.m_X, value, m_Location.m_Z); }
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+		[NoDupe, CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public int Z { get => m_Location.m_Z; set => Location = new Point3D(m_Location.m_X, m_Location.m_Y, value); }
 		#endregion
 
@@ -5345,46 +5345,44 @@ namespace Server
 
 		#endregion
 
-		[CommandProperty(AccessLevel.GameMaster)]
-		public IEntity Parent
-		{
-			get => m_Parent;
-			set
-			{
-				if (m_Parent == value)
-				{
-					return;
-				}
-
-				OnParentChanging(value);
-
-				var oldParent = m_Parent;
-
-				m_Parent = value;
-
-				OnParentChanged(oldParent);
-			}
-		}
+		[NoDupe, CommandProperty(AccessLevel.GameMaster, true)]
+		public IEntity Parent { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public int ParentCount => m_Parent != null ? Parents.Count() : 0;
+		public int ParentCount => Parent != null ? Parents.Count() : 0;
 
 		public IEnumerable<IEntity> Parents
 		{
 			get
 			{
-				var p = m_Parent;
+				var p = Parent;
 
 				while (p != null)
 				{
 					yield return p;
 
 					if (p is Item i)
-						p = i.m_Parent;
+						p = i.Parent;
 					else
 						break;
 				}
 			}
+		}
+
+		internal void SetParent(IEntity p)
+		{
+			if (Parent == p)
+			{
+				return;
+			}
+
+			OnParentChanging(p);
+
+			var oldParent = Parent;
+
+			Parent = p;
+
+			OnParentChanged(oldParent);
 		}
 
 		protected virtual void OnParentChanging(IEntity newParent)
@@ -5392,7 +5390,7 @@ namespace Server
 
 		protected virtual void OnParentChanged(IEntity oldParent)
 		{
-			if (m_Parent is Container c)
+			if (Parent is Container c)
 			{
 				if (GridLocation == Byte.MaxValue)
 				{
@@ -5406,11 +5404,11 @@ namespace Server
 
 			if (m_Map != null)
 			{
-				if (oldParent != null && m_Parent == null)
+				if (oldParent != null && Parent == null)
 				{
 					m_Map.OnEnter(this);
 				}
-				else if (oldParent == null && m_Parent != null)
+				else if (oldParent == null && Parent != null)
 				{
 					m_Map.OnLeave(this);
 				}
@@ -5423,9 +5421,7 @@ namespace Server
 					oldParent = item.RootParent;
 				}
 
-				var root = RootParent as Mobile;
-
-				if (root != null && oldParent != root)
+				if (RootParent is Mobile root && oldParent != root)
 				{
 					root.Obtained(this);
 				}
@@ -6213,7 +6209,7 @@ namespace Server
 					return container;
 				}
 
-				p = item.m_Parent;
+				p = item.Parent;
 			}
 
 			return null;
@@ -6221,11 +6217,11 @@ namespace Server
 
 		public virtual void OnItemAdded(Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnSubItemAdded(item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnSubItemAdded(item);
 			}
@@ -6233,11 +6229,11 @@ namespace Server
 
 		public virtual void OnItemRemoved(Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnSubItemRemoved(item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnSubItemRemoved(item);
 			}
@@ -6245,11 +6241,11 @@ namespace Server
 
 		public virtual void OnSubItemAdded(Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnSubItemAdded(item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnSubItemAdded(item);
 			}
@@ -6257,11 +6253,11 @@ namespace Server
 
 		public virtual void OnSubItemRemoved(Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnSubItemRemoved(item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnSubItemRemoved(item);
 			}
@@ -6269,11 +6265,11 @@ namespace Server
 
 		public virtual void OnItemBounceCleared(Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnSubItemBounceCleared(item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnSubItemBounceCleared(item);
 			}
@@ -6281,11 +6277,11 @@ namespace Server
 
 		public virtual void OnSubItemBounceCleared(Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnSubItemBounceCleared(item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnSubItemBounceCleared(item);
 			}
@@ -6293,12 +6289,12 @@ namespace Server
 
 		public virtual bool CheckTarget(Mobile from, Target targ, object targeted)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				return iParent.CheckTarget(from, targ, targeted);
 			}
 
-			if (m_Parent is Mobile mParent)
+			if (Parent is Mobile mParent)
 			{
 				return mParent.CheckTarget(from, targ, targeted);
 			}
@@ -6346,7 +6342,7 @@ namespace Server
 
 		public virtual bool IsAccessibleTo(Mobile check)
 		{
-			if (m_Parent is Item item)
+			if (Parent is Item item)
 			{
 				return item.IsAccessibleTo(check);
 			}
@@ -6363,7 +6359,7 @@ namespace Server
 
 		public bool IsChildOf(object o, bool allowNull)
 		{
-			var p = m_Parent;
+			var p = Parent;
 
 			if ((p == null || o == null) && !allowNull)
 			{
@@ -6377,12 +6373,12 @@ namespace Server
 
 			while (p is Item item)
 			{
-				if (item.m_Parent == null)
+				if (item.Parent == null)
 				{
 					break;
 				}
 
-				p = item.m_Parent;
+				p = item.Parent;
 
 				if (p == o)
 				{
@@ -6481,11 +6477,11 @@ namespace Server
 
 		public virtual void OnItemUsed(Mobile from, Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnItemUsed(from, item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnItemUsed(from, item);
 			}
@@ -6498,12 +6494,12 @@ namespace Server
 
 		public virtual bool CheckItemUse(Mobile from, Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				return iParent.CheckItemUse(from, item);
 			}
 
-			if (m_Parent is Mobile mParent)
+			if (Parent is Mobile mParent)
 			{
 				return mParent.CheckItemUse(from, item);
 			}
@@ -6513,11 +6509,11 @@ namespace Server
 
 		public virtual void OnItemLifted(Mobile from, Item item)
 		{
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				iParent.OnItemLifted(from, item);
 			}
-			else if (m_Parent is Mobile mParent)
+			else if (Parent is Mobile mParent)
 			{
 				mParent.OnItemLifted(from, item);
 			}
@@ -6545,12 +6541,12 @@ namespace Server
 				}
 			}
 
-			if (m_Parent is Item iParent)
+			if (Parent is Item iParent)
 			{
 				return iParent.CheckLift(from, item, ref reject);
 			}
 
-			if (m_Parent is Mobile mParent)
+			if (Parent is Mobile mParent)
 			{
 				return mParent.CheckLift(from, item, ref reject);
 			}
@@ -6563,9 +6559,9 @@ namespace Server
 
 		public virtual void OnSingleClickContained(Mobile from, Item item)
 		{
-			if (m_Parent is Item)
+			if (Parent is Item iParent)
 			{
-				((Item)m_Parent).OnSingleClickContained(from, item);
+				iParent.OnSingleClickContained(from, item);
 			}
 		}
 
@@ -6638,7 +6634,7 @@ namespace Server
 
 			var ourHue = Hue;
 			var thisMap = Map;
-			var thisParent = m_Parent;
+			var thisParent = Parent;
 			var worldLoc = GetWorldLocation();
 			var type = LootType;
 
@@ -6682,7 +6678,7 @@ namespace Server
 
 		public virtual void ReplaceWith(Item newItem)
 		{
-			if (m_Parent is Container container)
+			if (Parent is Container container)
 			{
 				container.AddItem(newItem);
 				newItem.Location = m_Location;
@@ -6695,7 +6691,7 @@ namespace Server
 			Delete();
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[NoDupe, CommandProperty(AccessLevel.GameMaster)]
 		public bool QuestItem
 		{
 			get => GetFlag(ImplFlag.QuestItem);
@@ -6711,7 +6707,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[NoDupe, CommandProperty(AccessLevel.GameMaster)]
 		public bool Insured
 		{
 			get => GetFlag(ImplFlag.Insured);
@@ -6722,6 +6718,7 @@ namespace Server
 			}
 		}
 
+		[NoDupe, CommandProperty(AccessLevel.GameMaster)]
 		public bool PayedInsurance { get => GetFlag(ImplFlag.PayedInsurance); set => SetFlag(ImplFlag.PayedInsurance, value); }
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
@@ -6793,7 +6790,14 @@ namespace Server
 			return String.Format("0x{0:X} \"{1}\"", m_Serial.Value, GetType().Name);
 		}
 
-		internal int m_TypeRef;
+		[Constructable]
+		public Item(int itemID)
+			: this()
+		{
+			m_ItemID = itemID;
+
+			UpdateLight();
+		}
 
 		public Item()
 		{
@@ -6812,33 +6816,28 @@ namespace Server
 
 			World.AddItem(this);
 
-			var ourType = GetType();
+			InitializeTypeReference();
 
-			m_TypeRef = World.m_ItemTypes.IndexOf(ourType);
-
-			if (m_TypeRef == -1)
+			Timer.DelayCall(obj =>
 			{
-				World.m_ItemTypes.Add(ourType);
-
-				m_TypeRef = World.m_ItemTypes.Count - 1;
-			}
-
-			Timer.DelayCall(EventSink.InvokeItemCreated, new ItemCreatedEventArgs(this));
-		}
-
-		[Constructable]
-		public Item(int itemID)
-			: this()
-		{
-			m_ItemID = itemID;
-
-			UpdateLight();
+				if (!obj.Deleted)
+				{
+					EventSink.InvokeItemCreated(new ItemCreatedEventArgs(obj));
+				}
+			}, this);
 		}
 
 		public Item(Serial serial)
 		{
 			m_Serial = serial;
 
+			InitializeTypeReference();
+		}
+
+		internal int m_TypeRef;
+
+		private void InitializeTypeReference()
+		{
 			var ourType = GetType();
 
 			m_TypeRef = World.m_ItemTypes.IndexOf(ourType);

@@ -1,20 +1,21 @@
 #region References
+using System;
+
+using Server.Diagnostics;
 using Server.Items;
 using Server.Targeting;
-using System;
-using System.Linq;
 #endregion
 
 namespace Server.Commands
 {
-    public static class Dupe
-    {
-        public static void Configure()
+	public static class Dupe
+	{
+		public static void Configure()
 		{
 			Mobile.LiftItemDupeHandler = LiftItemDupe;
 
 			CommandSystem.Register("Dupe", AccessLevel.GameMaster, Dupe_OnCommand);
-            CommandSystem.Register("DupeInBag", AccessLevel.GameMaster, DupeInBag_OnCommand);
+			CommandSystem.Register("DupeInBag", AccessLevel.GameMaster, DupeInBag_OnCommand);
 		}
 
 		private static Item LiftItemDupe(Item oldItem, int amount)
@@ -24,359 +25,322 @@ namespace Server.Commands
 				return null;
 			}
 
-			var item = DupeItem(oldItem);
+			var newItem = DupeItem(oldItem);
 
-			if (item?.Deleted == false)
+			if (newItem?.Deleted == false)
 			{
-				item.Amount = oldItem.Amount - amount;
+				newItem.Amount = oldItem.Amount - amount;
 				oldItem.Amount = amount;
 
-				return item;
+				return newItem;
 			}
 
 			return null;
 		}
 
 		[Usage("Dupe [amount]")]
-        [Description("Dupes a targeted item.")]
-        private static void Dupe_OnCommand(CommandEventArgs e)
-        {
-            int amount = 1;
+		[Description("Dupes a targeted item.")]
+		private static void Dupe_OnCommand(CommandEventArgs e)
+		{
+			var amount = 1;
 
-            if (e.Length > 0)
-            {
-                amount = e.GetInt32(0);
-            }
+			if (e.Length > 0)
+			{
+				amount = e.GetInt32(0);
+			}
 
-            e.Mobile.Target = new DupeTarget(false, Math.Max(1, amount));
-            e.Mobile.SendMessage("What do you wish to dupe?");
-        }
+			e.Mobile.Target = new DupeTarget(false, amount);
+			e.Mobile.SendMessage("What do you wish to dupe?");
+		}
 
-        [Usage("DupeInBag <count>")]
-        [Description("Dupes an item at it's current location (count) number of times.")]
-        private static void DupeInBag_OnCommand(CommandEventArgs e)
-        {
-            int amount = 1;
+		[Usage("DupeInBag <count>")]
+		[Description("Dupes an item at it's current location (count) number of times.")]
+		private static void DupeInBag_OnCommand(CommandEventArgs e)
+		{
+			var amount = 1;
 
-            if (e.Length > 0)
-            {
-                amount = e.GetInt32(0);
-            }
+			if (e.Length > 0)
+			{
+				amount = e.GetInt32(0);
+			}
 
-            e.Mobile.Target = new DupeTarget(true, Math.Max(1, amount));
-            e.Mobile.SendMessage("What do you wish to dupe?");
-        }
+			e.Mobile.Target = new DupeTarget(true, amount);
+			e.Mobile.SendMessage("What do you wish to dupe?");
+		}
 
-        private class DupeTarget : Target
-        {
-            private readonly bool _InBag;
-            private readonly int _Amount;
+		private class DupeTarget : Target
+		{
+			private readonly bool _InBag;
+			private readonly int _Amount;
 
-            public DupeTarget(bool inbag, int amount)
-                : base(15, false, TargetFlags.None)
-            {
-                _InBag = inbag;
-                _Amount = amount;
-            }
+			public DupeTarget(bool inbag, int amount)
+				: base(15, false, TargetFlags.None)
+			{
+				_InBag = inbag;
+				_Amount = Math.Max(1, amount);
+			}
 
-            protected override void OnTarget(Mobile m, object targ)
-            {
-                bool done = false;
+			protected override void OnTarget(Mobile m, object targ)
+			{
+				if (!(targ is Item item))
+				{
+					m.SendMessage("You can only dupe items.");
+					return;
+				}
 
-                if (!(targ is Item))
-                {
-                    m.SendMessage("You can only dupe items.");
-                    return;
-                }
+				CommandLogging.WriteLine(m, "{0} {1} duping {2} (inBag={3}; amount={4})", m.AccessLevel, CommandLogging.Format(m), CommandLogging.Format(targ), _InBag, _Amount);
 
-                CommandLogging.WriteLine(
-                    m,
-                    "{0} {1} duping {2} (inBag={3}; amount={4})",
-                    m.AccessLevel,
-                    CommandLogging.Format(m),
-                    CommandLogging.Format(targ),
-                    _InBag,
-                    _Amount);
+				Container pack;
 
-                Item item = (Item)targ;
+				if (_InBag)
+				{
+					if (item.Parent is Container cp)
+					{
+						pack = cp;
+					}
+					else if (item.Parent is Mobile mp)
+					{
+						pack = mp.Backpack;
+					}
+					else
+					{
+						pack = null;
+					}
+				}
+				else
+				{
+					pack = m.Backpack;
+				}
 
-                Container pack;
+				try
+				{
+					m.SendMessage("Duping {0}...", _Amount);
 
-                if (_InBag)
-                {
-                    if (item.Parent is Container)
-                    {
-                        pack = (Container)item.Parent;
-                    }
-                    else if (item.Parent is Mobile)
-                    {
-                        pack = ((Mobile)item.Parent).Backpack;
-                    }
-                    else
-                    {
-                        pack = null;
-                    }
-                }
-                else
-                {
-                    pack = m.Backpack;
-                }
+					for (var i = 0; i < _Amount; i++)
+					{
+						var o = Construct(m, item);
 
-                Type t = item.GetType();
+						if (o == null)
+						{
+							m.SendMessage("Unable to dupe.");
+							return;
+						}
 
-                object[] a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
+						if (pack != null)
+						{
+							pack.DropItem(o);
+						}
+						else
+						{
+							o.MoveToWorld(m.Location, m.Map);
+						}
 
-                if (a.OfType<ConstructableAttribute>().Any(ca => ca.AccessLevel > m.AccessLevel))
-                {
-                    return;
-                }
+						o.UpdateTotals();
+						o.InvalidateProperties();
+						o.Delta(ItemDelta.Update);
 
-                try
-                {
-                    m.SendMessage("Duping {0}...", _Amount);
+						item.Delta(ItemDelta.Update);
 
-                    bool noCtor = false;
+						CommandLogging.WriteLine(m, "{0} {1} duped {2} creating {3}", m.AccessLevel, CommandLogging.Format(m), CommandLogging.Format(item), CommandLogging.Format(o));
+					}
 
-                    for (int i = 0; i < _Amount; i++)
-                    {
-                        Item o;
+					m.SendMessage("Done");
+				}
+				catch (Exception e)
+				{
+					ExceptionLogging.LogException(e);
 
-                        try
-                        {
-                            o = Activator.CreateInstance(t, true) as Item;
-                        }
-                        catch
-                        {
-                            o = null;
-                        }
+					m.SendMessage("Error");
+				}
+			}
+		}
 
-                        if (o == null)
-                        {
-                            noCtor = true;
-                            break;
-                        }
+		public static Item DupeItem(Item item)
+		{
+			return DupeItem(null, item);
+		}
 
-                        CopyProperties(item, o);
+		public static Item DupeItem(Mobile m, Item item)
+		{
+			try
+			{
+				var o = Construct(m, item);
 
-                        o.Parent = null;
+				if (o == null)
+				{
+					return null;
+				}
 
-                        item.OnAfterDuped(o);
+				if (m != null)
+				{
+					o.MoveToWorld(m.Location, m.Map);
+				}
 
-                        if (item is Container && o is Container)
-                        {
-                            m.SendMessage("Duping Container Children...");
-                            DupeChildren(m, (Container)item, (Container)o);
-                        }
+				o.UpdateTotals();
+				o.InvalidateProperties();
+				o.Delta(ItemDelta.Update);
 
-                        if (pack != null)
-                        {
-                            pack.DropItem(o);
-                        }
-                        else
-                        {
-                            o.MoveToWorld(m.Location, m.Map);
-                        }
+				item.Delta(ItemDelta.Update);
 
-                        o.UpdateTotals();
-                        o.InvalidateProperties();
-                        o.Delta(ItemDelta.Update);
+				if (m != null)
+				{
+					CommandLogging.WriteLine(m, "{0} {1} duped {2} creating {3}", m.AccessLevel, CommandLogging.Format(m), CommandLogging.Format(item), CommandLogging.Format(o));
+				}
 
-                        CommandLogging.WriteLine(
-                            m,
-                            "{0} {1} duped {2} creating {3}",
-                            m.AccessLevel,
-                            CommandLogging.Format(m),
-                            CommandLogging.Format(item),
-                            CommandLogging.Format(o));
-                    }
+				return o;
+			}
+			catch (Exception e)
+			{
+				ExceptionLogging.LogException(e);
 
-                    if (!noCtor)
-                    {
-                        m.SendMessage("Done");
-                        done = true;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Diagnostics.ExceptionLogging.LogException(e);
-                    m.SendMessage("Error");
-                    return;
-                }
+				return null;
+			}
+		}
 
-                if (!done)
-                {
-                    m.SendMessage("Unable to dupe.  Item must have a 0 parameter constructor.");
-                }
-                else
-                {
-                    item.Delta(ItemDelta.Update);
-                }
-            }
-        }
+		public static void DupeChildren(Container src, Container dest)
+		{
+			DupeChildren(null, src, dest);
+		}
 
-        public static Item DupeItem(Item item)
-        {
-            return DupeItem(null, item);
-        }
+		public static void DupeChildren(Mobile m, Container src, Container dest)
+		{
+			foreach (var item in src.Items)
+			{
+				try
+				{
+					var o = Construct(m, item);
 
-        public static Item DupeItem(Mobile m, Item item)
-        {
-            try
-            {
-                Type t = item.GetType();
+					if (o == null)
+					{
+						continue;
+					}
 
-                if (m != null)
-                {
-                    object[] a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
+					dest.DropItem(o);
 
-                    if (a.OfType<ConstructableAttribute>().Any(ca => ca.AccessLevel > m.AccessLevel))
-                    {
-                        return null;
-                    }
-                }
+					o.Location = item.Location;
 
-                Item o;
+					o.UpdateTotals();
+					o.InvalidateProperties();
+					o.Delta(ItemDelta.Update);
 
-                try
-                {
-                    o = Activator.CreateInstance(t, true) as Item;
-                }
-                catch
-                {
-                    o = null;
-                }
+					item.Delta(ItemDelta.Update);
 
-                if (o == null)
-                {
-                    return null;
-                }
+					if (m != null)
+					{
+						CommandLogging.WriteLine(m, "{0} {1} duped {2} creating {3}", m.AccessLevel, CommandLogging.Format(m), CommandLogging.Format(item), CommandLogging.Format(o));
+					}
+				}
+				catch (Exception e)
+				{
+					ExceptionLogging.LogException(e);
+				}
+			}
+		}
 
-                CopyProperties(item, o);
+		private static Item Construct(Mobile m, Item item)
+		{
+			var t = item.GetType();
 
-                o.Parent = null;
+			if (m != null)
+			{
+				var ctor = t.GetConstructor(Type.EmptyTypes);
 
-                item.OnAfterDuped(o);
+				if (ctor != null)
+				{
+					var a = ctor.GetCustomAttributes(typeof(ConstructableAttribute), false);
 
-                if (item is Container && o is Container)
-                {
-                    DupeChildren(m, (Container)item, (Container)o);
-                }
+					for (var i = 0; i < a.Length; i++)
+					{
+						if (((ConstructableAttribute)a[i]).AccessLevel > m.AccessLevel)
+						{
+							return null;
+						}
+					}
+				}
+			}
 
-                if (m != null)
-                {
-                    o.MoveToWorld(m.Location, m.Map);
+			Item o;
 
-                    o.UpdateTotals();
-                    o.InvalidateProperties();
-                    o.Delta(ItemDelta.Update);
+			try
+			{
+				o = (Item)Activator.CreateInstance(t, true);
+			}
+			catch
+			{
+				o = null;
+			}
 
-                    CommandLogging.WriteLine(m, "{0} {1} duped {2} creating {3}", m.AccessLevel, CommandLogging.Format(m),
-                                             CommandLogging.Format(item), CommandLogging.Format(o));
-                }
+			if (o == null) // default to serial ctor
+			{
+				try
+				{
+					o = (Item)Activator.CreateInstance(t, Serial.NewItem);
+				}
+				catch
+				{
+					o = null;
+				}
 
-                item.Delta(ItemDelta.Update);
+				if (o != null) // invoke functions found in the skipped base item ctor
+				{
+					World.AddItem(o);
 
-                return o;
-            }
-            catch (Exception e)
-            {
-                Diagnostics.ExceptionLogging.LogException(e);
-                return null;
-            }
-        }
+					Timer.DelayCall(obj =>
+					{
+						if (!obj.Deleted)
+						{
+							EventSink.InvokeItemCreated(new ItemCreatedEventArgs(obj));
+						}
+					}, o);
+				}
+			}
 
-        public static void DupeChildren(Container src, Container dest)
-        {
-            DupeChildren(null, src, dest);
-        }
+			if (o?.Deleted == false)
+			{
+				CopyProperties(item, o);
 
-        public static void DupeChildren(Mobile m, Container src, Container dest)
-        {
-            foreach (Item item in src.Items)
-            {
-                try
-                {
-                    Type t = item.GetType();
+				o.Internalize();
 
-                    if (m != null)
-                    {
-                        object[] a = t.GetCustomAttributes(typeof(ConstructableAttribute), false);
+				item.OnAfterDuped(o);
 
-                        if (a.OfType<ConstructableAttribute>().Any(ca => ca.AccessLevel > m.AccessLevel))
-                        {
-                            continue;
-                        }
-                    }
+				if (item is Container ic && o is Container oc)
+				{
+					DupeChildren(m, ic, oc);
+				}
 
-                    Item o;
+				return o;
+			}
 
-                    try
-                    {
-                        o = Activator.CreateInstance(t, true) as Item;
-                    }
-                    catch
-                    {
-                        o = null;
-                    }
+			return null;
+		}
 
-                    if (o == null)
-                    {
-                        continue;
-                    }
+		public static void CopyProperties(object src, object dest)
+		{
+			var props = src.GetType().GetProperties();
 
-                    CopyProperties(item, o);
+			foreach (var p in props)
+			{
+				try
+				{
+					if (p.CanRead && p.CanWrite)
+					{
+						if (p.GetCustomAttributes(typeof(NoDupeAttribute), true).Length > 0)
+						{
+							continue;
+						}
 
-                    o.Parent = null;
+						p.SetValue(dest, p.GetValue(src, null), null);
+					}
+				}
+				catch (Exception e)
+				{
+					ExceptionLogging.LogException(e);
+				}
+			}
 
-                    item.OnAfterDuped(o);
+			OnCopyProperties?.Invoke(src, dest);
+		}
 
-                    if (item is Container && o is Container)
-                    {
-                        DupeChildren(m, (Container)item, (Container)o);
-                    }
-
-                    dest.DropItem(o);
-                    o.Location = item.Location;
-
-                    o.UpdateTotals();
-                    o.InvalidateProperties();
-                    o.Delta(ItemDelta.Update);
-
-                    CommandLogging.WriteLine(
-                        m,
-                        "{0} {1} duped {2} creating {3}",
-                        m.AccessLevel,
-                        CommandLogging.Format(m),
-                        CommandLogging.Format(item),
-                        CommandLogging.Format(o));
-
-                    item.Delta(ItemDelta.Update);
-                }
-                catch (Exception e)
-                {
-                    Diagnostics.ExceptionLogging.LogException(e);
-                }
-            }
-        }
-
-        public static void CopyProperties(object src, object dest)
-        {
-            System.Reflection.PropertyInfo[] props = src.GetType().GetProperties();
-
-            foreach (System.Reflection.PropertyInfo p in props)
-            {
-                try
-                {
-                    if (p.CanRead && p.CanWrite)
-                    {
-                        p.SetValue(dest, p.GetValue(src, null), null);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Diagnostics.ExceptionLogging.LogException(e);
-                }
-            }
-        }
-    }
+		public static event Action<object, object> OnCopyProperties;
+	}
 }

@@ -198,7 +198,7 @@ namespace Server.Engines.Craft
             }
             else
             {
-                Item newitem = Activator.CreateInstance(alterInfo.AlteredType) as Item;
+                Item newitem = Loot.Construct(alterInfo.AlteredType);
 
                 if (newitem == null)
                     return;
@@ -299,13 +299,14 @@ namespace Server.Engines.Craft
                 newitem.LootType = origItem.LootType;
                 newitem.Insured = origItem.Insured;
 
-                origItem.OnAfterDuped(newitem);
-                newitem.Parent = null;
+                newitem.Internalize();
 
-                if (origItem is IDurability && newitem is IDurability)
+                origItem.OnAfterDuped(newitem);
+
+                if (origItem is IDurability od && newitem is IDurability nd)
                 {
-                    ((IDurability)newitem).MaxHitPoints = ((IDurability)origItem).MaxHitPoints;
-                    ((IDurability)newitem).HitPoints = ((IDurability)origItem).HitPoints;
+                    nd.MaxHitPoints = od.MaxHitPoints;
+                    nd.HitPoints = od.HitPoints;
                 }
 
                 if (from.Backpack == null)

@@ -238,14 +238,14 @@ namespace Server.Gumps
 			Add(new GumpHtmlLocalized(x, y, width, height, number, args, color, background, scrollbar));
 		}
 
-		public void AddImage(int x, int y, int gumpID)
-		{
-			Add(new GumpImage(x, y, gumpID));
-		}
-
 		public void AddSpriteImage(int x, int y, int gumpID, int width, int height, int sx, int sy)
 		{
 			Add(new GumpSpriteImage(x, y, gumpID, width, height, sx, sy));
+		}
+
+		public void AddImage(int x, int y, int gumpID)
+		{
+			Add(new GumpImage(x, y, gumpID));
 		}
 
 		public void AddImage(int x, int y, int gumpID, int hue)

@@ -107,13 +107,13 @@ namespace Server.Items
 
         public override void OnRemoved(IEntity parent)
 		{
-            if (RootParent is Mobile)
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)RootParent;
-
                 m.CloseGump(typeof(GreaterBraceletOfBindingGump));
                 m.CloseGump(typeof(ConfirmBindGump));
             }
+
+			base.OnRemoved(parent);
         }
 
         public class GreaterBraceletOfBindingGump : BaseGump

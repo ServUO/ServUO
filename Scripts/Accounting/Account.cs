@@ -1555,12 +1555,27 @@ namespace Server.Accounting
         [CommandProperty(AccessLevel.Administrator)]
         public int TotalPlat => (int)Math.Truncate(TotalCurrency);
 
-        /// <summary>
-        ///     Attempts to deposit the given amount of Gold and Platinum into this account.
-        /// </summary>
-        /// <param name="amount">Amount to deposit.</param>
-        /// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
-        public bool DepositCurrency(double amount)
+		public void SetCurrency(double amount)
+		{
+			TotalCurrency = Math.Max(0, amount);
+		}
+
+		public void SetGold(int amount)
+		{
+			SetCurrency(Math.Truncate(TotalCurrency) + (amount / Math.Max(1.0, CurrencyThreshold)));
+		}
+
+		public void SetPlat(int amount)
+		{
+			SetCurrency(amount + (TotalCurrency - Math.Truncate(TotalCurrency)));
+		}
+
+		/// <summary>
+		///     Attempts to deposit the given amount of Gold and Platinum into this account.
+		/// </summary>
+		/// <param name="amount">Amount to deposit.</param>
+		/// <returns>True if successful, false if amount given is less than or equal to zero.</returns>
+		public bool DepositCurrency(double amount)
         {
             if (amount <= 0)
             {
@@ -1640,6 +1655,7 @@ namespace Server.Accounting
             TotalCurrency -= amount;
 
             EventSink.InvokeAccountGoldChange(new AccountGoldChangeEventArgs(this, oldAmount, TotalCurrency));
+
             return true;
         }
 

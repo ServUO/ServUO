@@ -991,9 +991,6 @@ namespace Server.Multis
 
         public static void Configure()
         {
-            LockedDownFlag = 1;
-            SecureFlag = 2;
-
             Timer.DelayCall(TimeSpan.FromMinutes(1.0), TimeSpan.FromMinutes(1.0), Decay_OnTick);
         }
 

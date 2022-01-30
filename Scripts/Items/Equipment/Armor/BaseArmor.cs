@@ -1182,10 +1182,8 @@ namespace Server.Items
 
         public override void OnAdded(IEntity parent)
 		{
-            if (parent is Mobile)
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.AddTo(from);
 
                 if (IsSetItem)
@@ -1200,8 +1198,10 @@ namespace Server.Items
                 }
 
                 from.Delta(MobileDelta.Armor); // Tell them armor rating has changed
-            }
-        }
+			}
+
+			base.OnAdded(parent);
+		}
 
         public virtual double ScaleArmorByDurability(double armor)
         {

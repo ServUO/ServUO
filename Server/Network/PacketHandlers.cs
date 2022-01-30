@@ -2752,7 +2752,7 @@ namespace Server.Network
 		public static void PublicHouseContent(NetState state, PacketReader pvSrc)
 		{
 			int value = pvSrc.ReadByte();
-
+			
 			state.Mobile.PublicHouseContent = Convert.ToBoolean(value);
 		}
 

@@ -311,9 +311,81 @@ namespace Server.Mobiles
                     acct.SetSovereigns(value);
                 }
             }
-        }
+		}
 
-        public bool DepositSovereigns(int amount)
+		public bool DepositCurrency(double amount)
+		{
+			IGoldAccount acct = Account;
+
+			if (acct != null)
+			{
+				return acct.DepositCurrency(amount);
+			}
+
+			return false;
+		}
+
+		public bool WithdrawCurrency(double amount)
+		{
+			IGoldAccount acct = Account;
+
+			if (acct != null)
+			{
+				return acct.WithdrawCurrency(amount);
+			}
+
+			return false;
+		}
+
+		public bool DepositGold(int amount)
+		{
+			IGoldAccount acct = Account;
+
+			if (acct != null)
+			{
+				return acct.DepositGold(amount);
+			}
+
+			return false;
+		}
+
+		public bool WithdrawGold(int amount)
+		{
+			IGoldAccount acct = Account;
+
+			if (acct != null)
+			{
+				return acct.WithdrawGold(amount);
+			}
+
+			return false;
+		}
+
+		public bool DepositPlat(int amount)
+		{
+			IGoldAccount acct = Account;
+
+			if (acct != null)
+			{
+				return acct.DepositPlat(amount);
+			}
+
+			return false;
+		}
+
+		public bool WithdrawPlat(int amount)
+		{
+			IGoldAccount acct = Account;
+
+			if (acct != null)
+			{
+				return acct.WithdrawPlat(amount);
+			}
+
+			return false;
+		}
+
+		public bool DepositSovereigns(int amount)
         {
             Account acct = Account as Account;
 

@@ -12,9 +12,9 @@ namespace Server.Misc
 	public class ServerList
 	{
 		[ConfigProperty("Server.Address")]
-		public static string Address
+		public static IPAddress Address
 		{
-			get => Config.Get("Server.Address", default(string)); 
+			get => Config.Get("Server.Address", IPAddress.Any);
 			set
 			{
 				Config.Set("Server.Address", value);
@@ -56,16 +56,14 @@ namespace Server.Misc
 
 		private static void Invalidate()
 		{
-			if (Address == null)
-			{
-				if (AutoDetect)
-				{
-					AutoDetection();
-				}
-			}
-			else
+			if (Address != null && Address != IPAddress.Any)
 			{
 				Resolve(Address, out _PublicAddress);
+			}
+
+			if (_PublicAddress == null && AutoDetect)
+			{
+				AutoDetection();
 			}
 		}
 
@@ -129,12 +127,15 @@ namespace Server.Misc
 			}
 		}
 
-		private static void Resolve(string addr, out IPAddress outValue)
+		private static void Resolve(IPAddress addr, out IPAddress outValue)
 		{
-			if (IPAddress.TryParse(addr, out outValue))
+			if (addr != null)
 			{
+				outValue = addr;
 				return;
 			}
+
+			outValue = null;
 
 			try
 			{

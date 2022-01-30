@@ -1,195 +1,259 @@
+using System.Linq;
+
 using Server.Items;
 using Server.Mobiles;
-using Server.Targeting;
-using System.Collections;
 
 namespace Server.Commands
 {
-    public class GMbody
-    {
-        public static void Initialize()
-        {
-            CommandSystem.Register("GMbody", AccessLevel.Counselor, GM_OnCommand);
-        }
+	public static class GMBody
+	{
+		[ConfigProperty("Staff.Body")]
+		public static int Body { get => Config.Get("Staff.Body", 987); set => Config.Set("Staff.Body", value); }
 
-        [Usage("GMbody")]
-        [Description("Helps staff members get going.")]
-        public static void GM_OnCommand(CommandEventArgs e)
-        {
-            e.Mobile.Target = new GMmeTarget();
-        }
+		[ConfigProperty("Staff.CutHair")]
+		public static bool CutHair { get => Config.Get("Staff.CutHair", false); set => Config.Set("Staff.CutHair", value); }
 
-        private class GMmeTarget : Target
-        {
-            private static Mobile m_Mobile;
-            public GMmeTarget()
-                : base(-1, false, TargetFlags.None)
-            {
-            }
+		[ConfigProperty("Staff.CutFacialHair")]
+		public static bool CutFacialHair { get => Config.Get("Staff.CutFacialHair", false); set => Config.Set("Staff.CutFacialHair", value); }
 
-            protected override void OnTarget(Mobile from, object targeted)
-            {
-                if (targeted is Mobile)
-                {
-                    Mobile targ = (Mobile)targeted;
-                    if (from != targ)
-                        from.SendMessage("You may only set your own body to GM style.");
+		[ConfigProperty("Staff.GiveRing")]
+		public static bool GiveRing { get => Config.Get("Staff.GiveRing", true); set => Config.Set("Staff.GiveRing", value); }
 
-                    else
-                    {
-                        m_Mobile = from;
+		[ConfigProperty("Staff.GiveOrb")]
+		public static bool GiveOrb { get => Config.Get("Staff.GiveOrb", true); set => Config.Set("Staff.GiveOrb", value); }
 
-                        if (Config.Get("Staff.Staffbody", true))
-                        {
-                            m_Mobile.BodyValue = 987;
+		[ConfigProperty("Staff.GiveStone")]
+		public static bool GiveStone { get => Config.Get("Staff.GiveStone", true); set => Config.Set("Staff.GiveStone", value); }
 
-                            if (Config.Get("Staff.UseColoring", true))
-                            {
-                                switch (m_Mobile.AccessLevel)
-                                {
-                                    case AccessLevel.Owner: m_Mobile.Hue = Config.Get("Staff.Owner", 1001); break;
-                                    case AccessLevel.Developer: m_Mobile.Hue = Config.Get("Staff.Developer", 1001); break;
-                                    case AccessLevel.Administrator: m_Mobile.Hue = Config.Get("Staff.Administrator", 1001); break;
-                                    case AccessLevel.Seer: m_Mobile.Hue = Config.Get("Staff.Seer", 467); break;
-                                    case AccessLevel.GameMaster: m_Mobile.Hue = Config.Get("Staff.GameMaster", 39); break;
-                                    case AccessLevel.Counselor: m_Mobile.Hue = Config.Get("Staff.Counselor", 3); break;
-                                }
-                            }
-                        }
+		[ConfigProperty("Staff.GiveMount")]
+		public static bool GiveMount { get => Config.Get("Staff.GiveMount", true); set => Config.Set("Staff.GiveMount", value); }
 
-                        if (Config.Get("Staff.CutHair", true))
-                            m_Mobile.HairItemID = 0;
+		[ConfigProperty("Staff.GiveBoots")]
+		public static bool GiveBoots { get => Config.Get("Staff.GiveBoots", true); set => Config.Set("Staff.GiveBoots", value); }
 
-                        if (Config.Get("Staff.CutFacialHair", true))
-                            m_Mobile.FacialHairItemID = 0;
+		[ConfigProperty("Staff.UseColoring")]
+		public static bool UseColoring { get => Config.Get("Staff.UseColoring", true); set => Config.Set("Staff.UseColoring", value); }
 
-                        CommandLogging.WriteLine(from, "{0} {1} is assuming a GM body", from.AccessLevel, CommandLogging.Format(from));
+		// Counselor, Decorator, Spawner, GameMaster, Seer, Administrator, Developer, CoOwner, Owner
+		private static readonly int[] m_DefaultColors = { 3, 85, 85, 39, 467, 1001, 1001, 1001, 1001 };
 
-                        Container pack = from.Backpack;
+		[ConfigProperty("Staff.Colors")]
+		public static int[] Colors { get => Config.GetArray("Staff.Colors", m_DefaultColors); set => Config.SetArray("Staff.Colors", value); }
 
-                        ArrayList ItemsToDelete = new ArrayList();
+		public static void Configure()
+		{
+			CommandSystem.Register("GMBody", AccessLevel.Counselor, GM_OnCommand);
+		}
 
-                        foreach (Item item in from.Items)
-                        {
-                            if (item.Layer != Layer.Bank && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair && item.Layer != Layer.Mount && item.Layer != Layer.Backpack)
-                            {
-                                ItemsToDelete.Add(item);
-                            }
-                        }
-                        foreach (Item item in ItemsToDelete)
-                            item.Delete();
+		[Usage("GMBody")]
+		[Description("Helps staff members get going.")]
+		public static void GM_OnCommand(CommandEventArgs e)
+		{
+			Process(e.Mobile);
+		}
 
-                        if (pack == null)
-                        {
-                            pack = new Backpack
-                            {
-                                Movable = false
-                            };
+		public static void Process(Mobile m)
+		{
+			if (m?.Deleted != false || m.AccessLevel < AccessLevel.Counselor)
+			{
+				return;
+			}
 
-                            from.AddItem(pack);
-                        }
-                        else
-                        {
-                            pack.Delete();
-                            pack = new Backpack
-                            {
-                                Movable = false
-                            };
+			CommandLogging.WriteLine(m, "{0} {1} is assuming a GM body", m.AccessLevel, CommandLogging.Format(m));
 
-                            from.AddItem(pack);
-                        }
+			var hue = 0;
 
-                        from.Hunger = 20;
-                        from.Thirst = 20;
-                        from.Fame = 0;
-                        from.Karma = 0;
-                        from.Kills = 0;
-                        from.Hidden = true;
-                        from.Blessed = true;
-                        from.Hits = from.HitsMax;
-                        from.Mana = from.ManaMax;
-                        from.Stam = from.StamMax;
+			if (UseColoring)
+			{
+				var colors = Colors;
+				var access = (int)m.AccessLevel - 2;
 
-                        if (from.IsStaff())
-                        {
-                            EquipItem(new StaffRing());
+				if (access >= 0 && access < colors.Length)
+				{
+					hue = colors[access];
+				}
+			}
 
-                            PackItem(new GMHidingStone());
-                            PackItem(new GMEthereal());
-                            PackItem(new StaffOrb());
+			var pack = m.Backpack;
 
-                            from.RawStr = 100;
-                            from.RawDex = 100;
-                            from.RawInt = 100;
+			if (pack?.Deleted != false)
+			{
+				m.AddItem(pack = new Backpack
+				{
+					Hue = hue,
+					Movable = false
+				});
+			}
+			else if (hue > 0)
+			{
+				pack.Hue = hue;
+			}
 
-                            from.Hits = from.HitsMax;
-                            from.Mana = from.ManaMax;
-                            from.Stam = from.StamMax;
+			var items = m.Items;
+			var count = items.Count;
 
-                            for (int i = 0; i < targ.Skills.Length; ++i)
-                                targ.Skills[i].Base = 120;
-                        }
+			while (--count >= 0)
+			{
+				if (count >= items.Count)
+				{
+					continue;
+				}
 
-                        if (Config.Get("Staff.GiveBoots", true))
-                        {
-                            int color = 0;
-                            if (Config.Get("Staff.UseColoring", true))
-                            {
-                                switch (m_Mobile.AccessLevel)
-                                {
-                                    case AccessLevel.Owner: color = Config.Get("Staff.Owner", 1001); break;
-                                    case AccessLevel.Developer: color = Config.Get("Staff.Developer", 1001); break;
-                                    case AccessLevel.Administrator: color = Config.Get("Staff.Administrator", 1001); break;
-                                    case AccessLevel.Seer: color = Config.Get("Staff.Seer", 467); break;
-                                    case AccessLevel.GameMaster: color = Config.Get("Staff.GameMaster", 39); break;
-                                    case AccessLevel.Counselor: color = Config.Get("Staff.Counselor", 3); break;
-                                }
-                            }
+				var item = items[count];
 
-                            if (from.IsStaff() && from.AccessLevel <= AccessLevel.Spawner)
-                                EquipItem(new FurBoots(color));
-                            else if (from.AccessLevel == AccessLevel.GameMaster)
-                                EquipItem(new FurBoots(color));
-                            if (from.AccessLevel == AccessLevel.Seer)
-                                EquipItem(new FurBoots(color));
-                            if (from.AccessLevel == AccessLevel.Administrator)
-                                EquipItem(new FurBoots(color));
-                            if (from.AccessLevel == AccessLevel.Developer)
-                                EquipItem(new FurBoots(color));
-                            if (from.AccessLevel >= AccessLevel.CoOwner)
-                                EquipItem(new FurBoots(color));
-                        }
-                    }
-                }
-            }
+				if (item != pack && item.Layer != Layer.Bank && item.Layer != Layer.Backpack && item.Layer != Layer.Hair && item.Layer != Layer.FacialHair && item.Layer != Layer.Face && item.Layer != Layer.Mount)
+				{
+					pack.DropItem(item);
+				}
+			}
 
-            private static void EquipItem(Item item)
-            {
-                EquipItem(item, false);
-            }
+			m.Hidden = true;
+			m.Blessed = true;
 
-            private static void EquipItem(Item item, bool mustEquip)
-            {
-                if (m_Mobile == null || m_Mobile.EquipItem(item))
-                    return;
+			if (Body > 0)
+			{
+				m.BodyValue = Body;
+			}
 
-                Container pack = m_Mobile.Backpack;
+			if (UseColoring)
+			{
+				m.BodyHue = m.NameHue = hue;
+			}
 
-                if (!mustEquip && pack != null)
-                    pack.DropItem(item);
-                else
-                    item.Delete();
-            }
+			if (CutHair)
+			{
+				m.HairItemID = 0;
+			}
 
-            private static void PackItem(Item item)
-            {
-                Container pack = m_Mobile.Backpack;
+			if (m.Female || CutFacialHair)
+			{
+				m.FacialHairItemID = 0;
+			}
 
-                if (pack != null)
-                    pack.DropItem(item);
-                else
-                    item.Delete();
-            }
-        }
-    }
+			m.Hunger = m.Thirst = 20;
+
+			m.Fame = m.Karma = m.Kills = 0;
+
+			m.RawStr = m.RawDex = m.RawInt = 100;
+
+			m.Hits = m.HitsMax;
+			m.Mana = m.ManaMax;
+			m.Stam = m.StamMax;
+
+			for (var i = 0; i < m.Skills.Length; ++i)
+			{
+				m.Skills[i].Base = m.Skills[i].Cap = 120.0;
+			}
+
+			if (GiveOrb && !Exists<StaffOrb>(m))
+			{
+				PackItem(m, new StaffOrb());
+			}
+
+			if (GiveStone && !Exists<GMHidingStone>(m))
+			{
+				PackItem(m, new GMHidingStone());
+			}
+
+			if (GiveMount)
+			{
+				if (!Exists<GMEthereal>(m, out var mount))
+				{
+					mount = new GMEthereal
+					{
+						Hue = hue
+					};
+				}
+
+				if (mount.Rider != m)
+				{
+					PackItem(m, mount);
+				}
+			}
+
+			if (GiveRing)
+			{
+				if (!Exists<StaffRing>(m, out var ring))
+				{
+					ring = new StaffRing();
+				}
+				
+				EquipItem(m, ring);
+			}
+
+			if (GiveBoots)
+			{
+				EquipItem(m, new FurBoots(hue));
+			}
+		}
+
+		private static bool Exists<T>(Mobile m) where T : Item
+		{
+			return Exists<T>(m, out _);
+		}
+
+		private static bool Exists<T>(Mobile m, out T found) where T : Item
+		{
+			foreach (var o in m.Items)
+			{
+				if (o is T t)
+				{
+					found = t;
+					return true;
+				}
+			}
+
+			return (found = m?.Backpack?.FindItemByType<T>()) != null || (found = m?.BankBox?.FindItemByType<T>()) != null;
+		}
+
+		private static void EquipItem(Mobile m, Item item)
+		{
+			EquipItem(m, item, false);
+		}
+
+		private static void EquipItem(Mobile m, Item item, bool mustEquip)
+		{
+			if (item?.Deleted != false || item.Parent == m)
+			{
+				return;
+			}
+
+			if (m?.Deleted == false)
+			{
+				if (m.EquipItem(item))
+				{
+					return;
+				}
+
+				if (!mustEquip)
+				{
+					PackItem(m, item);
+					return;
+				}
+			}
+
+			item.Delete();
+		}
+
+		private static void PackItem(Mobile m, Item item)
+		{
+			if (item?.Deleted != false)
+			{
+				return;
+			}
+
+			if (m?.Deleted == false)
+			{
+				var pack = m.Backpack;
+
+				if (pack?.Deleted == false)
+				{
+					pack.DropItem(item);
+					return;
+				}
+			}
+
+			item.Delete();
+		}
+	}
 }

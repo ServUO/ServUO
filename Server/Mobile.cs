@@ -3868,6 +3868,11 @@ namespace Server
 						continue;
 					}
 
+					if (item.Parent is Container ip && ip != pack && ip.CheckBlessed(this))
+					{
+						continue;
+					}
+
 					pack.DropItem(item);
 				}
 			}
@@ -4497,6 +4502,8 @@ namespace Server
 
 		public static Item LiftItemDupe(Item oldItem, int amount)
 		{
+			var oldParent = oldItem.Parent;
+
 			var item = LiftItemDupeHandler?.Invoke(oldItem, amount);
 
 			if (item?.Deleted != false)
@@ -4507,7 +4514,7 @@ namespace Server
 				}
 				catch
 				{
-					Console.WriteLine("Warning: 0x{0:X}: Item must have a zero paramater constructor to be separated from a stack. '{1}'.", oldItem.Serial.Value, oldItem.GetType().Name);
+					Console.WriteLine("Warning: {0}: Item must have a zero paramater constructor to be separated from a stack", oldItem);
 					return null;
 				}
 
@@ -4515,30 +4522,35 @@ namespace Server
 				item.Movable = oldItem.Movable;
 				item.LootType = oldItem.LootType;
 				item.Direction = oldItem.Direction;
-				item.Hue = oldItem.Hue;
+				item.RawHue = oldItem.RawHue;
 				item.ItemID = oldItem.ItemID;
-				item.Location = oldItem.Location;
 				item.Layer = oldItem.Layer;
-				item.Name = oldItem.Name;
+				item.RawName = oldItem.RawName;
 				item.Weight = oldItem.Weight;
-				item.Map = oldItem.Map;
 
 				item.Amount = oldItem.Amount - amount;
 				oldItem.Amount = amount;
 
+				item.Internalize();
+
 				oldItem.OnAfterDuped(item);
+
+				item.UpdateTotals();
+				item.InvalidateProperties();
+				item.Delta(ItemDelta.Update);
 			}
 
-			if (oldItem.Parent is Mobile mobileParent)
+			if (item?.Deleted == false && oldParent != null)
 			{
-				mobileParent.AddItem(item);
+				if (oldParent is Mobile mobileParent)
+				{
+					mobileParent.AddItem(item);
+				}
+				else if (oldParent is Item itemParent)
+				{
+					itemParent.AddItem(item);
+				}
 			}
-			else if (oldItem.Parent is Item itemParent)
-			{
-				itemParent.AddItem(item);
-			}
-
-			item.Delta(ItemDelta.Update);
 
 			return item;
 		}
@@ -6419,7 +6431,8 @@ namespace Server
 				}
 			}
 
-			item.Parent = this;
+			item.SetParent(this);
+
 			item.Map = m_Map;
 
 			m_Items.Add(item);
@@ -6469,7 +6482,7 @@ namespace Server
 					UpdateTotal(item, TotalType.Weight, -(item.TotalWeight + item.PileWeight));
 				}
 
-				item.Parent = null;
+				item.SetParent(null);
 
 				item.OnRemoved(this);
 
@@ -9964,7 +9977,7 @@ namespace Server
 					{
 						var m = ns.Mobile;
 
-						if (m != null && m != this && (!m.InUpdateRange(newLocation) || !m.CanSee(this)))
+						if (m != null && m != this && (!m.InUpdateRange(newLocation, m) || !m.CanSee(this)))
 						{
 							ns.Send(RemovePacket);
 						}
@@ -9972,11 +9985,11 @@ namespace Server
 
 					eable.Free();
 
-					Packet hbpPacket = Packet.Acquire(new HealthbarPoison(this)),
-						   hbyPacket = Packet.Acquire(new HealthbarYellow(this));
+					var hbpPacket = Packet.Acquire(new HealthbarPoison(this));
+					var hbyPacket = Packet.Acquire(new HealthbarYellow(this));
 
-					Packet hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this)),
-						   hbyKRPacket = Packet.Acquire(new HealthbarYellowEC(this));
+					var hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this));
+					var hbyKRPacket = Packet.Acquire(new HealthbarYellowEC(this));
 
 					var ourState = m_NetState;
 
@@ -10084,9 +10097,9 @@ namespace Server
 							if (mobile == null)
 								continue;
 
-							var update = mobile.InUpdateRange(newLocation, this);
+							var update = mobile.InUpdateRange(newLocation, mobile);
 
-							if (update && mobile.InUpdateRange(oldLocation, this))
+							if (update && mobile.InUpdateRange(oldLocation, mobile))
 							{
 								update = false;
 							}
@@ -10121,10 +10134,10 @@ namespace Server
 						eable.Free();
 					}
 
-					Packet.Release(hbpKRPacket);
-					Packet.Release(hbyKRPacket);
-					Packet.Release(hbpPacket);
-					Packet.Release(hbyPacket);
+					Packet.Release(ref hbpKRPacket);
+					Packet.Release(ref hbyKRPacket);
+					Packet.Release(ref hbpPacket);
+					Packet.Release(ref hbyPacket);
 				}
 
 				NotifyLocationChange(map, oldLocation);
