@@ -1066,6 +1066,25 @@ namespace Server.Mobiles
                 return;
             }
 
+            Container cont = BuyPack;
+
+            List<Item> packItems = cont.Items;
+
+            for (int i = packItems.Count - 1; i >= 0; --i)
+            {
+	            if (i >= packItems.Count)
+	            {
+		            continue;
+	            }
+
+	            Item item = packItems[i];
+
+	            if (item.LastMoved + InventoryDecayTime <= DateTime.UtcNow)
+	            {
+		            item.Delete();
+	            }
+            }
+
             Container pack = from.Backpack;
 
             if (pack != null)
