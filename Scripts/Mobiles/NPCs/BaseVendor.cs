@@ -1064,7 +1064,7 @@ namespace Server.Mobiles
 			{
 				var info = GetSellInfo();
 
-				var table = new Dictionary<Item, SellItemState>();
+				var table = new HashSet<SellItemState>();
 
 				foreach (var ssi in info)
 				{
@@ -1086,7 +1086,7 @@ namespace Server.Mobiles
 
 						if (item.IsStandardLoot() && item.Movable && ssi.IsSellable(item))
 						{
-							table[item] = new SellItemState(item, ssi.GetSellPriceFor(item, this), ssi.GetNameFor(item));
+							table.Add(new SellItemState(item, ssi.GetSellPriceFor(item, this), ssi.GetNameFor(item)));
 						}
 					}
 				}
@@ -1095,7 +1095,7 @@ namespace Server.Mobiles
 				{
 					SendPacksTo(from);
 
-					from.Send(new VendorSellList(this, table.Values));
+					from.Send(new VendorSellList(this, table));
 				}
 				else
 				{

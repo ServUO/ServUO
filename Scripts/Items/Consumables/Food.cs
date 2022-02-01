@@ -130,7 +130,7 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is Food && ((Food)dropped).PlayerConstructed == PlayerConstructed && ((Food)dropped).Quality == Quality && base.WillStack(from, dropped);
+            return dropped is Food food && food.PlayerConstructed == PlayerConstructed && food.Quality == Quality && base.WillStack(from, food);
         }
 
         public override void AddNameProperty(ObjectPropertyList list)

@@ -73,6 +73,16 @@ namespace Server.Mobiles
 			Price = price;
 			Name = name;
 		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is SellItemState state && state.Item == Item;
+		}
+
+		public override int GetHashCode()
+		{
+			return Item?.Serial.Value ?? 0;
+		}
 	}
 
 	public class BuyItemState

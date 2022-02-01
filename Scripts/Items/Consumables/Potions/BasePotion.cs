@@ -209,7 +209,7 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == m_PotionEffect && base.WillStack(from, dropped);
+            return dropped is BasePotion pot && pot.m_PotionEffect == m_PotionEffect && base.WillStack(from, pot);
         }
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
