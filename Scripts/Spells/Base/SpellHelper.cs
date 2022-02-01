@@ -147,14 +147,10 @@ namespace Server.Spells
 
             Sector sector = map.GetSector(p.X, p.Y);
 
-            for (int i = 0; i < sector.Multis.Count; ++i)
+            foreach (BaseMulti multi in sector.Multis)
             {
-                BaseMulti multi = sector.Multis[i];
-
-                if (multi is BaseHouse)
+				if (multi is BaseHouse bh)
                 {
-                    BaseHouse bh = (BaseHouse)multi;
-
                     if ((houses && bh.IsInside(p, 16)) || (housingrange > 0 && bh.InRange(p, housingrange)))
                         return true;
                 }

@@ -106,8 +106,8 @@ namespace Server.Mobiles
 
         public static int seccount;
 
-        // sector hashtable for each map
-        private static readonly Dictionary<Sector, List<XmlSpawner>>[] GlobalSectorTable = new Dictionary<Sector, List<XmlSpawner>>[6];
+		// sector hashtable for each map, allowing up to 255 maps
+		private static readonly Dictionary<Sector, HashSet<XmlSpawner>>[] GlobalSectorTable = new Dictionary<Sector, HashSet<XmlSpawner>>[Byte.MaxValue + 1];
 
         #endregion
 
@@ -224,7 +224,7 @@ namespace Server.Mobiles
 
         private bool inrespawn = false;
 
-        private List<Sector> sectorList = null;
+        private HashSet<Sector> sectorList = null;
 
         private bool m_DisableGlobalAutoReset;
 
@@ -431,7 +431,7 @@ namespace Server.Mobiles
                 if (sectorList == null)
                 {
                     Point3D loc = Location;
-                    sectorList = new List<Sector>();
+                    sectorList = new HashSet<Sector>();
 
                     // is this container held?
                     if (Parent != null)
@@ -461,50 +461,23 @@ namespace Server.Mobiles
                             if (s == null) continue;
 
                             // dont add any redundant sectors
-                            bool duplicate = false;
-                            foreach (Sector olds in sectorList)
+                            if (sectorList.Add(s))
                             {
-                                if (olds == s)
-                                {
-                                    duplicate = true;
-                                    break;
-                                }
-                            }
-                            if (!duplicate)
-                            {
-                                sectorList.Add(s);
-
                                 if (GlobalSectorTable[Map.MapID] == null)
                                 {
-                                    GlobalSectorTable[Map.MapID] = new Dictionary<Sector, List<XmlSpawner>>();
+                                    GlobalSectorTable[Map.MapID] = new Dictionary<Sector, HashSet<XmlSpawner>>();
                                 }
 
-                                // add this sector and the spawner associated with it to the global sector table
-                                List<XmlSpawner> spawnerlist;
-                                if (GlobalSectorTable[Map.MapID].TryGetValue(s, out spawnerlist))//.Contains(s))
+								// add this sector and the spawner associated with it to the global sector table
+								HashSet<XmlSpawner> spawnerlist;
+                                
+								if (!GlobalSectorTable[Map.MapID].TryGetValue(s, out spawnerlist) || spawnerlist == null)
                                 {
-                                    //List<XmlSpawner> spawnerlist = GlobalSectorTable[Map.MapID][s];
-                                    if (spawnerlist == null)
-                                    {
-                                        //GlobalSectorTable[Map.MapID].Remove(s);
-                                        spawnerlist = new List<XmlSpawner>();
-                                        //GlobalSectorTable[Map.MapID].Add(s, spawnerlist);
-                                        GlobalSectorTable[Map.MapID][s] = spawnerlist;
-                                    }
-
-                                    if (!spawnerlist.Contains(this))
-                                    {
-                                        spawnerlist.Add(this);
-
-                                    }
-                                }
-                                else
-                                {
-                                    spawnerlist = new List<XmlSpawner>();
-                                    spawnerlist.Add(this);
                                     // add a new entry to the table
-                                    GlobalSectorTable[Map.MapID][s] = spawnerlist;
+                                    GlobalSectorTable[Map.MapID][s] = spawnerlist = new HashSet<XmlSpawner>();
                                 }
+
+								spawnerlist.Add(this);
 
                                 totalSectorsMonitored++;
 
@@ -543,9 +516,8 @@ namespace Server.Mobiles
 
                 foreach (Sector s in sectorList)
                 {
-                    if (s != null && s.Active && s.Players != null && s.Players.Count > 0)
+                    if (s != null && s.Active && s.PlayerCount > 0)
                     {
-
                         // confirm that players with the proper access level are present
                         foreach (Mobile m in s.Players)
                         {
@@ -1989,15 +1961,12 @@ namespace Server.Mobiles
         {
             if (s == null || s.Owner == null || s.Owner == Map.Internal || GlobalSectorTable[s.Owner.MapID] == null) return;
 
-            // find the sector
-            List<XmlSpawner> spawnerlist;
+			// find the sector
+			HashSet<XmlSpawner> spawnerlist;
+
             if (GlobalSectorTable[s.Owner.MapID].TryGetValue(s, out spawnerlist) && spawnerlist != null)
             {
-                //List<XmlSpawner> spawnerlist = GlobalSectorTable[s.Owner.MapID][s];
-                if (spawnerlist.Contains(spawner))
-                {
-                    spawnerlist.Remove(spawner);
-                }
+				spawnerlist.Remove(spawner);
             }
         }
 
@@ -2009,9 +1978,9 @@ namespace Server.Mobiles
                 foreach (Sector s in sectorList)
                 {
                     RemoveFromSectorTable(s, this);
-
                 }
             }
+            
             sectorList = null;
             UseSectorActivate = false;
 
@@ -9316,14 +9285,10 @@ namespace Server.Mobiles
             }
 
             Sector sector = map.GetSector(x, y);
-            List<Item> items = sector.Items;
-            List<Mobile> mobs = sector.Mobiles;
 
-            for (int i = 0; i < items.Count; ++i)
+            foreach (Item item in sector.Items)
             {
-                Item item = items[i];
-
-                if (item.ItemID < 0x4000 && item.AtWorldPoint(x, y))
+				if (item.ItemID < 0x4000 && item.AtWorldPoint(x, y))
                 {
                     ItemData id = item.ItemData;
                     surface = id.Surface;
@@ -9357,10 +9322,8 @@ namespace Server.Mobiles
 
             if (checkMobiles)
             {
-                for (int i = 0; i < mobs.Count; ++i)
-                {
-                    Mobile m = mobs[i];
-
+				foreach (Mobile m in sector.Mobiles)
+				{
                     if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel == AccessLevel.Player || !m.Hidden))
                         if ((m.Z + 16) > z && (z + height) > m.Z)
                             return false;
@@ -10536,13 +10499,12 @@ namespace Server.Mobiles
 
                                 if (s != null && GlobalSectorTable[m.Map.MapID] != null)
                                 {
+									HashSet<XmlSpawner> spawnerlist;
 
-                                    List<XmlSpawner> spawnerlist;// = GlobalSectorTable[m.Map.MapID][s];
                                     if (GlobalSectorTable[m.Map.MapID].TryGetValue(s, out spawnerlist) && spawnerlist != null)
                                     {
                                         foreach (XmlSpawner spawner in spawnerlist)
                                         {
-
                                             if (spawner != null && !spawner.Deleted && spawner.Running && spawner.SmartSpawning && spawner.IsInactivated)
                                             {
                                                 spawner.SmartRespawn();

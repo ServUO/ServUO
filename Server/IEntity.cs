@@ -26,6 +26,9 @@ namespace Server
 		void ClearProperties();
 		void InvalidateProperties();
 		void OnStatsQuery(Mobile m);
+
+		void OnSectorActivate();
+		void OnSectorDeactivate();
 	}
 
 	public class Entity : IEntity, IComparable<Entity>
@@ -105,6 +108,12 @@ namespace Server
 		{ }
 
 		void IEntity.OnStatsQuery(Mobile m)
+		{ }
+
+		void IEntity.OnSectorActivate()
+		{ }
+
+		void IEntity.OnSectorDeactivate()
 		{ }
 	}
 }

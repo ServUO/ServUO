@@ -3018,40 +3018,32 @@ namespace Server
 
 						if (oldSector != newSector)
 						{
-							for (var i = 0; i < oldSector.Mobiles.Count; ++i)
+							foreach (var m in oldSector.Mobiles)
 							{
-								var m = oldSector.Mobiles[i];
-
 								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
 								{
 									return false;
 								}
 							}
 
-							for (var i = 0; i < oldSector.Items.Count; ++i)
+							foreach (var item in oldSector.Items)
 							{
-								var item = oldSector.Items[i];
-
 								if (item.AtWorldPoint(oldX, oldY) && (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
 								{
 									return false;
 								}
 							}
 
-							for (var i = 0; i < newSector.Mobiles.Count; ++i)
+							foreach (var m in newSector.Mobiles)
 							{
-								var m = newSector.Mobiles[i];
-
 								if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
 								{
 									return false;
 								}
 							}
 
-							for (var i = 0; i < newSector.Items.Count; ++i)
+							foreach (var item in newSector.Items)
 							{
-								var item = newSector.Items[i];
-
 								if (item.AtWorldPoint(x, y) && (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
 								{
 									return false;
@@ -3060,10 +3052,8 @@ namespace Server
 						}
 						else
 						{
-							for (var i = 0; i < oldSector.Mobiles.Count; ++i)
+							foreach (var m in oldSector.Mobiles)
 							{
-								var m = oldSector.Mobiles[i];
-
 								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
 								{
 									return false;
@@ -3075,10 +3065,8 @@ namespace Server
 								}
 							}
 
-							for (var i = 0; i < oldSector.Items.Count; ++i)
+							foreach (var item in oldSector.Items)
 							{
-								var item = oldSector.Items[i];
-
 								if (item.AtWorldPoint(oldX, oldY) && (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
 								{
 									return false;
