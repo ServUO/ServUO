@@ -922,10 +922,13 @@ namespace Server
 					Item.ProcessDeltaQueue();
 
 					Timer.Slice();
+
 					MessagePump.Slice();
 
 					NetState.FlushAll();
 					NetState.ProcessDisposedQueue();
+
+					Sector.Slice();
 
 					Slice?.Invoke();
 
