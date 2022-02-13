@@ -46,13 +46,25 @@ namespace Server
 
 	public class Sector
 	{
+		private const int m_SliceCapacity = 1 << 8;
+
 		private static readonly Queue<Action> m_SliceQueue = new Queue<Action>();
 
-		public static void Slice()
+		internal static void Slice()
 		{
+			if (m_SliceQueue.Count == 0)
+			{
+				return;
+			}
+			
 			while (m_SliceQueue.Count > 0)
 			{
 				m_SliceQueue.Dequeue()();
+
+				if (m_SliceQueue.Count == m_SliceCapacity)
+				{
+					m_SliceQueue.TrimExcess();
+				}
 			}
 		}
 
