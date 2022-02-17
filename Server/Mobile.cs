@@ -10542,8 +10542,11 @@ namespace Server
 				if (!m_Deleted)
 				{
 					EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(this));
-					m_InternalCanRegen = true;
-					OnCreate();
+					if (!m_Deleted)
+					{
+						m_InternalCanRegen = true;
+						OnCreate();
+					}
 				}
 			});
 		}
