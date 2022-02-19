@@ -1,10 +1,13 @@
 #region References
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using Server.Items;
+
 #endregion
 
 namespace Server.Misc
@@ -44,6 +47,10 @@ namespace Server.Misc
         public static readonly bool AutoDetect = Config.Get("Server.AutoDetect", true);
 
         public static string ServerName = Config.Get("Server.Name", "My Shard");
+        public static string username, password, ddnsurl;
+
+
+		public static readonly bool DDNS = Config.Get("Server.DDNS", false);
 
         private static IPAddress _PublicAddress;
 
@@ -53,19 +60,30 @@ namespace Server.Misc
         {
             if (Address == null)
             {
-                if (AutoDetect)
-                {
-                    AutoDetection();
-                }
+	            if (AutoDetect)
+	            {
+		            AutoDetection();
+	            }
             }
             else
             {
                 Resolve(Address, out _PublicAddress);
             }
-
+			
             EventSink.ServerList += EventSink_ServerList;
-        }
 
+            if (DDNS)
+            {
+				username = Config.Get("Server.Username", "");
+				password = Config.Get("Server.Password", "");
+				ddnsurl = Config.Get("Server.DDNSURL", "");
+				if (!(ddnsurl == "" || username == "" || password == ""))
+					// void DDNSCheck() with no arguments
+					Timer.DelayCall(TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2), DDNSCheck);
+				else
+					Console.WriteLine("DDNS is not configured.");
+            }
+		}
         private static void EventSink_ServerList(ServerListEventArgs e)
         {
             try
@@ -258,5 +276,57 @@ namespace Server.Misc
 
             return ip;
         }
-    }
+        private static void StartDetectChanges()
+        {
+	        var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Vitalwerks", "DUC");
+
+	        var watcher = new FileSystemWatcher(path, "DUC.txt")
+	        {
+		        EnableRaisingEvents = true,
+		        IncludeSubdirectories = false,
+		        NotifyFilter = NotifyFilters.LastWrite
+	        };
+
+	        watcher.Changed += (s, e) =>
+	        {
+		        var content = File.ReadAllLines(e.FullPath);
+
+		        var index = content.Length;
+
+		        while (--index >= 0)
+		        {
+			        var line = content[index];
+
+			        var match = Regex.Match(line, @"Remote IP Found: (?<ip>[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})");
+
+			        if (match.Success)
+			        {
+				        var rawip = match.Groups["ip"].Value;
+
+				        if (IPAddress.TryParse(rawip, out var ip))
+				        {
+					        _PublicAddress = Utility.Intern(ip);
+				        }
+			        }
+		        }
+	        };
+        }
+
+        private static void DDNSCheck()
+        {
+			var newAddress = FindPublicAddress(IPServices);
+			if (Equals(newAddress, _PublicAddress)) return;
+			_PublicAddress = newAddress;
+			VitaNex.Web.WebAPI.BeginRequest($"http://{username}:{password}@dynupdate.no-ip.com/nic/update?hostname={ddnsurl}&myip={_PublicAddress}", "POST",
+				(req, state) =>
+				{
+					req.Method = state;
+				},
+				(req, state, res) =>
+				{
+					var data = res.GetResponseStream();
+				});
+			Console.WriteLine("Updated DDNS: <<< {0}", _PublicAddress);
+		}
+	}
 }
