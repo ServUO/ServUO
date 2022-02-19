@@ -5,6 +5,7 @@ namespace Server.Mobiles.MannequinProperty
 {
     public abstract class SlayerProperty : ValuedProperty
     {
+        public override bool IsMagical => true;
         public override Catalog Catalog => Catalog.HitEffects;
         public abstract SlayerName Slayer { get; }
         public override int Hue => 0x43FF;
@@ -15,7 +16,7 @@ namespace Server.Mobiles.MannequinProperty
 
         public override bool Matches(Item item)
         {
-            return item is ISlayer slayer ? slayer.Slayer == Slayer || slayer.Slayer2 == Slayer : false;
+            return item is ISlayer slayer && (slayer.Slayer == Slayer || slayer.Slayer2 == Slayer);
         }
 
         public override bool Matches(List<Item> items)
@@ -32,6 +33,7 @@ namespace Server.Mobiles.MannequinProperty
 
     public abstract class TalismanSlayerProperty : ValuedProperty
     {
+        public override bool IsMagical => true;
         public override Catalog Catalog => Catalog.HitEffects;
         public abstract TalismanSlayerName Slayer { get; }
         public override int Hue => 0x43FF;
@@ -41,7 +43,7 @@ namespace Server.Mobiles.MannequinProperty
 
         public override bool Matches(Item item)
         {
-            return item is BaseTalisman talisman ? talisman.Slayer == Slayer : false;
+            return item is BaseTalisman talisman && talisman.Slayer == Slayer;
         }
 
         public override bool Matches(List<Item> items)
