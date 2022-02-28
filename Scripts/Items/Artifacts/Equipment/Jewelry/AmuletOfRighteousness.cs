@@ -60,7 +60,7 @@ namespace Server.Items
         {
             base.OnDoubleClick(from);
 
-            if (IsChildOf(from.Backpack))
+            if (IsChildOf(from.Backpack) || Parent == from)
                 from.Target = new InternalTarget(this);
             else
                 from.SendLocalizedMessage(1062334); // This item must be in your backpack to be used.
