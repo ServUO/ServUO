@@ -381,7 +381,7 @@ namespace Server.Spells
 
             offset *= -1;
 
-            target.AddStatMod(new StatMod(type, name, offset, TimeSpan.Zero));
+            target.AddStatMod(new StatMod(type, name, offset, duration));
             return true;
         }
 
