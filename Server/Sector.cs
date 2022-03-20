@@ -22,6 +22,19 @@ namespace Server
 			m_Rect = rect;
 		}
 
+		public override int GetHashCode()
+		{
+			var hash = -1;
+
+			unchecked
+			{
+				hash = (hash * 397) ^ m_Region.GetHashCode();
+				hash = (hash * 397) ^ m_Rect.GetHashCode();
+			}
+
+			return hash;
+		}
+
 		public bool Contains(IPoint3D loc)
 		{
 			return m_Rect.Contains(loc);
