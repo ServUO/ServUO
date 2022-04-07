@@ -338,7 +338,7 @@ namespace Server.Items
             yellow.ArmorFireResist = 1;
             yellow.ArmorColdResist = 1;
             yellow.ArmorPoisonResist = 1;
-            yellow.ArmorPoisonResist = 1;
+            yellow.ArmorEnergyResist = 1;
             yellow.ArmorLuck = 20;
 
             CraftAttributeInfo black = BlackScales = new CraftAttributeInfo();
