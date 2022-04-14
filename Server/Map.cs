@@ -1790,7 +1790,7 @@ namespace Server
 				return false;
 			}
 
-			if (!Utility.InRange(org, dest, m_MaxLOSDistance))
+			if (!Utility.InRange(org, dest, MaxLOSDistance))
 			{
 				return false;
 			}
