@@ -10539,9 +10539,15 @@ namespace Server
 
 			Timer.DelayCall(() =>
 			{
-				EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(this));
-				m_InternalCanRegen = true;
-				OnCreate();
+				if (!m_Deleted)
+				{
+					EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(this));
+					if (!m_Deleted)
+					{
+						m_InternalCanRegen = true;
+						OnCreate();
+					}
+				}
 			});
 		}
 
