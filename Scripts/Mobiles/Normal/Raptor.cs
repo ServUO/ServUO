@@ -162,6 +162,11 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
+			if (!Controlled && Utility.RandomDouble() < 0.25) // drop rates needs to be confirmed
+            {
+                c.DropItem(new RaptorTeeth());
+            }
+			
             if (!Controlled && Utility.RandomDouble() < 0.25)
             {
                 c.DropItem(new AncientPotteryFragments());
