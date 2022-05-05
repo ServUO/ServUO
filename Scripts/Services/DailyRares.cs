@@ -23,7 +23,7 @@ namespace Server.Items
 		{
 			Invalidate();
 
-			EventSink.AfterWorldSave += e => Rares.RemoveWhere(o => o.Deleted || o.Parent != null || o.LastMoved != DateTime.MaxValue);
+			EventSink.AfterWorldSave += e => Rares.RemoveWhere(o => o.Deleted || o.Parent != null || o.LastMoved < DateTime.UtcNow);
 		}
 
         public static void Invalidate()
@@ -109,7 +109,7 @@ namespace Server.Items
 
 			item.MoveToWorld(p, map);
 
-            item.LastMoved = DateTime.MaxValue;
+			item.LastMoved = DateTime.UtcNow + TimeSpan.FromMinutes(int.MaxValue);
 
 			if (item is BaseLight light)
 			{
