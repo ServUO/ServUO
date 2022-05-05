@@ -1,4 +1,4 @@
-﻿#region References
+#region References
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -710,11 +710,11 @@ namespace Server.Accounting
 
 		protected virtual XmlElement AppendNode(XmlElement parent, string name, string content, params (string key, string val)[] attrs)
 		{
-			var e = parent.OwnerDocument.CreateElement("username");
+			var e = parent.OwnerDocument.CreateElement(name);
 
 			if (content != null)
 			{
-				e.Value = content;
+				e.InnerText = content;
 			}
 
 			foreach (var (key, val) in attrs)

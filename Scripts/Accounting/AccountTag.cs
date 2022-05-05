@@ -65,7 +65,7 @@ namespace Server.Accounting
 
 			if (Value != null)
 			{
-				node.Value = Value;
+				node.InnerText = Value;
 			}
 
 			node.SetAttribute("name", Name);

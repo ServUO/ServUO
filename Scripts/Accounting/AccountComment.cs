@@ -3,7 +3,7 @@ using System.Xml;
 
 namespace Server.Accounting
 {
-    public class AccountComment : IAccountComment
+	public class AccountComment : IAccountComment
 	{
 		public DateTime LastModified { get; set; }
 
@@ -22,13 +22,13 @@ namespace Server.Accounting
 		}
 
 		public AccountComment(string addedBy, string content)
-        {
-            AddedBy = addedBy;
-            Content = content;
-        }
+		{
+			AddedBy = addedBy;
+			Content = content;
+		}
 
-        public AccountComment(XmlElement node)
-        {
+		public AccountComment(XmlElement node)
+		{
 			Load(node);
 		}
 
@@ -67,8 +67,8 @@ namespace Server.Accounting
 			}
 
 			AddedBy = Utility.GetAttribute(xml, "addedBy", "empty");
-            Content = Utility.GetText(xml, "");
-            LastModified = Utility.GetXMLDateTime(Utility.GetAttribute(xml, "lastModified"), DateTime.UtcNow);
+			Content = Utility.GetText(xml, "");
+			LastModified = Utility.GetXMLDateTime(Utility.GetAttribute(xml, "lastModified"), DateTime.UtcNow);
 		}
 
 		public virtual void Save(XmlElement xml)
@@ -80,9 +80,9 @@ namespace Server.Accounting
 				xml = xml.OwnerDocument.CreateElement("comment");
 			}
 
-			if (m_Content != null) 
+			if (m_Content != null)
 			{
-				xml.Value = m_Content;
+				xml.InnerText = m_Content;
 			}
 
 			xml.SetAttribute("addedBy", AddedBy);

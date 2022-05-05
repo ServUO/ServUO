@@ -314,10 +314,7 @@ namespace Server.Accounting
 			{
 				path = Path.Combine(root, $"accounts.{format.ToString().ToLower()}");
 
-				if (File.Exists(path))
-				{
-					return true;
-				}
+				return File.Exists(path);
 			}
 
 			foreach (AccountFormat f in Enum.GetValues(typeof(AccountFormat)))
@@ -327,7 +324,7 @@ namespace Server.Accounting
 					continue;
 				}
 
-				var file = Path.Combine(root, "accounts." + f.ToString().ToLower());
+				var file = Path.Combine(root, $"accounts.{f.ToString().ToLower()}");
 
 				if (File.Exists(file))
 				{
@@ -336,6 +333,14 @@ namespace Server.Accounting
 
 					return true;
 				}
+			}
+
+			if (format == AccountFormat.Detect)
+			{
+				format = AccountFormat.Xml;
+				path = Path.Combine(root, "accounts.xml");
+
+				return File.Exists(path);
 			}
 
 			return false;
@@ -352,32 +357,40 @@ namespace Server.Accounting
 				Directory.CreateDirectory(root);
 			}
 
-			if (format == AccountFormat.Detect)
+			if (format != AccountFormat.Detect)
 			{
-				foreach (AccountFormat f in Enum.GetValues(typeof(AccountFormat)))
-				{
-					if (f == AccountFormat.Detect || f == format)
-					{
-						continue;
-					}
+				path = Path.Combine(root, $"accounts.{format.ToString().ToLower()}");
 
-					var file = Path.Combine(root, "accounts." + f.ToString().ToLower());
-
-					if (File.Exists(file))
-					{
-						format = f;
-						path = file;
-
-						return true;
-					}
-				}
-
-				return false;
+				return true;
 			}
 
-			path = Path.Combine(root, $"accounts.{format.ToString().ToLower()}");
+			foreach (AccountFormat f in Enum.GetValues(typeof(AccountFormat)))
+			{
+				if (f == AccountFormat.Detect || f == format)
+				{
+					continue;
+				}
 
-			return true;
+				var file = Path.Combine(root, $"accounts.{f.ToString().ToLower()}");
+
+				if (File.Exists(file))
+				{
+					format = f;
+					path = file;
+
+					return true;
+				}
+			}
+
+			if (format == AccountFormat.Detect)
+			{
+				format = AccountFormat.Xml;
+				path = Path.Combine(root, "accounts.xml");
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 }
