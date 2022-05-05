@@ -372,7 +372,10 @@ namespace Server.Accounting
 					}
 				}
 
-				return false;
+				// Default Save format when first launch with AccountFormat.Detect
+				format = AccountFormat.Xml;
+				path = Path.Combine(root, "accounts." + format.ToString().ToLower());
+				return true;
 			}
 
 			path = Path.Combine(root, $"accounts.{format.ToString().ToLower()}");
