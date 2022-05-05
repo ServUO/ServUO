@@ -1724,7 +1724,7 @@ namespace Server
 		public static readonly string _StamRegenTimerPlayerID = _StamRegenTimerID + "Player";
 		public static readonly string _ManaRegenTimerPlayerID = _ManaRegenTimerID + "Player";
 
-		private bool m_InternalCanRegen;
+		private bool m_InternalCanRegen = true;
 
 		public virtual bool RegenThroughPoison => m_GlobalRegenThroughPoison;
 
@@ -5347,14 +5347,19 @@ namespace Server
 
 					m_InternalCanRegen = false;
 
-					Hits = 0;
-
-					if (oldHits >= 0)
+					try
 					{
-						Kill();
-					}
+						Hits = 0;
 
-					m_InternalCanRegen = true;
+						if (oldHits >= 0)
+						{
+							Kill();
+						}
+					}
+					finally
+					{
+						m_InternalCanRegen = true;
+					}
 				}
 				else
 				{
@@ -5897,8 +5902,6 @@ namespace Server
 						{
 							StartCrimDelayTimer();
 						}
-
-						m_InternalCanRegen = true;
 
 						if (ShouldCheckStatTimers)
 						{
@@ -10908,8 +10911,6 @@ namespace Server
 			return false;
 		}
 
-		internal int m_TypeRef;
-
 		public Mobile(Serial serial)
 		{
 			m_Serial = serial;
@@ -10923,15 +10924,7 @@ namespace Server
 
 			m_NextSkillTime = Core.TickCount;
 
-			var ourType = GetType();
-
-			m_TypeRef = World.m_MobileTypes.IndexOf(ourType);
-
-			if (m_TypeRef == -1)
-			{
-				World.m_MobileTypes.Add(ourType);
-				m_TypeRef = World.m_MobileTypes.Count - 1;
-			}
+			InitializeTypeReference();
 		}
 
 		public Mobile()
@@ -10944,6 +10937,26 @@ namespace Server
 
 			World.AddMobile(this);
 
+			InitializeTypeReference();
+
+			Timer.DelayCall(obj =>
+			{
+				if (!obj.Deleted)
+				{
+					EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(obj));
+
+					if (!obj.Deleted)
+					{
+						OnCreate();
+					}
+				}
+			}, this);
+		}
+
+		internal int m_TypeRef;
+
+		private void InitializeTypeReference()
+		{
 			var ourType = GetType();
 
 			m_TypeRef = World.m_MobileTypes.IndexOf(ourType);
@@ -10951,15 +10964,9 @@ namespace Server
 			if (m_TypeRef == -1)
 			{
 				World.m_MobileTypes.Add(ourType);
+
 				m_TypeRef = World.m_MobileTypes.Count - 1;
 			}
-
-			Timer.DelayCall(() =>
-			{
-				EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(this));
-				m_InternalCanRegen = true;
-				OnCreate();
-			});
 		}
 
 		public void DefaultMobileInit()

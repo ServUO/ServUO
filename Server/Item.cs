@@ -5058,6 +5058,9 @@ namespace Server
 		public virtual void OnAfterSpawn()
 		{ }
 
+		protected virtual void OnCreate()
+		{ }
+
 		public virtual int PhysicalResistance => 0;
 		public virtual int FireResistance => 0;
 		public virtual int ColdResistance => 0;
@@ -6823,6 +6826,11 @@ namespace Server
 				if (!obj.Deleted)
 				{
 					EventSink.InvokeItemCreated(new ItemCreatedEventArgs(obj));
+
+					if (!obj.Deleted)
+					{
+						OnCreate();
+					}
 				}
 			}, this);
 		}
