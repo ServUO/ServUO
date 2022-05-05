@@ -19,9 +19,11 @@ namespace Server.Engines.Quests
 		public BaseQuest Quest { get; set; }
 		public DateTime LastSeenEscorter { get; set; }
 
-		public bool IsDeleting => DeleteTime > DateTime.MinValue;
+		public bool HasEscorter => m_EscortTable.ContainsValue(this);
 
-		public override TimeSpan DeleteTimerDelay => m_EscortTable.ContainsValue(this) ? TimeSpan.FromSeconds(45) : TimeSpan.FromMinutes(5);
+		public bool IsDeleting => HasEscorter && DeleteTime > DateTime.MinValue;
+
+		public override TimeSpan DeleteTimerDelay => HasEscorter ? TimeSpan.FromSeconds(45) : TimeSpan.FromMinutes(5);
 
 		public override bool IsInvulnerable => false;
 		public override bool Commandable => false;
@@ -76,12 +78,12 @@ namespace Server.Engines.Quests
 		{
 			if (Quest != null)
 			{
-				Quest.RemoveQuest();
-
 				if (Quest.Owner != null)
 				{
 					m_EscortTable.Remove(Quest.Owner);
 				}
+
+				Quest.RemoveQuest();
 			}
 
 			base.OnAfterDelete();
