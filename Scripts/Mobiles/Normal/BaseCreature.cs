@@ -1454,11 +1454,11 @@ namespace Server.Mobiles
             return ((double)chance / 1000);
         }
 
-        public static readonly TimeSpan DeleteTimeSpan = TimeSpan.FromDays(3);
+        public virtual TimeSpan DeleteTimerDelay => TimeSpan.FromDays(3);
 
         public virtual void BeginDeleteTimer()
         {
-            DeleteTime = DateTime.UtcNow + DeleteTimeSpan;
+            DeleteTime = DateTime.UtcNow + DeleteTimerDelay;
         }
 
         public virtual void StopDeleteTimer()
