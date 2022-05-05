@@ -151,13 +151,13 @@ namespace Server
 
 		private static readonly string _Path = Path.Combine(Core.BaseDirectory, "Config");
 
-		private static readonly IFormatProvider _NumFormatter = CultureInfo.InvariantCulture.NumberFormat;
-
 		private static readonly HashSet<string> _Warned = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
 
 		private static readonly Dictionary<string, Entry> _Entries = new Dictionary<string, Entry>(StringComparer.InvariantCultureIgnoreCase);
 
 		public static IEnumerable<Entry> Entries => _Entries.Values;
+
+		public static IFormatProvider NumFormatter => CultureInfo.InvariantCulture.NumberFormat;
 
 		public static event Action<Entry, string, object> OnEntryChanged;
 
@@ -509,9 +509,11 @@ namespace Server
 
 		#region Setters
 
-		private static void InternalSet(string key, string value, object state)
+		private static void InternalSet<T>(string key, Stringifier<T> stringify, T state)
 		{
 			_Warned.Remove(key);
+
+			var value = stringify(state);
 
 			if (_Entries.TryGetValue(key, out var e) && e != null)
 			{
@@ -526,179 +528,114 @@ namespace Server
 			_Entries[key] = new Entry(path, idx, scope, String.Empty, key, value, state, false);
 		}
 
+		public static void Set<T>(string key, T value)
+		{
+			InternalSet(key, ToString, value);
+		}
+
 		public static void Set(string key, string value)
 		{
-			InternalSet(key, value, value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, char value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, sbyte value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, byte value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, short value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, ushort value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, int value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, uint value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, long value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, ulong value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, float value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, double value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, decimal value)
 		{
-			InternalSet(key, value.ToString(_NumFormatter), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, bool value)
 		{
-			InternalSet(key, value ? Boolean.TrueString : Boolean.FalseString, value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, TimeSpan value)
 		{
-			InternalSet(key, value.ToString(), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, DateTime value)
 		{
-			InternalSet(key, value.ToString(CultureInfo.InvariantCulture), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, IPAddress value)
 		{
-			InternalSet(key, value.ToString(), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void Set(string key, Version value)
 		{
-			InternalSet(key, value.ToString(), value);
-		}
-
-		public static void Set(string key, ClientVersion value)
-		{
-			InternalSet(key, value.ToString(), value);
+			InternalSet(key, ToString, value);
 		}
 
 		public static void SetEnum<T>(string key, T value) where T : Enum
 		{
-			var vals = (T[])Enum.GetValues(typeof(T));
-
-			foreach (var o in vals.Where(o => o.Equals(value)))
-			{
-				InternalSet(key, o.ToString(), o);
-				return;
-			}
-
-			throw new ArgumentException("Enumerated value not found");
+			InternalSet(key, ToEnumString, value);
 		}
 
 		public static void SetDelegate<T>(string key, T value) where T : Delegate
 		{
-			InternalSet(key, $"{value.Method.DeclaringType.FullName}.{value.Method.Name}", value);
+			InternalSet(key, ToDelegateString, value);
 		}
 
 		public static void SetArray<T>(string key, T[] value)
 		{
-			if (value == null)
-			{
-				InternalSet(key, String.Empty, value);
-			}
-			else if (value.Length == 0)
-			{
-				InternalSet(key, "[]", value);
-			}
-			else
-			{
-				var encoded = new StringBuilder();
-
-				for (var i = 0; i < value.Length; i++)
-				{
-					var val = value[i];
-
-					if (i > 0)
-					{
-						encoded.Append(", ");
-					}
-
-					var str = val.ToString();
-
-					encoded.Append('"');
-
-					foreach (var c in str)
-					{
-						switch (c)
-						{
-							case '"': encoded.Append("\\\""); break;
-							case '\\': encoded.Append("\\\\"); break;
-							case '\b': encoded.Append("\\b"); break;
-							case '\f': encoded.Append("\\f"); break;
-							case '\n': encoded.Append("\\n"); break;
-							case '\r': encoded.Append("\\r"); break;
-							case '\t': encoded.Append("\\t"); break;
-							default:
-								{
-									var sur = Convert.ToInt32(c);
-
-									if (sur >= 32 && sur <= 126)
-									{
-										encoded.Append(c);
-									}
-									else
-									{
-										encoded.Append("\\u" + Convert.ToString(sur, 16).PadLeft(4, '0'));
-									}
-								}
-								break;
-						}
-					}
-
-					encoded.Append('"');
-				}
-
-				InternalSet(key, $"[{encoded}]", value);
-			}
+			InternalSet(key, ToArrayString, value);
 		}
 
 		#endregion
@@ -748,6 +685,11 @@ namespace Server
 			}
 
 			return def;
+		}
+
+		public static T Get<T>(string key, T defaultValue)
+		{
+			return InternalGet(key, defaultValue, TryParse);
 		}
 
 		public static string Get(string key, string defaultValue)
@@ -840,11 +782,6 @@ namespace Server
 			return InternalGet(key, defaultValue, TryParse);
 		}
 
-		public static ClientVersion Get(string key, ClientVersion defaultValue)
-		{
-			return InternalGet(key, defaultValue, TryParse);
-		}
-
 		public static T GetEnum<T>(string key, T defaultValue) where T : struct, Enum
 		{
 			return InternalGet(key, defaultValue, TryParseEnum);
@@ -867,301 +804,319 @@ namespace Server
 
 		#endregion
 
-		#region Parsers
+		#region Stringifiers
 
-		private delegate bool Parser<T>(string input, out T val);
+		private delegate string Stringifier<T>(T value);
 
-		private static bool TryParse(string input, out string value)
+		private static readonly Dictionary<Type, MethodInfo> _DetectedStringifiers = new Dictionary<Type, MethodInfo>();
+
+		public static string ToString<T>(T value)
 		{
-			return (value = input) != null;
-		}
-
-		private static bool TryParse(string input, out sbyte value)
-		{
-			return SByte.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out byte value)
-		{
-			return Byte.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out short value)
-		{
-			return Int16.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out ushort value)
-		{
-			return UInt16.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out int value)
-		{
-			return Int32.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out uint value)
-		{
-			return UInt32.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out long value)
-		{
-			return Int64.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out ulong value)
-		{
-			return UInt64.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out float value)
-		{
-			return Single.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out double value)
-		{
-			return Double.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out decimal value)
-		{
-			return Decimal.TryParse(input, NumberStyles.Any, _NumFormatter, out value);
-		}
-
-		private static bool TryParse(string input, out bool value)
-		{
-			if (Boolean.TryParse(input, out value))
+			if (value == null)
 			{
-				return true;
+				return String.Empty;
 			}
 
-			if (Regex.IsMatch(input, @"(true|yes|on|1|enabled)", RegexOptions.IgnoreCase))
-			{
-				value = true;
-				return true;
-			}
+			var type = typeof(T);
 
-			if (Regex.IsMatch(input, @"(false|no|off|0|disabled)", RegexOptions.IgnoreCase))
-			{
-				value = false;
-				return true;
-			}
-
-			value = false;
-			return false;
-		}
-
-		private static bool TryParse(string input, out TimeSpan value)
-		{
-			return TimeSpan.TryParse(input, out value);
-		}
-
-		private static bool TryParse(string input, out DateTime value)
-		{
-			return DateTime.TryParse(input, out value);
-		}
-
-		private static bool TryParse(string input, out Type value)
-		{
-			var type = Type.GetType(input, false);
-
-			if (type != null)
-			{
-				return (value = type) != null;
-			}
-
-			if (input.IndexOf('.') < 0)
-			{
-				return (value = ScriptCompiler.FindTypeByName(input)) != null;
-			}
-
-			return (value = ScriptCompiler.FindTypeByFullName(input)) != null;
-		}
-
-		private static bool TryParse(string input, out IPAddress value)
-		{
-			return IPAddress.TryParse(input, out value);
-		}
-
-		private static bool TryParse(string input, out Version value)
-		{
-			return Version.TryParse(input, out value);
-		}
-
-		private static bool TryParse(string input, out ClientVersion value)
-		{
-			return ClientVersion.TryParse(input, out value);
-		}
-
-		private static bool TryParseEnum<T>(string input, out T value) where T : struct, Enum
-		{
-			return Enum.TryParse(input, out value);
-		}
-
-		private static bool TryParseDelegate<T>(string input, out T value) where T : Delegate
-		{
-			var i = input.LastIndexOf('.');
-
-			if (i > 0)
+			if (type.IsArray)
 			{
 				try
 				{
-					if (TryParse(input.Remove(i), out Type target) && target != null)
+					if (!_DetectedStringifiers.TryGetValue(typeof(Array), out var stringify))
 					{
-						var info = target.GetMethod(input.Substring(i + 1), (BindingFlags)0x38);
+						_DetectedStringifiers[typeof(Array)] = stringify = typeof(Config).GetMethod("ToArrayString", new[] { type });
+					}
 
-						if (info != null && Delegate.CreateDelegate(typeof(T), info) is T d)
-						{
-							value = d;
-							return true;
-						}
+					if (stringify != null)
+					{
+						return (string)stringify.Invoke(null, new object[] { value });
 					}
 				}
 				catch
 				{ }
+
+				return String.Empty;
 			}
 
-			value = null;
-			return false;
-		}
-
-		private static bool TryParseArray<T>(string input, out T[] value)
-		{
-			if (!input.StartsWith("[") || !input.EndsWith("]"))
+			if (type.IsEnum)
 			{
-				value = null;
-				return false;
-			}
-
-			input = input.Trim('[', ']');
-
-			if (typeof(T) == typeof(string))
-			{
-				var output = new List<string>();
-
-				var build = new StringBuilder(0x20);
-
-				var idx = 0;
-
-				while (idx < input.Length)
+				try
 				{
-					idx = input.IndexOf('"', idx);
-
-					if (idx < 0)
+					if (!_DetectedStringifiers.TryGetValue(typeof(Enum), out var stringify))
 					{
-						break;
+						_DetectedStringifiers[typeof(Enum)] = stringify = typeof(Config).GetMethod("ToEnumString", new[] { type });
 					}
 
-					var dump = false;
-
-					var o = input[idx++];
-
-					while (idx < input.Length)
+					if (stringify != null)
 					{
-						var c = input[idx++];
+						return (string)stringify.Invoke(null, new object[] { value });
+					}
+				}
+				catch
+				{ }
 
-						if (c == o)
+				return String.Empty;
+			}
+
+			if (type.IsAssignableFrom(typeof(Delegate)))
+			{
+				try
+				{
+					if (!_DetectedStringifiers.TryGetValue(typeof(Delegate), out var stringify))
+					{
+						_DetectedStringifiers[typeof(Delegate)] = stringify = typeof(Config).GetMethod("ToDelegateString", new[] { type });
+					}
+
+					if (stringify != null)
+					{
+						return (string)stringify.Invoke(null, new object[] { value });
+					}
+				}
+				catch
+				{ }
+
+				return String.Empty;
+			}
+
+			try
+			{
+				if (!_DetectedStringifiers.TryGetValue(type, out var stringify))
+				{
+					_DetectedStringifiers[type] = stringify = typeof(Config).GetMethod("ToString", new[] { type });
+				}
+
+				if (stringify != null)
+				{
+					return (string)stringify.Invoke(null, new object[] { value });
+				}
+
+				return value.ToString();
+			}
+			catch
+			{ }
+
+			return String.Empty;
+		}
+
+		public static string ToString(string value)
+		{
+			return value ?? String.Empty;
+		}
+
+		public static string ToString(char value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(sbyte value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(byte value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(short value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(ushort value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(int value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(uint value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(long value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(ulong value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(float value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(double value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(decimal value)
+		{
+			return value.ToString(NumFormatter);
+		}
+
+		public static string ToString(bool value)
+		{
+			return value ? Boolean.TrueString : Boolean.FalseString;
+		}
+
+		public static string ToString(TimeSpan value)
+		{
+			return value.ToString();
+		}
+
+		public static string ToString(DateTime value)
+		{
+			return value.ToString(CultureInfo.InvariantCulture);
+		}
+
+		public static string ToString(IPAddress value)
+		{
+			return value.ToString();
+		}
+
+		public static string ToString(Version value)
+		{
+			return value.ToString();
+		}
+
+		public static string ToEnumString<T>(T value) where T :Enum
+		{
+			return value.ToString();
+		}
+
+		public static string ToDelegateString<T>(T value) where T : Delegate
+		{
+			return $"{value.Method.DeclaringType.FullName}.{value.Method.Name}";
+		}
+
+		public static string ToArrayString<T>(T[] value)
+		{
+			if (value == null)
+			{
+				return String.Empty;
+			}
+
+			if (value.Length == 0)
+			{
+				return "[]";
+			}
+
+			var type = typeof(T);
+
+			var isString = type == typeof(string);
+
+			var encoded = new StringBuilder();
+
+			encoded.Append('[');
+
+			for (var i = 0; i < value.Length; i++)
+			{
+				var val = value[i];
+
+				if (i > 0)
+				{
+					encoded.Append(", ");
+				}
+
+				if (val != null)
+				{
+					var str = ToString(val);
+
+					var isSubArray = val?.GetType()?.IsArray == true;
+
+					if (isSubArray)
+					{
+						encoded.Append('\t');
+					}
+
+					var isSubString = isString || val?.GetType() == typeof(string);
+
+					if (isSubString)
+					{
+						encoded.Append('"');
+					}
+
+					foreach (var c in str)
+					{
+						switch (c)
 						{
-							dump = true;
+							case '"': encoded.Append("\\\""); break;
+							case '\\': encoded.Append("\\\\"); break;
+							case '\b': encoded.Append("\\b"); break;
+							case '\f': encoded.Append("\\f"); break;
+							case '\n': encoded.Append("\\n"); break;
+							case '\r': encoded.Append("\\r"); break;
+							case '\t': encoded.Append("\\t"); break;
+							default:
+							{
+								var sur = Convert.ToInt32(c);
+
+								if (sur >= 32 && sur <= 126)
+								{
+									encoded.Append(c);
+								}
+								else
+								{
+									encoded.Append("\\u" + Convert.ToString(sur, 16).PadLeft(4, '0'));
+								}
+							}
 							break;
 						}
-
-						if (c == '\\')
-						{
-							if (idx == input.Length)
-							{
-								dump = true;
-								break;
-							}
-
-							c = input[idx++];
-
-							var found = true;
-
-							switch (c)
-							{
-								case '"': build.Append('"'); break;
-								case '\\': build.Append('\\'); break;
-								case '/': build.Append('/'); break;
-								case 'b': build.Append('\b'); break;
-								case 'f': build.Append('\f'); break;
-								case 'n': build.Append('\n'); break;
-								case 'r': build.Append('\r'); break;
-								case 't': build.Append('\t'); break;
-								default: found = false; break;
-							}
-
-							if (!found && c == 'u')
-							{
-								var length = input.Length - idx;
-
-								if (length < 4)
-								{
-									value = null;
-									return false;
-								}
-
-								if (!UInt32.TryParse(input.Substring(idx, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var sur))
-								{
-									value = null;
-									return false;
-								}
-
-								build.Append(Char.ConvertFromUtf32((int)sur));
-
-								idx += 4;
-							}
-						}
-						else
-						{
-							build.Append(c);
-						}
 					}
 
-					if (dump)
+					if (isSubString)
 					{
-						output.Add(build.ToString());
+						encoded.Append('"');
 					}
 
-					build.Clear();
+					if (isSubArray)
+					{
+						encoded.Append(Environment.NewLine);
+					}
 				}
-
-				value = output.Cast<T>().ToArray();
-
-				ColUtility.Free(output);
-
-				return true;
 			}
 
-			var vals = input.Split(',');
+			encoded.Append(']');
 
-			value = new T[vals.Length];
+			var result = encoded.ToString();
 
-			for (var i = 0; i < vals.Length; i++)
-			{
-				if (!GenericTryParse(vals[i], out T obj))
-				{
-					value = null;
-					return false;
-				}
+			encoded.Clear();
 
-				value[i] = obj;
-			}
-
-			return true;
+			return result;
 		}
 
-		private static readonly ThreadLocal<Type[]> _GenericParserParams = new ThreadLocal<Type[]>(() => new Type[] { typeof(string) });
-		private static readonly ThreadLocal<Type[]> _GenericTryParserParams = new ThreadLocal<Type[]>(() => new Type[] { typeof(string), null });
+		#region Args
 
-		private static readonly ThreadLocal<object[]> _GenericParserArgs = new ThreadLocal<object[]>(() => new object[] { null });
-		private static readonly ThreadLocal<object[]> _GenericTryParserArgs = new ThreadLocal<object[]>(() => new object[] { null, null });
-
-		private static bool GenericTryParse<T>(string input, out T value)
+		public static string ToArgsString(params object[] args)
 		{
+			return ToArrayString(args);
+		}
+
+		#endregion
+
+		#endregion
+
+		#region Parsers
+
+		private delegate bool Parser<T>(string input, out T value);
+
+		private static readonly Dictionary<Type, MethodInfo> _DetectedParsers = new Dictionary<Type, MethodInfo>();
+		private static readonly Dictionary<Type, MethodInfo> _DetectedTryParsers = new Dictionary<Type, MethodInfo>();
+
+		public static bool TryParse<T>(string input, out T value)
+		{
+			value = default(T);
+
 			try
 			{
 				var type = typeof(T);
@@ -1190,22 +1145,92 @@ namespace Server
 					return false;
 				}
 
-				Type[] types;
-				object[] args;
+				if (type.IsArray)
+				{
+					try
+					{
+						if (!_DetectedTryParsers.TryGetValue(typeof(Array), out var tryParse))
+						{
+							_DetectedTryParsers[typeof(Array)] = tryParse = typeof(Config).GetMethod("TryParseArray", new[] { typeof(string), type.MakeByRefType() });
+						}
 
-				types = _GenericTryParserParams.Value;
-				args = _GenericTryParserArgs.Value;
+						if (tryParse != null)
+						{
+							var args = new object[] { input.Trim(), default(T) };
+
+							if ((bool)tryParse.Invoke(null, args))
+							{
+								value = (T)args[1];
+								return true;
+							}
+						}
+					}
+					catch
+					{ }
+
+					return false;
+				}
+
+				if (type.IsEnum)
+				{
+					try
+					{
+						if (!_DetectedTryParsers.TryGetValue(typeof(Enum), out var tryParse))
+						{
+							_DetectedTryParsers[typeof(Enum)] = tryParse = typeof(Config).GetMethod("TryParseEnum", new[] { typeof(string), type.MakeByRefType() });
+						}
+
+						if (tryParse != null)
+						{
+							var args = new object[] { input.Trim(), default(T) };
+
+							if ((bool)tryParse.Invoke(null, args))
+							{
+								value = (T)args[1];
+								return true;
+							}
+						}
+					}
+					catch
+					{ }
+
+					return false;
+				}
+
+				if (type.IsAssignableFrom(typeof(Delegate)))
+				{
+					try
+					{
+						if (!_DetectedTryParsers.TryGetValue(typeof(Delegate), out var tryParse))
+						{
+							_DetectedTryParsers[typeof(Delegate)] = tryParse = typeof(Config).GetMethod("TryParseDelegate", new[] { typeof(string), type.MakeByRefType() });
+						}
+
+						if (tryParse != null)
+						{
+							var args = new object[] { input.Trim(), value };
+
+							if ((bool)tryParse.Invoke(null, args))
+							{
+								value = (T)args[1];
+								return true;
+							}
+						}
+					}
+					catch
+					{ }
+
+					return false;
+				}
 
 				try
 				{
-					var search = type.IsEnum ? "TryParseEnum" : type.IsAssignableFrom(typeof(Delegate)) ? "TryParseDelegate" : "TryParse";
+					if (!_DetectedTryParsers.TryGetValue(type, out var tryParse))
+					{
+						_DetectedTryParsers[type] = tryParse = typeof(Config).GetMethod("TryParse", new[] { typeof(string), type.MakeByRefType() });
+					}
 
-					types[1] = type;
-
-					args[0] = input;
-					args[1] = null;
-
-					var tryParse = typeof(Config).GetMethod(search, types);
+					var args = new object[] { input.Trim(), value };
 
 					if (tryParse != null && (bool)tryParse.Invoke(null, args))
 					{
@@ -1215,71 +1240,508 @@ namespace Server
 				}
 				catch
 				{ }
-				finally
+
+				if (type.IsDefined(typeof(ParsableAttribute)))
 				{
-					types[1] = null;
-
-					args[0] = null;
-					args[1] = null;
-				}
-
-				try
-				{
-					var search = "TryParse";
-
-					types[1] = type;
-
-					args[0] = input;
-					args[1] = null;
-
-					var tryParse = type.GetMethod(search, types);
-
-					if (tryParse != null && (bool)tryParse.Invoke(null, args))
+					try
 					{
-						value = (T)args[1];
-						return true;
+						if (!_DetectedParsers.TryGetValue(type, out var parse))
+						{
+							_DetectedParsers[type] = parse = type.GetMethod("Parse", new[] { typeof(string) });
+						}
+
+						if (parse != null)
+						{
+							value = (T)parse.Invoke(null, new object[] { input.Trim() });
+							return true;
+						}
 					}
+					catch
+					{ }
 				}
-				catch
-				{ }
-				finally
+				else
 				{
-					types[1] = null;
-
-					args[0] = null;
-					args[1] = null;
-				}
-
-				types = _GenericParserParams.Value;
-				args = _GenericParserArgs.Value;
-
-				try
-				{
-					var search = "Parse";
-
-					args[0] = input.Trim();
-
-					var parse = type.GetMethod(search, types);
-
-					if (parse != null)
+					try
 					{
-						value = (T)parse.Invoke(null, args);
-						return true;
+						if (!_DetectedTryParsers.TryGetValue(type, out var tryParse))
+						{
+							_DetectedTryParsers[type] = tryParse = type.GetMethod("TryParse", new[] { typeof(string), type.MakeByRefType() });
+						}
+
+						var args = new object[] { input.Trim(), value };
+
+						if (tryParse != null && (bool)tryParse.Invoke(null, args))
+						{
+							value = (T)args[1];
+							return true;
+						}
 					}
-				}
-				catch
-				{ }
-				finally
-				{
-					args[0] = null;
+					catch
+					{ }
 				}
 			}
 			catch
 			{ }
 
-			value = default(T);
 			return false;
 		}
+
+		public static bool TryParse(string input, out string value)
+		{
+			return (value = input) != null;
+		}
+
+		public static bool TryParse(string input, out sbyte value)
+		{
+			return SByte.TryParse(input, NumberStyles.Any, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out byte value)
+		{
+			return Byte.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out short value)
+		{
+			return Int16.TryParse(input, NumberStyles.Any, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out ushort value)
+		{
+			return UInt16.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out int value)
+		{
+			return Int32.TryParse(input, NumberStyles.Any, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out uint value)
+		{
+			return UInt32.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out long value)
+		{
+			return Int64.TryParse(input, NumberStyles.Any, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out ulong value)
+		{
+			return UInt64.TryParse(input, NumberStyles.Any & ~NumberStyles.AllowLeadingSign, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out float value)
+		{
+			return Single.TryParse(input, NumberStyles.Any, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out double value)
+		{
+			return Double.TryParse(input, NumberStyles.Any, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out decimal value)
+		{
+			return Decimal.TryParse(input, NumberStyles.Any, NumFormatter, out value);
+		}
+
+		public static bool TryParse(string input, out bool value)
+		{
+			if (Boolean.TryParse(input, out value))
+			{
+				return true;
+			}
+
+			if (Regex.IsMatch(input, @"(true|yes|on|1|enabled)", RegexOptions.IgnoreCase))
+			{
+				value = true;
+				return true;
+			}
+
+			if (Regex.IsMatch(input, @"(false|no|off|0|disabled)", RegexOptions.IgnoreCase))
+			{
+				value = false;
+				return true;
+			}
+
+			value = false;
+			return false;
+		}
+
+		public static bool TryParse(string input, out TimeSpan value)
+		{
+			return TimeSpan.TryParse(input, out value);
+		}
+
+		public static bool TryParse(string input, out DateTime value)
+		{
+			return DateTime.TryParse(input, out value);
+		}
+
+		public static bool TryParse(string input, out Type value)
+		{
+			var type = Type.GetType(input, false);
+
+			if (type != null)
+			{
+				return (value = type) != null;
+			}
+
+			if (input.IndexOf('.') < 0)
+			{
+				return (value = ScriptCompiler.FindTypeByName(input)) != null;
+			}
+
+			return (value = ScriptCompiler.FindTypeByFullName(input)) != null;
+		}
+
+		public static bool TryParse(string input, out IPAddress value)
+		{
+			if (IPAddress.TryParse(input, out value))
+			{
+				Utility.Intern(ref value);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool TryParse(string input, out Version value)
+		{
+			return Version.TryParse(input, out value);
+		}
+
+		public static bool TryParseEnum<T>(string input, out T value) where T : struct, Enum
+		{
+			return Enum.TryParse(input, out value);
+		}
+
+		public static bool TryParseDelegate<T>(string input, out T value) where T : Delegate
+		{
+			var i = input.LastIndexOf('.');
+
+			if (i > 0)
+			{
+				try
+				{
+					if (TryParse(input.Remove(i), out Type target) && target != null)
+					{
+						var info = target.GetMethod(input.Substring(i + 1), (BindingFlags)0x38);
+
+						if (info != null && Delegate.CreateDelegate(typeof(T), info) is T d)
+						{
+							value = d;
+							return true;
+						}
+					}
+				}
+				catch
+				{ }
+			}
+
+			value = null;
+			return false;
+		}
+
+		#region Args
+
+		public static bool TryParseArgs<T1, T2>(string input, out (T1, T2) value)
+		{
+			value = default((T1, T2));
+
+			if (TryParse(input, out object[] values) && values.Length >= 2)
+			{
+				var index = -1;
+
+				value = ((T1)values[++index], (T2)values[++index]);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool TryParseArgs<T1, T2, T3>(string input, out (T1, T2, T3) value)
+		{
+			value = default((T1, T2, T3));
+
+			if (TryParseArray(input, out object[] values) && values.Length >= 3)
+			{
+				var index = -1;
+
+				value = ((T1)values[++index], (T2)values[++index], (T3)values[++index]);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool TryParseArgs<T1, T2, T3, T4>(string input, out (T1, T2, T3, T4) value)
+		{
+			value = default((T1, T2, T3, T4));
+
+			if (TryParseArray(input, out object[] values) && values.Length >= 4)
+			{
+				var index = -1;
+
+				value = ((T1)values[++index], (T2)values[++index], (T3)values[++index], (T4)values[++index]);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool TryParseArgs<T1, T2, T3, T4, T5>(string input, out (T1, T2, T3, T4, T5) value)
+		{
+			value = default((T1, T2, T3, T4, T5));
+
+			if (TryParseArray(input, out object[] values) && values.Length >= 5)
+			{
+				var index = -1;
+
+				value = ((T1)values[++index], (T2)values[++index], (T3)values[++index], (T4)values[++index], (T5)values[++index]);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool TryParseArgs<T1, T2, T3, T4, T5, T6>(string input, out (T1, T2, T3, T4, T5, T6) value)
+		{
+			value = default((T1, T2, T3, T4, T5, T6));
+
+			if (TryParseArray(input, out object[] values) && values.Length >= 6)
+			{
+				var index = -1;
+
+				value = ((T1)values[++index], (T2)values[++index], (T3)values[++index], (T4)values[++index], (T5)values[++index], (T6)values[++index]);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool TryParseArgs<T1, T2, T3, T4, T5, T6, T7>(string input, out (T1, T2, T3, T4, T5, T6, T7) value)
+		{
+			value = default((T1, T2, T3, T4, T5, T6, T7));
+
+			if (TryParseArray(input, out object[] values) && values.Length >= 7)
+			{
+				var index = -1;
+
+				value = ((T1)values[++index], (T2)values[++index], (T3)values[++index], (T4)values[++index], (T5)values[++index], (T6)values[++index], (T7)values[++index]);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public static bool TryParseArgs<T1, T2, T3, T4, T5, T6, T7, T8>(string input, out (T1, T2, T3, T4, T5, T6, T7, T8) value)
+		{
+			value = default((T1, T2, T3, T4, T5, T6, T7, T8));
+
+			if (TryParseArray(input, out object[] values) && values.Length >= 8)
+			{
+				var index = -1;
+
+				value = ((T1)values[++index], (T2)values[++index], (T3)values[++index], (T4)values[++index], (T5)values[++index], (T6)values[++index], (T7)values[++index], (T8)values[++index]);
+
+				return true;
+			}
+
+			return false;
+		}
+
+		#endregion
+
+		#region Arrays
+
+		public static bool TryParse(string input, out object[] value)
+		{
+			return TryParseArray(input, out value);
+		}
+
+		public static bool TryParse(string input, out string[] value)
+		{
+			return TryParseArray(input, out value);
+		}
+
+		private static bool TryParseArray<T>(string input, out T[] value)
+		{
+			try
+			{
+				if (!input.StartsWith("[") || !input.EndsWith("]"))
+				{
+					value = null;
+					return false;
+				}
+
+				input = input.Substring(1, input.Length - 2);
+
+				var isGeneric = typeof(T) == typeof(object);
+				var isString = typeof(T) == typeof(string);
+
+				if (isGeneric || isString)
+				{
+					var output = new List<string>();
+
+					var build = new StringBuilder(0x20);
+
+					var idx = 0;
+
+					while (idx < input.Length)
+					{
+						var oidx = idx;
+
+						idx = input.IndexOf('"', idx);
+
+						var inString = false;
+
+						if (idx >= 0)
+						{
+							inString = true;
+						}
+						else if (isGeneric)
+						{
+							idx = oidx;
+						}
+						else
+						{
+							break;
+						}
+
+						var dump = false;
+
+						var o = input[idx++];
+
+						while (idx < input.Length)
+						{
+							var c = input[idx++];
+
+							if (c == o)
+							{
+								dump = true;
+								break;
+							}
+
+							if (inString && c == '\\')
+							{
+								if (idx == input.Length)
+								{
+									dump = true;
+									break;
+								}
+
+								c = input[idx++];
+
+								var found = true;
+
+								switch (c)
+								{
+									case '"': build.Append('"'); break;
+									case '\\': build.Append('\\'); break;
+									case '/': build.Append('/'); break;
+									case 'b': build.Append('\b'); break;
+									case 'f': build.Append('\f'); break;
+									case 'n': build.Append('\n'); break;
+									case 'r': build.Append('\r'); break;
+									case 't': build.Append('\t'); break;
+									default: found = false; break;
+								}
+
+								if (!found && c == 'u')
+								{
+									var length = input.Length - idx;
+
+									if (length < 4)
+									{
+										value = null;
+										return false;
+									}
+
+									if (!UInt32.TryParse(input.Substring(idx, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var sur))
+									{
+										value = null;
+										return false;
+									}
+
+									build.Append(Char.ConvertFromUtf32((int)sur));
+
+									idx += 4;
+								}
+							}
+							else if (inString && c == '"')
+							{
+								dump = true;
+							}
+							else if (isGeneric && (Char.IsWhiteSpace(c) || c == ','))
+							{
+								dump = true;
+							}
+							else
+							{
+								build.Append(c);
+							}
+						}
+
+						if (dump)
+						{
+							output.Add(build.ToString());
+						}
+
+						build.Clear();
+					}
+
+					value = new T[output.Count];
+
+					for (var i = 0; i < output.Count; i++)
+					{
+						if (!TryParse(output[i], out T obj))
+						{
+							value = null;
+							return false;
+						}
+
+						value[i] = obj;
+					}
+
+					ColUtility.Free(output);
+
+					return true;
+				}
+
+				var vals = input.Split(',');
+
+				value = new T[vals.Length];
+
+				for (var i = 0; i < vals.Length; i++)
+				{
+					if (!TryParse(vals[i], out T obj))
+					{
+						value = null;
+						return false;
+					}
+
+					value[i] = obj;
+				}
+
+				return true;
+			}
+			catch
+			{
+				value = null;
+				return false;
+			}
+		}
+
+		#endregion
 
 		#endregion
 
@@ -1301,7 +1763,7 @@ namespace Server
 
 			try
 			{
-				Utility.WriteLine(ConsoleColor.Yellow, "Config: Generating files...");
+				Utility.WriteLine(ConsoleColor.Yellow, "Config: Generating...");
 
 				foreach (var m in typeof(Config).GetMethods(BindingFlags.Public | BindingFlags.Static))
 				{
@@ -1381,7 +1843,7 @@ namespace Server
 								}
 								else
 								{
-									InternalSet(key, null, null);
+									InternalSet<object>(key, ToString, null);
 								}
 
 								files.Add(GetFilePath(ref key, out _));
@@ -1417,7 +1879,7 @@ namespace Server
 								}
 								else
 								{
-									InternalSet(key, null, null);
+									InternalSet<object>(key, ToString, null);
 								}
 
 								files.Add(GetFilePath(ref key, out _));

@@ -82,8 +82,8 @@ namespace Server.Gumps
         private static readonly Type _TypeOfType = typeof(Type);
         private static readonly Type _TypeOfPoint3D = typeof(Point3D);
         private static readonly Type _TypeOfPoint2D = typeof(Point2D);
-        private static readonly Type _TypeOfTimeSpan = typeof(TimeSpan);
-        private static readonly Type _TypeOfCustomEnum = typeof(CustomEnumAttribute);
+		private static readonly Type _TypeOfTimeSpan = typeof(TimeSpan);
+		private static readonly Type _TypeOfCustomEnum = typeof(CustomEnumAttribute);
         private static readonly Type _TypeOfIDynamicEnum = typeof(IDynamicEnum);
         private static readonly Type _TypeOfEnum = typeof(Enum);
         private static readonly Type _TypeOfBool = typeof(bool);

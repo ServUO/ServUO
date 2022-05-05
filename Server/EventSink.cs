@@ -203,7 +203,11 @@ namespace Server
 
 	public delegate void PlayerMurderedEventHandler(PlayerMurderedEventArgs e);
 
-	public delegate void AccountGoldChangeEventHandler(AccountGoldChangeEventArgs e);
+	public delegate void AccountCurrencyChangeEventHandler(AccountCurrencyChangeEventArgs e);
+
+	public delegate void AccountSovereignsChangeEventHandler(AccountSovereignsChangeEventArgs e);
+
+	public delegate void AccountSecureChangeEventHandler(AccountSecureChangeEventArgs e);
 
 	public delegate void ContainerDroppedToEventHandler(ContainerDroppedToEventArgs e);
 
@@ -1753,15 +1757,49 @@ namespace Server
 		}
 	}
 
-	public class AccountGoldChangeEventArgs : EventArgs
+	public class AccountCurrencyChangeEventArgs : EventArgs
 	{
-		public IAccount Account { get; set; }
-		public double OldAmount { get; set; }
-		public double NewAmount { get; set; }
+		public IAccount Account { get; private set; }
 
-		public AccountGoldChangeEventArgs(IAccount account, double oldAmount, double newAmount)
+		public double OldAmount { get; private set; }
+		public double NewAmount { get; private set; }
+
+		public AccountCurrencyChangeEventArgs(IAccount account, double oldAmount, double newAmount)
 		{
 			Account = account;
+			OldAmount = oldAmount;
+			NewAmount = newAmount;
+		}
+	}
+
+	public class AccountSovereignsChangeEventArgs : EventArgs
+	{
+		public IAccount Account { get; private set; }
+
+		public int OldAmount { get; private set; }
+		public int NewAmount { get; private set; }
+
+		public AccountSovereignsChangeEventArgs(IAccount account, int oldAmount, int newAmount)
+		{
+			Account = account;
+			OldAmount = oldAmount;
+			NewAmount = newAmount;
+		}
+	}
+
+	public class AccountSecureChangeEventArgs : EventArgs
+	{
+		public IAccount Account { get; private set; }
+
+		public Mobile Mobile { get; private set; }
+
+		public int OldAmount { get; private set; }
+		public int NewAmount { get; private set; }
+
+		public AccountSecureChangeEventArgs(IAccount account, Mobile mobile, int oldAmount, int newAmount)
+		{
+			Account = account;
+			Mobile = mobile;
 			OldAmount = oldAmount;
 			NewAmount = newAmount;
 		}
@@ -1907,7 +1945,9 @@ namespace Server
 		public static event KarmaChangeEventHandler KarmaChange;
 		public static event VirtueLevelChangeEventHandler VirtueLevelChange;
 		public static event PlayerMurderedEventHandler PlayerMurdered;
-		public static event AccountGoldChangeEventHandler AccountGoldChange;
+		public static event AccountCurrencyChangeEventHandler AccountCurrencyChange;
+		public static event AccountSovereignsChangeEventHandler AccountSovereignsChange;
+		public static event AccountSecureChangeEventHandler AccountSecureChange;
 		public static event ContainerDroppedToEventHandler ContainerDroppedTo;
 		public static event TeleportMovementEventHandler TeleportMovement;
 		public static event MultiDesignQueryHandler MultiDesign;
@@ -2387,9 +2427,19 @@ namespace Server
 			PlayerMurdered?.Invoke(e);
 		}
 
-		public static void InvokeAccountGoldChange(AccountGoldChangeEventArgs e)
+		public static void InvokeAccountCurrencyChange(AccountCurrencyChangeEventArgs e)
 		{
-			AccountGoldChange?.Invoke(e);
+			AccountCurrencyChange?.Invoke(e);
+		}
+
+		public static void InvokeAccountSovereignsChange(AccountSovereignsChangeEventArgs e)
+		{
+			AccountSovereignsChange?.Invoke(e);
+		}
+
+		public static void InvokeAccountSecureChange(AccountSecureChangeEventArgs e)
+		{
+			AccountSecureChange?.Invoke(e);
 		}
 
 		public static void InvokeContainerDroppedTo(ContainerDroppedToEventArgs e)
@@ -2500,7 +2550,7 @@ namespace Server
 			KarmaChange = null;
 			VirtueLevelChange = null;
 			PlayerMurdered = null;
-			AccountGoldChange = null;
+			AccountCurrencyChange = null;
 			ContainerDroppedTo = null;
 			TeleportMovement = null;
 

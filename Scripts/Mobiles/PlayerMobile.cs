@@ -293,7 +293,7 @@ namespace Server.Mobiles
         {
             get
             {
-                Account acct = Account as Account;
+				IStoreAccount acct = Account;
 
                 if (acct != null)
                 {
@@ -304,7 +304,7 @@ namespace Server.Mobiles
             }
             set
             {
-                Account acct = Account as Account;
+				IStoreAccount acct = Account;
 
                 if (acct != null)
                 {
@@ -387,7 +387,7 @@ namespace Server.Mobiles
 
 		public bool DepositSovereigns(int amount)
         {
-            Account acct = Account as Account;
+			IStoreAccount acct = Account;
 
             if (acct != null)
             {
@@ -399,7 +399,7 @@ namespace Server.Mobiles
 
         public bool WithdrawSovereigns(int amount)
         {
-            Account acct = Account as Account;
+			IStoreAccount acct = Account;
 
             if (acct != null)
             {
@@ -1302,7 +1302,7 @@ namespace Server.Mobiles
             {
                 string notice;
 
-                Account acct = from.Account as Account;
+                IAccount acct = from.Account;
 
                 if (acct == null || !acct.HasAccess(from.NetState))
                 {
@@ -1319,8 +1319,7 @@ namespace Server.Mobiles
                 }
                 else if (from.AccessLevel >= AccessLevel.Administrator)
                 {
-                    notice =
-                        "The server is currently under lockdown. As you are an administrator, you may change this from the [Admin gump.";
+                    notice = "The server is currently under lockdown. As you are an administrator, you may change this from the [Admin gump.";
                 }
                 else
                 {
@@ -4706,7 +4705,7 @@ namespace Server.Mobiles
 
             if (m_LastOnline == DateTime.MinValue && Account != null)
             {
-                m_LastOnline = ((Account)Account).LastLogin;
+                m_LastOnline = Account.LastLogin;
             }
 
             if (m_ChampionTitles == null)
@@ -5501,7 +5500,7 @@ namespace Server.Mobiles
         {
             if (Young && Kills > oldValue)
             {
-                Account acc = Account as Account;
+				IAccount acc = Account;
 
                 if (acc != null)
                 {

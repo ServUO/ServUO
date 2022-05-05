@@ -42,7 +42,7 @@ namespace Server.Mobiles
 		public static int EconomyStockAmount { get => Config.Get("Vendors.EconomyStockAmount", 500); set => Config.Set("Housing.EconomyStockAmount", value); }
 
 		[ConfigProperty("Vendors.RestockDelay")]
-		public static TimeSpan DelayRestock { get => TimeSpan.FromMinutes(Config.Get("Vendors.RestockDelay", 60.0)); set => Config.Set("Housing.RestockDelay", value.TotalMinutes); }
+		public static TimeSpan DelayRestock { get => Config.Get("Vendors.RestockDelay", TimeSpan.FromMinutes(60.0)); set => Config.Set("Housing.RestockDelay", value); }
 
 		[ConfigProperty("Vendors.MaxSell")]
 		public static int MaxSell { get => Config.Get("Vendors.MaxSell", 500); set => Config.Set("Housing.MaxSell", value); }

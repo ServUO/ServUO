@@ -31,7 +31,7 @@ namespace Server.Engines.Shadowguard
     public class ShadowguardController : Item
 	{
 		[ConfigProperty("Shadowguard.ReadyDuration")]
-		public static TimeSpan ReadyDuration { get => TimeSpan.FromSeconds(Config.Get("Shadowguard.ReadyDuration", 30.0)); set => Config.Set("Shadowguard.ReadyDuration", value.TotalSeconds); }
+		public static TimeSpan ReadyDuration { get => Config.Get("Shadowguard.ReadyDuration", TimeSpan.FromSeconds(30.0)); set => Config.Set("Shadowguard.ReadyDuration", value.TotalSeconds); }
 
 		[ConfigProperty("Shadowguard.RandomizeInstances")]
 		public static bool RandomInstances { get => Config.Get("Shadowguard.RandomizeInstances", false); set => Config.Set("Shadowguard.RandomizeInstances", value); }

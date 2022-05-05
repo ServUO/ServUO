@@ -32,7 +32,7 @@ namespace Server.Network
 	public delegate void NetStateCreatedCallback(NetState ns);
 
 	[PropertyObject]
-	public class NetState : IComparable<NetState>
+	public class NetState : IComparable, IComparable<NetState>
 	{
 		public static bool BufferStaticPackets = false;
 
@@ -1405,7 +1405,37 @@ namespace Server.Network
 				return 1;
 			}
 
-			return Insensitive.Compare(m_ToString, other.m_ToString);
+			if (Mobile == null && other.Mobile == null)
+			{
+				return Insensitive.Compare(m_ToString, other.m_ToString);
+			}
+
+			if (Mobile == null)
+			{
+				return 1;
+			}
+
+			if (other.Mobile == null)
+			{
+				return -1;
+			}
+
+			if (Mobile.AccessLevel > other.Mobile.AccessLevel)
+			{
+				return -1;
+			}
+
+			if (Mobile.AccessLevel < other.Mobile.AccessLevel)
+			{
+				return 1;
+			}
+
+			return Insensitive.Compare(Mobile.Name, other.Mobile.Name);
+		}
+
+		public int CompareTo(object obj)
+		{
+			return CompareTo(obj as NetState);
 		}
 
 		#region Packet Throttling

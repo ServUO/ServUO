@@ -3,72 +3,95 @@ using System.Xml;
 
 namespace Server.Accounting
 {
-    public class AccountComment
-    {
-        private readonly string m_AddedBy;
-        private string m_Content;
-        private DateTime m_LastModified;
-        /// <summary>
-        /// Constructs a new AccountComment instance.
-        /// </summary>
-        /// <param name="addedBy">Initial AddedBy value.</param>
-        /// <param name="content">Initial Content value.</param>
-        public AccountComment(string addedBy, string content)
+    public class AccountComment : IAccountComment
+	{
+		public DateTime LastModified { get; set; }
+
+		public string AddedBy { get; set; }
+
+		private string m_Content;
+
+		public string Content
+		{
+			get => m_Content;
+			set
+			{
+				m_Content = value;
+				LastModified = DateTime.UtcNow;
+			}
+		}
+
+		public AccountComment(string addedBy, string content)
         {
-            m_AddedBy = addedBy;
-            m_Content = content;
-            m_LastModified = DateTime.UtcNow;
+            AddedBy = addedBy;
+            Content = content;
         }
 
-        /// <summary>
-        /// Deserializes an AccountComment instance from an xml element.
-        /// </summary>
-        /// <param name="node">The XmlElement instance from which to deserialize.</param>
         public AccountComment(XmlElement node)
         {
-            m_AddedBy = Utility.GetAttribute(node, "addedBy", "empty");
-            m_LastModified = Utility.GetXMLDateTime(Utility.GetAttribute(node, "lastModified"), DateTime.UtcNow);
-            m_Content = Utility.GetText(node, "");
-        }
+			Load(node);
+		}
 
-        /// <summary>
-        /// A string representing who added this comment.
-        /// </summary>
-        public string AddedBy => m_AddedBy;
-        /// <summary>
-        /// Gets or sets the body of this comment. Setting this value will reset LastModified.
-        /// </summary>
-        public string Content
-        {
-            get
-            {
-                return m_Content;
-            }
-            set
-            {
-                m_Content = value;
-                m_LastModified = DateTime.UtcNow;
-            }
-        }
-        /// <summary>
-        /// The date and time when this account was last modified -or- the comment creation time, if never modified.
-        /// </summary>
-        public DateTime LastModified => m_LastModified;
-        /// <summary>
-        /// Serializes this AccountComment instance to an XmlTextWriter.
-        /// </summary>
-        /// <param name="xml">The XmlTextWriter instance from which to serialize.</param>
-        public void Save(XmlTextWriter xml)
-        {
-            xml.WriteStartElement("comment");
+		public AccountComment(GenericReader reader)
+		{
+			Load(reader);
+		}
 
-            xml.WriteAttributeString("addedBy", m_AddedBy);
+		public virtual void Load(GenericReader reader)
+		{
+			reader.ReadInt();
 
-            xml.WriteAttributeString("lastModified", XmlConvert.ToString(m_LastModified, XmlDateTimeSerializationMode.Utc));
+			AddedBy = reader.ReadString();
+			Content = reader.ReadString();
+			LastModified = reader.ReadDateTime();
+		}
 
-            xml.WriteString(m_Content);
+		public virtual void Save(GenericWriter writer)
+		{
+			writer.Write(0);
 
-            xml.WriteEndElement();
-        }
-    }
+			writer.Write(AddedBy);
+			writer.Write(Content);
+			writer.Write(LastModified);
+		}
+
+		public virtual void Load(XmlElement xml)
+		{
+			if (!Insensitive.Equals(xml.Name, "comment"))
+			{
+				foreach (XmlElement sub in xml.GetElementsByTagName("comment"))
+				{
+					xml = sub;
+					break;
+				}
+			}
+
+			AddedBy = Utility.GetAttribute(xml, "addedBy", "empty");
+            Content = Utility.GetText(xml, "");
+            LastModified = Utility.GetXMLDateTime(Utility.GetAttribute(xml, "lastModified"), DateTime.UtcNow);
+		}
+
+		public virtual void Save(XmlElement xml)
+		{
+			var parent = xml;
+
+			if (!Insensitive.Equals(xml.Name, "comment"))
+			{
+				xml = xml.OwnerDocument.CreateElement("comment");
+			}
+
+			if (m_Content != null) 
+			{
+				xml.Value = m_Content;
+			}
+
+			xml.SetAttribute("addedBy", AddedBy);
+			xml.SetAttribute("lastModified", XmlConvert.ToString(LastModified, XmlDateTimeSerializationMode.Utc));
+
+			if (xml != parent)
+			{
+				parent.AppendChild(xml);
+			}
+		}
+	}
 }

@@ -127,6 +127,52 @@ namespace Server
 	{
 		public static List<Region> Regions { get; } = new List<Region>(0x400);
 
+		public static Region Find(Point2D p, Map map)
+		{
+			if (map == null)
+			{
+				return Map.Internal.DefaultRegion;
+			}
+
+			var sector = map.GetSector(p);
+
+			foreach (var o in sector.RegionRects)
+			{
+				foreach (var bound in o.Value)
+				{
+					if (bound.Contains(p))
+					{
+						return o.Key;
+					}
+				}
+			}
+
+			return map.DefaultRegion;
+		}
+
+		public static Region Find(IPoint2D p, Map map)
+		{
+			if (map == null)
+			{
+				return Map.Internal.DefaultRegion;
+			}
+
+			var sector = map.GetSector(p);
+
+			foreach (var o in sector.RegionRects)
+			{
+				foreach (var bound in o.Value)
+				{
+					if (bound.Contains(p))
+					{
+						return o.Key;
+					}
+				}
+			}
+
+			return map.DefaultRegion;
+		}
+
 		public static Region Find(Point3D p, Map map)
 		{
 			if (map == null)
@@ -136,54 +182,87 @@ namespace Server
 
 			var sector = map.GetSector(p);
 
-			if (sector == null)
+			foreach (var o in sector.RegionRects)
 			{
-				return map.DefaultRegion;
+				foreach (var bound in o.Value)
+				{
+					if (bound.Contains(p))
+					{
+						return o.Key;
+					}
+				}
 			}
 
-			var list = sector.RegionRects;
-
-			var r = list.FirstOrDefault(regRect => regRect.Contains(p));
-
-			return r?.Region ?? map.DefaultRegion;
+			return map.DefaultRegion;
 		}
 
-		public static IEnumerable<Region> FindRegions(Point3D p, Map map)
+		public static Region Find(IPoint3D p, Map map)
 		{
 			if (map == null)
 			{
-				yield return Map.Internal.DefaultRegion;
-				yield break;
+				return Map.Internal.DefaultRegion;
 			}
 
 			var sector = map.GetSector(p);
 
-			if (sector == null)
+			foreach (var o in sector.RegionRects)
 			{
-				yield return map.DefaultRegion;
-				yield break;
-			}
-
-			var found = false;
-			var list = sector.RegionRects;
-
-			foreach (var regRect in list)
-			{
-				if (regRect.Contains(p))
+				foreach (var bound in o.Value)
 				{
-					if (!found)
+					if (bound.Contains(p))
 					{
-						found = true;
+						return o.Key;
 					}
-
-					yield return regRect.Region;
 				}
 			}
 
-			if (!found)
+			return map.DefaultRegion;
+		}
+
+		public static Region Find(int x, int y, Map map)
+		{
+			if (map == null)
 			{
-				yield return map.DefaultRegion;
+				return Map.Internal.DefaultRegion;
 			}
+
+			var sector = map.GetSector(x, y);
+
+			foreach (var o in sector.RegionRects)
+			{
+				foreach (var bound in o.Value)
+				{
+					if (bound.Contains(x, y))
+					{
+						return o.Key;
+					}
+				}
+			}
+
+			return map.DefaultRegion;
+		}
+
+		public static Region Find(int x, int y, int z, Map map)
+		{
+			if (map == null)
+			{
+				return Map.Internal.DefaultRegion;
+			}
+
+			var sector = map.GetSector(x, y);
+
+			foreach (var o in sector.RegionRects)
+			{
+				foreach (var bound in o.Value)
+				{
+					if (bound.Contains(x, y, z))
+					{
+						return o.Key;
+					}
+				}
+			}
+
+			return map.DefaultRegion;
 		}
 
 		public static event Action OnLoaded;
@@ -479,10 +558,9 @@ namespace Server
 						{
 							var sector = Map.GetRealSector(x, y);
 
-							if (sectors.Add(sector))
-							{
-								sector.OnEnter(this, rect);
-							}
+							sectors.Add(sector);
+
+							sector.OnEnter(this, rect);
 						}
 					}
 				}
@@ -495,7 +573,9 @@ namespace Server
 				sectors.TrimExcess();
 			}
 			else
+			{
 				Sectors = Array.Empty<Sector>();
+			}
 
 			OnActivate?.Invoke(this);
 		}
@@ -619,6 +699,11 @@ namespace Server
 			return null;
 		}
 
+		public T GetRegion<T>() where T : Region
+		{
+			return GetRegion(typeof(T)) as T;
+		}
+
 		public Region GetRegion(string regionName)
 		{
 			if (regionName == null)
@@ -682,49 +767,31 @@ namespace Server
 			return false;
 		}
 
-		public virtual int CompareTo(object obj)
-		{
-			if (obj is Region reg)
-			{
-				return CompareTo(reg);
-			}
-
-			return 1;
-		}
-
 		public virtual int CompareTo(Region reg)
 		{
 			if (reg == null)
 			{
-				return 1;
+				return -1;
 			}
 
-			if (Dynamic)
+			var res = Dynamic.CompareTo(reg.Dynamic) * -1;
+
+			if (res == 0)
 			{
-				if (!reg.Dynamic)
+				res = Priority.CompareTo(reg.Priority) * -1;
+
+				if (res == 0)
 				{
-					return -1;
+					res = ChildLevel.CompareTo(reg.ChildLevel) * -1;
 				}
 			}
-			else if (reg.Dynamic)
-			{
-				return 1;
-			}
 
-			return ComparePriority(reg);
+			return res;
 		}
 
-		public int ComparePriority(Region reg)
+		public int CompareTo(object obj)
 		{
-			var thisPriority = Priority;
-			var regPriority = reg.Priority;
-
-			if (thisPriority != regPriority)
-			{
-				return regPriority - thisPriority;
-			}
-
-			return reg.ChildLevel - ChildLevel;
+			return CompareTo(obj as Region);
 		}
 
 		public override string ToString()

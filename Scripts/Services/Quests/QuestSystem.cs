@@ -655,13 +655,7 @@ namespace Server.Engines.Quests
 
         public static int C16232(int c16)
         {
-            c16 &= 0x7FFF;
-
-            int r = (((c16 >> 10) & 0x1F) << 3);
-            int g = (((c16 >> 05) & 0x1F) << 3);
-            int b = (((c16 >> 00) & 0x1F) << 3);
-
-            return (r << 16) | (g << 8) | (b << 0);
+			return Utility.ToColor32(c16);
         }
 
         public static int C16216(int c16)
@@ -670,15 +664,9 @@ namespace Server.Engines.Quests
         }
 
         public static int C32216(int c32)
-        {
-            c32 &= 0xFFFFFF;
-
-            int r = (((c32 >> 16) & 0xFF) >> 3);
-            int g = (((c32 >> 08) & 0xFF) >> 3);
-            int b = (((c32 >> 00) & 0xFF) >> 3);
-
-            return (r << 10) | (g << 5) | (b << 0);
-        }
+		{
+			return Utility.ToColor16(c32);
+		}
 
         public static string Color(string text, int color)
         {

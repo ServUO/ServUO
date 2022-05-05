@@ -4088,21 +4088,46 @@ namespace Server.Network
 		{ }
 	}
 
-	public sealed class CityInfo
+	[PropertyObject]
+	public sealed class CityInfo : IPoint3D
 	{
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public string City { get; set; }
+
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public string Building { get; set; }
+
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public int Description { get; set; }
+
 		private Point3D m_Location;
 
-		public CityInfo(string city, string building, int description, int x, int y, int z, Map m)
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public Point3D Location { get => m_Location; set => m_Location = value; }
+
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public int X { get => m_Location.X; set => m_Location.X = value; }
+
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public int Y { get => m_Location.Y; set => m_Location.Y = value; }
+
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public int Z { get => m_Location.Z; set => m_Location.Z = value; }
+
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Administrator)]
+		public Map Map { get; set; }
+
+		public CityInfo(string city, string building, int description, int x, int y, int z, Map map)
 		{
 			City = city;
 			Building = building;
 			Description = description;
 			m_Location = new Point3D(x, y, z);
-			Map = m;
+			Map = map;
 		}
 
-		public CityInfo(string city, string building, int x, int y, int z, Map m)
-			: this(city, building, 0, x, y, z, m)
+		public CityInfo(string city, string building, int x, int y, int z, Map map)
+			: this(city, building, 0, x, y, z, map)
 		{ }
 
 		public CityInfo(string city, string building, int description, int x, int y, int z)
@@ -4112,18 +4137,6 @@ namespace Server.Network
 		public CityInfo(string city, string building, int x, int y, int z)
 			: this(city, building, 0, x, y, z, Map.Trammel)
 		{ }
-
-		public string City { get; set; }
-		public string Building { get; set; }
-		public int Description { get; set; }
-
-		public int X { get => m_Location.X; set => m_Location.X = value; }
-		public int Y { get => m_Location.Y; set => m_Location.Y = value; }
-		public int Z { get => m_Location.Z; set => m_Location.Z = value; }
-
-		public Point3D Location { get => m_Location; set => m_Location = value; }
-
-		public Map Map { get; set; }
 	}
 
 	public sealed class CharacterListUpdate : Packet

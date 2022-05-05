@@ -912,6 +912,11 @@ namespace Server
 			return RandomList(min, max);
 		}
 
+		public static TimeSpan RandomMinMax(TimeSpan min, TimeSpan max)
+		{
+			return TimeSpan.FromTicks(RandomMinMax(min.Ticks, max.Ticks));
+		}
+
 		public static double RandomMinMax(double min, double max)
 		{
 			if (min > max)
@@ -926,6 +931,22 @@ namespace Server
 			}
 
 			return min + (RandomImpl.NextDouble() * (max - min));
+		}
+
+		public static long RandomMinMax(long min, long max)
+		{
+			if (min > max)
+			{
+				var copy = min;
+				min = max;
+				max = copy;
+			}
+			else if (min == max)
+			{
+				return min;
+			}
+
+			return min + (long)(RandomImpl.NextDouble() * (max - min));
 		}
 
 		public static int RandomMinMax(int min, int max)
@@ -1509,6 +1530,16 @@ namespace Server
 
 		private static readonly Stack<ConsoleColor> m_ConsoleColors = new Stack<ConsoleColor>();
 
+		public static void WriteWarning(string text, params object[] args)
+		{
+			WriteLine(ConsoleColor.Yellow, $"Warning: {text}", args);
+		}
+
+		public static void WriteError(string text, params object[] args)
+		{
+			WriteLine(ConsoleColor.Red, $"Error: {text}", args);
+		}
+
 		public static void Write(ConsoleColor color, string text, params object[] args)
 		{
 			lock (m_ConsoleColors)
@@ -1516,7 +1547,7 @@ namespace Server
 				var oldColor = Console.ForegroundColor;
 
 				try { Console.ForegroundColor = color; }
-				catch { return; }
+				catch { }
 
 				Console.Write(text, args);
 
@@ -1532,7 +1563,7 @@ namespace Server
 				var oldColor = Console.ForegroundColor;
 
 				try { Console.ForegroundColor = color; }
-				catch { return; }
+				catch { }
 
 				Console.WriteLine(text, args);
 
@@ -1658,6 +1689,20 @@ namespace Server
 			return !color.IsEmpty;
 		}
 
+		public static int ToColor32(int color16)
+		{
+			color16 &= 0x7FFF;
+
+			return (((color16 >> 10) & 0x1F) << 3 << 16) | (((color16 >> 05) & 0x1F) << 3 << 8) | (((color16 >> 00) & 0x1F) << 3);
+		}
+
+		public static int ToColor16(int color32)
+		{
+			color32 &= 0xFFFFFF;
+
+			return ((((color32 >> 16) & 0xFF) >> 3) << 10) | ((((color32 >> 08) & 0xFF) >> 3) << 5) | (((color32 >> 00) & 0xFF) >> 3);
+		}
+
 		public static bool NumberBetween(double num, int bound1, int bound2, double allowance)
 		{
 			if (bound1 > bound2)
@@ -1732,7 +1777,7 @@ namespace Server
 		public static List<TOutput> CastConvertList<TInput, TOutput>(List<TInput> list) where TOutput : TInput
 #endif
 		{
-			return list.ConvertAll<TOutput>(value => (TOutput)value);
+			return list.ConvertAll(value => (TOutput)value);
 		}
 
 		public static List<TOutput> SafeConvertList<TInput, TOutput>(List<TInput> list) where TOutput : class

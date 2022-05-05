@@ -15,9 +15,17 @@ namespace Server
 		SA
 	}
 
+	[Parsable]
 	public struct ClientVersion : IComparable, IComparable<ClientVersion>, IEquatable<ClientVersion>
 	{
 		public static readonly ClientVersion Zero = new ClientVersion(0, 0, 0, 0);
+
+		public static ClientVersion Parse(string input)
+		{
+			TryParse(input, out var value);
+
+			return value;
+		}
 
 		public static bool TryParse(string input, out int maj, out int min, out int rev, out int pat, out ClientType type)
 		{

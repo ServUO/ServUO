@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Xml;
+
+using Server.Network;
 #endregion
 
 namespace Server.Accounting
@@ -242,10 +245,34 @@ namespace Server.Accounting
 		bool HasPlatBalance(double amount);
 	}
 
-	public interface IAccount : IGoldAccount, IComparable<IAccount>, IEnumerable<Mobile>
+	public interface ISecureAccount
+	{
+		int GetSecureBalance(Mobile m);
+		void SetSecureBalance(Mobile m, int amount);
+
+		bool HasSecureBalance(Mobile m, int amount);
+
+		bool DepositSecure(Mobile m, int amount);
+		bool WithdrawSecure(Mobile m, int amount);
+	}
+
+	public interface IStoreAccount
 	{
 		[CommandProperty(AccessLevel.Administrator, true)]
-		string Username { get; set; }
+		int Sovereigns { get; }
+
+		void SetSovereigns(int amount);
+
+		bool HasSovereigns(int amount);
+
+		bool DepositSovereigns(int amount);
+		bool WithdrawSovereigns(int amount);
+	}
+
+	public interface IAccount : IGoldAccount, ISecureAccount, IStoreAccount, IComparable, IComparable<IAccount>, IEnumerable<Mobile>
+	{
+		[CommandProperty(AccessLevel.Administrator, true)]
+		string Username { get; }
 
 		[CommandProperty(AccessLevel.Administrator, true)]
 		string Email { get; set; }
@@ -283,6 +310,9 @@ namespace Server.Accounting
 		[CommandProperty(AccessLevel.Administrator)]
 		bool Young { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
+		bool Deleted { get; }
+
 		Mobile this[int index] { get; set; }
 
 		void Delete();
@@ -290,5 +320,71 @@ namespace Server.Accounting
 		string GetPassword();
 		void SetPassword(string password);
 		bool CheckPassword(string password);
+
+		int Flags { get; set; }
+
+		bool Inactive { get; }
+
+		string[] IPRestrictions { get; set; }
+
+		void CheckYoung();
+		void RemoveYoungStatus(int message);
+
+		bool GetFlag(int index);
+		void SetFlag(int index, bool value);
+
+		List<IAccountComment> Comments { get; }
+
+		void AddComment(string author, string value);
+
+		List<IAccountTag> Tags { get; }
+
+		string GetTag(string name);
+		void SetTag(string name, string value);
+		void AddTag(string name, string value);
+		void RemoveTag(string name);
+
+		bool GetBanTags(out DateTime banTime, out TimeSpan banDuration);
+		void SetBanTags(Mobile from, DateTime banTime, TimeSpan banDuration);
+		void SetUnspecifiedBan(Mobile from);
+
+		bool CheckAccess(IPAddress ipAddress);
+		bool CheckAccess(NetState ns);
+		bool HasAccess(IPAddress ipAddress);
+		bool HasAccess(NetState ns);
+		void LogAccess(IPAddress ipAddress);
+		void LogAccess(NetState ns);
+
+		bool Save(XmlElement xml);
+		bool Load(XmlElement xml);
+
+		bool Save(GenericWriter writer);
+		bool Load(GenericReader reader);
+	}
+
+	public interface IAccountComment
+	{
+		DateTime LastModified { get; set; }
+
+		string AddedBy { get; set; }
+		string Content { get; set; }
+
+		void Save(XmlElement xml);
+		void Load(XmlElement xml);
+
+		void Save(GenericWriter writer);
+		void Load(GenericReader reader);
+	}
+
+	public interface IAccountTag
+	{
+		string Name { get; set; }
+		string Value { get; set; }
+
+		void Save(XmlElement xml);
+		void Load(XmlElement xml);
+
+		void Save(GenericWriter writer);
+		void Load(GenericReader reader);
 	}
 }

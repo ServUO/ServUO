@@ -19,7 +19,7 @@ namespace Server.Services.Virtues
 		[ConfigProperty("Honesty.VirtualGold")]
 		public static bool Enabled { get => Config.Get("Honesty.Enabled", true); set => Config.Set("Honesty.Enabled", value); }
 
-		[ConfigProperty("Honesty.VirtualGold")]
+		[ConfigProperty("Honesty.MaxGeneration")]
 		public static int MaxGeneration { get => Config.Get("Honesty.MaxGeneration", 1000); set => Config.Set("Honesty.MaxGeneration", value); }
 
 		[ConfigProperty("Honesty.TrammelGeneration")]

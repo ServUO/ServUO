@@ -261,8 +261,8 @@ namespace Server.Items
                 HousePlacementEntry entry = entries[i];
 
                 int y = 70 + (index * 20);
-                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
-                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalStorageScalar);
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
@@ -1025,8 +1025,8 @@ namespace Server.Items
                 HousePlacementEntry entry = m_Entries[i];
 
                 int y = 70 + (index * 20);
-                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
-                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalStorageScalar);
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);

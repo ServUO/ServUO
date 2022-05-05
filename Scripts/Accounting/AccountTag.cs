@@ -2,68 +2,78 @@ using System.Xml;
 
 namespace Server.Accounting
 {
-    public class AccountTag
-    {
-        private string m_Name, m_Value;
-        /// <summary>
-        /// Constructs a new AccountTag instance with a specific name and value.
-        /// </summary>
-        /// <param name="name">Initial name.</param>
-        /// <param name="value">Initial value.</param>
-        public AccountTag(string name, string value)
-        {
-            m_Name = name;
-            m_Value = value;
-        }
+	public class AccountTag : IAccountTag
+	{
+		public string Name { get; set; }
+		public string Value { get; set; }
 
-        /// <summary>
-        /// Deserializes an AccountTag instance from an xml element.
-        /// </summary>
-        /// <param name="node">The XmlElement instance from which to deserialize.</param>
-        public AccountTag(XmlElement node)
-        {
-            m_Name = Utility.GetAttribute(node, "name", "empty");
-            m_Value = Utility.GetText(node, "");
-        }
+		public AccountTag(string name, string value)
+		{
+			Name = name;
+			Value = value;
+		}
 
-        /// <summary>
-        /// Gets or sets the name of this tag.
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
-            }
-        }
-        /// <summary>
-        /// Gets or sets the value of this tag.
-        /// </summary>
-        public string Value
-        {
-            get
-            {
-                return m_Value;
-            }
-            set
-            {
-                m_Value = value;
-            }
-        }
-        /// <summary>
-        /// Serializes this AccountTag instance to an XmlTextWriter.
-        /// </summary>
-        /// <param name="xml">The XmlTextWriter instance from which to serialize.</param>
-        public void Save(XmlTextWriter xml)
-        {
-            xml.WriteStartElement("tag");
-            xml.WriteAttributeString("name", m_Name);
-            xml.WriteString(m_Value);
-            xml.WriteEndElement();
-        }
-    }
+		public AccountTag(XmlElement node)
+		{
+			Load(node);
+		}
+
+		public AccountTag(GenericReader reader)
+		{
+			Load(reader);
+		}
+
+		public virtual void Load(GenericReader reader)
+		{
+			reader.ReadInt();
+
+			Name = reader.ReadString();
+			Value = reader.ReadString();
+		}
+
+		public virtual void Save(GenericWriter writer)
+		{
+			writer.Write(0);
+
+			writer.Write(Name);
+			writer.Write(Value);
+		}
+
+		public virtual void Load(XmlElement node)
+		{
+			if (!Insensitive.Equals(node.Name, "tag"))
+			{
+				foreach (XmlElement sub in node.GetElementsByTagName("tag"))
+				{
+					node = sub;
+					break;
+				}
+			}
+
+			Name = Utility.GetAttribute(node, "name", "empty");
+			Value = Utility.GetText(node, "");
+		}
+
+		public virtual void Save(XmlElement node)
+		{
+			var parent = node;
+
+			if (!Insensitive.Equals(node.Name, "tag"))
+			{
+				node = node.OwnerDocument.CreateElement("tag");
+			}
+
+			if (Value != null)
+			{
+				node.Value = Value;
+			}
+
+			node.SetAttribute("name", Name);
+
+			if (node != parent)
+			{
+				parent.AppendChild(node);
+			}
+		}
+	}
 }

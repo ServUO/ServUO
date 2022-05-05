@@ -33,16 +33,19 @@ namespace Server
 		public static Dictionary<Serial, Mobile> Mobiles { get; } = new Dictionary<Serial, Mobile>(0x40000);
 		public static Dictionary<Serial, Item> Items { get; } = new Dictionary<Serial, Item>(0x100000);
 
-		public static readonly string MobileIndexPath = Path.Combine("Saves/Mobiles/", "Mobiles.idx");
-		public static readonly string MobileTypesPath = Path.Combine("Saves/Mobiles/", "Mobiles.tdb");
-		public static readonly string MobileDataPath = Path.Combine("Saves/Mobiles/", "Mobiles.bin");
+		public static readonly string MobileRootPath = Path.Combine("Saves", "Mobiles");
+		public static readonly string MobileIndexPath = Path.Combine(MobileRootPath, "Mobiles.idx");
+		public static readonly string MobileTypesPath = Path.Combine(MobileRootPath, "Mobiles.tdb");
+		public static readonly string MobileDataPath = Path.Combine(MobileRootPath, "Mobiles.bin");
 
-		public static readonly string ItemIndexPath = Path.Combine("Saves/Items/", "Items.idx");
-		public static readonly string ItemTypesPath = Path.Combine("Saves/Items/", "Items.tdb");
-		public static readonly string ItemDataPath = Path.Combine("Saves/Items/", "Items.bin");
+		public static readonly string ItemRootPath = Path.Combine("Saves", "Items");
+		public static readonly string ItemIndexPath = Path.Combine(ItemRootPath, "Items.idx");
+		public static readonly string ItemTypesPath = Path.Combine(ItemRootPath, "Items.tdb");
+		public static readonly string ItemDataPath = Path.Combine(ItemRootPath, "Items.bin");
 
-		public static readonly string GuildIndexPath = Path.Combine("Saves/Guilds/", "Guilds.idx");
-		public static readonly string GuildDataPath = Path.Combine("Saves/Guilds/", "Guilds.bin");
+		public static readonly string GuildRootPath = Path.Combine("Saves", "Guilds");
+		public static readonly string GuildIndexPath = Path.Combine(GuildRootPath, "Guilds.idx");
+		public static readonly string GuildDataPath = Path.Combine(GuildRootPath, "Guilds.bin");
 
 		public static void NotifyDiskWriteComplete()
 		{
@@ -797,22 +800,27 @@ namespace Server
 				Console.WriteLine("Fixed   ({0:#,0} items, {1:#,0} mobiles)", itemConflicts, mobileConflicts);
 		}
 
+		private static void EnsureDirectories()
+		{
+			if (!Directory.Exists(MobileRootPath))
+			{
+				Directory.CreateDirectory(MobileRootPath);
+			}
+
+			if (!Directory.Exists(ItemRootPath))
+			{
+				Directory.CreateDirectory(ItemRootPath);
+			}
+
+			if (!Directory.Exists(GuildRootPath))
+			{
+				Directory.CreateDirectory(GuildRootPath);
+			}
+		}
+
 		private static void SaveIndex<T>(List<T> list, string path) where T : IEntityEntry
 		{
-			if (!Directory.Exists("Saves/Mobiles/"))
-			{
-				Directory.CreateDirectory("Saves/Mobiles/");
-			}
-
-			if (!Directory.Exists("Saves/Items/"))
-			{
-				Directory.CreateDirectory("Saves/Items/");
-			}
-
-			if (!Directory.Exists("Saves/Guilds/"))
-			{
-				Directory.CreateDirectory("Saves/Guilds/");
-			}
+			EnsureDirectories();
 
 			using (var idx = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
 			{
@@ -872,20 +880,7 @@ namespace Server
 
 			var watch = Stopwatch.StartNew();
 
-			if (!Directory.Exists("Saves/Mobiles/"))
-			{
-				Directory.CreateDirectory("Saves/Mobiles/");
-			}
-
-			if (!Directory.Exists("Saves/Items/"))
-			{
-				Directory.CreateDirectory("Saves/Items/");
-			}
-
-			if (!Directory.Exists("Saves/Guilds/"))
-			{
-				Directory.CreateDirectory("Saves/Guilds/");
-			}
+			EnsureDirectories();
 
 			try
 			{

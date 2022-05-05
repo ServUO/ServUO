@@ -18,47 +18,68 @@ namespace Server.Multis
 {
     public abstract class BaseHouse : BaseMulti
     {
+		[ConfigProperty("Housing.AccountHouseLimit")]
         public static int AccountHouseLimit { get => Config.Get("Housing.AccountHouseLimit", 1); set => Config.Set("Housing.AccountHouseLimit", value); }
 
-        public static double GlobalBonusStorageScalar => 1.4;
+		[ConfigProperty("Housing.GlobalBonusStorage")]
+		public static double GlobalStorageScalar { get => Config.Get("Housing.GlobalStorageScalar", 1.40); set => Config.Set("Housing.GlobalStorageScalar", value); }
 
-        public const int MaxCoOwners = 15;
-        public static int MaxFriends => 140;
-        public static int MaxBans => 140;
+		[ConfigProperty("Housing.PlacementRestrictDelay")]
+		public static TimeSpan PlacementRestrictDelay { get => Config.Get("Housing.PlacementRestrictDelay", TimeSpan.FromHours(1.0)); set => Config.Set("Housing.PlacementRestrictDelay", value); }
 
-        #region Dynamic decay system
-        private DecayLevel m_CurrentStage;
+		[ConfigProperty("Housing.MaxCoOwners")]
+		public static int MaxCoOwners  { get => Config.Get("Housing.MaxCoOwners", 15); set => Config.Set("Housing.MaxCoOwners", value); }
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public DateTime NextDecayStage { get; set; }
+		[ConfigProperty("Housing.MaxFriends")]
+		public static int MaxFriends { get => Config.Get("Housing.MaxFriends", 140); set => Config.Set("Housing.MaxFriends", value); }
 
-        public void ResetDynamicDecay()
-        {
-            m_CurrentStage = DecayLevel.Ageless;
-            NextDecayStage = DateTime.MinValue;
-        }
+		[ConfigProperty("Housing.MaxBans")]
+		public static int MaxBans { get => Config.Get("Housing.MaxBans", 140); set => Config.Set("Housing.MaxBans", value); }
 
-        public void SetDynamicDecay(DecayLevel level)
-        {
-            m_CurrentStage = level;
+		[ConfigProperty("Housing.DecayEnabled")]
+		public static bool DecayEnabled { get => Config.Get("Housing.DecayEnabled", true); set => Config.Set("Housing.DecayEnabled", value); }	
 
-            if (DynamicDecay.Decays(level))
-                NextDecayStage = DateTime.UtcNow + DynamicDecay.GetRandomDuration(level);
-            else
-                NextDecayStage = DateTime.MinValue;
-        }
-
-        #endregion
-
-        public const bool DecayEnabled = true;
+		private static readonly Dictionary<Mobile, HashSet<BaseHouse>> m_Table = new Dictionary<Mobile, HashSet<BaseHouse>>();
 
         public static void Decay_OnTick()
         {
-            for (int i = 0; i < AllHouses.Count; ++i)
-                AllHouses[i].CheckDecay();
+			ColUtility.IterateReverse(AllHouses, h => h.CheckDecay());
         }
 
-        [CommandProperty(AccessLevel.GameMaster)]
+		public static bool IsNewer(BaseHouse check, BaseHouse house)
+		{
+			DateTime checkTime = check.LastTraded > check.BuiltOn ? check.LastTraded : check.BuiltOn;
+			DateTime houseTime = house.LastTraded > house.BuiltOn ? house.LastTraded : house.BuiltOn;
+
+			return checkTime > houseTime;
+		}
+
+		#region Dynamic Decay
+
+		private DecayLevel m_CurrentStage;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public DateTime NextDecayStage { get; set; }
+
+		public void ResetDynamicDecay()
+		{
+			m_CurrentStage = DecayLevel.Ageless;
+			NextDecayStage = DateTime.MinValue;
+		}
+
+		public void SetDynamicDecay(DecayLevel level)
+		{
+			m_CurrentStage = level;
+
+			if (DynamicDecay.Decays(level))
+				NextDecayStage = DateTime.UtcNow + DynamicDecay.GetRandomDuration(level);
+			else
+				NextDecayStage = DateTime.MinValue;
+		}
+
+		#endregion
+
+		[CommandProperty(AccessLevel.GameMaster)]
         public DateTime LastRefreshed { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -70,7 +91,7 @@ namespace Server.Multis
         {
             get
             {
-                if (RestrictDecay || DecayPeriod == TimeSpan.Zero)
+                if (!DecayEnabled || RestrictDecay || DecayPeriod == TimeSpan.Zero)
                     return DecayType.Ageless;
 
                 if (m_Owner == null)
@@ -114,14 +135,6 @@ namespace Server.Multis
 
                 return DecayType.ManualRefresh;
             }
-        }
-
-        public bool IsNewer(BaseHouse check, BaseHouse house)
-        {
-            DateTime checkTime = check.LastTraded > check.BuiltOn ? check.LastTraded : check.BuiltOn;
-            DateTime houseTime = house.LastTraded > house.BuiltOn ? house.LastTraded : house.BuiltOn;
-
-            return checkTime > houseTime;
         }
 
         private DecayType _CurrentDecay;
@@ -236,9 +249,14 @@ namespace Server.Multis
 
         public virtual bool CheckDecay()
         {
+			if (!DecayEnabled)
+			{
+				return false;
+			}
+
             if (!Deleted && DecayLevel == DecayLevel.Collapsed)
             {
-                Timer.DelayCall(TimeSpan.Zero, Decay_Sandbox);
+                Timer.DelayCall(Decay_Sandbox);
                 return true;
             }
 
@@ -265,15 +283,12 @@ namespace Server.Multis
             if (Deleted)
                 return;
 
-            new TempNoHousingRegion(this, null);
-
-            Rectangle3D[] recs = m_Region.Area;
-            Map map = Map;
-
-            Timer.DelayCall(TimeSpan.FromMilliseconds(250), () => OnAfterDecay(recs, map));
+            _ = new TempNoHousingRegion(this, null);
 
             KillVendors();
             Delete();
+
+            Timer.DelayCall(OnAfterDecay, m_Region.Area, Map);
         }
 
         public virtual void OnAfterDecay(Rectangle3D[] recs, Map map)
@@ -317,10 +332,11 @@ namespace Server.Multis
             }
         }
 
-        public virtual TimeSpan RestrictedPlacingTime => TimeSpan.FromHours(1.0);
+		[CommandProperty(AccessLevel.GameMaster)]
+		public virtual TimeSpan RestrictedPlacingTime => PlacementRestrictDelay;
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public virtual double BonusStorageScalar => GlobalBonusStorageScalar;
+        public virtual double BonusStorageScalar => GlobalStorageScalar;
 
         private bool m_Public;
 
@@ -328,8 +344,6 @@ namespace Server.Multis
         private TrashBarrel m_Trash;
         private Mobile m_Owner;
         private Point3D m_RelativeBanLocation;
-
-        private static readonly Dictionary<Mobile, List<BaseHouse>> m_Table = new Dictionary<Mobile, List<BaseHouse>>();
 
         public virtual bool IsActive => true;
 
@@ -1035,15 +1049,11 @@ namespace Server.Multis
 
             if (m != null)
             {
-                m_Table.TryGetValue(m, out List<BaseHouse> exists);
-
-                if (exists != null)
+                if (m_Table.TryGetValue(m, out HashSet<BaseHouse> exists))
                 {
-                    for (int i = 0; i < exists.Count; ++i)
+                    foreach (BaseHouse house in exists)
                     {
-                        BaseHouse house = exists[i];
-
-                        if (house != null && !house.Deleted && house.Owner == m)
+						if (house != null && !house.Deleted && house.Owner == m)
                             list.Add(house);
                     }
                 }
@@ -1379,11 +1389,8 @@ namespace Server.Multis
 
             if (owner != null)
             {
-                List<BaseHouse> list = null;
-                m_Table.TryGetValue(owner, out list);
-
-                if (list == null)
-                    m_Table[owner] = list = new List<BaseHouse>();
+                if (!m_Table.TryGetValue(owner, out HashSet<BaseHouse> list))
+                    m_Table[owner] = list = new HashSet<BaseHouse>();
 
                 list.Add(this);
             }
@@ -3382,11 +3389,8 @@ namespace Server.Multis
 
                         if (m_Owner != null)
                         {
-                            List<BaseHouse> list = null;
-                            m_Table.TryGetValue(m_Owner, out list);
-
-                            if (list == null)
-                                m_Table[m_Owner] = list = new List<BaseHouse>();
+                            if (!m_Table.TryGetValue(m_Owner, out HashSet<BaseHouse> list))
+                                m_Table[m_Owner] = list = new HashSet<BaseHouse>();
 
                             list.Add(this);
                         }
@@ -3419,8 +3423,7 @@ namespace Server.Multis
             if (!CheckDecay())
             {
                 if (RelocatedEntities.Count > 0)
-                    Timer.DelayCall(TimeSpan.Zero, RestoreRelocatedEntities);
-
+                    Timer.DelayCall(RestoreRelocatedEntities);
             }
 
             if (version == 19)
@@ -3530,26 +3533,21 @@ namespace Server.Multis
             {
                 if (m_Owner != null)
                 {
-                    m_Table.TryGetValue(m_Owner, out List<BaseHouse> list);
+                    if (m_Table.TryGetValue(m_Owner, out HashSet<BaseHouse> list))
+						list.Remove(this);
 
-                    if (list == null)
-                        m_Table[m_Owner] = list = new List<BaseHouse>();
-
-                    list.Remove(this);
                     m_Owner.Delta(MobileDelta.Noto);
                 }
 
                 m_Owner = value;
 
                 if (m_Owner != null)
-                {
-                    List<BaseHouse> list = null;
-                    m_Table.TryGetValue(m_Owner, out list);
+				{
+					if (!m_Table.TryGetValue(m_Owner, out HashSet<BaseHouse> list))
+						m_Table[m_Owner] = list = new HashSet<BaseHouse>();
 
-                    if (list == null)
-                        m_Table[m_Owner] = list = new List<BaseHouse>();
+					list.Add(this);
 
-                    list.Add(this);
                     m_Owner.Delta(MobileDelta.Noto);
                 }
 
@@ -3804,14 +3802,9 @@ namespace Server.Multis
             base.OnAfterDelete();
 
             if (m_Owner != null)
-            {
-                List<BaseHouse> list = null;
-                m_Table.TryGetValue(m_Owner, out list);
-
-                if (list == null)
-                    m_Table[m_Owner] = list = new List<BaseHouse>();
-
-                list.Remove(this);
+			{
+				if (m_Table.TryGetValue(m_Owner, out HashSet<BaseHouse> list))
+					list.Remove(this);
             }
 
             CheckUnregisteredAddons();
@@ -4011,19 +4004,14 @@ namespace Server.Multis
             if (m == null)
                 return 0;
 
-            List<BaseHouse> list = null;
-            m_Table.TryGetValue(m, out list);
-
-            if (list == null)
+			if (!m_Table.TryGetValue(m, out HashSet<BaseHouse> list))
                 return 0;
 
             int count = 0;
 
-            for (int i = 0; i < list.Count; ++i)
+            foreach (BaseHouse h in list)
             {
-                BaseHouse h = list[i];
-
-                if (!h.Deleted)
+				if (!h.Deleted)
                     count++;
             }
 
@@ -4042,9 +4030,18 @@ namespace Server.Multis
 
         public static int GetAccountHouseLimit(Mobile m)
         {
-            int max = AccountHouseLimit;
+            var max = AccountHouseLimit;
 
-            return max;
+			if (max < 0)
+			{
+				max = Int32.MaxValue;
+			}
+			else if (m.Account is Account a && Int32.TryParse(a.GetTag("HouseLimitBonus"), out var bonus) && bonus > 0)
+			{
+				max += bonus;
+			}
+
+			return max;
         }
 
         public static bool CheckAccountHouseLimit(Mobile m, bool message = true)

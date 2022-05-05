@@ -96,7 +96,7 @@ namespace Server.Mobiles
             if (AccountGold.Enabled && from.Account != null && from.Account.WithdrawGold(amount))
             {
                 if (message)
-                    from.SendLocalizedMessage(1155856, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been removed from your bank box.
+                    from.SendLocalizedMessage(1155856, amount.ToString("N0")); // ~1_AMOUNT~ gold has been removed from your bank box.
 
                 return true;
             }
@@ -140,7 +140,7 @@ namespace Server.Mobiles
             }
 
             if (message)
-                from.SendLocalizedMessage(1155856, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold has been removed from your bank box.
+                from.SendLocalizedMessage(1155856, amount.ToString("N0")); // ~1_AMOUNT~ gold has been removed from your bank box.
 
             return true;
         }
@@ -151,7 +151,7 @@ namespace Server.Mobiles
             if (AccountGold.Enabled && from.Account != null && from.Account.DepositGold(amount))
             {
                 if (message)
-                    from.SendLocalizedMessage(1042763, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold was deposited in your account.
+                    from.SendLocalizedMessage(1042763, amount.ToString("N0")); // ~1_AMOUNT~ gold was deposited in your account.
 
                 return true;
             }
@@ -201,7 +201,7 @@ namespace Server.Mobiles
             }
 
             if (message)
-                from.SendLocalizedMessage(1042763, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold was deposited in your account.
+                from.SendLocalizedMessage(1042763, amount.ToString("N0")); // ~1_AMOUNT~ gold was deposited in your account.
 
             return true;
         }
@@ -212,7 +212,7 @@ namespace Server.Mobiles
             if (AccountGold.Enabled && from.Account != null && from.Account.DepositGold(amount))
             {
                 if (message)
-                    from.SendLocalizedMessage(1042763, amount.ToString("N0", System.Globalization.CultureInfo.GetCultureInfo("en-US"))); // ~1_AMOUNT~ gold was deposited in your account.
+                    from.SendLocalizedMessage(1042763, amount.ToString("N0")); // ~1_AMOUNT~ gold was deposited in your account.
 
                 return amount;
             }
@@ -387,13 +387,13 @@ namespace Server.Mobiles
                                     break;
                                 }
 
-                                if (AccountGold.Enabled && e.Mobile.Account is Account)
+                                if (AccountGold.Enabled && e.Mobile.Account != null)
                                 {
                                     vendor.Say(1155855, string.Format("{0:#,0}\t{1:#,0}",
                                         e.Mobile.Account.TotalPlat,
                                         e.Mobile.Account.TotalGold), 0x3BC);
 
-                                    vendor.Say(1155848, string.Format("{0:#,0}", ((Account)e.Mobile.Account).GetSecureAccountAmount(e.Mobile)), 0x3BC);
+                                    vendor.Say(1155848, string.Format("{0:#,0}", e.Mobile.Account.GetSecureBalance(e.Mobile)), 0x3BC);
                                 }
                                 else
                                 {

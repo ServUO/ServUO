@@ -155,7 +155,7 @@ namespace Server
 
 		#region Expansions
 
-		private static readonly Expansion[] _Expansions = Enum.GetValues(typeof(Expansion)).Cast<Expansion>().ToArray();
+		private static readonly Expansion[] _Expansions = (Expansion[])Enum.GetValues(typeof(Expansion));
 
 		[ConfigProperty("Server.Expansion")]
 		public static Expansion Expansion 

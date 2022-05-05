@@ -272,7 +272,7 @@ namespace Server.Items
             Account acct = User.Account as Account;
 
             if (acct != null)
-                secureAmount = acct.GetSecureAccountAmount(User);
+                secureAmount = acct.GetSecureBalance(User);
 
             AddHtmlLocalized(20, 35, 380, 16, 1155859, Safe.HoldAmount.ToString("N0", CultureInfo.GetCultureInfo("en-US")), 0xFFFF, false, false); // Gold Deposited: ~1_AMOUNT~
             AddHtmlLocalized(20, 65, 380, 16, 1155864, string.Format("{0}\t{1}", User.Name, secureAmount.ToString("N0", CultureInfo.GetCultureInfo("en-US"))), 0xFFFF, false, false); // ~1_NAME~'s Secure Account: ~2_AMOUNT~
@@ -302,7 +302,7 @@ namespace Server.Items
             int secureAmount = 0;
 
             if (account != null)
-                secureAmount = account.GetSecureAccountAmount(User);
+                secureAmount = account.GetSecureBalance(User);
 
             switch (info.ButtonID)
             {
@@ -324,16 +324,20 @@ namespace Server.Items
                                 int left = WallSafe.MaxGold - Safe.HoldAmount;
 
                                 if (v > left)
-                                {
-                                    Safe.HoldAmount = WallSafe.MaxGold;
-                                    acct.WithdrawFromSecure(User, left);
-                                    Safe.AddHistory(string.Format("<basefont color=green>{0} +{1}", User.Name, left.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
+								{
+									if (acct.WithdrawSecure(User, left))
+									{
+										Safe.HoldAmount += left;
+										Safe.AddHistory(string.Format("<basefont color=green>{0} +{1:N0}", User.Name, left));
+									}
                                 }
                                 else
                                 {
-                                    Safe.HoldAmount += v;
-                                    acct.WithdrawFromSecure(User, v);
-                                    Safe.AddHistory(string.Format("<basefont color=green>{0} +{1}", User.Name, v.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
+									if (acct.WithdrawSecure(User, v))
+									{
+										Safe.HoldAmount += v;
+										Safe.AddHistory(string.Format("<basefont color=green>{0} +{1:N0}", User.Name, v));
+									}
                                 }
 
                                 from.SendGump(new WallSafeGump(User, Safe));
@@ -366,15 +370,19 @@ namespace Server.Items
 
                                 if (v > left)
                                 {
-                                    acct.DepositToSecure(User, left);
-                                    Safe.HoldAmount -= left;
-                                    Safe.AddHistory(string.Format("<basefont color=red>{0} -{1}", User.Name, left.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
+									if (acct.DepositSecure(User, left))
+									{
+										Safe.HoldAmount -= left;
+										Safe.AddHistory(string.Format("<basefont color=red>{0} -{1:N0}", User.Name, left));
+									}
                                 }
                                 else
                                 {
-                                    acct.DepositToSecure(User, v);
-                                    Safe.HoldAmount -= v;
-                                    Safe.AddHistory(string.Format("<basefont color=red>{0} -{1}", User.Name, v.ToString("N0", CultureInfo.GetCultureInfo("en-US"))));
+									if (acct.DepositSecure(User, v))
+									{
+										Safe.HoldAmount -= v;
+										Safe.AddHistory(string.Format("<basefont color=red>{0} -{1:N0}", User.Name, v));
+									}
                                 }
 
                                 from.SendGump(new WallSafeGump(User, Safe));

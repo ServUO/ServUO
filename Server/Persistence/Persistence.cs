@@ -1,6 +1,7 @@
 #region References
 using System;
 using System.IO;
+using System.Xml;
 #endregion
 
 namespace Server
@@ -188,6 +189,109 @@ namespace Server
 				{
 					reader.Close();
 				}
+			}
+		}
+
+		public static void Save(string path, string root, Action<XmlElement> serializer)
+		{
+			Save(new FileInfo(path), root, serializer);
+		}
+
+		public static void Save(FileInfo file, string root, Action<XmlElement> serializer)
+		{
+			file.Refresh();
+
+			if (file.Directory != null && !file.Directory.Exists)
+			{
+				file.Directory.Create();
+			}
+
+			if (!file.Exists)
+			{
+				file.Create().Close();
+			}
+
+			file.Refresh();
+
+			var doc = new XmlDocument();
+
+			doc.AppendChild(doc.CreateXmlDeclaration("1.0", "utf-8", "yes"));
+
+			var node = doc.CreateElement(root);
+
+			serializer(node);
+
+			doc.AppendChild(node);
+
+			doc.Save(file.FullName);
+		}
+
+		public static void Load(string path, string root, Action<XmlElement> deserializer)
+		{
+			Load(path, root, deserializer, true);
+		}
+
+		public static void Load(FileInfo file, string root, Action<XmlElement> deserializer)
+		{
+			Load(file, root, deserializer, true);
+		}
+
+		public static void Load(string path, string root, Action<XmlElement> deserializer, bool ensure)
+		{
+			Load(new FileInfo(path), root, deserializer, ensure);
+		}
+
+		public static void Load(FileInfo file, string root, Action<XmlElement> deserializer, bool ensure)
+		{
+			file.Refresh();
+
+			if (file.Directory != null && !file.Directory.Exists)
+			{
+				if (!ensure)
+				{
+					throw new DirectoryNotFoundException();
+				}
+
+				file.Directory.Create();
+			}
+
+			if (!file.Exists)
+			{
+				if (!ensure)
+				{
+					throw new FileNotFoundException
+					{
+						Source = file.FullName
+					};
+				}
+
+				file.Create().Close();
+			}
+
+			file.Refresh();
+
+			try
+			{
+				var doc = new XmlDocument();
+
+				doc.Load(file.FullName);
+
+				var node = doc[root];
+
+				deserializer(node);
+			}
+			catch (EndOfStreamException eos)
+			{
+				if (file.Length > 0)
+				{
+					throw new Exception(String.Format("[Persistence]: {0}", eos));
+				}
+			}
+			catch (Exception e)
+			{
+				Utility.WriteLine(ConsoleColor.Red, "[Persistence]: An error was encountered while loading a saved object");
+
+				throw new Exception(String.Format("[Persistence]: {0}", e));
 			}
 		}
 	}
