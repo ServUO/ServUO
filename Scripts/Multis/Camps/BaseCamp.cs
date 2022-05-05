@@ -2,6 +2,7 @@ using Server.Items;
 using Server.Mobiles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Multis
 {
@@ -310,17 +311,37 @@ namespace Server.Multis
             _Camps.Add(this);
         }
 
+        public void checkPrisoner()
+        {
+            if (Prisoner != null && Prisoner.CantWalk)
+            {
+                if (!m_Mobiles.Any(m => m != null && !m.Deleted && m.Alive && m != Prisoner))
+                {
+                    Prisoner.CantWalk = false;
+                    Prisoner.Frozen = false;
+                }
+            }
+        }
+
         public static void OnTick()
         {
-            List<BaseCamp> list = new List<BaseCamp>(_Camps);
-
-            list.ForEach(c =>
-                {
-                    if (!c.Deleted && c.Map != null && c.Map != Map.Internal && !c.RestrictDecay)
+	    int index = _Camps.Count;
+	    
+	    while (--index >= 0)
+	    {
+	    	if (index >= _Camps.Count)
+		    continue;
+	    
+	        BaseCamp c = _Camps[index];
+		
+                if (!c.Deleted && c.Map != null && c.Map != Map.Internal)
+		{
+		    c.checkPrisoner();
+			
+                    if (!c.RestrictDecay)
                         c.CheckDecay();
-                });
-
-            ColUtility.Free(list);
+		}
+	    }
         }
     }
 }
