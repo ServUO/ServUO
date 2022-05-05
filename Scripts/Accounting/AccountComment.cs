@@ -82,7 +82,7 @@ namespace Server.Accounting
 
 			if (m_Content != null) 
 			{
-				xml.Value = m_Content;
+				xml.InnerText = m_Content;
 			}
 
 			xml.SetAttribute("addedBy", AddedBy);
