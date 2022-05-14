@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -490,6 +491,43 @@ namespace Server
 			Utility.PopColor();
 
 			return null;
+		}
+		private static string InternalGet(string key, object defaultValue)
+		{
+			if (!_Initialized)
+			{
+				Load();
+			}
+
+			if (_Entries.TryGetValue(key, out var e) && e != null)
+			{
+				return e.UseDefault ? null : e.Value;
+			}
+
+			var def = defaultValue?.ToString();
+
+			Utility.PushColor(ConsoleColor.Yellow);
+			Console.WriteLine("Config: Warning, using default value '{0}' for '{1}'", def, key);
+			Utility.PopColor();
+
+			//InternalSet(key, def);
+
+			return def;
+		}
+
+		public static IPAddress Get(string key, IPAddress defaultValue)
+		{
+			var ret = defaultValue;
+			var value = InternalGet(key, defaultValue);
+
+			if (value == null || IPAddress.TryParse(value, out ret))
+			{
+				return Utility.Intern(ret);
+			}
+
+			Warn<sbyte>(key);
+
+			return Utility.Intern(defaultValue);
 		}
 
 		public static string Get(string key, string defaultValue)

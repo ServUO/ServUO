@@ -12,26 +12,29 @@ namespace Server.Network
 {
 	public class Listener : IDisposable
 	{
-		private Socket m_Listener;
+		private Socket _Listener;
 		private PingListener _PingListener;
 
-		private readonly Queue<Socket> m_Accepted;
-		private readonly object m_AcceptedSyncRoot;
+		private readonly Queue<Socket> _Accepted;
+		private readonly object _AcceptedSyncRoot;
 
-		private readonly AsyncCallback m_OnAccept;
+		private readonly AsyncCallback _OnAccept;
 
-		private static readonly Socket[] m_EmptySockets = new Socket[0];
+		private static readonly Socket[] _EmptySockets = new Socket[0];
 
-		public static IPEndPoint[] EndPoints { get; set; }
+		public static IPEndPoint[] EndPoints { get; set; } = new IPEndPoint[]
+		{
+			new IPEndPoint(Config.Get("Server.Address", IPAddress.Any), Config.Get("Server.Port", 2593))
+		};
 
 		public Listener(IPEndPoint ipep)
 		{
-			m_Accepted = new Queue<Socket>();
-			m_AcceptedSyncRoot = ((ICollection)m_Accepted).SyncRoot;
+			_Accepted = new Queue<Socket>();
+			_AcceptedSyncRoot = ((ICollection)_Accepted).SyncRoot;
 
-			m_Listener = Bind(ipep);
+			_Listener = Bind(ipep);
 
-			if (m_Listener == null)
+			if (_Listener == null)
 			{
 				return;
 			}
@@ -39,10 +42,10 @@ namespace Server.Network
 			DisplayListener();
 			_PingListener = new PingListener(ipep);
 
-			m_OnAccept = OnAccept;
+			_OnAccept = OnAccept;
 			try
 			{
-				var res = m_Listener.BeginAccept(m_OnAccept, m_Listener);
+				var res = _Listener.BeginAccept(_OnAccept, _Listener);
 			}
 			catch (SocketException ex)
 			{
@@ -103,7 +106,7 @@ namespace Server.Network
 
 		private void DisplayListener()
 		{
-			var ipep = m_Listener.LocalEndPoint as IPEndPoint;
+			var ipep = _Listener.LocalEndPoint as IPEndPoint;
 
 			if (ipep == null)
 			{
@@ -182,7 +185,7 @@ namespace Server.Network
 
 			try
 			{
-				listener.BeginAccept(m_OnAccept, listener);
+				listener.BeginAccept(_OnAccept, listener);
 			}
 			catch (SocketException ex)
 			{
@@ -212,9 +215,9 @@ namespace Server.Network
 
 		private void Enqueue(Socket socket)
 		{
-			lock (m_AcceptedSyncRoot)
+			lock (_AcceptedSyncRoot)
 			{
-				m_Accepted.Enqueue(socket);
+				_Accepted.Enqueue(socket);
 			}
 
 			Core.Set();
@@ -245,15 +248,15 @@ namespace Server.Network
 		{
 			Socket[] array;
 
-			lock (m_AcceptedSyncRoot)
+			lock (_AcceptedSyncRoot)
 			{
-				if (m_Accepted.Count == 0)
+				if (_Accepted.Count == 0)
 				{
-					return m_EmptySockets;
+					return _EmptySockets;
 				}
 
-				array = m_Accepted.ToArray();
-				m_Accepted.Clear();
+				array = _Accepted.ToArray();
+				_Accepted.Clear();
 			}
 
 			return array;
@@ -261,7 +264,7 @@ namespace Server.Network
 
 		public void Dispose()
 		{
-			var socket = Interlocked.Exchange(ref m_Listener, null);
+			var socket = Interlocked.Exchange(ref _Listener, null);
 
 			if (socket != null)
 			{
