@@ -6253,7 +6253,7 @@ namespace Server
 			}
 		}
 
-		public void AddItem(Item item)
+		public void AddItem(Item item, bool deleteConflicting = true)
 		{
 			if (item == null || item.Deleted)
 			{
@@ -6302,6 +6302,10 @@ namespace Server
 				catch (Exception e)
 				{
 					Diagnostics.ExceptionLogging.LogException(e);
+				}
+				if (deleteConflicting)
+				{
+					equipped.Delete();
 				}
 			}
 

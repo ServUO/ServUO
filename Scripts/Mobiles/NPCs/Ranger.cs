@@ -35,7 +35,8 @@ namespace Server.Mobiles
             AddItem(new Items.Shirt(Utility.RandomNeutralHue()));
             AddItem(new Items.LongPants(Utility.RandomNeutralHue()));
             AddItem(new Items.Bow());
-            AddItem(new Items.ThighBoots(Utility.RandomNeutralHue()));
+			FindItemOnLayer(Layer.Shoes)?.Delete();
+			AddItem(new Items.ThighBoots(Utility.RandomNeutralHue()));
         }
 
         public override void Serialize(GenericWriter writer)
