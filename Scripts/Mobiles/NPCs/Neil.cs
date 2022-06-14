@@ -164,11 +164,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new SmithHammer());
-            AddItem(new ShortPants(0x3A));
-            AddItem(new Bandana(0x30));
-            AddItem(new Doublet(0x13));
-            AddItem(new RingmailChest());
+            SetWearable(new SmithHammer(), dropChance: 1);
+            SetWearable(new ShortPants(), 0x3A, 1);
+            SetWearable(new Bandana(), 0x30, 1);
+            SetWearable(new Doublet(), 0x13, 1);
+            SetWearable(new RingmailChest(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

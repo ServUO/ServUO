@@ -61,11 +61,7 @@ namespace Server.Mobiles
             Keyword = "";
             _Table = new Dictionary<Mobile, DateTime>();
 
-            Container pack = new StewardBackpack(Owner, this)
-            {
-                Movable = false
-            };
-            AddItem(pack);
+			SetWearable(new StewardBackpack(Owner, this));
         }
 
         public bool IsOwner(Mobile m)

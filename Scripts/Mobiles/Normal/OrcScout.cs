@@ -53,11 +53,11 @@ namespace Server.Mobiles
 
             if (0.1 > Utility.RandomDouble())
             {
-                AddItem(new OrcishBow());
+                SetWearable(new OrcishBow(), dropChance: 1);
             }
             else
             {
-                AddItem(new Bow());
+                SetWearable(new Bow(), dropChance: 1);
             }
         }
 

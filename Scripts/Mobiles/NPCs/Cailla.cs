@@ -473,21 +473,14 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new MagicalShortbow());
-            AddItem(new HidePants());
-            AddItem(new HidePauldrons());
-            AddItem(new HideGloves());
-            AddItem(new HideFemaleChest());
-            AddItem(new WoodlandBelt());
-
-            Item item;
-
-            item = new RavenHelm
-            {
-                Hue = 0x1BB
-            };
-            AddItem(item);
+            SetWearable(new ElvenBoots(), dropChance: 1);
+            SetWearable(new MagicalShortbow(), dropChance: 1);
+            SetWearable(new HidePants(), dropChance: 1);
+            SetWearable(new HidePauldrons(), dropChance: 1);
+            SetWearable(new HideGloves(), dropChance: 1);
+            SetWearable(new HideFemaleChest(), dropChance: 1);
+            SetWearable(new WoodlandBelt(), dropChance: 1);
+            SetWearable(new RavenHelm(), 0x1BB, 1);
         }
 
         public override void Serialize(GenericWriter writer)

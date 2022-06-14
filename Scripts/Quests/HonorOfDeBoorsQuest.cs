@@ -178,10 +178,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Shoes());
-            AddItem(new LongPants(0x901));
-            AddItem(new FancyShirt(0x5F4));
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
+            SetWearable(new Shoes(), dropChance: 1);
+            SetWearable(new LongPants(), 0x901, 1);
+            SetWearable(new FancyShirt(), 0x5F4, 1);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -228,10 +228,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Dagger());
-            AddItem(new ThighBoots(0x901));
-            AddItem(new LongPants(0x521));
-            AddItem(new FancyShirt(0x5A7));
+            SetWearable(new Dagger(), dropChance: 1);
+            SetWearable(new ThighBoots(), 0x901, 1);
+            SetWearable(new LongPants(), 0x521, 1);
+			SetWearable(new FancyShirt(), 0x5A7, 1);
         }
 
         public override void Serialize(GenericWriter writer)

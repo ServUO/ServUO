@@ -24,12 +24,12 @@ namespace Server.Mobiles
             m_RefineType = type;
 
             SetSkill(SkillName.ArmsLore, 36.0, 68.0);
-            AddItem(new HalfApron());
+			SetWearable(new HalfApron(), dropChance: 1);
 
             switch (m_RefineType)
             {
                 case RefinementCraftType.Blacksmith:
-                    AddItem(new SmithHammer());
+					SetWearable(new SmithHammer(), dropChance: 1);
                     SetSkill(SkillName.Blacksmith, 65.0, 88.0);
                     break;
                 case RefinementCraftType.Tailor:

@@ -39,41 +39,12 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            LeatherGloves gloves = new LeatherGloves
-            {
-                Hue = 0x66D
-            };
-            AddItem(gloves);
-
-            BoneHelm helm = new BoneHelm
-            {
-                Hue = 0x835
-            };
-            AddItem(helm);
-
-            Necklace necklace = new Necklace
-            {
-                Hue = 0x66D
-            };
-            AddItem(necklace);
-
-            Cloak cloak = new Cloak
-            {
-                Hue = 0x66D
-            };
-            AddItem(cloak);
-
-            Kilt kilt = new Kilt
-            {
-                Hue = 0x66D
-            };
-            AddItem(kilt);
-
-            Sandals sandals = new Sandals
-            {
-                Hue = 0x66D
-            };
-            AddItem(sandals);
+            SetWearable(new LeatherGloves(), 0x660, 1);
+            SetWearable(new BoneHelm(), 0x835, 1);
+            SetWearable(new Necklace(), 0x660, 1);
+            SetWearable(new Cloak(), 0x660, 1);
+            SetWearable(new Kilt(), 0x660, 1);
+            SetWearable(new Sandals(), 0x660, 1);
         }
 
         public KhaldunSummoner(Serial serial)
@@ -116,11 +87,7 @@ namespace Server.Mobiles
 
             if (rm.Backpack == null)
             {
-                Backpack pack = new Backpack
-                {
-                    Movable = false
-                };
-                rm.AddItem(pack);
+                rm.SetWearable(new Backpack());
             }
 
             for (int i = 0; i < 2; i++)

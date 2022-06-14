@@ -41,11 +41,11 @@ namespace Server.Items
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Dagger());
-            AddItem(new Sandals());
-            AddItem(new FancyShirt(0x6CC));
-            AddItem(new LongPants(0x5E8));
+            SetWearable(new Backpack());
+            SetWearable(new Dagger(), dropChance: 1);
+            SetWearable(new Sandals(), dropChance: 1);
+            SetWearable(new FancyShirt(), 0x6CC, 1);
+			SetWearable(new LongPants(), 0x5E8, 1);
         }
 
         public override void Init()

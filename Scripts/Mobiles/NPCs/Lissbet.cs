@@ -53,10 +53,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Sandals());
-            AddItem(new FancyShirt(0x6BF));
-            AddItem(new Kilt(0x6AA));
+            SetWearable(new Backpack());
+            SetWearable(new Sandals(), dropChance: 1);
+            SetWearable(new FancyShirt(), 0x6BF, 1);
+			SetWearable(new Kilt(), 0x6AA, 1);
         }
 
         public override void OnDelete()

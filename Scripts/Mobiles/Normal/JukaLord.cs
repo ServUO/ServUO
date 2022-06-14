@@ -41,7 +41,7 @@ namespace Server.Mobiles
             Fame = 15000;
             Karma = -15000;
 
-            AddItem(new JukaBow());
+            SetWearable(new JukaBow(), dropChance: 1);
         }
 
         public JukaLord(Serial serial)

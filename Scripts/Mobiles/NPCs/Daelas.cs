@@ -39,22 +39,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x901));
-            AddItem(new ElvenPants(0x8AB));
-
-            Item item;
-
-            item = new LeafGloves
-            {
-                Hue = 0x1BB
-            };
-            AddItem(item);
-
-            item = new LeafChest
-            {
-                Hue = 0x8B0
-            };
-            AddItem(item);
+            SetWearable(new ElvenBoots(), 0x901, 1);
+            SetWearable(new ElvenPants(), 0x8AB, 1);
+            SetWearable(new LeafGloves(), 0x1BB, 1);
+            SetWearable(new LeafChest(), 0x8B0, 1);
         }
 
         public override void Serialize(GenericWriter writer)

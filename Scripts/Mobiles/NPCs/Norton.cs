@@ -80,10 +80,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new ThighBoots());
-            AddItem(new Shirt(0x11D));
-            AddItem(new LongPants(0x6C2));
+            SetWearable(new Backpack());
+            SetWearable(new ThighBoots(), dropChance: 1);
+            SetWearable(new Shirt(), 0x11D, 1);
+			SetWearable(new LongPants(), 0x6C2, 1);
         }
 
         public override void Serialize(GenericWriter writer)

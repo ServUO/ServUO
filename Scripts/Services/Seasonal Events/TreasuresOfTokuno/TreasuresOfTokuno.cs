@@ -324,16 +324,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Waraji(0x711));
-            AddItem(new Backpack());
-            AddItem(new Kamishimo(0x483));
-
-            Item item = new LightPlateJingasa
-            {
-                Hue = 0x711
-            };
-
-            AddItem(item);
+            SetWearable(new Backpack());
+            SetWearable(new Waraji(), 0x711, 1);
+			SetWearable(new Kamishimo(), 0x483, 1);
+			SetWearable(new LightPlateJingasa(), 0x711, 1);
         }
 
         [Constructable]

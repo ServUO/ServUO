@@ -72,7 +72,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Robe(GetRobeColor()));
+            SetWearable(new Robe(), GetRobeColor(), 1);
         }
 
         public virtual bool CheckResurrect(Mobile m)

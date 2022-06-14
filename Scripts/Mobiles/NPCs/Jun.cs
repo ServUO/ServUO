@@ -124,13 +124,13 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new SamuraiTabi());
-            AddItem(new LeatherNinjaPants());
-            AddItem(new LeatherNinjaHood());
-            AddItem(new LeatherNinjaBelt());
-            AddItem(new LeatherNinjaMitts());
-            AddItem(new LeatherNinjaJacket());
+            SetWearable(new Backpack());
+			SetWearable(new SamuraiTabi(), dropChance: 1);
+            SetWearable(new LeatherNinjaPants(), dropChance: 1);
+            SetWearable(new LeatherNinjaHood(), dropChance: 1);
+            SetWearable(new LeatherNinjaBelt(), dropChance: 1);
+            SetWearable(new LeatherNinjaMitts(), dropChance: 1);
+            SetWearable(new LeatherNinjaJacket(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

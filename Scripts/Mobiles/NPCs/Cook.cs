@@ -1,4 +1,5 @@
 using Server.Engines.BulkOrders;
+using Server.Items;
 using System;
 using System.Collections.Generic;
 
@@ -34,7 +35,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.HalfApron());
+            SetWearable(new HalfApron(), dropChance: 1);
         }
 
         #region Bulk Orders

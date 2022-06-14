@@ -44,10 +44,10 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            SetWearable(new ShortPants(Utility.RandomRedHue()));
-            AddItem(new Sandals(Utility.RandomRedHue()));
-            AddItem(new Shirt(Utility.RandomRedHue()));
-            AddItem(new SkinningKnife());
+            SetWearable(new ShortPants(), Utility.RandomRedHue(), 1);
+            SetWearable(new Sandals(), Utility.RandomRedHue(), 1);
+            SetWearable(new Shirt(), Utility.RandomRedHue(), 1);
+			SetWearable(new SkinningKnife(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
         }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -27,7 +28,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.HalfApron());
+			SetWearable(new HalfApron(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

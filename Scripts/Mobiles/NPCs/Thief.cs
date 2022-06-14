@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -31,10 +32,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Items.Shirt(Utility.RandomNeutralHue()));
-            AddItem(new Items.LongPants(Utility.RandomNeutralHue()));
-            AddItem(new Items.Dagger());
-            AddItem(new Items.ThighBoots(Utility.RandomNeutralHue()));
+            SetWearable(new Shirt(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new LongPants(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new Dagger(), dropChance: 1);
+			SetWearable(new ThighBoots(), Utility.RandomNeutralHue(), 1);
 
             base.InitOutfit();
         }

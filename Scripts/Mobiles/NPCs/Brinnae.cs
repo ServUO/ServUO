@@ -404,11 +404,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x1BB));
-            AddItem(new LeafArms());
-            AddItem(new FemaleLeafChest());
-            AddItem(new HidePants());
-            AddItem(new ElvenCompositeLongbow());
+            SetWearable(new ElvenBoots(), 0x1BB, 1);
+            SetWearable(new LeafArms(), dropChance: 1);
+            SetWearable(new FemaleLeafChest(), dropChance: 1);
+            SetWearable(new HidePants(), dropChance: 1);
+            SetWearable(new ElvenCompositeLongbow(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

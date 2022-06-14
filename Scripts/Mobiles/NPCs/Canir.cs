@@ -37,10 +37,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Sandals(0x1BB));
-            AddItem(new MaleElvenRobe(0x5A5));
-            AddItem(new GemmedCirclet());
-            AddItem(RandomWand.CreateWand());
+            SetWearable(new Sandals(), 0x1BB, 1);
+            SetWearable(new MaleElvenRobe(), 0x5A5, 1);
+            SetWearable(new GemmedCirclet(), dropChance: 1);
+            SetWearable(RandomWand.CreateWand(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

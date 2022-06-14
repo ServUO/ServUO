@@ -35,9 +35,9 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = -1000;
 
-            AddItem(new Spear());
-            AddItem(new BoneArms());
-            AddItem(new BoneLegs());
+            SetWearable(new Spear(), dropChance: 1);
+            SetWearable(new BoneArms(), dropChance: 1);
+            SetWearable(new BoneLegs(), dropChance: 1);
         }
 
         public Savage(Serial serial)

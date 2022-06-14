@@ -49,11 +49,11 @@ namespace Server.Mobiles
             Fame = 32000;
             Karma = -32000;
 
-            AddAndEquip(new WildStaff(), 1971);
-            AddAndEquip(new ThighBoots(), 1910);
-            AddAndEquip(new ChainLegs(), 1936);
-            AddAndEquip(new LeatherGloves(), 1910);
-            AddAndEquip(new LeatherBustierArms(), 1947);
+			SetWearable(new WildStaff(), 1971);
+            SetWearable(new ThighBoots(), 1910);
+            SetWearable(new ChainLegs(), 1936);
+            SetWearable(new LeatherGloves(), 1910);
+            SetWearable(new LeatherBustierArms(), 1947);
 
             SetSpecialAbility(SpecialAbility.DragonBreath);
             SetAreaEffect(AreaEffect.AuraDamage);
@@ -88,13 +88,6 @@ namespace Server.Mobiles
         {
             AddLoot(LootPack.UltraRich, 3);
             AddLoot(LootPack.SuperBoss, 3);
-        }
-
-        private void AddAndEquip(Item item, int hue = 0)
-        {
-            item.Movable = false;
-            item.Hue = hue;
-            AddItem(item);
         }
 
         public override void OnThink()

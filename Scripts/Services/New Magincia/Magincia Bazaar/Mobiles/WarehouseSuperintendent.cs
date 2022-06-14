@@ -25,18 +25,18 @@ namespace Server.Engines.NewMagincia
                 Body = 0x191;
                 Name = NameList.RandomName("female");
 
-                AddItem(new Skirt(Utility.RandomPinkHue()));
+				SetWearable(new Skirt(), Utility.RandomPinkHue(), 1);
             }
             else
             {
                 Female = false;
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomBlueHue()));
+				SetWearable(new ShortPants(), Utility.RandomBlueHue(), 1);
             }
 
-            AddItem(new Tunic(Utility.RandomBlueHue()));
-            AddItem(new Boots());
+			SetWearable(new Tunic(), Utility.RandomBlueHue(), 1);
+			SetWearable(new Boots(), dropChance: 1);
 
             Utility.AssignRandomHair(this, Utility.RandomHairHue());
             Utility.AssignRandomFacialHair(this, Utility.RandomHairHue());

@@ -252,29 +252,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x3B3));
-            AddItem(new WingedHelm());
-            AddItem(new RadiantScimitar());
-
-            Item item;
-
-            item = new WoodlandLegs
-            {
-                Hue = 0x732
-            };
-            AddItem(item);
-
-            item = new HideChest
-            {
-                Hue = 0x727
-            };
-            AddItem(item);
-
-            item = new LeafArms
-            {
-                Hue = 0x749
-            };
-            AddItem(item);
+            SetWearable(new ElvenBoots(), 0x3B3, 1);
+            SetWearable(new WingedHelm(), dropChance: 1);
+            SetWearable(new RadiantScimitar(), dropChance: 1);
+			SetWearable(new WoodlandLegs(), 0x732, 1);
+			SetWearable(new HideChest(), 0x727, 1);
+			SetWearable(new LeafArms(), 0x749, 1);
         }
 
         public override void Serialize(GenericWriter writer)

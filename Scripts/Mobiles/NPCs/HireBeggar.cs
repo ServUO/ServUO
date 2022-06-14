@@ -18,10 +18,10 @@ namespace Server.Mobiles
                 switch (Utility.Random(2))
                 {
                     case 0:
-                        AddItem(new Skirt(Utility.RandomNeutralHue()));
+						SetWearable(new Skirt(), Utility.RandomNeutralHue(), 1);
                         break;
                     case 1:
-                        AddItem(new Kilt(Utility.RandomNeutralHue()));
+						SetWearable(new Kilt(), Utility.RandomNeutralHue(), 1);
                         break;
                 }
             }
@@ -29,7 +29,7 @@ namespace Server.Mobiles
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
             Title = "the beggar";
             HairItemID = Race.RandomHair(Female);
@@ -50,15 +50,15 @@ namespace Server.Mobiles
             Fame = 0;
             Karma = 0;
 
-            AddItem(new Sandals(Utility.RandomNeutralHue()));
+			SetWearable(new Sandals(), Utility.RandomNeutralHue(), 1);
 
             switch (Utility.Random(2))
             {
                 case 0:
-                    AddItem(new Doublet(Utility.RandomNeutralHue()));
+					SetWearable(new Doublet(), Utility.RandomNeutralHue(), 1);
                     break;
                 case 1:
-                    AddItem(new Shirt(Utility.RandomNeutralHue()));
+					SetWearable(new Shirt(), Utility.RandomNeutralHue(), 1);
                     break;
             }
 

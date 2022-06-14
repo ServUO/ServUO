@@ -36,10 +36,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new SerpentStoneStaff());
-            AddItem(new GargishClothChest(1307));
-            AddItem(new GargishClothArms(1330));
-            AddItem(new GargishClothKilt(1307));
+            SetWearable(new SerpentStoneStaff(), dropChance: 1);
+            SetWearable(new GargishClothChest(), 1307, 1);
+            SetWearable(new GargishClothArms(), 1330, 1);
+            SetWearable(new GargishClothKilt(), 1307, 1);
         }
 
         public override void Advertise()

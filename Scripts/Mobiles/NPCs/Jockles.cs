@@ -130,14 +130,14 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Broadsword());
-            AddItem(new PlateChest());
-            AddItem(new PlateLegs());
-            AddItem(new PlateGloves());
-            AddItem(new PlateArms());
-            AddItem(new PlateGorget());
-            AddItem(new OrderShield());
+            SetWearable(new Backpack());
+            SetWearable(new Broadsword(), dropChance: 1);
+            SetWearable(new PlateChest(), dropChance: 1);
+            SetWearable(new PlateLegs(), dropChance: 1);
+            SetWearable(new PlateGloves(), dropChance: 1);
+            SetWearable(new PlateArms(), dropChance: 1);
+            SetWearable(new PlateGorget(), dropChance: 1);
+            SetWearable(new OrderShield(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

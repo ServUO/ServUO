@@ -52,29 +52,29 @@ namespace Server.Mobiles
             Fame = 8500;
             Karma = -8500;
 
-            AddItem(new SamuraiTabi());
-            AddItem(new LeatherHiroSode());
-            AddItem(new LeatherDo());
+			SetWearable(new SamuraiTabi(), dropChance: 1);
+			SetWearable(new LeatherHiroSode(), dropChance: 1);
+			SetWearable(new LeatherDo(), dropChance: 1);
 
             switch (Utility.Random(4))
             {
-                case 0: AddItem(new LightPlateJingasa()); break;
-                case 1: AddItem(new ChainHatsuburi()); break;
-                case 2: AddItem(new DecorativePlateKabuto()); break;
-                case 3: AddItem(new LeatherJingasa()); break;
+                case 0: SetWearable(new LightPlateJingasa(), dropChance: 1); break;
+                case 1: SetWearable(new ChainHatsuburi(), dropChance: 1); break;
+                case 2: SetWearable(new DecorativePlateKabuto(), dropChance: 1); break;
+                case 3: SetWearable(new LeatherJingasa(), dropChance: 1); break;
             }
 
             switch (Utility.Random(3))
             {
-                case 0: AddItem(new StuddedHaidate()); break;
-                case 1: AddItem(new LeatherSuneate()); break;
-                case 2: AddItem(new PlateSuneate()); break;
+                case 0: SetWearable(new StuddedHaidate(), dropChance: 1); break;
+                case 1: SetWearable(new LeatherSuneate(), dropChance: 1); break;
+                case 2: SetWearable(new PlateSuneate(), dropChance: 1); break;
             }
 
             if (Utility.RandomDouble() > .2)
-                AddItem(new NoDachi());
-            else
-                AddItem(new Halberd());
+				SetWearable(new NoDachi(), dropChance: 1);
+			else
+				SetWearable(new Halberd(), dropChance: 1);
 
             PackItem(new Wakizashi());
             PackItem(new Longsword());

@@ -39,13 +39,13 @@ namespace Server.Items
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Boots());
-            AddItem(new HalfApron(0x65F));
-            AddItem(new Doublet(0x3B3));
-            AddItem(new Kilt(0x724));
-            AddItem(new LeatherDo());
-            AddItem(new LeatherHiroSode());
+            SetWearable(new Backpack());
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new HalfApron(), 0x65F, 1);
+            SetWearable(new Doublet(), 0x3B3, 1);
+            SetWearable(new Kilt(), 0x724, 1);
+            SetWearable(new LeatherDo(), dropChance: 1);
+			SetWearable(new LeatherHiroSode(), dropChance: 1);
         }
 
         public override void Init()

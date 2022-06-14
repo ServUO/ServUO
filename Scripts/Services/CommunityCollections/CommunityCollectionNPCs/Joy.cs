@@ -40,13 +40,13 @@ namespace Server.Items
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Longsword());
-            AddItem(new ThighBoots());
-            AddItem(new FancyShirt(0x584));
-            AddItem(new LongPants(0x73B));
-            AddItem(new BodySash(0x5E6));
-            AddItem(new Cloak(0x597));
+            SetWearable(new Backpack());
+            SetWearable(new Longsword(), dropChance: 1);
+            SetWearable(new ThighBoots(), dropChance: 1);
+            SetWearable(new FancyShirt(), 0x584, 1);
+            SetWearable(new LongPants(), 0x73B, 1);
+            SetWearable(new BodySash(), 0x5E6, 1);
+			SetWearable(new Cloak(), 0x597, 1);
         }
 
         public override void Init()

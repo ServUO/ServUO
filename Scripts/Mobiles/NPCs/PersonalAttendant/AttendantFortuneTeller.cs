@@ -61,14 +61,14 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Shoes(Utility.RandomPinkHue()));
-            AddItem(new Shirt(Utility.RandomPinkHue()));
-            AddItem(new SkullCap(Utility.RandomPinkHue()));
+            SetWearable(new Shoes(), Utility.RandomPinkHue(), 1);
+            SetWearable(new Shirt(), Utility.RandomPinkHue(), 1);
+			SetWearable(new SkullCap(), Utility.RandomPinkHue(), 1);
 
             if (Utility.RandomBool())
-                AddItem(new Kilt(Utility.RandomPinkHue()));
+				SetWearable(new Kilt(), Utility.RandomPinkHue(), 1);
             else
-                AddItem(new Skirt(Utility.RandomPinkHue()));
+				SetWearable(new Skirt(), Utility.RandomPinkHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)

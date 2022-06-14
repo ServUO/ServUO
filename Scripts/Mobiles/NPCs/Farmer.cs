@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -35,7 +36,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.WideBrimHat(Utility.RandomNeutralHue()));
+            SetWearable(new WideBrimHat(), Utility.RandomNeutralHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)

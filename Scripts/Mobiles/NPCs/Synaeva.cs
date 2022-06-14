@@ -33,19 +33,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new LeafArms());
-            AddItem(new FemaleLeafChest());
-            AddItem(new LeafTonlet());
-            AddItem(new WildStaff());
-
-            Item item;
-
-            item = new RavenHelm
-            {
-                Hue = 0x583
-            };
-            AddItem(item);
+            SetWearable(new ElvenBoots(), dropChance: 1);
+            SetWearable(new LeafArms(), dropChance: 1);
+            SetWearable(new FemaleLeafChest(), dropChance: 1);
+            SetWearable(new LeafTonlet(), dropChance: 1);
+			SetWearable(new WildStaff(), dropChance: 1);
+			SetWearable(new RavenHelm(), 0x583, 1);
         }
 
         public override void Serialize(GenericWriter writer)

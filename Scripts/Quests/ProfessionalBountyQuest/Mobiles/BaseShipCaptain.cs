@@ -76,13 +76,13 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                AddItem(new Skirt(Utility.RandomNeutralHue()));
+				SetWearable(new Skirt(), Utility.RandomNeutralHue(), 1);
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
 
             SetStr(500, 750);

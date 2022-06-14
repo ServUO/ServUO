@@ -1,3 +1,5 @@
+using Server.Items;
+
 namespace Server.Mobiles
 {
     public class MageGuildmaster : BaseGuildmaster
@@ -28,8 +30,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.Robe(Utility.RandomBlueHue()));
-            AddItem(new Items.GnarledStaff());
+            SetWearable(new Robe(), Utility.RandomBlueHue(), 1);
+			SetWearable(new GnarledStaff(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

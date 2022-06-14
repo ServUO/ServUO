@@ -44,11 +44,11 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new Cloak(0x3B2));
-            AddItem(new FemaleLeafChest());
-            AddItem(new LeafArms());
-            AddItem(new LeafTonlet());
+            SetWearable(new ElvenBoots(), dropChance: 1);
+            SetWearable(new Cloak(), 0x3B2, 1);
+            SetWearable(new FemaleLeafChest(), dropChance: 1);
+            SetWearable(new LeafArms(), dropChance: 1);
+			SetWearable(new LeafTonlet(), dropChance: 1);
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)

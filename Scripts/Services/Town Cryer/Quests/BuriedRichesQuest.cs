@@ -341,11 +341,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            SetWearable(new Doublet());
-            SetWearable(new Kilt(), 443);
-            SetWearable(new ThighBoots(), 1837);
+            SetWearable(new Doublet(), dropChance: 1);
+            SetWearable(new Kilt(), 443, 1);
+            SetWearable(new ThighBoots(), 1837, 1);
         }
 
         public override void OnDoubleClick(Mobile m)
@@ -447,11 +447,11 @@ namespace Server.Engines.Quests
         {
             AddItem(new Backpack());
 
-            SetWearable(new FancyShirt());
-            SetWearable(new JinBaori());
-            SetWearable(new Kilt());
-            SetWearable(new ThighBoots(), 1908);
-            SetWearable(new GoldNecklace());
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new JinBaori(), dropChance: 1);
+            SetWearable(new Kilt(), dropChance: 1);
+            SetWearable(new ThighBoots(), 1908, 1);
+            SetWearable(new GoldNecklace(), dropChance: 1);
         }
 
         public override void OnDoubleClick(Mobile m)

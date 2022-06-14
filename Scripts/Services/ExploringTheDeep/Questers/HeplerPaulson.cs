@@ -32,10 +32,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Shoes(0x737));
-            AddItem(new LongPants(0x1BB));
-            AddItem(new FancyShirt(0x535));
+            SetWearable(new Backpack());
+            SetWearable(new Shoes(), 0x737, 1);
+            SetWearable(new LongPants(), 0x1BB, 1);
+			SetWearable(new FancyShirt(), 0x535, 1);
         }
 
         public HeplerPaulson(Serial serial) : base(serial)

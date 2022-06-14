@@ -31,9 +31,9 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Sandals(0x8FD));
-            AddItem(new FancyDress(0x8FD));
+            SetWearable(new Backpack());
+            SetWearable(new Sandals(), 0x8FD, 1);
+			SetWearable(new FancyDress(), 0x8FD, 1);
         }
 
         public override void Serialize(GenericWriter writer)

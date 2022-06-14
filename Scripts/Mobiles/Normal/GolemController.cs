@@ -72,7 +72,7 @@ namespace Server.Mobiles
             item.Hue = ArcaneGem.DefaultArcaneHue;
             item.LootType = LootType.Newbied;
 
-            AddItem(item);
+            SetWearable(item);
         }
 
         public override void Serialize(GenericWriter writer)

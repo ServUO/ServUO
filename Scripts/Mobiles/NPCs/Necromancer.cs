@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -34,24 +35,17 @@ namespace Server.Mobiles
         public override void InitOutfit()
         {
             base.InitOutfit();
-            AddItem(new Items.Shoes(0x151));
-            AddItem(new Items.Robe(0x455));
-            AddItem(new Items.FancyShirt(0x455));
+            SetWearable(new Shoes(), 0x151, 1);
+            SetWearable(new Robe(), 0x455, 1);
+			SetWearable(new FancyShirt(), 0x455, 1);
 
             Item hair = new Item(Utility.RandomList(0x203B, 0x2049, 0x2048, 0x204A))
             {
-                Hue = 0x3c6,
-                Layer = Layer.Hair,
-                Movable = false
+                Layer = Layer.Hair
             };
-            AddItem(hair);
-
-            Item beard = new Item(0x0)
-            {
-                Layer = Layer.FacialHair
-            };
-            AddItem(beard);
-        }
+            SetWearable(hair, 0x3c6);
+			FacialHairItemID = 0;
+		}
 
         public override void Serialize(GenericWriter writer)
         {

@@ -14,23 +14,12 @@ namespace Server.Mobiles
             Body = 0x190;
             Name = "Lysander Gathenwale";
 
-            AddItem(new Boots(0x599));
-            AddItem(new Cloak(0x96F));
-
-            Spellbook spellbook = new Spellbook();
-            RingmailGloves gloves = new RingmailGloves();
-            StuddedChest chest = new StuddedChest();
-            PlateArms arms = new PlateArms();
-
-            spellbook.Hue = 0x599;
-            gloves.Hue = 0x599;
-            chest.Hue = 0x96F;
-            arms.Hue = 0x599;
-
-            AddItem(spellbook);
-            AddItem(gloves);
-            AddItem(chest);
-            AddItem(arms);
+			SetWearable(new Boots(), 0x599, 1);
+			SetWearable(new Cloak(), 0x96F, 1);
+			SetWearable(new Spellbook(), 0x599, 1);
+			SetWearable(new RingmailGloves(), 0x599, 1);
+			SetWearable(new StuddedChest(), 0x96F, 1);
+			SetWearable(new PlateArms(), 0x599, 1);
 
             SetStr(111, 120);
             SetDex(71, 80);

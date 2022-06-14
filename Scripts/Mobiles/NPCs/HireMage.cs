@@ -20,7 +20,7 @@ namespace Server.Mobiles
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
 
             HairItemID = Race.RandomHair(Female);
@@ -43,14 +43,14 @@ namespace Server.Mobiles
             Fame = 100;
             Karma = 100;
 
-            AddItem(new Shirt());
+			SetWearable(new Shirt(), dropChance: 1);
 
-            AddItem(new Robe(Utility.RandomNeutralHue()));
+			SetWearable(new Robe(), Utility.RandomNeutralHue(), 1);
 
             if (Utility.RandomBool())
-                AddItem(new Shoes(Utility.RandomNeutralHue()));
+				SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
             else
-                AddItem(new ThighBoots());
+				SetWearable(new ThighBoots(), dropChance: 1);
 
             PackGold(20, 100);
         }

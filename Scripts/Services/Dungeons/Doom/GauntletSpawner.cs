@@ -528,12 +528,12 @@ namespace Server.Engines.Doom
             dealer.FacialHairItemID = 0x203E;
             dealer.FacialHairHue = 0x482;
 
-            dealer.AddItem(new FloppyHat(1));
-            dealer.AddItem(new Robe(1));
+            dealer.SetWearable(new FloppyHat(), 1, 1);
+            dealer.SetWearable(new Robe(), 1, 1);
 
-            dealer.AddItem(new LanternOfSouls());
+            dealer.SetWearable(new LanternOfSouls(), dropChance: 1);
 
-            dealer.AddItem(new Sandals(0x482));
+            dealer.SetWearable(new Sandals(), 0x482, 1);
             /* End outfit */
 
             dealer.MoveToWorld(p, Map.Malas);

@@ -40,13 +40,13 @@ namespace Server.Mobiles
             Fame = 2000;
             Karma = -2000;
 
-            AddItem(new Bandana());
-            AddItem(new LeatherArms());
-            AddItem(new FancyShirt());
-            AddItem(new ShortPants());
-            AddItem(new Cutlass());
-            AddItem(new Boots(Utility.RandomNeutralHue()));
-            AddItem(new SilverEarrings());
+			SetWearable(new Bandana(), dropChance: 1);
+			SetWearable(new LeatherArms(), dropChance: 1);
+			SetWearable(new FancyShirt(), dropChance: 1);
+			SetWearable(new ShortPants(), dropChance: 1);
+			SetWearable(new Cutlass(), dropChance: 1);
+			SetWearable(new Boots(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new SilverEarrings(), dropChance: 1);
 
         }
 

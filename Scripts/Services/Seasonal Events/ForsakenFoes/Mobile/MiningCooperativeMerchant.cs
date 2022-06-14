@@ -136,10 +136,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new FancyShirt(0x3E4));
-            AddItem(new LongPants(0x192));
-            AddItem(new Pickaxe());
-            AddItem(new ThighBoots(0x283));
+            SetWearable(new FancyShirt(), 0x3E4, 1);
+            SetWearable(new LongPants(), 0x192, 1);
+            SetWearable(new Pickaxe(), dropChance: 1);
+			SetWearable(new ThighBoots(), 0x283, 1);
         }
 
         public override void OnDoubleClick(Mobile from)

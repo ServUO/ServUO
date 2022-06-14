@@ -129,9 +129,9 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new HoodedShroudOfShadows(0x479));
-            AddItem(new Sandals());
+            SetWearable(new Backpack());
+            SetWearable(new HoodedShroudOfShadows(), 0x479, 1);
+			SetWearable(new Sandals(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

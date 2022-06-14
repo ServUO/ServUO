@@ -29,11 +29,11 @@ namespace Server.Engines.Quests.Collector
 
         public override void InitOutfit()
         {
-            AddItem(new FancyShirt());
-            AddItem(new Skirt(0x59B));
-            AddItem(new Boots());
-            AddItem(new FeatheredHat(0x59B));
-            AddItem(new FullApron(0x59B));
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new Skirt(), 0x59B, 1);
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new FeatheredHat(), 0x59B, 1);
+            SetWearable(new FullApron(), 0x59B, 1);
 
             HairItemID = 0x203D; // Pony Tail
             HairHue = 0x457;

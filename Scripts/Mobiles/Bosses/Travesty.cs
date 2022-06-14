@@ -195,27 +195,16 @@ namespace Server.Mobiles
 
                             if (crItem != null)
                             {
-                                // Is this necessary? Was this check already done?
-                                Item i = FindItemOnLayer(Layer.TwoHanded);
-
-                                if (i != null)
-                                    i.Delete();
-
-                                i = FindItemOnLayer(Layer.OneHanded);
-
-                                if (i != null)
-                                    i.Delete();
-
-                                AddItem(Loot.Construct(crItem.ItemType));
+								SetWearable(Loot.Construct(crItem.ItemType));
                             }
                             else
                             {
-                                AddItem(new ClonedItem(item));
+								SetWearable(new ClonedItem(item));
                             }
                         }
                         else
                         {
-                            AddItem(new ClonedItem(item));
+							SetWearable(new ClonedItem(item));
                         }
                     }
                 }

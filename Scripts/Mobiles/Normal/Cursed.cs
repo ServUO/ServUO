@@ -16,8 +16,8 @@ namespace Server.Mobiles
             Name = NameList.RandomName("male");
             BaseSoundID = 471;
 
-            AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            AddItem(new Shirt(Utility.RandomNeutralHue()));
+            SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new Shirt(), Utility.RandomNeutralHue(), 1);
 
             SetStr(91, 100);
             SetDex(86, 95);
@@ -43,9 +43,7 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = -2000;
 
-            BaseWeapon weapon = Loot.RandomWeapon();
-            weapon.Movable = false;
-            AddItem(weapon);
+            AddItem(Loot.RandomWeapon());
         }
 
         public Cursed(Serial serial)

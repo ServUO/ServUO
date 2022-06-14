@@ -30,7 +30,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new HalfApron(Utility.RandomBrightHue()));
+            SetWearable(new HalfApron(), Utility.RandomBrightHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)

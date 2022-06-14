@@ -224,17 +224,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Sandals(0x901));
-            AddItem(new LongPants(0x52C));
-            AddItem(new FancyShirt(0x546));
-
-            Item item;
-
-            item = new LeafGloves
-            {
-                Hue = 0x901
-            };
-            AddItem(item);
+            SetWearable(new Sandals(), 0x901, 1);
+            SetWearable(new LeafGloves(), 0x901, 1);
+            SetWearable(new LongPants(), 0x52C, 1);
+            SetWearable(new FancyShirt(), 0x546, 1);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -126,41 +126,14 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Shoes(0x455));
-            AddItem(new WarFork());
-
-            Item item;
-
-            item = new StuddedLegs
-            {
-                Hue = 0x455
-            };
-            AddItem(item);
-
-            item = new StuddedGloves
-            {
-                Hue = 0x455
-            };
-            AddItem(item);
-
-            item = new StuddedGorget
-            {
-                Hue = 0x455
-            };
-            AddItem(item);
-
-            item = new StuddedChest
-            {
-                Hue = 0x455
-            };
-            AddItem(item);
-
-            item = new StuddedArms
-            {
-                Hue = 0x455
-            };
-            AddItem(item);
+            SetWearable(new Backpack());
+            SetWearable(new Shoes(), 0x455, 1);
+			SetWearable(new WarFork(), dropChance: 1);
+			SetWearable(new StuddedLegs(), 0x455, 1);
+			SetWearable(new StuddedGloves(), 0x455, 1);
+			SetWearable(new StuddedGorget(), 0x455, 1);
+			SetWearable(new StuddedChest(), 0x455, 1);
+			SetWearable(new StuddedArms(), 0x455, 1);
         }
 
         public override void Serialize(GenericWriter writer)

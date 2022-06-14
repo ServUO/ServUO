@@ -30,26 +30,16 @@ namespace Server.Engines.Quests.Hag
 
         public override void InitOutfit()
         {
-            AddItem(new FancyShirt());
-            AddItem(new LongPants(0x66D));
-            AddItem(new ThighBoots());
-            AddItem(new TricorneHat(0x1));
-            AddItem(new BodySash(0x66D));
-
-            LeatherGloves gloves = new LeatherGloves
-            {
-                Hue = 0x66D
-            };
-            AddItem(gloves);
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new ThighBoots(), dropChance: 1);
+            SetWearable(new LongPants(), 0x66D, 1);
+            SetWearable(new TricorneHat(), 0x1, 1);
+            SetWearable(new BodySash(), 0x66D, 1);
+            SetWearable(new LeatherGloves(), 0x66D, 1);
+            SetWearable(new Cutlass());
 
             FacialHairItemID = 0x203E; // Long Beard
             FacialHairHue = 0x455;
-
-            Item sword = new Cutlass
-            {
-                Movable = false
-            };
-            AddItem(sword);
         }
 
         public override void OnTalk(PlayerMobile player, bool contextMenu)

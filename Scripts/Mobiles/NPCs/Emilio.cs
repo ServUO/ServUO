@@ -33,12 +33,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Sandals(0x721));
-            AddItem(new LongPants(0x51B));
-            AddItem(new FancyShirt(0x517));
-            AddItem(new FloppyHat(0x584));
-            AddItem(new BodySash(0x13));
+            SetWearable(new Backpack());
+            SetWearable(new Sandals(), 0x721, 1);
+            SetWearable(new LongPants(), 0x51B, 1);
+            SetWearable(new FancyShirt(), 0x517, 1);
+            SetWearable(new FloppyHat(), 0x584, 1);
+            SetWearable(new BodySash(), 0x13, 1);
         }
 
         public override void Serialize(GenericWriter writer)

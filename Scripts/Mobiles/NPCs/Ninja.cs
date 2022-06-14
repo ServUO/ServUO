@@ -35,12 +35,12 @@ namespace Server.Mobiles
             }
 
             if (!Female)
-                AddItem(new LeatherNinjaHood());
+				SetWearable(new LeatherNinjaHood(), dropChance: 1);
 
-            AddItem(new LeatherNinjaPants());
-            AddItem(new LeatherNinjaBelt());
-            AddItem(new LeatherNinjaJacket());
-            AddItem(new NinjaTabi());
+			SetWearable(new LeatherNinjaPants(), dropChance: 1);
+            SetWearable(new LeatherNinjaBelt(), dropChance: 1);
+            SetWearable(new LeatherNinjaJacket(), dropChance: 1);
+            SetWearable(new NinjaTabi(), dropChance: 1);
 
             int hairHue = Utility.RandomNondyedHue();
 

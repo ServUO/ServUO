@@ -1,4 +1,5 @@
 using Server.Engines.BulkOrders;
+using Server.Items;
 using System;
 using System.Collections.Generic;
 
@@ -126,8 +127,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.HalfApron(Utility.RandomYellowHue()));
-            AddItem(new Items.Bascinet());
+            SetWearable(new HalfApron(), Utility.RandomYellowHue(), 1);
+            SetWearable(new Bascinet(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

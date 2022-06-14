@@ -24,12 +24,6 @@ namespace Server.Engines.Despise
             FollowersMax = 100;
         }
 
-        public void SetNonMovable(Item item)
-        {
-            item.Movable = false;
-            AddItem(item);
-        }
-
         public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
         {
             if (from is DespiseCreature)
@@ -218,11 +212,11 @@ namespace Server.Engines.Despise
                 Layer = Layer.OneHanded
             };
 
-            SetNonMovable(boots);
-            SetNonMovable(scimitar);
-            SetNonMovable(new LongPants(1818));
-            SetNonMovable(new FancyShirt(194));
-            SetNonMovable(new Doublet(1281));
+			SetWearable(boots);
+			SetWearable(scimitar);
+			SetWearable(new LongPants(), 1818);
+			SetWearable(new FancyShirt(), 194);
+			SetWearable(new Doublet(), 1281);
         }
 
         public override bool InitialInnocent => true;
@@ -295,21 +289,17 @@ namespace Server.Engines.Despise
             Fame = 22000;
             Karma = -22000;
 
-            Item boots = new ThighBoots
-            {
-                Hue = 1
-            };
 
             Item staff = new Item(3721)
             {
                 Layer = Layer.TwoHanded
             };
 
-            SetNonMovable(boots);
-            SetNonMovable(new LongPants(1818));
-            SetNonMovable(new FancyShirt(2726));
-            SetNonMovable(new Doublet(1153));
-            SetNonMovable(staff);
+			SetWearable(new ThighBoots(), 1);
+			SetWearable(new LongPants(), 1818);
+			SetWearable(new FancyShirt(), 2726);
+			SetWearable(new Doublet(), 1153);
+			SetWearable(staff);
         }
 
         public override bool AlwaysMurderer => true;

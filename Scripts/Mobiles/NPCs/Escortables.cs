@@ -519,17 +519,17 @@ namespace Server.Engines.Quests
         {
             int lowHue = GetRandomHue();
 
-            AddItem(new ThighBoots());
+			SetWearable(new ThighBoots(), dropChance: 1);
 
             if (Female)
-                AddItem(new FancyDress(lowHue));
+				SetWearable(new FancyDress(), lowHue, 1);
             else
-                AddItem(new FancyShirt(lowHue));
+				SetWearable(new FancyShirt(), lowHue, 1);
 
-            AddItem(new LongPants(lowHue));
+			SetWearable(new LongPants(), lowHue, 1);
 
             if (!Female)
-                AddItem(new BodySash(lowHue));
+				SetWearable(new BodySash(), lowHue, 1);
 
             PackGold(50, 100);
         }
@@ -572,16 +572,16 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Robe(GetRandomHue()));
+			SetWearable(new Robe(), GetRandomHue(), 1);
 
             int lowHue = GetRandomHue();
 
-            AddItem(new ShortPants(lowHue));
+			SetWearable(new ShortPants(), lowHue, 1);
 
             if (Female)
-                AddItem(new ThighBoots(lowHue));
+				SetWearable(new ThighBoots(), lowHue, 1);
             else
-                AddItem(new Boots(lowHue));
+				SetWearable(new Boots(), lowHue, 1);
 
             PackGold(50, 100);
         }
@@ -617,32 +617,32 @@ namespace Server.Engines.Quests
         public override void InitOutfit()
         {
             if (Female)
-                AddItem(new PlainDress());
+				SetWearable(new PlainDress(), dropChance: 1);
             else
-                AddItem(new Shirt(GetRandomHue()));
+				SetWearable(new Shirt(), GetRandomHue(), 1);
 
             int lowHue = GetRandomHue();
 
-            AddItem(new ShortPants(lowHue));
+			SetWearable(new ShortPants(), lowHue, 1);
 
             if (Female)
-                AddItem(new Boots(lowHue));
+				SetWearable(new Boots(), lowHue, 1);
             else
-                AddItem(new Shoes(lowHue));
+				SetWearable(new Shoes(), lowHue);
 
             switch (Utility.Random(4))
             {
                 case 0:
-                    AddItem(new ShortHair(Utility.RandomHairHue()));
+					SetWearable(new ShortHair(Utility.RandomHairHue()));
                     break;
                 case 1:
-                    AddItem(new TwoPigTails(Utility.RandomHairHue()));
+					SetWearable(new TwoPigTails(Utility.RandomHairHue()));
                     break;
                 case 2:
-                    AddItem(new ReceedingHair(Utility.RandomHairHue()));
+					SetWearable(new ReceedingHair(Utility.RandomHairHue()));
                     break;
                 case 3:
-                    AddItem(new KrisnaHair(Utility.RandomHairHue()));
+					SetWearable(new KrisnaHair(Utility.RandomHairHue()));
                     break;
             }
 
@@ -680,25 +680,25 @@ namespace Server.Engines.Quests
         public override void InitOutfit()
         {
             if (Female)
-                AddItem(new FancyDress(GetRandomHue()));
+				SetWearable(new FancyDress(), GetRandomHue(), 1);
             else
-                AddItem(new FancyShirt(GetRandomHue()));
+				SetWearable(new FancyShirt(), GetRandomHue(), 1);
 
             int lowHue = GetRandomHue();
 
-            AddItem(new ShortPants(lowHue));
+			SetWearable(new ShortPants(), lowHue, 1);
 
             if (Female)
-                AddItem(new ThighBoots(lowHue));
+				SetWearable(new ThighBoots(), lowHue, 1);
             else
-                AddItem(new Boots(lowHue));
+				SetWearable(new Boots(), lowHue, 1);
 
             if (!Female)
-                AddItem(new BodySash(lowHue));
+				SetWearable(new BodySash(), lowHue, 1);
 
-            AddItem(new Cloak(GetRandomHue()));
+			SetWearable(new Cloak(), GetRandomHue(), 1);
 
-            AddItem(new Longsword());
+			SetWearable(new Longsword(), dropChance: 1);
 
             PackGold(50, 100);
         }
@@ -740,26 +740,26 @@ namespace Server.Engines.Quests
         public override void InitOutfit()
         {
             if (Female)
-                AddItem(new FancyDress());
+				SetWearable(new FancyDress(), dropChance: 1);
             else
-                AddItem(new FancyShirt(GetRandomHue()));
+				SetWearable(new FancyShirt(), GetRandomHue(), 1);
 
             int lowHue = GetRandomHue();
 
-            AddItem(new ShortPants(lowHue));
+			SetWearable(new ShortPants(), lowHue, 1);
 
             if (Female)
-                AddItem(new ThighBoots(lowHue));
+				SetWearable(new ThighBoots(), lowHue, 1);
             else
-                AddItem(new Boots(lowHue));
+				SetWearable(new Boots(), lowHue, 1);
 
             if (!Female)
-                AddItem(new BodySash(lowHue));
+				SetWearable(new BodySash(), lowHue, 1);
 
-            AddItem(new Cloak(GetRandomHue()));
+			SetWearable(new Cloak(), GetRandomHue(), 1);
 
             if (!Female)
-                AddItem(new Longsword());
+				SetWearable(new Longsword(), dropChance: 1);
 
             PackGold(50, 100);
         }
@@ -798,18 +798,18 @@ namespace Server.Engines.Quests
         public override void InitOutfit()
         {
             if (Female)
-                AddItem(new FancyDress());
+                SetWearable(new FancyDress(), dropChance: 1);
             else
-                AddItem(new FancyShirt());
+				SetWearable(new FancyShirt(), dropChance: 1);
 
             int lowHue = GetRandomHue();
 
-            AddItem(new LongPants(lowHue));
+			SetWearable(new LongPants(), lowHue, 1);
 
             if (Female)
-                AddItem(new Shoes(lowHue));
+				SetWearable(new Shoes(), lowHue, 1);
             else
-                AddItem(new Boots(lowHue));
+				SetWearable(new Boots(), lowHue, 1);
 
             if (Utility.RandomBool())
                 HairItemID = 0x203B;
@@ -852,18 +852,18 @@ namespace Server.Engines.Quests
         public override void InitOutfit()
         {
             if (Female)
-                AddItem(new PlainDress());
+                SetWearable(new PlainDress(), dropChance: 1);
             else
-                AddItem(new Shirt(GetRandomHue()));
+				SetWearable(new Shirt(), GetRandomHue(), 1);
 
             int lowHue = GetRandomHue();
 
-            AddItem(new ShortPants(lowHue));
+			SetWearable(new ShortPants(), lowHue, 1);
 
             if (Female)
-                AddItem(new Boots(lowHue));
+				SetWearable(new Boots(), lowHue, 1);
             else
-                AddItem(new Shoes(lowHue));
+				SetWearable(new Shoes(), lowHue, 1);
 
             Utility.AssignRandomHair(this);
 
@@ -954,9 +954,9 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Sandals(GetShoeHue()));
-            AddItem(new Robe(Utility.RandomYellowHue()));
-            AddItem(new GnarledStaff());
+            SetWearable(new Sandals(), GetShoeHue(), 1);
+            SetWearable(new Robe(), Utility.RandomYellowHue(), 1);
+            SetWearable(new GnarledStaff(), dropChance: 1);
         }
 
         public virtual bool CheckResurrect(Mobile m)

@@ -22,13 +22,11 @@ namespace Server.Mobiles
             else
                 hat = new TricorneHat();
 
-            hat.Hue = Utility.RandomNeutralHue();
-
-            AddItem(new Sandals());
-            AddItem(new FancyShirt(Utility.RandomNeutralHue()));
-            AddItem(hat);
-            AddItem(new Cloak(Utility.RandomNeutralHue()));
-            AddItem(new Dagger());
+            SetWearable(new Sandals(), dropChance: 1);
+            SetWearable(new FancyShirt(), Utility.RandomNeutralHue(), 1);
+            SetWearable(hat, Utility.RandomNeutralHue(), 1);
+            SetWearable(new Cloak(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new Dagger(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
 

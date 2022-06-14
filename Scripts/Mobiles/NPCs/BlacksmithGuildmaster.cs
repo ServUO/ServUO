@@ -1,4 +1,5 @@
 using Server.Engines.BulkOrders;
+using Server.Items;
 using System;
 
 namespace Server.Mobiles
@@ -30,8 +31,10 @@ namespace Server.Mobiles
         }
 
         public override void InitOutfit()
-        {
-            Item item = (Utility.RandomBool() ? null : new Items.RingmailChest());
+		{
+			base.InitOutfit();
+
+			Item item = (Utility.RandomBool() ? null : new RingmailChest());
 
             if (item != null && !EquipItem(item))
             {
@@ -40,12 +43,10 @@ namespace Server.Mobiles
             }
 
             if (item == null)
-                AddItem(new Items.FullApron());
+				SetWearable(new FullApron(), dropChance: 1);
 
-            AddItem(new Items.Bascinet());
-            AddItem(new Items.SmithHammer());
-
-            base.InitOutfit();
+			SetWearable(new Bascinet(), dropChance: 1);
+			SetWearable(new SmithHammer(), dropChance: 1);
         }
 
         #region Bulk Orders

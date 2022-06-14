@@ -1,4 +1,5 @@
-﻿using Server.Items;
+﻿using System;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -16,13 +17,13 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                AddItem(new Skirt(Utility.RandomNeutralHue()));
+				SetWearable(new Skirt(), Utility.RandomNeutralHue(), 1);
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
 
             SetStr(147, 215);
@@ -49,36 +50,12 @@ namespace Server.Mobiles
             Fame = 2500;
             Karma = -2500;
 
-            AddItem(new Boots(Utility.RandomNeutralHue()));
-            AddItem(new FancyShirt());
-            AddItem(new Bandana());
+			SetWearable(new Boots(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new FancyShirt(), dropChance: 1);
+			SetWearable(new Bandana(), dropChance: 1);
+			SetWearable((Item)Activator.CreateInstance(Utility.RandomList(_WeaponsList)), dropChance: 1);
 
-            switch (Utility.Random(7))
-            {
-                case 0:
-                    AddItem(new Longsword());
-                    break;
-                case 1:
-                    AddItem(new Cutlass());
-                    break;
-                case 2:
-                    AddItem(new Broadsword());
-                    break;
-                case 3:
-                    AddItem(new Axe());
-                    break;
-                case 4:
-                    AddItem(new Club());
-                    break;
-                case 5:
-                    AddItem(new Dagger());
-                    break;
-                case 6:
-                    AddItem(new Spear());
-                    break;
-            }
-
-            Utility.AssignRandomHair(this);
+			Utility.AssignRandomHair(this);
         }
 
         public ForgottenServant(Serial serial)
@@ -86,7 +63,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool ClickTitle => false;
+		private static readonly Type[] _WeaponsList =
+		{
+			typeof(Longsword), typeof(Cutlass), typeof(Broadsword), typeof(Axe), typeof(Club), typeof(Dagger), typeof(Spear)
+		};
+
+		public override bool ClickTitle => false;
         public override bool AlwaysMurderer => true;
 
         public override void GenerateLoot()
