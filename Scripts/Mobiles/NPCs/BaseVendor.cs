@@ -691,39 +691,35 @@ namespace Server.Mobiles
         {
             if (Backpack == null)
             {
-                Item backpack = new Backpack
-                {
-                    Movable = false
-                };
-                AddItem(backpack);
+                SetWearable(new Backpack());
             }
 
             switch (Utility.Random(3))
             {
                 case 0:
-                    SetWearable(new FancyShirt(GetRandomHue()));
+                    SetWearable(new FancyShirt(), GetRandomHue(), 1);
                     break;
                 case 1:
-                    SetWearable(new Doublet(GetRandomHue()));
+                    SetWearable(new Doublet(), GetRandomHue(), 1);
                     break;
                 case 2:
-                    SetWearable(new Shirt(GetRandomHue()));
+                    SetWearable(new Shirt(), GetRandomHue(), 1);
                     break;
             }
 
             switch (ShoeType)
             {
                 case VendorShoeType.Shoes:
-                    SetWearable(new Shoes(GetShoeHue()));
+                    SetWearable(new Shoes(), GetShoeHue(), 1);
                     break;
                 case VendorShoeType.Boots:
-                    SetWearable(new Boots(GetShoeHue()));
+                    SetWearable(new Boots(), GetShoeHue(), 1);
                     break;
                 case VendorShoeType.Sandals:
-                    SetWearable(new Sandals(GetShoeHue()));
+                    SetWearable(new Sandals(), GetShoeHue(), 1);
                     break;
                 case VendorShoeType.ThighBoots:
-                    SetWearable(new ThighBoots(GetShoeHue()));
+                    SetWearable(new ThighBoots(), GetShoeHue(), 1);
                     break;
             }
 
@@ -742,16 +738,16 @@ namespace Server.Mobiles
                 switch (Utility.Random(6))
                 {
                     case 0:
-                        SetWearable(new ShortPants(GetRandomHue()));
+                        SetWearable(new ShortPants(), GetRandomHue(), 1);
                         break;
                     case 1:
                     case 2:
-                        SetWearable(new Kilt(GetRandomHue()));
+                        SetWearable(new Kilt(), GetRandomHue(), 1);
                         break;
                     case 3:
                     case 4:
                     case 5:
-                        SetWearable(new Skirt(GetRandomHue()));
+                        SetWearable(new Skirt(), GetRandomHue(), 1);
                         break;
                 }
             }
@@ -760,10 +756,10 @@ namespace Server.Mobiles
                 switch (Utility.Random(2))
                 {
                     case 0:
-                        SetWearable(new LongPants(GetRandomHue()));
+                        SetWearable(new LongPants(), GetRandomHue(), 1);
                         break;
                     case 1:
-                        SetWearable(new ShortPants(GetRandomHue()));
+                        SetWearable(new ShortPants(), GetRandomHue(), 1);
                         break;
                 }
             }
