@@ -5300,15 +5300,24 @@ namespace Server.Mobiles
             if (hue > -1)
                 item.Hue = hue;
 
-            item.Movable = dropChance > Utility.RandomDouble();
+			if (dropChance <= 0) 
+				item.Movable = false;
+			else if (dropChance >= 1) 
+				item.Movable = true;
+			else
+				item.Movable = dropChance > Utility.RandomDouble();
 
-            if (!CheckEquip(item) || !OnEquip(item) || !item.OnEquip(this))
+			if(!OnEquip(item) || !item.OnEquip(this))
             {
                 PackItem(item);
             }
             else
-            {
-                AddItem(item);
+			{
+				if (!CheckEquip(item))
+				{
+					FindItemOnLayer(item.Layer).Delete();
+				}
+				AddItem(item);
             }
         }
 
