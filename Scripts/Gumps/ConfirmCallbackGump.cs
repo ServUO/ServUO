@@ -66,7 +66,7 @@ namespace Server.Gumps
             AddImage(2, 248, 0x2716);
             AddImage(2, 2, 0x2716);
 
-            if (Title != null)
+            if (!Title.IsEmpty)
             {
                 if (Title.Number > 0)
                 {

@@ -19,7 +19,7 @@ namespace Server.Gumps
         {
             AddBackground(0, 0, length, height, 9200);
 
-            if (title != null)
+            if (!title.IsEmpty)
             {
                 AddImageTiled(10, 10, length - 20, 20, 2702);
                 AddImageTiled(10, 40, length - 20, height - 50, 2702);

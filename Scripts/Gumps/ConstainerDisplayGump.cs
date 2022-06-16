@@ -29,7 +29,7 @@ namespace Server.Gumps
         {
             AddImage(0, 0, 0x9CDF);
 
-            if (Title != null)
+            if (!Title.IsEmpty)
             {
                 if (Title.Number > 0)
                 {

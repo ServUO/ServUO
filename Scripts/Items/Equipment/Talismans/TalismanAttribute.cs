@@ -126,7 +126,7 @@ namespace Server.Items
             SaveFlag flags = SaveFlag.None;
 
             SetSaveFlag(ref flags, SaveFlag.Type, m_Type != null);
-            SetSaveFlag(ref flags, SaveFlag.Name, m_Name != null);
+            SetSaveFlag(ref flags, SaveFlag.Name, !m_Name.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Amount, m_Amount != 0);
 
             writer.WriteEncodedInt((int)flags);

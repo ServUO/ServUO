@@ -638,10 +638,10 @@ namespace Server.Engines.UOStore
                     {
                         if (m.Backpack != null && m.Alive && m.Backpack.TryDropItem(m, item, false))
                         {
-                            if (item is IPromotionalToken && ((IPromotionalToken)item).ItemName != null)
+                            if (item is IPromotionalToken pt && !pt.ItemName.IsEmpty)
                             {
                                 // A token has been placed in your backpack. Double-click it to redeem your ~1_PROMO~.
-                                m.SendLocalizedMessage(1075248, ((IPromotionalToken)item).ItemName.ToString());
+                                m.SendLocalizedMessage(1075248, pt.ItemName.ToString());
                             }
                             else if (item.LabelNumber > 0 || item.Name != null)
                             {

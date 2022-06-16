@@ -239,7 +239,7 @@ namespace Server.Mobiles
             }
             public override string ToString()
             {
-                if (m_Message != null)
+                if (!m_Message.IsEmpty)
                     return m_Message.ToString();
 
                 return base.ToString();

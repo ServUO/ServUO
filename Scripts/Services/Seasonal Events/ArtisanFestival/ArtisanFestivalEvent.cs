@@ -175,7 +175,7 @@ namespace Server.Engines.ArtisanFestival
         {
             if (TownCryerSystem.GreetingsEntries != null)
             {
-                var entry = TownCryerSystem.GreetingsEntries.FirstOrDefault(e => e.Title != null && e.Title.Number == 1157283);
+                var entry = TownCryerSystem.GreetingsEntries.FirstOrDefault(e => e.Title.Number == 1157283);
 
                 if (entry != null)
                 {

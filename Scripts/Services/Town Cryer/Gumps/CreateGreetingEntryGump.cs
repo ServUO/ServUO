@@ -18,8 +18,8 @@ namespace Server.Services.TownCryer
             {
                 Edit = true;
 
-                _Headline = Entry.Title != null ? Entry.Title.String : string.Empty;
-                _Body = Entry.Body1 != null ? Entry.Body1.String : string.Empty;
+                _Headline = !Entry.Title.IsEmpty ? Entry.Title.String : string.Empty;
+                _Body = !Entry.Body1.IsEmpty ? Entry.Body1.String : string.Empty;
                 _Body2 = Entry.Body2 != null ? Entry.Body2 : string.Empty;
                 _Body3 = Entry.Body3 != null ? Entry.Body3 : string.Empty;
 
@@ -37,7 +37,7 @@ namespace Server.Services.TownCryer
 
             AddHtmlLocalized(58, 160, 100, 20, 1158026, false, false); // Headline:
             AddBackground(58, 180, 740, 20, 0x2486);
-            AddTextEntry(59, 180, 739, 20, 0, 1, Entry != null ? Entry.Title.ToString() : _Headline);
+            AddTextEntry(59, 180, 739, 20, 0, 1, !Entry.Title.IsEmpty ? Entry.Title.ToString() : _Headline);
 
             AddHtmlLocalized(58, 200, 120, 20, 1158028, false, false); // Body Paragraph 1:
             AddBackground(58, 220, 740, 40, 0x2486);

@@ -138,7 +138,7 @@ namespace Server.Items
 
             TextDefinition desc = RepairSkillInfo.GetInfo(m_Skill).Description;
 
-            if (desc != null)
+            if (!desc.IsEmpty)
             {
                 list.Add(desc.ToString());
             }
@@ -290,7 +290,7 @@ namespace Server.Items
         private readonly TextDefinition m_Name;
         private readonly TextDefinition m_Description;
 
-        public RepairSkillInfo(CraftSystem system, Type[] nearbyTypes, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
+        public RepairSkillInfo(CraftSystem system, Type[] nearbyTypes, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = default)
         {
             m_System = system;
             m_NearbyTypes = nearbyTypes;
@@ -299,7 +299,7 @@ namespace Server.Items
             m_Description = description;
         }
 
-        public RepairSkillInfo(CraftSystem system, Type nearbyType, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = null)
+        public RepairSkillInfo(CraftSystem system, Type nearbyType, TextDefinition notNearbyMessage, TextDefinition name, TextDefinition description = default)
             : this(system, new Type[] { nearbyType }, notNearbyMessage, name, description)
         {
         }

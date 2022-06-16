@@ -75,7 +75,7 @@ namespace Server.Items
         public int Hue { get; private set; }
         public TextDefinition Args { get; private set; }
 
-        public CoverInfo(CoverType type, TextDefinition label, int hue, TextDefinition args = null)
+        public CoverInfo(CoverType type, TextDefinition label, int hue, TextDefinition args = default)
         {
             Type = type;
             Label = label;
@@ -146,18 +146,21 @@ namespace Server.Items
 
             if (info != null)
             {
-                if (info.Args != null)
-                {
-                    list.Add(1157605, info.Args.ToString()); // Bulk Order Cover (~1_HUE~)
-                }
-                else if (info.Label.Number > 0)
-                {
-                    list.Add(info.Label.Number);
-                }
-                else
-                {
-                    list.Add(1114057, info.Label.ToString()); // ~1_val~
-                }
+				if (!info.Args.IsEmpty)
+				{
+					list.Add(1157605, info.Args.ToString()); // Bulk Order Cover (~1_HUE~)
+				}
+				else if (!info.Label.IsEmpty)
+				{
+					if (string.IsNullOrWhiteSpace(info.Label.String))
+					{
+						list.Add(info.Label.Number);
+					}
+					else
+					{
+						list.Add(1114057, info.Label.ToString()); // ~1_val~
+					}
+				}
             }
             else
             {

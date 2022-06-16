@@ -96,7 +96,7 @@ namespace Server.Engines.NewMagincia
                 if (message == null)
                     continue;
 
-                if (message.Title != null)
+                if (!message.Title.IsEmpty)
                 {
                     if (message.Title.Number > 0)
                     {
@@ -195,7 +195,7 @@ namespace Server.Engines.NewMagincia
                 AddButton(7, 7, 0x1523, 0x1523, 0, GumpButtonType.Reply, 0);
                 AddButton(390, 7, 0x1519, 0x151A, 1, GumpButtonType.Reply, 0);
 
-                if (Message.Title != null)
+                if (!Message.Title.IsEmpty)
                 {
                     if (Message.Title.Number != 0)
                     {
@@ -219,7 +219,7 @@ namespace Server.Engines.NewMagincia
                     AddHtmlLocalized(47, 7, 360, 18, 1150425, string.Format("{0}", Messages.Count), GreenColor, false, false); // ~1_COUNT~ Messages
                 }
 
-                if (Message.Body != null)
+                if (!Message.Body.IsEmpty)
                 {
                     if (Message.Body.Number != 0)
                     {

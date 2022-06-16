@@ -110,7 +110,7 @@ namespace Server.Gumps
 
             AddHtmlLocalized(25, 80, 390, 20, 1114270, LabelColor, false, false);  // Property:
 
-            if (m_Info.AttributeName != null)
+            if (!m_Info.AttributeName.IsEmpty)
             {
                 AddHtmlLocalized(95, 80, 150, 20, 1114057, m_Info.AttributeName.ToString(), LabelColor, false, false);
             }
@@ -118,7 +118,7 @@ namespace Server.Gumps
             AddHtmlLocalized(25, 100, 390, 20, 1114271, LabelColor, false, false); // Replaces:
             TextDefinition replace = WhatReplacesWhat(m_ID, m_Item);
 
-            if (replace != null)
+            if (!replace.IsEmpty)
             {
                 AddHtmlLocalized(95, 100, 150, 20, 1114057, replace.ToString(), LabelColor, false, false);
             }

@@ -85,8 +85,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (m_Label != null && m_Label > 0)
-                TextDefinition.AddTo(list, m_Label);
+			TextDefinition.AddTo(list, m_Label);
         }
 
         public override void OnDoubleClick(Mobile m)

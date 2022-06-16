@@ -668,7 +668,7 @@ namespace Server.Items
                             from.SendLocalizedMessage(1075001); // You have been given some ingots.
                         else if (item is Bandage)
                             from.SendLocalizedMessage(1075002); // You have been given some clean bandages.
-                        else if (m_Summoner != null && m_Summoner.Name != null)
+                        else if (m_Summoner != null && !m_Summoner.Name.IsEmpty)
                             from.SendLocalizedMessage(1074853, m_Summoner.Name.ToString()); // You have been given ~1_name~
                     }
                     else if (obj is BaseCreature)
@@ -706,7 +706,7 @@ namespace Server.Items
             if (ForceShowName)
                 base.AddNameProperty(list);
             else if (m_Summoner != null && !m_Summoner.IsEmpty)
-                list.Add(1072400, m_Summoner.Name != null ? m_Summoner.Name.ToString() : "Unknown"); // Talisman of ~1_name~ Summoning
+                list.Add(1072400, !m_Summoner.Name.IsEmpty ? m_Summoner.Name.ToString() : "Unknown"); // Talisman of ~1_name~ Summoning
             else if (m_Removal != TalismanRemoval.None)
                 list.Add(1072389, "#" + (1072000 + (int)m_Removal)); // Talisman of ~1_name~
             else
@@ -748,10 +748,10 @@ namespace Server.Items
                 list.Add(1116158); //Mana Phase
 
             if (m_Killer != null && !m_Killer.IsEmpty && m_Killer.Amount > 0)
-                list.Add(1072388, "{0}\t{1}", m_Killer.Name != null ? m_Killer.Name.ToString() : "Unknown", m_Killer.Amount); // ~1_NAME~ Killer: +~2_val~%
+                list.Add(1072388, "{0}\t{1}", !m_Killer.Name.IsEmpty ? m_Killer.Name.ToString() : "Unknown", m_Killer.Amount); // ~1_NAME~ Killer: +~2_val~%
 
             if (m_Protection != null && !m_Protection.IsEmpty && m_Protection.Amount > 0)
-                list.Add(1072387, "{0}\t{1}", m_Protection.Name != null ? m_Protection.Name.ToString() : "Unknown", m_Protection.Amount); // ~1_NAME~ Protection: +~2_val~%
+                list.Add(1072387, "{0}\t{1}", !m_Protection.Name.IsEmpty ? m_Protection.Name.ToString() : "Unknown", m_Protection.Amount); // ~1_NAME~ Protection: +~2_val~%
 
             if (m_ExceptionalBonus != 0)
                 list.Add(1072395, "#{0}\t{1}", GetSkillLabel(), m_ExceptionalBonus); // ~1_NAME~ Exceptional Bonus: ~2_val~%

@@ -382,7 +382,7 @@ namespace Server
         public AddBuffPacket(Mobile mob, BuffIcon iconID, int titleCliloc, int secondaryCliloc, TextDefinition args, TimeSpan length)
             : base(0xDF)
         {
-            bool hasArgs = (args != null);
+            bool hasArgs = !args.IsEmpty;
 
             EnsureCapacity((hasArgs ? (48 + args.ToString().Length * 2) : 44));
             m_Stream.Write(mob.Serial);

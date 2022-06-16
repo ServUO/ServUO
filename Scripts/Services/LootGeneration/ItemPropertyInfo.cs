@@ -170,7 +170,7 @@ namespace Server.Items
                 Imbuable = true;
             }
 
-            if (pResName == null)
+            if (pResName.IsEmpty)
             {
                 PrimaryName = GetName(pRes);
             }
@@ -179,7 +179,7 @@ namespace Server.Items
                 PrimaryName = pResName;
             }
 
-            if (gResName == null)
+            if (gResName.IsEmpty)
             {
                 GemName = GetName(gRes);
             }
@@ -188,7 +188,7 @@ namespace Server.Items
                 GemName = gResName;
             }
 
-            if (spResName == null)
+            if (spResName.IsEmpty)
             {
                 SpecialName = GetName(spRes);
             }

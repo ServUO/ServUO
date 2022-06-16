@@ -34,7 +34,7 @@ namespace Server.Services.TownCryer
 
             int y = 150;
 
-            if (Entry.Title != null)
+            if (!Entry.Title.IsEmpty)
             {
                 if (Entry.Title.Number > 0)
                 {
