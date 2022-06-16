@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Server.Engines.Quests;
 using Server.Items;
 using Server.Mobiles;
 using Server.Spells;
@@ -239,6 +238,8 @@ namespace Server.Multis
 
 		public override void OnLocationChange(Point3D old)
 		{
+			base.OnLocationChange(old);
+
 			for (var i = m_Items.Count - 1; i >= 0; i--)
 			{
 				if (i < m_Items.Count && m_Items[i]?.Deleted == false)
@@ -264,6 +265,8 @@ namespace Server.Multis
 
 		public override void OnMapChange()
 		{
+			base.OnMapChange();
+
 			for (var i = m_Items.Count - 1; i >= 0; i--)
 			{
 				if (i < m_Items.Count && m_Items[i]?.Deleted == false)
@@ -298,10 +301,8 @@ namespace Server.Multis
 			}
 		}
 
-		public override void OnAfterDelete()
+		public override void OnDelete()
 		{
-			base.OnAfterDelete();
-
 			for (var i = m_Items.Count - 1; i >= 0; i--)
 			{
 				if (i < m_Items.Count && m_Items[i]?.Deleted == false)
@@ -309,8 +310,6 @@ namespace Server.Multis
 					m_Items[i].Delete();
 				}
 			}
-
-			m_Items.Clear();
 
 			for (var i = m_Mobiles.Count - 1; i >= 0; i--)
 			{
@@ -323,6 +322,14 @@ namespace Server.Multis
 				}
 			}
 
+			base.OnDelete();
+		}
+
+		public override void OnAfterDelete()
+		{
+			base.OnAfterDelete();
+
+			m_Items.Clear();
 			m_Mobiles.Clear();
 
 			Camps.Remove(this);
@@ -365,6 +372,7 @@ namespace Server.Multis
 
 			writer.Write(m_Items, true);
 			writer.Write(m_Mobiles, true);
+
 			writer.WriteDeltaTime(TimeOfDecay);
 		}
 
@@ -382,13 +390,14 @@ namespace Server.Multis
 					Treasure1 = reader.ReadItem<BaseContainer>();
 					Treasure2 = reader.ReadItem<BaseContainer>();
 
-					goto case 0;
+					goto case 1;
 				}
 				case 1:
 				case 0:
 				{
 					m_Items = reader.ReadStrongItemList();
 					m_Mobiles = reader.ReadStrongMobileList();
+
 					TimeOfDecay = reader.ReadDeltaTime();
 
 					break;
@@ -405,7 +414,7 @@ namespace Server.Multis
 				Prisoner.IsPrisoner = true;
 			}
 
-			if (version == 1)
+			if (version < 2)
 			{
 				Delete();
 			}
