@@ -9,7 +9,7 @@ namespace Server.Mobiles
         {
             Title = "the wandering healer";
 
-            AddItem(new GnarledStaff());
+			SetWearable(new GnarledStaff(), dropChance: 1);
 
             SetSkill(SkillName.Camping, 80.0, 100.0);
             SetSkill(SkillName.Forensics, 80.0, 100.0);

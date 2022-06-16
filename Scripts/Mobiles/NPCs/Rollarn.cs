@@ -77,19 +77,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Shoes(0x1BB));
-            AddItem(new Circlet());
-            AddItem(new Cloak(0x296));
-            AddItem(new LeafChest());
-            AddItem(new LeafArms());
-
-            Item item;
-
-            item = new LeafLegs
-            {
-                Hue = 0x74E
-            };
-            AddItem(item);
+            SetWearable(new Shoes(), 0x1BB, 1);
+            SetWearable(new Circlet(), dropChance: 1);
+            SetWearable(new Cloak(), 0x296, 1);
+            SetWearable(new LeafChest(), dropChance: 1);
+			SetWearable(new LeafArms(), dropChance: 1);
+			SetWearable(new LeafLegs(), 0x74E, 1);
         }
 
         public override void Serialize(GenericWriter writer)

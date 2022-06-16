@@ -304,15 +304,15 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            SetWearable(new ChainCoif());
-            SetWearable(new ChainChest());
-            SetWearable(new ChainLegs());
-            SetWearable(new Boots(), 2012);
-            SetWearable(new FancyKilt(), 2012);
-            SetWearable(new RingmailGloves());
-            SetWearable(new BodySash(), 43);
+            SetWearable(new ChainCoif(), dropChance: 1);
+            SetWearable(new ChainChest(), dropChance: 1);
+            SetWearable(new ChainLegs(), dropChance: 1);
+            SetWearable(new Boots(), 2012, 1);
+            SetWearable(new FancyKilt(), 2012, 1);
+			SetWearable(new RingmailGloves(), dropChance: 1);
+            SetWearable(new BodySash(), 43, 1);
         }
 
         public override void OnDoubleClick(Mobile m)

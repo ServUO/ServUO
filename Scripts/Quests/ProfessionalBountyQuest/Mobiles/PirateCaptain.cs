@@ -92,20 +92,18 @@ namespace Server.Mobiles
             else
                 hat = new TricorneHat();
 
-            hat.Hue = Utility.RandomNeutralHue();
-
-            AddItem(new Boots());
-            AddItem(shirt);
-            AddItem(fancyShirt);
-            AddItem(hat);
-            AddItem(new Cloak(Utility.RandomNeutralHue()));
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(shirt, dropChance: 1);
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(hat, Utility.RandomNeutralHue(), 1);
+			SetWearable(new Cloak(), Utility.RandomNeutralHue(), 1);
 
             switch (Utility.Random(7))
             {
-                case 0: AddItem(new Longsword()); break;
-                case 1: AddItem(new Cutlass()); break;
-                case 2: AddItem(new Broadsword()); break;
-                case 5: AddItem(new Dagger()); break;
+                case 0: SetWearable(new Longsword(), dropChance: 1); break;
+                case 1: SetWearable(new Cutlass(), dropChance: 1); break;
+                case 2: SetWearable(new Broadsword(), dropChance: 1); break;
+                case 5: SetWearable(new Dagger(), dropChance: 1); break;
             }
 
             Utility.AssignRandomHair(this);

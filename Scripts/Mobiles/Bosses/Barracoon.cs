@@ -42,11 +42,11 @@ namespace Server.Mobiles
             Fame = 22500;
             Karma = -22500;
 
-            AddItem(new FancyShirt(Utility.RandomGreenHue()));
-            AddItem(new LongPants(Utility.RandomYellowHue()));
-            AddItem(new JesterHat(Utility.RandomPinkHue()));
-            AddItem(new Cloak(Utility.RandomPinkHue()));
-            AddItem(new Sandals());
+			SetWearable(new FancyShirt(), Utility.RandomGreenHue(), 1);
+			SetWearable(new LongPants(), Utility.RandomYellowHue(), 1);
+			SetWearable(new JesterHat(), Utility.RandomPinkHue(), 1);
+			SetWearable(new Cloak(), Utility.RandomPinkHue(), 1);
+			SetWearable(new Sandals(), 1);
 
             HairItemID = 0x203B; // Short Hair
             HairHue = 0x94;

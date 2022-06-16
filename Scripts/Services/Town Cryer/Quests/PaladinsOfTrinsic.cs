@@ -160,14 +160,14 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            SetWearable(new PlateChest(), 0x8A5);
-            SetWearable(new PlateLegs(), 0x8A5);
-            SetWearable(new PlateArms(), 0x8A5);
-            SetWearable(new PlateGloves(), 0x8A5);
-            SetWearable(new BodySash(), 1158);
-            SetWearable(new Cloak(), 1158);
+            SetWearable(new PlateChest(), 0x8A5, 1);
+            SetWearable(new PlateLegs(), 0x8A5, 1);
+            SetWearable(new PlateArms(), 0x8A5, 1);
+            SetWearable(new PlateGloves(), 0x8A5, 1);
+            SetWearable(new BodySash(), 1158, 1);
+            SetWearable(new Cloak(), 1158, 1);
         }
 
         public override void OnDoubleClick(Mobile m)

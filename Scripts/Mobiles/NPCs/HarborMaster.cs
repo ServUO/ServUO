@@ -38,10 +38,10 @@ namespace Server.Mobiles
                 Title = "the Harbor Master";
             }
 
-            AddItem(new Shirt(Utility.RandomDyedHue()));
-            AddItem(new Boots());
-            AddItem(new LongPants(Utility.RandomNeutralHue()));
-            AddItem(new QuarterStaff());
+            SetWearable(new Shirt(), Utility.RandomDyedHue(), 1);
+            SetWearable(new LongPants(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new QuarterStaff(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
         }

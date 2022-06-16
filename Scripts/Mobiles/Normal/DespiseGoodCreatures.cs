@@ -200,8 +200,8 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaGood;
 
-            AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(5, 10)));
+			SetWearable(new Bow(), dropChance: 1);
+			PackItem(new Arrow(Utility.RandomMinMax(5, 10)));
             Power = powerLevel;
 
             RangeFight = 8;

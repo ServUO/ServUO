@@ -16,12 +16,7 @@ namespace Server.Mobiles
             Body = 0x10;
             Hue = 2051;
 
-            // this to allow shadow fiend to loot from corpses
-            Backpack backpack = new Backpack
-            {
-                Movable = false
-            };
-            AddItem(backpack);
+            AddItem(new Backpack());
 
             SetStr(300, 400);
             SetDex(200, 250);

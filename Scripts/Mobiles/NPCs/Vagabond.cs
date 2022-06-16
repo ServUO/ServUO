@@ -31,22 +31,22 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new FancyShirt(Utility.RandomBrightHue()));
-            AddItem(new Shoes(GetShoeHue()));
-            AddItem(new LongPants(GetRandomHue()));
+			SetWearable(new FancyShirt(), Utility.RandomBrightHue(), 1);
+            SetWearable(new Shoes(), GetShoeHue(), 1);
+            SetWearable(new LongPants(), GetRandomHue(), 1);
 
             if (Utility.RandomBool())
             {
-                AddItem(new Cloak(Utility.RandomBrightHue()));
+				SetWearable(new Cloak(), Utility.RandomBrightHue(), 1);
             }
 
             switch (Utility.Random(2))
             {
                 case 0:
-                    AddItem(new SkullCap(Utility.RandomNeutralHue()));
+					SetWearable(new SkullCap(), Utility.RandomNeutralHue(), 1);
                     break;
                 case 1:
-                    AddItem(new Bandana(Utility.RandomNeutralHue()));
+					SetWearable(new Bandana(), Utility.RandomNeutralHue(), 1);
                     break;
             }
 

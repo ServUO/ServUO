@@ -31,16 +31,16 @@ namespace Server.Mobiles
                 case 0:
                     break;
                 case 1:
-                    AddItem(new Bascinet());
+					SetWearable(new Bascinet(), dropChance: 1);
                     break;
                 case 2:
-                    AddItem(new CloseHelm());
+					SetWearable(new CloseHelm(), dropChance: 1);
                     break;
                 case 3:
-                    AddItem(new NorseHelm());
+					SetWearable(new NorseHelm(), dropChance: 1);
                     break;
                 case 4:
-                    AddItem(new Helmet());
+					SetWearable(new Helmet(), dropChance: 1);
                     break;
             }
 
@@ -62,15 +62,15 @@ namespace Server.Mobiles
             Fame = 100;
             Karma = 250;
 
-            AddItem(new Shoes(Utility.RandomNeutralHue()));
-            AddItem(new Shirt());
-            AddItem(new VikingSword());
-            AddItem(new MetalKiteShield());
+            SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new Shirt(), dropChance: 1);
+            SetWearable(new VikingSword(), dropChance: 1);
+			SetWearable(new MetalKiteShield(), dropChance: 1);
 
-            AddItem(new PlateChest());
-            AddItem(new PlateLegs());
-            AddItem(new PlateArms());
-            AddItem(new LeatherGorget());
+            SetWearable(new PlateChest(), dropChance: 1);
+            SetWearable(new PlateLegs(), dropChance: 1);
+            SetWearable(new PlateArms(), dropChance: 1);
+			SetWearable(new LeatherGorget(), dropChance: 1);
             PackGold(20, 100);
         }
 

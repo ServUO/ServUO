@@ -64,11 +64,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Boots());
-            AddItem(new LongPants(0x6C7));
-            AddItem(new FancyShirt(0x6BB));
-            AddItem(new Cloak(0x59));
+            SetWearable(new Backpack(), dropChance: 1);
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new LongPants(), 0x6C7, 1);
+            SetWearable(new FancyShirt(), 0x6BB, 1);
+            SetWearable(new Cloak(), 0x59, 1);
         }
 
         public Barreraak(Serial serial)

@@ -46,16 +46,13 @@ namespace Server.Engines.Quests.Haven
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this, HairHue);
 
-            AddItem(new PlateChest());
-            AddItem(new PlateArms());
-            AddItem(new PlateGloves());
-            AddItem(new PlateLegs());
+            SetWearable(new PlateChest(), dropChance: 1);
+            SetWearable(new PlateArms(), dropChance: 1);
+            SetWearable(new PlateGloves(), dropChance: 1);
+			SetWearable(new PlateLegs(), dropChance: 1);
 
-            Torch torch = new Torch
-            {
-                Movable = false
-            };
-            AddItem(torch);
+			Torch torch = new Torch();
+			SetWearable(torch);
             torch.Ignite();
         }
 

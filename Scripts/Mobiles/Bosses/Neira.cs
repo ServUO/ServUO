@@ -46,23 +46,9 @@ namespace Server.Mobiles
 
             Female = true;
 
-            Item shroud = new HoodedShroudOfShadows
-            {
-                Movable = false
-            };
-
-            AddItem(shroud);
-
-            Scimitar weapon = new Scimitar
-            {
-                Skill = SkillName.Wrestling,
-                Hue = 38,
-                Movable = false
-            };
-
-            AddItem(weapon);
-
-            AddItem(new VirtualMountItem(this));
+			SetWearable(new HoodedShroudOfShadows());
+			SetWearable(new Scimitar { Skill = SkillName.Wrestling }, 38);
+			SetWearable(new VirtualMountItem(this));
         }
 
         public Neira(Serial serial)

@@ -36,47 +36,15 @@ namespace Server.Items
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Halberd());
-            AddItem(new Cloak(0x4E6));
-
-            Item item;
-
-            item = new PlateLegs
-            {
-                Hue = 0x8A6
-            };
-            AddItem(item);
-
-            item = new PlateArms
-            {
-                Hue = 0x8A6
-            };
-            AddItem(item);
-
-            item = new PlateChest
-            {
-                Hue = 0x8A6
-            };
-            AddItem(item);
-
-            item = new PlateGloves
-            {
-                Hue = 0x8A6
-            };
-            AddItem(item);
-
-            item = new PlateHelm
-            {
-                Hue = 0x8A6
-            };
-            AddItem(item);
-
-            item = new PlateGorget
-            {
-                Hue = 0x8A6
-            };
-            AddItem(item);
+			SetWearable(new Backpack());
+            SetWearable(new Halberd(), dropChance: 1);
+			SetWearable(new Cloak(), 0x4E6, 1);
+			SetWearable(new PlateLegs(), 0x8A6, 1);
+			SetWearable(new PlateArms(), 0x8A6, 1);
+			SetWearable(new PlateChest(), 0x8A6, 1);
+			SetWearable(new PlateGloves(), 0x8A6, 1);
+			SetWearable(new PlateHelm(), 0x8A6, 1);
+			SetWearable(new PlateGorget(), 0x8A6, 1);
         }
 
         public override void Init()

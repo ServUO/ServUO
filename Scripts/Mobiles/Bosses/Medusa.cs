@@ -55,11 +55,7 @@ namespace Server.Mobiles
             Fame = 22000;
             Karma = -22000;
 
-            IronwoodCompositeBow Bow = new IronwoodCompositeBow
-            {
-                Movable = false
-            };
-            AddItem(Bow);
+			SetWearable(new IronwoodCompositeBow());
 
             m_Scales = Utility.RandomMinMax(1, 2) + 7;
 
@@ -702,7 +698,7 @@ namespace Server.Mobiles
             for (int i = 0; i < m.Items.Count; i++)
             {
                 if (m.Items[i].Layer != Layer.Backpack && m.Items[i].Layer != Layer.Mount && m.Items[i].Layer != Layer.Bank)
-                    AddItem(CloneItem(m.Items[i]));
+					SetWearable(CloneItem(m.Items[i]));
             }
         }
 

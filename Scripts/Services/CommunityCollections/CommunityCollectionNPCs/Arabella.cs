@@ -38,13 +38,13 @@ namespace Server.Items
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new NoDachi());
-            AddItem(new SamuraiTabi(0x589));
-            AddItem(new LeatherSuneate());
-            AddItem(new LeatherJingasa());
-            AddItem(new LeatherDo());
-            AddItem(new LeatherHiroSode());
+            SetWearable(new Backpack());
+            SetWearable(new NoDachi(), dropChance: 1);
+            SetWearable(new SamuraiTabi(), 0x589, 1);
+            SetWearable(new LeatherSuneate(), dropChance: 1);
+            SetWearable(new LeatherJingasa(), dropChance: 1);
+            SetWearable(new LeatherDo(), dropChance: 1);
+			SetWearable(new LeatherHiroSode(), dropChance: 1);
         }
 
         public override void Init()

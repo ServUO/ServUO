@@ -131,7 +131,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Robe(Utility.RandomPinkHue()));
+            SetWearable(new Robe(), Utility.RandomPinkHue(), 1);
         }
 
         public override bool CheckVendorAccess(Mobile from)

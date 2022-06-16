@@ -82,7 +82,7 @@ namespace Server.Engines.VvV
         public void StockInventory()
         {
             if (Backpack == null)
-                AddItem(new Backpack());
+				SetWearable(new Backpack());
 
             foreach (CollectionItem item in VvVRewards.Rewards)
             {

@@ -45,13 +45,7 @@ namespace Server.Mobiles
             Fame = 0;
             Karma = 0;
 
-            Halberd weapon = new Halberd
-            {
-                Hue = 0x41CE,
-                Movable = false
-            };
-
-            AddItem(weapon);
+            SetWearable(new Halberd(), 0x41CE);
         }
 
         public KhaldunRevenant(Serial serial)

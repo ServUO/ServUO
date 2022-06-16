@@ -103,11 +103,11 @@ namespace Server.Mobiles
 
         public void InitOutfit()
         {
-            AddItem(new Sandals(0x75E));
-            AddItem(new Shirt());
-            AddItem(new ShortPants(0x66C));
-            AddItem(new SkullCap(0x649));
-            AddItem(new Pitchfork());
+            SetWearable(new Sandals(), 0x75E, 1);
+			SetWearable(new Shirt(), dropChance: 1);
+			SetWearable(new ShortPants(), 0x66C, 1);
+			SetWearable(new SkullCap(), 0x649, 1);
+			SetWearable(new Pitchfork(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

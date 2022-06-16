@@ -19,7 +19,7 @@ namespace Server.Mobiles
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
 
             Title = "the ranger";
@@ -44,28 +44,28 @@ namespace Server.Mobiles
             Fame = 100;
             Karma = 125;
 
-            AddItem(new Shoes(Utility.RandomNeutralHue()));
-            AddItem(new Shirt());
+			SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new Shirt(), dropChance: 1);
 
             // Pick a random sword
             switch (Utility.Random(3))
             {
                 case 0:
-                    AddItem(new Longsword());
+					SetWearable(new Longsword(), dropChance: 1);
                     break;
                 case 1:
-                    AddItem(new VikingSword());
+					SetWearable(new VikingSword(), dropChance: 1);
                     break;
                 case 2:
-                    AddItem(new Broadsword());
+					SetWearable(new Broadsword(), dropChance: 1);
                     break;
             }
 
-            SetWearable(new StuddedChest(), 0x59C);
-            SetWearable(new StuddedArms(), 0x59C);
-            SetWearable(new StuddedGloves(), 0x59C);
-            SetWearable(new StuddedLegs(), 0x59C);
-            SetWearable(new StuddedGorget(), 0x59C);
+            SetWearable(new StuddedChest(), 0x59C, 1);
+            SetWearable(new StuddedArms(), 0x59C, 1);
+            SetWearable(new StuddedGloves(), 0x59C, 1);
+            SetWearable(new StuddedLegs(), 0x59C, 1);
+            SetWearable(new StuddedGorget(), 0x59C, 1);
         }
 
         public override void GenerateLoot()

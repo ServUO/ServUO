@@ -45,7 +45,7 @@ namespace Server.Mobiles
             Fame = 50000;
             Karma = 50000;
 
-            AddItem(new Bow());
+            SetWearable(new Bow(), 1);
         }
 
         public Twaulo(Serial serial)

@@ -100,7 +100,7 @@ namespace Server.Mobiles
         private void AddImmovableItem(Item item)
         {
             item.LootType = LootType.Blessed;
-            AddItem(item);
+            SetWearable(item);
         }
 
         public override Poison PoisonImmune => Poison.Deadly;

@@ -28,11 +28,7 @@ namespace Server.AccountVault
         {
             if (Backpack == null)
             {
-                Item backpack = new Backpack
-                {
-                    Movable = false
-                };
-                AddItem(backpack);
+				SetWearable(new Backpack());
             }
 
             SetWearable(new ElvenShirt());

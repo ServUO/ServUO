@@ -148,10 +148,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x901));
-            AddItem(new HalfApron(0x759));
-            AddItem(new ElvenPants(0x901));
-            AddItem(new LeafChest());
+            SetWearable(new ElvenBoots(), 0x901, 1);
+            SetWearable(new HalfApron(), 0x759, 1);
+            SetWearable(new ElvenPants(), 0x901, 1);
+            SetWearable(new LeafChest(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -899,10 +899,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new SamuraiTabi());
-            AddItem(new Kasa());
-            AddItem(new MaleKimono(Utility.RandomGreenHue()));
-            AddItem(new ShepherdsCrook());
+            SetWearable(new SamuraiTabi(), dropChance: 1);
+            SetWearable(new Kasa(), dropChance: 1);
+            SetWearable(new MaleKimono(), Utility.RandomGreenHue(), 1);
+			SetWearable(new ShepherdsCrook(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -950,16 +950,11 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Shoes(Utility.RandomBlueHue()));
-            AddItem(new Shirt(0x8FD));
-            AddItem(new FeatheredHat(Utility.RandomBlueHue()));
-            AddItem(new Kilt(Utility.RandomBlueHue()));
-
-            Item item = new Spellbook
-            {
-                Hue = Utility.RandomBlueHue()
-            };
-            AddItem(item);
+            SetWearable(new Shoes(), Utility.RandomBlueHue(), 1);
+            SetWearable(new Shirt(), 0x8FD, 1);
+			SetWearable(new FeatheredHat(), Utility.RandomBlueHue(), 1);
+            SetWearable(new Kilt(), Utility.RandomBlueHue(), 1);
+			SetWearable(new Spellbook(), Utility.RandomBlueHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)

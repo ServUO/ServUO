@@ -43,7 +43,7 @@ namespace Server.Mobiles
             Fame = 6500;
             Karma = -6500;
 
-            AddItem(new Bow());
+			SetWearable(new Bow(), 1);
         }
 
         public RakktaviRenowned(Serial serial)

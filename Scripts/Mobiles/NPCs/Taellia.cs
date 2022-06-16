@@ -43,10 +43,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Boots(0x74B));
-            AddItem(new FemaleElvenRobe(0x44));
-            AddItem(new Circlet());
-            AddItem(new Item(0xDF2));
+            SetWearable(new Boots(), 0x74B, 1);
+            SetWearable(new FemaleElvenRobe(), 0x44, 1);
+            SetWearable(new Circlet(), dropChance: 1);
+			SetWearable(new MagicWand(), dropChance: 1);
         }
 
         public override void OnMovement(Mobile m, Point3D oldLocation)

@@ -15,25 +15,12 @@ namespace Server.Mobiles
             Body = 0x191;
             Name = "Tavara Sewel";
 
-            AddItem(new Kilt(0x59C));
-            AddItem(new Sandals(0x599));
-
-            Kryss kryss = new Kryss();
-            Buckler buckler = new Buckler();
-            RingmailGloves gloves = new RingmailGloves();
-            FemalePlateChest chest = new FemalePlateChest();
-
-            kryss.Hue = 0x96F;
-            kryss.Movable = false;
-            buckler.Hue = 0x96F;
-            buckler.Movable = false;
-            gloves.Hue = 0x599;
-            chest.Hue = 0x96F;
-
-            AddItem(kryss);
-            AddItem(buckler);
-            AddItem(gloves);
-            AddItem(chest);
+			SetWearable(new Kilt(), 0x59C, 1);
+			SetWearable(new Sandals(), 0x599, 1);
+			SetWearable(new Kryss(), 0x96F);
+			SetWearable(new Buckler(), 0x96F);
+			SetWearable(new RingmailGloves(), 0x599, 1);
+			SetWearable(new FemalePlateChest(), 0x96F, 1);
 
             SetStr(111, 120);
             SetDex(111, 120);

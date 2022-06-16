@@ -39,11 +39,11 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new GemmedCirclet());
-            AddItem(new HidePants());
-            AddItem(new HideFemaleChest());
-            AddItem(new HidePauldrons());
+            SetWearable(new ElvenBoots(), dropChance: 1);
+            SetWearable(new GemmedCirclet(), dropChance: 1);
+            SetWearable(new HidePants(), dropChance: 1);
+            SetWearable(new HideFemaleChest(), dropChance: 1);
+            SetWearable(new HidePauldrons(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

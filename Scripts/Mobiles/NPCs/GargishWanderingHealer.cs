@@ -10,9 +10,9 @@ namespace Server.Mobiles
             Title = "a Gargish wandering healer";
             Body = 666;
 
-            AddItem(new GnarledStaff());
-            //AddItem( new GargishRobe(5) );
-
+            SetWearable(new GnarledStaff(), dropChance: 1);
+            //SetWearable(new GargishRobe(), 5, 1);
+            
             SetSkill(SkillName.Camping, 80.0, 100.0);
             SetSkill(SkillName.Forensics, 80.0, 100.0);
             SetSkill(SkillName.SpiritSpeak, 80.0, 100.0);

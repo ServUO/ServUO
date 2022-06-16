@@ -42,19 +42,13 @@ namespace Server.Engines.Fellowship
 
         public override void InitOutfit()
         {
+            if (Backpack == null)
+            {
+				SetWearable(new Backpack());
+            }
             SetWearable(new Kamishimo());
             SetWearable(new Sandals());
             SetWearable(new GoldRing());
-
-            if (Backpack == null)
-            {
-                Item backpack = new Backpack
-                {
-                    Movable = false
-                };
-
-                AddItem(backpack);
-            }
         }
 
         public override void GetProperties(ObjectPropertyList list)

@@ -189,11 +189,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ThighBoots(0x901));
-            AddItem(new FancyShirt(0x72B));
-            AddItem(new Cloak(0x1C));
-            AddItem(new Skirt(0x62));
-            AddItem(new Circlet());
+			SetWearable(new ThighBoots(0x901));
+			SetWearable(new FancyShirt(0x72B));
+			SetWearable(new Cloak(0x1C));
+			SetWearable(new Skirt(0x62));
+            SetWearable(new Circlet(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

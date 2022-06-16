@@ -45,12 +45,12 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new ShepherdsCrook());
-            AddItem(new Shoes(0x72F));
-            AddItem(new LongPants(0x519));
-            AddItem(new FancyShirt(0x600));
-            AddItem(new WideBrimHat(0x6B1));
+            SetWearable(new Backpack());
+            SetWearable(new ShepherdsCrook(), dropChance: 1);
+            SetWearable(new Shoes(), 0x72F, 1);
+            SetWearable(new LongPants(), 0x519, 1);
+            SetWearable(new FancyShirt(), 0x600, 1);
+			SetWearable(new WideBrimHat(), 0x6B1, 1);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -42,21 +42,13 @@ namespace Server.Mobiles
             Fame = 10000;
             Karma = -10000;
 
-            Item boots = new ThighBoots
-            {
-                Movable = false,
-                Hue = Utility.Random(2)
-            };
-
             Item shroud = new Item(0x204E)
             {
-                Layer = Layer.OuterTorso,
-                Movable = false,
-                Hue = Utility.Random(2)
+                Layer = Layer.OuterTorso
             };
 
-            AddItem(boots);
-            AddItem(shroud);
+            SetWearable(new ThighBoots(), Utility.Random(2));
+            SetWearable(shroud, Utility.Random(2));
         }
 
         public Protector(Serial serial)

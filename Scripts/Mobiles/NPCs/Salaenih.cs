@@ -152,40 +152,13 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new WarCleaver());
-
-            Item item;
-
-            item = new WoodlandLegs
-            {
-                Hue = 0x1BB
-            };
-            AddItem(item);
-
-            item = new WoodlandArms
-            {
-                Hue = 0x1BB
-            };
-            AddItem(item);
-
-            item = new WoodlandChest
-            {
-                Hue = 0x1BB
-            };
-            AddItem(item);
-
-            item = new WoodlandBelt
-            {
-                Hue = 0x597
-            };
-            AddItem(item);
-
-            item = new VultureHelm
-            {
-                Hue = 0x1BB
-            };
-            AddItem(item);
+            SetWearable(new ElvenBoots(), dropChance: 1);
+			SetWearable(new WarCleaver(), dropChance: 1);
+			SetWearable(new WoodlandLegs(), 0x1BB, 1);
+			SetWearable(new WoodlandArms(), 0x1BB, 1);
+			SetWearable(new WoodlandChest(), 0x1BB, 1);
+			SetWearable(new WoodlandBelt(), 0x597, 1);
+			SetWearable(new VultureHelm(), 0x1BB, 1);
         }
 
         public override void Serialize(GenericWriter writer)

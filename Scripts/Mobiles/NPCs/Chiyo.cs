@@ -121,7 +121,7 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+            SetWearable(new Backpack());
         }
 
         public override void Serialize(GenericWriter writer)

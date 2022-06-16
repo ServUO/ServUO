@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 
 namespace Server.Engines.Quests
 {
@@ -29,18 +30,17 @@ namespace Server.Engines.Quests
             Hue = 0x840C;
             HairItemID = 0x203C;
             HairHue = 0x3B3;
-        }
+
+			CantWalk = true;
+			Blessed = true;
+		}
 
         public override void InitOutfit()
         {
-            CantWalk = true;
-
-            AddItem(new Items.Boots());
-            AddItem(new Items.Shirt(1436));
-            AddItem(new Items.ShortPants(1436));
-            AddItem(new Items.CompositeBow());
-
-            Blessed = true;
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new Shirt(), 1436, 1);
+            SetWearable(new ShortPants(), 1436, 1);
+			SetWearable(new CompositeBow(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

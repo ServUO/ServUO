@@ -48,33 +48,33 @@ namespace Server.Mobiles
             Karma = -1000;
 
             // outfit
-            AddItem(new Shirt(Utility.RandomNeutralHue()));
+            SetWearable(new Shirt(), Utility.RandomNeutralHue(), 1);
 
             switch (Utility.Random(4))
             {
                 case 0:
-                    AddItem(new Sandals());
+					SetWearable(new Sandals(), dropChance: 1);
                     break;
                 case 1:
-                    AddItem(new Shoes());
+					SetWearable(new Shoes(), dropChance: 1);
                     break;
                 case 2:
-                    AddItem(new Boots());
+					SetWearable(new Boots(), dropChance: 1);
                     break;
                 case 3:
-                    AddItem(new ThighBoots());
+					SetWearable(new ThighBoots(), dropChance: 1);
                     break;
             }
 
             if (Female)
             {
                 if (Utility.RandomBool())
-                    AddItem(new Skirt(Utility.RandomNeutralHue()));
+					SetWearable(new Skirt(), Utility.RandomNeutralHue(), 1);
                 else
-                    AddItem(new Kilt(Utility.RandomNeutralHue()));
+					SetWearable(new Kilt(), Utility.RandomNeutralHue(), 1);
             }
             else
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
 
             // hair, facial hair			
             HairItemID = Race.RandomHair(Female);
@@ -83,10 +83,10 @@ namespace Server.Mobiles
             // weapon, shield
             Item weapon = Loot.RandomWeapon();
 
-            AddItem(weapon);
+			SetWearable(weapon, dropChance: 1);
 
             if (weapon.Layer == Layer.OneHanded && Utility.RandomBool())
-                AddItem(Loot.RandomShield());
+                SetWearable(Loot.RandomShield(), dropChance: 1);
         }
 
         public ElfBrigand(Serial serial)

@@ -51,12 +51,12 @@ namespace Server.Engines.Khaldun
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            SetWearable(new HakamaShita());
-            SetWearable(new ShortPants(), 1157);
-            SetWearable(new Obi(), 1157);
-            SetWearable(new Sandals());
+            SetWearable(new HakamaShita(), dropChance: 1);
+            SetWearable(new ShortPants(), 1157, 1);
+            SetWearable(new Obi(), 1157, 1);
+            SetWearable(new Sandals(), dropChance: 1);
         }
 
         public override void OnDoubleClick(Mobile m)

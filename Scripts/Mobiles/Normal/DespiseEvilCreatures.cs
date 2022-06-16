@@ -203,8 +203,8 @@ namespace Server.Engines.Despise
             Fame = GetFame;
             Karma = GetKarmaEvil;
 
-            AddItem(new Bow());
-            PackItem(new Arrow(Utility.RandomMinMax(5, 10))); // OSI it is different: in a sub backpack, this is probably just a limitation of their engine
+			SetWearable(new Bow(), dropChance: 1);
+			PackItem(new Arrow(Utility.RandomMinMax(5, 10))); // OSI it is different: in a sub backpack, this is probably just a limitation of their engine
             Power = powerLevel;
         }
 

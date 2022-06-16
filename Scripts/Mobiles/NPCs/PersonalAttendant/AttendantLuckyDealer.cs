@@ -191,10 +191,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Boots());
-            AddItem(new ShortPants());
-            AddItem(new JesterHat());
-            AddItem(new JesterSuit());
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new ShortPants(), dropChance: 1);
+            SetWearable(new JesterHat(), dropChance: 1);
+			SetWearable(new JesterSuit(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -242,10 +242,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new ElvenPants());
-            AddItem(new ElvenShirt());
-            AddItem(new JesterHat());
+            SetWearable(new ElvenBoots(), dropChance: 1);
+            SetWearable(new ElvenPants(), dropChance: 1);
+            SetWearable(new ElvenShirt(), dropChance: 1);
+			SetWearable(new JesterHat(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

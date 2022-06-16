@@ -128,11 +128,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new BlackStaff());
-            AddItem(new Boots());
-            AddItem(new LongPants());
-            AddItem(new Tunic(0x66D));
+            SetWearable(new Backpack());
+            SetWearable(new BlackStaff(), dropChance: 1);
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new LongPants(), dropChance: 1);
+            SetWearable(new Tunic(), 0x66D, 1);
         }
 
         public override void Serialize(GenericWriter writer)

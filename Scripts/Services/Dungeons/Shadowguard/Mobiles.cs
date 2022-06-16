@@ -38,12 +38,12 @@ namespace Server.Engines.Shadowguard
             Fame = 1000;
             Karma = -1000;
 
-            AddItem(new ExecutionersAxe());
+			SetWearable(new ExecutionersAxe(), dropChance: 1);
 
-            AddItem(new Boots(Utility.RandomNeutralHue()));
-            AddItem(new ShortPants());
-            AddItem(new FancyShirt());
-            AddItem(new TricorneHat());
+			SetWearable(new Boots(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new ShortPants(), dropChance: 1);
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new TricorneHat(), dropChance: 1);
 
             Fame = 5000;
             Karma = -5000;
@@ -348,49 +348,14 @@ namespace Server.Engines.Shadowguard
             SetSkill(SkillName.Tactics, 125.0);
             SetSkill(SkillName.Lumberjacking, 125.0);
 
-            CloseHelm helm = new CloseHelm
-            {
-                Hue = 0x96D
-            };
-            AddItem(helm);
-
-            PlateArms arms = new PlateArms
-            {
-                Hue = 0x96D
-            };
-            AddItem(arms);
-
-            PlateLegs legs = new PlateLegs
-            {
-                Hue = 0x96D
-            };
-            AddItem(legs);
-
-            PlateChest tunic = new PlateChest
-            {
-                Hue = 0x96D
-            };
-            AddItem(tunic);
-
-            PlateGorget gorget = new PlateGorget
-            {
-                Hue = 0x96D
-            };
-            AddItem(gorget);
-
-            PlateGloves golves = new PlateGloves
-            {
-                Hue = 0x96D
-            };
-            AddItem(golves);
-
-            Halberd halberd = new Halberd
-            {
-                Hue = 0x96D
-            };
-            AddItem(halberd);
-
-            AddItem(new HalfApron(728));
+			SetWearable(new CloseHelm(), 0x96D, 1);
+			SetWearable(new PlateArms(), 0x96D, 1);
+			SetWearable(new PlateLegs(), 0x96D, 1);
+			SetWearable(new PlateChest(), 0x96D, 1);
+			SetWearable(new PlateGorget(), 0x96D, 1);
+			SetWearable(new PlateGloves(), 0x96D, 1);
+			SetWearable(new Halberd(), 0x96D, 1);
+			SetWearable(new HalfApron(), 728, 1);
 
             Fame = 8500;
             Karma = -8500;

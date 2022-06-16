@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -25,12 +26,12 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Items.FancyShirt(0x3E4));
-            AddItem(new Items.LongPants(0x192));
-            AddItem(new Items.Pickaxe());
-            AddItem(new Items.ThighBoots(0x283));
-
             base.InitOutfit();
+
+			SetWearable(new FancyShirt(), 0x3E4, 1);
+            SetWearable(new LongPants(), 0x192, 1);
+            SetWearable(new Pickaxe(), dropChance: 1);
+            SetWearable(new ThighBoots(), 0x283, 1);
         }
 
         public override void Serialize(GenericWriter writer)

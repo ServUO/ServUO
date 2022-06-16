@@ -29,20 +29,14 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            ColorItem(new LeatherTalons()); // Bright Blue
-            ColorItem(new GargishLeatherChest()); // Bright Blue
-            ColorItem(new GargishLeatherLegs()); // Bright Blue
-            ColorItem(new GargishClothWingArmor()); // Bright Blue
-            ColorItem(new GargishLeatherArms()); // Bright Blue
-            ColorItem(new GargishLeatherKilt()); // Bright Blue
+            SetWearable(new LeatherTalons(), 0x4F2, 1); // Bright Blue
+            SetWearable(new GargishLeatherChest(), 0x4F2, 1); // Bright Blue
+            SetWearable(new GargishLeatherLegs(), 0x4F2, 1); // Bright Blue
+            SetWearable(new GargishClothWingArmor(), 0x4F2, 1); // Bright Blue
+            SetWearable(new GargishLeatherArms(), 0x4F2, 1); // Bright Blue
+			SetWearable(new GargishLeatherKilt(), 0x4F2, 1); // Bright Blue
 
-            AddItem(new SerpentStoneStaff());
-        }
-
-        private void ColorItem(Item item)
-        {
-            item.Hue = 0x4F2;
-            AddItem(item);
+			SetWearable(new SerpentStoneStaff(), dropChance: 1);
         }
 
         public override void Advertise()

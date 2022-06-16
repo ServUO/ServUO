@@ -31,10 +31,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Sandals(0x4B7));
-            AddItem(new Skirt(0x4B4));
-            AddItem(new FancyShirt(0x659));
+            SetWearable(new Backpack(), dropChance: 1);
+            SetWearable(new Sandals(), 0x4B7, 1);
+            SetWearable(new Skirt(), 0x4B4, 1);
+            SetWearable(new FancyShirt(), 0x659, 1);
         }
 
         public override void Serialize(GenericWriter writer)

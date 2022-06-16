@@ -18,10 +18,10 @@ namespace Server.Mobiles
             HairHue = Race.RandomHairHue();
             Race.RandomFacialHair(this);
 
-            AddItem(new NinjaTabi());
-            AddItem(new FancyShirt(0x51D));
-            AddItem(new Hakama(0x51D));
-            AddItem(new Kasa(0x51D));
+			SetWearable(new NinjaTabi(), dropChance: 1);
+			SetWearable(new FancyShirt(), 0x51D, 1);
+			SetWearable(new Hakama(), 0x51D, 1);
+			SetWearable(new Kasa(), 0x51D, 1);
 
             SetStr(340, 360);
             SetDex(200, 215);

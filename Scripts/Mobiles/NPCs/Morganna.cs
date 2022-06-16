@@ -129,10 +129,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Robe(0x47D));
-            AddItem(new SkullCap(0x455));
-            AddItem(new Sandals());
+            SetWearable(new Backpack());
+            SetWearable(new Robe(), 0x47D, 1);
+            SetWearable(new SkullCap(), 0x455, 1);
+			SetWearable(new Sandals(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

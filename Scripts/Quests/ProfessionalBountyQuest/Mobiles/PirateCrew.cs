@@ -117,7 +117,7 @@ namespace Server.Mobiles
                     case 3: bow = new HeavyCrossbow(); break;
                 }
 
-                AddItem(bow);
+				SetWearable(bow, dropChance: 1);
             }
 
             SetSkill(SkillName.DetectHidden, 40.0, 45.0);

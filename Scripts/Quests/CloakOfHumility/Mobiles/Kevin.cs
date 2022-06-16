@@ -1,4 +1,5 @@
 using Server.Engines.Quests;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -43,8 +44,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.HalfApron());
-            AddItem(new Items.Cleaver());
+            SetWearable(new HalfApron(), dropChance: 1);
+			SetWearable(new Cleaver(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

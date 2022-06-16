@@ -30,18 +30,17 @@ namespace Server.Mobiles
             Race.RandomHair(this);
             HairHue = Race.RandomHairHue();
 
-            Item fancyShirt = new FancyShirt();
             Item shirt = new Shirt(PirateCaptain.GetRandomShirtHue())
             {
                 Layer = Layer.OuterTorso
             };
 
-            AddItem(new Cloak(5));
-            AddItem(new Cutlass());
-            AddItem(shirt);
-            AddItem(fancyShirt);
-            AddItem(new LongPants());
-            AddItem(new Boots());
+            SetWearable(shirt, dropChance: 1);
+            SetWearable(new Cloak(), 5, 1);
+            SetWearable(new Cutlass(), dropChance: 1);
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new LongPants(), dropChance: 1);
+			SetWearable(new Boots(), dropChance: 1);
 
             m_NextSay = DateTime.UtcNow;
         }
