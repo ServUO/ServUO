@@ -648,7 +648,53 @@ namespace Server.Mobiles
             }
         }
 
-        public static void Refresh_Callback(object state)
+#if (BOOKTEXTENTRY)
+		private static void ProcessSpawnerBookEntry(Mobile from, XmlTextEntryBook book)
+		{
+			if (from == null)
+			{
+				return;
+			}
+
+			var spawner = book.SpawnerInstance;
+
+			if (spawner == null || spawner.m_SpawnObjects == null)
+			{
+				return;
+			}
+
+			var entry = book.ContentAsString;
+			var index = book.SpawnerEntryIndex;
+
+			// place the book text into the spawn entry
+			if (index < spawner.m_SpawnObjects.Count)
+			{
+				var so = spawner.m_SpawnObjects[index];
+
+				if (so.TypeName != entry)
+				{
+					var loc = spawner.GetWorldLocation();
+
+					CommandLogging.WriteLine(from, $"{from.AccessLevel} {CommandLogging.Format(from)} changed XmlSpawner {spawner.Serial} '{spawner.Name}' {loc} [{spawner.Map}] : {so.TypeName} to {entry}");
+				}
+
+				so.TypeName = entry;
+			}
+			else
+			{
+				// add a new spawn entry
+				spawner.m_SpawnObjects.Add(new XmlSpawner.SpawnObject(from, spawner, entry, 1));
+
+				// and bump the maxcount of the spawner
+				spawner.MaxCount++;
+			}
+
+			// refresh the spawner gumps			
+			RefreshSpawnerGumps(from);
+		}
+#endif
+
+		public static void Refresh_Callback(object state)
         {
             object[] args = (object[])state;
             Mobile m = (Mobile)args[0];
@@ -1048,49 +1094,34 @@ namespace Server.Mobiles
                             // open a text entry gump
 #if (BOOKTEXTENTRY)
                             // display a new gump
-                            XmlSpawnerGump newgump = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page);
-                            state.Mobile.SendGump(newgump);
+                            state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page));
+
+							XmlSpawner.SpawnObject entry = null;
+
+                            if (m_Spawner.SpawnObjects != null && index < m_Spawner.SpawnObjects.Length)
+                            {
+                                entry = m_Spawner.SpawnObjects[index];
+                            }
 
                             // is there an existing book associated with the gump?
                             if (m_Spawner.m_TextEntryBook == null)
                             {
                                 m_Spawner.m_TextEntryBook = new List<XmlTextEntryBook>();
                             }
+							
+                            object[] args = new object[] { m_Spawner, index, X, Y, m_ShowGump, page };
 
-                            object[] args = new object[6];
-
-                            args[0] = m_Spawner;
-                            args[1] = index;
-                            args[2] = X;
-                            args[3] = Y;
-                            args[4] = m_ShowGump;
-                            args[5] = page;
-
-                            XmlTextEntryBook book = new XmlTextEntryBook(0, string.Empty, m_Spawner.Name, 20, true);
+                            XmlTextEntryBook book = new XmlTextEntryBook(m_Spawner, index, $"Entry {index}", m_Spawner.Name, entry?.TypeName, ProcessSpawnerBookEntry);
 
                             m_Spawner.m_TextEntryBook.Add(book);
 
-                            book.Title = string.Format("Entry {0}", index);
-                            book.Author = m_Spawner.Name;
-
-                            // fill the contents of the book with the current text entry data
-                            string text = string.Empty;
-                            if (m_Spawner.SpawnObjects != null && index < m_Spawner.SpawnObjects.Length)
-                            {
-                                text = m_Spawner.SpawnObjects[index].TypeName;
-                            }
-                            book.Fill(text);
-
                             // put the book at the location of the player so that it can be opened, but drop it below visible range
-                            book.Visible = false;
-                            book.Movable = false;
                             book.MoveToWorld(new Point3D(state.Mobile.Location.X, state.Mobile.Location.Y, state.Mobile.Location.Z - 100), state.Mobile.Map);
 
                             // and open it
                             book.OnDoubleClick(state.Mobile);
-
 #else
-							state.Mobile.SendGump( new TextEntryGump(m_Spawner,this, index, this.X, this.Y));
+							state.Mobile.SendGump(new TextEntryGump(m_Spawner,this, index, this.X, this.Y));
 #endif
                             return;
                         }

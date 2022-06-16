@@ -1,40 +1,80 @@
+using System;
+
+using Server.Mobiles;
+
 namespace Server.Items
 {
-	public class XmlTextEntryBook : BaseBook
+	public delegate void XmlTextEntryBookCallback(Mobile from, XmlTextEntryBook book);
+
+	public sealed class XmlTextEntryBook : BaseEntryBook
 	{
-		[Constructable]
-		public XmlTextEntryBook(int itemID, string title, string author, int pageCount, bool writable)
-			: base(itemID, title, author, pageCount, writable)
+		public XmlSpawner SpawnerInstance { get; }
+		public int SpawnerEntryIndex { get; }
+
+		public XmlTextEntryBookCallback Callback { get; }
+
+		public XmlTextEntryBook(XmlSpawner spawner, int entryIndex, string title, string author, string content, XmlTextEntryBookCallback callback)
+			: base(title, author, content)
+		{
+			SpawnerInstance = spawner;
+			SpawnerEntryIndex = entryIndex;
+
+			Callback = callback;
+		}
+
+		public XmlTextEntryBook(Serial serial)
+			: base(serial)
 		{
 		}
 
-		public XmlTextEntryBook(Serial serial) : base(serial)
+		protected override void OnContentChange(Mobile from)
+		{
+			base.OnContentChange(from);
+
+			Callback?.Invoke(from, this);
+		}
+
+		public override void Serialize(GenericWriter writer)
 		{
 		}
 
-		public void Fill(string text)
+		public override void Deserialize(GenericReader reader)
 		{
+			Delete();
+		}
+	}
+
+	public abstract class BaseEntryBook : BaseBook
+	{
+		public BaseEntryBook(string title, string author, string content)
+			: base(0, title, author, 20, true)
+		{
+			Visible = false;
+			Movable = false;
+
 			int pagenum = 0;
 			int current = 0;
 
 			// break up the text into single line length pieces
-			while (text != null && current < text.Length)
+			while (content != null && current < content.Length)
 			{
-				int lineCount = 10;
-				string[] lines = new string[lineCount];
+				string[] lines = new string[10];
 
 				// place the line on the page
-				for (int i = 0; i < lineCount; i++)
+				for (int i = 0; i < lines.Length; i++)
 				{
-					if (current < text.Length)
+					if (current < content.Length)
 					{
 						// make each line 25 chars long
-						int length = text.Length - current;
+						int length = content.Length - current;
 
-						if (length > 20) 
+						if (length > 20)
+						{
 							length = 20;
+						}
 
-						lines[i] = text.Substring(current, length);
+						lines[i] = content.Substring(current, length);
+
 						current += length;
 					}
 					else
@@ -45,10 +85,13 @@ namespace Server.Items
 				}
 
 				if (pagenum >= PagesCount)
+				{
 					return;
+				}
 
 				Pages[pagenum].Lines = lines;
-				pagenum++;
+
+				++pagenum;
 			}
 
 			// empty the remaining contents
@@ -64,21 +107,18 @@ namespace Server.Items
 			}
 		}
 
+		public BaseEntryBook(Serial serial) 
+			: base(serial)
+		{
+		}
+
 		public override void Serialize(GenericWriter writer)
 		{
-			base.Serialize(writer);
-
-			writer.Write(0); // version
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
-			base.Deserialize(reader);
-
-			reader.ReadInt();
-
 			Delete();
 		}
 	}
 }
-

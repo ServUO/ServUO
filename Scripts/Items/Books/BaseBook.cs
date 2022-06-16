@@ -548,8 +548,13 @@ namespace Server.Items
             else
             {
                 return;
-            }           
+            }
+
+			book.OnContentChange(from);
         }
+
+		protected virtual void OnContentChange(Mobile from)
+		{ }
 
         #region ISecurable Members
 
