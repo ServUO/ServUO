@@ -1,24 +1,14 @@
 using System;
 
-using Server.Mobiles;
-
 namespace Server.Items
 {
-	public delegate void XmlTextEntryBookCallback(Mobile from, XmlTextEntryBook book);
-
 	public sealed class XmlTextEntryBook : BaseEntryBook
 	{
-		public XmlSpawner SpawnerInstance { get; }
-		public int SpawnerEntryIndex { get; }
+		public Action<string> Callback { get; }
 
-		public XmlTextEntryBookCallback Callback { get; }
-
-		public XmlTextEntryBook(XmlSpawner spawner, int entryIndex, string title, string author, string content, XmlTextEntryBookCallback callback)
+		public XmlTextEntryBook(string title, string author, string content, Action<string> callback)
 			: base(title, author, content)
 		{
-			SpawnerInstance = spawner;
-			SpawnerEntryIndex = entryIndex;
-
 			Callback = callback;
 		}
 
@@ -31,7 +21,7 @@ namespace Server.Items
 		{
 			base.OnContentChange(from);
 
-			Callback?.Invoke(from, this);
+			Callback?.Invoke(ContentAsStringNoBreaks);
 		}
 
 		public override void Serialize(GenericWriter writer)
@@ -47,7 +37,7 @@ namespace Server.Items
 	public abstract class BaseEntryBook : BaseBook
 	{
 		public BaseEntryBook(string title, string author, string content)
-			: base(0, title, author, 20, true)
+			: base(0, title, author, DefaultPageCount, true)
 		{
 			Visible = false;
 			Movable = false;
@@ -58,20 +48,14 @@ namespace Server.Items
 			// break up the text into single line length pieces
 			while (content != null && current < content.Length)
 			{
-				string[] lines = new string[10];
+				string[] lines = new string[LineLimit];
 
 				// place the line on the page
 				for (int i = 0; i < lines.Length; i++)
 				{
 					if (current < content.Length)
 					{
-						// make each line 25 chars long
-						int length = content.Length - current;
-
-						if (length > 20)
-						{
-							length = 20;
-						}
+						int length = Math.Min(20, content.Length - current);
 
 						lines[i] = content.Substring(current, length);
 
@@ -107,7 +91,7 @@ namespace Server.Items
 			}
 		}
 
-		public BaseEntryBook(Serial serial) 
+		public BaseEntryBook(Serial serial)
 			: base(serial)
 		{
 		}
