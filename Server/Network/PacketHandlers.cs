@@ -128,7 +128,7 @@ namespace Server.Network
 			//Register(0xF0, 0, false, NewMovementReq);
 			Register(0xF4, 0, false, CrashReport);
 			Register(0xF8, 106, false, CreateCharacter);
-			//Register(0xFA, 1, true, Unhandled); // Currently Handled in UltimaStore.cs
+			//Register(0xFA, 1, true, Empty); // Handled by UltimaStore
 			Register(0xFB, 2, false, PublicHouseContent);
 
 			RegisterExtended(0x05, false, ScreenSize);
@@ -139,13 +139,13 @@ namespace Server.Network
 			RegisterExtended(0x0B, false, Language);
 			RegisterExtended(0x0C, true, CloseStatus);
 			RegisterExtended(0x0E, true, Animate);
-			RegisterExtended(0x0F, false, Empty); // What's this?
+			RegisterExtended(0x0F, false, Empty); // ?
 			RegisterExtended(0x10, true, QueryProperties);
 			RegisterExtended(0x13, true, ContextMenuRequest);
 			RegisterExtended(0x15, true, ContextMenuResponse);
 			RegisterExtended(0x1A, true, StatLockChange);
 			RegisterExtended(0x1C, true, CastSpell);
-			RegisterExtended(0x24, false, UnhandledExtended);
+			RegisterExtended(0x24, false, Empty); // ?
 			RegisterExtended(0x2C, true, BandageTarget);
 			RegisterExtended(0x2D, true, TargetedSpell);
 			RegisterExtended(0x2E, true, TargetedSkillUse);
@@ -247,16 +247,6 @@ namespace Server.Network
 			{
 				ph.ThrottleCallback = t;
 			}
-		}
-
-		private static void UnhandledExtended(NetState state, PacketReader pvSrc)
-		{
-			//pvSrc.Trace(state);
-		}
-
-		private static void UnhandledEncoded(NetState state, IEntity e, EncodedReader pvSrc)
-		{
-			//pvSrc.Trace(state);
 		}
 
 		public static void Empty(NetState state, PacketReader pvSrc)

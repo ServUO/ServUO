@@ -644,13 +644,9 @@ namespace Server.Engines.VendorSearching
             item.GetProperties(opl);
 
             //since the object property list is based on a packet object, the property info is packed away in a packet format
-            byte[] data = opl.Stream.UnderlyingStream.ToArray();
+            byte[] data = opl.Stream.ToArray();
 
             int index = 15; // First localization number index
-            string basestring = null;
-
-            //reset the number property
-            uint number = 0;
 
             //if there's not enough room for another record, quit
             if (index + 4 >= data.Length)
@@ -659,10 +655,7 @@ namespace Server.Engines.VendorSearching
             }
 
             //read number property from the packet data
-            number = (uint)(data[index++] << 24 | data[index++] << 16 | data[index++] << 8 | data[index++]);
-
-            //reset the length property
-            ushort length = 0;
+            int number = (int)(data[index++] << 24 | data[index++] << 16 | data[index++] << 8 | data[index++]);
 
             //if there's not enough room for another record, quit
             if (index + 2 > data.Length)
@@ -670,8 +663,8 @@ namespace Server.Engines.VendorSearching
                 return null;
             }
 
-            //read length property from the packet data
-            length = (ushort)(data[index++] << 8 | data[index++]);
+			//read length property from the packet data
+			ushort length = (ushort)(data[index++] << 8 | data[index++]);
 
             //determine the location of the end of the string
             int end = index + length;
@@ -685,17 +678,19 @@ namespace Server.Engines.VendorSearching
             //read the string into a StringBuilder object
 
             StringBuilder s = new StringBuilder();
+
             while (index + 2 <= end + 1)
             {
-                short next = (short)(data[index++] | data[index++] << 8);
+				if ((data[index++] | data[index++] << 8) == 0)
+				{
+					break;
+				}
 
-                if (next == 0)
-                    break;
-
-                s.Append(Encoding.Unicode.GetString(BitConverter.GetBytes(next)));
+				s.Append(Encoding.Unicode.GetChars(data, index - 2, 2));
             }
 
-            basestring = StringList.GetString((int)number);
+            string basestring = StringList.GetString((int)number);
+
             string args = s.ToString();
 
             if (args == string.Empty)
