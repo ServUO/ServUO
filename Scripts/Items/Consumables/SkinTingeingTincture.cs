@@ -96,7 +96,7 @@ namespace Server.Items
                     x += 21;
                 }
 
-                displayHue = SelectedHue != 0 ? SelectedHue : User.Hue ^ 0x8000;
+                displayHue = (SelectedHue > 0 ? SelectedHue : User.BodyHue) | Mobile.HuePartialFlag;
 
                 if (elf)
                     displayHue--;
@@ -127,7 +127,7 @@ namespace Server.Items
                 {
                     if (SelectedHue != 0)
                     {
-                        User.Hue = User.Race.ClipSkinHue(SelectedHue & 0x3FFF) | 0x8000;
+                        User.BodyHue = User.Race.ClipSkinHue(SelectedHue & Mobile.HueTransparentFlag) | Mobile.HuePartialFlag;
                         Item.Delete();
                     }
                 }

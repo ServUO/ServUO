@@ -13,7 +13,7 @@ namespace Server.Mobiles
         public ForestOstard(string name)
             : base(name, 0xDB, 0x3EA5, AIType.AI_Melee, FightMode.Aggressor, 10, 1, 0.2, 0.4)
         {
-            Hue = Utility.RandomSlimeHue() | 0x8000;
+            BodyHue = Utility.RandomSlimeHue() | HuePartialFlag;
 
             BaseSoundID = 0x270;
 

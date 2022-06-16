@@ -677,7 +677,6 @@ namespace Server
 		private Point3D m_Location;
 		private Direction m_Direction;
 		private Body m_Body;
-		private int m_Hue;
 		private Poison m_Poison;
 		private Timer m_PoisonTimer;
 		private BaseGuild m_Guild;
@@ -2875,7 +2874,7 @@ namespace Server
 		/// <returns>True if the move is allowed, false if not.</returns>
 		protected virtual bool OnMove(Direction d)
 		{
-			if (m_Hidden && m_AccessLevel == AccessLevel.Player)
+			if (m_Hidden && m_AccessLevel < AccessLevel.Counselor)
 			{
 				if (m_AllowedStealthSteps-- <= 0 || (d & Direction.Running) != 0 || Mounted)
 				{
@@ -5893,6 +5892,18 @@ namespace Server
 							m_Map = Map.Internal;
 						}
 
+						if ((m_Hue & HuePartialFlag) != 0)
+						{
+							m_Hue &= ~HuePartialFlag;
+							m_HueFlags |= HuePartialFlag;
+						}
+
+						if ((m_Hue & HueTransparentFlag) != 0)
+						{
+							m_Hue &= ~HueTransparentFlag;
+							m_HueFlags |= HueTransparentFlag;
+						}
+
 						if (m_Map != null)
 						{
 							m_Map.OnEnter(this);
@@ -5923,8 +5934,6 @@ namespace Server
 
 			Utility.Intern(ref m_Title);
 			Utility.Intern(ref m_Language);
-
-			m_Hue &= ~0x8000;
 		}
 
 		public void ConvertHair()
@@ -6147,7 +6156,7 @@ namespace Server
 			writer.Write(m_Warmode);
 			writer.Write(m_Hidden);
 			writer.Write((byte)m_Direction);
-			writer.Write(m_Hue);
+			writer.Write(m_Hue | m_HueFlags);
 			writer.Write(m_Str);
 			writer.Write(m_Dex);
 			writer.Write(m_Int);
@@ -7371,16 +7380,8 @@ namespace Server
 							{
 								MobileIncoming.Send(ns, m);
 
-								if (ns.IsEnhancedClient)
-								{
-									ns.Send(new HealthbarPoisonEC(m));
-									ns.Send(new HealthbarYellowEC(m));
-								}
-								else if (ns.StygianAbyss)
-								{
-									ns.Send(new HealthbarPoison(m));
-									ns.Send(new HealthbarYellow(m));
-								}
+								HealthbarPoison.Send(ns, m);
+								HealthbarYellow.Send(ns, m);
 
 								if (m.IsDeadBondedPet)
 								{
@@ -8397,7 +8398,65 @@ namespace Server
 
 		public virtual int Luck => 0;
 
+		#region Hue
+
+		public const int HueTransparentFlag = 0x4000;
+		public const int HuePartialFlag = 0x8000;
+
+		public const int HueCombinedFlags = HueTransparentFlag | HuePartialFlag;
+
 		public virtual int HuedItemID => m_Female ? 0x2107 : 0x2106;
+
+		private int m_HueFlags;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int HueFlags
+		{
+			get => m_HueFlags;
+			set
+			{
+				if (m_HueFlags != value)
+				{
+					m_HueFlags = value;
+
+					Delta(MobileDelta.Hue);
+				}
+			}
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool HueTransparent
+		{
+			get => (HueFlags & HueTransparentFlag) != 0;
+			set
+			{
+				if (value)
+				{
+					HueFlags |= HueTransparentFlag;
+				}
+				else
+				{
+					HueFlags &= ~HueTransparentFlag;
+				}
+			}
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool HuePartial
+		{
+			get => (HueFlags & HuePartialFlag) != 0;
+			set
+			{
+				if (value)
+				{
+					HueFlags |= HuePartialFlag;
+				}
+				else
+				{
+					HueFlags &= ~HuePartialFlag;
+				}
+			}
+		}
 
 		private int m_HueMod = -1;
 
@@ -8416,20 +8475,7 @@ namespace Server
 			}
 		}
 
-		[Hue, CommandProperty(AccessLevel.Decorator)]
-		public virtual int Hue
-		{
-			get
-			{
-				if (m_HueMod != -1)
-				{
-					return m_HueMod;
-				}
-
-				return BodyHue;
-			}
-			set => BodyHue = value;
-		}
+		private int m_Hue;
 
 		[Hue, CommandProperty(AccessLevel.Decorator)]
 		public int BodyHue
@@ -8437,11 +8483,32 @@ namespace Server
 			get => m_Hue;
 			set
 			{
-				var oldHue = m_Hue;
-
-				if (oldHue != value)
+				if (m_Hue != value)
 				{
 					m_Hue = value;
+
+					if (m_Hue > 0)
+					{
+						if ((m_Hue & HueTransparentFlag) != 0)
+						{
+							m_Hue &= ~HueTransparentFlag;
+							m_HueFlags |= HueTransparentFlag;
+						}
+						else
+						{
+							m_HueFlags &= ~HueTransparentFlag;
+						}
+
+						if ((m_Hue & HuePartialFlag) != 0)
+						{
+							m_Hue &= ~HuePartialFlag;
+							m_HueFlags |= HuePartialFlag;
+						}
+						else
+						{
+							m_HueFlags &= ~HuePartialFlag;
+						}
+					}
 
 					Delta(MobileDelta.Hue);
 				}
@@ -8449,7 +8516,13 @@ namespace Server
 		}
 
 		[Hue, CommandProperty(AccessLevel.Decorator)]
-		public int RawHue { get => m_Hue; set => Hue = value; }
+		public virtual int Hue
+		{
+			get => m_HueMod != -1 ? m_HueMod : BodyHue;
+			set => BodyHue = value;
+		}
+
+		#endregion
 
 		public void SetDirection(Direction dir)
 		{
@@ -8549,7 +8622,7 @@ namespace Server
 				flags |= 0x02;
 			}
 
-			if (m_Poison != null)
+			if (m_Poison != null || m_PoisonHealthbar)
 			{
 				flags |= 0x04;
 			}
@@ -9002,12 +9075,12 @@ namespace Server
 				return false;
 			}
 
-			if (m.Hidden && (m_AccessLevel == AccessLevel.Player || (m_AccessLevel < m.AccessLevel && m_AccessLevel < AccessLevel.Administrator)))
+			if (m.Hidden && (m_AccessLevel < AccessLevel.Counselor || (m_AccessLevel < m.AccessLevel && m_AccessLevel < AccessLevel.Administrator)))
 			{
 				return false;
 			}
 
-			if ((!m.Alive && (!Core.SE || !(Skills.SpiritSpeak.Value >= 100.0))) && Alive && m_AccessLevel == AccessLevel.Player && !m.Warmode)
+			if (!m.Alive && (!Core.SE || !(Skills.SpiritSpeak.Value >= 100.0)) && Alive && m_AccessLevel < AccessLevel.Counselor && !m.Warmode)
 			{
 				return false;
 			}
@@ -9124,6 +9197,19 @@ namespace Server
 			{
 				m_YellowHealthbar = value;
 				Delta(MobileDelta.HealthbarYellow);
+			}
+		}
+
+		private bool m_PoisonHealthbar;
+
+		[CommandProperty(AccessLevel.Decorator)]
+		public bool PoisonHealthbar
+		{
+			get => m_PoisonHealthbar;
+			set
+			{
+				m_PoisonHealthbar = value;
+				Delta(MobileDelta.HealthbarPoison);
 			}
 		}
 
@@ -9976,12 +10062,6 @@ namespace Server
 
 					eable.Free();
 
-					var hbpPacket = Packet.Acquire(new HealthbarPoison(this));
-					var hbyPacket = Packet.Acquire(new HealthbarYellow(this));
-
-					var hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this));
-					var hbyKRPacket = Packet.Acquire(new HealthbarYellowEC(this));
-
 					var ourState = m_NetState;
 
 					// Check to see if we are attached to a client
@@ -10015,16 +10095,8 @@ namespace Server
 								{
 									MobileIncoming.Send(m.m_NetState, this);
 
-									if (m.m_NetState.IsEnhancedClient)
-									{
-										m.m_NetState.Send(hbpKRPacket);
-										m.m_NetState.Send(hbyKRPacket);
-									}
-									else if (m.m_NetState.StygianAbyss)
-									{
-										m.m_NetState.Send(hbpPacket);
-										m.m_NetState.Send(hbyPacket);
-									}
+									HealthbarPoison.Send(m.m_NetState, this);
+									HealthbarYellow.Send(m.m_NetState, this);
 
 									if (IsDeadBondedPet)
 									{
@@ -10050,16 +10122,8 @@ namespace Server
 								{
 									MobileIncoming.Send(ourState, m);
 
-									if (ourState.IsEnhancedClient)
-									{
-										ourState.Send(new HealthbarPoisonEC(m));
-										ourState.Send(new HealthbarYellowEC(m));
-									}
-									else if (ourState.StygianAbyss)
-									{
-										ourState.Send(new HealthbarPoison(m));
-										ourState.Send(new HealthbarYellow(m));
-									}
+									HealthbarPoison.Send(ourState, m);
+									HealthbarYellow.Send(ourState, m);
 
 									if (m.IsDeadBondedPet)
 									{
@@ -10099,16 +10163,8 @@ namespace Server
 							{
 								MobileIncoming.Send(ns, this);
 
-								if (ns.IsEnhancedClient)
-								{
-									ns.Send(hbpKRPacket);
-									ns.Send(hbyKRPacket);
-								}
-								else if (ns.StygianAbyss)
-								{
-									ns.Send(hbpPacket);
-									ns.Send(hbyPacket);
-								}
+								HealthbarPoison.Send(ns, this);
+								HealthbarYellow.Send(ns, this);
 
 								if (IsDeadBondedPet)
 								{
@@ -10124,11 +10180,6 @@ namespace Server
 
 						eable.Free();
 					}
-
-					Packet.Release(ref hbpKRPacket);
-					Packet.Release(ref hbyKRPacket);
-					Packet.Release(ref hbpPacket);
-					Packet.Release(ref hbyPacket);
 				}
 
 				NotifyLocationChange(map, oldLocation);
@@ -10538,32 +10589,8 @@ namespace Server
 					{
 						MobileIncoming.Send(state, this);
 
-						if (state.StygianAbyss)
-						{
-							if (m_Poison != null)
-							{
-								if (state.IsEnhancedClient)
-								{
-									state.Send(new HealthbarPoisonEC(this));
-								}
-								else
-								{
-									state.Send(new HealthbarPoison(this));
-								}
-							}
-
-							if (m_Blessed || m_YellowHealthbar)
-							{
-								if (state.IsEnhancedClient)
-								{
-									state.Send(new HealthbarYellowEC(this));
-								}
-								else
-								{
-									state.Send(new HealthbarYellow(this));
-								}
-							}
-						}
+						HealthbarPoison.Send(state, this);
+						HealthbarYellow.Send(state, this);
 
 						if (IsDeadBondedPet)
 						{
@@ -11241,26 +11268,12 @@ namespace Server
 
 					if (sendHealthbarPoison)
 					{
-						if (ourState.IsEnhancedClient)
-						{
-							ourState.Send(new HealthbarPoisonEC(m));
-						}
-						else
-						{
-							ourState.Send(new HealthbarPoison(m));
-						}
+						HealthbarPoison.Send(ourState, m);
 					}
 
 					if (sendHealthbarYellow)
 					{
-						if (ourState.IsEnhancedClient)
-						{
-							ourState.Send(new HealthbarYellowEC(m));
-						}
-						else
-						{
-							ourState.Send(new HealthbarYellow(m));
-						}
+						HealthbarYellow.Send(ourState, m);
 					}
 				}
 				else
@@ -11372,10 +11385,6 @@ namespace Server
 				Packet deadPacket = null;
 				Packet hairPacket = null;
 				Packet facialhairPacket = null;
-				Packet hbpPacket = null;
-				Packet hbyPacket = null;
-				Packet hbpPacketEC = null;
-				Packet hbyPacketEC = null;
 				Packet faceRemovePacket = null;
 				Packet faceSendPacket = null;
 
@@ -11416,46 +11425,12 @@ namespace Server
 
 							if (sendHealthbarPoison)
 							{
-								if (state.IsEnhancedClient)
-								{
-									if (hbpPacketEC == null)
-									{
-										hbpPacketEC = Packet.Acquire(new HealthbarPoisonEC(m));
-									}
-
-									state.Send(hbpPacketEC);
-								}
-								else
-								{
-									if (hbpPacket == null)
-									{
-										hbpPacket = Packet.Acquire(new HealthbarPoison(m));
-									}
-
-									state.Send(hbpPacket);
-								}
+								HealthbarPoison.Send(state, m);
 							}
 
 							if (sendHealthbarYellow)
 							{
-								if (state.IsEnhancedClient)
-								{
-									if (hbyPacketEC == null)
-									{
-										hbyPacketEC = Packet.Acquire(new HealthbarYellowEC(m));
-									}
-
-									state.Send(hbyPacketEC);
-								}
-								else
-								{
-									if (hbyPacket == null)
-									{
-										hbyPacket = Packet.Acquire(new HealthbarYellow(m));
-									}
-
-									state.Send(hbyPacket);
-								}
+								HealthbarYellow.Send(state, m);
 							}
 						}
 						else
@@ -11545,10 +11520,6 @@ namespace Server
 				Packet.Release(deadPacket);
 				Packet.Release(hairPacket);
 				Packet.Release(facialhairPacket);
-				Packet.Release(hbpPacket);
-				Packet.Release(hbyPacket);
-				Packet.Release(hbpPacketEC);
-				Packet.Release(hbyPacketEC);
 				Packet.Release(faceRemovePacket);
 				Packet.Release(faceSendPacket);
 

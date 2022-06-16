@@ -158,7 +158,7 @@ namespace Server.Misc
 
 			newChar.Race = race;
 
-			newChar.BodyHue = race.ClipSkinHue(args.SkinHue) | 0x8000;
+			newChar.BodyHue = race.ClipSkinHue(args.SkinHue) | Mobile.HuePartialFlag;
 
 			newChar.Hunger = 20;
 
