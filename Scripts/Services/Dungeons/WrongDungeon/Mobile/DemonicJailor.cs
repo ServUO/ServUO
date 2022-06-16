@@ -130,7 +130,7 @@ namespace Server.Mobiles
                 m.RevealingAction();
             base.OnMovement(m, oldLocation);
 
-            if (m_NextTerror < DateTime.Now && m != null && InRange(m.Location, 3) && m.AccessLevel == AccessLevel.Player)
+            if (m_NextTerror < DateTime.Now && m != null && InRange(m.Location, 3) && m.AccessLevel < AccessLevel.Counselor)
             {
                 m.Frozen = true;
                 m.SendLocalizedMessage(1080342, Title, 33); // Terror slices into your very being, destroying any chance of resisting ~1_name~ you might have had

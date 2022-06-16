@@ -388,7 +388,7 @@ namespace Server.Mobiles
 
                         foreach (Mobile m in eable)
                         {
-                            if (m.Alive && m.AccessLevel == AccessLevel.Player && m is PlayerMobile && .75 > Utility.RandomDouble())
+                            if (m.Alive && m.AccessLevel < AccessLevel.Counselor && m is PlayerMobile && .75 > Utility.RandomDouble())
                                 DoDismount(m);
                         }
 
@@ -400,7 +400,7 @@ namespace Server.Mobiles
 
                         foreach (Mobile m in eable2)
                         {
-                            if (m.Alive && m.AccessLevel == AccessLevel.Player && m is PlayerMobile)
+                            if (m.Alive && m.AccessLevel < AccessLevel.Counselor && m is PlayerMobile)
                                 mobiles.Add(m);
                         }
 
@@ -453,7 +453,7 @@ namespace Server.Mobiles
 
                     foreach (Mobile m in eable)
                     {
-                        if (m.Alive && m.AccessLevel == AccessLevel.Player && m is PlayerMobile)
+                        if (m.Alive && m.AccessLevel < AccessLevel.Counselor && m is PlayerMobile)
                             mobiles.Add(m);
                     }
 

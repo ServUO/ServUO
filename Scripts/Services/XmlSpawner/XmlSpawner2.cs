@@ -9324,7 +9324,7 @@ namespace Server.Mobiles
             {
 				foreach (Mobile m in sector.Mobiles)
 				{
-                    if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel == AccessLevel.Player || !m.Hidden))
+                    if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel < AccessLevel.Counselor || !m.Hidden))
                         if ((m.Z + 16) > z && (z + height) > m.Z)
                             return false;
                 }

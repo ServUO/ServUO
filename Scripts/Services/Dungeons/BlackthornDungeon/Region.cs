@@ -34,7 +34,7 @@ namespace Server.Engines.Blackthorn
         {
             if (!Fellowship.ForsakenFoesEvent.Instance.Running)
             {
-                foreach (Mobile m in AllPlayers.Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player))
+                foreach (Mobile m in AllPlayers.Where(m => m is PlayerMobile && m.AccessLevel < AccessLevel.Counselor))
                 {
                     if (m.Hidden)
                         m.RevealingAction();

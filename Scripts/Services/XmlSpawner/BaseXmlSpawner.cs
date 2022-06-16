@@ -1291,7 +1291,7 @@ namespace Server.Mobiles
                                     IPooledEnumerable ie = ((Item)refobject).GetMobilesInRange(range);
                                     foreach (Mobile p in ie)
                                     {
-                                        if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+                                        if (p.Player && p.AccessLevel < AccessLevel.Counselor) nplayers++;
                                     }
                                     ie.Free();
                                 }
@@ -1300,7 +1300,7 @@ namespace Server.Mobiles
                                     IPooledEnumerable ie = ((Mobile)refobject).GetMobilesInRange(range);
                                     foreach (Mobile p in ie)
                                     {
-                                        if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+                                        if (p.Player && p.AccessLevel < AccessLevel.Counselor) nplayers++;
                                     }
                                     ie.Free();
                                 }
@@ -1554,7 +1554,7 @@ namespace Server.Mobiles
                         IPooledEnumerable ie = ((Item)o).GetMobilesInRange(range);
                         foreach (Mobile p in ie)
                         {
-                            if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+                            if (p.Player && p.AccessLevel < AccessLevel.Counselor) nplayers++;
                         }
                         ie.Free();
                     }
@@ -1563,7 +1563,7 @@ namespace Server.Mobiles
                         IPooledEnumerable ie = ((Mobile)o).GetMobilesInRange(range);
                         foreach (Mobile p in ie)
                         {
-                            if (p.Player && p.AccessLevel == AccessLevel.Player) nplayers++;
+                            if (p.Player && p.AccessLevel < AccessLevel.Counselor) nplayers++;
                         }
                         ie.Free();
                     }

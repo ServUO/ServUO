@@ -49,7 +49,7 @@ namespace Server.Engines.Doom
         {
             base.OnLocationChanged(m, oldLocation);
 
-            if (!Active && CanActivate && m is PlayerMobile && m.AccessLevel == AccessLevel.Player && m.Alive)
+            if (!Active && CanActivate && m is PlayerMobile && m.AccessLevel < AccessLevel.Counselor && m.Alive)
             {
                 for (int x = m.X - 3; x <= m.X + 3; x++)
                 {
@@ -278,7 +278,7 @@ namespace Server.Engines.Doom
                         Effects.SendLocationEffect(p, Map.Malas, Utility.RandomList(0x113C, 0x1147, 0x11A8) - 2, 16, 3, 0, 0);
                     }
 
-                    foreach (Mobile m in Region.AllMobiles.Where(m => m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && m.Poison == null))
+                    foreach (Mobile m in Region.AllMobiles.Where(m => m is PlayerMobile && m.Alive && m.AccessLevel < AccessLevel.Counselor && m.Poison == null))
                     {
                         m.ApplyPoison(m, Poison.Deadly);
                         m.SendSound(0x231);

@@ -1298,7 +1298,7 @@ namespace Server.Mobiles
 
             CheckAtrophies(from);
 
-            if (AccountHandler.LockdownLevel > AccessLevel.VIP)
+            if (AccountHandler.LockdownLevel >= AccessLevel.Counselor)
             {
                 string notice;
 
@@ -1340,7 +1340,7 @@ namespace Server.Mobiles
                 ReportMurdererGump.CheckMurderer(pm);
             }
 
-            if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel == AccessLevel.Player)
+            if (Siege.SiegeShard && from.Map == Map.Trammel && from.AccessLevel < AccessLevel.Counselor)
             {
                 from.Map = Map.Felucca;
             }
@@ -5024,7 +5024,7 @@ namespace Server.Mobiles
             {
                 return false;
             }
-            else if (AccessLevel == AccessLevel.Player)
+            else if (AccessLevel < AccessLevel.Counselor)
             {
                 Region r = item.GetRegion();
 

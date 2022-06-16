@@ -85,7 +85,7 @@ namespace Server.Items
             {
                 foreach (var m in _Region.AllPlayers)
                 {
-                    if (m.AccessLevel == AccessLevel.Player)
+                    if (m.AccessLevel < AccessLevel.Counselor)
                         m.PrivateOverheadMessage(MessageType.Regular, 0x21, 1156506, m.NetState); // *The Volcano is becoming unstable!*
                 }
 
@@ -134,7 +134,7 @@ namespace Server.Items
 
                         foreach (Mobile m in mobiles)
                         {
-                            if (m.AccessLevel == AccessLevel.Player && m is PlayerMobile)
+                            if (m.AccessLevel < AccessLevel.Counselor && m is PlayerMobile)
                                 m.PlaySound(520);
                         }
 
@@ -148,7 +148,7 @@ namespace Server.Items
 
                             foreach (Mobile m in eable)
                             {
-                                if (m.Alive && m.AccessLevel == AccessLevel.Player && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
+                                if (m.Alive && m.AccessLevel < AccessLevel.Counselor && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
                                     DoLavaDamageDelayed(m);
                             }
 
@@ -176,7 +176,7 @@ namespace Server.Items
             if (!m.Alive || m.AccessLevel > AccessLevel.Player || (m is BaseCreature && ((BaseCreature)m).GetMaster() == null))
                 return;
 
-            if (_LavaTimer != null && m.AccessLevel == AccessLevel.Player && m.Alive && _CurrentLava.Contains(m) && !_SafeZone.Contains(m) && !InSafeZone(m))
+            if (_LavaTimer != null && m.AccessLevel < AccessLevel.Counselor && m.Alive && _CurrentLava.Contains(m) && !_SafeZone.Contains(m) && !InSafeZone(m))
             {
                 DoLavaDamageDelayed(m);
             }

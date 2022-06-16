@@ -81,7 +81,7 @@ namespace Server.Engines.VvV
                 }
                 else
                 {
-                    if (User.AccessLevel == AccessLevel.Player)
+                    if (User.AccessLevel < AccessLevel.Counselor)
                         PointsSystem.ViceVsVirtue.DeductPoints(User, citem.Points);
 
                     User.SendLocalizedMessage(1073621); // Your reward has been placed in your backpack.

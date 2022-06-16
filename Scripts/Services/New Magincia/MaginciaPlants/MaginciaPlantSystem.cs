@@ -61,7 +61,7 @@ namespace Server.Engines.Plants
 
         public void OnPlantPlanted(Mobile from)
         {
-            if (from.AccessLevel == AccessLevel.Player)
+            if (from.AccessLevel < AccessLevel.Counselor)
                 PlantDelayTable[from] = DateTime.UtcNow + TimeSpan.FromDays(PlantDelay);
             else
                 from.SendMessage("As staff, you bypass the {0} day plant delay.", PlantDelay);

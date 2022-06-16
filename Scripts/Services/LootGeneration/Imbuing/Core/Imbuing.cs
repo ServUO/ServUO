@@ -327,7 +327,7 @@ namespace Server.SkillHandlers
             int primResAmount = GetPrimaryAmount(i, id, value);
             int specResAmount = GetSpecialAmount(i, id, value);
 
-            if (from.AccessLevel == AccessLevel.Player &&
+            if (from.AccessLevel < AccessLevel.Counselor &&
                 (from.Backpack == null || from.Backpack.GetAmount(gem) < gemAmount ||
                 from.Backpack.GetAmount(primary) < primResAmount ||
                 from.Backpack.GetAmount(special) < specResAmount))
@@ -370,7 +370,7 @@ namespace Server.SkillHandlers
 
                 if (success >= Utility.RandomDouble() || id < 0 || id > 180)
                 {
-                    if (from.AccessLevel == AccessLevel.Player)
+                    if (from.AccessLevel < AccessLevel.Counselor)
                     {
                         from.Backpack.ConsumeTotal(gem, gemAmount);
                         from.Backpack.ConsumeTotal(primary, primResAmount);
@@ -385,7 +385,7 @@ namespace Server.SkillHandlers
                 else
                 {
                     // This is consumed regardless of success/fail
-                    if (from.AccessLevel == AccessLevel.Player)
+                    if (from.AccessLevel < AccessLevel.Counselor)
                     {
                         from.Backpack.ConsumeTotal(primary, primResAmount);
                     }

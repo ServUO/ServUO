@@ -173,7 +173,7 @@ namespace Server.Items
                     return;
 
                 // Add delay
-                if (from.AccessLevel == AccessLevel.Player)
+                if (from.AccessLevel < AccessLevel.Counselor)
                 {
                     AddDelay(from);
                 }

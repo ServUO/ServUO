@@ -39,7 +39,7 @@ namespace Server.Items
 
                 var quest = QuestHelper.GetQuest<QuestOfSingularity>(pm);
 
-                if (HasDelay(pm) && pm.AccessLevel == AccessLevel.Player)
+                if (HasDelay(pm) && pm.AccessLevel < AccessLevel.Counselor)
                 {
                     pm.PublicOverheadMessage(MessageType.Regular, 0x47E, 1112685); // You need more time to contemplate the Book of Circles before trying again.
                 }

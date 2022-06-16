@@ -702,7 +702,7 @@ namespace Server.Engines.Shadowguard
             {
                 Mobile m = Combatant as Mobile;
 
-                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && CanBeHarmful(m, false) && m.AccessLevel == AccessLevel.Player)
+                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && CanBeHarmful(m, false) && m.AccessLevel < AccessLevel.Counselor)
                 {
                     if (_NextTeleport < DateTime.UtcNow)
                     {

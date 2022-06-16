@@ -84,7 +84,7 @@ namespace Server.Regions
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
-            if (m.AccessLevel == AccessLevel.Player)
+            if (m.AccessLevel < AccessLevel.Counselor)
             {
                 if (s is Spells.Sixth.MarkSpell || s is Spells.Fourth.RecallSpell || s is Spells.Seventh.GateTravelSpell
                 || s is Spells.Chivalry.SacredJourneySpell)

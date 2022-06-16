@@ -249,7 +249,7 @@ namespace Server.Regions
 
             foreach (BaseBoat boat in boats)
             {
-                if (!m_BoatTable.ContainsKey(boat) && !boat.IsMoving && boat.Owner != null && boat.Owner.AccessLevel == AccessLevel.Player)
+                if (!m_BoatTable.ContainsKey(boat) && !boat.IsMoving && boat.Owner != null && boat.Owner.AccessLevel < AccessLevel.Counselor)
                     AddToTable(boat);
             }
 

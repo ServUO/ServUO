@@ -195,7 +195,7 @@ namespace Server.Engines.Harvest
                             item.Amount += WoodsmansTalisman.CheckHarvest(from, type, this);
                         }
 
-                        if (from.AccessLevel == AccessLevel.Player)
+                        if (from.AccessLevel < AccessLevel.Counselor)
                         {
                             bank.Consume(amount, from);
                         }

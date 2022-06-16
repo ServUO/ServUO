@@ -197,7 +197,7 @@ namespace Server.Targeting
 
 					var root = i.RootParent;
 
-					if (!AllowNonlocal && root is Mobile && root != from && from.AccessLevel == AccessLevel.Player)
+					if (!AllowNonlocal && root is Mobile && root != from && from.AccessLevel < AccessLevel.Counselor)
 					{
 						OnNonlocalTarget(from, targeted);
 						return;

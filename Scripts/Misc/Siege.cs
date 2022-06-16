@@ -226,7 +226,7 @@ namespace Server
 				return;
 			}
 
-			if (e.Mobile is PlayerMobile pm && pm.Map == Map.Trammel && pm.AccessLevel == AccessLevel.Player)
+			if (e.Mobile is PlayerMobile pm && pm.Map == Map.Trammel && pm.AccessLevel < AccessLevel.Counselor)
 			{
 				pm.MoveToWorld(new Point3D(989, 519, -50), Map.Malas);
 				pm.SendMessage("You have been removed from Trammel.");

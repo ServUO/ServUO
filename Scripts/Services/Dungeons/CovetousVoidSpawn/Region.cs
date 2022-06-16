@@ -93,7 +93,7 @@ namespace Server.Engines.VoidPool
 
         public override bool OnDoubleClick(Mobile m, object o)
         {
-            if (o is Corpse && m.AccessLevel == AccessLevel.Player)
+            if (o is Corpse && m.AccessLevel < AccessLevel.Counselor)
             {
                 Corpse c = o as Corpse;
 

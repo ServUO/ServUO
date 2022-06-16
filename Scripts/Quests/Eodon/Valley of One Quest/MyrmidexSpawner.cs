@@ -39,7 +39,7 @@ namespace Server.Items
         public override bool HandlesOnMovement => NextSpawn < DateTime.UtcNow;
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (m.InRange(Location, 7) && m.AccessLevel == AccessLevel.Player &&
+            if (m.InRange(Location, 7) && m.AccessLevel < AccessLevel.Counselor &&
                 (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)))
             {
                 Focus = m;
@@ -221,7 +221,7 @@ namespace Server.Items
             {
                 double chance = Utility.RandomDouble();
 
-                if (0.005 > chance && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && m.AccessLevel == AccessLevel.Player)
+                if (0.005 > chance && (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).GetMaster() is PlayerMobile)) && m.AccessLevel < AccessLevel.Counselor)
                 {
                     MyrmidexHill hill = new MyrmidexHill(this, m);
                     Point3D p = m.Location;

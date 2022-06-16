@@ -177,7 +177,7 @@ namespace Server.Engines.VvV
 
             if (entry != null && entry.Active && !entry.Resigning)
             {
-                if (m.AccessLevel == AccessLevel.Player)
+                if (m.AccessLevel < AccessLevel.Counselor)
                     entry.ResignExpiration = DateTime.UtcNow + TimeSpan.FromDays(3);
                 else
                     entry.ResignExpiration = DateTime.UtcNow + TimeSpan.FromMinutes(1);

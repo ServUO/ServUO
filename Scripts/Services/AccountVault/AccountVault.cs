@@ -754,7 +754,7 @@ namespace Server.AccountVault
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
-            if (_AuctionItem && from.AccessLevel == AccessLevel.Player)
+            if (_AuctionItem && from.AccessLevel < AccessLevel.Counselor)
             {
                 return false;
             }
@@ -764,7 +764,7 @@ namespace Server.AccountVault
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (_AuctionItem && from.AccessLevel == AccessLevel.Player)
+            if (_AuctionItem && from.AccessLevel < AccessLevel.Counselor)
             {
                 return false;
             }
@@ -774,7 +774,7 @@ namespace Server.AccountVault
 
         public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p)
         {
-            if (_AuctionItem && from.AccessLevel == AccessLevel.Player)
+            if (_AuctionItem && from.AccessLevel < AccessLevel.Counselor)
             {
                 return false;
             }

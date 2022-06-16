@@ -914,7 +914,7 @@ namespace Server
 			{
 				foreach (var m in mobs)
 				{
-					if (m.Location.m_X == x && m.Location.m_Y == y && (m.AccessLevel == AccessLevel.Player || !m.Hidden))
+					if (m.Location.m_X == x && m.Location.m_Y == y && (m.AccessLevel < AccessLevel.Counselor || !m.Hidden))
 					{
 						if ((m.Z + 16) > z && (z + height) > m.Z)
 						{
@@ -1075,7 +1075,7 @@ namespace Server
 			{
 				foreach (var m in sector.Mobiles)
 				{
-					if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel == AccessLevel.Player || !m.Hidden))
+					if (m.Location.X == x && m.Location.Y == y && (m.AccessLevel < AccessLevel.Counselor || !m.Hidden))
 					{
 						if (m.Z + 16 > z && z + height > m.Z)
 						{

@@ -134,7 +134,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+                if (m is PlayerMobile && m.AccessLevel < AccessLevel.Counselor)
                 {
                     canTeleport = false;
                     break;

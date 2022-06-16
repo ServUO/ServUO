@@ -747,11 +747,11 @@ namespace Server.Engines.Doom
                 Region reg = Region.Find(loc, map).GetRegion("Doom Gauntlet");
 
                 if (reg != null)
-                    playerCount = reg.AllMobiles.Where(m => m is PlayerMobile && m.AccessLevel == AccessLevel.Player).Count();
+                    playerCount = reg.AllMobiles.Where(m => m is PlayerMobile && m.AccessLevel < AccessLevel.Counselor).Count();
             }
 
             if (playerCount == 0 && m_Region != null)
-                playerCount = m_Region.AllMobiles.Where(m => m.AccessLevel == AccessLevel.Player).Count();
+                playerCount = m_Region.AllMobiles.Where(m => m.AccessLevel < AccessLevel.Counselor).Count();
 
             int count = (playerCount + PlayersPerSpawn - 1) / PlayersPerSpawn;
 

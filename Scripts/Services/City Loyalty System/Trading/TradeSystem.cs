@@ -161,7 +161,7 @@ namespace Server.Engines.CityLoyalty
             TradeEntry entry = order.Entry;
             TradeMinister minister = turninMobile as TradeMinister;
 
-            if (from.AccessLevel == AccessLevel.Player && minister != null && minister.City != entry.Destination)
+            if (from.AccessLevel < AccessLevel.Counselor && minister != null && minister.City != entry.Destination)
                 turninMobile.SayTo(from, 1151738, string.Format("#{0}", CityLoyaltySystem.GetCityLocalization(entry.Destination))); // Begging thy pardon, but those goods are destined for the City of ~1_city~
             else if (!order.Fulfilled)
                 turninMobile.SayTo(from, 1151732); // This trade order has not been fulfilled.  Fill the trade order with all necessary items and try again.
@@ -688,7 +688,7 @@ namespace Server.Engines.CityLoyalty
 
                 foreach (Mobile m in eable)
                 {
-                    if (m.AccessLevel == AccessLevel.Player || !m.Hidden)
+                    if (m.AccessLevel < AccessLevel.Counselor || !m.Hidden)
                     {
                         if ((m.Z + 16) > z && (z + height) > m.Z)
                         {

@@ -156,7 +156,7 @@ namespace Server.Gumps
 
         public static void CheckMurderer(Mobile m)
         {
-            if (m.AccessLevel == AccessLevel.Player && m.Murderer && SpellHelper.RestrictRedTravel && m.Map != null && m.Map.Rules != MapRules.FeluccaRules)
+            if (m.AccessLevel < AccessLevel.Counselor && m.Murderer && SpellHelper.RestrictRedTravel && m.Map != null && m.Map.Rules != MapRules.FeluccaRules)
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
                 {

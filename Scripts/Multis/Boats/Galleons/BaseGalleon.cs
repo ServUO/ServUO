@@ -642,7 +642,7 @@ namespace Server.Multis
                     });
                 }
 
-                if (deed != null && (from == null || from.AccessLevel == AccessLevel.Player))
+                if (deed != null && (from == null || from.AccessLevel < AccessLevel.Counselor))
                 {
                     deed.Delete();
                 }
@@ -693,7 +693,7 @@ namespace Server.Multis
                     //Lets check for mobiles
                     foreach (Mobile mob in eable)
                     {
-                        if (!mob.Hidden && mob.AccessLevel == AccessLevel.Player)
+                        if (!mob.Hidden && mob.AccessLevel < AccessLevel.Counselor)
                         {
                             if (from != null)
                                 from.SendMessage("The weapon pad must be clear of obstructions to place a cannon.");

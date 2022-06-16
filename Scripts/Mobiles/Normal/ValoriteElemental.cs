@@ -88,7 +88,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m != this && m.Alive && m.AccessLevel == AccessLevel.Player &&
+                if (m != this && m.Alive && m.AccessLevel < AccessLevel.Counselor &&
                     (m is PlayerMobile || (m is BaseCreature && !((BaseCreature)m).IsMonster)))
                 {
                     list.Add(m);

@@ -45,7 +45,7 @@ namespace Server.Items
                     from.SendLocalizedMessage(1072223); // An item has been placed in your backpack.
                     puzzle.SendTimeRemainingMessage(from);
 
-                    if (from.AccessLevel == AccessLevel.Player)
+                    if (from.AccessLevel < AccessLevel.Counselor)
                         m_Table[from] = DateTime.UtcNow + TimeSpan.FromHours(24);
                 }
             }

@@ -1381,7 +1381,7 @@ namespace Server.Multis
 
                     break;
                 }
-                else if (o is Mobile && Contains((Mobile)o) && ((Mobile)o).AccessLevel == AccessLevel.Player)
+                else if (o is Mobile && Contains((Mobile)o) && ((Mobile)o).AccessLevel < AccessLevel.Counselor)
                 {
                     res = DryDockResult.Mobiles;
                     break;
