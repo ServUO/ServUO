@@ -48,7 +48,7 @@ namespace Server.Engines.Khaldun
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
             DeathRobe robe = new DeathRobe
             {

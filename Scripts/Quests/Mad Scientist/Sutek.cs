@@ -107,10 +107,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Sandals());
-            AddItem(new TattsukeHakama(0x528));
-            AddItem(new WizardsHat(0x528));
-            AddItem(new Tunic(0x528));
+            SetWearable(new Sandals(), dropChance: 1);
+            SetWearable(new TattsukeHakama(), 0x528, 1);
+            SetWearable(new WizardsHat(), 0x528, 1);
+			SetWearable(new Tunic(), 0x528, 1);
         }
 
         public void TalkTimer()

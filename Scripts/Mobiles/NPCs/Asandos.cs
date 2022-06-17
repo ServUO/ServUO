@@ -75,12 +75,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Boots(0x901));
-            AddItem(new ShortPants());
-            AddItem(new Shirt());
-            AddItem(new Cap());
-            AddItem(new HalfApron(0x28));
+            SetWearable(new Backpack(), dropChance: 1);
+            SetWearable(new Boots(), 0x901, 1);
+            SetWearable(new ShortPants(), dropChance: 1);
+            SetWearable(new Shirt(), dropChance: 1);
+            SetWearable(new Cap(), dropChance: 1);
+            SetWearable(new HalfApron(), 0x28, 1);
         }
 
         public override void Serialize(GenericWriter writer)

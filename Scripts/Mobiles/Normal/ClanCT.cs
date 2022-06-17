@@ -38,8 +38,8 @@ namespace Server.Mobiles
             Fame = 6500;
             Karma = -6500;
 
-            AddItem(new Bow());
-        }
+			SetWearable(new Bow(), dropChance: 1);
+		}
 
         public ClanCT(Serial serial)
             : base(serial)

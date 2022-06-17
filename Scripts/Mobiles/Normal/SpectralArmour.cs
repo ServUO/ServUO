@@ -12,18 +12,9 @@ namespace Server.Mobiles
             Hue = 0x8026;
             Name = "spectral armour";
 
-            Buckler buckler = new Buckler();
-            ChainCoif coif = new ChainCoif();
-            PlateGloves gloves = new PlateGloves();
-
-            buckler.Hue = 0x835;
-            buckler.Movable = false;
-            coif.Hue = 0x835;
-            gloves.Hue = 0x835;
-
-            AddItem(buckler);
-            AddItem(coif);
-            AddItem(gloves);
+            SetWearable(new Buckler(), 0x835);
+            SetWearable(new ChainCoif(), 0x835, 1);
+            SetWearable(new PlateGloves(), 0x835, 1);
 
             SetStr(101, 110);
             SetDex(101, 110);

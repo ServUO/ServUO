@@ -1,4 +1,5 @@
 using Server.Engines.BulkOrders;
+using Server.Items;
 using System;
 using System.Collections.Generic;
 
@@ -32,8 +33,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.Bow());
-            AddItem(new Items.LeatherGorget());
+            SetWearable(new Bow(), dropChance: 1);
+            SetWearable(new LeatherGorget(), dropChance: 1);
         }
 
         public override void InitSBInfo()

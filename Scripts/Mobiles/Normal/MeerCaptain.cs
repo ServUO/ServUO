@@ -41,7 +41,7 @@ namespace Server.Mobiles
             Fame = 2000;
             Karma = 5000;
 
-            AddItem(new Crossbow());
+            SetWearable(new Crossbow(), dropChance: 1);
 
             m_NextAbilityTime = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(2, 5));
         }

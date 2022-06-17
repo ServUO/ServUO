@@ -40,8 +40,8 @@ namespace Server.Mobiles
             Fame = 18000;
             Karma = -18000;
 
-            AddItem(new Shoes(0x537));
-            AddItem(new Robe(0x452));
+			SetWearable(new Shoes(), 0x537, 1);
+			SetWearable(new Robe(), 0x452, 1);
 
             SetWeaponAbility(WeaponAbility.ParalyzingBlow);
         }

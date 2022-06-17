@@ -37,16 +37,16 @@ namespace Server.Items
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            AddItem(new DoubleAxe());
-            AddItem(new PlateLegs());
-            AddItem(new CloseHelm());
-            AddItem(new PlateGloves());
-            AddItem(new StuddedGorget());
-            AddItem(new PlateChest());
-            AddItem(new PlateArms());
-            AddItem(new BodySash(0x75D));
+            SetWearable(new DoubleAxe(), dropChance: 1);
+            SetWearable(new PlateLegs(), dropChance: 1);
+            SetWearable(new CloseHelm(), dropChance: 1);
+            SetWearable(new PlateGloves(), dropChance: 1);
+            SetWearable(new StuddedGorget(), dropChance: 1);
+            SetWearable(new PlateChest(), dropChance: 1);
+			SetWearable(new PlateArms(), dropChance: 1);
+			SetWearable(new BodySash(), 0x75D, 1);
         }
 
         public override void Init()

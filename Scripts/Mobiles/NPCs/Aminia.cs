@@ -21,10 +21,10 @@ namespace Server.Mobiles
             HairItemID = 0x203B;
             HairHue = 0x454;
 
-            AddItem(new Backpack());
-            AddItem(new Sandals(0x75B));
-            AddItem(new Tunic(0x4BF));
-            AddItem(new Skirt(0x8FD));
+            SetWearable(new Backpack());
+            SetWearable(new Sandals(), 0x75B, 1);
+            SetWearable(new Tunic(), 0x4BF, 1);
+            SetWearable(new Skirt(), 0x8FD, 1);
         }
 
         public Aminia(Serial serial)

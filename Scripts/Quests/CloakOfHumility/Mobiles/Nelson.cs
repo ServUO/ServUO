@@ -1,4 +1,5 @@
 using Server.Engines.Quests;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -34,8 +35,8 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.Robe(Utility.RandomGreenHue()));
-            AddItem(new Items.ShepherdsCrook());
+            SetWearable(new Robe(), Utility.RandomGreenHue(), 1);
+			SetWearable(new ShepherdsCrook(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

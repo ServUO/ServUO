@@ -33,10 +33,10 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = -1000;
 
-            AddItem(new TribalSpear());
-            AddItem(new BoneArms());
-            AddItem(new BoneLegs());
-            AddItem(new BearMask());
+            SetWearable(new TribalSpear(), dropChance: 1);
+            SetWearable(new BoneArms(), dropChance: 1);
+            SetWearable(new BoneLegs(), dropChance: 1);
+            SetWearable(new BearMask(), dropChance: 1);
 
             new SavageRidgeback().Rider = this;
         }

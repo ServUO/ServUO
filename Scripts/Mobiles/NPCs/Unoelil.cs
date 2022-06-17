@@ -38,9 +38,9 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x1BB));
-            AddItem(new Tunic(0x64F));
-            AddItem(new ShortPants(0x1BB));
+            SetWearable(new ElvenBoots(), 0x1BB, 1);
+            SetWearable(new Tunic(), 0x64F, 1);
+			SetWearable(new ShortPants(), 0x1BB, 1);
         }
 
         public override void Serialize(GenericWriter writer)

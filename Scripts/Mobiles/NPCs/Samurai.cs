@@ -35,48 +35,48 @@ namespace Server.Mobiles
             switch (Utility.Random(3))
             {
                 case 0:
-                    AddItem(new Lajatang());
+					SetWearable(new Lajatang(), dropChance: 1);
                     break;
                 case 1:
-                    AddItem(new Wakizashi());
+					SetWearable(new Wakizashi(), dropChance: 1);
                     break;
                 case 2:
-                    AddItem(new NoDachi());
+					SetWearable(new NoDachi(), dropChance: 1);
                     break;
             }
 
             switch (Utility.Random(3))
             {
                 case 0:
-                    AddItem(new LeatherSuneate());
+					SetWearable(new LeatherSuneate(), dropChance: 1);
                     break;
                 case 1:
-                    AddItem(new PlateSuneate());
+					SetWearable(new PlateSuneate(), dropChance: 1);
                     break;
                 case 2:
-                    AddItem(new StuddedHaidate());
+					SetWearable(new StuddedHaidate(), dropChance: 1);
                     break;
             }
 
             switch (Utility.Random(4))
             {
                 case 0:
-                    AddItem(new LeatherJingasa());
+					SetWearable(new LeatherJingasa(), dropChance: 1);
                     break;
                 case 1:
-                    AddItem(new ChainHatsuburi());
-                    break;
+					SetWearable(new ChainHatsuburi(), dropChance: 1);
+					break;
                 case 2:
-                    AddItem(new HeavyPlateJingasa());
+					SetWearable(new HeavyPlateJingasa(), dropChance: 1);
                     break;
                 case 3:
-                    AddItem(new DecorativePlateKabuto());
+					SetWearable(new DecorativePlateKabuto(), dropChance: 1);
                     break;
             }
 
-            AddItem(new LeatherDo());
-            AddItem(new LeatherHiroSode());
-            AddItem(new SamuraiTabi(Utility.RandomNondyedHue())); // TODO: Hue
+            SetWearable(new LeatherDo(), dropChance: 1);
+            SetWearable(new LeatherHiroSode(), dropChance: 1);
+			SetWearable(new SamuraiTabi(), Utility.RandomNondyedHue(), 1); // TODO: Hue
 
             int hairHue = Utility.RandomNondyedHue();
 

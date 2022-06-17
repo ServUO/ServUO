@@ -134,12 +134,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
-            AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
-            AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
-            AddItem(new SerpentStoneStaff());
+            SetWearable(new GargishClothChest(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new GargishClothKilt(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new GargishClothLegs(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new SerpentStoneStaff(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -188,12 +188,12 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            AddItem(new Tunic(Utility.RandomNeutralHue()));
-            AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            AddItem(new Boots());
-            AddItem(new Halberd());
+            SetWearable(new Tunic(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new Boots(), dropChance: 1);
+			SetWearable(new Halberd(), dropChance: 1);
         }
 
         public override bool CheckTerMur()

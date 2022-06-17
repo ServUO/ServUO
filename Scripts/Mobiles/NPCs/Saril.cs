@@ -326,13 +326,13 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x3B2));
-            AddItem(new WingedHelm());
-            AddItem(new RadiantScimitar());
-            AddItem(new WoodlandLegs());
-            AddItem(new WoodlandArms());
-            AddItem(new WoodlandChest());
-            AddItem(new WoodlandBelt());
+			SetWearable(new ElvenBoots(), 0x3B2, 1);
+            SetWearable(new WingedHelm(), dropChance: 1);
+            SetWearable(new RadiantScimitar(), dropChance: 1);
+            SetWearable(new WoodlandLegs(), dropChance: 1);
+            SetWearable(new WoodlandArms(), dropChance: 1);
+            SetWearable(new WoodlandChest(), dropChance: 1);
+            SetWearable(new WoodlandBelt(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

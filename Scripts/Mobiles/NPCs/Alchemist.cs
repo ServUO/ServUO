@@ -53,7 +53,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.Robe(Utility.RandomPinkHue()));
+            SetWearable(new Items.Robe(), Utility.RandomPinkHue());
         }
 
         public override void Serialize(GenericWriter writer)

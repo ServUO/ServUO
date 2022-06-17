@@ -39,11 +39,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new LongPants(0x3B3));
-            AddItem(new ElvenShirt());
-            AddItem(new SmithHammer());
-            AddItem(new FullApron(0x1BB));
+            SetWearable(new ElvenBoots(), dropChance: 1);
+            SetWearable(new LongPants(), 0x3B3, 1);
+            SetWearable(new ElvenShirt(), dropChance: 1);
+            SetWearable(new SmithHammer(), dropChance: 1);
+			SetWearable(new FullApron(), 0x1BB, 1);
         }
 
         public override void Serialize(GenericWriter writer)

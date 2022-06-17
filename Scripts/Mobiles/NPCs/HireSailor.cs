@@ -14,13 +14,13 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
             Title = "the sailor";
             HairItemID = Race.RandomHair(Female);
@@ -46,16 +46,16 @@ namespace Server.Mobiles
             Fame = 100;
             Karma = 0;
 
-            AddItem(new Shoes(Utility.RandomNeutralHue()));
-            AddItem(new Cutlass());
+			SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new Cutlass(), dropChance: 1);
 
             switch (Utility.Random(2))
             {
                 case 0:
-                    AddItem(new Doublet(Utility.RandomDyedHue()));
+					SetWearable(new Doublet(), Utility.RandomDyedHue(), 1);
                     break;
                 case 1:
-                    AddItem(new Shirt(Utility.RandomDyedHue()));
+					SetWearable(new Shirt(), Utility.RandomDyedHue(), 1);
                     break;
             }
         }

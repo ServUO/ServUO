@@ -44,17 +44,7 @@ namespace Server.Mobiles
             ControlSlots = 1;
             MinTameSkill = 29.1;
 
-            Container pack = Backpack;
-
-            if (pack != null)
-                pack.Delete();
-
-            pack = new StrongBackpack
-            {
-                Movable = false
-            };
-
-            AddItem(pack);
+			SetWearable(new StrongBackpack());
         }
 
         public override int Meat => 1;

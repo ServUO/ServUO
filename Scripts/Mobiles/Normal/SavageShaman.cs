@@ -46,9 +46,9 @@ namespace Server.Mobiles
             Fame = 1000;
             Karma = -1000;
 
-            AddItem(new BoneArms());
-            AddItem(new BoneLegs());
-            AddItem(new DeerMask());
+            SetWearable(new BoneArms(), dropChance: 1);
+            SetWearable(new BoneLegs(), dropChance: 1);
+            SetWearable(new DeerMask(), dropChance: 1);
         }
 
         public SavageShaman(Serial serial)

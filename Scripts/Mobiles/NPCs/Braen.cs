@@ -58,8 +58,8 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Sandals(0x722));
-            AddItem(RandomWand.CreateWand());
+            SetWearable(new Sandals(), 0x722, 1);
+            SetWearable(RandomWand.CreateWand(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

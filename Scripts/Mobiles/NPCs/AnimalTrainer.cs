@@ -46,7 +46,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(Utility.RandomBool() ? new QuarterStaff() : (Item)new ShepherdsCrook());
+            SetWearable(Utility.RandomBool() ? new QuarterStaff() : (Item)new ShepherdsCrook(), dropChance: 1);
         }
 
         public override void AddCustomContextEntries(Mobile from, List<ContextMenuEntry> list)

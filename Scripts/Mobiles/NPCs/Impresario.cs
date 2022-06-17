@@ -31,9 +31,9 @@ namespace Server.Engines.Quests.Collector
 
         public override void InitOutfit()
         {
-            AddItem(new FancyShirt(Utility.RandomDyedHue()));
-            AddItem(new LongPants(Utility.RandomNondyedHue()));
-            AddItem(new Shoes(Utility.RandomNeutralHue()));
+            SetWearable(new FancyShirt(), Utility.RandomDyedHue(), 1);
+            SetWearable(new LongPants(), Utility.RandomNondyedHue(), 1);
+            SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
 
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this);

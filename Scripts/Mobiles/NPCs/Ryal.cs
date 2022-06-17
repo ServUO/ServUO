@@ -212,10 +212,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x1BB));
-            AddItem(new Cloak(0x219));
-            AddItem(new LeafTonlet());
-            AddItem(new GnarledStaff());
+            SetWearable(new ElvenBoots(), 0x1BB, 1);
+            SetWearable(new Cloak(), 0x219, 1);
+            SetWearable(new LeafTonlet(), dropChance: 1);
+			SetWearable(new GnarledStaff(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

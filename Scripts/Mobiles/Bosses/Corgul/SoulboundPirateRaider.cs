@@ -1,3 +1,4 @@
+using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -57,27 +58,20 @@ namespace Server.Mobiles
             Fame = 2000;
             Karma = -2000;
 
-            AddItem(new TricorneHat());
-            AddItem(new LeatherArms());
-            AddItem(new FancyShirt());
-            AddItem(new ShortPants());
-            AddItem(new Cutlass());
-            AddItem(new Boots(Utility.RandomNeutralHue()));
-            AddItem(new GoldEarrings());
-
-            Item bow;
-
-            switch (Utility.Random(4))
-            {
-                default:
-                case 0: bow = new CompositeBow();break;
-                case 1: bow = new Crossbow(); break;
-                case 2: bow = new Bow(); break;
-                case 3: bow = new HeavyCrossbow(); break;
-            }
-
-            AddItem(bow);
+			SetWearable(new TricorneHat(), dropChance: 1);
+			SetWearable(new LeatherArms(), dropChance: 1);
+			SetWearable(new FancyShirt(), dropChance: 1);
+			SetWearable(new ShortPants(), dropChance: 1);
+			SetWearable(new Cutlass(), dropChance: 1);
+			SetWearable(new Boots(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new GoldEarrings(), dropChance: 1);
+			SetWearable((Item)Activator.CreateInstance(Utility.RandomList(_WeaponsList)), dropChance: 1);
         }
+
+		private static readonly Type[] _WeaponsList = new Type[]
+		{
+			typeof(CompositeBow), typeof(Crossbow), typeof(Bow), typeof(HeavyCrossbow)
+		};
 
         public override void GenerateLoot()
         {

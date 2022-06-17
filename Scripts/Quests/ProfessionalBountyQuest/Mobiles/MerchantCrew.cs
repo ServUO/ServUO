@@ -33,13 +33,13 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                AddItem(new Skirt(Utility.RandomNeutralHue()));
+				SetWearable(new Skirt(), Utility.RandomNeutralHue(), 1);
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+                SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
 
             bool magery = 0.33 > Utility.RandomDouble();
@@ -84,12 +84,12 @@ namespace Server.Mobiles
                 case 3: bow = new HeavyCrossbow(); break;
             }
 
-            AddItem(bow);
+			SetWearable(bow, dropChance: 1);
 
-            AddItem(new TricorneHat());
-            AddItem(new FancyShirt());
-            AddItem(new Boots(Utility.RandomNeutralHue()));
-            AddItem(new GoldEarrings());
+            SetWearable(new TricorneHat(), dropChance: 1);
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new Boots(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new GoldEarrings(), dropChance: 1);
 
             Fame = 8000;
             Karma = 8000;

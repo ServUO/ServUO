@@ -16,13 +16,13 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                AddItem(new Skirt(Utility.RandomRedHue()));
+                SetWearable(new Skirt(), Utility.RandomRedHue(), 1);
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomRedHue()));
+				SetWearable(new ShortPants(), Utility.RandomRedHue(), 1);
             }
 
             SetStr(386, 400);
@@ -51,9 +51,9 @@ namespace Server.Mobiles
             Fame = 5000;
             Karma = -5000;
 
-            AddItem(new ThighBoots(Utility.RandomRedHue()));
-            AddItem(new Surcoat(Utility.RandomRedHue()));
-            AddItem(new ExecutionersAxe());
+			SetWearable(new ThighBoots(), Utility.RandomRedHue(), 1);
+			SetWearable(new Surcoat(), Utility.RandomRedHue(), 1);
+			SetWearable(new ExecutionersAxe(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
         }

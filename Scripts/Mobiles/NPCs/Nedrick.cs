@@ -31,11 +31,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new ThighBoots());
-            AddItem(new LongPants(0x528));
-            AddItem(new FancyShirt(0x4C3));
-            AddItem(new Tunic(0x3));
+            SetWearable(new Backpack());
+            SetWearable(new ThighBoots(), dropChance: 1);
+            SetWearable(new LongPants(), 0x528, 1);
+            SetWearable(new FancyShirt(), 0x4C3, 1);
+            SetWearable(new Tunic(), 0x3, 1);
         }
 
         public override void Initialize()

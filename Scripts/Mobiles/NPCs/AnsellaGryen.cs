@@ -31,11 +31,10 @@ namespace Server.Engines.Quests.Zento
             HairItemID = 0x203B;
             HairHue = 0x1BB;
 
-            AddItem(new SamuraiTabi(0x8FD));
-            AddItem(new FemaleKimono(0x4B6));
-            AddItem(new Obi(0x526));
-
-            AddItem(new GoldBracelet());
+            SetWearable(new SamuraiTabi(), 0x8FD, 1);
+            SetWearable(new FemaleKimono(), 0x4B6, 1);
+            SetWearable(new Obi(), 0x526, 1);
+            SetWearable(new GoldBracelet(), dropChance: 1);
         }
 
         public override int GetAutoTalkRange(PlayerMobile m)

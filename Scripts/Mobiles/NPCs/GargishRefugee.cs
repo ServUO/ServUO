@@ -14,17 +14,17 @@ namespace Server.Mobiles
                 Body = 667;
                 HairItemID = 17067;
                 HairHue = 1762;
-                AddItem(new GargishClothChest());
-                AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
+                SetWearable(new GargishClothChest(), dropChance: 1);
+                SetWearable(new GargishClothKilt(), Utility.RandomNeutralHue(), 1);
             }
             else
             {
                 Body = 666;
                 HairItemID = 16987;
                 HairHue = 1801;
-                AddItem(new GargishClothChest());
-                AddItem(new GargishClothKilt());
-                AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+                SetWearable(new GargishClothChest(), dropChance: 1);
+                SetWearable(new GargishClothKilt(), dropChance: 1);
+				SetWearable(new GargishClothLegs(), Utility.RandomNeutralHue(), 1);
             }
         }
 

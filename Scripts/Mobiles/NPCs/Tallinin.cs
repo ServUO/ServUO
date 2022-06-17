@@ -226,9 +226,9 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots(0x901));
-            AddItem(new Tunic(0x62));
-            AddItem(new Cloak(0x71E));
+            SetWearable(new ElvenBoots(), 0x901, 1);
+            SetWearable(new Tunic(), 0x62, 1);
+			SetWearable(new Cloak(), 0x71E, 1);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -29,9 +29,9 @@ namespace Server.Engines.Quests.Collector
 
         public override void InitOutfit()
         {
-            AddItem(new FancyShirt());
-            AddItem(new LongPants(0x5F7));
-            AddItem(new Shoes(0x5F7));
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new LongPants(), 0x5F7, 1);
+            SetWearable(new Shoes(), 0x5F7, 1);
 
             HairItemID = 0x2049; // Pig Tails
             HairHue = 0x460;

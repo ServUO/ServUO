@@ -18,19 +18,19 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                AddItem(new FancyDress(Utility.RandomDyedHue()));
+				SetWearable(new FancyDress(), Utility.RandomDyedHue(), 1);
                 Title = "the actress";
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new LongPants(Utility.RandomNeutralHue()));
-                AddItem(new FancyShirt(Utility.RandomDyedHue()));
+				SetWearable(new LongPants(), Utility.RandomNeutralHue(), 1);
+				SetWearable(new FancyShirt(), Utility.RandomDyedHue(), 1);
                 Title = "the actor";
             }
 
-            AddItem(new Boots(Utility.RandomNeutralHue()));
+            SetWearable(new Boots(), Utility.RandomNeutralHue(), 1);
 
             Utility.AssignRandomHair(this);
 
@@ -38,9 +38,7 @@ namespace Server.Mobiles
 
             pack.DropItem(new Gold(250, 300));
 
-            pack.Movable = false;
-
-            AddItem(pack);
+            SetWearable(pack);
         }
 
         public Actor(Serial serial)

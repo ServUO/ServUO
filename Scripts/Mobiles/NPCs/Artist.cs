@@ -26,10 +26,10 @@ namespace Server.Mobiles
                 Body = 0x190;
                 Name = NameList.RandomName("male");
             }
-            AddItem(new Doublet(Utility.RandomDyedHue()));
-            AddItem(new Sandals(Utility.RandomNeutralHue()));
-            AddItem(new ShortPants(Utility.RandomNeutralHue()));
-            AddItem(new HalfApron(Utility.RandomDyedHue()));
+            SetWearable(new Doublet(), Utility.RandomDyedHue(), 1);
+            SetWearable(new Sandals(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new HalfApron(), Utility.RandomDyedHue(), 1);
 
             Utility.AssignRandomHair(this);
 
@@ -37,9 +37,7 @@ namespace Server.Mobiles
 
             pack.DropItem(new Gold(250, 300));
 
-            pack.Movable = false;
-
-            AddItem(pack);
+            SetWearable(pack);
         }
 
         public Artist(Serial serial)

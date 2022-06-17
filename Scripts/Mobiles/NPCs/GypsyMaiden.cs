@@ -37,21 +37,21 @@ namespace Server.Mobiles
             base.InitOutfit();
 
             switch (Utility.Random(4))
-            {
-                case 0:
-                    AddItem(new JesterHat(Utility.RandomBrightHue()));
-                    break;
-                case 1:
-                    AddItem(new Bandana(Utility.RandomBrightHue()));
-                    break;
-                case 2:
-                    AddItem(new SkullCap(Utility.RandomBrightHue()));
-                    break;
-            }
+			{
+				case 0:
+					SetWearable(new JesterHat(), Utility.RandomBrightHue(), 1);
+					break;
+				case 1:
+					SetWearable(new Bandana(), Utility.RandomBrightHue(), 1);
+					break;
+				case 2:
+					SetWearable(new SkullCap(), Utility.RandomBrightHue(), 1);
+					break;
+			}
 
             if (Utility.RandomBool())
             {
-                AddItem(new HalfApron(Utility.RandomBrightHue()));
+                SetWearable(new HalfApron(), Utility.RandomBrightHue(), 1);
             }
 
             Item item = FindItemOnLayer(Layer.Pants);

@@ -76,9 +76,9 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new ElvenBoots());
-            AddItem(new LeafTonlet());
-            AddItem(new ElvenShirt());
+            SetWearable(new ElvenBoots(), dropChance: 1);
+            SetWearable(new LeafTonlet(), dropChance: 1);
+            SetWearable(new ElvenShirt(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

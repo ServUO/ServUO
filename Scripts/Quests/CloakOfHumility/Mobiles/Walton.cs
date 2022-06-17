@@ -33,11 +33,11 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new FancyShirt());
-            AddItem(new Doublet(1109));
-            AddItem(new LongPants(Utility.RandomBlueHue()));
-            AddItem(new Boots());
+            SetWearable(new Backpack());
+            SetWearable(new FancyShirt(), dropChance: 1);
+            SetWearable(new Doublet(), 1109, 1);
+            SetWearable(new LongPants(), Utility.RandomBlueHue(), 1);
+			SetWearable(new Boots(), dropChance: 1);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -150,11 +150,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-
-            AddItem(new GargishClothChest(Utility.RandomNeutralHue()));
-            AddItem(new GargishClothKilt(Utility.RandomNeutralHue()));
-            AddItem(new GargishClothLegs(Utility.RandomNeutralHue()));
+            SetWearable(new Backpack());
+            SetWearable(new GargishClothChest(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new GargishClothKilt(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new GargishClothLegs(), Utility.RandomNeutralHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)

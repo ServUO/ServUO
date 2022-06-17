@@ -52,14 +52,14 @@ namespace Server.Engines.Khaldun
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
+			SetWearable(new Backpack());
 
-            SetWearable(new Surcoat(), 1634);
-            SetWearable(new Kilt(), 946);
-            SetWearable(new FancyShirt(), 1411);
-            SetWearable(new ThighBoots(), 2013);
-            SetWearable(new GoldBracelet());
-            SetWearable(new GoldRing());
+            SetWearable(new Surcoat(), 1634, 1);
+            SetWearable(new Kilt(), 946, 1);
+            SetWearable(new FancyShirt(), 1411, 1);
+            SetWearable(new ThighBoots(), 2013, 1);
+            SetWearable(new GoldBracelet(), dropChance: 1);
+            SetWearable(new GoldRing(), dropChance: 1);
         }
 
         public override void OnDoubleClick(Mobile m)

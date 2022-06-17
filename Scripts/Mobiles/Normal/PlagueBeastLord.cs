@@ -214,8 +214,8 @@ namespace Server.Mobiles
                 m_Timer.StartDissolving();
 
                 PlagueBeastBackpack pack = new PlagueBeastBackpack();
-                AddItem(pack);
-                pack.Initialize();
+				SetWearable(pack);
+				pack.Initialize();
 
                 foreach (NetState state in GetClientsInRange(12))
                 {

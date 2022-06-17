@@ -41,9 +41,9 @@ namespace Server.Items
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Shoes(0x455));
-            AddItem(new Robe(0x485));
+            SetWearable(new Backpack());
+            SetWearable(new Shoes(), 0x455, 1);
+			SetWearable(new Robe(), 0x485, 1);
         }
 
         public override void Init()

@@ -134,13 +134,13 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Pickaxe());
-            AddItem(new Boots());
-            AddItem(new ShortPants(0x370));
-            AddItem(new Shirt(0x966));
-            AddItem(new WideBrimHat(0x966));
-            AddItem(new HalfApron(0x1BB));
+            SetWearable(new Backpack(), dropChance: 1);
+            SetWearable(new Pickaxe(), dropChance: 1);
+            SetWearable(new Boots(), dropChance: 1);
+            SetWearable(new ShortPants(), 0x370, 1);
+            SetWearable(new Shirt(), 0x966, 1);
+            SetWearable(new WideBrimHat(), 0x966, 1);
+            SetWearable(new HalfApron(), 0x1BB, 1);
         }
 
         public override void Serialize(GenericWriter writer)

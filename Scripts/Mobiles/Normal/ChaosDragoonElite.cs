@@ -1,3 +1,4 @@
+using System;
 using Server.Items;
 
 namespace Server.Mobiles
@@ -41,91 +42,17 @@ namespace Server.Mobiles
             Fame = 8000;
             Karma = -8000;
 
-            CraftResource res = CraftResource.None;
+			CraftResource res = (CraftResource)Utility.RandomMinMax(201, 206); // All normal scales
 
-            switch (Utility.Random(6))
-            {
-                case 0:
-                    res = CraftResource.BlackScales;
-                    break;
-                case 1:
-                    res = CraftResource.RedScales;
-                    break;
-                case 2:
-                    res = CraftResource.BlueScales;
-                    break;
-                case 3:
-                    res = CraftResource.YellowScales;
-                    break;
-                case 4:
-                    res = CraftResource.GreenScales;
-                    break;
-                case 5:
-                    res = CraftResource.WhiteScales;
-                    break;
-            }
-
-            BaseWeapon melee = null;
-
-            switch (Utility.Random(3))
-            {
-                case 0:
-                    melee = new Kryss();
-                    break;
-                case 1:
-                    melee = new Broadsword();
-                    break;
-                case 2:
-                    melee = new Katana();
-                    break;
-            }
-
-            melee.Movable = false;
-            AddItem(melee);
-
-            DragonChest Tunic = new DragonChest
-            {
-                Resource = res,
-                Movable = false
-            };
-            AddItem(Tunic);
-
-            DragonLegs Legs = new DragonLegs
-            {
-                Resource = res,
-                Movable = false
-            };
-            AddItem(Legs);
-
-            DragonArms Arms = new DragonArms
-            {
-                Resource = res,
-                Movable = false
-            };
-            AddItem(Arms);
-
-            DragonGloves Gloves = new DragonGloves
-            {
-                Resource = res,
-                Movable = false
-            };
-            AddItem(Gloves);
-
-            DragonHelm Helm = new DragonHelm
-            {
-                Resource = res,
-                Movable = false
-            };
-            AddItem(Helm);
-
-            ChaosShield shield = new ChaosShield
-            {
-                Movable = false
-            };
-            AddItem(shield);
-
-            AddItem(new Boots(0x455));
-            AddItem(new Shirt(Utility.RandomMetalHue()));
+			SetWearable((Item)Activator.CreateInstance(Utility.RandomList(_WeaponsList)));
+			SetWearable(new DragonHelm() { Resource = res });
+			SetWearable(new DragonChest() { Resource = res });
+			SetWearable(new DragonArms() { Resource = res });
+			SetWearable(new DragonGloves() { Resource = res });
+			SetWearable(new DragonLegs() { Resource = res });
+			SetWearable(new ChaosShield());
+			SetWearable(new Shirt(), Utility.RandomMetalHue(), 1);
+			SetWearable(new Boots(), 0x455, 1);
 
             int amount = Utility.RandomMinMax(1, 3);
 
@@ -150,38 +77,10 @@ namespace Server.Mobiles
                     AddItem(new WhiteScales(amount));
                     break;
             }
-            switch (Utility.Random(9))
-            {
-                case 0:
-                    res = CraftResource.DullCopper;
-                    break;
-                case 1:
-                    res = CraftResource.ShadowIron;
-                    break;
-                case 2:
-                    res = CraftResource.Copper;
-                    break;
-                case 3:
-                    res = CraftResource.Bronze;
-                    break;
-                case 4:
-                    res = CraftResource.Gold;
-                    break;
-                case 5:
-                    res = CraftResource.Agapite;
-                    break;
-                case 6:
-                    res = CraftResource.Verite;
-                    break;
-                case 7:
-                    res = CraftResource.Valorite;
-                    break;
-                case 8:
-                    res = CraftResource.Iron;
-                    break;
-            }
+            
+			res = (CraftResource)Utility.RandomMinMax(1, 9); // All metal types
 
-            SwampDragon mt = new SwampDragon
+			SwampDragon mt = new SwampDragon
             {
                 HasBarding = true,
                 BardingResource = res
@@ -197,7 +96,12 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool AutoDispel => true;
+		private static readonly Type[] _WeaponsList = new Type[]
+		{
+			typeof(Kryss), typeof(Broadsword), typeof(Katana)
+		};
+
+		public override bool AutoDispel => true;
         public override bool CanRummageCorpses => true;
         public override bool AlwaysMurderer => true;
         public override bool ShowFameTitle => false;

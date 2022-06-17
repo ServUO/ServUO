@@ -87,11 +87,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Shoes(0x755));
-            AddItem(new LongPants(0x1BB));
-            AddItem(new FancyShirt(0x71E));
-            AddItem(new Cloak(0x59));
+            SetWearable(new Backpack());
+            SetWearable(new Shoes(), 0x755, 1);
+            SetWearable(new LongPants(), 0x1BB, 1);
+            SetWearable(new FancyShirt(), 0x71E, 1);
+			SetWearable(new Cloak(), 0x59, 1);
         }
 
         public override void Serialize(GenericWriter writer)

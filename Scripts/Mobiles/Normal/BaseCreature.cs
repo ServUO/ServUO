@@ -5299,14 +5299,24 @@ namespace Server.Mobiles
             if (hue > -1)
                 item.Hue = hue;
 
-            item.Movable = dropChance > Utility.RandomDouble();
+            if (dropChance <= 0) 
+                item.Movable = false;
+            else if (dropChance >= 1) 
+                item.Movable = true;
+            else
+                item.Movable = dropChance > Utility.RandomDouble();
 
-            if (!CheckEquip(item) || !OnEquip(item) || !item.OnEquip(this))
+            if(!OnEquip(item) || !item.OnEquip(this))
             {
                 PackItem(item);
             }
             else
             {
+                if (!CheckEquip(item))
+                {
+                    FindItemOnLayer(item.Layer)?.Delete();
+                }
+				
                 AddItem(item);
             }
         }
@@ -7072,7 +7082,7 @@ namespace Server.Mobiles
             List<Item> items = toRummage.Items;
 
 			if (items.Count == 0)
-			{
+            {
 				return false;
 			}
 
@@ -7092,13 +7102,13 @@ namespace Server.Mobiles
 					Item item = Utility.RandomList(items);
 
 					if (Lift(item, item.Amount) && Drop(pack, new Point3D(-1, -1, 0)))
-					{
-						// *rummages through a corpse and takes an item*
-						PublicOverheadMessage(MessageType.Emote, 0x3B2, 1008086);
-
-						return true;
-					}
-				}
+	                {
+	                    // *rummages through a corpse and takes an item*
+	                    PublicOverheadMessage(MessageType.Emote, 0x3B2, 1008086);
+	
+	                    return true;
+	                }
+	            }
             }
 
             return false;

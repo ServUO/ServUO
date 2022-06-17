@@ -31,18 +31,12 @@ namespace Server.Engines.Quests.Hag
 
         public override void InitOutfit()
         {
-            AddItem(new Robe(0x1));
-            AddItem(new Sandals());
-            AddItem(new WizardsHat(0x1));
-            AddItem(new GoldBracelet());
-
-            HairItemID = 0x203C;
-
-            Item staff = new GnarledStaff
-            {
-                Movable = false
-            };
-            AddItem(staff);
+            SetWearable(new Robe(), 0x1, 1);
+            SetWearable(new Sandals(), dropChance: 1);
+            SetWearable(new WizardsHat(), 0x1, 1);
+			SetWearable(new GoldBracelet(), dropChance: 1);
+			SetWearable(new GnarledStaff());
+			HairItemID = 0x203C;
         }
 
         public override void OnTalk(PlayerMobile player, bool contextMenu)

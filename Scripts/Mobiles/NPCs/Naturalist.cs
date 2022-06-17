@@ -30,9 +30,9 @@ namespace Server.Engines.Quests.Naturalist
 
         public override void InitOutfit()
         {
-            AddItem(new Tunic(0x598));
-            AddItem(new LongPants(0x59B));
-            AddItem(new Boots());
+            SetWearable(new Tunic(), 0x598, 1);
+            SetWearable(new LongPants(), 0x59B, 1);
+			SetWearable(new Boots(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
             Utility.AssignRandomFacialHair(this, HairHue);

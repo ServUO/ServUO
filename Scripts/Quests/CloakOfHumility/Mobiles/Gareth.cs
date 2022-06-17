@@ -39,11 +39,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Boots());
-            AddItem(new BodySash());
-            AddItem(new FancyShirt(6));
-            AddItem(new LongPants());
+            SetWearable(new Backpack());
+            SetWearable(new Boots(), dropChance :1);
+            SetWearable(new BodySash(), dropChance :1);
+            SetWearable(new FancyShirt(), 6, 1);
+			SetWearable(new LongPants(), dropChance :1);
         }
 
         private DateTime m_NextTalk;

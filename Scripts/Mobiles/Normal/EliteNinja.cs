@@ -57,10 +57,9 @@ namespace Server.Mobiles
             {
                 UsesRemaining = 20,
                 Poison = Poison.Greater,
-                PoisonCharges = 20,
-                Movable = false
+                PoisonCharges = 20
             };
-            AddItem(belt);
+            SetWearable(belt);
 
             int amount = Skills[SkillName.Ninjitsu].Value >= 100 ? 2 : 1;
 
@@ -76,11 +75,11 @@ namespace Server.Mobiles
                 PackItem(f);
             }
 
-            AddItem(new NinjaTabi());
-            AddItem(new LeatherNinjaJacket());
-            AddItem(new LeatherNinjaHood());
-            AddItem(new LeatherNinjaPants());
-            AddItem(new LeatherNinjaMitts());
+            SetWearable(new NinjaTabi(), dropChance: 1);
+			SetWearable(new LeatherNinjaJacket(), dropChance: 1);
+			SetWearable(new LeatherNinjaHood(), dropChance: 1);
+			SetWearable(new LeatherNinjaPants(), dropChance: 1);
+			SetWearable(new LeatherNinjaMitts(), dropChance: 1);
 
             if (Utility.RandomDouble() < 0.33)
                 PackItem(new SmokeBomb());

@@ -69,10 +69,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new FemaleGargishClothLegs(0x70F));
-            AddItem(new FemaleGargishClothKilt(0x742));
-            AddItem(new FemaleGargishClothChest(0x4C3));
-            AddItem(new FemaleGargishClothArms(0x738));
+            SetWearable(new FemaleGargishClothLegs(), 0x70F, 1);
+            SetWearable(new FemaleGargishClothKilt(), 0x742, 1);
+            SetWearable(new FemaleGargishClothChest(), 0x4C3, 1);
+			SetWearable(new FemaleGargishClothArms(), 0x738, 1);
         }
 
         private static readonly Type[][] m_PileTypes = new Type[][]

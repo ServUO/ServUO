@@ -1,3 +1,5 @@
+using Server.Items;
+
 namespace Server.Mobiles
 {
     public class HealerGuildmaster : BaseGuildmaster
@@ -24,7 +26,7 @@ namespace Server.Mobiles
         {
             base.InitOutfit();
 
-            AddItem(new Items.Robe(Utility.RandomYellowHue()));
+			SetWearable(new Robe(), Utility.RandomYellowHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)

@@ -109,10 +109,10 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new GlassStaff());
-            AddItem(new GargishClothChest(0x64F));
-            AddItem(new GargishClothArms(0x64F));
-            AddItem(new GargishClothKilt(0x643));
+            SetWearable(new GlassStaff(), dropChance: 1);
+            SetWearable(new GargishClothChest(), 0x64F, 1);
+            SetWearable(new GargishClothArms(), 0x64F, 1);
+			SetWearable(new GargishClothKilt(), 0x643, 1);
         }
 
         public override void Serialize(GenericWriter writer)

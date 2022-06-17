@@ -16,28 +16,12 @@ namespace Server.Mobiles
 
             HairItemID = 0x204A;	//Krisna
 
-            Bow bow = new Bow
-            {
-                Movable = false
-            };
-            AddItem(bow);
-
-            AddItem(new Boots(0x8A4));
-            AddItem(new BodySash(0x8A4));
-
-            Backpack backpack = new Backpack
-            {
-                Movable = false
-            };
-            AddItem(backpack);
-
-            LeatherGloves gloves = new LeatherGloves();
-            LeatherChest chest = new LeatherChest();
-            gloves.Hue = 0x96F;
-            chest.Hue = 0x96F;
-
-            AddItem(gloves);
-            AddItem(chest);
+			SetWearable(new Bow());
+			SetWearable(new Boots(), 0x8A4, 1);
+			SetWearable(new BodySash(), 0x8A4, 1);
+			SetWearable(new Backpack());
+			SetWearable(new LeatherGloves(), 0x96F, 1);
+			SetWearable(new LeatherChest(), 0x96F, 1);
 
             SetStr(111, 120);
             SetDex(151, 160);

@@ -23,23 +23,23 @@ namespace Server.Mobiles
             {
                 Body = 0x191;
                 Name = NameList.RandomName("female");
-                AddItem(new Kilt(Utility.RandomDyedHue()));
-                AddItem(new Shirt(Utility.RandomDyedHue()));
-                AddItem(new ThighBoots());
+                SetWearable(new Kilt(), Utility.RandomDyedHue(), 1);
+                SetWearable(new Shirt(), Utility.RandomDyedHue(), 1);
+				SetWearable(new ThighBoots(), dropChance: 1);
                 Title = "the gypsy";
             }
             else
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
-                AddItem(new Shirt(Utility.RandomDyedHue()));
-                AddItem(new Sandals());
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
+                SetWearable(new Shirt(), Utility.RandomDyedHue(), 1);
+                SetWearable(new Sandals(), dropChance: 1);
                 Title = "the gypsy";
             }
 
-            AddItem(new Bandana(Utility.RandomDyedHue()));
-            AddItem(new Dagger());
+			SetWearable(new Bandana(), Utility.RandomDyedHue(), 1);
+			SetWearable(new Dagger(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
 
@@ -47,9 +47,7 @@ namespace Server.Mobiles
 
             pack.DropItem(new Gold(250, 300));
 
-            pack.Movable = false;
-
-            AddItem(pack);
+			SetWearable(pack);
         }
 
         public Gypsy(Serial serial)

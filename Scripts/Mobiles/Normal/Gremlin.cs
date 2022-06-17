@@ -32,7 +32,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.MagicResist, 82.5);
             SetSkill(SkillName.Tactics, 65.3);
 
-            AddItem(new Bow());
+            SetWearable(new Bow(), dropChance: 1);
         }
 
         public Gremlin(Serial serial)

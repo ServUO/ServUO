@@ -18,36 +18,14 @@ namespace Server.Mobiles
             HairHue = Race.RandomHairHue();
             Race.RandomFacialHair(this);
 
-            AddItem(new ThighBoots(0x51D));
-            AddItem(new FancyShirt(0x51D));
-            AddItem(new StuddedMempo());
-            AddItem(new JinBaori(0x2A));
-
-            Item item;
-
-            item = new StuddedGloves
-            {
-                Hue = 0x2A
-            };
-            AddItem(item);
-
-            item = new LeatherNinjaPants
-            {
-                Hue = 0x51D
-            };
-            AddItem(item);
-
-            item = new LightPlateJingasa
-            {
-                Hue = 0x51D
-            };
-            AddItem(item);
-
-            item = new Sai
-            {
-                Hue = 0x51D
-            };
-            AddItem(item);
+            SetWearable(new ThighBoots(), 0x51D, 1);
+			SetWearable(new FancyShirt(), 0x51D, 1);
+			SetWearable(new StuddedMempo(), dropChance: 1);
+			SetWearable(new JinBaori(), 0x2A, 1);
+			SetWearable(new StuddedGloves(), 0x2A, 1);
+			SetWearable(new LeatherNinjaPants(), 0x51D, 1);
+			SetWearable(new LightPlateJingasa(), 0x51D, 1);
+			SetWearable(new Sai(), 0x51D, 1); 
 
             SetStr(440, 460);
             SetDex(160, 175);

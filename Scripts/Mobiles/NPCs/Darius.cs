@@ -29,11 +29,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new WildStaff());
-            AddItem(new Sandals(0x1BB));
-            AddItem(new GemmedCirclet());
-            AddItem(new Tunic(0x3));
+            SetWearable(new Backpack(), dropChance: 1);
+            SetWearable(new WildStaff(), dropChance: 1);
+            SetWearable(new Sandals(), 0x1BB, 1);
+            SetWearable(new GemmedCirclet(), dropChance: 1);
+            SetWearable(new Tunic(), 0x3, 1);
         }
 
         public override void Initialize()

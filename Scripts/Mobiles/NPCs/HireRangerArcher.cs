@@ -44,25 +44,25 @@ namespace Server.Mobiles
             Fame = 100;
             Karma = 125;
 
-            AddItem(new Shoes(Utility.RandomNeutralHue()));
-            AddItem(new Shirt());
+            SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
+			SetWearable(new Shirt(), dropChance: 1);
 
             // Pick a random sword
             switch (Utility.Random(2))
             {
                 case 0:
-                    AddItem(new Bow());
+					SetWearable(new Bow(), dropChance: 1);
                     break;
                 case 1:
-                    AddItem(new CompositeBow());
+					SetWearable(new CompositeBow(), dropChance: 1);
                     break;
             }
 
-            AddItem(new RangerChest());
-            AddItem(new RangerArms());
-            AddItem(new RangerGloves());
-            AddItem(new RangerGorget());
-            AddItem(new RangerLegs());
+			SetWearable(new RangerChest(), dropChance: 1);
+			SetWearable(new RangerArms(), dropChance: 1);
+			SetWearable(new RangerGloves(), dropChance: 1);
+			SetWearable(new RangerGorget(), dropChance: 1);
+			SetWearable(new RangerLegs(), dropChance: 1);
         }
 
         public override void GenerateLoot()

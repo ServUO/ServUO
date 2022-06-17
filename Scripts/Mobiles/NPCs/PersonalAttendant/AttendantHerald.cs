@@ -579,10 +579,10 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new FurBoots());
-            AddItem(new LongPants(0x901));
-            AddItem(new TricorneHat());
-            AddItem(new FormalShirt(Utility.RandomBlueHue()));
+            SetWearable(new FurBoots(), dropChance: 1);
+            SetWearable(new LongPants(), 0x901, 1);
+            SetWearable(new TricorneHat(), dropChance: 1);
+			SetWearable(new FormalShirt(), Utility.RandomBlueHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)
@@ -633,10 +633,10 @@ namespace Server.Mobiles
             Lantern lantern = new Lantern();
             lantern.Ignite();
 
-            AddItem(lantern);
-            AddItem(new Shoes(Utility.RandomNeutralHue()));
-            AddItem(new Bonnet(Utility.RandomPinkHue()));
-            AddItem(new PlainDress(Utility.RandomPinkHue()));
+            SetWearable(lantern, dropChance: 1);
+            SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
+            SetWearable(new Bonnet(), Utility.RandomPinkHue(), 1);
+			SetWearable(new PlainDress(), Utility.RandomPinkHue(), 1);
         }
 
         public override void Serialize(GenericWriter writer)

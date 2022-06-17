@@ -14,20 +14,10 @@ namespace Server.Mobiles
             Body = 0x190;
             Name = "Morg Bergen";
 
-            AddItem(new ShortPants(0x59C));
-
-            Bardiche bardiche = new Bardiche();
-            LeatherGloves gloves = new LeatherGloves();
-            LeatherArms arms = new LeatherArms();
-
-            bardiche.Hue = 0x96F;
-            bardiche.Movable = false;
-            gloves.Hue = 0x96F;
-            arms.Hue = 0x96F;
-
-            AddItem(bardiche);
-            AddItem(gloves);
-            AddItem(arms);
+			SetWearable(new ShortPants(), 0x59C, 1);
+			SetWearable(new Bardiche(), 0x96F);
+			SetWearable(new LeatherGloves(), 0x96F, 1);
+			SetWearable(new LeatherArms(), 0x96F, 1);
 
             SetStr(111, 120);
             SetDex(111, 120);

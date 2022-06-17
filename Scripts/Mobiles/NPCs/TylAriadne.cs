@@ -128,46 +128,14 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new ElvenBoots(0x96D));
-
-            Item item;
-
-            item = new StuddedLegs
-            {
-                Hue = 0x96D
-            };
-            AddItem(item);
-
-            item = new StuddedGloves
-            {
-                Hue = 0x96D
-            };
-            AddItem(item);
-
-            item = new StuddedGorget
-            {
-                Hue = 0x96D
-            };
-            AddItem(item);
-
-            item = new StuddedChest
-            {
-                Hue = 0x96D
-            };
-            AddItem(item);
-
-            item = new StuddedArms
-            {
-                Hue = 0x96D
-            };
-            AddItem(item);
-
-            item = new DiamondMace
-            {
-                Hue = 0x96D
-            };
-            AddItem(item);
+			SetWearable(new Backpack());
+			SetWearable(new ElvenBoots(), 0x96D, 1);
+            SetWearable(new StuddedLegs(), 0x96D, 1);
+            SetWearable(new StuddedGloves(), 0x96D, 1);
+            SetWearable(new StuddedGorget(), 0x96D, 1);
+            SetWearable(new StuddedChest(), 0x96D, 1);
+            SetWearable(new StuddedArms(), 0x96D, 1);
+            SetWearable(new DiamondMace(), 0x96D, 1);
         }
 
         public override void Serialize(GenericWriter writer)

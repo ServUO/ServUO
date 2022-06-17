@@ -209,40 +209,34 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new PlateArms());
-            AddItem(new PlateChest());
-            AddItem(new PlateGloves());
-            AddItem(new StuddedGorget());
-            AddItem(new PlateLegs());
+            SetWearable(new PlateArms(), dropChance: 1);
+            SetWearable(new PlateChest(), dropChance: 1);
+            SetWearable(new PlateGloves(), dropChance: 1);
+            SetWearable(new StuddedGorget(), dropChance: 1);
+			SetWearable(new PlateLegs(), dropChance: 1);
 
             switch (Utility.Random(4))
             {
-                case 0: AddItem(new PlateHelm()); break;
-                case 1: AddItem(new NorseHelm()); break;
-                case 2: AddItem(new CloseHelm()); break;
-                case 3: AddItem(new Helmet()); break;
+                case 0: SetWearable(new PlateHelm(), dropChance: 1); break;
+                case 1: SetWearable(new NorseHelm(), dropChance: 1); break;
+                case 2: SetWearable(new CloseHelm(), dropChance: 1); break;
+                case 3: SetWearable(new Helmet(), dropChance: 1); break;
             }
 
             switch (Utility.Random(3))
             {
-                case 0: AddItem(new BodySash(0x482)); break;
-                case 1: AddItem(new Doublet(0x482)); break;
-                case 2: AddItem(new Tunic(0x482)); break;
+                case 0: SetWearable(new BodySash(), 0x482, 1); break;
+                case 1: SetWearable(new Doublet(), 0x482, 1); break;
+                case 2: SetWearable(new Tunic(), 0x482, 1); break;
             }
 
-            AddItem(new Broadsword());
-
-            Item shield = new MetalKiteShield
-            {
-                Hue = Utility.RandomNondyedHue()
-            };
-
-            AddItem(shield);
+			SetWearable(new Broadsword(), dropChance: 1);
+			SetWearable(new MetalKiteShield(), Utility.RandomNondyedHue(), 1);
 
             switch (Utility.Random(2))
             {
-                case 0: AddItem(new Boots()); break;
-                case 1: AddItem(new ThighBoots()); break;
+                case 0: SetWearable(new Boots(), dropChance: 1); break;
+                case 1: SetWearable(new ThighBoots(), dropChance: 1); break;
             }
 
             Blessed = true;

@@ -19,10 +19,10 @@ namespace Server.Mobiles
                 switch (Utility.Random(2))
                 {
                     case 0:
-                        AddItem(new Skirt(Utility.RandomDyedHue()));
+						SetWearable(new Skirt(), Utility.RandomDyedHue(), 1);
                         break;
                     case 1:
-                        AddItem(new Kilt(Utility.RandomNeutralHue()));
+						SetWearable(new Kilt(), Utility.RandomNeutralHue(), 1);
                         break;
                 }
             }
@@ -30,7 +30,7 @@ namespace Server.Mobiles
             {
                 Body = 0x190;
                 Name = NameList.RandomName("male");
-                AddItem(new ShortPants(Utility.RandomNeutralHue()));
+				SetWearable(new ShortPants(), Utility.RandomNeutralHue(), 1);
             }
             Title = "the bard";
             HairItemID = Race.RandomHair(Female);
@@ -54,15 +54,15 @@ namespace Server.Mobiles
             Fame = 100;
             Karma = 100;
 
-            AddItem(new Shoes(Utility.RandomNeutralHue()));
+			SetWearable(new Shoes(), Utility.RandomNeutralHue(), 1);
 
             switch (Utility.Random(2))
             {
                 case 0:
-                    AddItem(new Doublet(Utility.RandomDyedHue()));
+					SetWearable(new Doublet(), Utility.RandomDyedHue(), 1);
                     break;
                 case 1:
-                    AddItem(new Shirt(Utility.RandomDyedHue()));
+					SetWearable(new Shirt(), Utility.RandomDyedHue(), 1);
                     break;
             }
         }

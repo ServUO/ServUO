@@ -1,4 +1,5 @@
 using Server.Engines.Quests;
+using Server.Items;
 
 namespace Server.Mobiles
 {
@@ -38,9 +39,9 @@ namespace Server.Mobiles
 
         public override void InitOutfit()
         {
-            AddItem(new Items.Backpack());
-            AddItem(new Items.Sandals());
-            AddItem(new Items.FancyDress(2205));
+            SetWearable(new Backpack());
+            SetWearable(new Sandals(), dropChance: 1);
+			SetWearable(new FancyDress(), 2205, 1);
         }
 
         public override void Serialize(GenericWriter writer)

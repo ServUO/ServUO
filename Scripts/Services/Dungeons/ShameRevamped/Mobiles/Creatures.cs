@@ -777,8 +777,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 120, 130);
             SetSkill(SkillName.EvalInt, 120, 130);
 
-            AddItem(new Robe(1156));
-            AddItem(new Sandals());
+            SetWearable(new Robe(), 1156, 1);
+			SetWearable(new Sandals(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
 
@@ -918,8 +918,8 @@ namespace Server.Mobiles
             SetSkill(SkillName.Magery, 100, 110);
             SetSkill(SkillName.EvalInt, 100, 110);
 
-            AddItem(new Robe(1157));
-            AddItem(new Sandals());
+            SetWearable(new Robe(), 1157, 1);
+			SetWearable(new Sandals(), dropChance: 1);
 
             Utility.AssignRandomHair(this);
             Hue = Race.RandomSkinHue();

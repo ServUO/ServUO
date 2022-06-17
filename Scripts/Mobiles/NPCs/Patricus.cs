@@ -70,11 +70,11 @@ namespace Server.Engines.Quests
 
         public override void InitOutfit()
         {
-            AddItem(new Backpack());
-            AddItem(new Shoes(0x74B));
-            AddItem(new LongPants(0x1C));
-            AddItem(new FancyShirt(0x71B));
-            AddItem(new Cloak(0x1BB));
+            SetWearable(new Backpack());
+            SetWearable(new Shoes(), 0x74B, 1);
+            SetWearable(new LongPants(), 0x1C, 1);
+            SetWearable(new FancyShirt(), 0x71B, 1);
+			SetWearable(new Cloak(), 0x1BB, 1);
         }
 
         public override void Serialize(GenericWriter writer)
