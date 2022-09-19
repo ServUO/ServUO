@@ -1,13 +1,13 @@
 #define NEWPROPSGUMP
 #define BOOKTEXTENTRY
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
 using Server.Commands;
 using Server.Gumps;
 using Server.Items;
 using Server.Network;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Server.Mobiles
 {
@@ -21,7 +21,10 @@ namespace Server.Mobiles
 			: base(X, Y)
 		{
 			if (spawner == null || spawner.Deleted)
+			{
 				return;
+			}
+
 			m_Spawner = spawner;
 			m_index = index;
 			m_SpawnerGump = spawnergump;
@@ -33,7 +36,7 @@ namespace Server.Mobiles
 			AddImageTiled(23, 5, 214, 270, 0x52);
 			AddImageTiled(24, 6, 213, 261, 0xBBC);
 
-			string label = spawner.Name + " entry " + index;
+			var label = spawner.Name + " entry " + index;
 			AddLabel(28, 10, 0x384, label);
 
 			// OK button
@@ -64,13 +67,17 @@ namespace Server.Mobiles
 		public override void OnResponse(NetState state, RelayInfo info)
 		{
 			if (info == null || state?.Mobile == null)
+			{
 				return;
+			}
 
 			if (m_Spawner == null || m_Spawner.Deleted)
+			{
 				return;
+			}
 
-			bool update_entry = false;
-			bool edit_entry = false;
+			var update_entry = false;
+			var edit_entry = false;
 
 			switch (info.ButtonID)
 			{
@@ -95,26 +102,26 @@ namespace Server.Mobiles
 			if (edit_entry)
 			{
 				// get the old text
-				TextRelay entry = info.GetTextEntry(1);
-				string oldtext = entry.Text;
+				var entry = info.GetTextEntry(1);
+				var oldtext = entry.Text;
 				// get the new text
 				entry = info.GetTextEntry(2);
-				string newtext = entry.Text;
+				var newtext = entry.Text;
 				// make the substitution
 				entry = info.GetTextEntry(0);
-				string origtext = entry.Text;
+				var origtext = entry.Text;
 				if (origtext != null && oldtext != null && newtext != null)
 				{
 					try
 					{
-						int firstindex = origtext.IndexOf(oldtext);
+						var firstindex = origtext.IndexOf(oldtext);
 						if (firstindex >= 0)
 						{
 
 
-							int secondindex = firstindex + oldtext.Length;
+							var secondindex = firstindex + oldtext.Length;
 
-							int lastindex = origtext.Length - 1;
+							var lastindex = origtext.Length - 1;
 
 							string editedtext;
 							if (firstindex > 0)
@@ -141,12 +148,12 @@ namespace Server.Mobiles
 
 				}
 				// open a new text entry gump
-				state.Mobile.SendGump(new TextEntryGump(m_Spawner, m_SpawnerGump, m_index, X, Y));
+				_ = state.Mobile.SendGump(new TextEntryGump(m_Spawner, m_SpawnerGump, m_index, X, Y));
 				return;
 			}
 			if (update_entry)
 			{
-				TextRelay entry = info.GetTextEntry(0);
+				var entry = info.GetTextEntry(0);
 				if (m_index < m_Spawner.SpawnObjects.Length)
 				{
 					m_Spawner.SpawnObjects[m_index].TypeName = entry.Text;
@@ -159,7 +166,7 @@ namespace Server.Mobiles
 			}
 
 			// open a new spawner gump
-			state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_SpawnerGump.m_ShowGump, m_SpawnerGump.xoffset, m_SpawnerGump.page));
+			_ = state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_SpawnerGump.m_ShowGump, m_SpawnerGump.xoffset, m_SpawnerGump.page));
 		}
 	}
 
@@ -191,7 +198,9 @@ namespace Server.Mobiles
 			: base(X, Y)
 		{
 			if (spawner == null || spawner.Deleted)
+			{
 				return;
+			}
 
 			m_Spawner = spawner;
 			spawner.SpawnerGump = this;
@@ -290,7 +299,7 @@ namespace Server.Mobiles
 			// Add sequential spawn state
 			if (m_Spawner.SequentialSpawn >= 0)
 			{
-				AddLabel(15, 365, 33, string.Format("{0}", m_Spawner.SequentialSpawn));
+				AddLabel(15, 365, 33, String.Format("{0}", m_Spawner.SequentialSpawn));
 			}
 
 			// Add Current / Max count labels
@@ -331,20 +340,26 @@ namespace Server.Mobiles
 			// add the status string
 			AddTextEntry(38, 384, 235, 33, 33, 900, m_Spawner.status_str);
 			// add the page buttons
-			for (int i = 0; i < MaxSpawnEntries / MaxEntriesPerPage; i++)
+			for (var i = 0; i < MaxSpawnEntries / MaxEntriesPerPage; i++)
 			{
 				//AddButton( 38+i*30, 365, 2206, 2206, 0, GumpButtonType.Page, 1+i );
-				AddButton(38 + i * 25, 365, 0x8B1 + i, 0x8B1 + i, 4000 + i, GumpButtonType.Reply, 0);
+				AddButton(38 + (i * 25), 365, 0x8B1 + i, 0x8B1 + i, 4000 + i, GumpButtonType.Reply, 0);
 			}
 
 			// add gump extension button
 			if (m_ShowGump > 1)
+			{
 				AddButton(645 + xoffset + 30, 450, 0x15E3, 0x15E7, 200, GumpButtonType.Reply, 0);
+			}
 			else
 				if (m_ShowGump > 0)
+			{
 				AddButton(315 + xoffset, 450, 0x15E1, 0x15E5, 200, GumpButtonType.Reply, 0);
+			}
 			else
+			{
 				AddButton(285 + xoffset, 450, 0x15E1, 0x15E5, 200, GumpButtonType.Reply, 0);
+			}
 
 			// add the textentry extender button
 			if (xoffset > 0)
@@ -357,20 +372,23 @@ namespace Server.Mobiles
 			}
 
 
-			for (int i = 0; i < MaxSpawnEntries; i++)
+			for (var i = 0; i < MaxSpawnEntries; i++)
 			{
-				if (page != i / MaxEntriesPerPage) continue;
+				if (page != i / MaxEntriesPerPage)
+				{
+					continue;
+				}
 
-				string str = string.Empty;
-				int texthue = 0;
-				int background = 0xBBC;
+				var str = String.Empty;
+				var texthue = 0;
+				var background = 0xBBC;
 
 				if (i % MaxEntriesPerPage == 0)
 				{
 					//AddPage(page+1);
 					// add highlighted page button
-					AddImageTiled(35 + page * 25, 363, 25, 25, 0xBBC);
-					AddImage(38 + page * 25, 365, 0x8B1 + page);
+					AddImageTiled(35 + (page * 25), 363, 25, 25, 0xBBC);
+					AddImage(38 + (page * 25), 365, 0x8B1 + page);
 				}
 
 				if (i < m_Spawner.SpawnObjects.Length)
@@ -381,15 +399,15 @@ namespace Server.Mobiles
 					{
 						// change the background for the spawn text entry if disabled
 						background = 0x23F4;
-						AddButton(2, 22 * (i % MaxEntriesPerPage) + 34, 0x82C, 0x82C, 6000 + i, GumpButtonType.Reply, 0);
+						AddButton(2, (22 * (i % MaxEntriesPerPage)) + 34, 0x82C, 0x82C, 6000 + i, GumpButtonType.Reply, 0);
 					}
 					else
 					{
-						AddButton(2, 22 * (i % MaxEntriesPerPage) + 36, 0x837, 0x837, 6000 + i, GumpButtonType.Reply, 0);
+						AddButton(2, (22 * (i % MaxEntriesPerPage)) + 36, 0x837, 0x837, 6000 + i, GumpButtonType.Reply, 0);
 					}
 				}
 
-				bool hasreplacement = false;
+				var hasreplacement = false;
 
 				// check for replacement entries
 				if (Rentry != null && Rentry.Index == i)
@@ -402,21 +420,21 @@ namespace Server.Mobiles
 				}
 
 				// increment/decrement buttons
-				AddButton(15, 22 * (i % MaxEntriesPerPage) + 34, 0x15E0, 0x15E4, 6 + (i * 2), GumpButtonType.Reply, 0);
-				AddButton(30, 22 * (i % MaxEntriesPerPage) + 34, 0x15E2, 0x15E6, 7 + (i * 2), GumpButtonType.Reply, 0);
+				AddButton(15, (22 * (i % MaxEntriesPerPage)) + 34, 0x15E0, 0x15E4, 6 + (i * 2), GumpButtonType.Reply, 0);
+				AddButton(30, (22 * (i % MaxEntriesPerPage)) + 34, 0x15E2, 0x15E6, 7 + (i * 2), GumpButtonType.Reply, 0);
 
 				// categorization gump button
-				AddButton(171 + xoffset - 18, 22 * (i % MaxEntriesPerPage) + 34, 0x15E1, 0x15E5, 5000 + i, GumpButtonType.Reply, 0);
+				AddButton(171 + xoffset - 18, (22 * (i % MaxEntriesPerPage)) + 34, 0x15E1, 0x15E5, 5000 + i, GumpButtonType.Reply, 0);
 
 				// goto spawn button
-				AddButton(171 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 0xFAE, 0xFAF, 1300 + i, GumpButtonType.Reply, 0);
+				AddButton(171 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 0xFAE, 0xFAF, 1300 + i, GumpButtonType.Reply, 0);
 
 				// text entry gump button
-				AddButton(200 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 0xFAB, 0xFAD, 800 + i, GumpButtonType.Reply, 0);
+				AddButton(200 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 0xFAB, 0xFAD, 800 + i, GumpButtonType.Reply, 0);
 
 				// background for text entry area
-				AddImageTiled(48, 22 * (i % MaxEntriesPerPage) + 30, 133 + xoffset - 25, 23, 0x52);
-				AddImageTiled(49, 22 * (i % MaxEntriesPerPage) + 31, 131 + xoffset - 25, 21, background);
+				AddImageTiled(48, (22 * (i % MaxEntriesPerPage)) + 30, 133 + xoffset - 25, 23, 0x52);
+				AddImageTiled(49, (22 * (i % MaxEntriesPerPage)) + 31, 131 + xoffset - 25, 21, background);
 
 				if (i < m_Spawner.SpawnObjects.Length)
 				{
@@ -425,31 +443,34 @@ namespace Server.Mobiles
 						str = m_Spawner.SpawnObjects[i].TypeName;
 					}
 
-					int count = m_Spawner.SpawnObjects[i].SpawnedObjects.Count;
-					int max = m_Spawner.SpawnObjects[i].ActualMaxCount;
-					int subgrp = m_Spawner.SpawnObjects[i].SubGroup;
-					int spawnsper = m_Spawner.SpawnObjects[i].SpawnsPerTick;
+					var count = m_Spawner.SpawnObjects[i].SpawnedObjects.Count;
+					var max = m_Spawner.SpawnObjects[i].ActualMaxCount;
+					var subgrp = m_Spawner.SpawnObjects[i].SubGroup;
+					var spawnsper = m_Spawner.SpawnObjects[i].SpawnsPerTick;
 
 					texthue = subgrp * 11;
-					if (texthue < 0) texthue = 0;
+					if (texthue < 0)
+					{
+						texthue = 0;
+					}
 
 					// Add current count
-					AddImageTiled(231 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 35, 23, 0x52);
-					AddImageTiled(232 + xoffset, 22 * (i % MaxEntriesPerPage) + 31, 32, 21, 0xBBC);
-					AddLabel(233 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 68, count.ToString());
+					AddImageTiled(231 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 35, 23, 0x52);
+					AddImageTiled(232 + xoffset, (22 * (i % MaxEntriesPerPage)) + 31, 32, 21, 0xBBC);
+					AddLabel(233 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 68, count.ToString());
 
 					// Add maximum count
-					AddImageTiled(267 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 35, 23, 0x52);
-					AddImageTiled(268 + xoffset, 22 * (i % MaxEntriesPerPage) + 31, 32, 21, 0xBBC);
+					AddImageTiled(267 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 35, 23, 0x52);
+					AddImageTiled(268 + xoffset, (22 * (i % MaxEntriesPerPage)) + 31, 32, 21, 0xBBC);
 					// AddTextEntry(x,y,w,ht,color,id,str)
-					AddTextEntry(270 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 30, 30, 33, 500 + i, max.ToString());
+					AddTextEntry(270 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 30, 30, 33, 500 + i, max.ToString());
 
 					if (m_ShowGump > 0)
 					{
 						// Add subgroup
-						AddImageTiled(334 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 25, 23, 0x52);
-						AddImageTiled(335 + xoffset, 22 * (i % MaxEntriesPerPage) + 31, 22, 21, 0xBBC);
-						AddTextEntry(338 + xoffset, 22 * (i % MaxEntriesPerPage) + 30, 17, 33, texthue, 600 + i, subgrp.ToString());
+						AddImageTiled(334 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 25, 23, 0x52);
+						AddImageTiled(335 + xoffset, (22 * (i % MaxEntriesPerPage)) + 31, 22, 21, 0xBBC);
+						AddTextEntry(338 + xoffset, (22 * (i % MaxEntriesPerPage)) + 30, 17, 33, texthue, 600 + i, subgrp.ToString());
 					}
 					if (m_ShowGump > 1)
 					{
@@ -460,7 +481,7 @@ namespace Server.Mobiles
 						string strmind = null;
 						string strmaxd = null;
 						string strpackrange = null;
-						string strspawnsper = spawnsper.ToString();
+						var strspawnsper = spawnsper.ToString();
 
 						if (m_Spawner.SpawnObjects[i].SequentialResetTime > 0 && m_Spawner.SpawnObjects[i].SubGroup > 0)
 						{
@@ -492,7 +513,7 @@ namespace Server.Mobiles
 						{
 							// if the next spawn tick of the spawner will occur after the subgroup is available for spawning
 							// then report the next spawn tick since that is the earliest that the subgroup can actually be spawned
-							if ((DateTime.UtcNow + m_Spawner.NextSpawn) > m_Spawner.SpawnObjects[i].NextSpawn)
+							if (DateTime.UtcNow + m_Spawner.NextSpawn > m_Spawner.SpawnObjects[i].NextSpawn)
 							{
 								strnext = m_Spawner.NextSpawn.ToString();
 							}
@@ -507,7 +528,7 @@ namespace Server.Mobiles
 							strnext = m_Spawner.NextSpawn.ToString();
 						}
 
-						int yoff = 22 * (i % MaxEntriesPerPage) + 30;
+						var yoff = (22 * (i % MaxEntriesPerPage)) + 30;
 
 						// spawns per tick
 						AddImageTiled(303 + xoffset, yoff, 30, 23, 0x52);
@@ -557,41 +578,43 @@ namespace Server.Mobiles
 					}
 				}
 
-				AddTextEntry(52, 22 * (i % MaxEntriesPerPage) + 31, 119 + xoffset - 25, 21, texthue, i, str);
+				AddTextEntry(52, (22 * (i % MaxEntriesPerPage)) + 31, 119 + xoffset - 25, 21, texthue, i, str);
 			}
 		}
 
 		public XmlSpawner.SpawnObject[] CreateArray(RelayInfo info, Mobile from)
 		{
-			ArrayList SpawnObjects = new ArrayList();
+			var SpawnObjects = new ArrayList();
 
-			for (int i = 0; i < MaxSpawnEntries; i++)
+			for (var i = 0; i < MaxSpawnEntries; i++)
 			{
-				TextRelay te = info.GetTextEntry(i);
+				var te = info.GetTextEntry(i);
 
 				if (te != null)
 				{
-					string str = te.Text;
+					var str = te.Text;
 
 					if (str.Length > 0)
 					{
 						str = str.Trim();
-#if (BOOKTEXTENTRY)
+#if BOOKTEXTENTRY
 						if (i < m_Spawner.SpawnObjects.Length)
 						{
-							string currenttext = m_Spawner.SpawnObjects[i].TypeName;
+							var currenttext = m_Spawner.SpawnObjects[i].TypeName;
 							if (currenttext != null && currenttext.Length >= 230)
 							{
 								str = currenttext;
 							}
 						}
 #endif
-						string typestr = BaseXmlSpawner.ParseObjectType(str);
+						var typestr = BaseXmlSpawner.ParseObjectType(str);
 
-						Type type = SpawnerType.GetType(typestr);
+						var type = SpawnerType.GetType(typestr);
 
 						if (type != null)
+						{
 							SpawnObjects.Add(new XmlSpawner.SpawnObject(from, m_Spawner, str, 0));
+						}
 						else
 						{
 							// check for special keywords
@@ -600,7 +623,9 @@ namespace Server.Mobiles
 								SpawnObjects.Add(new XmlSpawner.SpawnObject(from, m_Spawner, str, 0));
 							}
 							else
-								m_Spawner.status_str = string.Format("{0} is not a valid type name.", str);
+							{
+								m_Spawner.status_str = String.Format("{0} is not a valid type name.", str);
+							}
 							//from.SendMessage( "{0} is not a valid type name.", str );
 						}
 
@@ -613,13 +638,13 @@ namespace Server.Mobiles
 
 		public void UpdateTypeNames(Mobile from, RelayInfo info)
 		{
-			for (int i = 0; i < MaxSpawnEntries; i++)
+			for (var i = 0; i < MaxSpawnEntries; i++)
 			{
-				TextRelay te = info.GetTextEntry(i);
+				var te = info.GetTextEntry(i);
 
 				if (te != null)
 				{
-					string str = te.Text;
+					var str = te.Text;
 
 					if (str.Length > 0)
 					{
@@ -630,8 +655,8 @@ namespace Server.Mobiles
 							// if it is then dont update it since we will assume that the textentry has truncated the actual string
 							// that could be longer than the buffer if booktextentry is used
 
-#if (BOOKTEXTENTRY)
-							string currentstr = m_Spawner.SpawnObjects[i].TypeName;
+#if BOOKTEXTENTRY
+							var currentstr = m_Spawner.SpawnObjects[i].TypeName;
 							if (currentstr != null && currentstr.Length < 230)
 #endif
 							{
@@ -649,7 +674,7 @@ namespace Server.Mobiles
 			}
 		}
 
-#if (BOOKTEXTENTRY)
+#if BOOKTEXTENTRY
 		private static void ProcessSpawnerBookEntry(Mobile from, XmlSpawner spawner, int entryIndex, string entryContent)
 		{
 			if (from == null || spawner == null || spawner.m_SpawnObjects == null)
@@ -661,8 +686,6 @@ namespace Server.Mobiles
 			if (entryIndex < spawner.m_SpawnObjects.Count)
 			{
 				var so = spawner.m_SpawnObjects[entryIndex];
-
-				var len = entryContent.Length;
 
 				if (so.TypeName != entryContent)
 				{
@@ -689,33 +712,36 @@ namespace Server.Mobiles
 
 		public static void Refresh_Callback(object state)
 		{
-			object[] args = (object[])state;
-			Mobile m = (Mobile)args[0];
+			var args = (object[])state;
+			var m = (Mobile)args[0];
 			// refresh the spawner gumps			
 			RefreshSpawnerGumps(m);
 		}
 
 		public static void RefreshSpawnerGumps(Mobile from)
 		{
-			if (from == null) return;
+			if (from == null)
+			{
+				return;
+			}
 
-			NetState ns = from.NetState;
+			var ns = from.NetState;
 
 			if (ns?.Gumps != null)
 			{
-				ArrayList refresh = new ArrayList();
+				var refresh = new ArrayList();
 
-				foreach (Gump g in ns.Gumps)
+				foreach (var g in ns.Gumps)
 				{
 					// clear the gump status on the spawner associated with the gump
 					if (g is XmlSpawnerGump xg && xg.m_Spawner != null)
 					{
-						refresh.Add(xg);
+						_ = refresh.Add(xg);
 					}
 				}
 
 				// close all of the currently opened spawner gumps
-				from.CloseGump(typeof(XmlSpawnerGump));
+				_ = from.CloseGump(typeof(XmlSpawnerGump));
 
 				// reopen the closed gumps from the gump collection
 				foreach (XmlSpawnerGump g in refresh)
@@ -726,9 +752,9 @@ namespace Server.Mobiles
 						// flag the current gump on the spawner as closed
 						g.m_Spawner.GumpReset = true;
 
-						XmlSpawnerGump xg = new XmlSpawnerGump(g.m_Spawner, g.X, g.Y, g.m_ShowGump, g.xoffset, g.page, g.Rentry);
+						var xg = new XmlSpawnerGump(g.m_Spawner, g.X, g.Y, g.m_ShowGump, g.xoffset, g.page, g.Rentry);
 
-						from.SendGump(xg);
+						_ = from.SendGump(xg);
 					}
 				}
 			}
@@ -738,8 +764,10 @@ namespace Server.Mobiles
 		{
 			if (o is Item i)
 			{
-				if (!i.Deleted && (i.Map != null) && (i.Map != Map.Internal))
+				if (!i.Deleted && i.Map != null && i.Map != Map.Internal)
+				{
 					return true;
+				}
 
 				if (from != null && !from.Deleted)
 				{
@@ -748,8 +776,10 @@ namespace Server.Mobiles
 			}
 			else if (o is Mobile m)
 			{
-				if (!m.Deleted && (m.Map != null) && (m.Map != Map.Internal))
+				if (!m.Deleted && m.Map != null && m.Map != Map.Internal)
+				{
 					return true;
+				}
 
 				if (from != null && !from.Deleted)
 				{
@@ -764,12 +794,16 @@ namespace Server.Mobiles
 		{
 			if (m_Spawner == null || m_Spawner.Deleted || state == null || info == null)
 			{
-				if (m_Spawner != null) m_Spawner.SpawnerGump = null;
+				if (m_Spawner != null)
+				{
+					m_Spawner.SpawnerGump = null;
+				}
+
 				return;
 			}
 
 			// Get the current name
-			TextRelay tr = info.GetTextEntry(999);
+			var tr = info.GetTextEntry(999);
 			if (tr != null)
 			{
 				m_Spawner.Name = tr.Text;
@@ -787,18 +821,24 @@ namespace Server.Mobiles
 				return;
 			}
 
-			for (int i = 0; i < m_Spawner.SpawnObjects.Length; i++)
+			for (var i = 0; i < m_Spawner.SpawnObjects.Length; i++)
 			{
-				if (page != i / MaxEntriesPerPage) continue;
+				if (page != i / MaxEntriesPerPage)
+				{
+					continue;
+				}
 
 				// check the max count entry
-				TextRelay temcnt = info.GetTextEntry(500 + i);
+				var temcnt = info.GetTextEntry(500 + i);
 				if (temcnt != null)
 				{
-					int maxval = 0;
+					var maxval = 0;
 					try { maxval = Convert.ToInt32(temcnt.Text, 10); }
 					catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-					if (maxval < 0) maxval = 0;
+					if (maxval < 0)
+					{
+						maxval = 0;
+					}
 
 					m_Spawner.SpawnObjects[i].MaxCount = maxval;
 				}
@@ -806,13 +846,16 @@ namespace Server.Mobiles
 				if (m_ShowGump > 0)
 				{
 					// check the subgroup entry
-					TextRelay tegrp = info.GetTextEntry(600 + i);
+					var tegrp = info.GetTextEntry(600 + i);
 					if (tegrp != null)
 					{
-						int grpval = 0;
+						var grpval = 0;
 						try { grpval = Convert.ToInt32(tegrp.Text, 10); }
 						catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-						if (grpval < 0) grpval = 0;
+						if (grpval < 0)
+						{
+							grpval = 0;
+						}
 
 						m_Spawner.SpawnObjects[i].SubGroup = grpval;
 					}
@@ -821,7 +864,7 @@ namespace Server.Mobiles
 				if (m_ShowGump > 1)
 				{
 					// note, while these values can be entered in any spawn entry, they will only be assigned to the subgroup leader
-					int subgroupindex = m_Spawner.GetCurrentSequentialSpawnIndex(m_Spawner.SpawnObjects[i].SubGroup);
+					var subgroupindex = m_Spawner.GetCurrentSequentialSpawnIndex(m_Spawner.SpawnObjects[i].SubGroup);
 					TextRelay tegrp;
 
 					if (subgroupindex >= 0 && subgroupindex < m_Spawner.SpawnObjects.Length)
@@ -833,7 +876,10 @@ namespace Server.Mobiles
 							double grpval = 0;
 							try { grpval = Convert.ToDouble(tegrp.Text); }
 							catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-							if (grpval < 0) grpval = 0;
+							if (grpval < 0)
+							{
+								grpval = 0;
+							}
 
 							m_Spawner.SpawnObjects[i].SequentialResetTime = 0;
 
@@ -843,10 +889,13 @@ namespace Server.Mobiles
 						tegrp = info.GetTextEntry(1100 + i);
 						if (tegrp?.Text != null && tegrp.Text.Length > 0)
 						{
-							int grpval = 0;
+							var grpval = 0;
 							try { grpval = Convert.ToInt32(tegrp.Text, 10); }
 							catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-							if (grpval < 0) grpval = 0;
+							if (grpval < 0)
+							{
+								grpval = 0;
+							}
 
 							m_Spawner.SpawnObjects[subgroupindex].SequentialResetTo = grpval;
 						}
@@ -854,10 +903,13 @@ namespace Server.Mobiles
 						tegrp = info.GetTextEntry(1200 + i);
 						if (tegrp?.Text != null && tegrp.Text.Length > 0)
 						{
-							int grpval = 0;
+							var grpval = 0;
 							try { grpval = Convert.ToInt32(tegrp.Text, 10); }
 							catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-							if (grpval < 0) grpval = 0;
+							if (grpval < 0)
+							{
+								grpval = 0;
+							}
 
 							m_Spawner.SpawnObjects[subgroupindex].KillsNeeded = grpval;
 						}
@@ -867,12 +919,15 @@ namespace Server.Mobiles
 					tegrp = info.GetTextEntry(1300 + i);
 					if (tegrp != null)
 					{
-						if (!string.IsNullOrEmpty(tegrp.Text))
+						if (!String.IsNullOrEmpty(tegrp.Text))
 						{
 							double grpval = -1;
 							try { grpval = Convert.ToDouble(tegrp.Text); }
 							catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-							if (grpval < 0) grpval = -1;
+							if (grpval < 0)
+							{
+								grpval = -1;
+							}
 
 							// if this value has changed, then update the next spawn time
 							if (grpval != m_Spawner.SpawnObjects[i].MinDelay)
@@ -893,12 +948,15 @@ namespace Server.Mobiles
 					tegrp = info.GetTextEntry(1400 + i);
 					if (tegrp != null)
 					{
-						if (!string.IsNullOrEmpty(tegrp.Text))
+						if (!String.IsNullOrEmpty(tegrp.Text))
 						{
 							double grpval = -1;
 							try { grpval = Convert.ToDouble(tegrp.Text); }
 							catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-							if (grpval < 0) grpval = -1;
+							if (grpval < 0)
+							{
+								grpval = -1;
+							}
 
 							// if this value has changed, then update the next spawn time
 							if (grpval != m_Spawner.SpawnObjects[i].MaxDelay)
@@ -919,12 +977,15 @@ namespace Server.Mobiles
 					tegrp = info.GetTextEntry(1500 + i);
 					if (tegrp != null)
 					{
-						if (!string.IsNullOrEmpty(tegrp.Text))
+						if (!String.IsNullOrEmpty(tegrp.Text))
 						{
-							int grpval = 1;
-							try { grpval = int.Parse(tegrp.Text); }
+							var grpval = 1;
+							try { grpval = Int32.Parse(tegrp.Text); }
 							catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-							if (grpval < 0) grpval = 1;
+							if (grpval < 0)
+							{
+								grpval = 1;
+							}
 
 							// if this value has changed, then update the next spawn time
 							if (grpval != m_Spawner.SpawnObjects[i].SpawnsPerTick)
@@ -942,12 +1003,15 @@ namespace Server.Mobiles
 					tegrp = info.GetTextEntry(1600 + i);
 					if (tegrp != null)
 					{
-						if (!string.IsNullOrEmpty(tegrp.Text))
+						if (!String.IsNullOrEmpty(tegrp.Text))
 						{
-							int grpval = 1;
-							try { grpval = int.Parse(tegrp.Text); }
+							var grpval = 1;
+							try { grpval = Int32.Parse(tegrp.Text); }
 							catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-							if (grpval < 0) grpval = 1;
+							if (grpval < 0)
+							{
+								grpval = 1;
+							}
 
 							// if this value has changed, then update 
 							if (grpval != m_Spawner.SpawnObjects[i].PackRange)
@@ -964,13 +1028,16 @@ namespace Server.Mobiles
 			}
 
 			// Update the maxcount
-			TextRelay temax = info.GetTextEntry(300);
+			var temax = info.GetTextEntry(300);
 			if (temax != null)
 			{
-				int maxval = 0;
+				var maxval = 0;
 				try { maxval = Convert.ToInt32(temax.Text, 10); }
 				catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-				if (maxval < 0) maxval = 0;
+				if (maxval < 0)
+				{
+					maxval = 0;
+				}
 				// if the maxcount of the spawner has been altered external to the interface (e.g. via props, or by the running spawner itself
 				// then that change will override the text entry
 				if (m_Spawner.MaxCount == initial_maxcount)
@@ -1069,23 +1136,26 @@ namespace Server.Mobiles
 					// check the restrict kills flag
 					if (info.ButtonID >= 300 && info.ButtonID < 300 + MaxSpawnEntries)
 					{
-						int index = info.ButtonID - 300;
+						var index = info.ButtonID - 300;
 						if (index < m_Spawner.SpawnObjects.Length)
+						{
 							m_Spawner.SpawnObjects[index].RestrictKillsToSubgroup = !m_Spawner.SpawnObjects[index].RestrictKillsToSubgroup;
-
+						}
 					}
 					else if (info.ButtonID >= 400 && info.ButtonID < 400 + MaxSpawnEntries)
 					{
-						int index = info.ButtonID - 400;
+						var index = info.ButtonID - 400;
 						if (index < m_Spawner.SpawnObjects.Length)
+						{
 							m_Spawner.SpawnObjects[index].ClearOnAdvance = !m_Spawner.SpawnObjects[index].ClearOnAdvance;
+						}
 					}
 					else if (info.ButtonID >= 800 && info.ButtonID < 800 + MaxSpawnEntries)
 					{
 						// open the text entry gump
-						int index = info.ButtonID - 800;
+						var index = info.ButtonID - 800;
 						// open a text entry gump
-#if (BOOKTEXTENTRY)
+#if BOOKTEXTENTRY
 						// display a new gump
 						state.Mobile.SendGump(new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page));
 
@@ -1096,7 +1166,7 @@ namespace Server.Mobiles
 							entry = m_Spawner.SpawnObjects[index];
 						}
 
-						XmlTextEntryBook book = new XmlTextEntryBook($"Entry {index}", m_Spawner.Name, entry?.TypeName, content => ProcessSpawnerBookEntry(state.Mobile, m_Spawner, index, content));
+						var book = new XmlTextEntryBook($"Entry {index}", m_Spawner.Name, entry?.TypeName, content => ProcessSpawnerBookEntry(state.Mobile, m_Spawner, index, content));
 
 						if (m_Spawner.m_TextEntryBook == null)
 						{
@@ -1119,27 +1189,29 @@ namespace Server.Mobiles
 					{
 						nclicks++;
 						// find the location of the spawn at the specified index
-						int index = info.ButtonID - 1300;
+						var index = info.ButtonID - 1300;
 						if (index < m_Spawner.SpawnObjects.Length)
 						{
-							int scount = m_Spawner.SpawnObjects[index].SpawnedObjects.Count;
+							var scount = m_Spawner.SpawnObjects[index].SpawnedObjects.Count;
 							if (scount > 0)
 							{
-								object so = m_Spawner.SpawnObjects[index].SpawnedObjects[nclicks % scount];
+								var so = m_Spawner.SpawnObjects[index].SpawnedObjects[nclicks % scount];
 
 								if (ValidGotoObject(state.Mobile, so))
 								{
-									IPoint3D o = so as IPoint3D;
-
-									if (o != null)
+									if (so is IPoint3D o)
 									{
-										Map m = m_Spawner.Map;
+										var m = m_Spawner.Map;
 
 										if (o is Item item)
+										{
 											m = item.Map;
+										}
 
 										if (o is Mobile mobile)
+										{
 											m = mobile.Map;
+										}
 
 										state.Mobile.Location = new Point3D(o);
 										state.Mobile.Map = m;
@@ -1148,7 +1220,7 @@ namespace Server.Mobiles
 							}
 						}
 					}
-					else if (info.ButtonID >= 4000 && info.ButtonID < 4001 + MaxSpawnEntries / MaxEntriesPerPage)
+					else if (info.ButtonID >= 4000 && info.ButtonID < 4001 + (MaxSpawnEntries / MaxEntriesPerPage))
 					{
 						// which page
 						page = info.ButtonID - 4000;
@@ -1156,7 +1228,7 @@ namespace Server.Mobiles
 					}
 					else if (info.ButtonID >= 6000 && info.ButtonID < 6000 + MaxSpawnEntries)
 					{
-						int index = info.ButtonID - 6000;
+						var index = info.ButtonID - 6000;
 
 						if (index < m_Spawner.SpawnObjects.Length)
 						{
@@ -1164,23 +1236,25 @@ namespace Server.Mobiles
 
 							// clear any current spawns on the disabled entry
 							if (m_Spawner.SpawnObjects[index].Disabled)
+							{
 								m_Spawner.RemoveSpawnObjects(m_Spawner.SpawnObjects[index]);
+							}
 						}
 					}
 					else if (info.ButtonID >= 5000 && info.ButtonID < 5000 + MaxSpawnEntries)
 					{
-						int i = info.ButtonID - 5000;
+						var i = info.ButtonID - 5000;
 
 						string categorystring = null;
 						string entrystring = null;
 
-						TextRelay te = info.GetTextEntry(i);
+						var te = info.GetTextEntry(i);
 
 						if (te?.Text != null)
 						{
 							// get the string
 
-							string[] cargs = te.Text.Split(',');
+							var cargs = te.Text.Split(',');
 
 							// parse out any comma separated args
 							categorystring = cargs[0];
@@ -1188,10 +1262,10 @@ namespace Server.Mobiles
 							entrystring = te.Text;
 						}
 
-						if (string.IsNullOrEmpty(categorystring))
+						if (String.IsNullOrEmpty(categorystring))
 						{
 
-							XmlSpawnerGump newg = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page);
+							var newg = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page);
 							state.Mobile.SendGump(newg);
 
 							// if no string has been entered then just use the full categorized add gump
@@ -1204,17 +1278,17 @@ namespace Server.Mobiles
 							state.Mobile.CloseGump(typeof(XmlPartialCategorizedAddGump));
 
 							//Type [] types = (Type[])XmlPartialCategorizedAddGump.Match( categorystring ).ToArray( typeof( Type ) );
-							ArrayList types = XmlPartialCategorizedAddGump.Match(categorystring);
+							var types = XmlPartialCategorizedAddGump.Match(categorystring);
 
 
-							ReplacementEntry re = new ReplacementEntry
+							var re = new ReplacementEntry
 							{
 								Typename = entrystring,
 								Index = i,
 								Color = 0x1436
 							};
 
-							XmlSpawnerGump newg = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page, re);
+							var newg = new XmlSpawnerGump(m_Spawner, X, Y, m_ShowGump, xoffset, page, re);
 
 							state.Mobile.SendGump(new XmlPartialCategorizedAddGump(state.Mobile, categorystring, 0, types, true, i, newg));
 
@@ -1226,23 +1300,25 @@ namespace Server.Mobiles
 					else
 					{
 						// up and down arrows
-						int buttonID = info.ButtonID - 6;
-						int index = buttonID / 2;
-						int type = buttonID % 2;
+						var buttonID = info.ButtonID - 6;
+						var index = buttonID / 2;
+						var type = buttonID % 2;
 
-						TextRelay entry = info.GetTextEntry(index);
+						var entry = info.GetTextEntry(index);
 
 						if (entry != null && entry.Text.Length > 0)
 						{
-							string entrystr = entry.Text;
+							var entrystr = entry.Text;
 
-#if (BOOKTEXTENTRY)
+#if BOOKTEXTENTRY
 							if (index < m_Spawner.SpawnObjects.Length)
 							{
-								string str = m_Spawner.SpawnObjects[index].TypeName;
+								var str = m_Spawner.SpawnObjects[index].TypeName;
 
 								if (str != null && str.Length >= 230)
+								{
 									entrystr = str;
+								}
 							}
 #endif
 							if (type == 0) // Add creature

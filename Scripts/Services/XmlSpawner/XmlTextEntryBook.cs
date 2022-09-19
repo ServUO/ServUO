@@ -42,20 +42,20 @@ namespace Server.Items
 			Visible = false;
 			Movable = false;
 
-			int pagenum = 0;
-			int current = 0;
+			var pagenum = 0;
+			var current = 0;
 
 			// break up the text into single line length pieces
 			while (content != null && current < content.Length)
 			{
-				string[] lines = new string[LineLimit];
+				var lines = new string[LineLimit];
 
 				// place the line on the page
-				for (int i = 0; i < lines.Length; i++)
+				for (var i = 0; i < lines.Length; i++)
 				{
 					if (current < content.Length)
 					{
-						int length = Math.Min(20, content.Length - current);
+						var length = Math.Min(20, content.Length - current);
 
 						lines[i] = content.Substring(current, length);
 
@@ -64,7 +64,7 @@ namespace Server.Items
 					else
 					{
 						// fill up the remaining lines
-						lines[i] = string.Empty;
+						lines[i] = String.Empty;
 					}
 				}
 
@@ -79,13 +79,13 @@ namespace Server.Items
 			}
 
 			// empty the remaining contents
-			for (int j = pagenum; j < PagesCount; j++)
+			for (var j = pagenum; j < PagesCount; j++)
 			{
 				if (Pages[j].Lines.Length > 0)
 				{
-					for (int i = 0; i < Pages[j].Lines.Length; i++)
+					for (var i = 0; i < Pages[j].Lines.Length; i++)
 					{
-						Pages[j].Lines[i] = string.Empty;
+						Pages[j].Lines[i] = String.Empty;
 					}
 				}
 			}

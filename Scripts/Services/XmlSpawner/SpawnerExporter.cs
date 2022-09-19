@@ -1,10 +1,11 @@
-using Server.Commands;
-using Server.Commands.Generic;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+
+using Server.Commands;
+using Server.Commands.Generic;
 
 /*
 ** Sno's distro spawner importer/exporter
@@ -19,249 +20,263 @@ using System.Xml;
 
 namespace Server.Mobiles
 {
-    public class SpawnerExporter
-    {
-        public static void Initialize()
-        {
-            TargetCommands.Register(new ExportSpawnerCommand());
-            CommandSystem.Register("ImportSpawners", AccessLevel.Administrator, ImportSpawners_OnCommand);
-        }
+	public class SpawnerExporter
+	{
+		public static void Initialize()
+		{
+			TargetCommands.Register(new ExportSpawnerCommand());
+			CommandSystem.Register("ImportSpawners", AccessLevel.Administrator, ImportSpawners_OnCommand);
+		}
 
-        public class ExportSpawnerCommand : BaseCommand
-        {
-            public ExportSpawnerCommand()
-            {
-                AccessLevel = AccessLevel.Administrator;
-                Supports = CommandSupport.Area | CommandSupport.Region | CommandSupport.Global | CommandSupport.Multi | CommandSupport.Single;
-                Commands = new[] { "ExportSpawner" };
-                ObjectTypes = ObjectTypes.Items;
-                Usage = "ExportSpawner <filename>";
-                Description = "Exports all Spawner objects to the specified filename.";
-                ListOptimized = true;
-            }
+		public class ExportSpawnerCommand : BaseCommand
+		{
+			public ExportSpawnerCommand()
+			{
+				AccessLevel = AccessLevel.Administrator;
+				Supports = CommandSupport.Area | CommandSupport.Region | CommandSupport.Global | CommandSupport.Multi | CommandSupport.Single;
+				Commands = new[] { "ExportSpawner" };
+				ObjectTypes = ObjectTypes.Items;
+				Usage = "ExportSpawner <filename>";
+				Description = "Exports all Spawner objects to the specified filename.";
+				ListOptimized = true;
+			}
 
-            public override void ExecuteList(CommandEventArgs e, ArrayList list)
-            {
-                string filename = e.GetString(0);
+			public override void ExecuteList(CommandEventArgs e, ArrayList list)
+			{
+				var filename = e.GetString(0);
 
-                ArrayList spawners = new ArrayList();
+				var spawners = new ArrayList();
 
-                for (int i = 0; i < list.Count; ++i)
-                {
-                    if (list[i] is Spawner)
-                    {
-                        Spawner spawner = (Spawner)list[i];
-                        if (!spawner.Deleted && spawner.Map != Map.Internal && spawner.Parent == null)
-                            spawners.Add(spawner);
-                    }
-                }
+				for (var i = 0; i < list.Count; ++i)
+				{
+					if (list[i] is Spawner spawner)
+					{
+						if (!spawner.Deleted && spawner.Map != Map.Internal && spawner.Parent == null)
+						{
+							_ = spawners.Add(spawner);
+						}
+					}
+				}
 
-                AddResponse(string.Format("{0} spawners exported to Saves/Spawners/{1}.", spawners.Count.ToString(), filename));
+				AddResponse(String.Format("{0} spawners exported to Saves/Spawners/{1}.", spawners.Count.ToString(), filename));
 
-                ExportSpawners(spawners, filename);
-            }
+				ExportSpawners(spawners, filename);
+			}
 
-            public override bool ValidateArgs(BaseCommandImplementor impl, CommandEventArgs e)
-            {
-                if (e.Arguments.Length >= 1)
-                    return true;
+			public override bool ValidateArgs(BaseCommandImplementor impl, CommandEventArgs e)
+			{
+				if (e.Arguments.Length >= 1)
+				{
+					return true;
+				}
 
-                e.Mobile.SendMessage("Usage: " + Usage);
-                return false;
-            }
+				e.Mobile.SendMessage("Usage: " + Usage);
+				return false;
+			}
 
-            private void ExportSpawners(ArrayList spawners, string filename)
-            {
-                if (spawners.Count == 0)
-                    return;
+			private void ExportSpawners(ArrayList spawners, string filename)
+			{
+				if (spawners.Count == 0)
+				{
+					return;
+				}
 
-                if (!Directory.Exists("Saves/Spawners"))
-                    Directory.CreateDirectory("Saves/Spawners");
+				if (!Directory.Exists("Saves/Spawners"))
+				{
+					_ = Directory.CreateDirectory("Saves/Spawners");
+				}
 
-                string filePath = Path.Combine("Saves/Spawners", filename);
+				var filePath = Path.Combine("Saves/Spawners", filename);
 
-                using (StreamWriter op = new StreamWriter(filePath))
-                {
-                    XmlTextWriter xml = new XmlTextWriter(op)
-                    {
-                        Formatting = Formatting.Indented,
-                        IndentChar = '\t',
-                        Indentation = 1
-                    };
+				using (var op = new StreamWriter(filePath))
+				{
+					var xml = new XmlTextWriter(op)
+					{
+						Formatting = Formatting.Indented,
+						IndentChar = '\t',
+						Indentation = 1
+					};
 
-                    xml.WriteStartDocument(true);
+					xml.WriteStartDocument(true);
 
-                    xml.WriteStartElement("spawners");
+					xml.WriteStartElement("spawners");
 
-                    xml.WriteAttributeString("count", spawners.Count.ToString());
+					xml.WriteAttributeString("count", spawners.Count.ToString());
 
-                    foreach (Spawner spawner in spawners)
-                        ExportSpawner(spawner, xml);
+					foreach (Spawner spawner in spawners)
+					{
+						ExportSpawner(spawner, xml);
+					}
 
-                    xml.WriteEndElement();
+					xml.WriteEndElement();
 
-                    xml.Close();
-                }
-            }
+					xml.Close();
+				}
+			}
 
-            private void ExportSpawner(Spawner spawner, XmlWriter xml)
-            {
-                xml.WriteStartElement("spawner");
+			private void ExportSpawner(Spawner spawner, XmlWriter xml)
+			{
+				xml.WriteStartElement("spawner");
 
-                xml.WriteStartElement("count");
-                xml.WriteString(spawner.MaxCount.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("count");
+				xml.WriteString(spawner.MaxCount.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("group");
-                xml.WriteString(spawner.Group.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("group");
+				xml.WriteString(spawner.Group.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("homerange");
-                xml.WriteString(spawner.HomeRange.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("homerange");
+				xml.WriteString(spawner.HomeRange.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("walkingrange");
-                xml.WriteString(spawner.WalkingRange.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("walkingrange");
+				xml.WriteString(spawner.WalkingRange.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("maxdelay");
-                xml.WriteString(spawner.MaxDelay.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("maxdelay");
+				xml.WriteString(spawner.MaxDelay.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("mindelay");
-                xml.WriteString(spawner.MinDelay.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("mindelay");
+				xml.WriteString(spawner.MinDelay.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("team");
-                xml.WriteString(spawner.Team.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("team");
+				xml.WriteString(spawner.Team.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("creaturesname");
-                foreach (SpawnObject kvp in spawner.SpawnObjects)
-                {
-                    xml.WriteStartElement("creaturename");
-                    xml.WriteString(kvp.SpawnName);
-                    xml.WriteEndElement();
-                }
-                xml.WriteEndElement();
+				xml.WriteStartElement("creaturesname");
+				foreach (var kvp in spawner.SpawnObjects)
+				{
+					xml.WriteStartElement("creaturename");
+					xml.WriteString(kvp.SpawnName);
+					xml.WriteEndElement();
+				}
+				xml.WriteEndElement();
 
-                // Item properties
+				// Item properties
 
-                xml.WriteStartElement("name");
-                xml.WriteString(spawner.Name);
-                xml.WriteEndElement();
+				xml.WriteStartElement("name");
+				xml.WriteString(spawner.Name);
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("location");
-                xml.WriteString(spawner.Location.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("location");
+				xml.WriteString(spawner.Location.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteStartElement("map");
-                xml.WriteString(spawner.Map.ToString());
-                xml.WriteEndElement();
+				xml.WriteStartElement("map");
+				xml.WriteString(spawner.Map.ToString());
+				xml.WriteEndElement();
 
-                xml.WriteEndElement();
-            }
-        }
+				xml.WriteEndElement();
+			}
+		}
 
-        [Usage("ImportSpawners")]
-        [Description("Recreates Spawner items from the specified file.")]
-        public static void ImportSpawners_OnCommand(CommandEventArgs e)
-        {
-            if (e.Arguments.Length >= 1)
-            {
-                string filename = e.GetString(0);
-                string filePath = Path.Combine("Saves/Spawners", filename);
+		[Usage("ImportSpawners")]
+		[Description("Recreates Spawner items from the specified file.")]
+		public static void ImportSpawners_OnCommand(CommandEventArgs e)
+		{
+			if (e.Arguments.Length >= 1)
+			{
+				var filename = e.GetString(0);
+				var filePath = Path.Combine("Saves/Spawners", filename);
 
-                if (File.Exists(filePath))
-                {
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(filePath);
+				if (File.Exists(filePath))
+				{
+					var doc = new XmlDocument();
+					doc.Load(filePath);
 
-                    XmlElement root = doc["spawners"];
+					var root = doc["spawners"];
 
-                    int successes = 0, failures = 0;
+					int successes = 0, failures = 0;
 
-                    foreach (XmlElement spawner in root.GetElementsByTagName("spawner"))
-                    {
-                        try
-                        {
-                            ImportSpawner(spawner);
-                            successes++;
-                        }
-                        catch (Exception ex)
-                        {
-                            failures++;
-                            Diagnostics.ExceptionLogging.LogException(ex);
-                        }
-                    }
+					foreach (XmlElement spawner in root.GetElementsByTagName("spawner"))
+					{
+						try
+						{
+							ImportSpawner(spawner);
+							successes++;
+						}
+						catch (Exception ex)
+						{
+							failures++;
+							Diagnostics.ExceptionLogging.LogException(ex);
+						}
+					}
 
-                    e.Mobile.SendMessage("{0} spawners loaded successfully from {1}, {2} failures.", successes, filePath, failures);
-                }
-                else
-                {
-                    e.Mobile.SendMessage("File {0} does not exist.", filePath);
-                }
-            }
-            else
-            {
-                e.Mobile.SendMessage("Usage: [ImportSpawners <filename>");
-            }
-        }
+					e.Mobile.SendMessage("{0} spawners loaded successfully from {1}, {2} failures.", successes, filePath, failures);
+				}
+				else
+				{
+					e.Mobile.SendMessage("File {0} does not exist.", filePath);
+				}
+			}
+			else
+			{
+				e.Mobile.SendMessage("Usage: [ImportSpawners <filename>");
+			}
+		}
 
-        private static string GetText(XmlNode node, string defaultValue)
-        {
-            if (node == null)
-                return defaultValue;
+		private static string GetText(XmlNode node, string defaultValue)
+		{
+			if (node == null)
+			{
+				return defaultValue;
+			}
 
-            return node.InnerText;
-        }
+			return node.InnerText;
+		}
 
-        private static void ImportSpawner(XmlNode node)
-        {
-            int count = int.Parse(GetText(node["count"], "1"));
-            int homeRange = int.Parse(GetText(node["homerange"], "4"));
+		private static void ImportSpawner(XmlNode node)
+		{
+			var count = Int32.Parse(GetText(node["count"], "1"));
+			var homeRange = Int32.Parse(GetText(node["homerange"], "4"));
 
-            int walkingRange = int.Parse(GetText(node["walkingrange"], "-1"));
+			var walkingRange = Int32.Parse(GetText(node["walkingrange"], "-1"));
 
-            int team = int.Parse(GetText(node["team"], "0"));
+			var team = Int32.Parse(GetText(node["team"], "0"));
+			_ = Boolean.Parse(GetText(node["group"], "False"));
+			var maxDelay = TimeSpan.Parse(GetText(node["maxdelay"], "10:00"));
+			var minDelay = TimeSpan.Parse(GetText(node["mindelay"], "05:00"));
+			var creaturesName = LoadCreaturesName(node["creaturesname"]);
 
-            bool group = bool.Parse(GetText(node["group"], "False"));
-            TimeSpan maxDelay = TimeSpan.Parse(GetText(node["maxdelay"], "10:00"));
-            TimeSpan minDelay = TimeSpan.Parse(GetText(node["mindelay"], "05:00"));
-            IEnumerable<string> creaturesName = LoadCreaturesName(node["creaturesname"]);
+			var name = GetText(node["name"], "Spawner");
+			var location = Point3D.Parse(GetText(node["location"], "Error"));
+			var map = Map.Parse(GetText(node["map"], "Error"));
 
-            string name = GetText(node["name"], "Spawner");
-            Point3D location = Point3D.Parse(GetText(node["location"], "Error"));
-            Map map = Map.Parse(GetText(node["map"], "Error"));
+			var spawner = new Spawner(count, minDelay, maxDelay, team, homeRange, creaturesName);
+			if (walkingRange >= 0)
+			{
+				spawner.WalkingRange = walkingRange;
+			}
 
-            Spawner spawner = new Spawner(count, minDelay, maxDelay, team, homeRange, creaturesName);
-            if (walkingRange >= 0)
-                spawner.WalkingRange = walkingRange;
+			spawner.Name = name;
+			spawner.MoveToWorld(location, map);
+			if (spawner.Map == Map.Internal)
+			{
+				spawner.Delete();
+				throw new Exception("Spawner created on Internal map.");
+			}
+			spawner.Respawn();
+		}
 
-            spawner.Name = name;
-            spawner.MoveToWorld(location, map);
-            if (spawner.Map == Map.Internal)
-            {
-                spawner.Delete();
-                throw new Exception("Spawner created on Internal map.");
-            }
-            spawner.Respawn();
-        }
+		private static IEnumerable<string> LoadCreaturesName(XmlElement node)
+		{
+			var names = new List<string>();
 
-        private static IEnumerable<string> LoadCreaturesName(XmlElement node)
-        {
-            List<string> names = new List<string>();
+			if (node != null)
+			{
+				foreach (XmlElement ele in node.GetElementsByTagName("creaturename"))
+				{
+					if (ele != null)
+					{
+						names.Add(ele.InnerText);
+					}
+				}
+			}
 
-            if (node != null)
-            {
-                foreach (XmlElement ele in node.GetElementsByTagName("creaturename"))
-                {
-                    if (ele != null)
-                        names.Add(ele.InnerText);
-                }
-            }
-
-            return names;
-        }
-    }
+			return names;
+		}
+	}
 }

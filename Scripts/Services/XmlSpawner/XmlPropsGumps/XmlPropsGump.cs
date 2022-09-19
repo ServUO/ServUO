@@ -1,9 +1,12 @@
 using Server.Commands.Generic;
 using Server.Network;
+using Server.Mobiles;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+
 using CPA = Server.CommandPropertyAttribute;
 /*
 ** modified properties gumps taken from RC0 properties gump scripts to support the special XmlSpawner properties gump
@@ -11,7 +14,7 @@ using CPA = Server.CommandPropertyAttribute;
 
 namespace Server.Gumps
 {
-    public class XmlPropertiesGump : Gump
+	public class XmlPropertiesGump : Gump
     {
         private readonly ArrayList m_List;
         private int m_Page;
@@ -157,7 +160,7 @@ namespace Server.Gumps
                     // look for the default value of the equivalent property in the XmlSpawnerDefaults.DefaultEntry class
 
                     int huemodifier = TextHue;
-                    Mobiles.XmlSpawnerDefaults.DefaultEntry de = new Mobiles.XmlSpawnerDefaults.DefaultEntry();
+					XmlSpawnerDefaults.DefaultEntry de = new XmlSpawnerDefaults.DefaultEntry();
                     Type ftype = de.GetType();
 
                     var finfo = ftype.GetField(prop.Name);
