@@ -939,9 +939,7 @@ namespace Server.Mobiles
 
         public static void EquipMacro(EquipMacroEventArgs e)
         {
-            PlayerMobile pm = e.Mobile as PlayerMobile;
-
-            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Length > 0)
+			if (e.Mobile is PlayerMobile pm && pm.Backpack != null && pm.Alive && e.List != null && e.List.Length > 0 && !pm.HasTrade)
             {
                 if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
                 {
@@ -986,9 +984,7 @@ namespace Server.Mobiles
 
         public static void UnequipMacro(UnequipMacroEventArgs e)
         {
-            PlayerMobile pm = e.Mobile as PlayerMobile;
-
-            if (pm != null && pm.Backpack != null && pm.Alive && e.List != null && e.List.Length > 0)
+			if (e.Mobile is PlayerMobile pm && pm.Backpack != null && pm.Alive && e.List != null && e.List.Length > 0 && !pm.HasTrade)
             {
                 if (pm.IsStaff() || Core.TickCount - pm.NextActionTime >= 0)
                 {
