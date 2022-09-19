@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -12,6 +13,9 @@ namespace Server
 {
 	public static class ScriptCompiler
 	{
+		[ConfigProperty("Compiler.Dynamic")]
+		public static bool Dynamic { get => Config.Get("Compiler.Dynamic", false); set => Config.Set("Compiler.Dynamic", value); }
+
 		public static Assembly[] Assemblies { get; set; }
 
 		public static bool Compile(bool debug, bool cache)
@@ -20,9 +24,46 @@ namespace Server
 			{
 				var assemblies = new HashSet<Assembly>
 				{
-					typeof(ScriptCompiler).Assembly,
-					Assembly.LoadFrom("Scripts.dll"),
+					typeof(ScriptCompiler).Assembly
 				};
+
+				if (Dynamic)
+				{
+					Console.WriteLine("Core: Compiling scripts...");
+
+					var path = Path.Combine(Core.BaseDirectory, "Scripts");
+					
+					foreach (var proj in Directory.EnumerateFiles(path, "Scripts.csproj"))
+					{
+						try
+						{
+							var info = new ProcessStartInfo
+							{
+								FileName = "dotnet",
+								Arguments = $"build {proj} -c {(debug ? "Debug" : "Release")}",
+								ErrorDialog = false,
+								UseShellExecute = false,
+								CreateNoWindow = true,
+								WindowStyle = ProcessWindowStyle.Hidden,
+								RedirectStandardOutput = true,
+							};
+
+							var proc = Process.Start(info);
+
+							Console.WriteLine(proc.StandardOutput.ReadToEnd());
+
+							proc.WaitForExit();
+						}
+						catch (Exception e)
+						{
+							ExceptionLogging.LogException(e);
+						}
+
+						break;
+					}
+				}
+
+				assemblies.Add(Assembly.LoadFrom("Scripts.dll"));
 
 				Assemblies = assemblies.ToArray();
 

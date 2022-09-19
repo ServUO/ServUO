@@ -353,7 +353,9 @@ namespace Server
 				var buffer = Marshal.AllocHGlobal(width * height * Marshal.SizeOf(typeof(CHAR_INFO)));
 
 				if (buffer == null)
+				{
 					throw new OutOfMemoryException();
+				}
 
 				try
 				{
@@ -376,7 +378,9 @@ namespace Server
 					const int STD_OUTPUT_HANDLE = -11;
 
 					if (!ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), buffer, size, coord, ref rc))
+					{
 						throw new Win32Exception(Marshal.GetLastWin32Error());
+					}
 
 					var ptr = buffer;
 
@@ -399,7 +403,9 @@ namespace Server
 						sb.Clear();
 
 						if (!String.IsNullOrWhiteSpace(s))
+						{
 							yield return s;
+						}
 					}
 				}
 				finally
@@ -464,7 +470,9 @@ namespace Server
 				var i = _CycleIndex;
 
 				while (--i >= 0)
+				{
 					t += _CyclesPerSecond[i];
+				}
 
 				return t / (_CycleIndex + 1);
 			}
@@ -476,25 +484,31 @@ namespace Server
 		}
 
 #if MONO
-		private static string[] SupportedTerminals => new string[]
+		private static string[] _SupportedTerminals = 
 		{
 			"xfce4-terminal", "gnome-terminal", "xterm"
 		};
 
 		private static void RebootTerminal(int i = 0)
 		{
-			if(SupportedTerminals.Length > i)
+			if (_SupportedTerminals.Length > i)
 			{
-				try {
-					if(SupportedTerminals[i] != "xterm")
-						Process.Start(SupportedTerminals[i], $"--working-directory={BaseDirectory} -x ./ServUO.sh");
+				try
+				{
+					if (_SupportedTerminals[i] != "xterm")
+					{
+						Process.Start(_SupportedTerminals[i], $"--working-directory={BaseDirectory} -x ./ServUO.sh");
+					}
 					else
-						Process.Start(SupportedTerminals[i], $"-lcc {BaseDirectory} -e ./ServUO.sh");
+					{
+						Process.Start(_SupportedTerminals[i], $"-lcc {BaseDirectory} -e ./ServUO.sh");
+					}
+
 					Thread.Sleep(500); // a sleep here to not close the programm to quick, so that the new windows cant start.
 				}
-				catch(System.ComponentModel.Win32Exception)
+				catch (System.ComponentModel.Win32Exception)
 				{
-					RebootTerminal(i+1);
+					RebootTerminal(i + 1);
 				}
 			}
 		}
@@ -503,14 +517,16 @@ namespace Server
 		public static void Kill(bool restart)
 		{
 			HandleClosed();
-
+#if MONO
 			if (restart)
 			{
-#if MONO
 				RebootTerminal();
-				Environment.Exit(0);
 			}
+
+			Environment.Exit(0);
 #else
+			if (restart)
+			{
 				Process.Start(ExePath, Arguments);
 			}
 
@@ -528,10 +544,14 @@ namespace Server
 			Closing = true;
 
 			if (Debug)
+			{
 				Console.Write("Exiting...");
+			}
 
 			if (World.Saving)
+			{
 				World.WaitForWriteCompletion();
+			}
 
 			if (!Crashed)
 			{
@@ -541,7 +561,9 @@ namespace Server
 			Timer.TimerThread.Set();
 
 			if (Debug)
+			{
 				Console.WriteLine("done");
+			}
 		}
 
 		private static readonly AutoResetEvent _Signal = new AutoResetEvent(true);
@@ -602,7 +624,6 @@ namespace Server
 					Console.WriteLine("     -profile            Enables profiling allowing to get performance diagnostic information of packets, timers etc. in AdminGump -> Maintenance. Use with caution. This increases server load.");
 					Console.WriteLine("     -service            This parameter should be set if you're running ServUO as a Windows Service. No user interaction. *Windows only*");
 					Console.WriteLine("     -usehrt             Enables High Resolution Timing if requirements are met. Increasing the resolution of the timer. *Windows only*");
-					Console.WriteLine("     -vb                 Enables compilation of VB.NET Scripts. Without this option VB.NET Scripts are skipped.");
 
 					Environment.Exit(0);
 				}
@@ -735,6 +756,11 @@ namespace Server
 
 			InitDataDirectories();
 
+			if (ScriptCompiler.Dynamic)
+			{
+				NextColor(ConsoleColor.White);
+			}
+
 			while (!ScriptCompiler.Compile(Debug, _Cache))
 			{
 				sw.Stop();
@@ -756,6 +782,11 @@ namespace Server
 				}
 
 				sw.Start();
+			}
+
+			if (ScriptCompiler.Dynamic)
+			{
+				NextColor(ConsoleColor.DarkYellow);
 			}
 
 			sw.Stop();
@@ -1056,7 +1087,9 @@ namespace Server
 						}
 
 						if (warningSb.Length > 0)
+						{
 							Utility.WriteLine(ConsoleColor.Yellow, $"Warning: {t}\n{warningSb}");
+						}
 					}
 					catch
 					{
