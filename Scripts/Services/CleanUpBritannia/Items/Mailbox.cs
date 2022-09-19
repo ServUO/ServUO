@@ -159,19 +159,25 @@ namespace Server.Items
         {
             BaseHouse house = BaseHouse.FindHouseAt(this);
 
-            if (house != null && !house.IsOwner(from))
-            {
-                if (IsSecure)
-                {
-                    SendLocalizedMessageTo(from, 1010563); // This container is secure.                    
-                    return;
-                }
-                else if (IsLockedDown)
-                {
-                    SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
-                    return;
-                }
-            }
+			if (house != null)
+			{
+				SecureInfo secure = house.GetSecureInfoFor(this);
+
+				if (secure != null && !house.HasSecureAccess(from, secure))
+				{
+					if (IsSecure)
+					{
+						SendLocalizedMessageTo(from, 1010563); // This container is secure.                    
+						return;
+					}
+
+					if (IsLockedDown)
+					{
+						SendLocalizedMessageTo(from, 1061637); // You are not allowed to access this.
+						return;
+					}
+				}
+			}
 
             base.OnDoubleClick(from);
         }
