@@ -43,18 +43,16 @@ namespace Server.Accounting
 			try
 			{
 				BankBox box;
-				List<Gold> gold;
-				List<BankCheck> checks;
 				long share = 0, shared;
 				int diff;
 
-				foreach (var a in Accounts.GetAccounts().Where(a => a.Count > 0))
+				foreach (var a in Accounts.Instances.Where(a => a.Count > 0))
 				{
 					try
 					{
 						if (!AccountGold.Enabled)
 						{
-							share = (int)Math.Truncate((a.TotalCurrency / a.Count) * CurrencyThreshold);
+							share = (int)Math.Truncate(a.TotalCurrency / a.Count * CurrencyThreshold);
 							found += a.TotalCurrency * CurrencyThreshold;
 						}
 
@@ -69,7 +67,7 @@ namespace Server.Accounting
 
 							if (AccountGold.Enabled)
 							{
-								foreach (var o in checks = box.FindItemsByType<BankCheck>())
+								foreach (var o in box.FindItemsByType<BankCheck>())
 								{
 									found += o.Worth;
 
@@ -82,10 +80,7 @@ namespace Server.Accounting
 									o.Delete();
 								}
 
-								checks.Clear();
-								checks.TrimExcess();
-
-								foreach (var o in gold = box.FindItemsByType<Gold>())
+								foreach (var o in box.FindItemsByType<Gold>())
 								{
 									found += o.Amount;
 
@@ -97,9 +92,6 @@ namespace Server.Accounting
 									converted += o.Amount;
 									o.Delete();
 								}
-
-								gold.Clear();
-								gold.TrimExcess();
 							}
 							else
 							{
@@ -144,13 +136,13 @@ namespace Server.Accounting
 					}
 					catch (Exception ex)
 					{
-						Diagnostics.ExceptionLogging.LogException(ex);
+						ExceptionLogging.LogException(ex);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				Diagnostics.ExceptionLogging.LogException(ex);
+				ExceptionLogging.LogException(ex);
 			}
 
 			NetState.Resume();

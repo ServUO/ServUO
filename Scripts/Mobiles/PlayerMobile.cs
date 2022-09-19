@@ -3585,11 +3585,9 @@ namespace Server.Mobiles
 
             if (Backpack != null && !Backpack.Deleted)
             {
-                List<Item> ilist = Backpack.FindItemsByType<Item>(FindItems_Callback);
-
-                for (int i = 0; i < ilist.Count; i++)
+                foreach (var item in Backpack.FindItems(FindItems_Callback))
                 {
-                    Backpack.AddItem(ilist[i]);
+                    Backpack.AddItem(item);
                 }
             }
 

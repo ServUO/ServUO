@@ -296,13 +296,9 @@ namespace Server.Engines.Harvest
 
             if (pack != null)
             {
-                List<SOS> messages = pack.FindItemsByType<SOS>();
-
-                for (int i = 0; i < messages.Count; ++i)
+                foreach (SOS sos in pack.FindItemsByType<SOS>())
                 {
-                    SOS sos = messages[i];
-
-                    if ((from.Map == Map.Felucca || from.Map == Map.Trammel) && from.InRange(sos.TargetLocation, 60))
+					if ((from.Map == Map.Felucca || from.Map == Map.Trammel) && from.InRange(sos.TargetLocation, 60))
                         return true;
                 }
             }
@@ -333,13 +329,9 @@ namespace Server.Engines.Harvest
 
             if (pack != null)
             {
-                List<SOS> messages = pack.FindItemsByType<SOS>();
-
-                for (int i = 0; i < messages.Count; ++i)
+                foreach (SOS sos in pack.FindItemsByType<SOS>())
                 {
-                    SOS sos = messages[i];
-
-                    if ((from.Map == Map.Felucca || from.Map == Map.Trammel) && from.InRange(sos.TargetLocation, 60))
+					if ((from.Map == Map.Felucca || from.Map == Map.Trammel) && from.InRange(sos.TargetLocation, 60))
                     {
                         Item preLoot = null;
                         bool dredge = HasTypeHook(tool, HookType.Dredging);

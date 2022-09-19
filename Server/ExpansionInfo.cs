@@ -83,7 +83,7 @@ namespace Server
 		ExpansionSA = ExpansionML | SA | Gothic | Rustic,
 		ExpansionHS = ExpansionSA | HS,
 		ExpansionTOL = ExpansionHS | TOL | Jungle | Shadowguard,
-		ExpansionEJ = ExpansionTOL | EJ
+		ExpansionEJ = ExpansionTOL | EJ,
 	}
 
 	[Flags]
@@ -119,7 +119,7 @@ namespace Server
 		ExpansionSA = ExpansionML,
 		ExpansionHS = ExpansionSA,
 		ExpansionTOL = ExpansionHS,
-		ExpansionEJ = ExpansionTOL
+		ExpansionEJ = ExpansionTOL,
 	}
 
 	[Flags]
@@ -145,7 +145,7 @@ namespace Server
 		HousingSA = HousingML | SA | Gothic | Rustic,
 		HousingHS = HousingSA | HS,
 		HousingTOL = HousingHS | TOL | Jungle | Shadowguard,
-		HousingEJ = HousingTOL | EJ
+		HousingEJ = HousingTOL | EJ,
 	}
 
 	public class ExpansionInfo
@@ -241,7 +241,7 @@ namespace Server
 					new ClientVersion("7.0.61.0"),
 					FeatureFlags.ExpansionEJ,
 					CharacterListFlags.ExpansionEJ,
-					HousingFlags.HousingEJ)
+					HousingFlags.HousingEJ),
 			};
 		}
 

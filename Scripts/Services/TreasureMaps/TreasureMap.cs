@@ -806,9 +806,7 @@ namespace Server.Items
                 return false;
             }
 
-            List<BaseHarvestTool> items = m.Backpack.FindItemsByType<BaseHarvestTool>();
-
-            foreach (BaseHarvestTool tool in items)
+            foreach (BaseHarvestTool tool in m.Backpack.FindItemsByType<BaseHarvestTool>())
             {
                 if (tool.HarvestSystem == Mining.System)
                 {
@@ -830,11 +828,11 @@ namespace Server.Items
                 from.SendLocalizedMessage(1046447); // Only a young player may use this treasure map.
             }
             /*
-        else if ( from != m_Decoder )
-        {
-        from.SendLocalizedMessage( 503016 ); // Only the person who decoded this map may actually dig up the treasure.
-        }
-        */
+            else if (from != m_Decoder)
+            {
+                from.SendLocalizedMessage(503016); // Only the person who decoded this map may actually dig up the treasure.
+            }
+            */
             else if (m_Decoder != from && !HasRequiredSkill(from))
             {
                 from.SendLocalizedMessage(503031); // You did not decode this map and have no clue where to look for the treasure.

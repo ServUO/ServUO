@@ -89,9 +89,16 @@ namespace Server
 
 			if (def.Number > 0)
 			{
-				m.SendLocalizedMessage(def.Number);
+				if (!String.IsNullOrWhiteSpace(def.String))
+				{
+					m.SendLocalizedMessage(def.Number, def.String);
+				}
+				else
+				{
+					m.SendLocalizedMessage(def.Number);
+				}
 			}
-			else if (def.String != null)
+			else if (!String.IsNullOrWhiteSpace(def.String))
 			{
 				m.SendMessage(def.String);
 			}

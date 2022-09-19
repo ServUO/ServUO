@@ -548,9 +548,8 @@ namespace Server.Items
         private void RecountLiveCreatures()
         {
             LiveCreatures = 0;
-            List<BaseFish> fish = FindItemsByType<BaseFish>();
 
-            foreach (BaseFish f in fish)
+            foreach (BaseFish f in FindItemsByType<BaseFish>())
             {
                 if (!f.Dead)
                     ++LiveCreatures;

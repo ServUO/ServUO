@@ -4,44 +4,6 @@ using Server.Accounting;
 
 namespace Server.Items
 {
-    public static class BankCheckExtensions
-    {
-        public static int GetChecksWorth(this Container cont, bool recurse)
-        {
-            int count = 0;
-
-            Item[] items = cont.FindItemsByType(typeof(BankCheck), recurse);
-            foreach (BankCheck check in items)
-            {
-                count += check.Worth;
-            }
-            return count;
-        }
-        public static int TakeFromChecks(this Container cont, int amount, bool recurse)
-        {
-            int left = amount;
-
-            Item[] items = cont.FindItemsByType(typeof(BankCheck), recurse);
-            foreach (BankCheck check in items)
-            {
-                if (check.Worth <= left)
-                {
-                    left -= check.Worth;
-                    check.Delete();
-                }
-                else
-                {
-                    check.Worth -= left;
-                    check.InvalidateProperties();
-                    left = 0;
-                    break;
-                }
-            }
-
-            return amount - left;
-        }
-    }
-
     public class BankCheck : Item
     {
         private int m_Worth;
@@ -107,74 +69,31 @@ namespace Server.Items
             base.GetProperties(list);
 
             list.Add(1060738, m_Worth.ToString("#,0")); // value: ~1_val~
-        }
+		}
 
 #if NEWPARENT
 		public override void OnAdded(IEntity parent)
 #else
-        public override void OnAdded(object parent)
+		public override void OnAdded(object parent)
 #endif
-        {
-            base.OnAdded(parent);
+		{
+			base.OnAdded(parent);
 
-            if (!AccountGold.Enabled)
-            {
-                return;
-            }
+			Gold.CheckConvertToBank(this);
+		}
 
-            Mobile owner = null;
-            SecureTradeInfo tradeInfo = null;
+#if NEWPARENT
+		protected override void OnTreeParentChanged(Item sender, IEntity oldParent)
+#else
+		protected override void OnTreeParentChanged(Item sender, object oldParent)
+#endif
+		{
+			base.OnTreeParentChanged(sender, oldParent);
 
-            Container root = parent as Container;
+			Gold.CheckConvertToBank(this);
+		}
 
-            while (root != null && root.Parent is Container)
-            {
-                root = (Container)root.Parent;
-            }
-
-            parent = root ?? parent;
-
-            if (parent is SecureTradeContainer && AccountGold.ConvertOnTrade)
-            {
-                SecureTradeContainer trade = (SecureTradeContainer)parent;
-
-                if (trade.Trade.From.Container == trade)
-                {
-                    tradeInfo = trade.Trade.From;
-                    owner = tradeInfo.Mobile;
-                }
-                else if (trade.Trade.To.Container == trade)
-                {
-                    tradeInfo = trade.Trade.To;
-                    owner = tradeInfo.Mobile;
-                }
-            }
-            else if (parent is BankBox && AccountGold.ConvertOnBank)
-            {
-                owner = ((BankBox)parent).Owner;
-            }
-
-            if (owner == null || owner.Account == null || !owner.Account.DepositGold(Worth))
-            {
-                return;
-            }
-
-            if (tradeInfo != null)
-            {
-                if (tradeInfo.VirtualCheck != null)
-                {
-                    tradeInfo.VirtualCheck.UpdateTrade(tradeInfo.Mobile);
-                }
-            }
-
-            owner.SendLocalizedMessage(1042763, Worth.ToString("#,0"));
-
-            Delete();
-
-            ((Container)parent).UpdateTotals();
-        }
-
-        public override void OnDoubleClick(Mobile from)
+		public override void OnDoubleClick(Mobile from)
         {
             // This probably isn't OSI accurate, but we can't just make the quests redundant.
             // Double-clicking the BankCheck in your pack will now credit your account.
@@ -242,7 +161,6 @@ namespace Server.Items
 
             // Gold was deposited in your account:
             from.SendLocalizedMessage(1042672, true, deposited.ToString("#,0"));
-
         }
     }
 }

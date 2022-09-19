@@ -13,12 +13,6 @@ namespace Server.Items
         Rusty = 0x1013
     }
 
-    public interface ILockable
-    {
-        bool Locked { get; set; }
-        uint KeyValue { get; set; }
-    }
-
     public class Key : Item, IResource, IQuality
     {
         private string m_Description;

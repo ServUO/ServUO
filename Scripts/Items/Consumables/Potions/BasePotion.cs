@@ -223,13 +223,9 @@ namespace Server.Items
                     if ((int)PotionEffect >= (int)PotionEffect.Invisibility)
                         return 1;
 
-                    List<PotionKeg> kegs = pack.FindItemsByType<PotionKeg>();
-
-                    for (int i = 0; i < kegs.Count; ++i)
+                    foreach (PotionKeg keg in pack.FindItemsByType<PotionKeg>())
                     {
-                        PotionKeg keg = kegs[i];
-
-                        if (keg == null)
+						if (keg == null)
                             continue;
 
                         if (keg.Held <= 0 || keg.Held >= 100)

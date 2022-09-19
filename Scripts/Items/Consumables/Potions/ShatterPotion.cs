@@ -101,10 +101,7 @@ namespace Server.Items
 
             if (m.Backpack != null)
             {
-                foreach (BasePotion p in m.Backpack.FindItemsByType<BasePotion>())
-                {
-                    amount += p.Amount;
-                }
+				amount = m.Backpack.GetAmount<BasePotion>();
             }
 
             if (amount < 20)
@@ -124,11 +121,17 @@ namespace Server.Items
                     from.SendLocalizedMessage(1115761, from.Name); // ~1_NAME~'s shatter potion destroys a potion in your inventory.
                 }
 
-                for (int i = 0; i < p; i++)
-                {
-                    List<BasePotion> potions = m.Backpack.FindItemsByType<BasePotion>();
-                    potions[Utility.Random(potions.Count)].Consume();
-                }
+				BasePotion[] potions = m.Backpack.FindItemsByType<BasePotion>();
+
+				for (int i = 0; i < p; i++)
+				{
+					BasePotion potion = Utility.RandomList(potions);
+
+					if (!potion.Deleted)
+						potion.Consume();
+					else
+						++i;
+				}
             }
         }
 

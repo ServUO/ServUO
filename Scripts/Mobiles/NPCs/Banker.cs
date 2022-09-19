@@ -27,125 +27,165 @@ namespace Server.Mobiles
 
         protected override List<SBInfo> SBInfos => m_SBInfos;
 
-        public static int GetBalance(Mobile m)
-        {
-            double balance = 0;
+		public static double GetFullBalance(Mobile m)
+		{
+			return GetFullBalance(m, out _, out _, out _, out _, out _);
+		}
 
-            if (AccountGold.Enabled && m.Account != null)
-            {
-                int goldStub;
-                m.Account.GetGoldBalance(out goldStub, out balance);
+		public static double GetFullBalance(Mobile m, out Gold[] gold, out BankCheck[] checks)
+		{
+			return GetFullBalance(m, out gold, out checks, out _, out _, out _);
+		}
 
-                if (balance > int.MaxValue)
-                {
-                    return int.MaxValue;
-                }
-            }
+		public static double GetFullBalance(Mobile m, out long goldTotal, out long checkTotal, out long virtualTotal)
+		{
+			return GetFullBalance(m, out _, out _, out goldTotal, out checkTotal, out virtualTotal);
+		}
 
-            Container bank = m.Player ? m.BankBox : m.FindBankNoCreate();
+		public static double GetFullBalance(Mobile m, out Gold[] gold, out BankCheck[] checks, out long goldTotal, out long checkTotal, out long virtualTotal)
+		{
+			gold = Array.Empty<Gold>();
+			checks = Array.Empty<BankCheck>();
 
-            if (bank != null)
-            {
-                List<Gold> gold = bank.FindItemsByType<Gold>();
-                List<BankCheck> checks = bank.FindItemsByType<BankCheck>();
+			goldTotal = checkTotal = virtualTotal = 0L;
 
-                balance += gold.Aggregate(0.0, (c, t) => c + t.Amount);
-                balance += checks.Aggregate(0.0, (c, t) => c + t.Worth);
-            }
+			var balance = 0.0;
 
-            return (int)Math.Max(0, Math.Min(int.MaxValue, balance));
-        }
+			if (AccountGold.Enabled && m.Account != null)
+			{
+				m.Account.GetGoldBalance(out virtualTotal, out _);
 
-        public static int GetBalance(Mobile m, out Item[] gold, out Item[] checks)
-        {
-            double balance = 0;
+				balance += virtualTotal;
+			}
 
-            if (AccountGold.Enabled && m.Account != null)
-            {
-                int goldStub;
-                m.Account.GetGoldBalance(out goldStub, out balance);
+			var bank = m.Player ? m.BankBox : m.FindBankNoCreate();
 
-                if (balance > int.MaxValue)
-                {
-                    gold = checks = new Item[0];
-                    return int.MaxValue;
-                }
-            }
+			if (bank != null)
+			{
+				gold = bank.FindItemsByType<Gold>(o => !o.HasLockedParent).ToArray();
+				checks = bank.FindItemsByType<BankCheck>(o => !o.HasLockedParent).ToArray();
 
-            Container bank = m.Player ? m.BankBox : m.FindBankNoCreate();
+				balance += goldTotal = gold.Aggregate(0L, (c, t) => c + t.Amount);
+				balance += checkTotal = checks.Aggregate(0L, (c, t) => c + t.Worth);
+			}
 
-            if (bank != null)
-            {
-                gold = bank.FindItemsByType(typeof(Gold));
-                checks = bank.FindItemsByType(typeof(BankCheck));
+			return balance;
+		}
 
-                balance += gold.OfType<Gold>().Aggregate(0.0, (c, t) => c + t.Amount);
-                balance += checks.OfType<BankCheck>().Aggregate(0.0, (c, t) => c + t.Worth);
-            }
-            else
-            {
-                gold = checks = new Item[0];
-            }
+		public static int GetBalance(Mobile m)
+		{
+			var balance = GetFullBalance(m);
 
-            return (int)Math.Max(0, Math.Min(int.MaxValue, balance));
-        }
+			return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
+		}
 
-        public static bool Withdraw(Mobile from, int amount, bool message = false)
-        {
-            // If for whatever reason the TOL checks fail, we should still try old methods for withdrawing currency.
-            if (AccountGold.Enabled && from.Account != null && from.Account.WithdrawGold(amount))
-            {
-                if (message)
-                    from.SendLocalizedMessage(1155856, amount.ToString("N0")); // ~1_AMOUNT~ gold has been removed from your bank box.
+		public static int GetBalance(Mobile m, out Gold[] gold, out BankCheck[] checks)
+		{
+			var balance = GetFullBalance(m, out gold, out checks);
 
-                return true;
-            }
+			return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
+		}
 
-            Item[] gold, checks;
-            int balance = GetBalance(from, out gold, out checks);
+		public static int GetBalance(Mobile m, out long goldTotal, out long checkTotal, out long virtualTotal)
+		{
+			var balance = GetFullBalance(m, out goldTotal, out checkTotal, out virtualTotal);
 
-            if (balance < amount)
-            {
-                return false;
-            }
+			return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
+		}
 
-            for (int i = 0; amount > 0 && i < gold.Length; ++i)
-            {
-                if (gold[i].Amount <= amount)
-                {
-                    amount -= gold[i].Amount;
-                    gold[i].Delete();
-                }
-                else
-                {
-                    gold[i].Amount -= amount;
-                    amount = 0;
-                }
-            }
+		public static int GetBalance(Mobile m, out Gold[] gold, out BankCheck[] checks, out long goldTotal, out long checkTotal, out long virtualTotal)
+		{
+			var balance = GetFullBalance(m, out gold, out checks, out goldTotal, out checkTotal, out virtualTotal);
 
-            for (int i = 0; amount > 0 && i < checks.Length; ++i)
-            {
-                BankCheck check = (BankCheck)checks[i];
+			return (int)Math.Max(0, Math.Min(Int32.MaxValue, balance));
+		}
 
-                if (check.Worth <= amount)
-                {
-                    amount -= check.Worth;
-                    check.Delete();
-                }
-                else
-                {
-                    check.Worth -= amount;
-                    amount = 0;
-                }
-            }
+		public static bool Withdraw(Mobile from, long amount)
+		{
+			return Withdraw(from, amount, false);
+		}
 
-            if (message)
-                from.SendLocalizedMessage(1155856, amount.ToString("N0")); // ~1_AMOUNT~ gold has been removed from your bank box.
+		public static bool Withdraw(Mobile from, long amount, bool message)
+		{
+			var balance = GetFullBalance(from, out var gold, out var checks, out var goldTotal, out var checkTotal, out var virtualTotal);
 
-            return true;
-        }
+			if (balance < amount)
+			{
+				return false;
+			}
 
-        public static bool Deposit(Mobile from, int amount, bool message = false)
+			var need = amount;
+
+			if (need > 0 && virtualTotal > 0)
+			{
+				if (virtualTotal < need)
+				{
+					if (from.Account.WithdrawGold(virtualTotal))
+					{
+						need -= virtualTotal;
+					}
+				}
+				else
+				{
+					if (from.Account.WithdrawGold(need))
+					{
+						need = 0;
+					}
+				}
+
+				if (need == amount)
+				{
+					return false;
+				}
+			}
+
+			if (need > 0 && goldTotal > 0)
+			{
+				for (var i = 0; need > 0 && i < gold.Length; ++i)
+				{
+					var g = gold[i];
+
+					if (g.Amount <= need)
+					{
+						need -= g.Amount;
+						g.Delete();
+					}
+					else
+					{
+						g.Amount -= (int)need;
+						need = 0;
+					}
+				}
+			}
+
+			if (need > 0 && checkTotal > 0)
+			{
+				for (var i = 0; need > 0 && i < checks.Length; ++i)
+				{
+					var c = checks[i];
+
+					if (c.Worth <= need)
+					{
+						need -= c.Worth;
+						c.Delete();
+					}
+					else
+					{
+						c.Worth -= (int)need;
+						need = 0;
+					}
+				}
+			}
+
+			if (message)
+			{
+				from.SendLocalizedMessage(1155856, amount.ToString("N0")); // ~1_AMOUNT~ gold has been removed from your bank box.
+			}
+
+			return true;
+		}
+
+		public static bool Deposit(Mobile from, int amount, bool message = false)
         {
             // If for whatever reason the TOL checks fail, we should still try old methods for depositing currency.
             if (AccountGold.Enabled && from.Account != null && from.Account.DepositGold(amount))

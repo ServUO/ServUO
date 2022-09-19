@@ -181,4 +181,10 @@ namespace Server
 
 		IDamageable ControlTarget { get; set; }
 	}
+
+	public interface ILockable
+	{
+		bool Locked { get; set; }
+		uint KeyValue { get; set; }
+	}
 }
