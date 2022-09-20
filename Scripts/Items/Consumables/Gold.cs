@@ -13,7 +13,7 @@ namespace Server.Items
 				return false;
 			}
 
-			if (goldORcheck == null)
+			if (goldORcheck?.Deleted != false)
 			{
 				return false;
 			}

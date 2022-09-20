@@ -5427,7 +5427,7 @@ namespace Server
 
 		protected virtual void OnTreeParentChanged(Item sender, IEntity oldParent)
 		{
-			var items = sender?.LookupItems();
+			var items = LookupItems();
 
 			if (items != null)
 			{

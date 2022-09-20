@@ -71,22 +71,14 @@ namespace Server.Items
             list.Add(1060738, m_Worth.ToString("#,0")); // value: ~1_val~
 		}
 
-#if NEWPARENT
 		public override void OnAdded(IEntity parent)
-#else
-		public override void OnAdded(object parent)
-#endif
 		{
 			base.OnAdded(parent);
 
 			Gold.CheckConvertToBank(this);
 		}
 
-#if NEWPARENT
 		protected override void OnTreeParentChanged(Item sender, IEntity oldParent)
-#else
-		protected override void OnTreeParentChanged(Item sender, object oldParent)
-#endif
 		{
 			base.OnTreeParentChanged(sender, oldParent);
 
