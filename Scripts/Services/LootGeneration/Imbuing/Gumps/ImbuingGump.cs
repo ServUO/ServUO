@@ -409,7 +409,7 @@ namespace Server.Gumps
             {
                 ImbuingContext context = Imbuing.GetContext(m);
                 context.Imbue_Mod = -1; // Re-set when changing targets to prevent exploit with Reimbue Last option.
-				context.LastImbued = item;
+		context.LastImbued = item;
 
                 if (context.ImbMenu_Cat == 0)
                     context.ImbMenu_Cat = 1;
