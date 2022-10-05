@@ -1,6 +1,14 @@
+using Server.Commands.Generic;
+using Server.Commands;
+using System.Collections;
+using System.Reflection;
+
+using Server.Mobiles;
+using Server.Items;
+
 namespace Server.Gumps
 {
-    public abstract class BaseGridGump : Gump
+	public abstract class BaseGridGump : Gump
     {
         public const int ArrowLeftID1 = 0x15E3;
         public const int ArrowLeftID2 = 0x15E7;
@@ -172,5 +180,5 @@ namespace Server.Gumps
 
             IncreaseX(width);
         }
-    }
+	}
 }
