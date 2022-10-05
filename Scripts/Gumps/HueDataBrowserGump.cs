@@ -3,21 +3,19 @@
 using Server.Commands;
 using Server.Network;
 
-using static System.Net.Mime.MediaTypeNames;
-
 namespace Server.Gumps
 {
 	public class HueDataBrowserGump : BaseGridGump
 	{
 		public static void Configure()
 		{
-			CommandSystem.Register("HueBrowser", AccessLevel.Decorator, e=> DisplayTo(e.Mobile));
+			CommandSystem.Register("HueBrowser", AccessLevel.Decorator, e => DisplayTo(e.Mobile));
 		}
 
 		public static void DisplayTo(Mobile user)
 		{
-			user.CloseGump<HueDataBrowserGump>();
-			user.SendGump(new HueDataBrowserGump(user));
+			_ = user.CloseGump<HueDataBrowserGump>();
+			_ = user.SendGump(new HueDataBrowserGump(user));
 		}
 
 		private const int EntriesPerPage = 20;
