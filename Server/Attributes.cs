@@ -198,4 +198,70 @@ namespace Server
 			WriteLevel = writeLevel;
 		}
 	}
+
+	public enum TypeFilterResult
+	{
+		NoFilter,
+		NotFound,
+		Allowed,
+		Disallowed,
+	}
+
+	[AttributeUsage(AttributeTargets.Property)]
+	public class TypeFilterAttribute : Attribute
+	{
+		public bool CheckChildren { get; }
+
+		public Type[] AllowedTypes { get; }
+		public Type[] DisallowedTypes { get; }
+
+		public TypeFilterAttribute(bool checkChildren, bool allowed, params Type[] types)
+			: this(checkChildren, allowed ? types : null, !allowed ? types : null)
+		{ }
+
+		public TypeFilterAttribute(bool checkChildren, Type[] allowedTypes, Type[] disallowedTypes)
+		{
+			CheckChildren = checkChildren;
+
+			AllowedTypes = allowedTypes ?? Type.EmptyTypes;
+			DisallowedTypes = disallowedTypes ?? Type.EmptyTypes;
+		}
+
+		public static TypeFilterResult CheckState(PropertyInfo prop, Type type)
+		{
+			int index, count = 0;
+
+			foreach (var attr in prop.GetCustomAttributes<TypeFilterAttribute>())
+			{
+				++count;
+
+				index = attr.AllowedTypes.Length;
+
+				while (--index >= 0)
+				{
+					if (attr.AllowedTypes[index] == type || (attr.CheckChildren && type.IsSubclassOf(attr.AllowedTypes[index])))
+					{
+						return TypeFilterResult.Allowed;
+					}
+				}
+
+				index = attr.DisallowedTypes.Length;
+
+				while (--index >= 0)
+				{
+					if (attr.DisallowedTypes[index] == type || (attr.CheckChildren && type.IsSubclassOf(attr.DisallowedTypes[index])))
+					{
+						return TypeFilterResult.Disallowed;
+					}
+				}
+			}
+
+			if (count > 0)
+			{
+				return TypeFilterResult.NotFound;
+			}
+
+			return TypeFilterResult.NoFilter;
+		}
+	}
 }

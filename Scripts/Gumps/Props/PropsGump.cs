@@ -1,14 +1,14 @@
 #region References
-using Server.Accounting;
-using Server.Commands.Generic;
-using Server.Network;
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+
+using Server.Accounting;
+using Server.Commands.Generic;
+using Server.Network;
 
 using CPA = Server.CommandPropertyAttribute;
 #endregion
@@ -184,7 +184,7 @@ namespace Server.Gumps
 				return;
 			}
 
-			StackEntry peek = (StackEntry)stack.Peek();
+			var peek = (StackEntry)stack.Peek();
 
 			if (peek.m_Property.CanWrite)
 			{
@@ -226,17 +226,15 @@ namespace Server.Gumps
 				return $"0x{(int)ch:X} '{ch}'";
 			}
 
-			if (o is Serial)
+			if (o is Serial s)
 			{
-				Serial s = (Serial)o;
-
 				if (s.IsValid)
 				{
 					if (s.IsItem)
 					{
 						return $"(I) 0x{s.Value:X}";
 					}
-					
+
 					if (s.IsMobile)
 					{
 						return $"(M) 0x{s.Value:X}";
@@ -273,6 +271,11 @@ namespace Server.Gumps
 
 			if (o is Color c)
 			{
+				if (c.IsEmpty)
+				{
+					return "---";
+				}
+
 				if (c.IsNamedColor)
 				{
 					return c.Name;
@@ -328,6 +331,16 @@ namespace Server.Gumps
 
 			if (t == typeof(Color))
 			{
+				if (String.IsNullOrWhiteSpace(s) || s == "---")
+				{
+					return Color.Empty;
+				}
+
+				if (Insensitive.Equals(s, "None") || Insensitive.Equals(s, "Empty"))
+				{
+					return Color.Empty;
+				}
+
 				if (Insensitive.StartsWith(s, "0x"))
 				{
 					return Color.FromArgb(Convert.ToInt32(s.Substring(2), 16));
@@ -338,16 +351,16 @@ namespace Server.Gumps
 					return Color.FromArgb(Convert.ToInt32(s.Substring(1), 16));
 				}
 
-				if (int.TryParse(s, out var val))
+				if (Int32.TryParse(s, out var val))
 				{
 					return Color.FromArgb(val);
 				}
 
-				string[] rgb = s.Split(',');
+				var rgb = s.Split(',');
 
 				if (rgb.Length >= 3)
 				{
-					if (int.TryParse(rgb[0], out var r) && int.TryParse(rgb[1], out var g) && int.TryParse(rgb[2], out var b))
+					if (Byte.TryParse(rgb[0], out var r) && Byte.TryParse(rgb[1], out var g) && Byte.TryParse(rgb[2], out var b))
 					{
 						return Color.FromArgb(r, g, b);
 					}
@@ -358,17 +371,17 @@ namespace Server.Gumps
 
 			if (t.IsDefined(typeof(ParsableAttribute), false))
 			{
-				MethodInfo parseMethod = t.GetMethod("Parse", new[] { typeof(string) });
+				var parseMethod = t.GetMethod("Parse", new[] { typeof(string) });
 
 				return parseMethod.Invoke(null, new object[] { s });
 			}
 
-			throw new Exception("bad");
+			throw new FormatException();
 		}
 
 		public override void OnResponse(NetState state, RelayInfo info)
 		{
-			Mobile from = state.Mobile;
+			var from = state.Mobile;
 
 			if (!BaseCommand.IsAccessible(from, m_Object))
 			{
@@ -382,9 +395,9 @@ namespace Server.Gumps
 				{
 					if (m_Stack != null && m_Stack.Count > 0)
 					{
-						StackEntry entry = (StackEntry)m_Stack.Pop();
+						var entry = (StackEntry)m_Stack.Pop();
 
-						from.SendGump(new PropertiesGump(from, entry.m_Object, m_Stack, null));
+						_ = from.SendGump(new PropertiesGump(from, entry.m_Object, m_Stack, null));
 					}
 
 					return;
@@ -393,7 +406,7 @@ namespace Server.Gumps
 				{
 					if (m_Page > 0)
 					{
-						from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page - 1));
+						_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page - 1));
 					}
 
 					return;
@@ -402,149 +415,150 @@ namespace Server.Gumps
 				{
 					if ((m_Page + 1) * EntryCount < m_List.Count)
 					{
-						from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page + 1));
+						_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page + 1));
 					}
 
 					return;
 				}
 			}
 
-			int index = (m_Page * EntryCount) + (info.ButtonID - 3);
+			var index = (m_Page * EntryCount) + (info.ButtonID - 3);
 
 			if (index < 0 || index >= m_List.Count)
 			{
 				return;
 			}
 
-			PropertyInfo prop = m_List[index] as PropertyInfo;
+			var prop = m_List[index] as PropertyInfo;
 
 			if (prop == null)
 			{
 				return;
 			}
 
-			CPA attr = GetCPA(prop);
+			var attr = GetCPA(prop);
 
 			if (!prop.CanWrite || attr == null || from.AccessLevel < attr.WriteLevel || attr.ReadOnly)
 			{
 				return;
 			}
 
-			Type type = prop.PropertyType;
+			var type = prop.PropertyType;
 
 			if (IsType(type, _TypeOfType))
 			{
+				from.SendMessage($"Target an object to use its type reference for {prop.Name}...");
 				from.Target = new SetObjectTarget(prop, from, m_Object, m_Stack, type, m_Page, m_List);
 				return;
 			}
 
 			if (IsType(type, _TypeOfMobile) || IsType(type, _TypeOfItem) || IsType(type, _TypeOfIEntity))
 			{
-				from.SendGump(new SetObjectGump(prop, from, m_Object, m_Stack, type, m_Page, m_List));
+				_ = from.SendGump(new SetObjectGump(prop, from, m_Object, m_Stack, type, m_Page, m_List));
 				return;
 			}
 
 			if (IsType(type, _TypeOfPoint3D))
 			{
-				from.SendGump(new SetPoint3DGump(prop, from, m_Object, m_Stack, m_Page, m_List));
+				_ = from.SendGump(new SetPoint3DGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
 			}
 
 			if (IsType(type, _TypeOfPoint2D))
 			{
-				from.SendGump(new SetPoint2DGump(prop, from, m_Object, m_Stack, m_Page, m_List));
+				_ = from.SendGump(new SetPoint2DGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
 			}
 
 			if (IsType(type, _TypeOfTimeSpan))
 			{
-				from.SendGump(new SetTimeSpanGump(prop, from, m_Object, m_Stack, m_Page, m_List));
+				_ = from.SendGump(new SetTimeSpanGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
 			}
 
 			if (IsCustomEnum(type))
 			{
-				from.SendGump(new SetCustomEnumGump(prop, from, m_Object, m_Stack, m_Page, m_List, GetCustomEnumNames(type)));
+				_ = from.SendGump(new SetCustomEnumGump(prop, from, m_Object, m_Stack, m_Page, m_List, GetCustomEnumNames(type)));
 				return;
 			}
 
 			if (IsType(type, _TypeOfIDynamicEnum))
 			{
-				from.SendGump(new SetCustomEnumGump(prop, from, m_Object, m_Stack, m_Page, m_List, ((IDynamicEnum)prop.GetValue(m_Object, null)).Values));
+				_ = from.SendGump(new SetCustomEnumGump(prop, from, m_Object, m_Stack, m_Page, m_List, ((IDynamicEnum)prop.GetValue(m_Object, null)).Values));
 				return;
 			}
 
 			if (IsType(type, _TypeOfEnum))
 			{
-				from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
+				_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
 				return;
 			}
 
 			if (IsType(type, _TypeOfBool))
 			{
-				from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, m_BoolNames, m_BoolValues));
+				_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, m_BoolNames, m_BoolValues));
 				return;
 			}
 
 			if (IsType(type, _TypeOfString) || IsType(type, _TypeOfReal) || IsType(type, _TypeOfNumeric) || IsType(type, _TypeOfText))
 			{
-				from.SendGump(new SetGump(prop, from, m_Object, m_Stack, m_Page, m_List));
+				_ = from.SendGump(new SetGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
 			}
 
 			if (IsType(type, _TypeOfPoison))
 			{
-				from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, m_PoisonNames, m_PoisonValues));
+				_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, m_PoisonNames, m_PoisonValues));
 				return;
 			}
 
 			if (IsType(type, _TypeofDateTime))
 			{
-				from.SendGump(new SetDateTimeGump(prop, from, m_Object, m_Stack, m_Page, m_List));
+				_ = from.SendGump(new SetDateTimeGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
 			}
 
 			if (IsType(type, _TypeOfMap))
 			{
-				from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Map.GetMapNames(), Map.GetMapValues()));
+				_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Map.GetMapNames(), Map.GetMapValues()));
 				return;
 			}
 
 			if (IsType(type, _TypeOfSkills) && m_Object is Mobile m)
 			{
-				from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
-				from.SendGump(new SkillsGump(from, m));
+				_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
+				_ = from.SendGump(new SkillsGump(from, m));
 				return;
 			}
 
 			if (IsType(type, _TypeofColor))
 			{
-				from.SendGump(new SetColorGump(prop, from, m_Object, m_Stack, m_Page, m_List));
+				_ = from.SendGump(new SetColorGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
 			}
 
 			if (IsType(type, _TypeofAccount))
 			{
-				from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
+				_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
 				return;
 			}
 
 			if (HasAttribute(type, _TypeOfPropertyObject, true))
 			{
-				object obj = prop.GetValue(m_Object, null);
+				var obj = prop.GetValue(m_Object, null);
 
-				from.SendGump(obj != null ? new PropertiesGump(from, obj, m_Stack, new StackEntry(m_Object, prop)) : new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
+				_ = from.SendGump(obj != null ? new PropertiesGump(from, obj, m_Stack, new StackEntry(m_Object, prop)) : new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
 				return;
 			}
 
-			from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
+			_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
 		}
 
 		private static object[] GetObjects(Array a)
 		{
-			object[] list = new object[a.Length];
+			var list = new object[a.Length];
 
-			for (int i = 0; i < list.Length; ++i)
+			for (var i = 0; i < list.Length; ++i)
 			{
 				list[i] = a.GetValue(i);
 			}
@@ -559,16 +573,14 @@ namespace Server.Gumps
 
 		private static string[] GetCustomEnumNames(Type type)
 		{
-			object[] attrs = type.GetCustomAttributes(_TypeOfCustomEnum, false);
+			var attrs = type.GetCustomAttributes(_TypeOfCustomEnum, false);
 
 			if (attrs.Length == 0)
 			{
 				return new string[0];
 			}
 
-			CustomEnumAttribute ce = attrs[0] as CustomEnumAttribute;
-
-			if (ce == null)
+			if (!(attrs[0] is CustomEnumAttribute ce))
 			{
 				return new string[0];
 			}
@@ -593,16 +605,19 @@ namespace Server.Gumps
 
 		private static CPA GetCPA(PropertyInfo prop)
 		{
-			object[] attrs = prop.GetCustomAttributes(_TypeOfCPA, false);
+			foreach (var attr in prop.GetCustomAttributes<CPA>(false))
+			{
+				return attr;
+			}
 
-			return attrs.Length > 0 ? attrs[0] as CPA : null;
+			return null;
 		}
 
 		private void Initialize(int page)
 		{
 			m_Page = page;
 
-			int count = m_List.Count - (page * EntryCount);
+			var count = m_List.Count - (page * EntryCount);
 
 			if (count < 0)
 			{
@@ -613,14 +628,14 @@ namespace Server.Gumps
 				count = EntryCount;
 			}
 
-			int lastIndex = (page * EntryCount) + count - 1;
+			var lastIndex = (page * EntryCount) + count - 1;
 
 			if (lastIndex >= 0 && lastIndex < m_List.Count && m_List[lastIndex] == null)
 			{
 				--count;
 			}
 
-			int totalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (count + 1));
+			var totalHeight = OffsetSize + ((EntryHeight + OffsetSize) * (count + 1));
 
 			AddPage(0);
 
@@ -632,10 +647,10 @@ namespace Server.Gumps
 				totalHeight,
 				OffsetGumpID);
 
-			int x = BorderSize + OffsetSize;
-			int y = BorderSize + OffsetSize;
+			var x = BorderSize + OffsetSize;
+			var y = BorderSize + OffsetSize;
 
-			int emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
+			var emptyWidth = TotalWidth - PrevWidth - NextWidth - (OffsetSize * 4) - (OldStyle ? SetWidth + OffsetSize : 0);
 
 			if (OldStyle)
 			{
@@ -665,14 +680,7 @@ namespace Server.Gumps
 
 			if (TypeLabel && m_Type != null)
 			{
-				AddHtml(
-					x,
-					y,
-					emptyWidth,
-					EntryHeight,
-					string.Format("<BASEFONT COLOR=#FAFAFA><CENTER>{0}</CENTER></BASEFONT>", m_Type.Name),
-					false,
-					false);
+				AddHtml(x, y, emptyWidth, EntryHeight, $"<BASEFONT COLOR=#FAFAFA><CENTER>{m_Type.Name}</CENTER>", false, false);
 			}
 
 			x += emptyWidth + OffsetSize;
@@ -697,12 +705,10 @@ namespace Server.Gumps
 				x = BorderSize + OffsetSize;
 				y += EntryHeight + OffsetSize;
 
-				object o = m_List[index];
+				var o = m_List[index];
 
-				if (o is Type)
+				if (o is Type type)
 				{
-					Type type = (Type)o;
-
 					AddImageTiled(x, y, TypeWidth, EntryHeight, EntryGumpID);
 					AddLabelCropped(x + TextOffsetX, y, TypeWidth - TextOffsetX, EntryHeight, TextHue, type.Name);
 					x += TypeWidth + OffsetSize;
@@ -712,15 +718,21 @@ namespace Server.Gumps
 						AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
 					}
 				}
-				else if (o is PropertyInfo)
+				else if (o is PropertyInfo prop)
 				{
-					PropertyInfo prop = (PropertyInfo)o;
-
 					AddImageTiled(x, y, NameWidth, EntryHeight, EntryGumpID);
 					AddLabelCropped(x + TextOffsetX, y, NameWidth - TextOffsetX, EntryHeight, TextHue, prop.Name);
 					x += NameWidth + OffsetSize;
+
+					var value = ValueToString(prop);
+
+					if (value.Length * 6 >= ValueWidth - TextOffsetX)
+					{
+						value = value.Substring(0, (ValueWidth - TextOffsetX) / 6);
+					}
+
 					AddImageTiled(x, y, ValueWidth, EntryHeight, EntryGumpID);
-					AddLabelCropped(x + TextOffsetX, y, ValueWidth - TextOffsetX, EntryHeight, TextHue, ValueToString(prop));
+					AddLabelCropped(x + TextOffsetX, y, ValueWidth - TextOffsetX, EntryHeight, TextHue, value);
 					x += ValueWidth + OffsetSize;
 
 					if (SetGumpID != 0)
@@ -728,7 +740,7 @@ namespace Server.Gumps
 						AddImageTiled(x, y, SetWidth, EntryHeight, SetGumpID);
 					}
 
-					CPA cpa = GetCPA(prop);
+					var cpa = GetCPA(prop);
 
 					if (prop.CanWrite && cpa != null && m_Mobile.AccessLevel >= cpa.WriteLevel && !cpa.ReadOnly)
 					{
@@ -749,21 +761,21 @@ namespace Server.Gumps
 
 		private ArrayList BuildList()
 		{
-			ArrayList list = new ArrayList();
+			var list = new ArrayList();
 
 			if (m_Type == null)
 			{
 				return list;
 			}
 
-			PropertyInfo[] props = m_Type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
+			var props = m_Type.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
 
-			ArrayList groups = GetGroups(m_Type, props);
+			var groups = GetGroups(m_Type, props);
 
-			for (int i = 0; i < groups.Count; ++i)
+			for (var i = 0; i < groups.Count; ++i)
 			{
-				DictionaryEntry de = (DictionaryEntry)groups[i];
-				ArrayList groupList = (ArrayList)de.Value;
+				var de = (DictionaryEntry)groups[i];
+				var groupList = (ArrayList)de.Value;
 
 				if (!HasAttribute((Type)de.Key, _TypeOfNoSort, false))
 				{
@@ -772,10 +784,10 @@ namespace Server.Gumps
 
 				if (i != 0)
 				{
-					list.Add(new { });
+					_ = list.Add(new { });
 				}
 
-				list.Add(de.Key);
+				_ = list.Add(de.Key);
 				list.AddRange(groupList);
 			}
 
@@ -784,24 +796,24 @@ namespace Server.Gumps
 
 		private ArrayList GetGroups(Type objectType, IEnumerable<PropertyInfo> props)
 		{
-			Hashtable groups = new Hashtable();
+			var groups = new Hashtable();
 
-			foreach (PropertyInfo prop in props)
+			foreach (var prop in props)
 			{
 				if (!prop.CanRead)
 				{
 					continue;
 				}
 
-				CPA attr = GetCPA(prop);
+				var attr = GetCPA(prop);
 
 				if (attr == null || m_Mobile.AccessLevel < attr.ReadLevel)
 				{
 					continue;
 				}
 
-				Type type = prop.DeclaringType;
-				bool die = false;
+				var type = prop.DeclaringType;
+				var die = false;
 
 				if (type == null)
 				{
@@ -810,7 +822,7 @@ namespace Server.Gumps
 
 				while (!die)
 				{
-					Type baseType = type.BaseType;
+					var baseType = type.BaseType;
 
 					if (baseType == null || baseType == _TypeOfObject)
 					{
@@ -826,17 +838,15 @@ namespace Server.Gumps
 					}
 				}
 
-				ArrayList list = groups[type] as ArrayList;
-
-				if (list == null)
+				if (!(groups[type] is ArrayList list))
 				{
 					groups[type] = list = new ArrayList();
 				}
 
-				list.Add(prop);
+				_ = list.Add(prop);
 			}
 
-			ArrayList sorted = new ArrayList(groups);
+			var sorted = new ArrayList(groups);
 
 			sorted.Sort(new GroupComparer(objectType));
 
@@ -884,10 +894,10 @@ namespace Server.Gumps
 					throw new ArgumentException();
 				}
 
-				PropertyInfo a = (PropertyInfo)x;
-				PropertyInfo b = (PropertyInfo)y;
+				var a = (PropertyInfo)x;
+				var b = (PropertyInfo)y;
 
-				return string.Compare(a.Name, b.Name, StringComparison.Ordinal);
+				return String.Compare(a.Name, b.Name, StringComparison.Ordinal);
 			}
 		}
 
@@ -922,18 +932,18 @@ namespace Server.Gumps
 					throw new ArgumentException();
 				}
 
-				DictionaryEntry de1 = (DictionaryEntry)x;
-				DictionaryEntry de2 = (DictionaryEntry)y;
+				var de1 = (DictionaryEntry)x;
+				var de2 = (DictionaryEntry)y;
 
-				Type a = (Type)de1.Key;
-				Type b = (Type)de2.Key;
+				var a = (Type)de1.Key;
+				var b = (Type)de2.Key;
 
 				return GetDistance(a).CompareTo(GetDistance(b));
 			}
 
 			private int GetDistance(Type type)
 			{
-				Type current = m_Start;
+				var current = m_Start;
 				int dist;
 
 				for (dist = 0; current != null && current != _TypeOfObject && current != type; ++dist)

@@ -215,26 +215,51 @@ namespace Server.Gumps
 
 		public void AddHtml(int x, int y, int width, int height, string text, bool background, bool scrollbar)
 		{
+			if (!scrollbar && !background && height < 40 && !Insensitive.Contains(text, "BODYBGCOLOR"))
+			{
+				height = 40;
+			}
+
 			Add(new GumpHtml(x, y, width, height, text, background, scrollbar));
 		}
 
 		public void AddHtmlIntern(int x, int y, int width, int height, int textid, bool background, bool scrollbar)
 		{
+			if (!scrollbar && !background && height < 40 && textid >= 0 && textid < m_Strings.Count && !Insensitive.Contains(m_Strings[textid], "BODYBGCOLOR"))
+			{
+				height = 40;
+			}
+
 			Add(new GumpHtml(x, y, width, height, textid, background, scrollbar));
 		}
 
 		public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
 		{
+			if (!scrollbar && !background && height < 40)
+			{
+				height = 40;
+			}
+
 			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
 
 		public void AddHtmlLocalized(int x, int y, int width, int height, int number, int color, bool background, bool scrollbar)
 		{
+			if (!scrollbar && !background && height < 40)
+			{
+				height = 40;
+			}
+
 			Add(new GumpHtmlLocalized(x, y, width, height, number, color, background, scrollbar));
 		}
 
 		public void AddHtmlLocalized(int x, int y, int width, int height, int number, string args, int color, bool background, bool scrollbar)
 		{
+			if (!scrollbar && !background && height < 40)
+			{
+				height = 40;
+			}
+
 			Add(new GumpHtmlLocalized(x, y, width, height, number, args, color, background, scrollbar));
 		}
 
