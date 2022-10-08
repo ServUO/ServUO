@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using Server.Accounting;
@@ -9696,77 +9697,71 @@ namespace Server
 			}
 		}
 
-		public void FreeCache()
+		public virtual void FreeCache()
 		{
 			Packet.Release(ref m_RemovePacket);
-			Packet.Release(ref m_PropertyList);
-			Packet.Release(ref m_OPLPacket);
+
+			ClearProperties();
 		}
 
-		private Packet m_RemovePacket;
-		private readonly object rpLock = new object();
+		private RemoveMobile m_RemovePacket;
 
-		public Packet RemovePacket
+		public RemoveMobile RemovePacket => GetRemovePacket();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private RemoveMobile GetRemovePacket()
 		{
-			get
+			if (m_RemovePacket == null)
 			{
-				if (m_RemovePacket == null)
-				{
-					lock (rpLock)
-					{
-						if (m_RemovePacket == null)
-						{
-							m_RemovePacket = new RemoveMobile(this);
-							m_RemovePacket.SetStatic();
-						}
-					}
-				}
+				var remove = new RemoveMobile(this);
 
-				return m_RemovePacket;
+				remove.SetStatic();
+
+				m_RemovePacket = remove;
 			}
+
+			return m_RemovePacket;
 		}
 
-		private Packet m_OPLPacket;
-		private readonly object oplLock = new object();
+		private OPLInfo m_OPLPacket;
 
-		public Packet OPLPacket
+		public OPLInfo OPLPacket => GetOPLPacket();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private OPLInfo GetOPLPacket()
 		{
-			get
+			if (m_OPLPacket == null)
 			{
-				if (m_OPLPacket == null)
-				{
-					lock (oplLock)
-					{
-						if (m_OPLPacket == null)
-						{
-							m_OPLPacket = new OPLInfo(PropertyList);
-							m_OPLPacket.SetStatic();
-						}
-					}
-				}
+				var opl = new OPLInfo(PropertyList);
 
-				return m_OPLPacket;
+				opl.SetStatic();
+
+				m_OPLPacket = opl;
 			}
+
+			return m_OPLPacket;
 		}
 
 		private ObjectPropertyList m_PropertyList;
 
-		public ObjectPropertyList PropertyList
+		public ObjectPropertyList PropertyList => GetPropertyList();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private ObjectPropertyList GetPropertyList()
 		{
-			get
+			if (m_PropertyList == null)
 			{
-				if (m_PropertyList == null)
-				{
-					m_PropertyList = new ObjectPropertyList(this);
+				var list = new ObjectPropertyList(this);
 
-					GetProperties(m_PropertyList);
+				GetProperties(list);
 
-					m_PropertyList.Terminate();
-					m_PropertyList.SetStatic();
-				}
+				list.Terminate();
+				list.SetStatic();
 
-				return m_PropertyList;
+				m_PropertyList = list;
 			}
+
+			return m_PropertyList;
 		}
 
 		public void ClearProperties()

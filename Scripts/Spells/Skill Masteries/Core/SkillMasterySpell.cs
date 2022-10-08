@@ -705,21 +705,16 @@ namespace Server.Spells.SkillMasteries
             }
         }
 
-        private static readonly object _Lock = new object();
-
         public static void CheckTable(Mobile m)
         {
             if (m == null)
                 return;
 
-            lock (_Lock)
+            if (m_Table.TryGetValue(m, out var entry))
             {
-                if (m_Table.ContainsKey(m))
+                if (entry == null || entry.Count == 0)
                 {
-                    if (m_Table[m] == null || m_Table[m].Count == 0)
-                    {
-                        m_Table.Remove(m);
-                    }
+                    m_Table.Remove(m);
                 }
             }
         }
@@ -731,13 +726,10 @@ namespace Server.Spells.SkillMasteries
 
             List<SkillMasterySpell> list = new List<SkillMasterySpell>();
 
-            lock (_Lock)
-            {
-                foreach (KeyValuePair<Mobile, List<SkillMasterySpell>> kvp in m_Table)
-                {
-                    list.AddRange(kvp.Value);
-                }
-            }
+			foreach (List<SkillMasterySpell> entry in m_Table.Values)
+			{
+				list.AddRange(entry);
+			}
 
             foreach (SkillMasterySpell spell in list)
             {
@@ -747,28 +739,18 @@ namespace Server.Spells.SkillMasteries
 
         public static IEnumerable<SkillMasterySpell> EnumerateSpells(Mobile from, Type t = null)
         {
-            if (m_Table == null || m_Table.Count == 0 || !m_Table.ContainsKey(from))
+            if (m_Table == null || m_Table.Count == 0 || !m_Table.TryGetValue(from, out var entry))
                 yield break;
 
-            List<SkillMasterySpell> list;
-
-            lock (_Lock)
+            if (entry == null || entry.Count == 0)
             {
-                list = m_Table[from];
+				m_Table.Remove(from);
 
-                if (list == null || list.Count == 0)
-                {
-                    yield break;
-                }
+                yield break;
             }
 
-            IEnumerable<SkillMasterySpell> e;
-
-            lock (_Lock)
-            {
-                e = list.Where(s => s.GetType() == t || t == null);
-            }
-
+            IEnumerable<SkillMasterySpell> e = t == null ? entry : entry.Where(s => s.GetType() == t);
+            
             foreach (SkillMasterySpell spell in e)
             {
                 yield return spell;
@@ -777,9 +759,9 @@ namespace Server.Spells.SkillMasteries
 
         public static List<SkillMasterySpell> GetSpells(Mobile m)
         {
-            if (m_Table != null && m_Table.ContainsKey(m))
+            if (m_Table != null && m_Table.TryGetValue(m, out var entry))
             {
-                return new List<SkillMasterySpell>(m_Table[m]);
+                return new List<SkillMasterySpell>(entry);
             }
 
             return null;
@@ -787,32 +769,24 @@ namespace Server.Spells.SkillMasteries
 
         protected void AddToTable(Mobile from, SkillMasterySpell spell)
         {
-            lock (_Lock)
+            if (!m_Table.TryGetValue(from, out var entry))
             {
-                if (!m_Table.ContainsKey(from))
-                {
-                    m_Table[from] = new List<SkillMasterySpell>();
-                }
+                m_Table[from] = entry = new List<SkillMasterySpell>();
+            }
 
-                if (!m_Table[from].Contains(spell))
-                {
-                    m_Table[from].Add(spell);
-                }
+            if (!entry.Contains(spell))
+            {
+				entry.Add(spell);
             }
         }
 
         protected void RemoveFromTable()
         {
-            if (m_Table.ContainsKey(Caster) && m_Table[Caster].Contains(this))
+            if (m_Table.TryGetValue(Caster, out var entry) && entry.Remove(this))
             {
-                lock (_Lock)
+                if (entry.Count == 0)
                 {
-                    m_Table[Caster].Remove(this);
-
-                    if (m_Table[Caster].Count == 0)
-                    {
-                        m_Table.Remove(Caster);
-                    }
+                    m_Table.Remove(Caster);
                 }
             }
 

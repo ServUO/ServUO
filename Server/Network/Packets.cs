@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -4738,6 +4739,7 @@ namespace Server.Network
 			if (ns != null && p != null && ns.Socket != null && !ns.IsDisposing)
 			{
 				ns.Send(p);
+
 				return true;
 			}
 
@@ -4767,7 +4769,7 @@ namespace Server.Network
 		{
 			p?.Release();
 
-			p = null;
+			Interlocked.Exchange(ref p, null);
 		}
 
 		private readonly int m_PacketID;
@@ -4869,51 +4871,49 @@ namespace Server.Network
 			}
 		}
 
+		[MethodImpl(MethodImplOptions.Synchronized)]
 		public byte[] Compile(bool compress, out int length)
 		{
-			lock (this)
+			if (m_CompiledBuffer == null)
 			{
-				if (m_CompiledBuffer == null)
+				if ((m_State & PacketState.Accessed) == 0)
 				{
-					if ((m_State & PacketState.Accessed) == 0)
+					m_State |= PacketState.Accessed;
+				}
+				else
+				{
+					if ((m_State & PacketState.Warned) == 0)
 					{
-						m_State |= PacketState.Accessed;
-					}
-					else
-					{
-						if ((m_State & PacketState.Warned) == 0)
+						m_State |= PacketState.Warned;
+
+						try
 						{
-							m_State |= PacketState.Warned;
+							var trace = new StackTrace();
+							var notice = $"Redundant compile for packet 0x{m_PacketID:X2} ('{GetType().Name}'), use Acquire() and Release()";
 
-							try
-							{
-								var trace = new StackTrace();
-								var notice = $"Redundant compile for packet 0x{m_PacketID:X2} ('{GetType().Name}'), use Acquire() and Release()";
+							Console.WriteLine($"Warning: {notice}");
 
-								Console.WriteLine($"Warning: {notice}");
-
-								File.AppendAllText("packet_errors.log", $"{DateTime.UtcNow}{Environment.NewLine}{notice}{Environment.NewLine}{trace}{Environment.NewLine}{Environment.NewLine}");
-							}
-							catch (Exception e)
-							{
-								ExceptionLogging.LogException(e);
-							}
+							File.AppendAllText("packet_errors.log", $"{DateTime.UtcNow}{Environment.NewLine}{notice}{Environment.NewLine}{trace}{Environment.NewLine}{Environment.NewLine}");
 						}
-
-						m_CompiledBuffer = new byte[0];
-
-						length = m_CompiledLength = 0;
-
-						return m_CompiledBuffer;
+						catch (Exception e)
+						{
+							ExceptionLogging.LogException(e);
+						}
 					}
 
-					InternalCompile(compress);
+					m_CompiledBuffer = new byte[0];
+
+					length = m_CompiledLength = 0;
+
+					return m_CompiledBuffer;
 				}
 
-				length = m_CompiledLength;
-
-				return m_CompiledBuffer;
+				InternalCompile(compress);
 			}
+
+			length = m_CompiledLength;
+
+			return m_CompiledBuffer;
 		}
 
 		private void InternalCompile(bool compress)
@@ -4964,10 +4964,7 @@ namespace Server.Network
 					}
 					else
 					{
-						lock (m_Buffers)
-						{
-							m_CompiledBuffer = m_Buffers.AcquireBuffer();
-						}
+						m_CompiledBuffer = m_Buffers.AcquireBuffer();
 
 						m_State |= PacketState.Buffered;
 					}

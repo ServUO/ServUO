@@ -7,28 +7,10 @@ namespace Server
 {
 	public class TileMatrixPatch
 	{
-		private readonly int m_LandBlocks;
-		private readonly int m_StaticBlocks;
-
 		public static bool Enabled { get; set; } = true;
 
-		public int LandBlocks
-		{
-			get
-			{
-				lock (this)
-					return m_LandBlocks;
-			}
-		}
-
-		public int StaticBlocks
-		{
-			get
-			{
-				lock (this)
-					return m_StaticBlocks;
-			}
-		}
+		public int LandBlocks { get; }
+		public int StaticBlocks { get; }
 
 		public TileMatrixPatch(TileMatrix matrix, int index)
 		{
@@ -42,7 +24,7 @@ namespace Server
 
 			if (File.Exists(mapDataPath) && File.Exists(mapIndexPath))
 			{
-				m_LandBlocks = PatchLand(matrix, mapDataPath, mapIndexPath);
+				LandBlocks = PatchLand(matrix, mapDataPath, mapIndexPath);
 			}
 
 			var staDataPath = Core.FindDataFile("stadif{0}.mul", index);
@@ -51,7 +33,7 @@ namespace Server
 
 			if (File.Exists(staDataPath) && File.Exists(staIndexPath) && File.Exists(staLookupPath))
 			{
-				m_StaticBlocks = PatchStatics(matrix, staDataPath, staIndexPath, staLookupPath);
+				StaticBlocks = PatchStatics(matrix, staDataPath, staIndexPath, staLookupPath);
 			}
 		}
 

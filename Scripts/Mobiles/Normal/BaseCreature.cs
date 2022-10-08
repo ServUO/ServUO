@@ -19,6 +19,7 @@ using Server.Spells.SkillMasteries;
 using Server.Spells.Spellweaving;
 using Server.Targeting;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7417,15 +7418,22 @@ namespace Server.Mobiles
     {
         private static readonly TimeSpan InternalDelay = TimeSpan.FromMinutes(5.0);
 
-        public static void Initialize()
+		public static LoyaltyTimer Instance { get; }
+
+		static LoyaltyTimer()
+		{
+			Instance = new LoyaltyTimer();
+		}
+
+		public static void Initialize()
         {
-            new LoyaltyTimer().Start();
+			Instance.Start();
         }
 
         public LoyaltyTimer()
             : base(InternalDelay, InternalDelay)
         {
-            m_NextHourlyCheck = DateTime.UtcNow + TimeSpan.FromHours(1.0);
+            m_NextHourlyCheck = DateTime.UtcNow.AddHours(1.0);
             Priority = TimerPriority.FiveSeconds;
         }
 
@@ -7433,127 +7441,120 @@ namespace Server.Mobiles
 
         protected override void OnTick()
         {
-            if (DateTime.UtcNow >= m_NextHourlyCheck)
-            {
-                m_NextHourlyCheck = DateTime.UtcNow + TimeSpan.FromHours(1.0);
-            }
-            else
-            {
-                return;
-            }
+			if (DateTime.UtcNow < m_NextHourlyCheck)
+			{
+				return;
+			}
 
-            List<BaseCreature> toRelease = new List<BaseCreature>();
+			m_NextHourlyCheck = DateTime.UtcNow.AddHours(1.0);
+
+			ConcurrentQueue<BaseCreature> toRelease = new ConcurrentQueue<BaseCreature>();
 
             // added array for wild creatures in house regions to be removed
-            List<BaseCreature> toRemove = new List<BaseCreature>();
+            ConcurrentQueue<BaseCreature> toRemove = new ConcurrentQueue<BaseCreature>();
 
-            Parallel.ForEach(
-                World.Mobiles.Values,
-                m =>
+            Parallel.ForEach(World.Mobiles.Values, m =>
+            {
+                if (m is BaseMount bm && bm.Rider != null)
                 {
-                    if (m is BaseMount && ((BaseMount)m).Rider != null)
+                    bm.OwnerAbandonTime = DateTime.MinValue;
+                }
+                else if (m is BaseCreature c)
+                {
+                    if (c.IsDeadPet)
                     {
-                        ((BaseCreature)m).OwnerAbandonTime = DateTime.MinValue;
-                    }
-                    else if (m is BaseCreature)
-                    {
-                        BaseCreature c = (BaseCreature)m;
+                        Mobile owner = c.ControlMaster;
 
-                        if (c.IsDeadPet)
+                        if (!c.IsStabled && !(c is BaseVendor) && (owner == null || owner.Deleted || owner.Map != c.Map || !owner.InRange(c, 12) || !c.CanSee(owner) || !c.InLOS(owner)))
                         {
-                            Mobile owner = c.ControlMaster;
-
-                            if (!c.IsStabled && !(c is BaseVendor) &&
-                                (owner == null || owner.Deleted || owner.Map != c.Map || !owner.InRange(c, 12) || !c.CanSee(owner) ||
-                                 !c.InLOS(owner)))
+                            if (c.OwnerAbandonTime == DateTime.MinValue)
                             {
-                                if (c.OwnerAbandonTime == DateTime.MinValue)
-                                {
-                                    c.OwnerAbandonTime = DateTime.UtcNow;
-                                }
-                                else if ((c.OwnerAbandonTime + c.BondingAbandonDelay) <= DateTime.UtcNow)
-                                {
-                                    toRemove.Add(c);
-                                }
+                                c.OwnerAbandonTime = DateTime.UtcNow;
                             }
-                            else
+                            else if ((c.OwnerAbandonTime + c.BondingAbandonDelay) <= DateTime.UtcNow)
                             {
-                                c.OwnerAbandonTime = DateTime.MinValue;
-                            }
-                        }
-                        else if (c.Controlled && c.Commandable)
-                        {
-                            c.OwnerAbandonTime = DateTime.MinValue;
-
-                            if (c.Map != Map.Internal)
-                            {
-                                c.Loyalty -= (BaseCreature.MaxLoyalty / 10);
-
-                                if (c.Loyalty < (BaseCreature.MaxLoyalty / 10))
-                                {
-                                    c.Say(1043270, c.Name); // * ~1_NAME~ looks around desperately *
-                                    c.PlaySound(c.GetIdleSound());
-                                }
-
-                                if (c.Loyalty <= 0)
-                                {
-                                    toRelease.Add(c);
-                                }
-                            }
-                        }
-
-                        // added lines to check if a wild creature in a house region has to be removed or not
-                        if (!c.Controlled && !c.IsStabled &&
-                            ((c.Region.IsPartOf<HouseRegion>() && c.CanBeDamaged()) || (c.RemoveIfUntamed && c.Spawner == null)))
-                        {
-                            c.RemoveStep++;
-
-                            if (c.RemoveStep >= 20)
-                            {
-                                lock (toRemove)
-                                    toRemove.Add(c);
+                                toRemove.Enqueue(c);
                             }
                         }
                         else
                         {
-                            c.RemoveStep = 0;
+                            c.OwnerAbandonTime = DateTime.MinValue;
                         }
                     }
-                });
+                    else if (c.Controlled && c.Commandable)
+                    {
+                        c.OwnerAbandonTime = DateTime.MinValue;
 
-            foreach (BaseCreature c in toRelease.Where(c => c != null))
-            {
-                if (c.IsDeadBondedPet)
+                        if (c.Map != Map.Internal)
+                        {
+							int reduction = BaseCreature.MaxLoyalty / 10;
+
+							c.Loyalty -= reduction;
+
+                            if (c.Loyalty < reduction)
+                            {
+                                c.Say(1043270, c.Name); // * ~1_NAME~ looks around desperately *
+                                c.PlaySound(c.GetIdleSound());
+                            }
+
+                            if (c.Loyalty <= 0)
+                            {
+                                toRelease.Enqueue(c);
+                            }
+                        }
+                    }
+
+                    // added lines to check if a wild creature in a house region has to be removed or not
+                    if (!c.Controlled && !c.IsStabled && ((c.Region.IsPartOf<HouseRegion>() && c.CanBeDamaged()) || (c.RemoveIfUntamed && c.Spawner == null)))
+                    {
+                        if (++c.RemoveStep >= 20)
+                        {
+							toRemove.Enqueue(c);
+                        }
+                    }
+                    else
+                    {
+                        c.RemoveStep = 0;
+                    }
+                }
+            });
+
+			BaseCreature bc;
+
+			while (toRelease.TryDequeue(out bc))
+			{
+				if (bc.Deleted)
+				{
+					continue;
+				}
+
+                if (bc.IsDeadBondedPet)
                 {
-                    c.Delete();
+                    bc.Delete();
                     continue;
                 }
 
-                c.Say(1043255, c.Name); // ~1_NAME~ appears to have decided that is better off without a master!
-                c.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully Happy
-                c.IsBonded = false;
-                c.BondingBegin = DateTime.MinValue;
-                c.OwnerAbandonTime = DateTime.MinValue;
-                c.ControlTarget = null;
+                bc.Say(1043255, bc.Name); // ~1_NAME~ appears to have decided that is better off without a master!
 
-                if (c.AIObject != null)
-                {
-                    c.AIObject.DoOrderRelease();
-                }
+                bc.Loyalty = BaseCreature.MaxLoyalty; // Wonderfully Happy
+                bc.IsBonded = false;
+                bc.BondingBegin = DateTime.MinValue;
+                bc.OwnerAbandonTime = DateTime.MinValue;
+                bc.ControlTarget = null;
+				
+				bc.AIObject?.DoOrderRelease();
 
                 // this will prevent no release of creatures left alone with AI disabled (and consequent bug of Followers)
-                c.DropBackpack();
-                c.RemoveOnSave = true;
+                bc.DropBackpack();
+
+                bc.RemoveOnSave = true;
             }
 
-            // added code to handle removing of wild creatures in house regions
-            foreach (BaseCreature c in toRemove)
-            {
-                c.Delete();
+			// added code to handle removing of wild creatures in house regions
+			while (toRemove.TryDequeue(out bc))
+			{
+                bc.Delete();
             }
-
-            ColUtility.Free(toRelease);
-            ColUtility.Free(toRemove);
         }
     }
 

@@ -1,6 +1,8 @@
 #region References
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 #endregion
 
 namespace Server.Network
@@ -9,40 +11,28 @@ namespace Server.Network
 	{
 		public class Gram
 		{
-			private static readonly Stack<Gram> _pool = new Stack<Gram>();
+			private static readonly ConcurrentStack<Gram> m_Pool = new ConcurrentStack<Gram>();
 
 			public static Gram Acquire()
 			{
-				lock (_pool)
+				if (!m_Pool.TryPop(out var gram))
 				{
-					Gram gram;
-
-					if (_pool.Count > 0)
-					{
-						gram = _pool.Pop();
-					}
-					else
-					{
-						gram = new Gram();
-					}
-
-					gram._buffer = AcquireBuffer();
-					gram._length = 0;
-
-					return gram;
+					gram = new Gram();
 				}
+
+				gram.Buffer = AcquireBuffer();
+				gram.Length = 0;
+
+				return gram;
 			}
 
-			private byte[] _buffer;
-			private int _length;
+			public byte[] Buffer { get; private set; }
 
-			public byte[] Buffer => _buffer;
+			public int Length { get; private set; }
 
-			public int Length => _length;
+			public int Available => Buffer.Length - Length;
 
-			public int Available => _buffer.Length - _length;
-
-			public bool IsFull => _length == _buffer.Length;
+			public bool IsFull => Length == Buffer.Length;
 
 			private Gram()
 			{ }
@@ -51,24 +41,23 @@ namespace Server.Network
 			{
 				var write = Math.Min(length, Available);
 
-				System.Buffer.BlockCopy(buffer, offset, _buffer, _length, write);
+				System.Buffer.BlockCopy(buffer, offset, Buffer, Length, write);
 
-				_length += write;
+				Length += write;
 
 				return write;
 			}
 
 			public void Release()
 			{
-				lock (_pool)
-				{
-					_pool.Push(this);
-					ReleaseBuffer(_buffer);
-				}
+				m_Pool.Push(this);
+
+				ReleaseBuffer(Buffer);
 			}
 		}
 
 		private static int m_CoalesceBufferSize = 512;
+
 		private static BufferPool m_UnusedBuffers = new BufferPool("Coalesced", 2048, m_CoalesceBufferSize);
 
 		public static int CoalesceBufferSize
@@ -81,25 +70,19 @@ namespace Server.Network
 					return;
 				}
 
-				var old = m_UnusedBuffers;
+				var unused = new BufferPool("Coalesced", 2048, value);
 
-				lock (old)
-				{
-					if (m_UnusedBuffers != null)
-					{
-						m_UnusedBuffers.Free();
-					}
+				var old = Interlocked.Exchange(ref m_UnusedBuffers, unused);
 
-					m_CoalesceBufferSize = value;
-					m_UnusedBuffers = new BufferPool("Coalesced", 2048, m_CoalesceBufferSize);
-				}
+				old?.Free();
+
+				m_CoalesceBufferSize = value;
 			}
 		}
 
 		public static byte[] AcquireBuffer()
 		{
-			lock (m_UnusedBuffers)
-				return m_UnusedBuffers.AcquireBuffer();
+			return m_UnusedBuffers.AcquireBuffer();
 		}
 
 		public static void ReleaseBuffer(byte[] buffer)
@@ -110,39 +93,40 @@ namespace Server.Network
 			}
 		}
 
-		private readonly Queue<Gram> _pending;
+		private readonly ConcurrentQueue<Gram> m_Pending;
 
-		private Gram _buffered;
+		private Gram m_Buffered;
 
-		public bool IsFlushReady => _pending.Count == 0 && _buffered != null;
+		public bool IsFlushReady => m_Pending.IsEmpty && m_Buffered != null;
 
-		public bool IsEmpty => _pending.Count == 0 && _buffered == null;
+		public bool IsEmpty => m_Pending.IsEmpty && m_Buffered == null;
 
 		public SendQueue()
 		{
-			_pending = new Queue<Gram>();
+			m_Pending = new ConcurrentQueue<Gram>();
 		}
 
 		public Gram CheckFlushReady()
 		{
-			var gram = _buffered;
-			_pending.Enqueue(_buffered);
-			_buffered = null;
+			var gram = Interlocked.Exchange(ref m_Buffered, null);
+
+			m_Pending.Enqueue(gram);
+
 			return gram;
 		}
 
 		public Gram Dequeue()
 		{
-			Gram gram = null;
-
-			if (_pending.Count > 0)
+			if (!m_Pending.TryDequeue(out var gram))
 			{
-				_pending.Dequeue().Release();
+				return null;
+			}
 
-				if (_pending.Count > 0)
-				{
-					gram = _pending.Peek();
-				}
+			gram?.Release();
+
+			if (!m_Pending.TryPeek(out gram))
+			{
+				return null;
 			}
 
 			return gram;
@@ -161,24 +145,25 @@ namespace Server.Network
 			{
 				throw new ArgumentNullException("buffer");
 			}
-			else if (!(offset >= 0 && offset < buffer.Length))
+
+			if (offset < 0 || offset >= buffer.Length)
 			{
-				throw new ArgumentOutOfRangeException(
-					"offset", offset, "Offset must be greater than or equal to zero and less than the size of the buffer.");
+				throw new ArgumentOutOfRangeException("offset", offset, "Offset must be greater than or equal to zero and less than the size of the buffer.");
 			}
-			else if (length < 0 || length > buffer.Length)
+
+			if (length < 0 || length > buffer.Length)
 			{
-				throw new ArgumentOutOfRangeException(
-					"length", length, "Length cannot be less than zero or greater than the size of the buffer.");
+				throw new ArgumentOutOfRangeException("length", length, "Length cannot be less than zero or greater than the size of the buffer.");
 			}
-			else if ((buffer.Length - offset) < length)
+
+			if (buffer.Length - offset < length)
 			{
 				throw new ArgumentException("Offset and length do not point to a valid segment within the buffer.");
 			}
 
-			var existingBytes = (_pending.Count * m_CoalesceBufferSize) + (_buffered == null ? 0 : _buffered.Length);
+			var existingBytes = (m_Pending.Count * m_CoalesceBufferSize) + m_Buffered?.Length;
 
-			if ((existingBytes + length) > PendingCap)
+			if (existingBytes + length > PendingCap)
 			{
 				throw new CapacityExceededException();
 			}
@@ -187,26 +172,27 @@ namespace Server.Network
 
 			while (length > 0)
 			{
-				if (_buffered == null)
+				if (m_Buffered == null)
 				{
 					// nothing yet buffered
-					_buffered = Gram.Acquire();
+					m_Buffered = Gram.Acquire();
 				}
 
-				var bytesWritten = _buffered.Write(buffer, offset, length);
+				var bytesWritten = m_Buffered.Write(buffer, offset, length);
 
 				offset += bytesWritten;
 				length -= bytesWritten;
 
-				if (_buffered.IsFull)
+				if (m_Buffered.IsFull)
 				{
-					if (_pending.Count == 0)
+					if (m_Pending.IsEmpty)
 					{
-						gram = _buffered;
+						gram = m_Buffered;
 					}
 
-					_pending.Enqueue(_buffered);
-					_buffered = null;
+					m_Pending.Enqueue(m_Buffered);
+
+					m_Buffered = null;
 				}
 			}
 
@@ -215,15 +201,12 @@ namespace Server.Network
 
 		public void Clear()
 		{
-			if (_buffered != null)
-			{
-				_buffered.Release();
-				_buffered = null;
-			}
+			m_Buffered?.Release();
+			m_Buffered = null;
 
-			while (_pending.Count > 0)
+			while (m_Pending.TryDequeue(out var gram))
 			{
-				_pending.Dequeue().Release();
+				gram?.Release();
 			}
 		}
 	}

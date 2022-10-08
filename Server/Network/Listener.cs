@@ -1,6 +1,7 @@
 #region References
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -12,22 +13,18 @@ namespace Server.Network
 {
 	public class Listener : IDisposable
 	{
-		private Socket m_Listener;
-		private PingListener _PingListener;
+		public static IPEndPoint[] EndPoints { get; set; }
 
-		private readonly Queue<Socket> m_Accepted;
-		private readonly object m_AcceptedSyncRoot;
+		private volatile Socket m_Listener;
+		private volatile PingListener m_PingListener;
+
+		private readonly ConcurrentQueue<Socket> m_Accepted;
 
 		private readonly AsyncCallback m_OnAccept;
 
-		private static readonly Socket[] m_EmptySockets = new Socket[0];
-
-		public static IPEndPoint[] EndPoints { get; set; }
-
 		public Listener(IPEndPoint ipep)
 		{
-			m_Accepted = new Queue<Socket>();
-			m_AcceptedSyncRoot = ((ICollection)m_Accepted).SyncRoot;
+			m_Accepted = new ConcurrentQueue<Socket>();
 
 			m_Listener = Bind(ipep);
 
@@ -37,7 +34,8 @@ namespace Server.Network
 			}
 
 			DisplayListener();
-			_PingListener = new PingListener(ipep);
+
+			m_PingListener = new PingListener(ipep);
 
 			m_OnAccept = OnAccept;
 
@@ -72,10 +70,8 @@ namespace Server.Network
 			}
 			catch (Exception e)
 			{
-				if (e is SocketException)
+				if (e is SocketException se)
 				{
-					var se = (SocketException)e;
-
 					if (se.ErrorCode == 10048)
 					{
 						// WSAEADDRINUSE
@@ -105,42 +101,32 @@ namespace Server.Network
 
 		private void DisplayListener()
 		{
-			var ipep = m_Listener.LocalEndPoint as IPEndPoint;
-
-			if (ipep == null)
+			if (m_Listener.LocalEndPoint is IPEndPoint ipep)
 			{
-				return;
-			}
-
-			if (ipep.Address.Equals(IPAddress.Any) || ipep.Address.Equals(IPAddress.IPv6Any))
-			{
-				var adapters = NetworkInterface.GetAllNetworkInterfaces();
-
-				foreach (var adapter in adapters)
+				if (ipep.Address.Equals(IPAddress.Any) || ipep.Address.Equals(IPAddress.IPv6Any))
 				{
-					var properties = adapter.GetIPProperties();
+					var adapters = NetworkInterface.GetAllNetworkInterfaces();
 
-					foreach (var unicast in properties.UnicastAddresses)
+					foreach (var adapter in adapters)
 					{
-						if (ipep.AddressFamily == unicast.Address.AddressFamily)
+						var properties = adapter.GetIPProperties();
+
+						foreach (var unicast in properties.UnicastAddresses)
 						{
-							Utility.PushColor(ConsoleColor.Green);
-							Console.WriteLine("Listening: {0}:{1}", unicast.Address, ipep.Port);
-							Utility.PopColor();
+							if (ipep.AddressFamily == unicast.Address.AddressFamily)
+							{
+								Utility.WriteLine(ConsoleColor.Green, $"Listening: {unicast.Address}:{ipep.Port}");
+							}
 						}
 					}
 				}
-			}
-			else
-			{
-				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine("Listening: {0}:{1}", ipep.Address, ipep.Port);
-				Utility.PopColor();
-			}
+				else
+				{
+					Utility.WriteLine(ConsoleColor.Green, $"Listening: {ipep.Address}:{ipep.Port}");
+				}
 
-			Utility.PushColor(ConsoleColor.DarkGreen);
-			Console.WriteLine("----------------------------------------------------------------------");
-			Utility.PopColor();
+				Utility.WriteLine(ConsoleColor.DarkGreen, new string('-', Console.BufferWidth));
+			}
 		}
 
 		private void OnAccept(IAsyncResult asyncResult)
@@ -206,10 +192,7 @@ namespace Server.Network
 
 		private void Enqueue(Socket socket)
 		{
-			lock (m_AcceptedSyncRoot)
-			{
-				m_Accepted.Enqueue(socket);
-			}
+			m_Accepted.Enqueue(socket);
 
 			Core.Set();
 		}
@@ -235,22 +218,22 @@ namespace Server.Network
 			}
 		}
 
-		public Socket[] Slice()
+		public IEnumerable<Socket> Slice()
 		{
-			Socket[] array;
-
-			lock (m_AcceptedSyncRoot)
+			if (m_Accepted.Count == 0)
 			{
-				if (m_Accepted.Count == 0)
-				{
-					return m_EmptySockets;
-				}
-
-				array = m_Accepted.ToArray();
-				m_Accepted.Clear();
+				yield break;
 			}
 
-			return array;
+			var count = m_Accepted.Count;
+
+			while (--count >= 0)
+			{
+				if (m_Accepted.TryDequeue(out var socket))
+				{
+					yield return socket;
+				}
+			}
 		}
 
 		public void Dispose()
@@ -262,13 +245,12 @@ namespace Server.Network
 				socket.Close();
 			}
 
-			if (_PingListener == null)
-			{
-				return;
-			}
+			var ping = Interlocked.Exchange(ref m_PingListener, null);
 
-			_PingListener.Dispose();
-			_PingListener = null;
+			if (ping != null)
+			{
+				ping.Dispose();
+			}
 		}
 	}
 }

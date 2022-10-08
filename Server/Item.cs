@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 using Server.ContextMenus;
 using Server.Items;
@@ -821,10 +823,8 @@ namespace Server
 		private ImplFlag m_Flags;
 
 		#region Packet caches
-		private Packet m_RemovePacket;
+		private RemoveItem m_RemovePacket;
 
-		private Packet m_OPLPacket;
-		private ObjectPropertyList m_PropertyList;
 		#endregion
 
 		public int TempFlags
@@ -2421,67 +2421,63 @@ namespace Server
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool Stackable { get => GetFlag(ImplFlag.Stackable); set => SetFlag(ImplFlag.Stackable, value); }
 
-		private readonly object _rpl = new object();
+		public RemoveItem RemovePacket => GetRemovePacket();
 
-		public Packet RemovePacket
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private RemoveItem GetRemovePacket()
 		{
-			get
+			if (m_RemovePacket == null)
 			{
-				if (m_RemovePacket == null)
-				{
-					lock (_rpl)
-					{
-						if (m_RemovePacket == null)
-						{
-							m_RemovePacket = new RemoveItem(this);
-							m_RemovePacket.SetStatic();
-						}
-					}
-				}
+				var remove = new RemoveItem(this);
 
-				return m_RemovePacket;
+				remove.SetStatic();
+
+				Interlocked.Exchange(ref m_RemovePacket, remove);
 			}
+
+			return m_RemovePacket;
 		}
 
-		private readonly object _opll = new object();
+		private OPLInfo m_OPLPacket;
 
-		public Packet OPLPacket
+		public OPLInfo OPLPacket => GetOPLPacket();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private OPLInfo GetOPLPacket()
 		{
-			get
+			if (m_OPLPacket == null)
 			{
-				if (m_OPLPacket == null)
-				{
-					lock (_opll)
-					{
-						if (m_OPLPacket == null)
-						{
-							m_OPLPacket = new OPLInfo(PropertyList);
-							m_OPLPacket.SetStatic();
-						}
-					}
-				}
+				var opl = new OPLInfo(PropertyList);
 
-				return m_OPLPacket;
+				opl.SetStatic();
+
+				m_OPLPacket = opl;
 			}
+
+			return m_OPLPacket;
 		}
 
-		public ObjectPropertyList PropertyList
+		private ObjectPropertyList m_PropertyList;
+
+		public ObjectPropertyList PropertyList => GetPropertyList();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private ObjectPropertyList GetPropertyList()
 		{
-			get
+			if (m_PropertyList == null)
 			{
-				if (m_PropertyList == null)
-				{
-					m_PropertyList = new ObjectPropertyList(this);
+				var list = new ObjectPropertyList(this);
 
-					GetProperties(m_PropertyList);
-					AppendChildProperties(m_PropertyList);
+				GetProperties(list);
+				AppendChildProperties(list);
 
-					m_PropertyList.Terminate();
-					m_PropertyList.SetStatic();
-				}
+				list.Terminate();
+				list.SetStatic();
 
-				return m_PropertyList;
+				m_PropertyList = list;
 			}
+
+			return m_PropertyList;
 		}
 
 		public virtual void AppendChildProperties(ObjectPropertyList list)
@@ -4524,48 +4520,48 @@ namespace Server
 
 						var openers = contParent.Openers;
 
-						if (openers != null)
+						if (openers?.Count > 0)
 						{
-							lock (openers)
+							var i = openers.Count;
+
+							while (--i >= 0)
 							{
-								for (var i = 0; i < openers.Count; ++i)
+								var mob = openers[i];
+
+								if (mob.Map != map || !mob.InUpdateRange(this))
 								{
-									var mob = openers[i];
-
-									if (mob.Map != map || !mob.InUpdateRange(this))
+									openers.RemoveAt(i);
+								}
+								else
+								{
+									if (mob == rootParent || mob == tradeRecip)
 									{
-										openers.RemoveAt(i--);
+										continue;
 									}
-									else
+
+									var ns = mob.NetState;
+
+									if (ns != null && ns.Seeded)
 									{
-										if (mob == rootParent || mob == tradeRecip)
+										if (mob.CanSee(this))
 										{
-											continue;
-										}
+											ContainerContentUpdate.Send(ns, this);
 
-										var ns = mob.NetState;
-
-										if (ns != null && ns.Seeded)
-										{
-											if (mob.CanSee(this))
+											if (sendOPLUpdate && mob.ViewOPL)
 											{
-												ContainerContentUpdate.Send(ns, this);
-
-												if (sendOPLUpdate && mob.ViewOPL)
-												{
-													ns.Send(OPLPacket);
-												}
+												ns.Send(OPLPacket);
 											}
 										}
 									}
 								}
+							}
 
-								if (openers.Count == 0)
-								{
-									contParent.Openers = null;
-								}
+							if (openers.Count == 0)
+							{
+								contParent.Openers = null;
 							}
 						}
+
 						return;
 					}
 

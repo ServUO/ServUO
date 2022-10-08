@@ -105,7 +105,9 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 
 using Server.Items;
 using Server.Network;
@@ -534,24 +536,21 @@ namespace Server
 
 		private readonly Sector[][] m_Sectors;
 
-		private readonly object m_TileLock = new object();
+		private volatile TileMatrix m_Tiles;
 
-		private TileMatrix m_Tiles;
+		public TileMatrix Tiles => GetTiles();
 
-		public TileMatrix Tiles
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private TileMatrix GetTiles()
 		{
-			get
+			if (m_Tiles == null)
 			{
-				if (m_Tiles != null)
-				{
-					return m_Tiles;
-				}
+				var tiles = new TileMatrix(this, FileIndex, MapID, Width, Height);
 
-				lock (m_TileLock)
-				{
-					return m_Tiles ?? (m_Tiles = new TileMatrix(this, FileIndex, MapID, Width, Height));
-				}
+				m_Tiles = tiles;
 			}
+
+			return m_Tiles;
 		}
 
 		public int MapID { get; }

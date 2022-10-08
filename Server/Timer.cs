@@ -1,5 +1,6 @@
 #region References
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -129,7 +130,7 @@ namespace Server
 
 		public class TimerThread
 		{
-			private static readonly Dictionary<Timer, TimerChangeEntry> m_Changed = new Dictionary<Timer, TimerChangeEntry>();
+			private static readonly ConcurrentDictionary<Timer, TimerChangeEntry> m_Changed = new ConcurrentDictionary<Timer, TimerChangeEntry>();
 
 			private static readonly long[] m_NextPriorities = new long[8];
 			private static readonly long[] m_PriorityDelays = { 0, 10, 25, 50, 250, 1000, 5000, 60000 };
@@ -218,30 +219,17 @@ namespace Server
 				{
 					m_Timer = null;
 
-					lock (m_InstancePool)
+					if (m_InstancePool.Count < 512) // Arbitrary
 					{
-						if (m_InstancePool.Count < 512) // Arbitrary
-						{
-							m_InstancePool.Enqueue(this);
-						}
+						m_InstancePool.Enqueue(this);
 					}
 				}
 
-				private static readonly Queue<TimerChangeEntry> m_InstancePool = new Queue<TimerChangeEntry>();
+				private static readonly ConcurrentQueue<TimerChangeEntry> m_InstancePool = new ConcurrentQueue<TimerChangeEntry>();
 
 				public static TimerChangeEntry GetInstance(Timer t, int newIndex, bool isAdd)
 				{
-					TimerChangeEntry e = null;
-
-					lock (m_InstancePool)
-					{
-						if (m_InstancePool.Count > 0)
-						{
-							e = m_InstancePool.Dequeue();
-						}
-					}
-
-					if (e != null)
+					if (m_InstancePool.TryDequeue(out var e))
 					{
 						e.m_Timer = t;
 						e.m_NewIndex = newIndex;
@@ -367,10 +355,7 @@ namespace Server
 
 							t.m_Queued = true;
 
-							lock (m_Queue)
-							{
-								m_Queue.Enqueue(t);
-							}
+							m_Queue.Enqueue(t);
 
 							loaded = true;
 
@@ -395,7 +380,8 @@ namespace Server
 			}
 		}
 
-		private static readonly Queue<Timer> m_Queue = new Queue<Timer>();
+		private static readonly ConcurrentQueue<Timer> m_Queue = new ConcurrentQueue<Timer>();
+
 		private static int m_BreakCount = 20000;
 
 		public static int BreakCount { get => m_BreakCount; set => m_BreakCount = value; }
@@ -404,28 +390,26 @@ namespace Server
 
 		public static void Slice()
 		{
-			lock (m_Queue)
+			var index = 0;
+
+			while (index < m_BreakCount && m_Queue.TryDequeue(out var t))
 			{
-				var index = 0;
+				var prof = t.GetProfile();
 
-				while (index < m_BreakCount && m_Queue.Count != 0)
+				if (prof != null)
 				{
-					var t = m_Queue.Dequeue();
-					var prof = t.GetProfile();
+					prof.Start();
+				}
 
-					if (prof != null)
-					{
-						prof.Start();
-					}
+				t.OnTick();
 
-					t.OnTick();
-					t.m_Queued = false;
-					++index;
+				t.m_Queued = false;
 
-					if (prof != null)
-					{
-						prof.Finish();
-					}
+				++index;
+
+				if (prof != null)
+				{
+					prof.Finish();
 				}
 			}
 		}

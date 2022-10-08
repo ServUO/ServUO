@@ -1,20 +1,37 @@
 #region References
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 
 using Server.Network;
 #endregion
 
 namespace Server.Gumps
 {
+	[Flags]
+	public enum GumpFlags
+	{
+		None = 0,
+
+		Disposable = 1 << 0,
+		Resizable = 1 << 1,
+		Dragable = 1 << 2,
+		Closable = 1 << 3,
+
+		Default = Disposable | Resizable | Dragable | Closable,
+
+		All = ~None
+	}
+
 	public class Gump
 	{
-		private static readonly Dictionary<Type, int> _TypeCodes = new Dictionary<Type, int>(0x100);
+		private static readonly Dictionary<Type, int> m_TypeCodes = new Dictionary<Type, int>(0x100);
 
 		public static int GetTypeID(Type type)
 		{
-			if (!_TypeCodes.TryGetValue(type, out var id))
+			if (!m_TypeCodes.TryGetValue(type, out var id))
 			{
 				unchecked
 				{
@@ -23,10 +40,12 @@ namespace Server.Gumps
 					var name = type.FullName;
 
 					for (var i = 0; i < name.Length; i++)
+					{
 						id = (id * 397) ^ name[i];
+					}
 				}
 
-				_TypeCodes[type] = id;
+				m_TypeCodes[type] = id;
 			}
 
 			return id;
@@ -38,18 +57,92 @@ namespace Server.Gumps
 
 		private static int m_NextSerial = 1;
 
-		private int m_Serial;
-		private int m_X, m_Y;
+		public List<GumpEntry> Entries { get; }
 
-		private bool m_Dragable = true;
-		private bool m_Closable = true;
-		private bool m_Resizable = true;
-		private bool m_Disposable = true;
+		private int m_TypeID;
 
-		public virtual int GetTypeID()
+		public int TypeID
 		{
-			return GetTypeID(GetType());
+			get => m_TypeID;
+			set
+			{
+				if (m_TypeID != value)
+				{
+					m_TypeID = value;
+
+					Invalidate();
+				}
+			}
 		}
+
+		private int m_Serial;
+
+		public int Serial
+		{
+			get => m_Serial;
+			set
+			{
+				if (m_Serial != value)
+				{
+					m_Serial = value;
+
+					Invalidate();
+				}
+			}
+		}
+
+		private int m_X;
+
+		public int X
+		{
+			get => m_X;
+			set
+			{
+				if (m_X != value)
+				{
+					m_X = value;
+
+					Invalidate();
+				}
+			}
+		}
+
+		private int m_Y;
+
+		public int Y
+		{
+			get => m_Y;
+			set
+			{
+				if (m_Y != value)
+				{
+					m_Y = value;
+
+					Invalidate();
+				}
+			}
+		}
+
+		private GumpFlags m_Flags;
+
+		public GumpFlags Flags
+		{
+			get => m_Flags;
+			set
+			{
+				if (m_Flags != value)
+				{
+					m_Flags = value;
+
+					Invalidate();
+				}
+			}
+		}
+
+		public bool Disposable { get => GetFlag(GumpFlags.Disposable); set => SetFlag(GumpFlags.Disposable, value); }
+		public bool Resizable { get => GetFlag(GumpFlags.Resizable); set => SetFlag(GumpFlags.Resizable, value); }
+		public bool Dragable { get => GetFlag(GumpFlags.Dragable); set => SetFlag(GumpFlags.Dragable, value); }
+		public bool Closable { get => GetFlag(GumpFlags.Closable); set => SetFlag(GumpFlags.Closable, value); }
 
 		public Gump(int x, int y)
 		{
@@ -58,6 +151,8 @@ namespace Server.Gumps
 				m_Serial = m_NextSerial++;
 			}
 			while (m_Serial == 0); // standard client apparently doesn't send a gump response packet if serial == 0
+
+			m_Flags = GumpFlags.Default;
 
 			m_X = x;
 			m_Y = y;
@@ -68,103 +163,30 @@ namespace Server.Gumps
 			m_Strings = new List<string>();
 		}
 
+		public virtual int GetTypeID()
+		{
+			return GetTypeID(GetType());
+		}
+
 		public virtual void Invalidate()
 		{
 			ReleasePackets();
 		}
 
-		public int TypeID { get; set; }
-
-		public List<GumpEntry> Entries { get; }
-
-		public int Serial
+		public bool GetFlag(GumpFlags flag)
 		{
-			get => m_Serial;
-			set
-			{
-				if (m_Serial != value)
-				{
-					m_Serial = value;
-					Invalidate();
-				}
-			}
+			return (Flags & flag) != 0;
 		}
 
-		public int X
+		public void SetFlag(GumpFlags flag, bool state)
 		{
-			get => m_X;
-			set
+			if (state)
 			{
-				if (m_X != value)
-				{
-					m_X = value;
-					Invalidate();
-				}
+				Flags |= flag;
 			}
-		}
-
-		public int Y
-		{
-			get => m_Y;
-			set
+			else
 			{
-				if (m_Y != value)
-				{
-					m_Y = value;
-					Invalidate();
-				}
-			}
-		}
-
-		public bool Disposable
-		{
-			get => m_Disposable;
-			set
-			{
-				if (m_Disposable != value)
-				{
-					m_Disposable = value;
-					Invalidate();
-				}
-			}
-		}
-
-		public bool Resizable
-		{
-			get => m_Resizable;
-			set
-			{
-				if (m_Resizable != value)
-				{
-					m_Resizable = value;
-					Invalidate();
-				}
-			}
-		}
-
-		public bool Dragable
-		{
-			get => m_Dragable;
-			set
-			{
-				if (m_Dragable != value)
-				{
-					m_Dragable = value;
-					Invalidate();
-				}
-			}
-		}
-
-		public bool Closable
-		{
-			get => m_Closable;
-			set
-			{
-				if (m_Closable != value)
-				{
-					m_Closable = value;
-					Invalidate();
-				}
+				Flags &= ~flag;
 			}
 		}
 
@@ -367,19 +389,20 @@ namespace Server.Gumps
 			else if (!Entries.Contains(g))
 			{
 				Invalidate();
+
 				Entries.Add(g);
 			}
 		}
 
 		public void Remove(GumpEntry g)
 		{
-			if (g == null || !Entries.Contains(g))
+			if (g == null || !Entries.Remove(g))
 			{
 				return;
 			}
 
 			Invalidate();
-			Entries.Remove(g);
+
 			g.Parent = null;
 		}
 
@@ -395,16 +418,20 @@ namespace Server.Gumps
 				var indexOf = m_Strings.IndexOf(value);
 
 				if (indexOf >= 0)
+				{
 					return indexOf;
+				}
 			}
 
 			m_Strings.Add(value);
+
 			return m_Strings.Count - 1;
 		}
 
 		public void SendTo(NetState state)
 		{
 			state.AddGump(this);
+
 			state.Send(GetPacketFor(state));
 		}
 
@@ -426,93 +453,81 @@ namespace Server.Gumps
 			return OpenPacket;
 		}
 
-		private readonly object m_OpenPacketLock = new object();
+		private DisplayGumpPacked m_OpenPacket;
 
-		private Packet m_OpenPacket;
+		public DisplayGumpPacked OpenPacket => GetOpenPacket();
 
-		public Packet OpenPacket
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private DisplayGumpPacked GetOpenPacket()
 		{
-			get
+			if (m_OpenPacket == null)
 			{
-				if (m_OpenPacket == null)
+				var disp = new DisplayGumpPacked(this);
+
+				if (!Dragable)
 				{
-					lock (m_OpenPacketLock)
-					{
-						if (m_OpenPacket == null)
-						{
-							IGumpWriter disp = new DisplayGumpPacked(this);
-
-							if (!m_Dragable)
-							{
-								disp.AppendLayout(m_NoMove);
-							}
-
-							if (!m_Closable)
-							{
-								disp.AppendLayout(m_NoClose);
-							}
-
-							if (!m_Disposable)
-							{
-								disp.AppendLayout(m_NoDispose);
-							}
-
-							if (!m_Resizable)
-							{
-								disp.AppendLayout(m_NoResize);
-							}
-
-							var count = Entries.Count;
-							GumpEntry e;
-
-							for (var i = 0; i < count; ++i)
-							{
-								e = Entries[i];
-
-								disp.AppendLayout(m_BeginLayout);
-								e.AppendTo(disp);
-								disp.AppendLayout(m_EndLayout);
-							}
-
-							disp.WriteStrings(m_Strings);
-
-							disp.Flush();
-
-							m_TextEntries = disp.TextEntries;
-							m_Switches = disp.Switches;
-
-							m_OpenPacket = (Packet)disp;
-							m_OpenPacket.SetStatic();
-						}
-					}
+					disp.AppendLayout(m_NoMove);
 				}
 
-				return m_OpenPacket;
+				if (!Closable)
+				{
+					disp.AppendLayout(m_NoClose);
+				}
+
+				if (!Disposable)
+				{
+					disp.AppendLayout(m_NoDispose);
+				}
+
+				if (!Resizable)
+				{
+					disp.AppendLayout(m_NoResize);
+				}
+
+				var count = Entries.Count;
+
+				GumpEntry e;
+
+				for (var i = 0; i < count; ++i)
+				{
+					e = Entries[i];
+
+					disp.AppendLayout(m_BeginLayout);
+					e.AppendTo(disp);
+					disp.AppendLayout(m_EndLayout);
+				}
+
+				disp.WriteStrings(m_Strings);
+
+				disp.Flush();
+				disp.SetStatic();
+
+				m_OpenPacket = disp;
+
+				m_TextEntries = disp.TextEntries;
+				m_Switches = disp.Switches;
 			}
+
+			return m_OpenPacket;
 		}
 
-		private readonly object m_ClosePacketLock = new object();
+		private CloseGump m_ClosePacket;
 
-		private Packet m_ClosePacket;
+		public CloseGump ClosePacket => GetClosePacket();
 
-		public Packet ClosePacket
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private CloseGump GetClosePacket()
 		{
-			get
+			if (m_ClosePacket == null)
 			{
-				if (m_ClosePacket == null)
-				{
-					lock (m_ClosePacketLock)
-					{
-						if (m_ClosePacket == null)
-						{
-							m_ClosePacket = new CloseGump(TypeID, 0);
-							m_ClosePacket.SetStatic();
-						}
-					}
-				}
+				var close = new CloseGump(m_TypeID, 0);
 
-				return m_ClosePacket;
+				close.SetStatic();
+
+				m_ClosePacket = close;
 			}
+
+			return m_ClosePacket;
 		}
 
 		public virtual void ReleasePackets()
