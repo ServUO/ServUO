@@ -402,9 +402,10 @@ namespace Server
 
 				inv /= 100.0;
 
-				var statsOffset = ((m_UseStatMods ? m_Owner.Owner.Str : m_Owner.Owner.RawStr) * m_Info.StrScale) +
-									 ((m_UseStatMods ? m_Owner.Owner.Dex : m_Owner.Owner.RawDex) * m_Info.DexScale) +
-									 ((m_UseStatMods ? m_Owner.Owner.Int : m_Owner.Owner.RawInt) * m_Info.IntScale);
+				var statsOffset = ((m_UseStatMods ? m_Owner.Owner.Str : m_Owner.Owner.RawStr) * m_Info.StrScale) 
+					            + ((m_UseStatMods ? m_Owner.Owner.Dex : m_Owner.Owner.RawDex) * m_Info.DexScale) 
+								+ ((m_UseStatMods ? m_Owner.Owner.Int : m_Owner.Owner.RawInt) * m_Info.IntScale);
+
 				var statTotal = m_Info.StatTotal * inv;
 
 				statsOffset *= inv;
@@ -444,6 +445,8 @@ namespace Server
 							bonusObey = 0.0;
 							bonusNotObey = 0.0;
 							value = mod.Value;
+
+							break;
 						}
 					}
 				}

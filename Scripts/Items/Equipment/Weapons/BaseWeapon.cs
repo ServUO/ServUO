@@ -874,7 +874,7 @@ namespace Server.Items
                     m_MageMod.Remove();
                 }
 
-                m_MageMod = new DefaultSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon);
+                m_MageMod = new EquipedSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon, this, from);
                 from.AddSkillMod(m_MageMod);
             }
 
@@ -999,7 +999,7 @@ namespace Server.Items
             if (Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > value)
                 value = Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon);
 
-            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + value);
+            m_MysticMod = new EquipedSkillMod(SkillName.Mysticism, true, -30 + value, this, from);
             from.AddSkillMod(m_MysticMod);
         }
 
@@ -3973,10 +3973,10 @@ namespace Server.Items
                             m_AosWeaponAttributes.MageWeapon = 30 - m_AosWeaponAttributes.MageWeapon;
                         }
 
-                        if (m_AosWeaponAttributes.MageWeapon != 0 && m_AosWeaponAttributes.MageWeapon != 30 && Parent is Mobile)
+                        if (m_AosWeaponAttributes.MageWeapon != 0 && m_AosWeaponAttributes.MageWeapon != 30 && Parent is Mobile mp1)
                         {
-                            m_MageMod = new DefaultSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon);
-                            ((Mobile)Parent).AddSkillMod(m_MageMod);
+                            m_MageMod = new EquipedSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon, this, mp1);
+                            mp1.AddSkillMod(m_MageMod);
                         }
 
                         if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
@@ -4046,10 +4046,10 @@ namespace Server.Items
                             m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
                         }
 
-                        if (m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
+                        if (m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30 && Parent is Mobile mp2)
                         {
-                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_ExtendedWeaponAttributes.MysticWeapon);
-                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
+                            m_MysticMod = new EquipedSkillMod(SkillName.Mysticism, true, -30 + m_ExtendedWeaponAttributes.MysticWeapon, this, mp2);
+                            mp2.AddSkillMod(m_MysticMod);
                         }
 
                         break;
