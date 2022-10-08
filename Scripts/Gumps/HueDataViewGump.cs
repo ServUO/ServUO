@@ -195,7 +195,7 @@ namespace Server.Gumps
 					{
 						var value = PropertiesGump.ValueToString(index);
 
-						AddEntryHtml(width, value.Trim('"'));
+						AddEntryLabel(width, value.Trim('"'));
 					}
 					else if (col.Key == "Color")
 					{
@@ -221,16 +221,16 @@ namespace Server.Gumps
 						{
 							var hex = color.ToArgb() & 0x00FFFFFF;
 
-							AddEntryHtml(width, $"#{hex:X6}");
+							AddEntryLabel(width, $"#{hex:X6}");
 						}
 						else
 						{
-							AddEntryHtml(width, "---");
+							AddEntryLabel(width, "---");
 						}
 					}
 					else if (col.Key == "Name" && !color.IsNamedColor)
 					{
-						AddEntryHtml(width, "---");
+						AddEntryLabel(width, "---");
 					}
 					else if (!color.IsEmpty && color.A > 0)
 					{
@@ -238,11 +238,21 @@ namespace Server.Gumps
 
 						var value = PropertiesGump.ValueToString(color, prop);
 
-						AddEntryHtml(width, value.Trim('"'));
+						if (col.Key == "R" || col.Key == "G" || col.Key == "B")
+						{
+							var s = value.IndexOf(' ');
+
+							if (s >= 0)
+							{
+								value = value.Substring(0, s);
+							}
+						}
+
+						AddEntryLabel(width, value.Trim('"'));
 					}
 					else
 					{
-						AddEntryHtml(width, "---");
+						AddEntryLabel(width, "---");
 					}
 				}
 
@@ -313,7 +323,7 @@ namespace Server.Gumps
 						offset += 44 - itemHeight;
 					}
 
-					AddItem(CurrentX, CurrentY + offset, itemID, m_ParentHue);
+					AddItem(CurrentX, CurrentY + offset, itemID, m_ParentHue > 0 ? m_ParentHue + 1 : 0);
 
 					IncreaseX(itemWidth + 6 - OffsetSize);
 

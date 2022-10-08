@@ -119,7 +119,7 @@ namespace Server.Gumps
 
 			foreach (var col in m_Columns)
 			{
-				AddEntryHtml(col.Value + (++i == 0 ? 40 : 0), col.Key);
+				AddEntryLabel(col.Value + (++i == 0 ? 40 : 0), col.Key);
 			}
 
 			AddEntryHeader(20);
@@ -200,11 +200,11 @@ namespace Server.Gumps
 
 						if (col.Key == "Colors")
 						{
-							AddEntryHtml(width, String.Empty);
+							AddEntryLabel(width, String.Empty);
 						}
 						else
 						{
-							AddEntryHtml(width, "---");
+							AddEntryLabel(width, "---");
 						}
 					}
 
