@@ -91,9 +91,7 @@ namespace Server.Misc
                 if (node.Name.Equals("entry") && node.Attributes["cidrmatch"] != null && node.Attributes["destination"] != null)
                 {
                     var cidrmatch = node.Attributes["cidrmatch"].Value;
-                    var cidrParts = cidrmatch.Split('/');
-                    IPAddress.TryParse(cidrParts[0], out var cidrAddress);
-                    Int32.TryParse(cidrParts[1], out var cidrLength);
+                    Utility.TryParseCIDR(cidrmatch, out var cidrAddress, out var cidrLength);
 
                     IPAddress net;
                     try

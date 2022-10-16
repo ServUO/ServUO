@@ -149,6 +149,23 @@ namespace Server
 			return sb.ToString();
 		}
 
+		public static bool TryParseCIDR(string cidr, out IPAddress cidrAddress, out int length)
+		{
+			var cidrParts = cidr.Split('/');
+			try
+			{
+				IPAddress.TryParse(cidrParts[0], out cidrAddress);
+				Int32.TryParse(cidrParts[1], out length);
+				return true;
+			}
+			catch
+			{
+				cidrAddress = null;
+				length = 0;
+				return false;
+			}
+		}
+
 		public static bool IPMatchCIDR(string cidr, IPAddress ip)
 		{
 			if (ip == null || ip.AddressFamily == AddressFamily.InterNetworkV6)
@@ -815,7 +832,7 @@ namespace Server
 
 		#region Random
 		/// <summary>
-		/// Enables or disables floating dice. 
+		/// Enables or disables floating dice.
 		/// Floating dice uses a double to obtain a lower average value range.
 		/// Consistent average values for [1,000,000 x 1d6+0] rolls: [Integral: 3.50]  [Floating: 2.25]
 		/// </summary>
@@ -862,7 +879,7 @@ namespace Server
 		}
 
 #if MONO
-		public static TEnum RandomEnum<TEnum>() where TEnum : struct, IConvertible            
+		public static TEnum RandomEnum<TEnum>() where TEnum : struct, IConvertible
 #else
 		public static TEnum RandomEnum<TEnum>() where TEnum : Enum
 #endif
@@ -874,7 +891,7 @@ namespace Server
 		}
 
 #if MONO
-		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : struct, IConvertible            
+		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : struct, IConvertible
 #else
 		public static TEnum RandomMinMax<TEnum>(TEnum min, TEnum max) where TEnum : Enum
 #endif

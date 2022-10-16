@@ -8,6 +8,8 @@
 /Scripts/obj
 /Application/bin
 /Application/obj
+/Tests/bin
+/Tests/obj
 
 # Common Directories
 /.vs
