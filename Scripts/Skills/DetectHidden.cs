@@ -183,7 +183,7 @@ namespace Server.SkillHandlers
 
         public static bool CanDetect(Mobile src, Mobile target, bool direct)
         {
-            if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false, false, true))
+            if (src?.Map == null || target?.Map == null || !src.CanBeHarmful(target, false, false, true))
             {
                 return false;
             }
@@ -208,7 +208,7 @@ namespace Server.SkillHandlers
             SpellHelper.CheckResponsible(ref src);
             SpellHelper.CheckResponsible(ref target);
 
-			if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false, false, true))
+			if (src?.Map == null || target?.Map == null || !src.CanBeHarmful(target, false, false, true))
 			{
 				return false;
 			}
