@@ -183,7 +183,7 @@ namespace Server.SkillHandlers
 
         public static bool CanDetect(Mobile src, Mobile target, bool direct)
         {
-            if (src.Map == null || target.Map == null || !src.CanBeHarmful(target, false, false, true))
+            if (src?.Map == null || target?.Map == null || !src.CanBeHarmful(target, false, false, true))
             {
                 return false;
             }
@@ -208,6 +208,29 @@ namespace Server.SkillHandlers
             SpellHelper.CheckResponsible(ref src);
             SpellHelper.CheckResponsible(ref target);
 
+			if (src?.Map == null || target?.Map == null || !src.CanBeHarmful(target, false, false, true))
+			{
+				return false;
+			}
+
+			// No invulnerable NPC's
+			if (src.Blessed || (src is BaseCreature && ((BaseCreature)src).IsInvulnerable))
+			{
+				return false;
+			}
+
+			if (target.Blessed || (target is BaseCreature && ((BaseCreature)target).IsInvulnerable))
+			{
+				return false;
+			}
+			
+			// pets shouldn't reveal their masters
+			if (src is BaseCreature sbc2 && sbc2.ControlMaster == target)
+			{
+				return false;
+			}
+			
+			
             if (src.Map.Rules == MapRules.FeluccaRules && direct)
             {
                 return !SpellHelper.IsGuildAllyOrParty(src, target);
