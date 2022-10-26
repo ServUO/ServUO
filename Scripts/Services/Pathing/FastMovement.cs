@@ -64,12 +64,12 @@ namespace Server.Movement
 			{
 				if (!IsOk(tiles[i], ourZ, ourTop))
 					return false;
+			}
 
-				foreach (var item in items)
-				{
-					if (!IsOk(m, item, ourZ, ourTop, ignoreDoors, ignoreSpellFields))
-						return false;
-				}
+			foreach (var item in items)
+			{
+				if (!IsOk(m, item, ourZ, ourTop, ignoreDoors, ignoreSpellFields))
+					return false;
 			}
 
 			return true;
