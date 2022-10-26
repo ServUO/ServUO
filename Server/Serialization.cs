@@ -429,7 +429,14 @@ namespace Server
 
 			if (value != null)
 			{
-				WriteEncodedULong(Convert.ToUInt64(value));
+				if ((int)value.GetTypeCode() % 2 == 1)
+				{
+					WriteEncodedLong(Convert.ToInt64(value));
+				}
+				else
+				{
+					WriteEncodedULong(Convert.ToUInt64(value));
+				}
 			}
 			else
 			{
@@ -1197,6 +1204,11 @@ namespace Server
 
 			if (type?.IsEnum == true)
 			{
+				if ((int)Type.GetTypeCode(type) % 2 == 1)
+				{
+					return (Enum)Enum.ToObject(type, unchecked((long)value));
+				}
+
 				return (Enum)Enum.ToObject(type, value);
 			}
 
@@ -1205,15 +1217,7 @@ namespace Server
 
 		public override T ReadEnum<T>()
 		{
-			var type = ReadObjectType() ?? typeof(T);
-			var value = ReadEncodedULong();
-
-			if (type?.IsEnum == true)
-			{
-				return (T)Enum.ToObject(type, value);
-			}
-
-			return default;
+			return (T)ReadEnum();
 		}
 
 		public override decimal ReadDecimal()
@@ -1753,7 +1757,14 @@ namespace Server
 
 			if (value != null)
 			{
-				WriteEncodedULong(Convert.ToUInt64(value));
+				if ((int)value.GetTypeCode() % 2 == 1)
+				{
+					WriteEncodedLong(Convert.ToInt64(value));
+				}
+				else
+				{
+					WriteEncodedULong(Convert.ToUInt64(value));
+				}
 			}
 			else
 			{

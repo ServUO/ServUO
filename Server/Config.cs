@@ -87,7 +87,12 @@ namespace Server
 
 			public override string ToString()
 			{
-				return String.Format("{0}.{1}{2}={3}", Scope, UseDefault ? "@" : "", Key, Value);
+				if (UseDefault)
+				{
+					return $"{Scope}.@{Key}={Value}";
+				}
+
+				return $"{Scope}.{Key}={Value}";
 			}
 
 			public override int GetHashCode()
@@ -222,10 +227,7 @@ namespace Server
 
 			_Initialized = true;
 
-			if (!Directory.Exists(_Path))
-			{
-				Directory.CreateDirectory(_Path);
-			}
+			Directory.CreateDirectory(_Path);
 
 			IEnumerable<string> files;
 
@@ -288,10 +290,7 @@ namespace Server
 
 		public static bool Load(string scope)
 		{
-			if (!Directory.Exists(_Path))
-			{
-				Directory.CreateDirectory(_Path);
-			}
+			Directory.CreateDirectory(_Path);
 
 			var success = false;
 
@@ -404,10 +403,7 @@ namespace Server
 		{
 			Load();
 
-			if (!Directory.Exists(_Path))
-			{
-				Directory.CreateDirectory(_Path);
-			}
+			Directory.CreateDirectory(_Path);
 
 			foreach (var g in _Entries.Values.GroupBy(e => e.File))
 			{
@@ -431,10 +427,7 @@ namespace Server
 				Load(scope);
 			}
 
-			if (!Directory.Exists(_Path))
-			{
-				Directory.CreateDirectory(_Path);
-			}
+			Directory.CreateDirectory(_Path);
 
 			foreach (var g in _Entries.Values.Where(e => Insensitive.Equals(e.Scope, scope)).GroupBy(e => e.File))
 			{
@@ -481,10 +474,7 @@ namespace Server
 
 			var dir = Path.GetDirectoryName(path);
 
-			if (!Directory.Exists(dir))
-			{
-				Directory.CreateDirectory(dir);
-			}
+			Directory.CreateDirectory(dir);
 
 			File.WriteAllText(path, content.ToString());
 		}
