@@ -30,6 +30,7 @@ namespace Server
 						--m_NextMobileQueued._Value;
 
 					s = m_NextMobileQueued;
+					--m_NextMobileQueued._Value;
 				}
 				else
 				{
@@ -37,6 +38,7 @@ namespace Server
 						++m_NextMobile._Value;
 
 					s = m_NextMobile;
+					++m_NextMobile._Value;
 				}
 
 				return s;
@@ -55,6 +57,7 @@ namespace Server
 						--m_NextItemQueued._Value;
 
 					s = m_NextItemQueued;
+					--m_NextItemQueued._Value;
 				}
 				else
 				{
@@ -62,6 +65,7 @@ namespace Server
 						++m_NextItem._Value;
 
 					s = m_NextItem;
+					++m_NextItem._Value;
 				}
 
 				return s;
