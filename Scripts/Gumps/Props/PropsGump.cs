@@ -490,7 +490,10 @@ namespace Server.Gumps
 
 			if (IsType(type, _TypeOfEnum))
 			{
-				_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
+				if (prop.PropertyType.IsDefined(typeof(FlagsAttribute), false))
+					_ = from.SendGump(new SetFlagListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
+				else
+					_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
 				return;
 			}
 
