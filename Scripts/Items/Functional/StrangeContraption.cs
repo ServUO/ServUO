@@ -128,12 +128,14 @@ namespace Server.Items
             {
                 StrangeContraptionAddon item = new StrangeContraptionAddon();
                 item.MoveToWorld(new Point3D(5668, 1925, 0), Map.Trammel);
+				InstanceTram = item; 
             }
 
             if (InstanceFel == null)
             {
                 StrangeContraptionAddon item = new StrangeContraptionAddon();
                 item.MoveToWorld(new Point3D(5668, 1925, 0), Map.Felucca);
+				InstanceFel = item;
             }
         }
 
