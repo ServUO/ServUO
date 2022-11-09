@@ -615,7 +615,7 @@ namespace Server
 
             if (!FindItem(822, 756, 56, Map.TerMur, mAltar))
             {
-                WeakEntityCollection.Add("ml", sAltar);
+				WeakEntityCollection.Add("ml", mAltar);
                 mAltar.MoveToWorld(new Point3D(822, 756, 56), Map.TerMur);
             }
 
