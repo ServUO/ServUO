@@ -80,22 +80,25 @@ namespace Server.Network
 				return 0;
 			}
 
-			if (m_Head < m_Tail)
+			if (buffer != null)
 			{
-				Buffer.BlockCopy(m_Buffer, m_Head, buffer, offset, size);
-			}
-			else
-			{
-				var rightLength = m_Buffer.Length - m_Head;
-
-				if (rightLength >= size)
+				if (m_Head < m_Tail)
 				{
 					Buffer.BlockCopy(m_Buffer, m_Head, buffer, offset, size);
 				}
 				else
 				{
-					Buffer.BlockCopy(m_Buffer, m_Head, buffer, offset, rightLength);
-					Buffer.BlockCopy(m_Buffer, 0, buffer, offset + rightLength, size - rightLength);
+					var rightLength = m_Buffer.Length - m_Head;
+
+					if (rightLength >= size)
+					{
+						Buffer.BlockCopy(m_Buffer, m_Head, buffer, offset, size);
+					}
+					else
+					{
+						Buffer.BlockCopy(m_Buffer, m_Head, buffer, offset, rightLength);
+						Buffer.BlockCopy(m_Buffer, 0, buffer, offset + rightLength, size - rightLength);
+					}
 				}
 			}
 

@@ -245,9 +245,13 @@ namespace Server.Network
 
 					if (handler == null)
 					{
+#if DEBUG
 						var data = new byte[length];
 						length = buffer.Dequeue(data, 0, length);
 						new PacketReader(data, length, false).Trace(ns);
+#else
+						length = buffer.Dequeue(null, 0, length);
+#endif
 						return;
 					}
 
@@ -315,7 +319,7 @@ namespace Server.Network
 							}
 							else
 							{
-								_ = buffer.Dequeue(new byte[packetLength], 0, packetLength);
+								_ = buffer.Dequeue(null, 0, packetLength);
 							}
 
 							return;
@@ -376,6 +380,10 @@ namespace Server.Network
 
 									return;
 								}
+							}
+							else
+							{
+								ns.SetPacketTime(packetID);
 							}
 						}
 						catch (Exception ex)
