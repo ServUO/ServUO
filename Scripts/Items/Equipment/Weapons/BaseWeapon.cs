@@ -5017,18 +5017,6 @@ namespace Server.Items
 
             GetDamageTypes(null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
 
-            #region Mondain's Legacy
-            if (chaos != 0)
-            {
-                list.Add(1072846, chaos.ToString()); // chaos damage ~1_val~%
-            }
-
-            if (direct != 0)
-            {
-                list.Add(1079978, direct.ToString()); // Direct Damage: ~1_PERCENT~%
-            }
-            #endregion
-
             if (phys != 0)
             {
                 list.Add(1060403, phys.ToString()); // physical damage ~1_val~%

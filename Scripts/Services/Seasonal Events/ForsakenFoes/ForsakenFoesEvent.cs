@@ -109,7 +109,7 @@ namespace Server.Engines.Fellowship
         #region Add/Remove decoration
         protected override void Generate()
         {
-            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeonCreature.xml");
+            string filename = XmlSpawner.LocateFile("Spawns/BlackthornDungeonCreature.xml");
             XmlSpawner.XmlUnLoadFromFile(filename, string.Empty, null, out int processedmaps, out int processedspawners);
 
             if (!Siege.SiegeShard)
@@ -218,7 +218,7 @@ namespace Server.Engines.Fellowship
 
         protected override void Remove()
         {
-            string filename = XmlSpawner.LocateFile("RevampedSpawns/BlackthornDungeonCreature.xml");
+            string filename = XmlSpawner.LocateFile("Spawns/BlackthornDungeonCreature.xml");
             XmlSpawner.XmlLoadFromFile(filename, string.Empty, null, Point3D.Zero, Map.Internal, false, 0, false, out int processedmaps, out int processedspawners);
 
             RemoveDecoration();

@@ -688,7 +688,7 @@ namespace Server.Engines.CannedEvil
                 Respawn();
             }
 
-            if (TimerRunning && _NextGhostCheck < DateTime.UtcNow)
+            if (TimerRunning && _NextGhostCheck < DateTime.UtcNow && m_Region != null)
             {
                 foreach (PlayerMobile ghost in m_Region.AllPlayers.OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
                 {

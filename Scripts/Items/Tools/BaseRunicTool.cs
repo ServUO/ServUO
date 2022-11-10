@@ -201,6 +201,11 @@ namespace Server.Items
             ApplyAttributesTo(pole, true, 0, attributeCount, min, max);
         }
 
+		public static void ApplyAttributesTo(FishingPole pole, int attributeCount, int min, int max)
+		{
+			ApplyAttributesTo(pole, false, 0, attributeCount, min, max);
+		}
+
         public static void ApplyAttributesTo(FishingPole pole, bool playerMade, int luckChance, int attributeCount, int min, int max)
         {
             int delta;

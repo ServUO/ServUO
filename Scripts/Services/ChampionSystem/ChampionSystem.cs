@@ -392,7 +392,7 @@ namespace Server.Engines.CannedEvil
 				{
 					var spawn = AllSpawns[i];
 
-					AddLabel(gTab[1], top, gFontHue, spawn.SpawnName);
+					AddLabel(gTab[1], top, gFontHue, spawn.SpawnName ?? "None");
 					AddLabel(gTab[2], top, gFontHue, spawn.GroupName ?? "None");
 					AddLabel(gTab[3], top, gFontHue, spawn.X.ToString());
 					AddLabel(gTab[4], top, gFontHue, spawn.Y.ToString());
