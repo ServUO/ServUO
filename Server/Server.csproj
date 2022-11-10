@@ -10,8 +10,8 @@
     <AssemblyName>ServUO</AssemblyName>
     <ApplicationIcon>servuo.ico</ApplicationIcon>
     <StartupObject>Server.Core</StartupObject>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <RuntimeIdentifiers>win7-x64;win7-x86;ubuntu.16.10-x64</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
