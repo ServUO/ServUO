@@ -5962,7 +5962,7 @@ namespace Server.Mobiles
 			return (running ? RunFoot : WalkFoot);
 		}
 
-		public static bool MovementThrottle_Callback(NetState ns, out bool drop)
+		public static bool MovementThrottle_Callback(byte packetID, NetState ns, out bool drop)
 		{
 			drop = false;
 

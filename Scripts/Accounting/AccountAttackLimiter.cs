@@ -20,7 +20,7 @@ namespace Server.Accounting
             PacketHandlers.RegisterThrottler(0xCF, new ThrottlePacketCallback(Throttle_Callback));
         }
 
-        public static bool Throttle_Callback(NetState ns, out bool drop)
+        public static bool Throttle_Callback(byte packetID, NetState ns, out bool drop)
         {
             drop = false;
 

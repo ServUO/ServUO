@@ -235,10 +235,14 @@ namespace Server.Network
 
 					if (handler == null)
 					{
-						var data = new byte[length];
+#if DEBUG
+                        var data = new byte[length];
 						length = buffer.Dequeue(data, 0, length);
 						new PacketReader(data, length, false).Trace(ns);
-						return;
+#else
+                        buffer.Dequeue(null, 0, length);
+#endif
+                        return;
 					}
 
 					int packetLength = handler.Length;
@@ -295,7 +299,7 @@ namespace Server.Network
 					{
 						bool drop;
 
-						if (!throttler(ns, out drop))
+						if (!throttler((byte)packetID, ns, out drop))
 						{
 							if (!drop)
 							{
@@ -303,7 +307,7 @@ namespace Server.Network
 							}
                             else
                             {
-                                buffer.Dequeue(new byte[packetLength], 0, packetLength);
+                                buffer.Dequeue(null, 0, packetLength);
                             }
 
 							return;
@@ -340,6 +344,8 @@ namespace Server.Network
 						PacketReader r = new PacketReader(packetBuffer, packetLength, handler.Length != 0);
 
 						handler.OnReceive(ns, r);
+
+                        ns.SetPacketTime((byte)packetID);
 
 						if (BufferSize >= packetLength)
 						{
