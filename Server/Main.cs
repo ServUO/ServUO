@@ -467,14 +467,14 @@ namespace Server
 			get
 			{
 				var t = 0f;
-				var i = _CycleIndex;
+				var i = _CycleIndex % _CyclesPerSecond.Length;
 
 				while (--i >= 0)
 				{
 					t += _CyclesPerSecond[i];
 				}
 
-				return t / (_CycleIndex + 1);
+				return t / ( (_CycleIndex % _CyclesPerSecond.Length) + 1);
 			}
 		}
 

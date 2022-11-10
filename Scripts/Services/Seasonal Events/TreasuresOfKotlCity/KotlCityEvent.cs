@@ -21,7 +21,7 @@ namespace Server.Engines.TreasuresOfKotlCity
 
         protected override void Generate()
         {
-            CommandSystem.Handle(null, CommandSystem.Prefix + "XmlLoad Spawns/TreasuresOfKotl.xml");
+			Server.Mobiles.XmlSpawner.XmlLoadFromFile("Spawns/TreasuresOfKotl.xml", "", false, out int processedmaps, out int processedspawners);
 
             Map map = Map.TerMur;
 
@@ -31,7 +31,7 @@ namespace Server.Engines.TreasuresOfKotlCity
                 door.MoveToWorld(new Point3D(610, 2319, 0), map);
             }
 
-            if (!FindItem<WheelsOfTime>(new Point3D(595, 2289, 8), map))
+            if (!FindItem<KotlCityPuzzle>(new Point3D(595, 2289, 8), map))
             {
                 KotlCityPuzzle puzzle = new KotlCityPuzzle();
                 puzzle.MoveToWorld(new Point3D(595, 2289, 8), map);
