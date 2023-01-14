@@ -246,10 +246,7 @@ namespace Server
 
 			public static void Change(Timer t, int newIndex, bool isAdd)
 			{
-				lock (m_Changed)
-				{
-					m_Changed[t] = TimerChangeEntry.GetInstance(t, newIndex, isAdd);
-				}
+				m_Changed[t] = TimerChangeEntry.GetInstance(t, newIndex, isAdd);
 
 				m_Signal.Set();
 			}
@@ -271,41 +268,38 @@ namespace Server
 
 			private static void ProcessChanged()
 			{
-				lock (m_Changed)
+				var curTicks = Core.TickCount;
+
+				foreach (var tce in m_Changed.Values)
 				{
-					var curTicks = Core.TickCount;
+					var timer = tce.m_Timer;
+					var newIndex = tce.m_NewIndex;
 
-					foreach (var tce in m_Changed.Values)
+					if (timer.m_List != null)
 					{
-						var timer = tce.m_Timer;
-						var newIndex = tce.m_NewIndex;
-
-						if (timer.m_List != null)
-						{
-							timer.m_List.Remove(timer);
-						}
-
-						if (tce.m_IsAdd)
-						{
-							timer.m_Next = curTicks + timer.m_Delay;
-							timer.m_Index = 0;
-						}
-
-						if (newIndex >= 0)
-						{
-							timer.m_List = m_Timers[newIndex];
-							timer.m_List.Add(timer);
-						}
-						else
-						{
-							timer.m_List = null;
-						}
-
-						tce.Free();
+						timer.m_List.Remove(timer);
 					}
 
-					m_Changed.Clear();
+					if (tce.m_IsAdd)
+					{
+						timer.m_Next = curTicks + timer.m_Delay;
+						timer.m_Index = 0;
+					}
+
+					if (newIndex >= 0)
+					{
+						timer.m_List = m_Timers[newIndex];
+						timer.m_List.Add(timer);
+					}
+					else
+					{
+						timer.m_List = null;
+					}
+
+					tce.Free();
 				}
+
+				m_Changed.Clear();
 			}
 
 			private static readonly AutoResetEvent m_Signal = new AutoResetEvent(false);
