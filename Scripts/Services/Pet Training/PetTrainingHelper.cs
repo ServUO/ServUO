@@ -94,7 +94,7 @@ namespace Server.Mobiles
         Tokuno1 = Tokuno | Chivalry | Discordance | MageryMastery | Mysticism | Poisoning | Spellweaving,
         Dragon1 = Bashing | BattleDefense | Chivalry | Discordance | MageryMastery | Mysticism | Piercing | Poisoning | Slashing | Spellweaving | WrestlingMastery,
         Dragon2 = Bashing | Chivalry | Discordance | MageryMastery | Mysticism | Piercing | Poisoning | Slashing | Spellweaving | WrestlingMastery,
-        ColdDrake = Chivalry | Discordance | Poisoning | Mysticism | Spellweaving,
+        ColdDrake = Chivalry | Discordance | Poisoning | MageryMastery | Mysticism | Spellweaving,
         Cusidhe = ColdDrake | WrestlingMastery,
         Wolf = Bashing | Tokuno | Necromage | Necromancy | Piercing | Poisoning | Slashing | WrestlingMastery,
         DragonWolf = Bashing | BattleDefense | Piercing | Poisoning | Slashing | WrestlingMastery,
