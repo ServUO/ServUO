@@ -54,7 +54,7 @@ namespace Server.PathAlgorithms.FastAStar
 
             m_Goal = goal;
 
-		    m_xOffset = (int)Math.Ceiling( (start.X + goal.X - AreaSize) / 2.0 );
+	    m_xOffset = (int)Math.Ceiling( (start.X + goal.X - AreaSize) / 2.0 );
             m_yOffset = (int)Math.Ceiling( (start.Y + goal.Y - AreaSize) / 2.0 );
 
             int fromNode = GetIndex(start.X, start.Y, start.Z);
