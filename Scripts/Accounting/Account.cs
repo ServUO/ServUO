@@ -1373,9 +1373,7 @@ namespace Server.Accounting
 				return false;
 			}
 
-			if (Sovereigns + amount < Int32.MaxValue)
-
-				Sovereigns = amount;
+			Sovereigns += amount;
 			return true;
 		}
 
@@ -1399,6 +1397,7 @@ namespace Server.Accounting
 		{
 			return Sovereigns >= amount;
 		}
+		
 		#endregion
 	}
 }
