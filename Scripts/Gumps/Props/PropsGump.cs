@@ -460,17 +460,11 @@ namespace Server.Gumps
                                         ((IDynamicEnum)prop.GetValue(m_Object, null)).Values));
                             }
                             else if (IsType(type, _TypeOfEnum))
-                            {
-                                from.SendGump(
-                                    new SetListOptionGump(
-                                        prop,
-                                        from,
-                                        m_Object,
-                                        m_Stack,
-                                        m_Page,
-                                        m_List,
-                                        Enum.GetNames(type),
-                                        GetObjects(Enum.GetValues(type))));
+							{
+								if (prop.PropertyType.IsDefined(typeof(FlagsAttribute), false))
+									from.SendGump(new SetFlagListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
+								else
+									from.SendGump(new SetListOptionGump(prop, from,m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
                             }
                             else if (IsType(type, _TypeOfBool))
                             {
