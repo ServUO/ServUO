@@ -8,6 +8,10 @@ using System.Reflection;
 namespace Server
 {
 	[AttributeUsage(AttributeTargets.Property)]
+	public class FlagsPropertyAttribute : Attribute
+	{ }
+
+	[AttributeUsage(AttributeTargets.Property)]
 	public class HueAttribute : Attribute
 	{ }
 

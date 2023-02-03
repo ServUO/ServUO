@@ -90,6 +90,8 @@ namespace Server.Gumps
 		private static readonly Type _TypeOfCustomEnum = typeof(CustomEnumAttribute);
 		private static readonly Type _TypeOfIDynamicEnum = typeof(IDynamicEnum);
 		private static readonly Type _TypeOfEnum = typeof(Enum);
+		private static readonly Type _TypeOfFlags = typeof(FlagsAttribute);
+		private static readonly Type _TypeOfFlagsProp = typeof(FlagsPropertyAttribute);
 		private static readonly Type _TypeOfBool = typeof(bool);
 		private static readonly Type _TypeOfString = typeof(string);
 		private static readonly Type _TypeOfText = typeof(TextDefinition);
@@ -98,10 +100,9 @@ namespace Server.Gumps
 		private static readonly Type _TypeOfSkills = typeof(Skills);
 		private static readonly Type _TypeOfPropertyObject = typeof(PropertyObjectAttribute);
 		private static readonly Type _TypeOfNoSort = typeof(NoSortAttribute);
-		private static readonly Type _TypeofDateTime = typeof(DateTime);
-		private static readonly Type _TypeofColor = typeof(Color);
-		private static readonly Type _TypeofAccount = typeof(IAccount);
-		private static readonly Type _TypeOfCPA = typeof(CPA);
+		private static readonly Type _TypeOfDateTime = typeof(DateTime);
+		private static readonly Type _TypeOfColor = typeof(Color);
+		private static readonly Type _TypeOfAccount = typeof(IAccount);
 		private static readonly Type _TypeOfObject = typeof(object);
 
 		private static readonly Type[] _TypeOfReal =
@@ -490,7 +491,15 @@ namespace Server.Gumps
 
 			if (IsType(type, _TypeOfEnum))
 			{
-				_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
+				if (HasAttribute(type, _TypeOfFlags, false) && HasAttribute(prop, _TypeOfFlagsProp, false))
+				{
+					_ = from.SendGump(new SetFlagsEnumGump(prop, from, m_Object, m_Stack, m_Page, m_List));
+				}
+				else
+				{	
+					_ = from.SendGump(new SetListOptionGump(prop, from, m_Object, m_Stack, m_Page, m_List, Enum.GetNames(type), GetObjects(Enum.GetValues(type))));
+				}
+				
 				return;
 			}
 
@@ -512,7 +521,7 @@ namespace Server.Gumps
 				return;
 			}
 
-			if (IsType(type, _TypeofDateTime))
+			if (IsType(type, _TypeOfDateTime))
 			{
 				_ = from.SendGump(new SetDateTimeGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
@@ -531,13 +540,13 @@ namespace Server.Gumps
 				return;
 			}
 
-			if (IsType(type, _TypeofColor))
+			if (IsType(type, _TypeOfColor))
 			{
 				_ = from.SendGump(new SetColorGump(prop, from, m_Object, m_Stack, m_Page, m_List));
 				return;
 			}
 
-			if (IsType(type, _TypeofAccount))
+			if (IsType(type, _TypeOfAccount))
 			{
 				_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
 				return;
@@ -547,14 +556,22 @@ namespace Server.Gumps
 			{
 				var obj = prop.GetValue(m_Object, null);
 
-				_ = from.SendGump(obj != null ? new PropertiesGump(from, obj, m_Stack, new StackEntry(m_Object, prop)) : new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
+				if (obj != null)
+				{
+					_ = from.SendGump(new PropertiesGump(from, obj, m_Stack, new StackEntry(m_Object, prop)));
+				}
+				else
+				{
+					_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
+				}
+
 				return;
 			}
 
 			_ = from.SendGump(new PropertiesGump(from, m_Object, m_Stack, m_List, m_Page));
 		}
 
-		private static object[] GetObjects(Array a)
+		public static object[] GetObjects(Array a)
 		{
 			var list = new object[a.Length];
 
@@ -566,12 +583,24 @@ namespace Server.Gumps
 			return list;
 		}
 
-		private static bool IsCustomEnum(Type type)
+		public static T[] GetObjects<T>(Array a)
+		{
+			var list = new T[a.Length];
+
+			for (var i = 0; i < list.Length; ++i)
+			{
+				list[i] = (T)a.GetValue(i);
+			}
+
+			return list;
+		}
+
+		public static bool IsCustomEnum(Type type)
 		{
 			return type.IsDefined(_TypeOfCustomEnum, false);
 		}
 
-		private static string[] GetCustomEnumNames(Type type)
+		public static string[] GetCustomEnumNames(Type type)
 		{
 			var attrs = type.GetCustomAttributes(_TypeOfCustomEnum, false);
 
@@ -588,29 +617,29 @@ namespace Server.Gumps
 			return ce.Names;
 		}
 
-		private static bool HasAttribute(Type type, Type check, bool inherit)
+		public static bool HasAttribute(PropertyInfo prop, Type check, bool inherit)
 		{
-			return type.GetCustomAttributes(check, inherit).Length > 0;
+			return prop.GetCustomAttribute(check, inherit) != null;
 		}
 
-		private static bool IsType(Type type, Type check)
+		public static bool HasAttribute(Type type, Type check, bool inherit)
+		{
+			return type.IsDefined(check, inherit);
+		}
+
+		public static bool IsType(Type type, Type check)
 		{
 			return type == check || (check.IsInterface ? check.IsAssignableFrom(type) : type.IsSubclassOf(check));
 		}
 
-		private static bool IsType(Type type, IEnumerable<Type> check)
+		public static bool IsType(Type type, IEnumerable<Type> check)
 		{
 			return check.Any(t => IsType(type, t));
 		}
 
-		private static CPA GetCPA(PropertyInfo prop)
+		public static CPA GetCPA(PropertyInfo prop)
 		{
-			foreach (var attr in prop.GetCustomAttributes<CPA>(false))
-			{
-				return attr;
-			}
-
-			return null;
+			return prop.GetCustomAttribute<CPA>(false);
 		}
 
 		private void Initialize(int page)
