@@ -342,8 +342,8 @@ namespace Server.Items
                             {
                                 GiveItem(from, new ScrollOfTranscendence(Skill, Needed));
                                 from.SendLocalizedMessage(1113145); // You've completed your binding and received an upgraded version of your scroll!
-								sot.Delete();
-								Delete();
+				sot.Delete();
+				Delete();
                             }
                             else if (newValue > Needed)
                             {
