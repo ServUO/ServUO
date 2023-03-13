@@ -235,7 +235,7 @@ namespace Server.Items
             }
             set
             {
-                m_IsRewardItem = value;
+                m_East = value;
                 InvalidateProperties();
             }
         }
