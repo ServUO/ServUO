@@ -35,14 +35,18 @@ namespace Server.Spells.SkillMasteries
                 int duration = 120;
                 double skill = ((Caster.Skills[CastSkill].Value + Caster.Skills[DamageSkill].Value) / 2.1) + GetMasteryLevel() * 2;
 
-                if (skill >= 120)
-                    duration = 30;
-
-                if (skill >= 100)
-                    duration = 60;
-
-                if (duration >= 60)
-                    duration = 90;
+                if (skill >= 120) 
+                {
+                duration = 30;
+                }
+                else if (skill >= 100)
+                {
+                duration = 60;
+                }
+                else if (duration >= 60)
+                {
+                duration = 90;
+                }
 
                 AddToCooldown(TimeSpan.FromMinutes(duration));
 
