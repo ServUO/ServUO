@@ -41,6 +41,8 @@ namespace Server.Misc
 
         public static readonly string Address = Config.Get("Server.Address", default(string));
 
+        public static readonly string PrivateAddress = Config.Get("Server.PrivateAddress", default(string));
+
         public static readonly bool AutoDetect = Config.Get("Server.AutoDetect", true);
 
         public static string ServerName = Config.Get("Server.Name", "My Shard");
@@ -85,6 +87,10 @@ namespace Server.Misc
                     if (!IsPrivateNetwork(ipep.Address) && _PublicAddress != null)
                     {
                         localAddress = _PublicAddress;
+                    }
+                    else if (PrivateAddress != null)
+                    {
+                        Resolve(PrivateAddress, out localAddress);
                     }
                 }
 
