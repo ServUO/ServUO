@@ -19,128 +19,15 @@ namespace Server.Multis
             m_ItemTable = CreateTable(TileData.MaxItemValue);
             m_MultiTable = CreateTable(0x4000);
 
-            LoadItems(
-                "Data/Components/walls.txt",
-                //
-                "South1",
-                "South2",
-                "South3",
-                "Corner",
-                "East1",
-                "East2",
-                "East3",
-                "Post",
-                "WindowS",
-                "AltWindowS",
-                "WindowE",
-                "AltWindowE",
-                "SecondAltWindowS",
-                "SecondAltWindowE");
+            LoadItems("walls.txt", "South1", "South2", "South3", "Corner", "East1", "East2", "East3", "Post", "WindowS", "AltWindowS", "WindowE", "AltWindowE", "SecondAltWindowS", "SecondAltWindowE");
+            LoadItems("teleprts.txt", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16");
+            LoadItems("stairs.txt", "Block", "North", "East", "South", "West", "Squared1", "Squared2", "Rounded1", "Rounded2");
+            LoadItems("roof.txt", "North", "East", "South", "West", "NSCrosspiece", "EWCrosspiece", "NDent", "EDent", "SDent", "WDent", "NTPiece", "ETPiece", "STPiece", "WTPiece", "XPiece", "Extra Piece");
+            LoadItems("floors.txt", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "F13", "F14", "F15", "F16");
+            LoadItems("misc.txt", "Piece1", "Piece2", "Piece3", "Piece4", "Piece5", "Piece6", "Piece7", "Piece8");
+            LoadItems("doors.txt", "Piece1", "Piece2", "Piece3", "Piece4", "Piece5", "Piece6", "Piece7", "Piece8");
 
-            LoadItems(
-                "Data/Components/teleprts.txt",
-                //
-                "F1",
-                "F2",
-                "F3",
-                "F4",
-                "F5",
-                "F6",
-                "F7",
-                "F8",
-                "F9",
-                "F10",
-                "F11",
-                "F12",
-                "F13",
-                "F14",
-                "F15",
-                "F16");
-
-            LoadItems(
-                "Data/Components/stairs.txt",
-                //
-                "Block",
-                "North",
-                "East",
-                "South",
-                "West",
-                "Squared1",
-                "Squared2",
-                "Rounded1",
-                "Rounded2");
-
-            LoadItems(
-                "Data/Components/roof.txt",
-                //
-                "North",
-                "East",
-                "South",
-                "West",
-                "NSCrosspiece",
-                "EWCrosspiece",
-                "NDent",
-                "EDent",
-                "SDent",
-                "WDent",
-                "NTPiece",
-                "ETPiece",
-                "STPiece",
-                "WTPiece",
-                "XPiece",
-                "Extra Piece");
-
-            LoadItems(
-                "Data/Components/floors.txt",
-                //
-                "F1",
-                "F2",
-                "F3",
-                "F4",
-                "F5",
-                "F6",
-                "F7",
-                "F8",
-                "F9",
-                "F10",
-                "F11",
-                "F12",
-                "F13",
-                "F14",
-                "F15",
-                "F16");
-
-            LoadItems(
-                "Data/Components/misc.txt",
-                //
-                "Piece1",
-                "Piece2",
-                "Piece3",
-                "Piece4",
-                "Piece5",
-                "Piece6",
-                "Piece7",
-                "Piece8");
-
-            LoadItems(
-                "Data/Components/doors.txt",
-                //
-                "Piece1",
-                "Piece2",
-                "Piece3",
-                "Piece4",
-                "Piece5",
-                "Piece6",
-                "Piece7",
-                "Piece8");
-
-            LoadMultis(
-                "Data/Components/stairs.txt",
-                //
-                "MultiNorth",
-                "MultiEast",
-                "MultiSouth",
-                "MultiWest");
+            LoadMultis("stairs.txt", "MultiNorth", "MultiEast", "MultiSouth", "MultiWest");
         }
 
         public bool IsItemValid(int itemID)
@@ -185,15 +72,25 @@ namespace Server.Multis
             return table;
         }
 
-        private void LoadItems(string path, params string[] itemColumns)
+        private void LoadItems(string fileName, params string[] itemColumns)
         {
-            LoadSpreadsheet(m_ItemTable, path, itemColumns);
+			var path = Core.FindDataFile(fileName);
+
+			if (path != null)
+			{
+				LoadSpreadsheet(m_ItemTable, path, itemColumns);
+			}
         }
 
-        private void LoadMultis(string path, params string[] multiColumns)
-        {
-            LoadSpreadsheet(m_MultiTable, path, multiColumns);
-        }
+        private void LoadMultis(string fileName, params string[] multiColumns)
+		{
+			var path = Core.FindDataFile(fileName);
+
+			if (path != null)
+			{
+				LoadSpreadsheet(m_MultiTable, path, multiColumns);
+			}
+		}
 
         private static void LoadSpreadsheet(int[] table, string path, params string[] tileColumns)
         {

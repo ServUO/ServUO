@@ -9,7 +9,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Archer)
         {
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = Utility.RandomBool())
             {

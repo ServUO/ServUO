@@ -11,7 +11,7 @@ namespace Server
 {
 	public sealed class VirtualCheck : Item
 	{
-		public static bool UseEditGump = false;
+		public static bool UseEditGump = true;
 
 		public override bool IsVirtualItem => true;
 
@@ -103,6 +103,11 @@ namespace Server
 
 				base.OnDoubleClickSecureTrade(from);
 			}
+		}
+
+		public override void OnSingleClick(Mobile from)
+		{
+			LabelTo(from, "Offer: {0:#,0} platinum, {1:#,0} gold", Plat, Gold);
 		}
 
 		public override void GetProperties(ObjectPropertyList list)
@@ -313,22 +318,25 @@ namespace Server
 					case Buttons.Clear:
 						{
 							_Plat = _Gold = 0;
+
 							refresh = true;
 						}
 						break;
 					case Buttons.Accept:
 						{
-							var platText = info.GetTextEntry(0).Text;
-							var goldText = info.GetTextEntry(1).Text;
+							var platText = info.GetTextEntry(0)?.Text;
+							var goldText = info.GetTextEntry(1)?.Text;
 
 							if (!Int32.TryParse(platText, out _Plat))
 							{
 								User.SendMessage("That is not a valid amount of platinum.");
+
 								refresh = true;
 							}
 							else if (!Int32.TryParse(goldText, out _Gold))
 							{
 								User.SendMessage("That is not a valid amount of gold.");
+
 								refresh = true;
 							}
 							else
@@ -340,13 +348,16 @@ namespace Server
 								{
 									_Plat = User.Account.TotalPlat;
 									_Gold = User.Account.TotalGold;
+
 									User.SendMessage("You do not have that much currency.");
+
 									refresh = true;
 								}
 								else
 								{
 									Check.Plat = _Plat;
 									Check.Gold = _Gold;
+
 									updated = true;
 								}
 							}
@@ -355,12 +366,14 @@ namespace Server
 					case Buttons.AllPlat:
 						{
 							_Plat = User.Account.TotalPlat;
+
 							refresh = true;
 						}
 						break;
 					case Buttons.AllGold:
 						{
 							_Gold = User.Account.TotalGold;
+
 							refresh = true;
 						}
 						break;

@@ -47,7 +47,7 @@ namespace Server.Engines.TreasuresOfDoom
             Female = true;
 
             SpeechHue = 0x3B2;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Body = 0x191;
         }
 

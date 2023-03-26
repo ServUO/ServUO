@@ -120,7 +120,7 @@ namespace Server.Items
                                 ThrowTarget targ = m.Target as ThrowTarget;
 
                                 if (targ != null && targ.Bomb == this)
-                                    Target.Cancel(m);
+									targ.Cancel(m, TargetCancelType.Timeout);
                             }
 
                             m_Users.Clear();

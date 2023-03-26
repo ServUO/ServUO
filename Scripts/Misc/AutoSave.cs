@@ -1,182 +1,264 @@
-using Server.Commands;
 using System;
 using System.IO;
 
+using Server.Commands;
+
 namespace Server.Misc
 {
-    public static class AutoSave
-    {
-        private static readonly string[] m_Backups = new[]
-        {
-            "Third Backup",
-            "Second Backup",
-            "Most Recent"
-        };
+	public static class AutoSave
+	{
+		private static readonly string[] m_Backups = new[]
+		{
+			"Third Backup",
+			"Second Backup",
+			"Most Recent"
+		};
 
-        private static readonly TimeSpan m_Delay;
-        private static readonly TimeSpan m_Warning;
+		public static Timer Timer { get; private set; }
 
-        private static readonly Timer m_Timer;
+		[ConfigProperty("AutoSave.Enabled")]
+		public static bool SavesEnabled
+		{
+			get => Config.Get("AutoSave.Enabled", true);
+			set
+			{
+				Config.Set("AutoSave.Enabled", value);
 
-        public static bool SavesEnabled { get; set; }
+				Initialize();
+			}
+		}
 
-        static AutoSave()
-        {
-            SavesEnabled = Config.Get("AutoSave.Enabled", true);
+		[ConfigProperty("AutoSave.Frequency")]
+		public static TimeSpan Delay
+		{
+			get => Config.Get("AutoSave.Frequency", TimeSpan.FromMinutes(5.0));
+			set
+			{
+				Config.Set("AutoSave.Frequency", value);
 
-            m_Delay = Config.Get("AutoSave.Frequency", TimeSpan.FromMinutes(5.0));
-            m_Warning = Config.Get("AutoSave.WarningTime", TimeSpan.Zero);
+				StartTimer();
+			}
+		}
 
-            m_Timer = Timer.DelayCall(m_Delay - m_Warning, m_Delay, Tick);
-            m_Timer.Stop();
-        }
+		[ConfigProperty("AutoSave.WarningTime")]
+		public static TimeSpan Warning
+		{
+			get => Config.Get("AutoSave.WarningTime", TimeSpan.Zero);
+			set
+			{
+				Config.Set("AutoSave.WarningTime", value);
 
-        public static void Initialize()
-        {
-            m_Timer.Start();
+				StartTimer();
+			}
+		}
 
-            CommandSystem.Register("SetSaves", AccessLevel.Administrator, SetSaves_OnCommand);
-        }
+		public static void Configure()
+		{
+			CommandSystem.Register("SetSaves", AccessLevel.Administrator, SetSaves_OnCommand);
+		}
 
-        [Usage("SetSaves <true | false>")]
-        [Description("Enables or disables automatic shard saving.")]
-        public static void SetSaves_OnCommand(CommandEventArgs e)
-        {
-            if (e.Length == 1)
-            {
-                SavesEnabled = e.GetBoolean(0);
+		public static void Initialize()
+		{
+			StartTimer();
+		}
 
-                e.Mobile.SendMessage("Saves have been {0}.", SavesEnabled ? "enabled" : "disabled");
-            }
-            else
-                e.Mobile.SendMessage("Format: SetSaves <true | false>");
-        }
+		private static void StartTimer()
+		{
+			StopTimer();
 
-        public static void Save()
-        {
-            Save(false);
-        }
+			Timer = Timer.DelayCall(Delay - Warning, Delay, Tick);
+		}
 
-        public static void Save(bool permitBackgroundWrite)
-        {
-            if (AutoRestart.Restarting || CreateWorld.WorldCreating)
-                return;
+		private static void StopTimer()
+		{
+			if (Timer != null)
+			{
+				Timer.Stop();
+				Timer = null;
+			}
+		}
 
-            World.WaitForWriteCompletion();
+		[Usage("SetSaves <true | false>")]
+		[Description("Enables or disables automatic shard saving.")]
+		public static void SetSaves_OnCommand(CommandEventArgs e)
+		{
+			if (e.Length == 1)
+			{
+				SavesEnabled = e.GetBoolean(0);
 
-            try
-            {
-                if (!Backup())
-                    Console.WriteLine("WARNING: Automatic backup FAILED");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("WARNING: Automatic backup FAILED:\n{0}", e);
-                Diagnostics.ExceptionLogging.LogException(e);
-            }
+				e.Mobile.SendMessage($"Saves have been {(SavesEnabled ? "enabled" : "disabled")}.");
+			}
+			else
+			{
+				e.Mobile.SendMessage("Format: SetSaves <true | false>");
+			}
+		}
 
-            World.Save(true, permitBackgroundWrite);
-        }
+		public static void Save()
+		{
+			Save(false);
+		}
 
-        private static void Tick()
-        {
-            if (!SavesEnabled || AutoRestart.Restarting || CreateWorld.WorldCreating)
-                return;
+		public static void Save(bool permitBackgroundWrite)
+		{
+			if (AutoRestart.Restarting || CreateWorld.WorldCreating)
+			{
+				return;
+			}
 
-            if (m_Warning == TimeSpan.Zero)
-                Save();
-            else
-            {
-                int s = (int)m_Warning.TotalSeconds;
-                int m = s / 60;
-                s %= 60;
+			World.WaitForWriteCompletion();
 
-                if (m > 0 && s > 0)
-                    World.Broadcast(0x35, false, "The world will save in {0} minute{1} and {2} second{3}.", m, m != 1 ? "s" : "", s, s != 1 ? "s" : "");
-                else if (m > 0)
-                    World.Broadcast(0x35, false, "The world will save in {0} minute{1}.", m, m != 1 ? "s" : "");
-                else
-                    World.Broadcast(0x35, false, "The world will save in {0} second{1}.", s, s != 1 ? "s" : "");
+			try
+			{
+				if (!Backup())
+				{
+					Console.WriteLine("WARNING: Automatic backup FAILED");
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine($"WARNING: Automatic backup FAILED:\n{e}");
 
-                Timer.DelayCall(m_Warning, Save);
-            }
-        }
+				Diagnostics.ExceptionLogging.LogException(e);
+			}
 
-        private static bool Backup()
-        {
-            if (m_Backups.Length == 0)
-                return false;
+			World.Save(true, permitBackgroundWrite);
+		}
 
-            string root = Path.Combine(Core.BaseDirectory, "Backups/Automatic");
+		private static void Tick()
+		{
+			if (!SavesEnabled || AutoRestart.Restarting || CreateWorld.WorldCreating)
+			{
+				return;
+			}
 
-            if (!Directory.Exists(root))
-                Directory.CreateDirectory(root);
+			if (Warning <= TimeSpan.Zero)
+			{
+				Save();
+			}
+			else
+			{
+				var s = (int)Warning.TotalSeconds;
+				var m = s / 60;
 
-            string tempRoot = Path.Combine(Core.BaseDirectory, "Backups/Temp");
+				s %= 60;
 
-            if (Directory.Exists(tempRoot))
-                Directory.Delete(tempRoot, true);
+				if (m > 0 && s > 0)
+				{
+					World.Broadcast(0x35, false, $"The world will save in {m} minute{(m != 1 ? "s" : "")} and {s} second{(s != 1 ? "s" : "")}.");
+				}
+				else if (m > 0)
+				{
+					World.Broadcast(0x35, false, $"The world will save in {m} minute{(m != 1 ? "s" : "")}.");
+				}
+				else
+				{
+					World.Broadcast(0x35, false, $"The world will save in {s} second{(s != 1 ? "s" : "")}.");
+				}
 
-            string[] existing = Directory.GetDirectories(root);
+				Timer.DelayCall(Warning, Save);
+			}
+		}
 
-            bool anySuccess = existing.Length == 0;
+		private static bool Backup()
+		{
+			if (m_Backups.Length == 0)
+			{
+				return false;
+			}
 
-            for (int i = 0; i < m_Backups.Length; ++i)
-            {
-                DirectoryInfo dir = Match(existing, m_Backups[i]);
+			var root = Path.Combine(Core.BaseDirectory, "Backups", "Automatic");
 
-                if (dir == null)
-                    continue;
+			if (!Directory.Exists(root))
+			{
+				Directory.CreateDirectory(root);
+			}
 
-                if (i > 0)
-                {
-                    try
-                    {
-                        dir.MoveTo(Path.Combine(root, m_Backups[i - 1]));
+			var tempRoot = Path.Combine(Core.BaseDirectory, "Backups", "Temp");
 
-                        anySuccess = true;
-                    }
-                    catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-                }
-                else
-                {
-                    bool delete = true;
+			if (Directory.Exists(tempRoot))
+			{
+				Directory.Delete(tempRoot, true);
+			}
 
-                    try
-                    {
-                        dir.MoveTo(tempRoot);
+			var existing = Directory.GetDirectories(root);
 
-                        delete = !ArchivedSaves.Process(tempRoot);
-                    }
-                    catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
+			var anySuccess = existing.Length == 0;
 
-                    if (delete)
-                    {
-                        try { dir.Delete(true); }
-                        catch (Exception e) { Diagnostics.ExceptionLogging.LogException(e); }
-                    }
-                }
-            }
+			for (var i = 0; i < m_Backups.Length; ++i)
+			{
+				var dir = Match(existing, m_Backups[i]);
 
-            string saves = Path.Combine(Core.BaseDirectory, "Saves");
+				if (dir == null)
+				{
+					continue;
+				}
 
-            if (Directory.Exists(saves))
-                Directory.Move(saves, Path.Combine(root, m_Backups[m_Backups.Length - 1]));
+				if (i > 0)
+				{
+					try
+					{
+						dir.MoveTo(Path.Combine(root, m_Backups[i - 1]));
 
-            return anySuccess;
-        }
+						anySuccess = true;
+					}
+					catch (Exception e)
+					{
+						Diagnostics.ExceptionLogging.LogException(e);
+					}
+				}
+				else
+				{
+					var delete = true;
 
-        private static DirectoryInfo Match(string[] paths, string match)
-        {
-            for (int i = 0; i < paths.Length; ++i)
-            {
-                DirectoryInfo info = new DirectoryInfo(paths[i]);
+					try
+					{
+						dir.MoveTo(tempRoot);
 
-                if (info.Name.StartsWith(match))
-                    return info;
-            }
+						delete = !ArchivedSaves.Process(tempRoot);
+					}
+					catch (Exception e)
+					{
+						Diagnostics.ExceptionLogging.LogException(e);
+					}
 
-            return null;
-        }
-    }
+					if (delete)
+					{
+						try
+						{
+							dir.Delete(true);
+						}
+						catch (Exception e)
+						{
+							Diagnostics.ExceptionLogging.LogException(e);
+						}
+					}
+				}
+			}
+
+			var saves = Path.Combine(Core.BaseDirectory, "Saves");
+
+			if (Directory.Exists(saves))
+			{
+				Directory.Move(saves, Path.Combine(root, m_Backups[m_Backups.Length - 1]));
+			}
+
+			return anySuccess;
+		}
+
+		private static DirectoryInfo Match(string[] paths, string match)
+		{
+			for (var i = 0; i < paths.Length; ++i)
+			{
+				var info = new DirectoryInfo(paths[i]);
+
+				if (info.Name.StartsWith(match))
+				{
+					return info;
+				}
+			}
+
+			return null;
+		}
+	}
 }

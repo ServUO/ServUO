@@ -119,7 +119,7 @@ namespace Server.Engines.BulkOrders
                     from.SendLocalizedMessage(1062385); // You must have the book in your backpack to add deeds to it.
                     return false;
                 }
-                else if (!from.Backpack.CheckHold(from, dropped, true, true))
+                else if (!from.Backpack.CheckHold(from, dropped, true))
                     return false;
                 else if (m_Entries.Count < 500)
                 {

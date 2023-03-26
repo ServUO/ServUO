@@ -263,8 +263,8 @@ namespace Server.Engines.NewMagincia
 
             if (info.ButtonID == 1)
             {
-                if (from.Target is CommodityBrokerGump.InternalTarget)
-                    Target.Cancel(from);
+                if (from.Target is CommodityBrokerGump.InternalTarget t)
+                    t.Cancel(from);
             }
         }
     }

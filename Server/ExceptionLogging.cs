@@ -41,8 +41,8 @@ namespace Server.Diagnostics
 
 		public static void LogException(Exception e)
 		{
-			Utility.WriteConsoleColor(ConsoleColor.Red, "Caught Exception:");
-			Utility.WriteConsoleColor(ConsoleColor.DarkRed, e.ToString());
+			Utility.WriteLine(ConsoleColor.Red, "Caught Exception:");
+			Utility.WriteLine(ConsoleColor.DarkRed, e.ToString());
 
 			Output.WriteLine("Exception Caught: {0}", DateTime.UtcNow);
 			Output.WriteLine(e);
@@ -51,8 +51,8 @@ namespace Server.Diagnostics
 
 		public static void LogException(Exception e, string arg)
 		{
-			Utility.WriteConsoleColor(ConsoleColor.Red, "Caught Exception: {0}", arg);
-			Utility.WriteConsoleColor(ConsoleColor.DarkRed, e.ToString());
+			Utility.WriteLine(ConsoleColor.Red, "Caught Exception: {0}", arg);
+			Utility.WriteLine(ConsoleColor.DarkRed, e.ToString());
 
 			Output.WriteLine("Exception Caught: {0}", DateTime.UtcNow);
 			Output.WriteLine(e);

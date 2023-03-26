@@ -165,7 +165,7 @@ namespace Server.Commands
                     int[] countTable = typeTable[itemType] as int[];
 
                     if (countTable == null)
-                        typeTable[itemType] = countTable = new int[9];
+                        typeTable[itemType] = countTable = new int[10];
 
                     if ((flags & ExpandFlag.Name) != 0)
                         ++countTable[0];
@@ -181,20 +181,23 @@ namespace Server.Commands
 
                     if ((flags & ExpandFlag.Blessed) != 0)
                         ++countTable[4];
+					/*
+					if ((flags & ExpandFlag.TempFlag) != 0)
+						++countTable[5];
 
-                    /*if ( ( flags & ExpandFlag.TempFlag ) != 0 )
-                    ++countTable[5];
-
-                    if ( ( flags & ExpandFlag.SaveFlag ) != 0 )
-                    ++countTable[6];*/
-
+					if ((flags & ExpandFlag.SaveFlag) != 0)
+						++countTable[6];
+					*/
                     if ((flags & ExpandFlag.Weight) != 0)
                         ++countTable[7];
 
                     if ((flags & ExpandFlag.Spawner) != 0)
                         ++countTable[8];
 
-                    itemType = itemType.BaseType;
+					if ((flags & ExpandFlag.VisList) != 0)
+						++countTable[9];
+
+					itemType = itemType.BaseType;
                 }
                 while (itemType != typeof(object));
             }
@@ -213,7 +216,8 @@ namespace Server.Commands
                         "TempFlag",
                         "SaveFlag",
                         "Weight",
-                        "Spawner"
+                        "Spawner",
+						"VisList"
                     };
 
                     ArrayList list = new ArrayList(typeTable);

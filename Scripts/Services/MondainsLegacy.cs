@@ -3,6 +3,7 @@ using Server.Engines.InstancedPeerless;
 using Server.Engines.Quests;
 using Server.Gumps;
 using Server.Items;
+using Server.Misc;
 using Server.Mobiles;
 using Server.Network;
 using System;
@@ -11,11 +12,6 @@ using System.Xml;
 
 namespace Server
 {
-    public interface ICanBeElfOrHuman
-    {
-        bool ElfOnly { get; set; }
-    }
-
     public static class MondainsLegacy
     {
         public static Type[] Artifacts => m_Artifacts;
@@ -388,9 +384,6 @@ namespace Server
         {
             Item item = Activator.CreateInstance(m_Artifacts[Utility.Random(m_Artifacts.Length)]) as Item;
 
-            if (item is ICanBeElfOrHuman)
-                ((ICanBeElfOrHuman)item).ElfOnly = false;
-
             peerlessCorpse.DropItem(item);
         }
 
@@ -622,7 +615,7 @@ namespace Server
 
             if (!FindItem(822, 756, 56, Map.TerMur, mAltar))
             {
-                WeakEntityCollection.Add("ml", sAltar);
+				WeakEntityCollection.Add("ml", mAltar);
                 mAltar.MoveToWorld(new Point3D(822, 756, 56), Map.TerMur);
             }
 

@@ -25,7 +25,7 @@ namespace Server.Engines.TreasuresOfKotlCity
             Name = "Hal";
 
             SpeechHue = 0x3B2;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Body = 0x190;
 
             Instance = this;

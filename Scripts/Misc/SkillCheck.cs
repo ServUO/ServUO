@@ -39,18 +39,18 @@ namespace Server.Misc
 
         static SkillCheck()
         {
-            _AntiMacroCode = Config.Get("PlayerCaps.EnableAntiMacro", false);
+            _AntiMacroCode = Config.Get("Gains.EnableAntiMacro", false);
 
-            _StatGainDelay = Config.Get("PlayerCaps.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
-            _PetStatGainDelay = Config.Get("PlayerCaps.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
+            _StatGainDelay = Config.Get("Gains.PlayerStatTimeDelay", TimeSpan.FromMinutes(15.0));
+            _PetStatGainDelay = Config.Get("Gains.PetStatTimeDelay", TimeSpan.FromMinutes(5.0));
 
-            _PlayerChanceToGainStats = Config.Get("PlayerCaps.PlayerChanceToGainStats", 5);
-            _PetChanceToGainStats = Config.Get("PlayerCaps.PetChanceToGainStats", 5);
+            _PlayerChanceToGainStats = Config.Get("Gains.PlayerChanceToGainStats", 5);
+            _PetChanceToGainStats = Config.Get("Gains.PetChanceToGainStats", 5);
 
-            if (!Config.Get("PlayerCaps.EnablePlayerStatTimeDelay", false))
+            if (!Config.Get("Gains.EnablePlayerStatTimeDelay", false))
                 _StatGainDelay = TimeSpan.FromSeconds(0.5);
 
-            if (!Config.Get("PlayerCaps.EnablePetStatTimeDelay", false))
+            if (!Config.Get("Gains.EnablePetStatTimeDelay", false))
                 _PetStatGainDelay = TimeSpan.FromSeconds(0.5);
         }
 
@@ -336,12 +336,15 @@ namespace Server.Misc
 
         public static void Gain(Mobile from, Skill skill)
         {
-            Gain(from, skill, (int)(from.Region.SkillGain(from) * 10));
+            Gain(from, skill, 1);
         }
 
         public static void Gain(Mobile from, Skill skill, int toGain)
-        {
-            if (from.Region.IsPartOf<Jail>())
+		{
+			if (!from.Region.OnSkillGain(from, skill.SkillID, ref toGain) || toGain <= 0)
+				return;
+
+			if (from.Region.IsPartOf<Jail>())
                 return;
 
             if (from is BaseCreature && ((BaseCreature)from).IsDeadPet)
@@ -354,13 +357,13 @@ namespace Server.Misc
             {
                 Skills skills = from.Skills;
 
-                if (from is PlayerMobile && Siege.SiegeShard)
+                if (from is PlayerMobile pm)
                 {
-                    int minsPerGain = Siege.MinutesPerGain(from, skill);
+                    int minsPerGain = Siege.MinutesPerGain(pm, skill);
 
                     if (minsPerGain > 0)
                     {
-                        if (Siege.CheckSkillGain((PlayerMobile)from, minsPerGain, skill))
+                        if (Siege.CheckSkillGain(pm, minsPerGain, skill))
                         {
                             CheckReduceSkill(skills, toGain, skill);
 

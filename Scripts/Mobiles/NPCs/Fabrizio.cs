@@ -70,7 +70,7 @@ namespace Server.Engines.Quests
             base.Serialize(writer);
 
             writer.Write(1); // version
-            writer.WriteItem(Dagger);
+            writer.Write(Dagger);
         }
 
         public override void Deserialize(GenericReader reader)

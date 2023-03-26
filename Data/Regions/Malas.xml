@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServerRegions>
+	<Facet name="Malas">
+		<region type="Underwater" priority="50" name="Gravewater Lake [Underwater]">
+			<rect x="1698" y="1567" width="5" height="60" />
+			<rect x="1687" y="1627" width="26" height="26" />
+		</region>
+		<region type="MondainRegion" priority="50" name="Gravewater Dock">
+			<rect x="1692" y="1551" width="16" height="16" />
+		</region>
+		<region type="MondainRegion" priority="50" name="Bedlam">
+			<rect x="80" y="1590" width="130" height="100" />
+			<go x="117" y="1681" z="0" />
+			<entrance x="2068" y="1372" />
+			<music name="GrizzleDungeon" />
+			<region type="PoisonedSemetery">
+				<rect x="79" y="1663" width="15" height="22" />
+				<rect x="94" y="1668" width="7" height="14" />
+				<zrange min="0" />
+			</region>
+		</region>
+		<region type="MondainRegion" priority="50" name="Labyrinth">
+			<rect x="255" y="1791" width="256" height="256" />
+			<go x="331" y="1973" z="0" />
+			<entrance x="1733" y="978" />
+			<music name="Dungeon9" />
+		</region>
+		<region type="MondainRegion" priority="50" name="TheCitadel">
+			<rect x="65" y="1865" width="130" height="125" />
+			<go x="106" y="1884" z="0" />
+			<entrance x="1349" y="769" />
+			<music name="Dungeon9" />
+		</region>
+		<region type="TownRegion" priority="50" name="Luna">
+			<rect x="945" y="490" width="91" height="61" />
+			<go x="989" y="520" z="-50" />
+			<music name="tavern04" />
+			<region>
+				<rect x="986" y="509" width="18" height="21" />
+				<logoutDelay active="false" />
+			</region>
+		</region>
+		<region type="TownRegion" priority="50" name="Umbra">
+			<rect x="2042" y="1265" width="48" height="13" />
+			<rect x="1960" y="1278" width="146" height="135" />
+			<rect x="2004" y="1413" width="36" height="6" />
+			<go x="2049" y="1344" z="-85" />
+			<region>
+				<rect x="2031" y="1311" width="15" height="14" />
+				<logoutDelay active="false" />
+			</region>
+		</region>
+		<region type="DungeonRegion" priority="50" name="Doom">
+			<rect x="256" y="0" width="256" height="304" />
+			<go x="2366" y="1268" z="-85" />
+			<entrance x="2357" y="1268" />
+			<music name="Dungeon9" />
+			<region type="DoomGuardianRegion" priority="50" name="Doom Guardian Room">
+				<rect x="355" y="5" width="20" height="20" />
+			</region>
+		</region>
+		<region type="DungeonRegion" priority="50" name="Doom Gauntlet">
+			<rect x="256" y="304" width="256" height="256" />
+			<go x="429" y="340" z="-1" />
+			<entrance x="2357" y="1268" />
+			<music name="Dungeon9" />
+		</region>
+		<region priority="50" name="Orc Fortress">
+			<rect x="1295" y="1189" width="100" height="105" />
+			<go x="1340" y="1226" z="-90" />
+		</region>
+		<region type="NoHousingRegion" priority="50" name="Crystal Cave Entrance">
+			<rect x="1176" y="509" width="43" height="13" />
+			<go x="1195" y="515" z="-90" />
+		</region>
+		<region type="NoHousingRegion" priority="50" name="Protected Island">
+			<rect x="1976" y="101" width="472" height="244" />
+			<rect x="2051" y="345" width="305" height="37" />
+			<rect x="2026" y="345" width="25" height="25" />
+			<rect x="2069" y="382" width="75" height="14" />
+			<rect x="2254" y="382" width="98" height="38" />
+			<rect x="2222" y="382" width="32" height="20" />
+			<go x="2104" y="380" z="-90" />
+			<smartNoHousing active="true" />
+		</region>
+		<region type="NoHousingRegion" priority="50" name="Grand Arena">
+			<rect x="919" y="622" width="43" height="30" />
+			<go x="961" y="637" z="-90" />
+		</region>
+		<region priority="50" name="Hanse's Hostel">
+			<rect x="1049" y="1420" width="13" height="25" />
+			<rect x="1062" y="1420" width="3" height="11" />
+			<rect x="1062" y="1439" width="3" height="6" />
+			<go x="1063" y="1435" z="-90" />
+			<logoutDelay active="false" />
+		</region>
+		<region type="DungeonRegion" priority="50" name="Yomotsu Mines">
+			<rect x="0" y="0" width="129" height="129" />
+			<go x="6" y="118" z="0" />
+			<entrance x="259" y="783" />
+			<music name="TokunoDungeon" />
+		</region>
+		<region type="DungeonRegion" priority="50" name="Fan Dancer's Dojo">
+			<rect x="40" y="320" width="170" height="400" />
+			<go x="71" y="337" z="0" />
+			<entrance x="977" y="223" />
+			<music name="TokunoDungeon" />
+		</region>
+		<region priority="50" name="Samurai start location">
+			<rect x="320" y="690" width="115" height="100" />
+			<music name="Zento" />
+		</region>
+		<region priority="50" name="Ninja start location">
+			<rect x="360" y="795" width="80" height="40" />
+			<music name="Zento" />
+		</region>
+		<region priority="50" name="Ninja cave">
+			<rect x="360" y="960" width="100" height="215" />
+		</region>
+		<region type="NoHousingRegion" priority="50" name="Isle of the Divide">
+			<rect x="1533" y="849" width="295" height="195" />
+			<go x="1731" y="982" z="-80" />
+			<smartNoHousing active="true" />
+		</region>
+	</Facet>
+</ServerRegions>

@@ -1,9 +1,11 @@
 namespace Server.Items
 {
-    public class CrownOfArcaneTemperament : Circlet, ICanBeElfOrHuman
-    {
-        public override bool IsArtifact => true;
-        public bool ElfOnly { get { return false; } set { } }
+    public class CrownOfArcaneTemperament : Circlet, IRacialEquipment
+	{
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Race RequiredRace => Race.Human;
+
+		public override bool IsArtifact => true;
 
         public override int LabelNumber => 1113762;  // Crown of Arcane Temperament
 

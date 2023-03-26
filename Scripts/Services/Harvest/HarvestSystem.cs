@@ -195,7 +195,7 @@ namespace Server.Engines.Harvest
                             item.Amount += WoodsmansTalisman.CheckHarvest(from, type, this);
                         }
 
-                        if (from.AccessLevel == AccessLevel.Player)
+                        if (from.AccessLevel < AccessLevel.Counselor)
                         {
                             bank.Consume(amount, from);
                         }
@@ -618,7 +618,7 @@ namespace Server.Engines.Harvest
 
                             if (definition.Validate(id))
                             {
-                                toHarvest = new StaticTarget(new Point3D(x, y, tile.Z), tile.ID);
+                                toHarvest = new StaticTarget(new Point3D(x, y, tile.Z), tile.ID, tile.Hue);
                                 return true;
                             }
                         }

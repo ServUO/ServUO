@@ -223,7 +223,7 @@ namespace Server.Engines.JollyRoger
 
             foreach (var kvp in ShrineTitles)
             {
-                writer.WriteMobile(kvp.Key);
+                writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
             }
         }

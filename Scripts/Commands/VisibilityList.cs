@@ -64,7 +64,7 @@ namespace Server.Commands
                 {
                     Mobile m = list[i];
 
-                    if (!m.CanSee(pm) && Utility.InUpdateRange(m, pm))
+                    if (!m.CanSee(pm) && m.InUpdateRange(pm))
                         m.Send(pm.RemovePacket);
                 }
             }
@@ -99,7 +99,7 @@ namespace Server.Commands
                             from.SendMessage("{0} has been added to your visibility list.", targ.Name);
                         }
 
-                        if (Utility.InUpdateRange(targ, from))
+                        if (targ.InUpdateRange(from))
                         {
                             NetState ns = targ.NetState;
 
@@ -107,7 +107,7 @@ namespace Server.Commands
                             {
                                 if (targ.CanSee(from))
                                 {
-                                    ns.Send(new MobileIncoming(targ, from));
+                                    MobileIncoming.Send(ns, from);
 
                                     ns.Send(from.OPLPacket);
 

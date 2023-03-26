@@ -509,7 +509,7 @@ namespace Server.Engines.Quests
 
         public override void OnMovement(Mobile m, Point3D oldLocation)
         {
-            if (InRange(m.Location, 2) && !InRange(oldLocation, 2))
+            if (Utility.InRange(this, m, 2) && !Utility.InRange(this, oldLocation, 2))
             {
                 PrivateOverheadMessage(MessageType.Regular, 1154, 1158137, m.NetState); // *You notice the skeleton clutching a small journal...*
             }

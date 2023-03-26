@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    public class AegisOfGrace : DragonHelm, ICanBeElfOrHuman
+    public class AegisOfGrace : DragonHelm, IRacialEquipment
     {
         public override int LabelNumber => 1075047;  // Aegis of Grace
         public override bool IsArtifact => true;
@@ -16,10 +16,10 @@ namespace Server.Items
         public override int InitMinHits => 255;
         public override int InitMaxHits => 255;
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public bool ElfOnly { get { return false; } set { } }
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Race RequiredRace => Race.Human;
 
-        [Constructable]
+		[Constructable]
         public AegisOfGrace()
         {
             SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);

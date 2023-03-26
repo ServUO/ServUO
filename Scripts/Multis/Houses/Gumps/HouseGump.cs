@@ -751,18 +751,16 @@ namespace Server.Gumps
                             house.MovingCrate = null;
                         }
 
-                        List<Item> items = house.GetItems();
-                        List<Mobile> mobiles = house.GetMobiles();
-
                         newHouse.MoveToWorld(new Point3D(house.X + house.ConvertOffsetX, house.Y + house.ConvertOffsetY, house.Z + house.ConvertOffsetZ), house.Map);
-                        house.Delete();
+                        
+						house.Delete();
 
-                        foreach (Item item in items)
+                        foreach (Item item in house.GetItems())
                         {
                             item.Location = newHouse.BanLocation;
                         }
 
-                        foreach (Mobile mobile in mobiles)
+                        foreach (Mobile mobile in house.GetMobiles())
                         {
                             mobile.Location = newHouse.BanLocation;
                         }
@@ -1067,15 +1065,12 @@ namespace Server.Gumps
                                         from.SendGump(new NoticeGump(1060637, 30720, 501888, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
 
                                         Region r = m_House.Region;
-                                        List<Mobile> list = r.GetMobiles();
 
-                                        for (int i = 0; i < list.Count; ++i)
-                                        {
-                                            Mobile m = list[i];
-
-                                            if (!m_House.HasAccess(m) && m_House.IsInside(m))
-                                                m.Location = m_House.BanLocation;
-                                        }
+										foreach (Mobile m in r.AllMobiles)
+										{
+											if (!m_House.HasAccess(m) && m_House.IsInside(m))
+												m.Location = m_House.BanLocation;
+										}
                                     }
 
                                     break;
@@ -1090,13 +1085,10 @@ namespace Server.Gumps
                                         from.SendGump(new NoticeGump(1060637, 30720, 501886, 32512, 320, 180, PublicPrivateNotice_Callback, m_House));
 
                                         Region r = m_House.Region;
-                                        List<Mobile> list = r.GetMobiles();
 
-                                        for (int i = 0; i < list.Count; ++i)
-                                        {
-                                            Mobile m = list[i];
-
-                                            if (m_House.IsBanned(m) && m_House.IsInside(m))
+										foreach (Mobile m in r.AllMobiles)
+										{
+											if (m_House.IsBanned(m) && m_House.IsInside(m))
                                                 m.Location = m_House.BanLocation;
                                         }
                                     }

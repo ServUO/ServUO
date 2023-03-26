@@ -77,7 +77,7 @@ namespace Server.Mobiles
             HairItemID = Race.RandomHair(false);
             HairHue = Race.RandomHairHue();
 
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
         }
 
         public override void InitOutfit()

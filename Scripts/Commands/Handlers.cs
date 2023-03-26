@@ -630,7 +630,7 @@ namespace Server.Commands
             {
                 try
                 {
-                    int ser = e.GetInt32(0);
+                    Serial ser = e.GetSerial(0);
 
                     IEntity ent = World.FindEntity(ser);
 

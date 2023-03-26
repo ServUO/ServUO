@@ -116,9 +116,18 @@ namespace Server.Engines.Khaldun
         }
 
         public override void OnUnregister()
-        {
-            GetEnumeratedMobiles().OfType<KhaldunCampGuard>().IterateReverse(g => g.Delete());
-            GetEnumeratedItems().OfType<KhaldunCampBlocker>().IterateReverse(b => b.Delete());
+		{
+			foreach (Mobile mob in AllMobiles)
+			{
+				if (mob is KhaldunCampGuard)
+					mob.Delete();
+			}
+
+			foreach (Item item in AllItems)
+			{
+				if (item is KhaldunCampBlocker)
+					item.Delete();
+			}
         }
 
         public override bool CheckTravel(Mobile traveller, Point3D p, TravelCheckType type)

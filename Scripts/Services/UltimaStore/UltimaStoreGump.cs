@@ -822,13 +822,13 @@ namespace Server.Engines.UOStore
         {
             if (info.ButtonID == 1)
             {
-                TextRelay text = info.GetTextEntry(1);
+                TextRelay text = info.GetTextEntry(0);
 
-                if (text != null && !string.IsNullOrEmpty(text.Text))
-                {
-                    // execute code here
-                }
-            }
+				if (!PromoCodes.TryRedeem(User, text?.Text))
+				{
+					Refresh(true, false);
+				}
+			}
         }
     }
 

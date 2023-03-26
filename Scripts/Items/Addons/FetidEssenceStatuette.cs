@@ -4,8 +4,9 @@ namespace Server.Items
     {
         [Constructable]
         public FetidEssenceStatuette()
-            : base(0x2D94)
         {
+			ItemID = 0x2D94;
+
             Weight = 1.0;
         }
 

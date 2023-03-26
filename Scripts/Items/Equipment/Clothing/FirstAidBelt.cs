@@ -117,7 +117,7 @@ namespace Server.Items
             return false;
         }
 
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
             if (!Movable)
                 return false;
@@ -137,7 +137,7 @@ namespace Server.Items
                 Items.ForEach(i => currentAmount += i.Amount);
 
                 if (item.Amount + currentAmount <= MaxBandage)
-                    return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+                    return base.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight);
                 else
                     m.SendLocalizedMessage(1080017); // That container cannot hold more items.
             }

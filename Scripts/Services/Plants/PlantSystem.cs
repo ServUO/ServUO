@@ -362,9 +362,7 @@ namespace Server.Engines.Plants
 
             if (from.Backpack != null)
             {
-                List<PlantItem> plants = from.Backpack.FindItemsByType<PlantItem>();
-
-                foreach (PlantItem plant in plants)
+                foreach (PlantItem plant in from.Backpack.FindItemsByType<PlantItem>())
                 {
                     if (plant.IsGrowable)
                         plant.PlantSystem.DoGrowthCheck();
@@ -375,9 +373,7 @@ namespace Server.Engines.Plants
 
             if (bank != null)
             {
-                List<PlantItem> plants = bank.FindItemsByType<PlantItem>();
-
-                foreach (PlantItem plant in plants)
+                foreach (PlantItem plant in bank.FindItemsByType<PlantItem>())
                 {
                     if (plant.IsGrowable)
                         plant.PlantSystem.DoGrowthCheck();

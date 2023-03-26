@@ -595,9 +595,12 @@ namespace Server.Spells
 
                 OnDisturb(type, false);
 
-                Target.Cancel(m_Caster);
+				if (m_Caster.Target != null)
+				{
+					m_Caster.Target.Cancel(m_Caster);
+				}
 
-                if (m_Caster.Player && type == DisturbType.Hurt)
+				if (m_Caster.Player && type == DisturbType.Hurt)
                 {
                     DoHurtFizzle();
                 }
@@ -621,7 +624,7 @@ namespace Server.Spells
         public virtual bool CheckCast()
         {
             #region High Seas
-            if (Multis.BaseBoat.IsDriving(m_Caster) && m_Caster.AccessLevel == AccessLevel.Player)
+            if (Multis.BaseBoat.IsDriving(m_Caster) && m_Caster.AccessLevel < AccessLevel.Counselor)
             {
                 m_Caster.SendLocalizedMessage(1049616); // You are too busy to do that at the moment.
                 return false;

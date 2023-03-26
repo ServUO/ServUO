@@ -99,8 +99,8 @@ namespace Server.Items
             base.OnItemRemoved(item);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (TurnedOn)
             {
                 TurnOff();

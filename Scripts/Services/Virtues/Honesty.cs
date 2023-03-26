@@ -15,29 +15,29 @@ using Server.Regions;
 namespace Server.Services.Virtues
 {
     public static class HonestyVirtue
-    {
-        public static bool Enabled { get; set; }
-        public static int MaxGeneration { get; set; }
-        public static bool TrammelGeneration { get; set; }
-        public static bool UseSpawnArea { get; set; }
+	{
+		[ConfigProperty("Honesty.VirtualGold")]
+		public static bool Enabled { get => Config.Get("Honesty.Enabled", true); set => Config.Set("Honesty.Enabled", value); }
 
-        private static readonly string[] _Regions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
+		[ConfigProperty("Honesty.MaxGeneration")]
+		public static int MaxGeneration { get => Config.Get("Honesty.MaxGeneration", 1000); set => Config.Set("Honesty.MaxGeneration", value); }
+
+		[ConfigProperty("Honesty.TrammelGeneration")]
+		public static bool TrammelGeneration { get => Config.Get("Honesty.TrammelGeneration", !Core.IsSiege); set => Config.Set("Honesty.TrammelGeneration", value); }
+
+		[ConfigProperty("Honesty.UseSpawnArea")]
+		public static bool UseSpawnArea { get => Config.Get("Honesty.UseSpawnArea", true); set => Config.Set("Honesty.UseSpawnArea", value); }
+
+		private static readonly string[] _DefaultRegions = { "Britain", "Minoc", "Magincia", "Trinsic", "Jhelom", "Moonglow", "Skara Brae", "Yew" };
+
+		[ConfigProperty("Honesty.Regions")]
+		public static string[] Regions { get => Config.GetArray("Honesty.Regions", _DefaultRegions); set => Config.SetArray("Honesty.Regions", value); }
 
         private const TileFlag _Filter = TileFlag.Wet | TileFlag.Roof | TileFlag.Impassable;
 
-        private static readonly HashSet<Item> _Items;
+        private static readonly HashSet<Item> _Items = new HashSet<Item>(MaxGeneration);
 
         private static SpawnArea _FeluccaArea, _TrammelArea;
-
-        static HonestyVirtue()
-        {
-            Enabled = Config.Get("Honesty.Enabled", true);
-            MaxGeneration = Config.Get("Honesty.MaxGeneration", 1000);
-            TrammelGeneration = !Siege.SiegeShard && Config.Get("Honesty.TrammelGeneration", true);
-            UseSpawnArea = Config.Get("Honesty.UseSpawnArea", true);
-
-            _Items = new HashSet<Item>(MaxGeneration);
-        }
 
         public static void Initialize()
         {
@@ -161,7 +161,7 @@ namespace Server.Services.Virtues
             CheckChests();
 
             Utility.PushColor(ConsoleColor.Yellow);
-            Console.WriteLine("[Honesty]: Generating...");
+            Console.WriteLine("Honesty: Generating...");
             Utility.PopColor();
 
             Stopwatch sw = new Stopwatch();
@@ -172,7 +172,7 @@ namespace Server.Services.Virtues
                 if (_FeluccaArea == null)
                 {
                     Utility.PushColor(ConsoleColor.Yellow);
-                    Console.Write("[Honesty]: Felucca - Reticulating splines...");
+                    Console.Write("Honesty: Felucca - Reticulating splines...");
                     Utility.PopColor();
 
                     sw.Restart();
@@ -191,7 +191,7 @@ namespace Server.Services.Virtues
                 if (_TrammelArea == null && TrammelGeneration)
                 {
                     Utility.PushColor(ConsoleColor.Yellow);
-                    Console.Write("[Honesty]: Trammel - Reticulating splines...");
+                    Console.Write("Honesty: Trammel - Reticulating splines...");
                     Utility.PopColor();
 
                     sw.Restart();
@@ -219,7 +219,7 @@ namespace Server.Services.Virtues
                 if (count > 0)
                 {
                     Utility.PushColor(ConsoleColor.Yellow);
-                    Console.Write("[Honesty]: Creating {0:#,0} lost items...", count);
+                    Console.Write("Honesty: Creating {0:#,0} lost items...", count);
                     Utility.PopColor();
 
                     sw.Restart();
@@ -311,7 +311,7 @@ namespace Server.Services.Virtues
             }
 
             Utility.PushColor(ConsoleColor.Yellow);
-            Console.Write("[Honesty]:");
+            Console.Write("Honesty:");
             Utility.PopColor();
             Utility.PushColor(ConsoleColor.Green);
             Console.WriteLine(" Generation completed in {0:F2} seconds.", s);
@@ -322,7 +322,7 @@ namespace Server.Services.Virtues
         {
             if (socket != null)
             {
-                socket.HonestyRegion = _Regions[Utility.Random(_Regions.Length)];
+                socket.HonestyRegion = Utility.RandomList(Regions);
 
                 if (!string.IsNullOrWhiteSpace(socket.HonestyRegion) && BaseVendor.AllVendors.Count >= 10)
                 {

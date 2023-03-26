@@ -17,7 +17,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Snooping, 65, 88);
             SetSkill(SkillName.Stealing, 65, 88);
 
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = Utility.RandomBool())
             {

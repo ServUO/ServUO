@@ -20,6 +20,14 @@ namespace Server
 		EJ
 	}
 
+	public enum ThemePack
+	{
+		None = 0,
+		Kings,
+		Rustic,
+		Gothic
+	}
+
 	[Flags]
 	public enum ClientFlags
 	{
@@ -62,7 +70,7 @@ namespace Server
 		Jungle = 0x00100000,
 		Shadowguard = 0x00200000,
 		TOL = 0x00400000,
-		EJ = 0x00800000, // TODO: Verify value
+		EJ = 0x00800000,
 
 		ExpansionNone = None,
 		ExpansionT2A = T2A,
@@ -75,7 +83,7 @@ namespace Server
 		ExpansionSA = ExpansionML | SA | Gothic | Rustic,
 		ExpansionHS = ExpansionSA | HS,
 		ExpansionTOL = ExpansionHS | TOL | Jungle | Shadowguard,
-		ExpansionEJ = ExpansionTOL | EJ
+		ExpansionEJ = ExpansionTOL | EJ,
 	}
 
 	[Flags]
@@ -111,7 +119,7 @@ namespace Server
 		ExpansionSA = ExpansionML,
 		ExpansionHS = ExpansionSA,
 		ExpansionTOL = ExpansionHS,
-		ExpansionEJ = ExpansionTOL
+		ExpansionEJ = ExpansionTOL,
 	}
 
 	[Flags]
@@ -129,7 +137,7 @@ namespace Server
 		Jungle = 0x100000,
 		Shadowguard = 0x200000,
 		TOL = 0x400000,
-		EJ = 0x800000, // TODO: Verify value
+		EJ = 0x800000,
 
 		HousingAOS = AOS,
 		HousingSE = HousingAOS | SE,
@@ -137,7 +145,7 @@ namespace Server
 		HousingSA = HousingML | SA | Gothic | Rustic,
 		HousingHS = HousingSA | HS,
 		HousingTOL = HousingHS | TOL | Jungle | Shadowguard,
-		HousingEJ = HousingTOL | EJ
+		HousingEJ = HousingTOL | EJ,
 	}
 
 	public class ExpansionInfo
@@ -152,11 +160,88 @@ namespace Server
 			{
 				new ExpansionInfo(
 					0,
+					"None",
+					ClientFlags.None,
+					FeatureFlags.ExpansionNone,
+					CharacterListFlags.ExpansionNone,
+					HousingFlags.None),
+				new ExpansionInfo(
+					1,
+					"The Second Age",
+					ClientFlags.Felucca,
+					FeatureFlags.ExpansionT2A,
+					CharacterListFlags.ExpansionT2A,
+					HousingFlags.None),
+				new ExpansionInfo(
+					2,
+					"Renaissance",
+					ClientFlags.Trammel,
+					FeatureFlags.ExpansionUOR,
+					CharacterListFlags.ExpansionUOR,
+					HousingFlags.None),
+				new ExpansionInfo(
+					3,
+					"Third Dawn",
+					ClientFlags.Ilshenar,
+					FeatureFlags.ExpansionUOTD,
+					CharacterListFlags.ExpansionUOTD,
+					HousingFlags.None),
+				new ExpansionInfo(
+					4,
+					"Blackthorn's Revenge",
+					ClientFlags.Ilshenar,
+					FeatureFlags.ExpansionLBR,
+					CharacterListFlags.ExpansionLBR,
+					HousingFlags.None),
+				new ExpansionInfo(
+					5,
+					"Age of Shadows",
+					ClientFlags.Malas,
+					FeatureFlags.ExpansionAOS,
+					CharacterListFlags.ExpansionAOS,
+					HousingFlags.HousingAOS),
+				new ExpansionInfo(
+					6,
+					"Samurai Empire",
+					ClientFlags.Tokuno,
+					FeatureFlags.ExpansionSE,
+					CharacterListFlags.ExpansionSE,
+					HousingFlags.HousingSE),
+				new ExpansionInfo(
+					7,
+					"Mondain's Legacy",
+					new ClientVersion("5.0.0a"),
+					FeatureFlags.ExpansionML,
+					CharacterListFlags.ExpansionML,
+					HousingFlags.HousingML),
+				new ExpansionInfo(
+					8,
+					"Stygian Abyss",
+					ClientFlags.TerMur,
+					FeatureFlags.ExpansionSA,
+					CharacterListFlags.ExpansionSA,
+					HousingFlags.HousingSA),
+				new ExpansionInfo(
+					9,
+					"High Seas",
+					new ClientVersion("7.0.9.0"),
+					FeatureFlags.ExpansionHS,
+					CharacterListFlags.ExpansionHS,
+					HousingFlags.HousingHS),
+				new ExpansionInfo(
+					10,
+					"Time of Legends",
+					new ClientVersion("7.0.45.65"),
+					FeatureFlags.ExpansionTOL,
+					CharacterListFlags.ExpansionTOL,
+					HousingFlags.HousingTOL),
+				new ExpansionInfo(
+					11,
 					"Endless Journey",
 					new ClientVersion("7.0.61.0"),
 					FeatureFlags.ExpansionEJ,
 					CharacterListFlags.ExpansionEJ,
-					HousingFlags.HousingEJ)
+					HousingFlags.HousingEJ),
 			};
 		}
 
@@ -169,7 +254,35 @@ namespace Server
 				return info.SupportedFeatures;
 			}
 
-			return FeatureFlags.ExpansionEJ;
+			switch (ex)
+			{
+				case Expansion.None:
+				return FeatureFlags.ExpansionNone;
+				case Expansion.T2A:
+				return FeatureFlags.ExpansionT2A;
+				case Expansion.UOR:
+				return FeatureFlags.ExpansionUOR;
+				case Expansion.UOTD:
+				return FeatureFlags.ExpansionUOTD;
+				case Expansion.LBR:
+				return FeatureFlags.ExpansionLBR;
+				case Expansion.AOS:
+				return FeatureFlags.ExpansionAOS;
+				case Expansion.SE:
+				return FeatureFlags.ExpansionSE;
+				case Expansion.ML:
+				return FeatureFlags.ExpansionML;
+				case Expansion.SA:
+				return FeatureFlags.ExpansionSA;
+				case Expansion.HS:
+				return FeatureFlags.ExpansionHS;
+				case Expansion.TOL:
+				return FeatureFlags.ExpansionTOL;
+				case Expansion.EJ:
+				return FeatureFlags.ExpansionEJ;
+			}
+
+			return FeatureFlags.ExpansionNone;
 		}
 
 		public static ExpansionInfo GetInfo(Expansion ex)
@@ -190,6 +303,7 @@ namespace Server
 		}
 
 		public int ID { get; }
+
 		public string Name { get; set; }
 
 		public ClientFlags ClientFlags { get; set; }
@@ -198,13 +312,7 @@ namespace Server
 		public ClientVersion RequiredClient { get; set; }
 		public HousingFlags CustomHousingFlag { get; set; }
 
-		public ExpansionInfo(
-			int id,
-			string name,
-			ClientFlags clientFlags,
-			FeatureFlags supportedFeatures,
-			CharacterListFlags charListFlags,
-			HousingFlags customHousingFlag)
+		public ExpansionInfo(int id, string name, ClientFlags clientFlags, FeatureFlags supportedFeatures, CharacterListFlags charListFlags, HousingFlags customHousingFlag)
 			: this(id, name, supportedFeatures, charListFlags, customHousingFlag)
 		{
 			ClientFlags = clientFlags;

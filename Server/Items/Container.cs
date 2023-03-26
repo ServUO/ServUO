@@ -11,90 +11,29 @@ using Server.Network;
 namespace Server.Items
 {
 	public delegate void OnItemConsumed(Item item, int amount);
+
 	public delegate int CheckItemGroup(Item a, Item b);
+
 	public delegate bool ResValidator(Item item);
+
 	public delegate void ContainerSnoopHandler(Container cont, Mobile from);
 
 	public class Container : Item
 	{
-		#region Enhanced Client Support
-		public virtual void ValidateGridLocation(Item item)
-		{
-			var pos = item.GridLocation;
+		public static List<Container> AllContainers { get; } = new List<Container>(0x2000);
 
-			if (!IsFreePosition(pos))
-			{
-				item.GridLocation = GetNewPosition(pos);
-			}
-		}
-
-		public virtual bool IsFreePosition(byte pos)
-		{
-			if (pos < 0 || pos > 0x7C)
-			{
-				return false;
-			}
-
-			return Items.All(i => i.GridLocation != pos);
-		}
-
-		public virtual byte GetNewPosition(byte current)
-		{
-			var index = 0;
-			var next = (byte)(current + 1);
-
-			while (++index < 0x7D)
-			{
-				if (!IsFreePosition(next))
-				{
-					if (next == 0x7C)
-					{
-						next = 0;
-
-						if (IsFreePosition(next))
-						{
-							return next;
-						}
-					}
-				}
-				else
-				{
-					return next;
-				}
-
-				next++;
-			}
-
-			return 0;
-		}
-
-		public virtual void ValidatePositions()
-		{
-			foreach (var item in Items)
-			{
-				if (IsFreePosition(item.GridLocation))
-				{
-					item.GridLocation = GetNewPosition(item.GridLocation);
-				}
-			}
-		}
-		#endregion
-
-		private static ContainerSnoopHandler m_SnoopHandler;
-
-		public static ContainerSnoopHandler SnoopHandler { get => m_SnoopHandler; set => m_SnoopHandler = value; }
+		public static ContainerSnoopHandler SnoopHandler { get; set; }
 
 		private ContainerData m_ContainerData;
 
 		private int m_DropSound;
 		private int m_GumpID;
-		private int m_MaxItems;
+		private int m_MaxItems = -1;
+		private int m_MaxWeight = -1;
 
-		private int m_TotalItems;
-		private int m_TotalWeight;
-		private int m_TotalGold;
-
-		private bool m_LiftOverride;
+		protected int m_TotalItems;
+		protected int m_TotalWeight;
+		protected int m_TotalGold;
 
 		internal List<Item> m_Items;
 
@@ -151,19 +90,24 @@ namespace Server.Items
 		{
 			get
 			{
-				if (Parent is Container && ((Container)Parent).MaxWeight == 0)
+				if (Parent is Container c && c.MaxWeight == 0)
 				{
 					return 0;
 				}
-				else
-				{
-					return DefaultMaxWeight;
-				}
+
+				return m_MaxWeight == -1 ? DefaultMaxWeight : m_MaxWeight;
+			}
+			set
+			{
+				m_MaxWeight = value;
+				InvalidateProperties();
 			}
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
-		public bool LiftOverride { get => m_LiftOverride; set => m_LiftOverride = value; }
+		public bool LiftOverride { get; set; }
+
+		public virtual Type[] SupportedContents => Type.EmptyTypes;
 
 		public virtual void UpdateContainerData()
 		{
@@ -177,7 +121,11 @@ namespace Server.Items
 		public virtual int DefaultMaxItems => GlobalMaxItems;
 		public virtual int DefaultMaxWeight => GlobalMaxWeight;
 
-		public virtual bool IsDecoContainer => !Movable && !IsLockedDown && !IsSecure && Parent == null && !m_LiftOverride;
+		public virtual bool CheckHoldCount => true;
+		public virtual bool CheckHoldWeight => true;
+		public virtual bool CheckHoldParent => true;
+
+		public virtual bool IsDecoContainer => !Movable && !IsLockedDown && !IsSecure && Parent == null && !LiftOverride;
 
 		public virtual int GetDroppedSound(Item item)
 		{
@@ -186,12 +134,20 @@ namespace Server.Items
 			return dropSound != -1 ? dropSound : DropSound;
 		}
 
+		public override void OnAfterDuped(Item newItem)
+		{
+			base.OnAfterDuped(newItem);
+
+			if (newItem is Container cont)
+			{
+				cont.m_MaxItems = m_MaxItems;
+				cont.m_MaxWeight = m_MaxWeight;
+			}
+		}
+
 		public override void OnSnoop(Mobile from)
 		{
-			if (m_SnoopHandler != null)
-			{
-				m_SnoopHandler(this, from);
-			}
+			SnoopHandler?.Invoke(this, from);
 		}
 
 		public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
@@ -216,23 +172,43 @@ namespace Server.Items
 			return base.CheckItemUse(from, item);
 		}
 
+		public bool CheckHold(Item item)
+		{
+			return CheckHold(null, item, false);
+		}
+
 		public bool CheckHold(Mobile m, Item item, bool message)
 		{
-			return CheckHold(m, item, message, true, 0, 0);
+			return CheckHold(m, item, message, true, true, 0, 0);
 		}
 
 		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems)
 		{
-			return CheckHold(m, item, message, checkItems, 0, 0);
+			return CheckHold(m, item, message, checkItems, true, 0, 0);
 		}
 
-		public virtual bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight)
 		{
-			if (!m.IsStaff())
+			return CheckHold(m, item, message, checkItems, checkWeight, 0, 0);
+		}
+
+		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems)
+		{
+			return CheckHold(m, item, message, checkItems, true, plusItems, 0);
+		}
+
+		public bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+		{
+			return CheckHold(m, item, message, checkItems, true, plusItems, plusWeight);
+		}
+
+		public virtual bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
+		{
+			if (m == null || !m.IsStaff())
 			{
 				if (IsDecoContainer)
 				{
-					if (message)
+					if (m != null && message)
 					{
 						SendCantStoreMessage(m, item);
 					}
@@ -240,25 +216,38 @@ namespace Server.Items
 					return false;
 				}
 
-				var maxItems = MaxItems;
-
-				if (checkItems && maxItems != 0 &&
-					(TotalItems + plusItems + item.TotalItems + (item.IsVirtualItem ? 0 : 1)) > maxItems)
+				if (checkItems && CheckHoldCount)
 				{
-					if (message)
+					if (!CanHold(m, item))
 					{
-						SendFullItemsMessage(m, item);
+						if (m != null && message)
+						{
+							SendDisallowedMessage(m, item);
+						}
+
+						return false;
 					}
 
-					return false;
+					var maxItems = MaxItems;
+
+					if (maxItems != 0 && (TotalItems + plusItems + item.TotalItems + (item.IsVirtualItem ? 0 : 1)) > maxItems)
+					{
+						if (m != null && message)
+						{
+							SendFullItemsMessage(m, item);
+						}
+
+						return false;
+					}
 				}
-				else
+
+				if (checkWeight && CheckHoldWeight)
 				{
 					var maxWeight = MaxWeight;
 
 					if (maxWeight != 0 && (TotalWeight + plusWeight + item.TotalWeight + item.PileWeight) > maxWeight)
 					{
-						if (message)
+						if (m != null && message)
 						{
 							SendFullWeightMessage(m, item);
 						}
@@ -268,17 +257,23 @@ namespace Server.Items
 				}
 			}
 
+			if (!CheckHoldParent)
+			{
+				return true;
+			}
+
 			var parent = Parent;
 
 			while (parent != null)
 			{
-				if (parent is Container)
+				if (parent is Container cp)
 				{
-					return ((Container)parent).CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+					return cp.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight);
 				}
-				else if (parent is Item)
+
+				if (parent is Item ip)
 				{
-					parent = ((Item)parent).Parent;
+					parent = ip.Parent;
 				}
 				else
 				{
@@ -287,6 +282,43 @@ namespace Server.Items
 			}
 
 			return true;
+		}
+
+		public bool CanHold(Item item)
+		{
+			return CanHold(null, item);
+		}
+
+		public virtual bool CanHold(Mobile m, Item item)
+		{
+			if (item == null || item.Deleted)
+			{
+				return false;
+			}
+
+			if (m != null && m.AccessLevel >= AccessLevel.GameMaster)
+			{
+				return true;
+			}
+
+			var types = SupportedContents;
+
+			if (types == null || types.Length <= 0)
+			{
+				return true;
+			}
+
+			var type = item.GetType();
+
+			foreach (var t in types)
+			{
+				if (t.IsAssignableFrom(type))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public virtual bool CheckStack(Mobile from, Item item)
@@ -322,9 +354,14 @@ namespace Server.Items
 			to.SendLocalizedMessage(500176); // That is not your container, you can't store things here.
 		}
 
+		public virtual void SendDisallowedMessage(Mobile to, Item item)
+		{
+			to.SendMessage("This item can't be stored in that container.");
+		}
+
 		public virtual bool OnDragDropInto(Mobile from, Item item, Point3D p)
 		{
-			if (!CheckHold(from, item, true, true))
+			if (!CheckHold(from, item, true, true, true))
 			{
 				return false;
 			}
@@ -356,19 +393,45 @@ namespace Server.Items
 		}
 
 		#region Consume[...]
+
+		public bool ConsumeTotalGrouped(Type type, int amount, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(type, amount, FindOptions.Default, callback, grouper);
+		}
+
 		public bool ConsumeTotalGrouped(Type type, int amount, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
 		{
-			return ConsumeTotalGrouped(type, amount, recurse, null, callback, grouper);
+			return ConsumeTotalGrouped(type, amount, InitFindOptions(recurse), callback, grouper);
+		}
+
+		public bool ConsumeTotalGrouped(Type type, int amount, FindOptions options, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(type, amount, options, null, callback, grouper);
+		}
+
+		public bool ConsumeTotalGrouped(Type type, int amount, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(type, amount, FindOptions.Default, validator, callback, grouper);
 		}
 
 		public bool ConsumeTotalGrouped(Type type, int amount, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(type, amount, InitFindOptions(recurse), validator, callback, grouper);
+		}
+
+		public bool ConsumeTotalGrouped(Type type, int amount, FindOptions options, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
 		{
 			if (grouper == null)
 			{
 				throw new ArgumentNullException();
 			}
 
-			var typedItems = FindItemsByType(type, recurse);
+			if (CheckLocked(this, options))
+			{
+				return false;
+			}
+
+			var typedItems = FindItemsByType(type, options);
 
 			var groups = new List<List<Item>>();
 			var idx = 0;
@@ -378,7 +441,9 @@ namespace Server.Items
 				var a = typedItems[idx++];
 
 				if (validator != null && !validator(a))
+				{
 					continue;
+				}
 
 				var group = new List<Item>
 				{
@@ -390,7 +455,9 @@ namespace Server.Items
 					var b = typedItems[idx];
 
 					if (validator != null && !validator(b))
+					{
 						continue;
+					}
 
 					var v = grouper(a, b);
 
@@ -417,7 +484,6 @@ namespace Server.Items
 			for (var i = 0; i < groups.Count; ++i)
 			{
 				items[i] = groups[i].ToArray();
-				//items[i] = (Item[])(((ArrayList)groups[i]).ToArray( typeof( Item ) ));
 
 				for (var j = 0; j < items[i].Length; ++j)
 				{
@@ -449,20 +515,14 @@ namespace Server.Items
 
 						if (theirAmount < need)
 						{
-							if (callback != null)
-							{
-								callback(item, theirAmount);
-							}
+							callback?.Invoke(item, theirAmount);
 
 							item.Delete();
 							need -= theirAmount;
 						}
 						else
 						{
-							if (callback != null)
-							{
-								callback(item, need);
-							}
+							callback?.Invoke(item, need);
 
 							item.Consume(need);
 							break;
@@ -476,14 +536,32 @@ namespace Server.Items
 			return true;
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, OnItemConsumed callback, CheckItemGroup grouper)
 		{
-			return ConsumeTotalGrouped(types, amounts, recurse, null, callback, grouper);
+			return ConsumeTotalGrouped(types, amounts, FindOptions.Default, callback, grouper);
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(types, amounts, InitFindOptions(recurse), callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, FindOptions options, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(types, amounts, options, null, callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(types, amounts, FindOptions.Default, validator, callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(types, amounts, InitFindOptions(recurse), validator, callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[] types, int[] amounts, FindOptions options, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
 		{
 			if (types.Length != amounts.Length)
 			{
@@ -494,12 +572,17 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
+			if (CheckLocked(this, options))
+			{
+				return Int32.MaxValue;
+			}
+
 			var items = new Item[types.Length][][];
 			var totals = new int[types.Length][];
 
 			for (var i = 0; i < types.Length; ++i)
 			{
-				var typedItems = FindItemsByType(types[i], recurse);
+				var typedItems = FindItemsByType(types[i], options);
 
 				var groups = new List<List<Item>>();
 				var idx = 0;
@@ -509,7 +592,9 @@ namespace Server.Items
 					var a = typedItems[idx++];
 
 					if (validator != null && !validator(a))
+					{
 						continue;
+					}
 
 					var group = new List<Item>
 					{
@@ -521,7 +606,9 @@ namespace Server.Items
 						var b = typedItems[idx];
 
 						if (validator != null && !validator(b))
+						{
 							continue;
+						}
 
 						var v = grouper(a, b);
 
@@ -548,7 +635,6 @@ namespace Server.Items
 				for (var j = 0; j < groups.Count; ++j)
 				{
 					items[i][j] = groups[j].ToArray();
-					//items[i][j] = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
 
 					for (var k = 0; k < items[i][j].Length; ++k)
 					{
@@ -583,20 +669,14 @@ namespace Server.Items
 
 							if (theirAmount < need)
 							{
-								if (callback != null)
-								{
-									callback(item, theirAmount);
-								}
+								callback?.Invoke(item, theirAmount);
 
 								item.Delete();
 								need -= theirAmount;
 							}
 							else
 							{
-								if (callback != null)
-								{
-									callback(item, need);
-								}
+								callback?.Invoke(item, need);
 
 								item.Consume(need);
 								break;
@@ -611,14 +691,32 @@ namespace Server.Items
 			return -1;
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[][] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, bool recurse, OnItemConsumed callback, CheckItemGroup grouper)
 		{
-			return ConsumeTotalGrouped(types, amounts, recurse, null, callback, grouper);
+			return ConsumeTotalGrouped(types, amounts, InitFindOptions(recurse), callback, grouper);
 		}
 
-		public int ConsumeTotalGrouped(
-			Type[][] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(types, amounts, FindOptions.Default, callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, FindOptions options, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(types, amounts, options, null, callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
+		{
+			return ConsumeTotalGrouped(types, amounts, FindOptions.Default, validator, callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, bool recurse, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper) 
+		{
+			return ConsumeTotalGrouped(types, amounts, InitFindOptions(recurse), validator, callback, grouper);
+		}
+
+		public int ConsumeTotalGrouped(Type[][] types, int[] amounts, FindOptions options, ResValidator validator, OnItemConsumed callback, CheckItemGroup grouper)
 		{
 			if (types.Length != amounts.Length)
 			{
@@ -629,12 +727,17 @@ namespace Server.Items
 				throw new ArgumentNullException();
 			}
 
+			if (CheckLocked(this, options))
+			{
+				return Int32.MaxValue;
+			}
+
 			var items = new Item[types.Length][][];
 			var totals = new int[types.Length][];
 
 			for (var i = 0; i < types.Length; ++i)
 			{
-				var typedItems = FindItemsByType(types[i], recurse);
+				var typedItems = FindItemsByType(types[i], options);
 
 				var groups = new List<List<Item>>();
 				var idx = 0;
@@ -644,7 +747,9 @@ namespace Server.Items
 					var a = typedItems[idx++];
 
 					if (validator != null && !validator(a))
+					{
 						continue;
+					}
 
 					var group = new List<Item>
 					{
@@ -656,7 +761,9 @@ namespace Server.Items
 						var b = typedItems[idx];
 
 						if (validator != null && !validator(b))
+						{
 							continue;
+						}
 
 						var v = grouper(a, b);
 
@@ -717,20 +824,14 @@ namespace Server.Items
 
 							if (theirAmount < need)
 							{
-								if (callback != null)
-								{
-									callback(item, theirAmount);
-								}
+								callback?.Invoke(item, theirAmount);
 
 								item.Delete();
 								need -= theirAmount;
 							}
 							else
 							{
-								if (callback != null)
-								{
-									callback(item, need);
-								}
+								callback?.Invoke(item, need);
 
 								item.Consume(need);
 								break;
@@ -747,19 +848,39 @@ namespace Server.Items
 
 		public int ConsumeTotal(Type[][] types, int[] amounts)
 		{
-			return ConsumeTotal(types, amounts, true, null);
+			return ConsumeTotal(types, amounts, FindOptions.Default);
 		}
 
 		public int ConsumeTotal(Type[][] types, int[] amounts, bool recurse)
 		{
-			return ConsumeTotal(types, amounts, recurse, null);
+			return ConsumeTotal(types, amounts, InitFindOptions(recurse));
+		}
+
+		public int ConsumeTotal(Type[][] types, int[] amounts, FindOptions options)
+		{
+			return ConsumeTotal(types, amounts, options, null);
+		}
+
+		public int ConsumeTotal(Type[][] types, int[] amounts, OnItemConsumed callback)
+		{
+			return ConsumeTotal(types, amounts, FindOptions.Default, callback);
 		}
 
 		public int ConsumeTotal(Type[][] types, int[] amounts, bool recurse, OnItemConsumed callback)
 		{
+			return ConsumeTotal(types, amounts, InitFindOptions(recurse), callback);
+		}
+
+		public int ConsumeTotal(Type[][] types, int[] amounts, FindOptions options, OnItemConsumed callback)
+		{
 			if (types.Length != amounts.Length)
 			{
 				throw new ArgumentException();
+			}
+
+			if (CheckLocked(this, options))
+			{
+				return Int32.MaxValue;
 			}
 
 			var items = new Item[types.Length][];
@@ -767,7 +888,7 @@ namespace Server.Items
 
 			for (var i = 0; i < types.Length; ++i)
 			{
-				items[i] = FindItemsByType(types[i], recurse);
+				items[i] = FindItemsByType(types[i], options);
 
 				for (var j = 0; j < items[i].Length; ++j)
 				{
@@ -792,20 +913,14 @@ namespace Server.Items
 
 					if (theirAmount < need)
 					{
-						if (callback != null)
-						{
-							callback(item, theirAmount);
-						}
+						callback?.Invoke(item, theirAmount);
 
 						item.Delete();
 						need -= theirAmount;
 					}
 					else
 					{
-						if (callback != null)
-						{
-							callback(item, need);
-						}
+						callback?.Invoke(item, need);
 
 						item.Consume(need);
 						break;
@@ -818,19 +933,39 @@ namespace Server.Items
 
 		public int ConsumeTotal(Type[] types, int[] amounts)
 		{
-			return ConsumeTotal(types, amounts, true, null);
+			return ConsumeTotal(types, amounts, FindOptions.Default);
 		}
 
 		public int ConsumeTotal(Type[] types, int[] amounts, bool recurse)
 		{
-			return ConsumeTotal(types, amounts, recurse, null);
+			return ConsumeTotal(types, amounts, InitFindOptions(recurse));
+		}
+
+		public int ConsumeTotal(Type[] types, int[] amounts, FindOptions options)
+		{
+			return ConsumeTotal(types, amounts, options, null);
+		}
+
+		public int ConsumeTotal(Type[] types, int[] amounts, OnItemConsumed callback)
+		{
+			return ConsumeTotal(types, amounts, FindOptions.Default, callback);
 		}
 
 		public int ConsumeTotal(Type[] types, int[] amounts, bool recurse, OnItemConsumed callback)
 		{
+			return ConsumeTotal(types, amounts, InitFindOptions(recurse), callback);
+		}
+
+		public int ConsumeTotal(Type[] types, int[] amounts, FindOptions options, OnItemConsumed callback)
+		{
 			if (types.Length != amounts.Length)
 			{
 				throw new ArgumentException();
+			}
+
+			if (CheckLocked(this, options))
+			{
+				return Int32.MaxValue;
 			}
 
 			var items = new Item[types.Length][];
@@ -838,7 +973,7 @@ namespace Server.Items
 
 			for (var i = 0; i < types.Length; ++i)
 			{
-				items[i] = FindItemsByType(types[i], recurse);
+				items[i] = FindItemsByType(types[i], options);
 
 				for (var j = 0; j < items[i].Length; ++j)
 				{
@@ -863,20 +998,14 @@ namespace Server.Items
 
 					if (theirAmount < need)
 					{
-						if (callback != null)
-						{
-							callback(item, theirAmount);
-						}
+						callback?.Invoke(item, theirAmount);
 
 						item.Delete();
 						need -= theirAmount;
 					}
 					else
 					{
-						if (callback != null)
-						{
-							callback(item, need);
-						}
+						callback?.Invoke(item, need);
 
 						item.Consume(need);
 						break;
@@ -889,21 +1018,41 @@ namespace Server.Items
 
 		public bool ConsumeTotal(Type type, int amount)
 		{
-			return ConsumeTotal(type, amount, true, null);
+			return ConsumeTotal(type, amount, FindOptions.Default);
 		}
 
 		public bool ConsumeTotal(Type type, int amount, bool recurse)
 		{
-			return ConsumeTotal(type, amount, recurse, null);
+			return ConsumeTotal(type, amount, InitFindOptions(recurse));
+		}
+
+		public bool ConsumeTotal(Type type, int amount, FindOptions options)
+		{
+			return ConsumeTotal(type, amount, options, null);
+		}
+
+		public bool ConsumeTotal(Type type, int amount, OnItemConsumed callback)
+		{
+			return ConsumeTotal(type, amount, FindOptions.Default, callback);
 		}
 
 		public bool ConsumeTotal(Type type, int amount, bool recurse, OnItemConsumed callback)
 		{
-			var items = FindItemsByType(type, recurse);
+			return ConsumeTotal(type, amount, InitFindOptions(recurse), callback);
+		}
 
-			// First pass, compute total
+		public bool ConsumeTotal(Type type, int amount, FindOptions options, OnItemConsumed callback)
+		{
+			if (CheckLocked(this, options))
+			{
+				return false;
+			}
+
 			var total = 0;
 
+			var items = FindItemsByType(type, options);
+
+			// First pass, compute total
 			for (var i = 0; i < items.Length; ++i)
 			{
 				total += items[i].Amount;
@@ -912,7 +1061,6 @@ namespace Server.Items
 			if (total >= amount)
 			{
 				// We've enough, so consume it
-
 				var need = amount;
 
 				for (var i = 0; i < items.Length; ++i)
@@ -923,20 +1071,14 @@ namespace Server.Items
 
 					if (theirAmount < need)
 					{
-						if (callback != null)
-						{
-							callback(item, theirAmount);
-						}
-
+						callback?.Invoke(item, theirAmount);
+						
 						item.Delete();
 						need -= theirAmount;
 					}
 					else
 					{
-						if (callback != null)
-						{
-							callback(item, need);
-						}
+						callback?.Invoke(item, need);
 
 						item.Consume(need);
 
@@ -950,16 +1092,41 @@ namespace Server.Items
 
 		public int ConsumeUpTo(Type type, int amount)
 		{
-			return ConsumeUpTo(type, amount, true);
+			return ConsumeUpTo(type, amount, FindOptions.Default);
 		}
 
 		public int ConsumeUpTo(Type type, int amount, bool recurse)
 		{
+			return ConsumeUpTo(type, amount, InitFindOptions(recurse));
+		}
+
+		public int ConsumeUpTo(Type type, int amount, FindOptions options)
+		{
+			return ConsumeUpTo(type, amount, options, null);
+		}
+
+		public int ConsumeUpTo(Type type, int amount, OnItemConsumed callback)
+		{
+			return ConsumeUpTo(type, amount, FindOptions.Default, callback);
+		}
+
+		public int ConsumeUpTo(Type type, int amount, bool recurse, OnItemConsumed callback)
+		{
+			return ConsumeUpTo(type, amount, InitFindOptions(recurse), callback);
+		}
+
+		public int ConsumeUpTo(Type type, int amount, FindOptions options, OnItemConsumed callback)
+		{
 			var consumed = 0;
+
+			if (CheckLocked(this, options))
+			{
+				return consumed;
+			}
 
 			var toDelete = new Queue<Item>();
 
-			RecurseConsumeUpTo(this, type, amount, recurse, ref consumed, toDelete);
+			RecurseConsumeUpTo(this, type, amount, options, callback, ref consumed, toDelete);
 
 			while (toDelete.Count > 0)
 			{
@@ -969,46 +1136,67 @@ namespace Server.Items
 			return consumed;
 		}
 
-		private static void RecurseConsumeUpTo(
-			Item current, Type type, int amount, bool recurse, ref int consumed, Queue<Item> toDelete)
+		private static void RecurseConsumeUpTo(Item current, Type type, int amount, FindOptions options, OnItemConsumed callback, ref int consumed, Queue<Item> toDelete)
 		{
 			if (current != null && current.Items.Count > 0)
 			{
+				if (CheckLocked(current, options))
+				{
+					return;
+				}
+
 				var list = current.Items;
 
 				for (var i = 0; i < list.Count; ++i)
 				{
 					var item = list[i];
 
-					if (type.IsAssignableFrom(item.GetType()))
+					if (CheckType(item, type))
 					{
 						var need = amount - consumed;
 						var theirAmount = item.Amount;
 
 						if (theirAmount <= need)
 						{
+							callback?.Invoke(item, theirAmount);
+
 							toDelete.Enqueue(item);
 							consumed += theirAmount;
 						}
 						else
 						{
+							callback?.Invoke(item, need);
+
 							item.Amount -= need;
 							consumed += need;
 
 							return;
 						}
 					}
-					else if (recurse && item is Container)
+
+					if (CheckRecurse(item, options))
 					{
-						RecurseConsumeUpTo(item, type, amount, recurse, ref consumed, toDelete);
+						RecurseConsumeUpTo(item, type, amount, options, callback, ref consumed, toDelete);
 					}
 				}
 			}
 		}
+
 		#endregion
 
 		#region Get[BestGroup]Amount
+
+		public int GetBestGroupAmount(Type type, CheckItemGroup grouper)
+		{
+			return GetBestGroupAmount(type, FindOptions.Default, grouper);
+		}
+
 		public int GetBestGroupAmount(Type type, bool recurse, CheckItemGroup grouper)
+		{
+			return GetBestGroupAmount(type, InitFindOptions(recurse), grouper);
+		}
+
+		public int GetBestGroupAmount(Type type, FindOptions options, CheckItemGroup grouper)
 		{
 			if (grouper == null)
 			{
@@ -1017,7 +1205,12 @@ namespace Server.Items
 
 			var best = 0;
 
-			var typedItems = FindItemsByType(type, recurse);
+			if (CheckLocked(this, options))
+			{
+				return best;
+			}
+
+			var typedItems = FindItemsByType(type, options);
 
 			var groups = new List<List<Item>>();
 			var idx = 0;
@@ -1052,12 +1245,11 @@ namespace Server.Items
 
 			for (var i = 0; i < groups.Count; ++i)
 			{
-				var items = groups[i].ToArray();
+				var items = groups[i];
 
-				//Item[] items = (Item[])(((ArrayList)groups[i]).ToArray( typeof( Item ) ));
 				var total = 0;
 
-				for (var j = 0; j < items.Length; ++j)
+				for (var j = 0; j < items.Count; ++j)
 				{
 					total += items[j].Amount;
 				}
@@ -1071,7 +1263,17 @@ namespace Server.Items
 			return best;
 		}
 
+		public int GetBestGroupAmount(Type[] types, CheckItemGroup grouper)
+		{
+			return GetBestGroupAmount(types, FindOptions.Default, grouper);
+		}
+
 		public int GetBestGroupAmount(Type[] types, bool recurse, CheckItemGroup grouper)
+		{
+			return GetBestGroupAmount(types, InitFindOptions(recurse), grouper);
+		}
+
+		public int GetBestGroupAmount(Type[] types, FindOptions options, CheckItemGroup grouper)
 		{
 			if (grouper == null)
 			{
@@ -1080,7 +1282,12 @@ namespace Server.Items
 
 			var best = 0;
 
-			var typedItems = FindItemsByType(types, recurse);
+			if (CheckLocked(this, options))
+			{
+				return best;
+			}
+
+			var typedItems = FindItemsByType(types, options);
 
 			var groups = new List<List<Item>>();
 			var idx = 0;
@@ -1115,11 +1322,10 @@ namespace Server.Items
 
 			for (var j = 0; j < groups.Count; ++j)
 			{
-				var items = groups[j].ToArray();
-				//Item[] items = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
+				var items = groups[j];
 				var total = 0;
 
-				for (var k = 0; k < items.Length; ++k)
+				for (var k = 0; k < items.Count; ++k)
 				{
 					total += items[k].Amount;
 				}
@@ -1133,7 +1339,17 @@ namespace Server.Items
 			return best;
 		}
 
+		public int GetBestGroupAmount(Type[][] types, CheckItemGroup grouper)
+		{
+			return GetBestGroupAmount(types, FindOptions.Default, grouper);
+		}
+
 		public int GetBestGroupAmount(Type[][] types, bool recurse, CheckItemGroup grouper)
+		{
+			return GetBestGroupAmount(types, InitFindOptions(recurse), grouper);
+		}
+
+		public int GetBestGroupAmount(Type[][] types, FindOptions options, CheckItemGroup grouper)
 		{
 			if (grouper == null)
 			{
@@ -1142,9 +1358,14 @@ namespace Server.Items
 
 			var best = 0;
 
+			if (CheckLocked(this, options))
+			{
+				return best;
+			}
+
 			for (var i = 0; i < types.Length; ++i)
 			{
-				var typedItems = FindItemsByType(types[i], recurse);
+				var typedItems = FindItemsByType(types[i], options);
 
 				var groups = new List<List<Item>>();
 				var idx = 0;
@@ -1179,11 +1400,10 @@ namespace Server.Items
 
 				for (var j = 0; j < groups.Count; ++j)
 				{
-					var items = groups[j].ToArray();
-					//Item[] items = (Item[])(((ArrayList)groups[j]).ToArray( typeof( Item ) ));
+					var items = groups[j];
 					var total = 0;
 
-					for (var k = 0; k < items.Length; ++k)
+					for (var k = 0; k < items.Count; ++k)
 					{
 						total += items[k].Amount;
 					}
@@ -1198,16 +1418,41 @@ namespace Server.Items
 			return best;
 		}
 
+		public int GetAmount<T>()
+		{
+			return GetAmount(typeof(T));
+		}
+
+		public int GetAmount<T>(bool recurse)
+		{
+			return GetAmount(typeof(T), recurse);
+		}
+
+		public int GetAmount<T>(FindOptions options)
+		{
+			return GetAmount(typeof(T), options);
+		}
+
 		public int GetAmount(Type type)
 		{
-			return GetAmount(type, true);
+			return GetAmount(type, FindOptions.Default);
 		}
 
 		public int GetAmount(Type type, bool recurse)
 		{
-			var items = FindItemsByType(type, recurse);
+			return GetAmount(type, InitFindOptions(recurse));
+		}
 
+		public int GetAmount(Type type, FindOptions options)
+		{
 			var amount = 0;
+
+			if (CheckLocked(this, options))
+			{
+				return amount;
+			}
+
+			var items = FindItemsByType(type, options);
 
 			for (var i = 0; i < items.Length; ++i)
 			{
@@ -1219,14 +1464,24 @@ namespace Server.Items
 
 		public int GetAmount(Type[] types)
 		{
-			return GetAmount(types, true);
+			return GetAmount(types, FindOptions.Default);
 		}
 
 		public int GetAmount(Type[] types, bool recurse)
 		{
-			var items = FindItemsByType(types, recurse);
+			return GetAmount(types, InitFindOptions(recurse));
+		}
 
+		public int GetAmount(Type[] types, FindOptions options)
+		{
 			var amount = 0;
+
+			if (CheckLocked(this, options))
+			{
+				return amount;
+			}
+
+			var items = FindItemsByType(types, options);
 
 			for (var i = 0; i < items.Length; ++i)
 			{
@@ -1235,46 +1490,58 @@ namespace Server.Items
 
 			return amount;
 		}
+
 		#endregion
 
 		private static readonly List<Item> m_FindItemsList = new List<Item>();
 
 		#region Non-Generic FindItem[s] by Type
+
 		public Item[] FindItemsByType(Type type)
 		{
-			return FindItemsByType(type, true);
+			return FindItemsByType(type, FindOptions.Default);
 		}
 
 		public Item[] FindItemsByType(Type type, bool recurse)
+		{
+			return FindItemsByType(type, InitFindOptions(recurse));
+		}
+
+		public Item[] FindItemsByType(Type type, FindOptions options)
 		{
 			if (m_FindItemsList.Count > 0)
 			{
 				m_FindItemsList.Clear();
 			}
 
-			RecurseFindItemsByType(this, type, recurse, m_FindItemsList);
+			RecurseFindItemsByType(this, type, options, m_FindItemsList);
 
 			return m_FindItemsList.ToArray();
 		}
 
-		private static void RecurseFindItemsByType(Item current, Type type, bool recurse, List<Item> list)
+		private static void RecurseFindItemsByType(Item current, Type type, FindOptions options, List<Item> list)
 		{
 			if (current != null && current.Items.Count > 0)
 			{
+				if (CheckLocked(current, options))
+				{
+					return;
+				}
+
 				var items = current.Items;
 
 				for (var i = 0; i < items.Count; ++i)
 				{
 					var item = items[i];
 
-					if (type.IsAssignableFrom(item.GetType())) // item.GetType().IsAssignableFrom( type ) )
+					if (CheckType(item, type))
 					{
 						list.Add(item);
 					}
 
-					if (recurse && item is Container)
+					if (CheckRecurse(item, options))
 					{
-						RecurseFindItemsByType(item, type, recurse, list);
+						RecurseFindItemsByType(item, type, options, list);
 					}
 				}
 			}
@@ -1282,39 +1549,49 @@ namespace Server.Items
 
 		public Item[] FindItemsByType(Type[] types)
 		{
-			return FindItemsByType(types, true);
+			return FindItemsByType(types, FindOptions.Default);
 		}
 
 		public Item[] FindItemsByType(Type[] types, bool recurse)
+		{
+			return FindItemsByType(types, InitFindOptions(recurse));
+		}
+
+		public Item[] FindItemsByType(Type[] types, FindOptions options)
 		{
 			if (m_FindItemsList.Count > 0)
 			{
 				m_FindItemsList.Clear();
 			}
 
-			RecurseFindItemsByType(this, types, recurse, m_FindItemsList);
+			RecurseFindItemsByType(this, types, options, m_FindItemsList);
 
 			return m_FindItemsList.ToArray();
 		}
 
-		private static void RecurseFindItemsByType(Item current, Type[] types, bool recurse, List<Item> list)
+		private static void RecurseFindItemsByType(Item current, Type[] types, FindOptions options, List<Item> list)
 		{
 			if (current != null && current.Items.Count > 0)
 			{
+				if (CheckLocked(current, options))
+				{
+					return;
+				}
+
 				var items = current.Items;
 
 				for (var i = 0; i < items.Count; ++i)
 				{
 					var item = items[i];
 
-					if (InTypeList(item, types))
+					if (CheckType(item, types))
 					{
 						list.Add(item);
 					}
 
-					if (recurse && item is Container)
+					if (CheckRecurse(item, options))
 					{
-						RecurseFindItemsByType(item, types, recurse, list);
+						RecurseFindItemsByType(item, types, options, list);
 					}
 				}
 			}
@@ -1322,31 +1599,42 @@ namespace Server.Items
 
 		public Item FindItemByType(Type type)
 		{
-			return FindItemByType(type, true);
+			return FindItemByType(type, FindOptions.Default);
 		}
 
 		public Item FindItemByType(Type type, bool recurse)
 		{
-			return RecurseFindItemByType(this, type, recurse);
+			return FindItemByType(type, InitFindOptions(recurse));
 		}
 
-		private static Item RecurseFindItemByType(Item current, Type type, bool recurse)
+		public Item FindItemByType(Type type, FindOptions options)
+		{
+			return RecurseFindItemByType(this, type, options);
+		}
+
+		private static Item RecurseFindItemByType(Item current, Type type, FindOptions options)
 		{
 			if (current != null && current.Items.Count > 0)
 			{
+				if (CheckLocked(current, options))
+				{
+					return null;
+				}
+
 				var list = current.Items;
 
 				for (var i = 0; i < list.Count; ++i)
 				{
 					var item = list[i];
 
-					if (type.IsAssignableFrom(item.GetType()))
+					if (CheckType(item, type))
 					{
 						return item;
 					}
-					else if (recurse && item is Container)
+
+					if (CheckRecurse(item, options))
 					{
-						var check = RecurseFindItemByType(item, type, recurse);
+						var check = RecurseFindItemByType(item, type, options);
 
 						if (check != null)
 						{
@@ -1361,31 +1649,42 @@ namespace Server.Items
 
 		public Item FindItemByType(Type[] types)
 		{
-			return FindItemByType(types, true);
+			return FindItemByType(types, FindOptions.Default);
 		}
 
 		public Item FindItemByType(Type[] types, bool recurse)
 		{
-			return RecurseFindItemByType(this, types, recurse);
+			return FindItemByType(types, InitFindOptions(recurse));
 		}
 
-		private static Item RecurseFindItemByType(Item current, Type[] types, bool recurse)
+		public Item FindItemByType(Type[] types, FindOptions options)
+		{
+			return RecurseFindItemByType(this, types, options);
+		}
+
+		private static Item RecurseFindItemByType(Item current, Type[] types, FindOptions options)
 		{
 			if (current != null && current.Items.Count > 0)
 			{
+				if (CheckLocked(current, options))
+				{
+					return null;
+				}
+
 				var list = current.Items;
 
 				for (var i = 0; i < list.Count; ++i)
 				{
 					var item = list[i];
 
-					if (InTypeList(item, types))
+					if (CheckType(item, types))
 					{
 						return item;
 					}
-					else if (recurse && item is Container)
+					
+					if (CheckRecurse(item, options))
 					{
-						var check = RecurseFindItemByType(item, types, recurse);
+						var check = RecurseFindItemByType(item, types, options);
 
 						if (check != null)
 						{
@@ -1397,62 +1696,74 @@ namespace Server.Items
 
 			return null;
 		}
+
 		#endregion
 
 		#region Generic FindItem[s] by Type
-		public List<T> FindItemsByType<T>() where T : Item
+
+		public T[] FindItemsByType<T>() where T : Item
 		{
-			return FindItemsByType<T>(true, null);
+			return FindItemsByType<T>(FindOptions.Default);
 		}
 
-		public List<T> FindItemsByType<T>(bool recurse) where T : Item
+		public T[] FindItemsByType<T>(bool recurse) where T : Item
 		{
-			return FindItemsByType<T>(recurse, null);
+			return FindItemsByType<T>(InitFindOptions(recurse));
 		}
 
-		public List<T> FindItemsByType<T>(Predicate<T> predicate) where T : Item
+		public T[] FindItemsByType<T>(FindOptions options) where T : Item
 		{
-			return FindItemsByType(true, predicate);
+			return FindItemsByType<T>(options, null);
 		}
 
-		public List<T> FindItemsByType<T>(bool recurse, Predicate<T> predicate) where T : Item
+		public T[] FindItemsByType<T>(Predicate<T> predicate) where T : Item
+		{
+			return FindItemsByType(FindOptions.Default, predicate);
+		}
+
+		public T[] FindItemsByType<T>(bool recurse, Predicate<T> predicate) where T : Item
+		{
+			return FindItemsByType(InitFindOptions(recurse), predicate);
+		}
+
+		public T[] FindItemsByType<T>(FindOptions options, Predicate<T> predicate) where T : Item
 		{
 			if (m_FindItemsList.Count > 0)
 			{
 				m_FindItemsList.Clear();
 			}
 
-			var list = new List<T>();
+			RecurseFindItemsByType(this, options, m_FindItemsList, predicate);
 
-			RecurseFindItemsByType(this, recurse, list, predicate);
-
-			return list;
+			return m_FindItemsList.Cast<T>().ToArray();
 		}
 
-		private static void RecurseFindItemsByType<T>(Item current, bool recurse, List<T> list, Predicate<T> predicate)
-			where T : Item
+		private static void RecurseFindItemsByType<T>(Item current, FindOptions options, List<Item> list, Predicate<T> predicate) where T : Item
 		{
 			if (current != null && current.Items.Count > 0)
 			{
+				if (CheckLocked(current, options))
+				{
+					return;
+				}
+
 				var items = current.Items;
 
 				for (var i = 0; i < items.Count; ++i)
 				{
 					var item = items[i];
 
-					if (typeof(T).IsAssignableFrom(item.GetType()))
+					if (item is T typedItem)
 					{
-						var typedItem = (T)item;
-
 						if (predicate == null || predicate(typedItem))
 						{
 							list.Add(typedItem);
 						}
 					}
 
-					if (recurse && item is Container)
+					if (CheckRecurse(item, options))
 					{
-						RecurseFindItemsByType(item, recurse, list, predicate);
+						RecurseFindItemsByType(item, options, list, predicate);
 					}
 				}
 			}
@@ -1460,46 +1771,60 @@ namespace Server.Items
 
 		public T FindItemByType<T>() where T : Item
 		{
-			return FindItemByType<T>(true);
-		}
-
-		public T FindItemByType<T>(Predicate<T> predicate) where T : Item
-		{
-			return FindItemByType(true, predicate);
+			return FindItemByType<T>(FindOptions.Default);
 		}
 
 		public T FindItemByType<T>(bool recurse) where T : Item
 		{
-			return FindItemByType<T>(recurse, null);
+			return FindItemByType<T>(InitFindOptions(recurse));
+		}
+
+		public T FindItemByType<T>(FindOptions options) where T : Item
+		{
+			return FindItemByType<T>(options, null);
+		}
+
+		public T FindItemByType<T>(Predicate<T> predicate) where T : Item
+		{
+			return FindItemByType(FindOptions.Default, predicate);
 		}
 
 		public T FindItemByType<T>(bool recurse, Predicate<T> predicate) where T : Item
 		{
-			return RecurseFindItemByType(this, recurse, predicate);
+			return FindItemByType(InitFindOptions(recurse), predicate);
 		}
 
-		private static T RecurseFindItemByType<T>(Item current, bool recurse, Predicate<T> predicate) where T : Item
+		public T FindItemByType<T>(FindOptions options, Predicate<T> predicate) where T : Item
+		{
+			return RecurseFindItemByType(this, options, predicate);
+		}
+
+		private static T RecurseFindItemByType<T>(Item current, FindOptions options, Predicate<T> predicate) where T : Item
 		{
 			if (current != null && current.Items.Count > 0)
 			{
+				if (CheckLocked(current, options))
+				{
+					return null;
+				}
+
 				var list = current.Items;
 
 				for (var i = 0; i < list.Count; ++i)
 				{
 					var item = list[i];
 
-					if (typeof(T).IsAssignableFrom(item.GetType()))
+					if (item is T typedItem)
 					{
-						var typedItem = (T)item;
-
 						if (predicate == null || predicate(typedItem))
 						{
 							return typedItem;
 						}
 					}
-					else if (recurse && item is Container)
+
+					if (CheckRecurse(item, options))
 					{
-						var check = RecurseFindItemByType(item, recurse, predicate);
+						var check = RecurseFindItemByType(item, options, predicate);
 
 						if (check != null)
 						{
@@ -1511,15 +1836,137 @@ namespace Server.Items
 
 			return null;
 		}
+
 		#endregion
 
-		private static bool InTypeList(Item item, Type[] types)
+		#region FindItem[s]
+
+		public Item FindItem(Predicate<Item> predicate)
+		{
+			return FindItemByType<Item>(predicate);
+		}
+
+		public Item FindItem(bool recurse, Predicate<Item> predicate)
+		{
+			return FindItemByType<Item>(recurse, predicate);
+		}
+
+		public Item FindItem(FindOptions options, Predicate<Item> predicate)
+		{
+			return FindItemByType<Item>(options, predicate);
+		}
+
+		public Item[] FindItems()
+		{
+			return FindItemsByType<Item>();
+		}
+
+		public Item[] FindItems(bool recurse)
+		{
+			return FindItemsByType<Item>(recurse);
+		}
+
+		public Item[] FindItems(FindOptions options)
+		{
+			return FindItemsByType<Item>(options);
+		}
+
+		public Item[] FindItems(Predicate<Item> predicate)
+		{
+			return FindItemsByType<Item>(predicate);
+		}
+
+		public Item[] FindItems(bool recurse, Predicate<Item> predicate)
+		{
+			return FindItemsByType<Item>(recurse, predicate);
+		}
+
+		public Item[] FindItems(FindOptions options, Predicate<Item> predicate)
+		{
+			return FindItemsByType<Item>(options, predicate);
+		}
+
+		#endregion
+
+		#region FindOptions
+
+		[Flags]
+		public enum FindOptions
+		{
+			None = 0x0,
+
+			/// <summary>
+			///		Includes child containers in the search.
+			/// </summary>
+			Recursive = 0x1,
+
+			/// <summary>
+			///		Containers that implement <see cref="ILockable"/> and have <see cref="ILockable.Locked"/> 
+			///		set to true will have their contents excluded from the search.
+			/// </summary>
+			Unlocked = 0x2,
+
+			/// <summary>
+			///		A combination of the <see cref="Recursive"/> and <see cref="Unlocked"/> flags.
+			/// </summary>
+			RecursiveUnlocked = Recursive | Unlocked,
+
+			/// <summary>
+			///		Default behavior, equivalent to the <see cref="Recursive"/> flag.
+			/// </summary>
+			Default = Recursive,
+
+			/// <summary>
+			///		A combination of all <see cref="FindOptions"/> flags.
+			/// </summary>
+			All = ~None
+		}
+
+		private static bool CheckRecurse(Item item, FindOptions options)
+		{
+			return options.HasFlag(FindOptions.Recursive) && item is Container;
+		}
+
+		private static bool CheckLocked(Item item, FindOptions options)
+		{
+			return options.HasFlag(FindOptions.Unlocked) && item is ILockable lockable && lockable.Locked;
+		}
+
+		private static FindOptions InitFindOptions(bool recurse)
+		{
+			var value = FindOptions.Default;
+
+			if (recurse)
+			{
+				value |= FindOptions.Recursive;
+			}
+			else
+			{
+				value &= ~FindOptions.Recursive;
+			}
+
+			return value;
+		}
+
+		#endregion
+
+		private static bool CheckType(Item item, Type type)
+		{
+			return CheckType(item.GetType(), type);
+		}
+
+		private static bool CheckType(Type item, Type type)
+		{
+			return type.IsAssignableFrom(item);
+		}
+
+		private static bool CheckType(Item item, Type[] types)
 		{
 			var t = item.GetType();
 
 			for (var i = 0; i < types.Length; ++i)
 			{
-				if (types[i].IsAssignableFrom(t))
+				if (CheckType(t, types[i]))
 				{
 					return true;
 				}
@@ -1549,7 +1996,8 @@ namespace Server.Items
 			GumpID = 0x00000002,
 			DropSound = 0x00000004,
 			LiftOverride = 0x00000008,
-			GridPositions = 0x00000010
+			GridPositions = 0x00000010,
+			MaxWeight = 0x00000080,
 		}
 
 		public override void Serialize(GenericWriter writer)
@@ -1561,26 +2009,21 @@ namespace Server.Items
 			var flags = SaveFlag.None;
 
 			SetSaveFlag(ref flags, SaveFlag.MaxItems, m_MaxItems != -1);
+			SetSaveFlag(ref flags, SaveFlag.MaxWeight, m_MaxWeight != -1);
 			SetSaveFlag(ref flags, SaveFlag.GumpID, m_GumpID != -1);
 			SetSaveFlag(ref flags, SaveFlag.DropSound, m_DropSound != -1);
-			SetSaveFlag(ref flags, SaveFlag.LiftOverride, m_LiftOverride);
+			SetSaveFlag(ref flags, SaveFlag.LiftOverride, LiftOverride);
 
 			writer.Write((byte)flags);
-
-			/*if (GetSaveFlag(flags, SaveFlag.GridPositions))
-            {
-                writer.Write(_Positions.Count);
-
-                foreach (var kvp in _Positions)
-                {
-                    writer.Write(kvp.Key);
-                    writer.Write(kvp.Value);
-                }
-            }*/
 
 			if (GetSaveFlag(flags, SaveFlag.MaxItems))
 			{
 				writer.WriteEncodedInt(m_MaxItems);
+			}
+
+			if (GetSaveFlag(flags, SaveFlag.MaxWeight))
+			{
+				writer.WriteEncodedInt(m_MaxWeight);
 			}
 
 			if (GetSaveFlag(flags, SaveFlag.GumpID))
@@ -1616,6 +2059,15 @@ namespace Server.Items
 							m_MaxItems = -1;
 						}
 
+						if (GetSaveFlag(flags, SaveFlag.MaxWeight))
+						{
+							m_MaxWeight = reader.ReadEncodedInt();
+						}
+						else
+						{
+							m_MaxWeight = -1;
+						}
+
 						if (GetSaveFlag(flags, SaveFlag.GumpID))
 						{
 							m_GumpID = reader.ReadEncodedInt();
@@ -1634,7 +2086,7 @@ namespace Server.Items
 							m_DropSound = -1;
 						}
 
-						m_LiftOverride = GetSaveFlag(flags, SaveFlag.LiftOverride);
+						LiftOverride = GetSaveFlag(flags, SaveFlag.LiftOverride);
 
 						break;
 					}
@@ -1648,6 +2100,7 @@ namespace Server.Items
 						if (version < 1)
 						{
 							m_MaxItems = GlobalMaxItems;
+							m_MaxWeight = GlobalMaxWeight;
 						}
 
 						m_GumpID = reader.ReadInt();
@@ -1668,7 +2121,11 @@ namespace Server.Items
 							m_MaxItems = -1;
 						}
 
-						//m_Bounds = new Rectangle2D( reader.ReadPoint2D(), reader.ReadPoint2D() );
+						if (m_MaxWeight == DefaultMaxWeight)
+						{
+							m_MaxWeight = -1;
+						}
+
 						reader.ReadPoint2D();
 						reader.ReadPoint2D();
 
@@ -1679,42 +2136,11 @@ namespace Server.Items
 			UpdateContainerData();
 		}
 
-		private static int? m_GlobalMaxItems;
-		private static int? m_GlobalMaxWeight;
+		[ConfigProperty("CarryWeight.GlobalMaxItems")]
+		public static int GlobalMaxItems { get => Config.Get("CarryWeight.GlobalMaxItems", 125); set => Config.Set("CarryWeight.GlobalMaxItems", value); }
 
-		public static int GlobalMaxItems 
-		{
-			get
-			{
-				if (!m_GlobalMaxItems.HasValue)
-				{
-					m_GlobalMaxItems = Config.Get("CarryWeight.GlobalMaxItems", 125);
-				}
-
-				return m_GlobalMaxItems.Value;
-			}
-			set
-			{
-				m_GlobalMaxItems = value;
-			}
-		}
-
-		public static int GlobalMaxWeight
-		{
-			get
-			{
-				if (!m_GlobalMaxWeight.HasValue)
-				{
-					m_GlobalMaxWeight = Config.Get("CarryWeight.GlobalMaxWeight", 400);
-				}
-
-				return m_GlobalMaxWeight.Value;
-			}
-			set
-			{
-				m_GlobalMaxWeight = value;
-			}
-		}
+		[ConfigProperty("CarryWeight.GlobalMaxWeight")]
+		public static int GlobalMaxWeight { get => Config.Get("CarryWeight.GlobalMaxWeight", 400); set => Config.Set("CarryWeight.GlobalMaxWeight", value); }
 
 		public Container(int itemID)
 			: base(itemID)
@@ -1722,6 +2148,9 @@ namespace Server.Items
 			m_GumpID = -1;
 			m_DropSound = -1;
 			m_MaxItems = -1;
+			m_MaxWeight = -1;
+
+			AllContainers.Add(this);
 
 			UpdateContainerData();
 		}
@@ -1800,11 +2229,13 @@ namespace Server.Items
 
 		public Container(Serial serial)
 			: base(serial)
-		{ }
+		{
+			AllContainers.Add(this);
+		}
 
 		public virtual bool OnStackAttempt(Mobile from, Item stack, Item dropped)
 		{
-			if (!CheckHold(from, dropped, true, false))
+			if (!CheckHold(from, dropped, true, false, true))
 			{
 				return false;
 			}
@@ -1830,7 +2261,7 @@ namespace Server.Items
 		{
 			if (CheckStack(from, dropped))
 			{
-				if (!CheckHold(from, dropped, sendFullMessage, false))
+				if (!CheckHold(from, dropped, sendFullMessage, false, true))
 				{
 					return false;
 				}
@@ -1848,7 +2279,7 @@ namespace Server.Items
 				}
 			}
 
-			if (!CheckHold(from, dropped, sendFullMessage, true))
+			if (!CheckHold(from, dropped, sendFullMessage, true, true))
 			{
 				return false;
 			}
@@ -1856,30 +2287,6 @@ namespace Server.Items
 			DropItem(dropped);
 
 			return true;
-		}
-
-		public override void AddItem(Item item)
-		{
-			ValidateGridLocation(item);
-
-			base.AddItem(item);
-		}
-
-		public virtual void Destroy()
-		{
-			var loc = GetWorldLocation();
-			var map = Map;
-
-			for (var i = Items.Count - 1; i >= 0; --i)
-			{
-				if (i < Items.Count)
-				{
-					Items[i].SetLastMoved();
-					Items[i].MoveToWorld(loc, map);
-				}
-			}
-
-			Delete();
 		}
 
 		public virtual void DropItem(Item dropped)
@@ -1921,6 +2328,40 @@ namespace Server.Items
 			y -= bounds.Y;
 
 			dropped.Location = new Point3D(x, y, 0);
+		}
+
+		public virtual void Destroy()
+		{
+			var loc = GetWorldLocation();
+			var map = Map;
+
+			if (map != null && map != Map.Internal)
+			{
+				var items = Items;
+
+				for (var i = items.Count - 1; i >= 0; --i)
+				{
+					if (i < items.Count)
+					{
+						items[i].SetLastMoved();
+						items[i].MoveToWorld(loc, map);
+					}
+				}
+			}
+
+			Delete();
+		}
+
+		public override bool AllowSecureTrade(Mobile from, Mobile to, Mobile newOwner, bool accepted)
+		{
+			if (!base.AllowSecureTrade(from, to, newOwner, accepted))
+			{
+				return false;
+			}
+
+			var allItems = FindItemsByType<Item>(true);
+
+			return allItems.All(o => o.AllowSecureTrade(from, to, newOwner, accepted));
 		}
 
 		public override void OnDoubleClickSecureTrade(Mobile from)
@@ -1970,6 +2411,16 @@ namespace Server.Items
 			return false;
 		}
 
+		public override void OnSingleClick(Mobile from)
+		{
+			base.OnSingleClick(from);
+
+			if (CheckContentDisplay(from))
+			{
+				LabelTo(from, "({0} items, {1} stones)", TotalItems, TotalWeight);
+			}
+		}
+
 		public List<Mobile> Openers { get; set; }
 
 		public virtual bool IsPublicContainer => false;
@@ -1979,6 +2430,15 @@ namespace Server.Items
 			base.OnDelete();
 
 			Openers = null;
+
+			AllContainers.Remove(this);
+		}
+
+		public override void OnAfterDelete()
+		{
+			base.OnAfterDelete();
+
+			AllContainers.Remove(this);
 		}
 
 		public virtual void DisplayTo(Mobile to)
@@ -1992,15 +2452,15 @@ namespace Server.Items
 				return;
 			}
 
-			ValidatePositions();
+			ContainerDisplay.Send(ns, this);
+			ContainerContent.Send(ns, this);
 
-			to.Send(new ContainerDisplay(this));
-
-			to.Send(new ContainerContent(to, this));
-
-			foreach (var o in Items)
+			if (to.ViewOPL)
 			{
-				to.Send(o.OPLPacket);
+				foreach (var o in Items)
+				{
+					to.Send(o.OPLPacket);
+				}
 			}
 		}
 
@@ -2012,7 +2472,6 @@ namespace Server.Items
 
 				if (Openers != null)
 				{
-					var worldLoc = GetWorldLocation();
 					var map = Map;
 
 					for (var i = 0; i < Openers.Count; ++i)
@@ -2023,14 +2482,9 @@ namespace Server.Items
 						{
 							contains = true;
 						}
-						else
+						else if (mob.Map != map || !mob.InUpdateRange(this))
 						{
-							var range = GetUpdateRange(mob);
-
-							if (mob.Map != map || !mob.InRange(worldLoc, range))
-							{
-								Openers.RemoveAt(i--);
-							}
+							Openers.RemoveAt(i--);
 						}
 					}
 				}
@@ -2057,15 +2511,22 @@ namespace Server.Items
 
 			if (DisplaysContent) //CheckContentDisplay( from ) )
 			{
-				if (ParentsContain<Item>() || IsLockedDown || IsSecure) //Root Parent is the Mobile.  Parent could be another containter.
+				if (Core.ML)
 				{
-					list.Add(1073841, "{0}\t{1}\t{2}", TotalItems, MaxItems, TotalWeight);
-					// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~ stones
+					if (MaxWeight <= 0 || IsLockedDown || IsSecure || ParentsContain<Item>()) //Root Parent is the Mobile.  Parent could be another containter.
+					{
+						list.Add(1073841, "{0}\t{1}\t{2}", TotalItems, MaxItems, TotalWeight);
+						// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~ stones
+					}
+					else
+					{
+						list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
+						// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+					}
 				}
 				else
 				{
-					list.Add(1072241, "{0}\t{1}\t{2}\t{3}", TotalItems, MaxItems, TotalWeight, MaxWeight);
-					// Contents: ~1_COUNT~/~2_MAXCOUNT~ items, ~3_WEIGHT~/~4_MAXWEIGHT~ stones
+					list.Add(1050044, "{0}\t{1}", TotalItems, TotalWeight); // ~1_COUNT~ items, ~2_WEIGHT~ stones
 				}
 			}
 		}
@@ -2093,7 +2554,7 @@ namespace Server.Items
 
 			if (!File.Exists(path))
 			{
-				m_Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
+				Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
 				return;
 			}
 
@@ -2135,9 +2596,9 @@ namespace Server.Items
 
 							var data = new ContainerData(gumpID, bounds, dropSound);
 
-							if (m_Default == null)
+							if (Default == null)
 							{
-								m_Default = data;
+								Default = data;
 							}
 
 							if (split.Length >= 4)
@@ -2165,16 +2626,15 @@ namespace Server.Items
 				}
 			}
 
-			if (m_Default == null)
+			if (Default == null)
 			{
-				m_Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
+				Default = new ContainerData(0x3C, new Rectangle2D(44, 65, 142, 94), 0x48);
 			}
 		}
 
-		private static ContainerData m_Default;
 		private static readonly Dictionary<int, ContainerData> m_Table;
 
-		public static ContainerData Default { get => m_Default; set => m_Default = value; }
+		public static ContainerData Default { get; set; }
 
 		public static ContainerData GetData(int itemID)
 		{
@@ -2184,25 +2644,19 @@ namespace Server.Items
 			{
 				return data;
 			}
-			else
-			{
-				return m_Default;
-			}
+
+			return Default;
 		}
 
-		private readonly int m_GumpID;
-		private readonly Rectangle2D m_Bounds;
-		private readonly int m_DropSound;
-
-		public int GumpID => m_GumpID;
-		public Rectangle2D Bounds => m_Bounds;
-		public int DropSound => m_DropSound;
+		public int GumpID { get; }
+		public Rectangle2D Bounds { get; }
+		public int DropSound { get; }
 
 		public ContainerData(int gumpID, Rectangle2D bounds, int dropSound)
 		{
-			m_GumpID = gumpID;
-			m_Bounds = bounds;
-			m_DropSound = dropSound;
+			GumpID = gumpID;
+			Bounds = bounds;
+			DropSound = dropSound;
 		}
 	}
 }

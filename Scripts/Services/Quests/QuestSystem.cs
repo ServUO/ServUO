@@ -95,6 +95,18 @@ namespace Server.Engines.Quests
             if (pm.HasGump(typeof(QuestOfferGump)))
                 return false;
 
+            if (questType.Name == "DarkTidesQuest" && pm.Profession != Profession.Necromancer)
+                return false;
+
+            if (questType.Name == "UzeraanTurmoilQuest" && pm.Profession != Profession.Warrior && pm.Profession != Profession.Mage && pm.Profession != Profession.Paladin)
+                return false;
+
+            if (questType.Name == "HaochisTrialsQuest" && pm.Profession != Profession.Samurai)
+                return false;
+
+            if (questType.Name == "EminosUndertakingQuest" && pm.Profession != Profession.Ninja)
+                return false;
+
             List<QuestRestartInfo> doneQuests = pm.DoneQuests;
 
             if (doneQuests != null)
@@ -643,13 +655,7 @@ namespace Server.Engines.Quests
 
         public static int C16232(int c16)
         {
-            c16 &= 0x7FFF;
-
-            int r = (((c16 >> 10) & 0x1F) << 3);
-            int g = (((c16 >> 05) & 0x1F) << 3);
-            int b = (((c16 >> 00) & 0x1F) << 3);
-
-            return (r << 16) | (g << 8) | (b << 0);
+			return Utility.ToColor32(c16);
         }
 
         public static int C16216(int c16)
@@ -658,15 +664,9 @@ namespace Server.Engines.Quests
         }
 
         public static int C32216(int c32)
-        {
-            c32 &= 0xFFFFFF;
-
-            int r = (((c32 >> 16) & 0xFF) >> 3);
-            int g = (((c32 >> 08) & 0xFF) >> 3);
-            int b = (((c32 >> 00) & 0xFF) >> 3);
-
-            return (r << 10) | (g << 5) | (b << 0);
-        }
+		{
+			return Utility.ToColor16(c32);
+		}
 
         public static string Color(string text, int color)
         {

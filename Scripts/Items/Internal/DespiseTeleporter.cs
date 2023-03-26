@@ -34,7 +34,7 @@ namespace Server.Items
 
             TeleportPets(m, p, map);
 
-            bool sendEffect = (!m.Hidden || m.AccessLevel == AccessLevel.Player);
+            bool sendEffect = (!m.Hidden || m.AccessLevel < AccessLevel.Counselor);
 
             if (SourceEffect && sendEffect)
                 Effects.SendLocationEffect(m.Location, m.Map, 0x3728, 10, 10);

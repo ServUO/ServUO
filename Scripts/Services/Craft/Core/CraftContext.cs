@@ -326,7 +326,7 @@ namespace Server.Engines.Craft
             }
 
             writer.Write(Ready);
-            writer.WriteItem(_Anvil);
+            writer.Write(_Anvil);
         }
 
         public void Deserialize(GenericReader reader)

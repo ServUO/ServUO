@@ -64,9 +64,9 @@ namespace Server.Multis
 
             Sector sector = map.GetSector(loc);
 
-            for (int i = 0; i < sector.Multis.Count; i++)
+            foreach (BaseMulti m in sector.Multis)
             {
-                if (sector.Multis[i] is BaseBoat boat && boat.Contains(loc.X, loc.Y))
+                if (m is BaseBoat boat && boat.Contains(loc.X, loc.Y))
                     return boat;
             }
 
@@ -1152,10 +1152,7 @@ namespace Server.Multis
                 }
             }
 
-            if (theirState != null)
-            {
-                theirState.Send(new DamagePacket(this, amount));
-            }
+            DamagePacket.Send(theirState, this, amount);
         }
 
         public virtual void SetFacingComponents(Direction newDirection, Direction oldDirection, bool ignoreLastFacing)
@@ -1384,7 +1381,7 @@ namespace Server.Multis
 
                     break;
                 }
-                else if (o is Mobile && Contains((Mobile)o) && ((Mobile)o).AccessLevel == AccessLevel.Player)
+                else if (o is Mobile && Contains((Mobile)o) && ((Mobile)o).AccessLevel < AccessLevel.Counselor)
                 {
                     res = DryDockResult.Mobiles;
                     break;

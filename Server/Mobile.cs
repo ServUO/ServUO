@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 using Server.Accounting;
@@ -153,7 +155,7 @@ namespace Server
 			{
 				if (m_Skill != value)
 				{
-					var oldUpdate = m_Owner != null ? m_Owner.Skills[m_Skill] : null;
+					var oldUpdate = m_Owner?.Skills[m_Skill];
 
 					m_Skill = value;
 
@@ -339,7 +341,7 @@ namespace Server
 		public Mobile Damager => m_Damager;
 		public int DamageGiven { get; set; }
 		public DateTime LastDamage { get => m_LastDamage; set => m_LastDamage = value; }
-		public bool HasExpired => DateTime.UtcNow > (m_LastDamage + m_ExpireDelay);
+		public bool HasExpired => DateTime.UtcNow > m_LastDamage + m_ExpireDelay;
 		public List<DamageEntry> Responsible { get; set; }
 
 		private static TimeSpan m_ExpireDelay = TimeSpan.FromMinutes(2.0);
@@ -388,38 +390,39 @@ namespace Server
 	}
 
 	[Flags]
-	public enum MobileDelta
+	public enum MobileDelta : uint
 	{
-		None = 0x00000000,
-		Name = 0x00000001,
-		Flags = 0x00000002,
-		Hits = 0x00000004,
-		Mana = 0x00000008,
-		Stam = 0x00000010,
-		Stat = 0x00000020,
-		Noto = 0x00000040,
-		Gold = 0x00000080,
-		Weight = 0x00000100,
-		Direction = 0x00000200,
-		Hue = 0x00000400,
-		Body = 0x00000800,
-		Armor = 0x00001000,
-		StatCap = 0x00002000,
-		GhostUpdate = 0x00004000,
-		Followers = 0x00008000,
-		Properties = 0x00010000,
-		TithingPoints = 0x00020000,
-		Resistances = 0x00040000,
-		WeaponDamage = 0x00080000,
-		Hair = 0x00100000,
-		FacialHair = 0x00200000,
-		Race = 0x00400000,
-		HealthbarYellow = 0x00800000,
-		HealthbarPoison = 0x01000000,
-		Face = 0x08000000,
-		Skills = 0x10000000,
+		None = 0,
 
-		Attributes = 0x0000001C
+		Name = 1u << 0,
+		Flags = 1u << 1,
+		Hits = 1u << 2,
+		Mana = 1u << 3,
+		Stam = 1u << 4,
+		Stat = 1u << 5,
+		Noto = 1u << 6,
+		Gold = 1u << 7,
+		Weight = 1u << 8,
+		Direction = 1u << 9,
+		Hue = 1u << 10,
+		Body = 1u << 11,
+		Armor = 1u << 12,
+		StatCap = 1u << 13,
+		GhostUpdate = 1u << 14,
+		Followers = 1u << 15,
+		Properties = 1u << 16,
+		TithingPoints = 1u << 17,
+		Resistances = 1u << 18,
+		WeaponDamage = 1u << 19,
+		Hair = 1u << 20,
+		FacialHair = 1u << 21,
+		Race = 1u << 22,
+		HealthbarYellow = 1u << 23,
+		HealthbarPoison = 1u << 24,
+		Face = 1u << 25,
+		Skills = 1u << 26,
+
+		Attributes = Hits | Stam | Mana
 	}
 
 	public enum AccessLevel
@@ -516,8 +519,7 @@ namespace Server
 
 	public delegate void FatigueHandler(Mobile m, int damage, DFAlgorithm df);
 
-	public delegate Container CreateCorpseHandler(
-		Mobile from, HairInfo hair, FacialHairInfo facialhair, List<Item> initialContent, List<Item> equipedItems);
+	public delegate Container CreateCorpseHandler(Mobile from, HairInfo hair, FacialHairInfo facialhair, List<Item> initialContent, List<Item> equipedItems);
 
 	public delegate int AOSStatusHandler(Mobile from, int index);
 	#endregion
@@ -555,9 +557,7 @@ namespace Server
 		}
 		#endregion
 
-		private static bool m_DragEffects = true;
-
-		public static bool DragEffects { get => m_DragEffects; set => m_DragEffects = value; }
+		public static bool DragEffects { get; set; } = true;
 
 		#region Handlers
 		public static AllowBeneficialHandler AllowBeneficialHandler { get; set; }
@@ -673,12 +673,11 @@ namespace Server
 		}
 
 		#region Var declarations
-		private readonly Serial m_Serial;
+		private Serial m_Serial;
 		private Map m_Map;
 		private Point3D m_Location;
 		private Direction m_Direction;
 		private Body m_Body;
-		private int m_Hue;
 		private Poison m_Poison;
 		private Timer m_PoisonTimer;
 		private BaseGuild m_Guild;
@@ -744,6 +743,7 @@ namespace Server
 		private DateTime m_NextWarmodeChange;
 		private WarmodeTimer m_WarmodeTimer;
 		private int m_Thirst, m_BAC;
+		private int m_VirtualArmorMod;
 		private VirtueInfo m_Virtues;
 		private object m_Party;
 		private List<SkillMod> m_SkillMods;
@@ -754,11 +754,13 @@ namespace Server
 		private Race m_Race;
 		#endregion
 
-		private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds(1.0);
-		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds(4.0);
+		private static readonly TimeSpan WarmodeSpamCatch = TimeSpan.FromSeconds(Core.SE ? 1.0 : 0.5);
+		private static readonly TimeSpan WarmodeSpamDelay = TimeSpan.FromSeconds(Core.SE ? 4.0 : 2.0);
 
 		private const int WarmodeCatchCount = 4;
 		// Allow four warmode changes in 0.5 seconds, any more will be delay for two seconds
+
+		public virtual bool ViewOPL => ObjectPropertyList.Enabled;
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public Race Race
@@ -792,6 +794,11 @@ namespace Server
 			}
 		}
 
+		protected virtual void OnRaceChange(Race oldRace)
+		{
+			EventSink.InvokeRaceChanged(new RaceChangedEventArgs(this, oldRace, m_Race));
+		}
+
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool CharacterOut { get; set; }
 
@@ -799,9 +806,6 @@ namespace Server
 		public bool PublicHouseContent { get; set; }
 
 		public DFAlgorithm DFA { get; set; }
-
-		protected virtual void OnRaceChange(Race oldRace)
-		{ }
 
 		public virtual double RacialSkillBonus => 0;
 
@@ -818,7 +822,7 @@ namespace Server
 		private int[] m_Resistances;
 
 		protected List<string> m_SlayerVulnerabilities = new List<string>();
-		protected bool m_SpecialSlayerMechanics; // false
+		protected bool m_SpecialSlayerMechanics;
 
 		public List<string> SlayerVulnerabilities => m_SlayerVulnerabilities;
 
@@ -1102,6 +1106,8 @@ namespace Server
 			list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~           
 		}
 
+		public virtual bool NewGuildDisplay => false;
+
 		public virtual void GetProperties(ObjectPropertyList list)
 		{
 			AddNameProperties(list);
@@ -1125,6 +1131,21 @@ namespace Server
 
 		public object Party { get => m_Party; set => m_Party = value; }
 		public List<SkillMod> SkillMods => m_SkillMods;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int VirtualArmorMod
+		{
+			get => m_VirtualArmorMod;
+			set
+			{
+				if (m_VirtualArmorMod != value)
+				{
+					m_VirtualArmorMod = value;
+
+					Delta(MobileDelta.Armor);
+				}
+			}
+		}
 
 		/// <summary>
 		///     Overridable. Virtual event invoked when <paramref name="skill" /> changes in some way.
@@ -1470,6 +1491,8 @@ namespace Server
 			{
 				if (m_Holding != value)
 				{
+					var old = m_Holding;
+
 					if (m_Holding != null)
 					{
 						UpdateTotal(m_Holding, TotalType.Weight, -(m_Holding.TotalWeight + m_Holding.PileWeight));
@@ -1496,8 +1519,14 @@ namespace Server
 							m_Holding.HeldBy = this;
 						}
 					}
+
+					OnHoldingChanged(old);
 				}
 			}
+		}
+
+		public virtual void OnHoldingChanged(Item old)
+		{
 		}
 
 		public long LastMoveTime { get => m_LastMoveTime; set => m_LastMoveTime = value; }
@@ -1695,7 +1724,7 @@ namespace Server
 		public static readonly string _StamRegenTimerPlayerID = _StamRegenTimerID + "Player";
 		public static readonly string _ManaRegenTimerPlayerID = _ManaRegenTimerID + "Player";
 
-		private bool m_InternalCanRegen;
+		private bool m_InternalCanRegen = true;
 
 		public virtual bool RegenThroughPoison => m_GlobalRegenThroughPoison;
 
@@ -1794,9 +1823,9 @@ namespace Server
 					m_Aggressors.RemoveAt(i);
 					info.Free();
 
-					if (m_NetState != null && Utility.InUpdateRange(this, attacker) && CanSee(attacker))
+					if (m_NetState != null && InUpdateRange(attacker) && CanSee(attacker))
 					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, attacker));
+						MobileIncoming.Send(m_NetState, attacker);
 					}
 				}
 			}
@@ -1818,9 +1847,9 @@ namespace Server
 					m_Aggressed.RemoveAt(i);
 					info.Free();
 
-					if (m_NetState != null && Utility.InUpdateRange(this, defender) && CanSee(defender))
+					if (m_NetState != null && InUpdateRange(defender) && CanSee(defender))
 					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, defender));
+						MobileIncoming.Send(m_NetState, defender);
 					}
 				}
 			}
@@ -1900,6 +1929,7 @@ namespace Server
 		private static readonly string _CombatTimerID = "CombatTimer";
 
 		private long m_NextCombatTime;
+
 		public long NextCombatTime { get => m_NextCombatTime; set => m_NextCombatTime = value; }
 
 		private bool UsePlayerCombatTimer()
@@ -2004,7 +2034,7 @@ namespace Server
 
 		public virtual bool CheckAttack(IDamageable e)
 		{
-			return Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e);
+			return InUpdateRange(e) && CanSee(e) && InLOS(e);
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -2115,7 +2145,9 @@ namespace Server
 		public virtual void AggressiveAction(Mobile aggressor, bool criminal)
 		{
 			if (aggressor == this)
+			{
 				return;
+			}
 
 			var args = AggressiveActionEventArgs.Create(this, aggressor, criminal);
 
@@ -2200,11 +2232,13 @@ namespace Server
 
 				if (CanSee(aggressor) && m_NetState != null)
 				{
-					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+					MobileIncoming.Send(m_NetState, aggressor);
 				}
 
 				if (Combatant == null)
+				{
 					setCombatant = true;
+				}
 
 				UpdateAggrExpire();
 			}
@@ -2215,17 +2249,21 @@ namespace Server
 
 				if (CanSee(aggressor) && m_NetState != null)
 				{
-					m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+					MobileIncoming.Send(m_NetState, aggressor);
 				}
 
 				if (Combatant == null)
+				{
 					setCombatant = true;
+				}
 
 				UpdateAggrExpire();
 			}
 
 			if (setCombatant && !Hidden)
+			{
 				Combatant = aggressor;
+			}
 
 			Region.OnAggressed(aggressor, this, criminal);
 		}
@@ -2250,7 +2288,7 @@ namespace Server
 
 					if (m_NetState != null && CanSee(aggressed))
 					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressed));
+						MobileIncoming.Send(m_NetState, aggressed);
 					}
 
 					break;
@@ -2280,7 +2318,7 @@ namespace Server
 
 					if (m_NetState != null && CanSee(aggressor))
 					{
-						m_NetState.Send(MobileIncoming.Create(m_NetState, this, aggressor));
+						MobileIncoming.Send(m_NetState, aggressor);
 					}
 
 					break;
@@ -2389,7 +2427,9 @@ namespace Server
 
 		public virtual void UpdateTotals()
 		{
-			if (m_Items == null)
+			var items = m_Items;
+
+			if (items == null)
 			{
 				return;
 			}
@@ -2400,9 +2440,22 @@ namespace Server
 			m_TotalItems = 0;
 			m_TotalWeight = 0;
 
-			for (var i = 0; i < m_Items.Count; ++i)
+			var i = items.Count;
+
+			while (--i >= 0)
 			{
-				var item = m_Items[i];
+				if (i >= items.Count)
+				{
+					continue;
+				}
+
+				var item = items[i];
+
+				if (item == null || item.Parent != this)
+				{
+					items.RemoveAt(i);
+					continue;
+				}
 
 				item.UpdateTotals();
 
@@ -2544,9 +2597,16 @@ namespace Server
 
 				m_Target = null;
 
-				if (oldTarget != null && newTarget != null)
+				if (oldTarget != null)
 				{
-					oldTarget.Cancel(this, TargetCancelType.Overriden);
+					if (newTarget != null)
+					{
+						oldTarget.Cancel(this, TargetCancelType.Overriden);
+					}
+					else
+					{
+						oldTarget.Cancel(this, TargetCancelType.Canceled);
+					}
 				}
 
 				m_Target = newTarget;
@@ -2573,9 +2633,9 @@ namespace Server
 			{
 				m_ContextMenu = value;
 
-				if (m_ContextMenu != null)
+				if (m_ContextMenu != null && m_NetState != null)
 				{
-					Send(new DisplayContextMenu(m_ContextMenu));
+					Network.DisplayContextMenu.Send(m_NetState, m_ContextMenu);
 				}
 			}
 		}
@@ -2610,39 +2670,30 @@ namespace Server
 
 			public override void OnResponse(Mobile from, string text)
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, text);
-				}
+				m_Callback?.Invoke(from, text);
 			}
 
 			public override void OnCancel(Mobile from)
 			{
-				if (m_CallbackHandlesCancel && m_Callback != null)
+				if (m_CallbackHandlesCancel)
 				{
-					m_Callback(from, "");
+					m_Callback?.Invoke(from, "");
 				}
-				else if (m_CancelCallback != null)
+				else
 				{
-					m_CancelCallback(from, "");
+					m_CancelCallback?.Invoke(from, "");
 				}
 			}
 		}
 
 		public Prompt BeginPrompt(PromptCallback callback, PromptCallback cancelCallback)
 		{
-			Prompt p = new SimplePrompt(callback, cancelCallback);
-
-			Prompt = p;
-			return p;
+			return Prompt = new SimplePrompt(callback, cancelCallback);
 		}
 
 		public Prompt BeginPrompt(PromptCallback callback, bool callbackHandlesCancel)
 		{
-			Prompt p = new SimplePrompt(callback, callbackHandlesCancel);
-
-			Prompt = p;
-			return p;
+			return Prompt = new SimplePrompt(callback, callbackHandlesCancel);
 		}
 
 		public Prompt BeginPrompt(PromptCallback callback)
@@ -2679,39 +2730,30 @@ namespace Server
 
 			public override void OnResponse(Mobile from, string text)
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, text, m_State);
-				}
+				m_Callback?.Invoke(from, text, m_State);
 			}
 
 			public override void OnCancel(Mobile from)
 			{
-				if (m_CallbackHandlesCancel && m_Callback != null)
+				if (m_CallbackHandlesCancel)
 				{
-					m_Callback(from, "", m_State);
+					m_Callback?.Invoke(from, "", m_State);
 				}
-				else if (m_CancelCallback != null)
+				else
 				{
-					m_CancelCallback(from, "", m_State);
+					m_CancelCallback?.Invoke(from, "", m_State);
 				}
 			}
 		}
 
 		public Prompt BeginPrompt(PromptStateCallback callback, PromptStateCallback cancelCallback, object state)
 		{
-			Prompt p = new SimpleStatePrompt(callback, cancelCallback, state);
-
-			Prompt = p;
-			return p;
+			return Prompt = new SimpleStatePrompt(callback, cancelCallback, state);
 		}
 
 		public Prompt BeginPrompt(PromptStateCallback callback, bool callbackHandlesCancel, object state)
 		{
-			Prompt p = new SimpleStatePrompt(callback, callbackHandlesCancel, state);
-
-			Prompt = p;
-			return p;
+			return Prompt = new SimpleStatePrompt(callback, callbackHandlesCancel, state);
 		}
 
 		public Prompt BeginPrompt(PromptStateCallback callback, object state)
@@ -2748,39 +2790,30 @@ namespace Server
 
 			public override void OnResponse(Mobile from, string text)
 			{
-				if (m_Callback != null)
-				{
-					m_Callback(from, text, m_State);
-				}
+				m_Callback?.Invoke(from, text, m_State);
 			}
 
 			public override void OnCancel(Mobile from)
 			{
-				if (m_CallbackHandlesCancel && m_Callback != null)
+				if (m_CallbackHandlesCancel)
 				{
-					m_Callback(from, "", m_State);
+					m_Callback?.Invoke(from, "", m_State);
 				}
-				else if (m_CancelCallback != null)
+				else
 				{
-					m_CancelCallback(from, "", m_State);
+					m_CancelCallback?.Invoke(from, "", m_State);
 				}
 			}
 		}
 
 		public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, PromptStateCallback<T> cancelCallback, T state)
 		{
-			Prompt p = new SimpleStatePrompt<T>(callback, cancelCallback, state);
-
-			Prompt = p;
-			return p;
+			return Prompt = new SimpleStatePrompt<T>(callback, cancelCallback, state);
 		}
 
 		public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, bool callbackHandlesCancel, T state)
 		{
-			Prompt p = new SimpleStatePrompt<T>(callback, callbackHandlesCancel, state);
-
-			Prompt = p;
-			return p;
+			return Prompt = new SimpleStatePrompt<T>(callback, callbackHandlesCancel, state);
 		}
 
 		public Prompt BeginPrompt<T>(PromptStateCallback<T> callback, T state)
@@ -2813,7 +2846,6 @@ namespace Server
 				if (newPrompt != null)
 				{
 					newPrompt.SendTo(this);
-					//Send(new UnicodePrompt(newPrompt));
 				}
 			}
 		}
@@ -2843,7 +2875,7 @@ namespace Server
 		/// <returns>True if the move is allowed, false if not.</returns>
 		protected virtual bool OnMove(Direction d)
 		{
-			if (m_Hidden && m_AccessLevel == AccessLevel.Player)
+			if (m_Hidden && m_AccessLevel < AccessLevel.Counselor)
 			{
 				if (m_AllowedStealthSteps-- <= 0 || (d & Direction.Running) != 0 || Mounted)
 				{
@@ -2854,15 +2886,15 @@ namespace Server
 			return true;
 		}
 
-		private static readonly Packet[][] m_MovingPacketCache =
-		{
-			new Packet[8], new Packet[8]
-		};
-
+		private bool m_Moving;
 		private bool m_Pushing;
 		private bool m_IgnoreMobiles;
 		private bool m_IsStealthing;
 
+		[CommandProperty(AccessLevel.Counselor, true)]
+		public bool Moving { get => m_Moving; set => m_Moving = value; }
+
+		[CommandProperty(AccessLevel.Counselor, true)]
 		public bool Pushing { get => m_Pushing; set => m_Pushing = value; }
 
 		private static int m_WalkFoot = 400;
@@ -2933,7 +2965,6 @@ namespace Server
 					return false;
 				}
 
-
 				if (CheckMovement(d, out var newZ))
 				{
 					int x = oldLocation.m_X, y = oldLocation.m_Y;
@@ -2987,43 +3018,33 @@ namespace Server
 
 						if (oldSector != newSector)
 						{
-							for (var i = 0; i < oldSector.Mobiles.Count; ++i)
+							foreach (var m in oldSector.Mobiles)
 							{
-								var m = oldSector.Mobiles[i];
-
 								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
 								{
 									return false;
 								}
 							}
 
-							for (var i = 0; i < oldSector.Items.Count; ++i)
+							foreach (var item in oldSector.Items)
 							{
-								var item = oldSector.Items[i];
-
-								if (item.AtWorldPoint(oldX, oldY) &&
-									(item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
+								if (item.AtWorldPoint(oldX, oldY) && (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
 								{
 									return false;
 								}
 							}
 
-							for (var i = 0; i < newSector.Mobiles.Count; ++i)
+							foreach (var m in newSector.Mobiles)
 							{
-								var m = newSector.Mobiles[i];
-
 								if (m.X == x && m.Y == y && (m.Z + 15) > newZ && (newZ + 15) > m.Z && !m.OnMoveOver(this))
 								{
 									return false;
 								}
 							}
 
-							for (var i = 0; i < newSector.Items.Count; ++i)
+							foreach (var item in newSector.Items)
 							{
-								var item = newSector.Items[i];
-
-								if (item.AtWorldPoint(x, y) &&
-									(item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+								if (item.AtWorldPoint(x, y) && (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
 								{
 									return false;
 								}
@@ -3031,10 +3052,8 @@ namespace Server
 						}
 						else
 						{
-							for (var i = 0; i < oldSector.Mobiles.Count; ++i)
+							foreach (var m in oldSector.Mobiles)
 							{
-								var m = oldSector.Mobiles[i];
-
 								if (m != this && m.X == oldX && m.Y == oldY && (m.Z + 15) > oldZ && (oldZ + 15) > m.Z && !m.OnMoveOff(this))
 								{
 									return false;
@@ -3046,18 +3065,14 @@ namespace Server
 								}
 							}
 
-							for (var i = 0; i < oldSector.Items.Count; ++i)
+							foreach (var item in oldSector.Items)
 							{
-								var item = oldSector.Items[i];
-
-								if (item.AtWorldPoint(oldX, oldY) &&
-									(item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
+								if (item.AtWorldPoint(oldX, oldY) && (item.Z == oldZ || ((item.Z + item.ItemData.Height) > oldZ && (oldZ + 15) > item.Z)) && !item.OnMoveOff(this))
 								{
 									return false;
 								}
 
-								if (item.AtWorldPoint(x, y) &&
-									(item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
+								if (item.AtWorldPoint(x, y) && (item.Z == newZ || ((item.Z + item.ItemData.Height) >= newZ && (newZ + 15) > item.Z)) && !item.OnMoveOver(this))
 								{
 									return false;
 								}
@@ -3079,8 +3094,7 @@ namespace Server
 						return false;
 					}
 
-					if (m_FwdEnabled && m_NetState != null && m_AccessLevel < m_FwdAccessOverride &&
-						(!m_FwdUOTDOverride || !m_NetState.IsUOTDClient))
+					if (m_FwdEnabled && m_NetState != null && m_AccessLevel < m_FwdAccessOverride && (!m_FwdUOTDOverride || !m_NetState.IsUOTDClient))
 					{
 						if (m_MoveRecords == null)
 						{
@@ -3104,6 +3118,7 @@ namespace Server
 						if (m_MoveRecords.Count >= m_FwdMaxSteps)
 						{
 							var fw = new FastWalkEventArgs(m_NetState);
+
 							EventSink.InvokeFastWalk(fw);
 
 							if (fw.Blocked)
@@ -3137,103 +3152,108 @@ namespace Server
 					return false;
 				}
 
+				m_Moving = true;
+
 				DisruptiveAction();
 			}
 
-			if (m_NetState != null)
+			try
 			{
-				m_NetState.Send(MovementAck.Instantiate(m_NetState.Sequence, this));
-			}
-
-			SetLocation(newLocation, false);
-			SetDirection(d);
-
-			if (m_Map != null)
-			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
-
-				foreach (var o in eable)
+				if (m_NetState != null)
 				{
-					if (o == this)
-					{
-						continue;
-					}
-
-					if (o is Mobile mob)
-					{
-						if (mob.NetState != null)
-						{
-							m_MoveClientList.Add(mob);
-						}
-						m_MoveList.Add(mob);
-					}
-					else if (o is Item item && item.HandlesOnMovement)
-					{
-						m_MoveList.Add(item);
-					}
+					MovementAck.Send(m_NetState);
 				}
 
-				eable.Free();
+				SetLocation(newLocation, false);
+				SetDirection(d);
 
-				var cache = m_MovingPacketCache;
-
-				foreach (var m in m_MoveClientList)
+				if (m_Map != null)
 				{
-					var ns = m.NetState;
+					var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalMaxUpdateRange);
 
-					if (ns != null && m.InUpdateRange(m_Location) && m.CanSee(this))
+					foreach (var o in eable)
 					{
-						var noto = Notoriety.Compute(m, this);
-						var p = cache[0][noto];
-
-						if (p == null)
+						if (o == this)
 						{
-							cache[0][noto] = p = Packet.Acquire(new MobileMoving(this, noto));
+							continue;
 						}
 
-						ns.Send(p);
-					}
-				}
+						if (o is Mobile mob)
+						{
+							if (mob.NetState != null)
+							{
+								m_MoveClientList.Add(mob);
+							}
 
-				for (var i = 0; i < cache.Length; ++i)
-				{
-					for (var j = 0; j < cache[i].Length; ++j)
+							m_MoveList.Add(mob);
+						}
+						else if (o is Item item && item.HandlesOnMovement)
+						{
+							m_MoveList.Add(item);
+						}
+					}
+
+					eable.Free();
+
+					foreach (var m in m_MoveClientList)
 					{
-						Packet.Release(ref cache[i][j]);
+						var ns = m.NetState;
+
+						if (ns != null && m.InUpdateRange(m_Location) && m.CanSee(this))
+						{
+							ns.Send(GetMovePacketFor(ns));
+						}
 					}
-				}
 
-				for (var i = 0; i < m_MoveList.Count; ++i)
-				{
-					var o = m_MoveList[i];
+					ReleaseMovePackets();
 
-					if (o is Mobile mobile)
+					for (var i = 0; i < m_MoveList.Count; ++i)
 					{
-						mobile.OnMovement(this, oldLocation);
+						var o = m_MoveList[i];
+
+						if (o is Mobile mobile)
+						{
+							mobile.OnMovement(this, oldLocation);
+						}
+						else if (o is Item item)
+						{
+							item.OnMovement(this, oldLocation);
+						}
 					}
-					else if (o is Item item)
+
+					if (m_MoveList.Count > 0)
 					{
-						item.OnMovement(this, oldLocation);
+						m_MoveList.Clear();
+					}
+
+					if (m_MoveClientList.Count > 0)
+					{
+						m_MoveClientList.Clear();
 					}
 				}
 
-				if (m_MoveList.Count > 0)
-				{
-					m_MoveList.Clear();
-				}
-
-				if (m_MoveClientList.Count > 0)
-				{
-					m_MoveClientList.Clear();
-				}
+				return true;
 			}
+			finally
+			{
+				m_Moving = false;
 
-			OnAfterMove(oldLocation);
-			return true;
+				OnAfterMove(oldLocation);
+			}
 		}
 
 		public virtual void OnAfterMove(Point3D oldLocation)
 		{ }
+
+		protected virtual Packet GetMovePacketFor(NetState state)
+		{
+			return MobileMoving.Instantiate(state, this);
+		}
+
+		public virtual void ReleaseMovePackets()
+		{
+			MobileMoving.Free(this);
+		}
 
 		public int ComputeMovementSpeed()
 		{
@@ -3488,6 +3508,8 @@ namespace Server
 
 				Holding = null;
 				holding.ClearBounce();
+
+				NetStateFlush();
 			}
 		}
 
@@ -3621,16 +3643,19 @@ namespace Server
 			if (m_PoisonTimer != null)
 			{
 				m_PoisonTimer.Stop();
+				m_PoisonTimer = null;
 			}
 
 			if (m_WarmodeTimer != null)
 			{
 				m_WarmodeTimer.Stop();
+				m_WarmodeTimer = null;
 			}
 
 			if (m_AutoManifestTimer != null)
 			{
 				m_AutoManifestTimer.Stop();
+				m_AutoManifestTimer = null;
 			}
 
 			Timer.DelayCall(EventSink.InvokeMobileDeleted, new MobileDeletedEventArgs(this));
@@ -3651,14 +3676,11 @@ namespace Server
 			return Skills.UseSkill(this, skillID);
 		}
 
-		private static CreateCorpseHandler m_CreateCorpse;
+		public static CreateCorpseHandler CreateCorpseHandler { get; set; }
 
-		public static TimeSpan DefaultCorpseDecay => _DefaultCorpseDecay;
-		public static readonly TimeSpan _DefaultCorpseDecay = TimeSpan.FromMinutes(7);
+		public static TimeSpan DefaultCorpseDecay { get; set; } = TimeSpan.FromMinutes(7);
 
-		public static CreateCorpseHandler CreateCorpseHandler { get => m_CreateCorpse; set => m_CreateCorpse = value; }
-
-		public virtual TimeSpan CorpseDecayTime => _DefaultCorpseDecay;
+		public virtual TimeSpan CorpseDecayTime => DefaultCorpseDecay;
 
 		public virtual DeathMoveResult GetParentMoveResultFor(Item item)
 		{
@@ -3670,7 +3692,7 @@ namespace Server
 			return item.OnInventoryDeath(this);
 		}
 
-		public virtual bool RetainPackLocsOnDeath => true;
+		public virtual bool RetainPackLocsOnDeath => Core.AOS;
 
 		public virtual void Kill()
 		{
@@ -3720,7 +3742,7 @@ namespace Server
 
 			if (m_Target != null)
 			{
-				m_Target.Cancel(this, TargetCancelType.Canceled);
+				m_Target.Cancel(this);
 			}
 
 			DisruptiveAction();
@@ -3787,6 +3809,11 @@ namespace Server
 							moveToPack.Add(item);
 							break;
 						}
+					case DeathMoveResult.Delete:
+						{
+							item.Delete();
+							break;
+						}
 				}
 			}
 
@@ -3800,13 +3827,23 @@ namespace Server
 
 					var res = GetInventoryMoveResultFor(item);
 
-					if (res == DeathMoveResult.MoveToCorpse)
+					switch (res)
 					{
-						content.Add(item);
-					}
-					else
-					{
-						moveToPack.Add(item);
+						case DeathMoveResult.Delete:
+							{
+								item.Delete();
+								break;
+							}
+						case DeathMoveResult.MoveToCorpse:
+							{
+								content.Add(item);
+								break;
+							}
+						default:
+							{
+								moveToPack.Add(item);
+								break;
+							}
 					}
 				}
 
@@ -3815,6 +3852,11 @@ namespace Server
 					var item = moveToPack[i];
 
 					if (RetainPackLocsOnDeath && item.Parent == pack)
+					{
+						continue;
+					}
+
+					if (item.Parent is Container ip && ip != pack && ip.CheckBlessed(this))
 					{
 						continue;
 					}
@@ -3835,7 +3877,7 @@ namespace Server
 				facialhair = new FacialHairInfo(m_FacialHair.ItemID, m_FacialHair.Hue);
 			}
 
-			var c = m_CreateCorpse == null ? null : m_CreateCorpse(this, hair, facialhair, content, equip);
+			var c = CreateCorpseHandler?.Invoke(this, hair, facialhair, content, equip);
 
 			if (m_Map != null)
 			{
@@ -3893,6 +3935,8 @@ namespace Server
 		/// </summary>
 		public virtual void OnDeath(Container c)
 		{
+			Flying = false;
+
 			if (LastKiller != null)
 			{
 				var items = LastKiller.Items;
@@ -3930,7 +3974,7 @@ namespace Server
 			}
 			else
 			{
-				Send(DeathStatus.Instantiate(true));
+				Send(DeathStatus.Alive);
 
 				Warmode = false;
 
@@ -3960,7 +4004,7 @@ namespace Server
 
 				ProcessDeltaQueue();
 
-				Send(DeathStatus.Instantiate(false));
+				Send(DeathStatus.Dead);
 
 				CheckStatTimers();
 			}
@@ -4061,7 +4105,8 @@ namespace Server
 			return true;
 		}
 
-		public static bool InsuranceEnabled { get; set; }
+		[ConfigProperty("Loot.InsuranceEnabled")]
+		public static bool InsuranceEnabled { get => Config.Get("Loot.InsuranceEnabled", Core.AOS && !Core.IsSiege); set => Config.Get("Loot.InsuranceEnabled", value); }
 
 		public virtual void Use(Item item)
 		{
@@ -4080,7 +4125,7 @@ namespace Server
 			var root = item.RootParent;
 			var okay = false;
 
-			if (!Utility.InUpdateRange(this, item.GetWorldLocation()))
+			if (!InUpdateRange(item))
 			{
 				item.OnDoubleClickOutOfRange(this);
 			}
@@ -4113,7 +4158,7 @@ namespace Server
 			{
 				okay = false;
 			}
-			else if (root is Mobile mobile && mobile.IsSnoop(this))
+			else if (root is Mobile rm && rm.IsSnoop(this) && !IsStaff())
 			{
 				item.OnSnoop(this);
 			}
@@ -4150,7 +4195,7 @@ namespace Server
 				return;
 			}
 
-			if (!Utility.InUpdateRange(this, m))
+			if (!InUpdateRange(m))
 			{
 				m.OnDoubleClickOutOfRange(this);
 			}
@@ -4168,10 +4213,58 @@ namespace Server
 			}
 		}
 
-		public static int ActionDelay { get; set; } = 750;
+		[ConfigProperty("General.ActionDelay")]
+		public static int ActionDelay { get => Config.Get("General.ActionDelay", Core.EJ ? 750 : Core.TOL ? 500 : Core.AOS ? 1000 : 500); set => Config.Set("General.ActionDelay", value); }
 
-		public virtual void Lift(Item item, int amount, out bool rejected, out LRReason reject)
+		public bool Lift(Item item, int amount)
 		{
+			HandleLift(amount, ref item, out var oldStack, out var rejected, out var reject);
+
+			if (rejected)
+			{
+				var state = NetState;
+
+				if (state == null)
+				{
+					return false;
+				}
+
+				LiftRej.Send(state, reject);
+
+				if (item == null || item.Deleted)
+				{
+					return false;
+				}
+
+				if (item.Parent is Item)
+				{
+					ContainerContentUpdate.Send(state, item);
+				}
+				else if (item.Parent is Mobile)
+				{
+					Send(new EquipUpdate(item));
+				}
+				else
+				{
+					item.SendInfoTo(state);
+				}
+
+				if (ViewOPL && item.Parent != null)
+				{
+					Send(item.OPLPacket);
+				}
+
+				return false;
+			}
+
+			EventSink.InvokeOnItemLifted(new OnItemLiftedEventArgs(this, item, oldStack));
+
+			return true;
+		}
+
+		private void HandleLift(int amount, ref Item item, out Item oldStack, out bool rejected, out LRReason reject)
+		{
+			oldStack = null;
 			rejected = true;
 			reject = LRReason.Inspecific;
 
@@ -4180,252 +4273,272 @@ namespace Server
 				return;
 			}
 
-			var from = this;
-			var state = m_NetState;
-
-			if (from.IsStaff() || Core.TickCount - from.NextActionTime >= 0)
-			{
-				if (from.CheckAlive())
-				{
-					from.DisruptiveAction();
-
-					if (from.Holding != null)
-					{
-						reject = LRReason.AreHolding;
-					}
-					else if (from.AccessLevel < AccessLevel.GameMaster && !from.InRange(item.GetWorldLocation(), 2))
-					{
-						reject = LRReason.OutOfRange;
-					}
-					else if (!from.CanSee(item) || !from.InLOS(item))
-					{
-						reject = LRReason.OutOfSight;
-					}
-					else if (!item.VerifyMove(from))
-					{
-						reject = LRReason.CannotLift;
-					}
-					else if (item.QuestItem && amount != item.Amount && !from.IsStaff())
-					{
-						reject = LRReason.Inspecific;
-						from.SendLocalizedMessage(1074868); // Stacks of quest items cannot be unstacked.
-					}
-					else if (!item.IsAccessibleTo(from))
-					{
-						reject = LRReason.CannotLift;
-					}
-					else if (item.Nontransferable && amount != item.Amount)
-					{
-						if (item.QuestItem)
-						{
-							from.SendLocalizedMessage(1074868); // Stacks of quest items cannot be unstacked.
-						}
-
-						reject = LRReason.CannotLift;
-					}
-					else if (!item.CheckLift(from, item, ref reject))
-					{ }
-					else
-					{
-						var root = item.RootParent;
-
-						if (root is Mobile mobile && !mobile.CheckNonlocalLift(from, item))
-						{
-							reject = LRReason.TryToSteal;
-						}
-						else if (!from.OnDragLift(item) || !item.OnDragLift(from))
-						{
-							reject = LRReason.Inspecific;
-						}
-						else if (!from.CheckAlive())
-						{
-							reject = LRReason.Inspecific;
-						}
-						else
-						{
-							item.SetLastMoved();
-
-							var itemGrid = item.GridLocation;
-
-							if (item.Spawner != null)
-							{
-								item.Spawner.Remove(item);
-								item.Spawner = null;
-							}
-
-							if (amount < 1)
-							{
-								amount = 1;
-							}
-
-							if (amount > item.Amount)
-							{
-								amount = item.Amount;
-							}
-
-							var oldAmount = item.Amount;
-
-							Item oldStack = null;
-
-							if (amount < oldAmount)
-							{
-								oldStack = LiftItemDupe(item, amount);
-							}
-
-							var map = from.Map;
-
-							if (m_DragEffects && map != null && (root == null || root is Item))
-							{
-								var eable = map.GetClientsInRange(from.Location);
-								Packet p = null;
-
-								foreach (var ns in eable)
-								{
-									if (ns.Mobile != from && ns.Mobile.CanSee(from) && ns.Mobile.InLOS(from) && ns.Mobile.CanSee(root))
-									{
-										if (p == null)
-										{
-											IEntity src;
-
-											if (root == null)
-											{
-												src = new Entity(Serial.Zero, item.Location, map);
-											}
-											else
-											{
-												src = new Entity(((Item)root).Serial, ((Item)root).Location, map);
-											}
-
-											p = Packet.Acquire(new DragEffect(src, from, item.ItemID, item.Hue, amount));
-										}
-
-										ns.Send(p);
-									}
-								}
-
-								Packet.Release(p);
-
-								eable.Free();
-							}
-
-							var fixLoc = item.Location;
-							var fixMap = item.Map;
-							var shouldFix = item.Parent == null;
-
-							item.RecordBounce(this, oldStack);
-							item.OnItemLifted(from, item);
-							item.Internalize();
-
-							from.Holding = item;
-							item.GridLocation = 0;
-
-							if (oldStack != null)
-							{
-								oldStack.GridLocation = itemGrid;
-							}
-
-							var liftSound = item.GetLiftSound(from);
-
-							if (liftSound != -1)
-							{
-								from.Send(new PlaySound(liftSound, from));
-							}
-
-							from.NextActionTime = Core.TickCount + ActionDelay;
-
-							if (fixMap != null && shouldFix)
-							{
-								fixMap.FixColumn(fixLoc.m_X, fixLoc.m_Y);
-							}
-
-							reject = LRReason.Inspecific;
-							rejected = false;
-						}
-					}
-				}
-				else
-				{
-					reject = LRReason.Inspecific;
-				}
-			}
-			else
+			if (!IsStaff() && Core.TickCount - NextActionTime < 0)
 			{
 				SendActionMessage();
 				reject = LRReason.Inspecific;
+				return;
 			}
 
-			if (rejected && state != null)
+			if (!CheckAlive())
 			{
-				state.Send(new LiftRej(reject));
+				reject = LRReason.Inspecific;
+				return;
+			}
 
-				if (item.Deleted)
+			DisruptiveAction();
+
+			if (Holding != null)
+			{
+				reject = LRReason.AreHolding;
+				return;
+			}
+
+			if (AccessLevel < AccessLevel.GameMaster && !InRange(item.GetWorldLocation(), 2))
+			{
+				reject = LRReason.OutOfRange;
+				return;
+			}
+
+			if (!CanSee(item) || !InLOS(item))
+			{
+				reject = LRReason.OutOfSight;
+				return;
+			}
+
+			if (!item.VerifyMove(this))
+			{
+				reject = LRReason.CannotLift;
+				return;
+			}
+
+			if (item.QuestItem && amount < item.Amount && AccessLevel < AccessLevel.GameMaster)
+			{
+				reject = LRReason.Inspecific;
+				SendLocalizedMessage(1074868); // Stacks of quest items cannot be unstacked.
+				return;
+			}
+
+			if (!item.IsAccessibleTo(this))
+			{
+				reject = LRReason.CannotLift;
+				return;
+			}
+
+			if (item.Nontransferable && amount < item.Amount && AccessLevel < AccessLevel.GameMaster)
+			{
+				reject = LRReason.CannotLift;
+				SendMessage("That cannot be unstacked.");
+				return;
+			}
+
+			if (!item.CheckLift(this, item, ref reject))
+			{
+				return;
+			}
+
+			var root = item.RootParent;
+			var parent = item.Parent;
+
+			var map = item.Map;
+			var location = item.GetWorldLocation();
+
+			if (root != null && root is Mobile rm && !rm.CheckNonlocalLift(this, item))
+			{
+				reject = LRReason.TryToSteal;
+				return;
+			}
+
+			if (!OnDragLift(item) || !item.OnDragLift(this))
+			{
+				reject = LRReason.Inspecific;
+				return;
+			}
+
+			if (!CheckAlive())
+			{
+				reject = LRReason.Inspecific;
+				return;
+			}
+
+			item.SetLastMoved();
+
+			var itemGrid = item.GridLocation;
+
+			if (item.Spawner != null)
+			{
+				item.Spawner.Remove(item);
+				item.Spawner = null;
+			}
+
+			if (amount < 1)
+			{
+				amount = 1;
+			}
+
+			if (amount > item.Amount)
+			{
+				amount = item.Amount;
+			}
+
+			if (amount < item.Amount)
+			{
+				oldStack = item;
+
+				item = LiftItemDupe(oldStack, item.Amount - amount);
+
+				if (item == null)
 				{
+					item = oldStack;
+					oldStack = null;
+
+					reject = LRReason.Inspecific;
 					return;
 				}
-
-				if (item.Parent is Item)
-				{
-					state.Send(new ContainerContentUpdate(item));
-				}
-				else if (item.Parent is Mobile)
-				{
-					state.Send(new EquipUpdate(item));
-				}
-				else
-				{
-					item.SendInfoTo(state);
-				}
-
-				if (item.Parent != null)
-				{
-					state.Send(item.OPLPacket);
-				}
 			}
+
+			if (DragEffects && map != null && (root == null || root is Item))
+			{
+				var eable = map.GetClientsInRange(location);
+
+				var src = root;
+
+				if (src == null)
+				{
+					src = new Entity(Serial.Zero, location, map);
+				}
+
+				if (!m_Moving)
+				{
+					Direction = GetDirectionTo(src);
+				}
+
+				Packet p = null;
+
+				foreach (var ns in eable)
+				{
+					if (ns.Mobile != this && ns.Mobile.CanSee(root) && ns.Mobile.CanSee(this) && ns.Mobile.InLOS(this))
+					{
+						if (p == null)
+						{
+							p = Packet.Acquire(new DragEffect(src, this, item.ItemID, item.Hue, amount));
+						}
+
+						ns.Send(p);
+					}
+				}
+
+				Packet.Release(p);
+
+				eable.Free();
+			}
+
+			var fixLoc = location;
+			var fixMap = map;
+			var shouldFix = parent == null;
+
+			item.RecordBounce(this, oldStack);
+
+			if (oldStack != null)
+			{
+				oldStack.OnItemLifted(this, item);
+			}
+			else if (parent is Item ip)
+			{
+				ip.OnItemLifted(this, item);
+			}
+			else if (parent is Mobile mp)
+			{
+				mp.OnItemLifted(this, item);
+			}
+
+			if (item != oldStack && item.Parent == null)
+			{
+				item.OnItemLifted(this, item);
+			}
+
+			item.Internalize();
+
+			Holding = item;
+
+			item.GridLocation = 0;
+
+			if (oldStack != null)
+			{
+				oldStack.GridLocation = itemGrid;
+			}
+
+			var liftSound = item.GetLiftSound(this);
+
+			if (liftSound != -1)
+			{
+				Send(new PlaySound(liftSound, this));
+			}
+
+			NextActionTime = Core.TickCount + ActionDelay;
+
+			if (fixMap != null && shouldFix)
+			{
+				fixMap.FixColumn(fixLoc.m_X, fixLoc.m_Y);
+			}
+
+			reject = LRReason.Inspecific;
+			rejected = false;
 		}
+
+		public static Func<Item, int, Item> LiftItemDupeHandler { get; set; }
 
 		public static Item LiftItemDupe(Item oldItem, int amount)
 		{
-			Item item;
-			try
-			{
-				item = (Item)Activator.CreateInstance(oldItem.GetType());
-			}
-			catch
-			{
-				Console.WriteLine(
-					"Warning: 0x{0:X}: Item must have a zero paramater constructor to be separated from a stack. '{1}'.",
-					oldItem.Serial.Value,
-					oldItem.GetType().Name);
-				return null;
-			}
+			var oldParent = oldItem.Parent;
 
-			item.Visible = oldItem.Visible;
-			item.Movable = oldItem.Movable;
-			item.LootType = oldItem.LootType;
-			item.Direction = oldItem.Direction;
-			item.Hue = oldItem.Hue;
-			item.ItemID = oldItem.ItemID;
-			item.Location = oldItem.Location;
-			item.Layer = oldItem.Layer;
-			item.Name = oldItem.Name;
-			item.Weight = oldItem.Weight;
+			var item = LiftItemDupeHandler?.Invoke(oldItem, amount);
 
-			item.Amount = oldItem.Amount - amount;
-			item.Map = oldItem.Map;
-
-			oldItem.Amount = amount;
-			oldItem.OnAfterDuped(item);
-
-			if (oldItem.Parent is Mobile mobile)
+			if (item?.Deleted != false)
 			{
-				mobile.AddItem(item);
-			}
-			else if (oldItem.Parent is Item parent)
-			{
-				parent.AddItem(item);
+				try
+				{
+					item = (Item)Activator.CreateInstance(oldItem.GetType());
+				}
+				catch
+				{
+					Console.WriteLine("Warning: {0}: Item must have a zero paramater constructor to be separated from a stack", oldItem);
+					return null;
+				}
+
+				item.Visible = oldItem.Visible;
+				item.Movable = oldItem.Movable;
+				item.LootType = oldItem.LootType;
+				item.Direction = oldItem.Direction;
+				item.RawHue = oldItem.RawHue;
+				item.ItemID = oldItem.ItemID;
+				item.Layer = oldItem.Layer;
+				item.RawName = oldItem.RawName;
+				item.Weight = oldItem.Weight;
+
+				item.Amount = oldItem.Amount - amount;
+				oldItem.Amount = amount;
+
+				item.Internalize();
+
+				oldItem.OnAfterDuped(item);
+
+				item.UpdateTotals();
+				item.InvalidateProperties();
+				item.Delta(ItemDelta.Update);
 			}
 
-			item.Delta(ItemDelta.Update);
+			if (item?.Deleted == false && oldParent != null)
+			{
+				if (oldParent is Mobile mobileParent)
+				{
+					mobileParent.AddItem(item);
+				}
+				else if (oldParent is Item itemParent)
+				{
+					itemParent.AddItem(item);
+				}
+			}
 
 			return item;
 		}
@@ -4459,7 +4572,7 @@ namespace Server
 
 			item.ClearBounce();
 
-			return !bounced;
+			return item.Deleted || !bounced;
 		}
 
 		public virtual bool Drop(Point3D loc)
@@ -4491,7 +4604,7 @@ namespace Server
 
 			item.ClearBounce();
 
-			return !bounced;
+			return item.Deleted || !bounced;
 		}
 
 		public virtual bool Drop(Mobile to, Point3D loc)
@@ -4523,7 +4636,7 @@ namespace Server
 
 			item.ClearBounce();
 
-			return !bounced;
+			return item.Deleted || !bounced;
 		}
 
 		private static readonly object m_GhostMutateContext = new object();
@@ -4598,12 +4711,10 @@ namespace Server
 			return true;
 		}
 
-		private void AddSpeechItemsFrom(List<IEntity> list, Container cont)
+		private static void AddSpeechItemsFrom(List<IEntity> list, Container cont)
 		{
-			for (var i = 0; i < cont.Items.Count; ++i)
+			foreach (var item in cont.Items)
 			{
-				var item = cont.Items[i];
-
 				if (item.HandlesOnSpeech)
 				{
 					list.Add(item);
@@ -4643,8 +4754,15 @@ namespace Server
 				m_RelativeTo = relativeTo;
 			}
 
-			private int GetDistance(IEntity p)
+			private int GetDistance(IEntity e)
 			{
+				var p = e.Location;
+
+				if (e is Item i && i.Parent != null)
+				{
+					p = i.GetWorldLocation();
+				}
+
 				var x = m_RelativeTo.X - p.X;
 				var y = m_RelativeTo.Y - p.Y;
 				var z = m_RelativeTo.Z - p.Z;
@@ -4757,7 +4875,7 @@ namespace Server
 
 			text = regArgs.Speech;
 
-			if (String.IsNullOrEmpty(text))
+			if (String.IsNullOrWhiteSpace(text))
 			{
 				return;
 			}
@@ -4773,7 +4891,7 @@ namespace Server
 				{
 					if (o is Mobile heard)
 					{
-						if (heard.CanSee(this) && (m_NoSpeechLOS || !heard.Player || heard.InLOS(this)))
+						if (heard == this || (heard.CanSee(this) && (m_NoSpeechLOS || !heard.Player || heard.InLOS(this))))
 						{
 							if (heard.m_NetState != null)
 							{
@@ -4883,9 +5001,7 @@ namespace Server
 
 				for (var i = 0; i < onSpeech.Count; ++i)
 				{
-					var obj = onSpeech[i];
-
-					if (obj is Mobile heard)
+					if (onSpeech[i] is Mobile heard)
 					{
 						if (mutatedArgs == null || !CheckHearsMutatedSpeech(heard, mutateContext))
 						{
@@ -4896,29 +5012,28 @@ namespace Server
 							heard.OnSpeech(mutatedArgs);
 						}
 					}
-					else
+					else if (onSpeech[i] is Item item)
 					{
-						var item = (Item)obj;
-
 						item.OnSpeech(regArgs);
 					}
 				}
 
-				if (m_Hears.Count > 0)
+				if (hears.Count > 0)
 				{
-					m_Hears.Clear();
+					hears.Clear();
 				}
 
-				if (m_OnSpeech.Count > 0)
+				if (onSpeech.Count > 0)
 				{
-					m_OnSpeech.Clear();
+					onSpeech.Clear();
 				}
 			}
 		}
 
-		private static VisibleDamageType m_VisibleDamageType;
+		public static VisibleDamageType DefaultVisibleDamageType => Core.AOS ? VisibleDamageType.Related : VisibleDamageType.None;
 
-		public static VisibleDamageType VisibleDamageType { get => m_VisibleDamageType; set => m_VisibleDamageType = value; }
+		[ConfigProperty("General.VisibleDamage")]
+		public static VisibleDamageType VisibleDamageType { get => Config.GetEnum("General.VisibleDamage", DefaultVisibleDamageType); set => Config.SetEnum("General.VisibleDamage", value); }
 
 		private List<DamageEntry> m_DamageEntries;
 
@@ -4926,7 +5041,7 @@ namespace Server
 
 		public static Mobile GetDamagerFrom(DamageEntry de)
 		{
-			return de == null ? null : de.Damager;
+			return de?.Damager;
 		}
 
 		public Mobile FindMostRecentDamager(bool allowSelf)
@@ -5140,13 +5255,13 @@ namespace Server
 		public DateTime LastKilled { get => m_LastKilled; set => m_LastKilled = value; }
 
 		/// <summary>
-		///     Overridable. Virtual event invoked when the Mobile is <see cref="OnDamage">damaged</see>. It is called before
+		///     Overridable. Virtual event invoked when the Mobile is <see cref="Damage">damaged</see>. It is called before
 		///     <see
 		///         cref="Hits">
 		///         hit points
 		///     </see>
 		///     are lowered or the Mobile is <see cref="Kill">killed</see>.
-		///     <seealso cref="OnDamage" />
+		///     <seealso cref="Damage" />
 		///     <seealso cref="Hits" />
 		///     <seealso cref="Kill" />
 		/// </summary>
@@ -5214,8 +5329,7 @@ namespace Server
 
 					if (temp > amount)
 					{
-						var absorbed = temp - amount;
-						newHits += absorbed;
+						newHits += temp - amount;
 					}
 				}
 
@@ -5224,18 +5338,28 @@ namespace Server
 
 				if (newHits < 0)
 				{
-					m_LastKiller = from;
+					var lastKiller = from;
+
+					while (lastKiller != null && !lastKiller.Player && lastKiller is ITamable pet && pet.ControlMaster != null)
+						lastKiller = pet.ControlMaster;
+
+					m_LastKiller = lastKiller;
 
 					m_InternalCanRegen = false;
 
-					Hits = 0;
-
-					if (oldHits >= 0)
+					try
 					{
-						Kill();
-					}
+						Hits = 0;
 
-					m_InternalCanRegen = true;
+						if (oldHits >= 0)
+						{
+							Kill();
+						}
+					}
+					finally
+					{
+						m_InternalCanRegen = true;
+					}
 				}
 				else
 				{
@@ -5250,11 +5374,11 @@ namespace Server
 
 		public virtual void SendDamagePacket(Mobile from, int amount)
 		{
-			switch (m_VisibleDamageType)
+			switch (VisibleDamageType)
 			{
 				case VisibleDamageType.Related:
 					{
-						NetState ourState = m_NetState, theirState = from == null ? null : from.m_NetState;
+						NetState ourState = m_NetState, theirState = from?.m_NetState;
 
 						if (ourState == null)
 						{
@@ -5278,19 +5402,15 @@ namespace Server
 
 						if (amount > 0 && (ourState != null || theirState != null))
 						{
-							Packet p = Packet.Acquire(new DamagePacket(this, amount));
-
 							if (ourState != null)
 							{
-								ourState.Send(p);
+								DamagePacket.Send(ourState, this, amount);
 							}
 
 							if (theirState != null && theirState != ourState)
 							{
-								theirState.Send(p);
+								DamagePacket.Send(theirState, this, amount);
 							}
-
-							Packet.Release(p);
 						}
 
 						break;
@@ -5319,17 +5439,13 @@ namespace Server
 
 			var eable = map.GetClientsInRange(m_Location);
 
-			Packet p = Packet.Acquire(new DamagePacket(this, amount));
-
 			foreach (var ns in eable)
 			{
 				if (ns.Mobile.CanSee(this))
 				{
-					ns.Send(p);
+					DamagePacket.Send(ns, this, amount);
 				}
 			}
-
-			Packet.Release(p);
 
 			eable.Free();
 		}
@@ -5397,6 +5513,7 @@ namespace Server
 
 			switch (version)
 			{
+				case 39:
 				case 38:
 				case 37:
 					{
@@ -5776,6 +5893,18 @@ namespace Server
 							m_Map = Map.Internal;
 						}
 
+						if ((m_Hue & HuePartialFlag) != 0)
+						{
+							m_Hue &= ~HuePartialFlag;
+							m_HueFlags |= HuePartialFlag;
+						}
+
+						if ((m_Hue & HueTransparentFlag) != 0)
+						{
+							m_Hue &= ~HueTransparentFlag;
+							m_HueFlags |= HueTransparentFlag;
+						}
+
 						if (m_Map != null)
 						{
 							m_Map.OnEnter(this);
@@ -5785,8 +5914,6 @@ namespace Server
 						{
 							StartCrimDelayTimer();
 						}
-
-						m_InternalCanRegen = true;
 
 						if (ShouldCheckStatTimers)
 						{
@@ -5808,11 +5935,6 @@ namespace Server
 
 			Utility.Intern(ref m_Title);
 			Utility.Intern(ref m_Language);
-
-			/*	//Moved into cleanup in scripts.
-			if( version < 30 )
-			Timer.DelayCall( TimeSpan.Zero, new TimerCallback( ConvertHair ) );
-			* */
 		}
 
 		public void ConvertHair()
@@ -5878,13 +6000,18 @@ namespace Server
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime CreationTime => m_CreationTime;
 
+		[CommandProperty(AccessLevel.GameMaster)]
+		public TimeSpan Age => DateTime.UtcNow - CreationTime;
+
 		int ISerializable.TypeReference => m_TypeRef;
 
 		int ISerializable.SerialIdentity => m_Serial;
 
 		public virtual void Serialize(GenericWriter writer)
 		{
-			writer.Write(38); // version
+			writer.Write(39); // version
+
+			// 39 - Merge sync
 
 			// 38 - Removed Disarm/Stun Ready
 
@@ -6030,7 +6157,7 @@ namespace Server
 			writer.Write(m_Warmode);
 			writer.Write(m_Hidden);
 			writer.Write((byte)m_Direction);
-			writer.Write(m_Hue);
+			writer.Write(m_Hue | m_HueFlags);
 			writer.Write(m_Str);
 			writer.Write(m_Dex);
 			writer.Write(m_Int);
@@ -6294,10 +6421,10 @@ namespace Server
 						op.WriteLine();
 					}
 
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Mobile: {0} [{1}]", GetType(), this));
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Offending Item: {0} [{1}]", item, item.GetType()));
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Equipped Item: {0} [{1}]", equipped, equipped.GetType()));
-					Utility.WriteConsoleColor(ConsoleColor.Red, String.Format("Layer: {0}", item.Layer.ToString()));
+					Utility.WriteLine(ConsoleColor.Red, String.Format("Offending Mobile: {0} [{1}]", GetType(), this));
+					Utility.WriteLine(ConsoleColor.Red, String.Format("Offending Item: {0} [{1}]", item, item.GetType()));
+					Utility.WriteLine(ConsoleColor.Red, String.Format("Equipped Item: {0} [{1}]", equipped, equipped.GetType()));
+					Utility.WriteLine(ConsoleColor.Red, String.Format("Layer: {0}", item.Layer.ToString()));
 				}
 				catch (Exception e)
 				{
@@ -6305,7 +6432,8 @@ namespace Server
 				}
 			}
 
-			item.Parent = this;
+			item.SetParent(this);
+
 			item.Map = m_Map;
 
 			m_Items.Add(item);
@@ -6320,10 +6448,10 @@ namespace Server
 			item.Delta(ItemDelta.Update);
 
 			item.OnAdded(this);
+
 			OnItemAdded(item);
 
-			if (item.PhysicalResistance != 0 || item.FireResistance != 0 || item.ColdResistance != 0 ||
-				item.PoisonResistance != 0 || item.EnergyResistance != 0)
+			if (item.PhysicalResistance != 0 || item.FireResistance != 0 || item.ColdResistance != 0 || item.PoisonResistance != 0 || item.EnergyResistance != 0)
 			{
 				UpdateResistances();
 			}
@@ -6355,13 +6483,13 @@ namespace Server
 					UpdateTotal(item, TotalType.Weight, -(item.TotalWeight + item.PileWeight));
 				}
 
-				item.Parent = null;
+				item.SetParent(null);
 
 				item.OnRemoved(this);
+
 				OnItemRemoved(item);
 
-				if (item.PhysicalResistance != 0 || item.FireResistance != 0 || item.ColdResistance != 0 ||
-					item.PoisonResistance != 0 || item.EnergyResistance != 0)
+				if (item.PhysicalResistance != 0 || item.FireResistance != 0 || item.ColdResistance != 0 || item.PoisonResistance != 0 || item.EnergyResistance != 0)
 				{
 					UpdateResistances();
 				}
@@ -6834,6 +6962,8 @@ namespace Server
 			}
 		}
 
+		bool IDamageable.Invulnerable { get => Blessed; set => Blessed = value; }
+
 		public void SendRemovePacket()
 		{
 			SendRemovePacket(true);
@@ -6859,34 +6989,49 @@ namespace Server
 
 		public void ClearScreen()
 		{
-			var ns = m_NetState;
+			ClearScreen(0, Core.GlobalRadarRange);
+		}
 
-			if (m_Map != null && ns != null)
+		public void ClearScreen(int minRange, int maxRange)
+		{
+			if (m_Map != null && m_Map != Map.Internal)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange - 4);
+				Utility.FixRange(ref minRange, ref maxRange);
 
-				foreach (var o in eable)
+				var ns = m_NetState;
+
+				if (ns != null)
 				{
-					if (o is Mobile m)
+					var eable = m_Map.GetObjectsInRange(m_Location, maxRange);
+
+					foreach (var o in eable)
 					{
-						if (m != this && Utility.InUpdateRange(m, m_Location, m.m_Location))
+						if (minRange > 0 && InRange(o, minRange))
 						{
-							ns.Send(m.RemovePacket);
+							continue;
+						}
+
+						if (o is Mobile m)
+						{
+							if (m != this && InUpdateRange(m))
+							{
+								ns.Send(m.RemovePacket);
+							}
+						}
+						else if (o is Item item && InUpdateRange(item))
+						{
+							ns.Send(item.RemovePacket);
 						}
 					}
-					else if (o is Item item && InRange(item.Location, item.GetUpdateRange(this)))
-					{
-						ns.Send(item.RemovePacket);
-					}
-				}
 
-				eable.Free();
+					eable.Free();
+				}
 			}
 		}
 
 		public virtual bool SendSpeedControl(SpeedControlType type)
 		{
-			return Send(new SpeedControl(type));
+			return SpeedControl.Send(m_NetState, type);
 		}
 
 		public bool Send(Packet p)
@@ -6911,96 +7056,103 @@ namespace Server
 		}
 
 		#region Gumps/Menus
-		public bool SendHuePicker(HuePicker p)
+
+		public IEnumerable<Gump> FindGumps(Type type)
 		{
-			return SendHuePicker(p, false);
+			return FindGumps(type, null);
 		}
 
-		public bool SendHuePicker(HuePicker p, bool throwOnOffline)
+		public IEnumerable<Gump> FindGumps(Type type, Predicate<Gump> predicate)
 		{
-			if (m_NetState != null)
-			{
-				p.SendTo(m_NetState);
-				return true;
-			}
+			var ns = m_NetState;
 
-			if (throwOnOffline)
+			if (ns != null)
 			{
-				throw new MobileNotConnectedException(this, "Hue picker could not be sent.");
-			}
+				var i = ns.Gumps.Count;
 
-			return false;
+				while (--i >= 0)
+				{
+					if (i >= ns.Gumps.Count)
+					{
+						continue;
+					}
+
+					var gump = ns.Gumps[i];
+
+					if (gump != null && type.IsAssignableFrom(gump.GetType()) && (predicate == null || predicate(gump)))
+					{
+						yield return gump;
+					}
+				}
+			}
+		}
+
+		public IEnumerable<TGump> FindGumps<TGump>() where TGump : Gump
+		{
+			return FindGumps<TGump>(null);
+		}
+
+		public IEnumerable<TGump> FindGumps<TGump>(Predicate<TGump> predicate) where TGump : Gump
+		{
+			var ns = m_NetState;
+
+			if (ns != null)
+			{
+				var i = ns.Gumps.Count;
+
+				while (--i >= 0)
+				{
+					if (i >= ns.Gumps.Count)
+					{
+						continue;
+					}
+
+					if (ns.Gumps[i] is TGump gump && (predicate == null || predicate(gump)))
+					{
+						yield return gump;
+					}
+				}
+			}
 		}
 
 		public Gump FindGump(Type type)
 		{
-			var ns = m_NetState;
+			return FindGump(type, null);
+		}
 
-			if (ns != null)
-			{
-				foreach (var gump in ns.Gumps)
-				{
-					if (type.IsAssignableFrom(gump.GetType()))
-					{
-						return gump;
-					}
-				}
-			}
-
-			return null;
+		public Gump FindGump(Type type, Predicate<Gump> predicate)
+		{
+			return FindGumps(type, predicate).FirstOrDefault();
 		}
 
 		public TGump FindGump<TGump>() where TGump : Gump
 		{
-			return FindGump(typeof(TGump)) as TGump;
+			return FindGump<TGump>(null);
+		}
+
+		public TGump FindGump<TGump>(Predicate<TGump> predicate) where TGump : Gump
+		{
+			return FindGumps(predicate).FirstOrDefault();
 		}
 
 		public bool CloseGump(Type type)
 		{
-			if (m_NetState != null)
-			{
-				var gump = FindGump(type);
-
-				if (gump != null)
-				{
-					m_NetState.Send(new CloseGump(gump.TypeID, 0));
-
-					m_NetState.RemoveGump(gump);
-
-					gump.OnServerClose(m_NetState);
-				}
-
-				return true;
-			}
-
-			return false;
+			return CloseGump(type, null);
 		}
 
-		[Obsolete("Use CloseGump( Type ) instead.")]
-		public bool CloseGump(Type type, int buttonID)
-		{
-			return CloseGump(type);
-		}
-
-		[Obsolete("Use CloseGump( Type ) instead.")]
-		public bool CloseGump(Type type, int buttonID, bool throwOnOffline)
-		{
-			return CloseGump(type);
-		}
-
-		public bool CloseAllGumps()
+		public bool CloseGump(Type type, Predicate<Gump> predicate)
 		{
 			var ns = m_NetState;
 
 			if (ns != null)
 			{
-				var gumps = new List<Gump>(ns.Gumps);
+				var gump = FindGump(type, predicate);
 
-				ns.ClearGumps();
-
-				foreach (var gump in gumps)
+				if (gump != null)
 				{
-					ns.Send(new CloseGump(gump.TypeID, 0));
+					ns.Send(gump.ClosePacket);
+
+					ns.RemoveGump(gump);
 
 					gump.OnServerClose(ns);
 				}
@@ -7011,29 +7163,120 @@ namespace Server
 			return false;
 		}
 
-		[Obsolete("Use CloseAllGumps() instead.", false)]
-		public bool CloseAllGumps(bool throwOnOffline)
+		public bool CloseGump<TGump>() where TGump : Gump
 		{
-			return CloseAllGumps();
+			return CloseGump<TGump>(null);
+		}
+
+		public bool CloseGump<TGump>(Predicate<TGump> predicate) where TGump : Gump
+		{
+			var ns = m_NetState;
+
+			if (ns != null)
+			{
+				var gump = FindGump<TGump>(predicate);
+
+				if (gump != null)
+				{
+					ns.Send(gump.ClosePacket);
+
+					ns.RemoveGump(gump);
+
+					gump.OnServerClose(ns);
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+
+		public int CloseGumps(Type type)
+		{
+			return CloseGumps(type, null);
+		}
+
+		public int CloseGumps(Type type, Predicate<Gump> predicate)
+		{
+			var count = -1;
+
+			var ns = m_NetState;
+
+			if (ns != null)
+			{
+				count = 0;
+
+				foreach (var gump in FindGumps(type, predicate))
+				{
+					ns.Send(gump.ClosePacket);
+
+					ns.RemoveGump(gump);
+
+					gump.OnServerClose(ns);
+
+					++count;
+				}
+			}
+
+			return count;
+		}
+
+		public int CloseGumps<TGump>() where TGump : Gump
+		{
+			return CloseGumps<TGump>(null);
+		}
+
+		public int CloseGumps<TGump>(Predicate<TGump> predicate) where TGump : Gump
+		{
+			var count = -1;
+
+			var ns = m_NetState;
+
+			if (ns != null)
+			{
+				count = 0;
+
+				foreach (var gump in FindGumps(predicate))
+				{
+					ns.Send(gump.ClosePacket);
+
+					ns.RemoveGump(gump);
+
+					gump.OnServerClose(ns);
+
+					++count;
+				}
+			}
+
+			return count;
+		}
+
+		public bool CloseAllGumps()
+		{
+			return CloseGumps<Gump>() > -1;
 		}
 
 		public bool HasGump(Type type)
 		{
-			return FindGump(type) != null;
+			return HasGump(type, null);
 		}
 
-		[Obsolete("Use HasGump( Type ) instead.", false)]
-		public bool HasGump(Type type, bool throwOnOffline)
+		public bool HasGump(Type type, Predicate<Gump> predicate)
 		{
-			return HasGump(type);
+			return FindGump(type, predicate) != null;
+		}
+
+		public bool HasGump<TGump>() where TGump : Gump
+		{
+			return HasGump<TGump>(null);
+		}
+
+		public bool HasGump<TGump>(Predicate<TGump> predicate) where TGump : Gump
+		{
+			return FindGump(predicate) != null;
 		}
 
 		public bool SendGump(Gump g)
-		{
-			return SendGump(g, false);
-		}
-
-		public bool SendGump(Gump g, bool throwOnOffline)
 		{
 			if (m_NetState != null)
 			{
@@ -7041,20 +7284,10 @@ namespace Server
 				return true;
 			}
 
-			if (throwOnOffline)
-			{
-				throw new MobileNotConnectedException(this, "Gump could not be sent.");
-			}
-
 			return false;
 		}
 
 		public bool SendMenu(IMenu m)
-		{
-			return SendMenu(m, false);
-		}
-
-		public bool SendMenu(IMenu m, bool throwOnOffline)
 		{
 			if (m_NetState != null)
 			{
@@ -7062,13 +7295,20 @@ namespace Server
 				return true;
 			}
 
-			if (throwOnOffline)
+			return false;
+		}
+
+		public bool SendHuePicker(HuePicker p)
+		{
+			if (m_NetState != null)
 			{
-				throw new MobileNotConnectedException(this, "Menu could not be sent.");
+				p.SendTo(m_NetState);
+				return true;
 			}
 
 			return false;
 		}
+
 		#endregion
 
 		/// <summary>
@@ -7106,53 +7346,73 @@ namespace Server
 
 		public void SendEverything()
 		{
-			var ns = m_NetState;
+			SendEverything(0, Core.GlobalRadarRange);
+		}
 
-			if (m_Map != null && ns != null)
+		public void SendEverything(int minRange, int maxRange)
+		{
+			if (m_Map != null && m_Map != Map.Internal)
 			{
-				var eable = m_Map.GetObjectsInRange(m_Location, Core.GlobalRadarRange);
+				Utility.FixRange(ref minRange, ref maxRange);
 
-				foreach (var o in eable)
+				var ns = m_NetState;
+
+				if (ns != null)
 				{
-					if (o is Item item)
+					var eable = m_Map.GetObjectsInRange(m_Location, maxRange);
+
+					foreach (var o in eable)
 					{
-						if (InRange(item.GetWorldLocation(), item.GetUpdateRange(this)) && CanSee(item))
+						if (minRange > 0 && InRange(o, minRange))
 						{
-							item.SendInfoTo(ns);
+							continue;
+						}
+
+						if (o is Item item)
+						{
+							if (CanSee(item) && InUpdateRange(item))
+							{
+								item.SendInfoTo(ns);
+							}
+						}
+						else if (o is Mobile m)
+						{
+							if (m == this || (CanSee(m) && InUpdateRange(m)))
+							{
+								MobileIncoming.Send(ns, m);
+
+								HealthbarPoison.Send(ns, m);
+								HealthbarYellow.Send(ns, m);
+
+								if (m.IsDeadBondedPet)
+								{
+									ns.Send(new BondedStatus(0, m.m_Serial, 1));
+								}
+
+								if (ViewOPL)
+								{
+									ns.Send(m.OPLPacket);
+								}
+							}
 						}
 					}
-					else if (o is Mobile m && Utility.InUpdateRange(this, m) && CanSee(m))
-					{
-						ns.Send(MobileIncoming.Create(ns, this, m));
 
-						if (ns.IsEnhancedClient)
-						{
-							ns.Send(new HealthbarPoisonEC(m));
-							ns.Send(new HealthbarYellowEC(m));
-						}
-						else
-						{
-							ns.Send(new HealthbarPoison(m));
-							ns.Send(new HealthbarYellow(m));
-						}
-
-						if (m.IsDeadBondedPet)
-						{
-							ns.Send(new BondedStatus(0, m.m_Serial, 1));
-						}
-
-						ns.Send(m.OPLPacket);
-					}
+					eable.Free();
 				}
-
-				eable.Free();
 			}
 		}
 
 		public virtual void OnUpdateRangeChanged(int oldRange, int newRange)
 		{
-			ClearScreen();
-			SendEverything();
+			if (oldRange > newRange)
+			{
+				ClearScreen(newRange, oldRange);
+				SendEverything(0, newRange);
+			}
+			else if (oldRange < newRange)
+			{
+				SendEverything(oldRange, newRange);
+			}
 		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
@@ -7168,24 +7428,29 @@ namespace Server
 
 				if (m_Map != value)
 				{
-					if (m_NetState != null)
-					{
-						m_NetState.ValidateAllTrades();
-					}
+					m_NetState?.ValidateAllTrades();
 
 					var oldMap = m_Map;
 
-					if (m_Map != null)
+					if (oldMap != null)
 					{
-						m_Map.OnLeave(this);
+						oldMap.OnLeave(this);
 
-						ClearScreen();
-						SendRemovePacket();
+						if (oldMap != Map.Internal)
+						{
+							ClearScreen();
+							SendRemovePacket();
+						}
 					}
 
-					for (var i = 0; i < m_Items.Count; ++i)
+					var i = m_Items.Count;
+
+					while (--i >= 0)
 					{
-						m_Items[i].Map = value;
+						if (i < m_Items.Count)
+						{
+							m_Items[i].Map = value;
+						}
 					}
 
 					m_Map = value;
@@ -7197,51 +7462,7 @@ namespace Server
 						m_Map.OnEnter(this);
 					}
 
-					var ns = m_NetState;
-
-					if (ns != null && m_Map != null)
-					{
-						ns.Sequence = 0;
-						ns.Send(new MapChange(this));
-						ns.Send(new MapPatches());
-						ns.Send(SeasonChange.Instantiate(GetSeason(), true));
-
-						ns.Send(new MobileUpdate(this));
-
-						ClearFastwalkStack();
-					}
-
-					if (ns != null)
-					{
-						if (m_Map != null)
-						{
-							ns.Send(new ServerChange(this, m_Map));
-						}
-
-						ns.Sequence = 0;
-						ClearFastwalkStack();
-
-						ns.Send(MobileIncoming.Create(ns, this, this));
-
-						ns.Send(new MobileUpdate(this));
-						CheckLightLevels(true);
-						ns.Send(new MobileUpdate(this));
-					}
-
-					SendEverything();
-					SendIncomingPacket();
-
-					if (ns != null)
-					{
-						ns.Sequence = 0;
-						ClearFastwalkStack();
-
-						ns.Send(MobileIncoming.Create(ns, this, this));
-
-						ns.Send(SupportedFeatures.Instantiate(ns));
-						ns.Send(new MobileUpdate(this));
-						ns.Send(new MobileAttributes(this));
-					}
+					SendMapUpdates(true, true);
 
 					OnMapChange(oldMap);
 				}
@@ -7460,7 +7681,7 @@ namespace Server
 		}
 
 		/// <summary>
-		///     Overridable. Event invoked when the Mobile <see cref="OnHarmfulAction">does a harmful action</see>.
+		///     Overridable. Event invoked when the Mobile <see cref="DoHarmful">does a harmful action</see>.
 		/// </summary>
 		public virtual void OnHarmfulAction(IDamageable target, bool isCriminal)
 		{
@@ -7508,7 +7729,6 @@ namespace Server
 			}
 
 			CheckExpireCombatantTimer();
-
 		}
 
 		public virtual bool HarmfulCheck(IDamageable target)
@@ -8091,7 +8311,7 @@ namespace Server
 		public virtual int StamMax => Dex;
 
 		/// <summary>
-		///     Gets or sets the current stamina of the Mobile. This value ranges from 0 to <see cref="ManaMax" />, inclusive.
+		///     Gets or sets the current mana of the Mobile. This value ranges from 0 to <see cref="ManaMax" />, inclusive.
 		/// </summary>
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int Mana
@@ -8159,16 +8379,90 @@ namespace Server
 		/// </summary>
 		[CommandProperty(AccessLevel.GameMaster)]
 		public virtual int ManaMax => Int;
+
+		public void RefreshStats(bool notify)
+		{
+			if (notify)
+			{
+				Hits = HitsMax;
+				Stam = StamMax;
+				Mana = ManaMax;
+			}
+			else
+			{
+				m_Hits = HitsMax;
+				m_Stam = StamMax;
+				m_Mana = ManaMax;
+			}
+		}
 		#endregion
 
 		public virtual int Luck => 0;
 
+		#region Hue
+
+		public const int HueTransparentFlag = 0x4000;
+		public const int HuePartialFlag = 0x8000;
+
+		public const int HueCombinedFlags = HueTransparentFlag | HuePartialFlag;
+
 		public virtual int HuedItemID => m_Female ? 0x2107 : 0x2106;
+
+		private int m_HueFlags;
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int HueFlags
+		{
+			get => m_HueFlags;
+			set
+			{
+				if (m_HueFlags != value)
+				{
+					m_HueFlags = value;
+
+					Delta(MobileDelta.Hue);
+				}
+			}
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool HueTransparent
+		{
+			get => (HueFlags & HueTransparentFlag) != 0;
+			set
+			{
+				if (value)
+				{
+					HueFlags |= HueTransparentFlag;
+				}
+				else
+				{
+					HueFlags &= ~HueTransparentFlag;
+				}
+			}
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public bool HuePartial
+		{
+			get => (HueFlags & HuePartialFlag) != 0;
+			set
+			{
+				if (value)
+				{
+					HueFlags |= HuePartialFlag;
+				}
+				else
+				{
+					HueFlags &= ~HuePartialFlag;
+				}
+			}
+		}
 
 		private int m_HueMod = -1;
 
 		[Hue, CommandProperty(AccessLevel.Decorator)]
-		public int HueMod
+		public virtual int HueMod
 		{
 			get => m_HueMod;
 			set
@@ -8182,30 +8476,54 @@ namespace Server
 			}
 		}
 
-		[Hue, CommandProperty(AccessLevel.Decorator)]
-		public virtual int Hue
-		{
-			get
-			{
-				if (m_HueMod != -1)
-				{
-					return m_HueMod;
-				}
+		private int m_Hue;
 
-				return m_Hue;
-			}
+		[Hue, CommandProperty(AccessLevel.Decorator)]
+		public int BodyHue
+		{
+			get => m_Hue;
 			set
 			{
-				var oldHue = m_Hue;
-
-				if (oldHue != value)
+				if (m_Hue != value)
 				{
 					m_Hue = value;
+
+					if (m_Hue > 0)
+					{
+						if ((m_Hue & HueTransparentFlag) != 0)
+						{
+							m_Hue &= ~HueTransparentFlag;
+							m_HueFlags |= HueTransparentFlag;
+						}
+						else
+						{
+							m_HueFlags &= ~HueTransparentFlag;
+						}
+
+						if ((m_Hue & HuePartialFlag) != 0)
+						{
+							m_Hue &= ~HuePartialFlag;
+							m_HueFlags |= HuePartialFlag;
+						}
+						else
+						{
+							m_HueFlags &= ~HuePartialFlag;
+						}
+					}
 
 					Delta(MobileDelta.Hue);
 				}
 			}
 		}
+
+		[Hue, CommandProperty(AccessLevel.Decorator)]
+		public virtual int Hue
+		{
+			get => m_HueMod != -1 ? m_HueMod : BodyHue;
+			set => BodyHue = value;
+		}
+
+		#endregion
 
 		public void SetDirection(Direction dir)
 		{
@@ -8236,6 +8554,16 @@ namespace Server
 			}
 
 			return 1;
+		}
+
+		int IDamageable.ComputeNotoriety(Mobile viewer)
+		{
+			return GetNotoriety(viewer);
+		}
+
+		public virtual int GetNotoriety(Mobile beholder)
+		{
+			return Notoriety.Compute(beholder, this);
 		}
 
 		public virtual int GetPacketFlags()
@@ -8295,7 +8623,7 @@ namespace Server
 				flags |= 0x02;
 			}
 
-			if (m_Poison != null)
+			if (m_Poison != null || m_PoisonHealthbar)
 			{
 				flags |= 0x04;
 			}
@@ -8341,24 +8669,58 @@ namespace Server
 		public virtual void OnGenderChanged(bool oldFemale)
 		{ }
 
+		public virtual bool CanFly => Race == Race.Gargoyle;
+
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool Flying
 		{
 			get => m_Flying;
 			set
 			{
-				if (m_Flying != value)
+				var canFly = CanFly;
+
+				if (value && !canFly)
+					value = false;
+
+				if (m_Flying == value)
+					return;
+
+				if (m_Flying)
 				{
-					m_Flying = value;
-					Delta(MobileDelta.Flags);
+					if (canFly && !CanEndFlight())
+						return;
 				}
+				else
+				{
+					if (!CanBeginFlight())
+						return;
+				}
+
+				m_Flying = value;
+
+				OnFlyingChange();
+
+				Delta(MobileDelta.Flags);
 			}
 		}
 
-		#region Stygian Abyss
-		public virtual void ToggleFlying()
-		{ }
-		#endregion
+		public virtual bool CanBeginFlight()
+		{
+			return true;
+		}
+
+		public virtual bool CanEndFlight()
+		{
+			return !Player || Map == null || Map == Map.Internal || Map.CanFit(X, Y, Z, 16, false, false);
+		}
+
+		protected virtual void OnFlyingChange()
+		{
+			if (m_Flying)
+				Animate(AnimationType.TakeOff, 0);
+			else
+				Animate(AnimationType.Land, 0);
+		}
 
 		[CommandProperty(AccessLevel.Decorator)]
 		public bool Warmode
@@ -8382,10 +8744,7 @@ namespace Server
 					m_Warmode = value;
 					Delta(MobileDelta.Flags);
 
-					if (m_NetState != null)
-					{
-						Send(SetWarMode.Instantiate(value));
-					}
+					SetWarMode.Send(m_NetState);
 
 					if (!m_Warmode)
 					{
@@ -8404,7 +8763,10 @@ namespace Server
 						}
 					}
 
-					NextActionTime = Core.TickCount + ActionDelay;
+					if (Core.SA)
+					{
+						NextActionTime = Core.TickCount + ActionDelay;
+					}
 
 					OnWarmodeChanged();
 				}
@@ -8460,14 +8822,17 @@ namespace Server
 					}
 					else
 					{
-						state.Send(MobileIncoming.Create(state, state.Mobile, this));
+						MobileIncoming.Send(state, this);
 
 						if (IsDeadBondedPet)
 						{
 							state.Send(new BondedStatus(0, m_Serial, 1));
 						}
 
-						state.Send(OPLPacket);
+						if (state.Mobile.ViewOPL)
+						{
+							state.Send(OPLPacket);
+						}
 					}
 				}
 
@@ -8483,6 +8848,35 @@ namespace Server
 
 		public virtual void OnNetStateChanged()
 		{ }
+
+		protected virtual void OnNetStateExchange(NetState oldns, ref NetState newns)
+		{ }
+
+		/// <summary>
+		/// Prevents invocation of LogoutTimer and EventSink events while the value of NetState is being updated.
+		/// </summary>
+		public bool NetStateExchange { get; private set; }
+
+		/// <summary>
+		/// Exchanges the old NetState with a new NetState while preventing invocation of LogoutTimer and EventSink events.
+		/// </summary>
+		/// <param name="state">New NetSate object</param>
+		/// <returns>Old NetState object</returns>
+		public NetState ExchangeNetState(NetState state)
+		{
+			var old = m_NetState;
+
+			NetStateExchange = true;
+			NetState = state;
+			NetStateExchange = false;
+
+			return old;
+		}
+
+		public bool NetStateFlush()
+		{
+			return m_NetState?.Flush() == true;
+		}
 
 		[CommandProperty(AccessLevel.GameMaster, AccessLevel.Administrator)]
 		public NetState NetState
@@ -8500,33 +8894,18 @@ namespace Server
 			{
 				if (m_NetState != value)
 				{
-					if (m_Map != null)
-					{
-						m_Map.OnClientChange(m_NetState, value, this);
-					}
+					m_Map?.OnClientChange(m_NetState, value, this);
 
-					if (m_Target != null)
-					{
-						m_Target.Cancel(this, TargetCancelType.Disconnected);
-					}
+					m_Target?.Cancel(this, TargetCancelType.Disconnected);
 
 					if (m_QuestArrow != null)
 					{
 						QuestArrow = null;
 					}
 
-					if (m_Spell != null)
-					{
-						m_Spell.OnConnectionChanged();
-					}
+					m_Spell?.OnConnectionChanged();
 
-					//if ( m_Spell != null )
-					//	m_Spell.FinishSequence();
-
-					if (m_NetState != null)
-					{
-						m_NetState.CancelAllTrades();
-					}
+					m_NetState?.CancelAllTrades();
 
 					var box = FindBankNoCreate();
 
@@ -8535,44 +8914,51 @@ namespace Server
 						box.Close();
 					}
 
-					// REMOVED:
-					//m_Actions.Clear();
+					var oldns = m_NetState;
 
 					m_NetState = value;
 
-					if (m_NetState == null)
+					if (NetStateExchange)
 					{
-						OnDisconnected();
-						EventSink.InvokeDisconnected(new DisconnectedEventArgs(this));
-
-						// Disconnected, start the logout timer
-						var logoutDelay = GetLogoutDelay();
-						if (!TimerRegistry.UpdateRegistry(_LogoutTimerID, this, logoutDelay))
-						{
-							TimerRegistry.Register(_LogoutTimerID, this, logoutDelay, TimerPriority.OneSecond, m => m.DoLogout());
-						}
+						OnNetStateExchange(oldns, ref m_NetState);
 					}
 					else
 					{
-						OnConnected();
-						EventSink.InvokeConnected(new ConnectedEventArgs(this));
-
-						// Connected, stop the logout timer and if needed, move to the world
-
-						if (TimerRegistry.HasTimer(_LogoutTimerID, this))
+						if (m_NetState == null)
 						{
-							TimerRegistry.RemoveFromRegistry(_LogoutTimerID, this);
-						}
+							OnDisconnected();
+							EventSink.InvokeDisconnected(new DisconnectedEventArgs(this));
 
-						if (m_Map == Map.Internal && m_LogoutMap != null)
-						{
-							CharacterOut = true;
-							Map = m_LogoutMap;
-							Location = m_LogoutLocation;
+							// Disconnected, start the logout timer
+							var logoutDelay = GetLogoutDelay();
+
+							if (!TimerRegistry.UpdateRegistry(_LogoutTimerID, this, logoutDelay))
+							{
+								TimerRegistry.Register(_LogoutTimerID, this, logoutDelay, TimerPriority.OneSecond, m => m.DoLogout());
+							}
 						}
 						else
 						{
-							CharacterOut = false;
+							OnConnected();
+							EventSink.InvokeConnected(new ConnectedEventArgs(this));
+
+							// Connected, stop the logout timer and if needed, move to the world
+
+							if (TimerRegistry.HasTimer(_LogoutTimerID, this))
+							{
+								TimerRegistry.RemoveFromRegistry(_LogoutTimerID, this);
+							}
+
+							if (m_Map == Map.Internal && m_LogoutMap != null)
+							{
+								CharacterOut = true;
+								Map = m_LogoutMap;
+								Location = m_LogoutLocation;
+							}
+							else
+							{
+								CharacterOut = false;
+							}
 						}
 					}
 
@@ -8596,7 +8982,7 @@ namespace Server
 								}
 							}
 
-							Timer.DelayCall(TimeSpan.Zero, delegate { item.Delete(); });
+							Timer.DelayCall(item.Delete);
 						}
 					}
 
@@ -8623,12 +9009,17 @@ namespace Server
 
 		public virtual bool CanSee(Item item)
 		{
-			if (m_Map == Map.Internal)
+			if (item.Deleted || item.Map == null || item.Map == Map.Internal || item.Map != m_Map)
 			{
 				return false;
 			}
 
-			if (item.Map == Map.Internal)
+			if (Deleted || m_Map == null || m_Map == Map.Internal)
+			{
+				return false;
+			}
+
+			if (!item.IsVisibleTo(this))
 			{
 				return false;
 			}
@@ -8637,7 +9028,7 @@ namespace Server
 			{
 				if (item.Parent is Item itemParent)
 				{
-					if (!(CanSee(itemParent) && itemParent.IsChildVisibleTo(this, item)))
+					if (!CanSee(itemParent) || !itemParent.IsChildVisibleTo(this, item))
 					{
 						return false;
 					}
@@ -8665,19 +9056,37 @@ namespace Server
 				}
 			}
 
-			return !item.Deleted && item.Map == m_Map && (item.Visible || IsStaff());
+			return true;
 		}
 
 		public virtual bool CanSee(Mobile m)
 		{
-			if (m_Deleted || m.m_Deleted || m_Map == Map.Internal || m.m_Map == Map.Internal)
+			if (Deleted || m.Deleted || m_Map == null || m_Map == Map.Internal || m.m_Map == null || m.m_Map == Map.Internal)
 			{
 				return false;
 			}
 
-			return this == m ||
-				   (m.m_Map == m_Map && (!m.Hidden || (IsStaff() && m_AccessLevel >= m.AccessLevel)) &&
-					(m.Alive || (Skills.SpiritSpeak.Value >= 100.0) || !Alive || IsStaff() || m.Warmode));
+			if (this == m)
+			{
+				return true;
+			}
+
+			if (m.m_Map != m_Map)
+			{
+				return false;
+			}
+
+			if (m.Hidden && (m_AccessLevel < AccessLevel.Counselor || (m_AccessLevel < m.AccessLevel && m_AccessLevel < AccessLevel.Administrator)))
+			{
+				return false;
+			}
+
+			if (!m.Alive && (!Core.SE || !(Skills.SpiritSpeak.Value >= 100.0)) && Alive && m_AccessLevel < AccessLevel.Counselor && !m.Warmode)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		public virtual bool CanBeRenamedBy(Mobile from)
@@ -8716,10 +9125,10 @@ namespace Server
 			get => m_GuildTitle;
 			set
 			{
-				var old = m_GuildTitle;
-
-				if (old != value)
+				if (m_GuildTitle != value)
 				{
+					var old = m_GuildTitle;
+
 					m_GuildTitle = value;
 
 					if (m_Guild != null && !m_Guild.Disbanded && m_GuildTitle != null)
@@ -8792,6 +9201,19 @@ namespace Server
 			}
 		}
 
+		private bool m_PoisonHealthbar;
+
+		[CommandProperty(AccessLevel.Decorator)]
+		public bool PoisonHealthbar
+		{
+			get => m_PoisonHealthbar;
+			set
+			{
+				m_PoisonHealthbar = value;
+				Delta(MobileDelta.HealthbarPoison);
+			}
+		}
+
 		[CommandProperty(AccessLevel.Decorator)]
 		public string RawName { get => m_Name; set => Name = value; }
 
@@ -8835,6 +9257,7 @@ namespace Server
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime LastDexGain { get => m_LastDexGain; set => m_LastDexGain = value; }
 
+		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime LastStatGain
 		{
 			get
@@ -8861,6 +9284,7 @@ namespace Server
 			}
 		}
 
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
 		public BaseGuild Guild
 		{
 			get => m_Guild;
@@ -8897,8 +9321,6 @@ namespace Server
 			get => m_Poison;
 			set
 			{
-				/*if ( m_Poison != value && (m_Poison == null || value == null || m_Poison.Level < value.Level) )
-				{*/
 				m_Poison = value;
 				Delta(MobileDelta.HealthbarPoison);
 
@@ -8919,7 +9341,6 @@ namespace Server
 				}
 
 				CheckStatTimers();
-				/*}*/
 			}
 		}
 
@@ -9241,8 +9662,13 @@ namespace Server
 		[Body, CommandProperty(AccessLevel.Decorator)]
 		public int BodyValue { get => Body.BodyID; set => Body = value; }
 
-		[CommandProperty(AccessLevel.Counselor)]
+		[CommandProperty(AccessLevel.Counselor, true)]
 		public Serial Serial => m_Serial;
+
+		internal void NewSerial()
+		{
+			m_Serial = Serial.NewMobile;
+		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public Point3D Location { get => m_Location; set => SetLocation(value, true); }
@@ -9271,77 +9697,71 @@ namespace Server
 			}
 		}
 
-		public void FreeCache()
+		public virtual void FreeCache()
 		{
 			Packet.Release(ref m_RemovePacket);
-			Packet.Release(ref m_PropertyList);
-			Packet.Release(ref m_OPLPacket);
+
+			ClearProperties();
 		}
 
-		private Packet m_RemovePacket;
-		private readonly object rpLock = new object();
+		private RemoveMobile m_RemovePacket;
 
-		public Packet RemovePacket
+		public RemoveMobile RemovePacket => GetRemovePacket();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private RemoveMobile GetRemovePacket()
 		{
-			get
+			if (m_RemovePacket == null)
 			{
-				if (m_RemovePacket == null)
-				{
-					lock (rpLock)
-					{
-						if (m_RemovePacket == null)
-						{
-							m_RemovePacket = new RemoveMobile(this);
-							m_RemovePacket.SetStatic();
-						}
-					}
-				}
+				var remove = new RemoveMobile(this);
 
-				return m_RemovePacket;
+				remove.SetStatic();
+
+				m_RemovePacket = remove;
 			}
+
+			return m_RemovePacket;
 		}
 
-		private Packet m_OPLPacket;
-		private readonly object oplLock = new object();
+		private OPLInfo m_OPLPacket;
 
-		public Packet OPLPacket
+		public OPLInfo OPLPacket => GetOPLPacket();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private OPLInfo GetOPLPacket()
 		{
-			get
+			if (m_OPLPacket == null)
 			{
-				if (m_OPLPacket == null)
-				{
-					lock (oplLock)
-					{
-						if (m_OPLPacket == null)
-						{
-							m_OPLPacket = new OPLInfo(PropertyList);
-							m_OPLPacket.SetStatic();
-						}
-					}
-				}
+				var opl = new OPLInfo(PropertyList);
 
-				return m_OPLPacket;
+				opl.SetStatic();
+
+				m_OPLPacket = opl;
 			}
+
+			return m_OPLPacket;
 		}
 
 		private ObjectPropertyList m_PropertyList;
 
-		public ObjectPropertyList PropertyList
+		public ObjectPropertyList PropertyList => GetPropertyList();
+
+		[MethodImpl(MethodImplOptions.Synchronized)]
+		private ObjectPropertyList GetPropertyList()
 		{
-			get
+			if (m_PropertyList == null)
 			{
-				if (m_PropertyList == null)
-				{
-					m_PropertyList = new ObjectPropertyList(this);
+				var list = new ObjectPropertyList(this);
 
-					GetProperties(m_PropertyList);
+				GetProperties(list);
 
-					m_PropertyList.Terminate();
-					m_PropertyList.SetStatic();
-				}
+				list.Terminate();
+				list.SetStatic();
 
-				return m_PropertyList;
+				m_PropertyList = list;
 			}
+
+			return m_PropertyList;
 		}
 
 		public void ClearProperties()
@@ -9350,41 +9770,124 @@ namespace Server
 			Packet.Release(ref m_OPLPacket);
 		}
 
+		private bool m_NoInvalidateRecurse;
+
 		public void InvalidateProperties()
 		{
-			if (m_Map != null && m_Map != Map.Internal && !World.Loading)
+			if (!ObjectPropertyList.Enabled)
 			{
-				var oldList = m_PropertyList;
-				Packet.Release(ref m_PropertyList);
-				var newList = PropertyList;
+				return;
+			}
 
-				if (oldList == null || oldList.Hash != newList.Hash)
-				{
-					Packet.Release(ref m_OPLPacket);
-					Delta(MobileDelta.Properties);
-				}
-			}
-			else
+			if (m_NoInvalidateRecurse)
 			{
-				ClearProperties();
+				return;
 			}
+
+			m_NoInvalidateRecurse = true;
+
+			try
+			{
+				if (m_Map != null && m_Map != Map.Internal && !World.Loading)
+				{
+					var oldList = m_PropertyList;
+					Packet.Release(ref m_PropertyList);
+					var newList = PropertyList;
+
+					if (oldList == null || oldList.Hash != newList.Hash)
+					{
+						Packet.Release(ref m_OPLPacket);
+						Delta(MobileDelta.Properties);
+					}
+				}
+				else
+				{
+					ClearProperties();
+				}
+
+				OnInvalidateProperties();
+			}
+			finally
+			{
+				m_NoInvalidateRecurse = false;
+			}
+		}
+
+		protected virtual void OnInvalidateProperties()
+		{
 		}
 
 		private int m_SolidHueOverride = -1;
 
 		[CommandProperty(AccessLevel.Decorator)]
+		public virtual int SolidHueMod => -1;
+
+		[CommandProperty(AccessLevel.Decorator)]
 		public int SolidHueOverride
 		{
-			get => m_SolidHueOverride;
+			get
+			{
+				if (!World.Saving)
+				{
+					var h = SolidHueMod;
+
+					if (h >= 0)
+					{
+						return h;
+					}
+				}
+
+				return m_SolidHueOverride;
+			}
 			set
 			{
 				if (m_SolidHueOverride == value)
 				{
 					return;
 				}
+
 				m_SolidHueOverride = value;
+
 				Delta(MobileDelta.Hue | MobileDelta.Body);
 			}
+		}
+
+		public virtual void SendMapUpdates(bool global, bool extra)
+		{
+			var ns = m_NetState;
+
+			if (ns != null)
+			{
+				ns.Sequence = 0;
+
+				ClearFastwalkStack();
+
+				SupportedFeatures.Send(ns);
+
+				if (m_Map != null)
+				{
+					MapChange.Send(ns);
+					MapPatches.Send(ns);
+
+					SeasonChange.Send(ns, true);
+
+					ns.Send(new ServerChange(this, m_Map));
+				}
+
+				CheckLightLevels(extra);
+
+				MobileIncoming.Send(ns, this);
+				MobileUpdate.Send(ns, this);
+
+				ns.Send(new MobileAttributes(this));
+			}
+
+			if (global)
+			{
+				SendIncomingPacket();
+			}
+
+			SendEverything();
 		}
 
 		public virtual void MoveToWorld(Point3D newLocation, Map map)
@@ -9400,11 +9903,14 @@ namespace Server
 				return;
 			}
 
-			var box = FindBankNoCreate();
-
-			if (box != null && box.Opened)
+			if (AccessLevel <= AccessLevel.Counselor)
 			{
-				box.Close();
+				var box = FindBankNoCreate();
+
+				if (box != null && box.Opened)
+				{
+					box.Close();
+				}
 			}
 
 			var oldLocation = m_Location;
@@ -9418,22 +9924,18 @@ namespace Server
 				SendRemovePacket();
 			}
 
-			foreach (var o in m_Items)
+			var i = m_Items.Count;
+
+			while (--i >= 0)
 			{
-				o.Map = map;
+				if (i < m_Items.Count)
+				{
+					m_Items[i].Map = map;
+				}
 			}
 
 			m_Map = map;
-
 			m_Location = newLocation;
-
-			var ns = m_NetState;
-
-			if (ns != null)
-			{
-				ns.Sequence = 0;
-				ClearFastwalkStack();
-			}
 
 			if (m_Map != null)
 			{
@@ -9441,37 +9943,52 @@ namespace Server
 			}
 
 			UpdateRegion();
+			SendMapUpdates(true, true);
 
-			if (m_Map != null && ns != null)
+			NotifyLocationChange(oldMap, oldLocation);
+		}
+
+		public virtual void NotifyLocationChange(Map oldMap, Point3D oldLocation)
+		{
+			if (oldMap == m_Map && oldLocation == m_Location)
+				return;
+
+			if (oldMap != null)
 			{
-				ns.Send(new MapChange(this));
-				ns.Send(new MapPatches());
+				var obj = oldMap.GetObjectsInRange(oldLocation, 0);
 
-				ns.Send(SeasonChange.Instantiate(GetSeason(), true));
+				foreach (var o in obj)
+				{
+					if (o is Item item)
+						item.OnLeaveLocation(this);
+					else if (o is Mobile mob)
+						mob.OnLeaveLocation(this);
+				}
 
-				Send(new ServerChange(this, m_Map));
-
-				ns.Send(MobileIncoming.Create(ns, this, this));
-
-				ns.Send(new MobileUpdate(this));
-
-				ns.Send(new MobileAttributes(this));
-
-				CheckLightLevels(true);
-
-				ns.Send(SupportedFeatures.Instantiate(ns));
+				obj.Free();
 			}
 
-			SendEverything();
-			SendIncomingPacket();
+			if (m_Map != null)
+			{
+				var obj = m_Map.GetObjectsInRange(m_Location, 0);
 
-			OnMapChange(oldMap);
+				foreach (var o in obj)
+				{
+					if (o is Item item)
+						item.OnEnterLocation(this);
+					else if (o is Mobile mob)
+						mob.OnEnterLocation(this);
+				}
+
+				obj.Free();
+			}
+
+			if (oldMap != m_Map)
+				OnMapChange(oldMap);
+
 			OnLocationChange(oldLocation);
 
-			if (m_Region != null)
-			{
-				m_Region.OnLocationChanged(this, oldLocation);
-			}
+			Region?.OnLocationChanged(this, oldLocation);
 		}
 
 		public virtual void SetLocation(Point3D newLocation, bool isTeleport)
@@ -9486,6 +10003,7 @@ namespace Server
 			if (oldLocation != newLocation)
 			{
 				m_Location = newLocation;
+
 				UpdateRegion();
 
 				if (AccessLevel <= AccessLevel.Counselor)
@@ -9508,13 +10026,13 @@ namespace Server
 					m_Map.OnMove(oldLocation, this);
 				}
 
-				if (isTeleport && m_NetState != null && !NoMoveHS)
+				if (isTeleport && m_NetState != null && (!m_NetState.HighSeas || !NoMoveHS))
 				{
 					m_NetState.Sequence = 0;
 
-					m_NetState.Send(new MobileUpdate(this));
-
 					ClearFastwalkStack();
+
+					MobileUpdate.Send(m_NetState, this);
 
 					EventSink.InvokeTeleportMovement(new TeleportMovementEventArgs(this, oldLocation, newLocation));
 				}
@@ -9529,7 +10047,9 @@ namespace Server
 
 					foreach (var ns in eable)
 					{
-						if (ns != m_NetState && !Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile))
+						var m = ns.Mobile;
+
+						if (m != null && m != this && (!m.InUpdateRange(newLocation, m) || !m.CanSee(this)))
 						{
 							ns.Send(RemovePacket);
 						}
@@ -9537,28 +10057,20 @@ namespace Server
 
 					eable.Free();
 
-					Packet hbpPacket = Packet.Acquire(new HealthbarPoison(this)),
-						   hbyPacket = Packet.Acquire(new HealthbarYellow(this));
-
-					Packet hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this)),
-						   hbyKRPacket = Packet.Acquire(new HealthbarYellowEC(this));
-
 					var ourState = m_NetState;
 
 					// Check to see if we are attached to a client
 					if (ourState != null)
 					{
+						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
+
 						var eeable = map.GetObjectsInRange(newLocation, Core.GlobalRadarRange);
 
-						// We are attached to a client, so it's a bit more complex. We need to send new items and people to ourself, and ourself to other clients
 						foreach (var o in eeable)
 						{
 							if (o is Item item)
 							{
-								var range = item.GetUpdateRange(this);
-								var loc = item.GetWorldLocation();
-
-								if (!Utility.InRange(oldLocation, loc, range) && Utility.InRange(newLocation, loc, range) && CanSee(item))
+								if (!InUpdateRange(oldLocation, item) && InUpdateRange(newLocation, item) && CanSee(item))
 								{
 									item.SendInfoTo(ourState);
 								}
@@ -9566,67 +10078,57 @@ namespace Server
 							else if (o != this && o is Mobile m)
 							{
 								// Will we enter their update range? (Y: Update)
-								var update = Utility.InUpdateRange(m, newLocation, m);
+								var update = m.InUpdateRange(newLocation, m);
 
 								// Were we already in their update range? (Y: Cancel Update)
-								if (update && Utility.InUpdateRange(m, oldLocation, m))
+								if (update && m.InUpdateRange(oldLocation, m))
 								{
 									update = false;
 								}
 
-								if (m.m_NetState != null && (update || (isTeleport && !NoMoveHS)) && m.CanSee(this))
+								if (m.m_NetState != null && (update || (isTeleport && (!m.m_NetState.HighSeas || !NoMoveHS))) && m.CanSee(this))
 								{
-									m.m_NetState.Send(MobileIncoming.Create(m.m_NetState, m, this));
+									MobileIncoming.Send(m.m_NetState, this);
 
-									if (m.m_NetState.IsEnhancedClient)
-									{
-										m.m_NetState.Send(hbpKRPacket);
-										m.m_NetState.Send(hbyKRPacket);
-									}
-									else
-									{
-										m.m_NetState.Send(hbpPacket);
-										m.m_NetState.Send(hbyPacket);
-									}
+									HealthbarPoison.Send(m.m_NetState, this);
+									HealthbarYellow.Send(m.m_NetState, this);
 
 									if (IsDeadBondedPet)
 									{
 										m.m_NetState.Send(new BondedStatus(0, m_Serial, 1));
 									}
 
-									m.m_NetState.Send(OPLPacket);
+									if (m.ViewOPL)
+									{
+										m.m_NetState.Send(OPLPacket);
+									}
 								}
 
 								// Will they enter in our update range? (Y: Update)
-								update = Utility.InUpdateRange(this, newLocation, m);
+								update = InUpdateRange(newLocation, m);
 
 								// Were they already in our update range? (Y: Cancel Update)
-								if (update && Utility.InUpdateRange(this, oldLocation, m))
+								if (update && InUpdateRange(oldLocation, m))
 								{
 									update = false;
 								}
 
 								if (update && CanSee(m))
 								{
-									ourState.Send(MobileIncoming.Create(ourState, this, m));
+									MobileIncoming.Send(ourState, m);
 
-									if (ourState.IsEnhancedClient)
-									{
-										ourState.Send(new HealthbarPoisonEC(m));
-										ourState.Send(new HealthbarYellowEC(m));
-									}
-									else
-									{
-										ourState.Send(new HealthbarPoison(m));
-										ourState.Send(new HealthbarYellow(m));
-									}
+									HealthbarPoison.Send(ourState, m);
+									HealthbarYellow.Send(ourState, m);
 
 									if (m.IsDeadBondedPet)
 									{
 										ourState.Send(new BondedStatus(0, m.m_Serial, 1));
 									}
 
-									ourState.Send(m.OPLPacket);
+									if (ViewOPL)
+									{
+										ourState.Send(m.OPLPacket);
+									}
 								}
 							}
 						}
@@ -9640,49 +10142,42 @@ namespace Server
 						// We're not attached to a client, so simply send an Incoming
 						foreach (var ns in eable)
 						{
-							var update = Utility.InUpdateRange(ns.Mobile, newLocation, ns.Mobile);
+							var mobile = ns.Mobile;
 
-							if (update && Utility.InUpdateRange(ns.Mobile, oldLocation, ns.Mobile))
+							if (mobile == null)
+								continue;
+
+							var update = mobile.InUpdateRange(newLocation, mobile);
+
+							if (update && mobile.InUpdateRange(oldLocation, mobile))
 							{
 								update = false;
 							}
 
-							if ((update || (isTeleport && !NoMoveHS)) && ns.Mobile.CanSee(this))
+							if ((update || (isTeleport && (!ns.HighSeas || !NoMoveHS))) && mobile.CanSee(this))
 							{
-								ns.Send(MobileIncoming.Create(ns, ns.Mobile, this));
+								MobileIncoming.Send(ns, this);
 
-								if (ns.IsEnhancedClient)
-								{
-									ns.Send(hbpKRPacket);
-									ns.Send(hbyKRPacket);
-								}
-								else
-								{
-									ns.Send(hbpPacket);
-									ns.Send(hbyPacket);
-								}
+								HealthbarPoison.Send(ns, this);
+								HealthbarYellow.Send(ns, this);
 
 								if (IsDeadBondedPet)
 								{
-									ns.Send(new BondedStatus(0, m_Serial, 1));
+									ns.Send(new BondedStatus(0, Serial, 1));
 								}
 
-								ns.Send(OPLPacket);
+								if (mobile.ViewOPL)
+								{
+									ns.Send(OPLPacket);
+								}
 							}
 						}
 
 						eable.Free();
 					}
-
-					Packet.Release(hbpKRPacket);
-					Packet.Release(hbyKRPacket);
-					Packet.Release(hbpPacket);
-					Packet.Release(hbyPacket);
 				}
 
-				OnLocationChange(oldLocation);
-
-				Region.OnLocationChanged(this, oldLocation);
+				NotifyLocationChange(map, oldLocation);
 			}
 		}
 
@@ -9690,7 +10185,32 @@ namespace Server
 		///     Overridable. Virtual event invoked when <see cref="Location" /> changes.
 		/// </summary>
 		protected virtual void OnLocationChange(Point3D oldLocation)
-		{ }
+		{
+			var items = Items;
+
+			if (items == null)
+			{
+				return;
+			}
+
+			var i = items.Count;
+
+			while (--i >= 0)
+			{
+				if (i < items.Count)
+				{
+					items[i]?.OnParentLocationChange(oldLocation);
+				}
+			}
+		}
+
+		public virtual void OnEnterLocation(Mobile m)
+		{
+		}
+
+		public virtual void OnLeaveLocation(Mobile m)
+		{
+		}
 
 		#region Hair & Face
 		private HairInfo m_Hair;
@@ -9729,6 +10249,28 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Decorator)]
+		public int HairHue
+		{
+			get
+			{
+				if (m_Hair == null)
+				{
+					return 0;
+				}
+
+				return m_Hair.Hue;
+			}
+			set
+			{
+				if (m_Hair != null)
+				{
+					m_Hair.Hue = value;
+					Delta(MobileDelta.Hair);
+				}
+			}
+		}
+
+		[CommandProperty(AccessLevel.Decorator)]
 		public int FacialHairItemID
 		{
 			get
@@ -9760,27 +10302,6 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Decorator)]
-		public int HairHue
-		{
-			get
-			{
-				if (m_Hair == null)
-				{
-					return 0;
-				}
-				return m_Hair.Hue;
-			}
-			set
-			{
-				if (m_Hair != null)
-				{
-					m_Hair.Hue = value;
-					Delta(MobileDelta.Hair);
-				}
-			}
-		}
-
-		[CommandProperty(AccessLevel.Decorator)]
 		public int FacialHairHue
 		{
 			get
@@ -9802,7 +10323,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty(AccessLevel.Decorator)]
 		public int FaceItemID
 		{
 			get
@@ -9833,7 +10354,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.GameMaster)]
+		[CommandProperty(AccessLevel.Decorator)]
 		public int FaceHue
 		{
 			get
@@ -9868,9 +10389,7 @@ namespace Server
 		{
 			get
 			{
-				var item = m_Weapon as Item;
-
-				if (item != null && !item.Deleted && item.Parent == this && CanSee(item))
+				if (m_Weapon is Item item && !item.Deleted && item.Parent == this && CanSee(item))
 				{
 					return m_Weapon;
 				}
@@ -9895,7 +10414,7 @@ namespace Server
 
 		public virtual IWeapon GetDefaultWeapon()
 		{
-			return m_DefaultWeapon;
+			return DefaultWeapon;
 		}
 
 		private BankBox m_BankBox;
@@ -9953,14 +10472,20 @@ namespace Server
 
 		public Item FindItemOnLayer(Layer layer)
 		{
-			var eq = m_Items;
+			var eq = Items;
+
+			if (eq == null)
+			{
+				return null;
+			}
+
 			var count = eq.Count;
 
 			for (var i = 0; i < count; ++i)
 			{
 				var item = eq[i];
 
-				if (!item.Deleted && item.Layer == layer)
+				if (item != null && !item.Deleted && item.Layer == layer)
 				{
 					return item;
 				}
@@ -9979,8 +10504,7 @@ namespace Server
 		public int Z { get => m_Location.m_Z; set => Location = new Point3D(m_Location.m_X, m_Location.m_Y, value); }
 
 		#region Effects & Particles
-		public void MovingEffect(
-			IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode)
+		public void MovingEffect(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode)
 		{
 			Effects.SendMovingEffect(this, to, itemID, speed, duration, fixedDirection, explodes, hue, renderMode);
 		}
@@ -9990,98 +10514,24 @@ namespace Server
 			Effects.SendMovingEffect(this, to, itemID, speed, duration, fixedDirection, explodes, 0, 0);
 		}
 
-		public void MovingParticles(
-			IEntity to,
-			int itemID,
-			int speed,
-			int duration,
-			bool fixedDirection,
-			bool explodes,
-			int hue,
-			int renderMode,
-			int effect,
-			int explodeEffect,
-			int explodeSound,
-			EffectLayer layer,
-			int unknown)
+		public void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode, int effect, int explodeEffect, int explodeSound, EffectLayer layer, int unknown)
 		{
-			Effects.SendMovingParticles(
-				this,
-				to,
-				itemID,
-				speed,
-				duration,
-				fixedDirection,
-				explodes,
-				hue,
-				renderMode,
-				effect,
-				explodeEffect,
-				explodeSound,
-				layer,
-				unknown);
+			Effects.SendMovingParticles(this, to, itemID, speed, duration, fixedDirection, explodes, hue, renderMode, effect, explodeEffect, explodeSound, layer, unknown);
 		}
 
-		public void MovingParticles(
-			IEntity to,
-			int itemID,
-			int speed,
-			int duration,
-			bool fixedDirection,
-			bool explodes,
-			int hue,
-			int renderMode,
-			int effect,
-			int explodeEffect,
-			int explodeSound,
-			int unknown)
+		public void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int hue, int renderMode, int effect, int explodeEffect, int explodeSound, int unknown)
 		{
-			Effects.SendMovingParticles(
-				this,
-				to,
-				itemID,
-				speed,
-				duration,
-				fixedDirection,
-				explodes,
-				hue,
-				renderMode,
-				effect,
-				explodeEffect,
-				explodeSound,
-				(EffectLayer)255,
-				unknown);
+			Effects.SendMovingParticles(this, to, itemID, speed, duration, fixedDirection, explodes, hue, renderMode, effect, explodeEffect, explodeSound, (EffectLayer)255, unknown);
 		}
 
-		public void MovingParticles(
-			IEntity to,
-			int itemID,
-			int speed,
-			int duration,
-			bool fixedDirection,
-			bool explodes,
-			int effect,
-			int explodeEffect,
-			int explodeSound,
-			int unknown)
+		public void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int effect, int explodeEffect, int explodeSound, int unknown)
 		{
-			Effects.SendMovingParticles(
-				this, to, itemID, speed, duration, fixedDirection, explodes, effect, explodeEffect, explodeSound, unknown);
+			Effects.SendMovingParticles(this, to, itemID, speed, duration, fixedDirection, explodes, effect, explodeEffect, explodeSound, unknown);
 		}
 
-		public void MovingParticles(
-			IEntity to,
-			int itemID,
-			int speed,
-			int duration,
-			bool fixedDirection,
-			bool explodes,
-			int effect,
-			int explodeEffect,
-			int explodeSound)
+		public void MovingParticles(IEntity to, int itemID, int speed, int duration, bool fixedDirection, bool explodes, int effect, int explodeEffect, int explodeSound)
 		{
-			Effects.SendMovingParticles(
-				this, to, itemID, speed, duration, fixedDirection, explodes, 0, 0, effect, explodeEffect, explodeSound, 0);
+			Effects.SendMovingParticles(this, to, itemID, speed, duration, fixedDirection, explodes, 0, 0, effect, explodeEffect, explodeSound, 0);
 		}
 
 		public void FixedEffect(int itemID, int speed, int duration, int hue, int renderMode)
@@ -10094,14 +10544,12 @@ namespace Server
 			Effects.SendTargetEffect(this, itemID, speed, duration, 0, 0);
 		}
 
-		public void FixedParticles(
-			int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer, int unknown)
+		public void FixedParticles(int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer, int unknown)
 		{
 			Effects.SendTargetParticles(this, itemID, speed, duration, hue, renderMode, effect, layer, unknown);
 		}
 
-		public void FixedParticles(
-			int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer)
+		public void FixedParticles(int itemID, int speed, int duration, int effect, int hue, int renderMode, EffectLayer layer)
 		{
 			Effects.SendTargetParticles(this, itemID, speed, duration, hue, renderMode, effect, layer, 0);
 		}
@@ -10130,40 +10578,24 @@ namespace Server
 
 				foreach (var state in eable)
 				{
-					if (state.Mobile.CanSee(this))
+					var mobile = state.Mobile;
+
+					if (mobile != null && mobile != this && mobile.CanSee(this))
 					{
-						state.Send(MobileIncoming.Create(state, state.Mobile, this));
+						MobileIncoming.Send(state, this);
 
-						if (m_Poison != null)
-						{
-							if (state.IsEnhancedClient)
-							{
-								state.Send(new HealthbarPoisonEC(this));
-							}
-							else
-							{
-								state.Send(new HealthbarPoison(this));
-							}
-						}
-
-						if (m_Blessed || m_YellowHealthbar)
-						{
-							if (state.IsEnhancedClient)
-							{
-								state.Send(new HealthbarYellowEC(this));
-							}
-							else
-							{
-								state.Send(new HealthbarYellow(this));
-							}
-						}
+						HealthbarPoison.Send(state, this);
+						HealthbarYellow.Send(state, this);
 
 						if (IsDeadBondedPet)
 						{
-							state.Send(new BondedStatus(0, m_Serial, 1));
+							state.Send(new BondedStatus(0, Serial, 1));
 						}
 
-						state.Send(OPLPacket);
+						if (mobile.ViewOPL)
+						{
+							state.Send(OPLPacket);
+						}
 					}
 				}
 
@@ -10173,7 +10605,7 @@ namespace Server
 
 		public bool PlaceInBackpack(Item item)
 		{
-			if (item.Deleted)
+			if (item == null || item.Deleted)
 			{
 				return false;
 			}
@@ -10185,7 +10617,7 @@ namespace Server
 
 		public bool AddToBackpack(Item item)
 		{
-			if (item.Deleted)
+			if (item == null || item.Deleted)
 			{
 				return false;
 			}
@@ -10195,10 +10627,10 @@ namespace Server
 				var loc = m_Location;
 				var map = m_Map;
 
-				if ((map == null || map == Map.Internal) && m_LogoutMap != null)
+				if ((map == null || map == Map.Internal) && LogoutMap != null)
 				{
-					loc = m_LogoutLocation;
-					map = m_LogoutMap;
+					loc = LogoutLocation;
+					map = LogoutMap;
 				}
 
 				item.MoveToWorld(loc, map);
@@ -10208,14 +10640,14 @@ namespace Server
 			return true;
 		}
 
-		public virtual bool CheckLift(Mobile from, Item item, ref LRReason reject)
+		public virtual bool CheckLift(Mobile m, Item item, ref LRReason reject)
 		{
 			return true;
 		}
 
-		public virtual bool CheckNonlocalLift(Mobile from, Item item)
+		public virtual bool CheckNonlocalLift(Mobile m, Item item)
 		{
-			if (from == this || (from.AccessLevel > AccessLevel && from.AccessLevel >= AccessLevel.GameMaster))
+			if (m == this || (m.AccessLevel > AccessLevel && m.AccessLevel >= AccessLevel.GameMaster))
 			{
 				return true;
 			}
@@ -10236,8 +10668,7 @@ namespace Server
 			}
 		}
 
-		public virtual bool CheckTrade(
-			Mobile to, Item item, SecureTradeContainer cont, bool message, bool checkItems, int plusItems, int plusWeight)
+		public virtual bool CheckTrade(Mobile to, Item item, SecureTradeContainer cont, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
 		{
 			return true;
 		}
@@ -10264,7 +10695,7 @@ namespace Server
 
 			var cont = theirState.FindTradeContainer(this);
 
-			if (!from.CheckTrade(this, offer, cont, true, true, 0, 0))
+			if (!from.CheckTrade(this, offer, cont, true, true, true, 0, 0))
 			{
 				return false;
 			}
@@ -10298,6 +10729,7 @@ namespace Server
 				if (pack != null)
 				{
 					dropped.GridLocation = 0x0;
+
 					return dropped.DropToItem(from, pack, new Point3D(-1, -1, 0));
 				}
 
@@ -10306,7 +10738,7 @@ namespace Server
 
 			if (from.InRange(Location, 2))
 			{
-				return OpenTrade(from, dropped);
+				return OpenTrade(from, dropped) || dropped?.Deleted == true;
 			}
 
 			return false;
@@ -10314,10 +10746,16 @@ namespace Server
 
 		public virtual bool CheckEquip(Item item)
 		{
-			for (var i = 0; i < m_Items.Count; ++i)
+			if (item == null || item.Deleted)
 			{
-				if (m_Items[i].CheckConflictingLayer(this, item, item.Layer) ||
-					item.CheckConflictingLayer(this, m_Items[i], m_Items[i].Layer))
+				return false;
+			}
+
+			var items = Items;
+
+			for (var i = 0; i < items.Count; ++i)
+			{
+				if (items[i].CheckConflictingLayer(this, item, item.Layer) || item.CheckConflictingLayer(this, items[i], items[i].Layer))
 				{
 					return false;
 				}
@@ -10483,13 +10921,10 @@ namespace Server
 
 			if (CheckEquip(item) && OnEquip(item) && item.OnEquip(this))
 			{
-				if (m_Spell != null && !m_Spell.OnCasterEquiping(item))
+				if (Spell?.OnCasterEquiping(item) == false)
 				{
 					return false;
 				}
-
-				//if ( m_Spell != null && m_Spell.State == SpellState.Casting )
-				//	m_Spell.Disturb( DisturbType.EquipRequest );
 
 				AddItem(item);
 				return true;
@@ -10498,57 +10933,62 @@ namespace Server
 			return false;
 		}
 
-		internal int m_TypeRef;
-
 		public Mobile(Serial serial)
 		{
-			m_Region = Map.Internal.DefaultRegion;
 			m_Serial = serial;
+
 			m_Aggressors = new List<AggressorInfo>();
 			m_Aggressed = new List<AggressorInfo>();
-			m_NextSkillTime = Core.TickCount;
+
 			m_DamageEntries = new List<DamageEntry>();
 
-			var ourType = GetType();
-			m_TypeRef = World.m_MobileTypes.IndexOf(ourType);
+			m_Region = Map.Internal.DefaultRegion;
 
-			if (m_TypeRef == -1)
-			{
-				World.m_MobileTypes.Add(ourType);
-				m_TypeRef = World.m_MobileTypes.Count - 1;
-			}
+			m_NextSkillTime = Core.TickCount;
+
+			InitializeTypeReference();
 		}
 
 		public Mobile()
 		{
-			m_Region = Map.Internal.DefaultRegion;
 			m_Serial = Serial.NewMobile;
+
+			m_Region = Map.Internal.DefaultRegion;
 
 			DefaultMobileInit();
 
 			World.AddMobile(this);
 
+			InitializeTypeReference();
+
+			Timer.DelayCall(obj =>
+			{
+				if (!obj.Deleted)
+				{
+					EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(obj));
+
+					if (!obj.Deleted)
+					{
+						OnCreate();
+					}
+				}
+			}, this);
+		}
+
+		internal int m_TypeRef;
+
+		private void InitializeTypeReference()
+		{
 			var ourType = GetType();
+
 			m_TypeRef = World.m_MobileTypes.IndexOf(ourType);
 
 			if (m_TypeRef == -1)
 			{
 				World.m_MobileTypes.Add(ourType);
+
 				m_TypeRef = World.m_MobileTypes.Count - 1;
 			}
-
-			Timer.DelayCall(() =>
-			{
-				if (!m_Deleted)
-				{
-					EventSink.InvokeMobileCreated(new MobileCreatedEventArgs(this));
-					if (!m_Deleted)
-					{
-						m_InternalCanRegen = true;
-						OnCreate();
-					}
-				}
-			});
 		}
 
 		public void DefaultMobileInit()
@@ -10560,13 +11000,13 @@ namespace Server
 			m_StrMaxCap = Config.Get("PlayerCaps.StrMaxCap", 150);
 			m_DexMaxCap = Config.Get("PlayerCaps.DexMaxCap", 150);
 			m_IntMaxCap = Config.Get("PlayerCaps.IntMaxCap", 150);
+
 			m_FollowersMax = 5;
+
 			m_Skills = new Skills(this);
 			m_Items = new List<Item>();
 			m_StatMods = new List<StatMod>();
 			m_SkillMods = new List<SkillMod>();
-			Map = Map.Internal;
-			m_AutoPageNotify = true;
 			m_Aggressors = new List<AggressorInfo>();
 			m_Aggressed = new List<AggressorInfo>();
 			m_Virtues = new VirtueInfo();
@@ -10575,6 +11015,11 @@ namespace Server
 
 			m_NextSkillTime = Core.TickCount;
 			m_CreationTime = DateTime.UtcNow;
+
+			m_DisplayGuildTitle = true;
+			m_AutoPageNotify = true;
+
+			Map = Map.Internal;
 		}
 
 		private static readonly List<Mobile> m_DeltaQueue = new List<Mobile>();
@@ -10584,7 +11029,7 @@ namespace Server
 
 		public virtual void Delta(MobileDelta flag)
 		{
-			if (m_Map == null || m_Map == Map.Internal || m_Deleted)
+			if (m_Map == null || m_Map == Map.Internal || Deleted || World.Loading)
 			{
 				return;
 			}
@@ -10601,9 +11046,7 @@ namespace Server
 			Core.Set();
 		}
 
-		private bool m_NoMoveHS;
-
-		public bool NoMoveHS { get => m_NoMoveHS; set => m_NoMoveHS = value; }
+		public bool NoMoveHS { get; set; }
 
 		#region GetDirectionTo[..]
 		public Direction GetDirectionTo(int x, int y)
@@ -10671,9 +11114,7 @@ namespace Server
 		public virtual void ProcessDelta()
 		{
 			var m = this;
-			MobileDelta delta;
-
-			delta = m.m_DeltaFlags;
+			var delta = m.m_DeltaFlags;
 
 			if (delta == MobileDelta.None)
 			{
@@ -10690,9 +11131,10 @@ namespace Server
 			bool sendUpdate = false, sendRemove = false;
 			bool sendPublicStats = false, sendPrivateStats = false;
 			bool sendMoving = false, sendNonlocalMoving = false;
-			var sendOPLUpdate = (delta & MobileDelta.Properties) != 0;
+			var sendOPLUpdate = ObjectPropertyList.Enabled && (delta & MobileDelta.Properties) != 0;
 
-			bool sendHair = false, sendFacialHair = false, removeHair = false, removeFacialHair = false, sendFace = false, removeFace = false;
+			bool sendHair = false, sendFacialHair = false, sendFace = false;
+			bool removeHair = false, removeFacialHair = false, removeFace = false;
 
 			bool sendHealthbarPoison = false, sendHealthbarYellow = false;
 
@@ -10759,10 +11201,7 @@ namespace Server
 				sendPublicStats = true;
 			}
 
-			if ((delta &
-				 (MobileDelta.WeaponDamage | MobileDelta.Resistances | MobileDelta.Stat | MobileDelta.Weight | MobileDelta.Gold |
-				  MobileDelta.Armor | MobileDelta.StatCap | MobileDelta.Followers | MobileDelta.TithingPoints | MobileDelta.Race)) !=
-				0)
+			if ((delta & (MobileDelta.WeaponDamage | MobileDelta.Resistances | MobileDelta.Stat | MobileDelta.Weight | MobileDelta.Gold | MobileDelta.Armor | MobileDelta.StatCap | MobileDelta.Followers | MobileDelta.TithingPoints | MobileDelta.Race)) != 0)
 			{
 				sendPrivateStats = true;
 			}
@@ -10797,8 +11236,6 @@ namespace Server
 				sendFace = true;
 			}
 
-			Packet[][] cache = { new Packet[8], new Packet[8] };
-
 			var ourState = m.m_NetState;
 
 			if (ourState != null)
@@ -10807,37 +11244,44 @@ namespace Server
 				{
 					ourState.Sequence = 0;
 
-					ourState.Send(new MobileUpdate(m));
+					MobileUpdate.Send(ourState, m);
 
 					ClearFastwalkStack();
 				}
 
 				if (sendIncoming)
 				{
-					ourState.Send(MobileIncoming.Create(ourState, m, m));
+					MobileIncoming.Send(ourState, m);
 				}
 
-				if (sendMoving)
+				if (ourState.StygianAbyss)
 				{
-					var noto = Notoriety.Compute(m, m);
-					ourState.Send(cache[0][noto] = Packet.Acquire(new MobileMoving(m, noto)));
-				}
+					if (sendMoving)
+					{
+						ourState.Send(m.GetMovePacketFor(ourState));
+					}
 
-				if (sendHealthbarPoison)
-				{
-					ourState.Send(new HealthbarPoison(m));
-					ourState.Send(new HealthbarPoisonEC(m));
-				}
+					if (sendHealthbarPoison)
+					{
+						HealthbarPoison.Send(ourState, m);
+					}
 
-				if (sendHealthbarYellow)
+					if (sendHealthbarYellow)
+					{
+						HealthbarYellow.Send(ourState, m);
+					}
+				}
+				else
 				{
-					ourState.Send(new HealthbarYellow(m));
-					ourState.Send(new HealthbarYellowEC(m));
+					if (sendMoving || sendHealthbarPoison || sendHealthbarYellow)
+					{
+						ourState.Send(m.GetMovePacketFor(ourState));
+					}
 				}
 
 				if (sendPublicStats || sendPrivateStats)
 				{
-					ourState.Send(new MobileStatus(m));
+					MobileStatus.Send(ourState, m);
 				}
 				else if (sendAll)
 				{
@@ -10863,16 +11307,16 @@ namespace Server
 
 				if (sendStam || sendMana)
 				{
-					var ip = m_Party as IParty;
+					var ip = Party as IParty;
 
-					if (ip != null && sendStam)
+					if (sendStam)
 					{
-						ip.OnStamChanged(this);
+						ip?.OnStamChanged(this);
 					}
 
-					if (ip != null && sendMana)
+					if (sendMana)
 					{
-						ip.OnManaChanged(this);
+						ip?.OnManaChanged(this);
 					}
 				}
 
@@ -10923,22 +11367,19 @@ namespace Server
 			sendIncoming = sendIncoming || sendNonlocalIncoming;
 			sendHits = sendHits || sendAll;
 
-			if (m.m_Map != null &&
-				(sendRemove || sendIncoming || sendPublicStats || sendHits || sendMoving || sendOPLUpdate || sendHair ||
-				 sendFacialHair || sendHealthbarPoison || sendHealthbarYellow || sendFace))
+			var send = sendRemove || sendIncoming || sendPublicStats
+					|| sendHits || sendMoving || sendOPLUpdate
+					|| sendHair || sendFacialHair || sendFace
+					|| sendHealthbarPoison || sendHealthbarYellow;
+
+			if (m.m_Map != null && send)
 			{
 				Mobile beholder;
 
 				Packet hitsPacket = null;
-				Packet statPacketTrue = null;
-				Packet statPacketFalse = null;
 				Packet deadPacket = null;
 				Packet hairPacket = null;
 				Packet facialhairPacket = null;
-				Packet hbpPacket = null;
-				Packet hbyPacket = null;
-				Packet hbpPacketEC = null;
-				Packet hbyPacketEC = null;
 				Packet faceRemovePacket = null;
 				Packet faceSendPacket = null;
 
@@ -10948,7 +11389,7 @@ namespace Server
 				{
 					beholder = state.Mobile;
 
-					if (beholder != m && Utility.InUpdateRange(beholder, m) && beholder.CanSee(m))
+					if (beholder != null && beholder != m && beholder.InUpdateRange(m) && beholder.CanSee(m))
 					{
 						if (sendRemove)
 						{
@@ -10957,7 +11398,7 @@ namespace Server
 
 						if (sendIncoming)
 						{
-							state.Send(MobileIncoming.Create(state, beholder, m));
+							MobileIncoming.Send(state, m);
 
 							if (m.IsDeadBondedPet)
 							{
@@ -10970,64 +11411,34 @@ namespace Server
 							}
 						}
 
-						if (sendMoving)
+						if (state.StygianAbyss)
 						{
-							var noto = Notoriety.Compute(beholder, m);
-
-							var p = cache[0][noto];
-
-							if (p == null)
+							if (sendMoving)
 							{
-								cache[0][noto] = p = Packet.Acquire(new MobileMoving(m, noto));
+								state.Send(m.GetMovePacketFor(state));
 							}
 
-							state.Send(p);
+							if (sendHealthbarPoison)
+							{
+								HealthbarPoison.Send(state, m);
+							}
+
+							if (sendHealthbarYellow)
+							{
+								HealthbarYellow.Send(state, m);
+							}
 						}
-
-						if (sendHealthbarPoison)
+						else
 						{
-							if (hbpPacket == null)
+							if (sendMoving || sendHealthbarPoison || sendHealthbarYellow)
 							{
-								hbpPacket = Packet.Acquire(new HealthbarPoison(m));
-								hbpPacketEC = Packet.Acquire(new HealthbarPoisonEC(m));
+								state.Send(m.GetMovePacketFor(state));
 							}
-
-							state.Send(hbpPacket);
-							state.Send(hbpPacketEC);
-						}
-
-						if (sendHealthbarYellow)
-						{
-							if (hbyPacket == null)
-							{
-								hbyPacket = Packet.Acquire(new HealthbarYellow(m));
-								hbyPacketEC = Packet.Acquire(new HealthbarYellowEC(m));
-							}
-
-							state.Send(hbyPacket);
-							state.Send(hbyPacketEC);
 						}
 
 						if (sendPublicStats)
 						{
-							if (m.CanBeRenamedBy(beholder))
-							{
-								if (statPacketTrue == null)
-								{
-									statPacketTrue = Packet.Acquire(new MobileStatusCompact(true, m));
-								}
-
-								state.Send(statPacketTrue);
-							}
-							else
-							{
-								if (statPacketFalse == null)
-								{
-									statPacketFalse = Packet.Acquire(new MobileStatusCompact(false, m));
-								}
-
-								state.Send(statPacketFalse);
-							}
+							MobileStatus.Send(state, m);
 						}
 						else if (sendHits)
 						{
@@ -11101,15 +11512,9 @@ namespace Server
 				}
 
 				Packet.Release(hitsPacket);
-				Packet.Release(statPacketTrue);
-				Packet.Release(statPacketFalse);
 				Packet.Release(deadPacket);
 				Packet.Release(hairPacket);
 				Packet.Release(facialhairPacket);
-				Packet.Release(hbpPacket);
-				Packet.Release(hbyPacket);
-				Packet.Release(hbpPacketEC);
-				Packet.Release(hbyPacketEC);
 				Packet.Release(faceRemovePacket);
 				Packet.Release(faceSendPacket);
 
@@ -11118,13 +11523,7 @@ namespace Server
 
 			if (sendMoving || sendNonlocalMoving || sendHealthbarPoison || sendHealthbarYellow)
 			{
-				for (var i = 0; i < cache.Length; ++i)
-				{
-					for (var j = 0; j < cache[i].Length; ++j)
-					{
-						Packet.Release(ref cache[i][j]);
-					}
-				}
+				m.ReleaseMovePackets();
 			}
 		}
 
@@ -11132,7 +11531,7 @@ namespace Server
 
 		public static void ProcessDeltaQueue()
 		{
-			if (_Processing)
+			if (World.Loading || _Processing)
 			{
 				return;
 			}
@@ -11179,16 +11578,11 @@ namespace Server
 			get => m_Kills;
 			set
 			{
-				var oldValue = m_Kills;
-
 				if (m_Kills != value)
 				{
-					m_Kills = value;
+					var oldValue = m_Kills;
 
-					if (m_Kills < 0)
-					{
-						m_Kills = 0;
-					}
+					m_Kills = Math.Max(0, value);
 
 					if ((oldValue >= 5) != (m_Kills >= 5))
 					{
@@ -11283,11 +11677,11 @@ namespace Server
 
 				if (ascii)
 				{
-					p = new AsciiMessage(m_Serial, Body, type, hue, 3, Name, text);
+					p = new AsciiMessage(Serial, Body, type, hue, 3, Name, text);
 				}
 				else
 				{
-					p = new UnicodeMessage(m_Serial, Body, type, hue, 3, m_Language, Name, text);
+					p = new UnicodeMessage(Serial, Body, type, hue, 3, m_Language, Name, text);
 				}
 
 				p.Acquire();
@@ -11296,7 +11690,9 @@ namespace Server
 
 				foreach (var state in eable)
 				{
-					if (state.Mobile.CanSee(this) && (noLineOfSight || state.Mobile.InLOS(this)))
+					var mobile = state.Mobile;
+
+					if (mobile != null && mobile.CanSee(this) && (noLineOfSight || mobile.InLOS(this)))
 					{
 						state.Send(p);
 					}
@@ -11322,13 +11718,15 @@ namespace Server
 		{
 			if (m_Map != null)
 			{
-				Packet p = Packet.Acquire(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
+				var p = Packet.Acquire(new MessageLocalized(Serial, Body, type, hue, 3, number, Name, args));
 
 				var eable = m_Map.GetClientsInRange(m_Location);
 
 				foreach (var state in eable)
 				{
-					if (state.Mobile.CanSee(this) && (noLineOfSight || state.Mobile.InLOS(this)))
+					var mobile = state.Mobile;
+
+					if (mobile != null && mobile.CanSee(this) && (noLineOfSight || mobile.InLOS(this)))
 					{
 						state.Send(p);
 					}
@@ -11340,14 +11738,12 @@ namespace Server
 			}
 		}
 
-		public void PublicOverheadMessage(
-			MessageType type, int hue, int number, AffixType affixType, string affix, string args)
+		public void PublicOverheadMessage(MessageType type, int hue, int number, AffixType affixType, string affix, string args)
 		{
 			PublicOverheadMessage(type, hue, number, affixType, affix, args, true);
 		}
 
-		public void PublicOverheadMessage(
-			MessageType type, int hue, int number, AffixType affixType, string affix, string args, bool noLineOfSight)
+		public void PublicOverheadMessage(MessageType type, int hue, int number, AffixType affixType, string affix, string args, bool noLineOfSight)
 		{
 			if (m_Map != null)
 			{
@@ -11358,13 +11754,15 @@ namespace Server
 
 				foreach (var state in eable)
 				{
-					if (state.Mobile.CanSee(this) && (noLineOfSight || state.Mobile.InLOS(this)))
+					var mobile = state.Mobile;
+
+					if (mobile != null && mobile.CanSee(this) && (noLineOfSight || mobile.InLOS(this)))
 					{
 						if (state.IsEnhancedClient)
 						{
 							if (ep == null)
 							{
-								ep = Packet.Acquire(new MessageLocalizedAffix(state, m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+								ep = Packet.Acquire(new MessageLocalizedAffix(state, Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
 							}
 
 							state.Send(ep);
@@ -11373,7 +11771,7 @@ namespace Server
 						{
 							if (cp == null)
 							{
-								cp = Packet.Acquire(new MessageLocalizedAffix(m_Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+								cp = Packet.Acquire(new MessageLocalizedAffix(Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
 							}
 
 							state.Send(cp);
@@ -11397,11 +11795,11 @@ namespace Server
 
 			if (ascii)
 			{
-				state.Send(new AsciiMessage(m_Serial, Body, type, hue, 3, Name, text));
+				state.Send(new AsciiMessage(Serial, Body, type, hue, 3, Name, text));
 			}
 			else
 			{
-				state.Send(new UnicodeMessage(m_Serial, Body, type, hue, 3, m_Language, Name, text));
+				state.Send(new UnicodeMessage(Serial, Body, type, hue, 3, m_Language, Name, text));
 			}
 		}
 
@@ -11412,17 +11810,12 @@ namespace Server
 
 		public void PrivateOverheadMessage(MessageType type, int hue, int number, AffixType affixType, string affix, string args, NetState state)
 		{
-			Send(new MessageLocalizedAffix(m_NetState, Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
+			state?.Send(new MessageLocalizedAffix(state, Serial, Body, type, hue, 3, number, Name, affixType, affix, args));
 		}
 
 		public void PrivateOverheadMessage(MessageType type, int hue, int number, string args, NetState state)
 		{
-			if (state == null)
-			{
-				return;
-			}
-
-			state.Send(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
+			state?.Send(new MessageLocalized(Serial, Body, type, hue, 3, number, Name, args));
 		}
 
 		public void LocalOverheadMessage(MessageType type, int hue, bool ascii, string text)
@@ -11433,11 +11826,11 @@ namespace Server
 			{
 				if (ascii)
 				{
-					ns.Send(new AsciiMessage(m_Serial, Body, type, hue, 3, Name, text));
+					ns.Send(new AsciiMessage(Serial, Body, type, hue, 3, Name, text));
 				}
 				else
 				{
-					ns.Send(new UnicodeMessage(m_Serial, Body, type, hue, 3, m_Language, Name, text));
+					ns.Send(new UnicodeMessage(Serial, Body, type, hue, 3, m_Language, Name, text));
 				}
 			}
 		}
@@ -11453,7 +11846,7 @@ namespace Server
 
 			if (ns != null)
 			{
-				ns.Send(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
+				ns.Send(new MessageLocalized(Serial, Body, type, hue, 3, number, Name, args));
 			}
 		}
 
@@ -11466,13 +11859,15 @@ namespace Server
 		{
 			if (m_Map != null)
 			{
-				Packet p = Packet.Acquire(new MessageLocalized(m_Serial, Body, type, hue, 3, number, Name, args));
+				var p = Packet.Acquire(new MessageLocalized(Serial, Body, type, hue, 3, number, Name, args));
 
 				var eable = m_Map.GetClientsInRange(m_Location);
 
 				foreach (var state in eable)
 				{
-					if (state != m_NetState && state.Mobile.CanSee(this))
+					var mobile = state.Mobile;
+
+					if (mobile != null && mobile != this && mobile.CanSee(this))
 					{
 						state.Send(p);
 					}
@@ -11492,11 +11887,11 @@ namespace Server
 
 				if (ascii)
 				{
-					p = new AsciiMessage(m_Serial, Body, type, hue, 3, Name, text);
+					p = new AsciiMessage(Serial, Body, type, hue, 3, Name, text);
 				}
 				else
 				{
-					p = new UnicodeMessage(m_Serial, Body, type, hue, 3, Language, Name, text);
+					p = new UnicodeMessage(Serial, Body, type, hue, 3, Language, Name, text);
 				}
 
 				p.Acquire();
@@ -11505,7 +11900,9 @@ namespace Server
 
 				foreach (var state in eable)
 				{
-					if (state != m_NetState && state.Mobile.CanSee(this))
+					var mobile = state.Mobile;
+
+					if (mobile != null && mobile != this && mobile.CanSee(this))
 					{
 						state.Send(p);
 					}
@@ -11519,11 +11916,80 @@ namespace Server
 		#endregion
 
 		#region SendLocalizedMessage
+		private Dictionary<int, long> _BufferedMessages;
+
+		protected Dictionary<int, long> BufferedMessages
+		{
+			get
+			{
+				if (_BufferedMessages == null)
+				{
+					_BufferedMessages = new Dictionary<int, long>();
+
+					if (Player)
+					{
+						_BufferedMessages[500111] = 0; // You are frozen and cannot move.
+						_BufferedMessages[500641] = 0; // Your concentration is disturbed, thus ruining thy spell.
+						_BufferedMessages[502642] = 0; // You are already casting a spell.
+						_BufferedMessages[502643] = 0; // You can not cast a spell while frozen.
+						_BufferedMessages[502644] = 0; // You have not yet recovered from casting a spell.
+						_BufferedMessages[502646] = 0; // You cannot cast a spell while frozen.
+						_BufferedMessages[1061091] = 0; // You cannot cast that spell in this form.
+						_BufferedMessages[1072060] = 0; // You cannot cast a spell while calmed.
+					}
+				}
+
+				return _BufferedMessages;
+			}
+		}
+
+		public void AddBufferedMessage(int number)
+		{
+			BufferedMessages[number] = 0;
+		}
+
+		public bool RemoveBufferedMessage(int number)
+		{
+			return BufferedMessages.Remove(number);
+		}
+
+		public bool IsBufferedMessage(int number)
+		{
+			return CheckBufferedMessage(number, false);
+		}
+
+		public bool CheckBufferedMessage(int number, bool update)
+		{
+			if (Core.AOS)
+			{
+				if (!BufferedMessages.TryGetValue(number, out var expire))
+				{
+					return false;
+				}
+
+				var now = Core.TickCount;
+
+				if (now >= expire)
+				{
+					if (update)
+					{
+						BufferedMessages[number] = now + 1000;
+					}
+
+					return false;
+				}
+
+				return true;
+			}
+
+			return false;
+		}
+
 		public void SendLocalizedMessage(int number)
 		{
 			var ns = m_NetState;
 
-			if (ns != null)
+			if (ns != null && !CheckBufferedMessage(number, true))
 			{
 				ns.Send(MessageLocalized.InstantiateGeneric(number));
 			}
@@ -11536,20 +12002,15 @@ namespace Server
 
 		public void SendLocalizedMessage(int number, string args, int hue)
 		{
-			if (hue == 0x3B2 && String.IsNullOrEmpty(args))
-			{
-				var ns = m_NetState;
+			var ns = m_NetState;
 
-				if (ns != null)
+			if (ns != null && !CheckBufferedMessage(number, true))
+			{
+				if (hue == 0x3B2 && (args == null || args.Length == 0))
 				{
 					ns.Send(MessageLocalized.InstantiateGeneric(number));
 				}
-			}
-			else
-			{
-				var ns = m_NetState;
-
-				if (ns != null)
+				else
 				{
 					ns.Send(new MessageLocalized(Serial.MinusOne, -1, MessageType.Regular, hue, 3, number, "System", args));
 				}
@@ -11570,21 +12031,11 @@ namespace Server
 		{
 			var ns = m_NetState;
 
-			if (ns != null)
+			if (ns != null && !CheckBufferedMessage(number, true))
 			{
-				ns.Send(
-					new MessageLocalizedAffix(
-						ns,
-						Serial.MinusOne,
-						-1,
-						MessageType.Regular,
-						hue,
-						3,
-						number,
-						"System",
-						(append ? AffixType.Append : AffixType.Prepend) | AffixType.System,
-						affix,
-						args));
+				var at = (append ? AffixType.Append : AffixType.Prepend) | AffixType.System;
+
+				ns.Send(new MessageLocalizedAffix(ns, Serial.MinusOne, -1, MessageType.Regular, hue, 3, number, "System", at, affix, args));
 			}
 		}
 		#endregion
@@ -11662,30 +12113,33 @@ namespace Server
 		#endregion
 
 		#region InRange
-		public bool InRange(Point2D p, int range)
-		{
-			return (p.m_X >= (m_Location.m_X - range)) && (p.m_X <= (m_Location.m_X + range)) &&
-				   (p.m_Y >= (m_Location.m_Y - range)) && (p.m_Y <= (m_Location.m_Y + range));
-		}
-
-		public bool InRange(Point3D p, int range)
-		{
-			return (p.m_X >= (m_Location.m_X - range)) && (p.m_X <= (m_Location.m_X + range)) &&
-				   (p.m_Y >= (m_Location.m_Y - range)) && (p.m_Y <= (m_Location.m_Y + range));
-		}
-
 		public bool InRange(IPoint2D p, int range)
 		{
-			return (p.X >= (m_Location.m_X - range)) && (p.X <= (m_Location.m_X + range)) && (p.Y >= (m_Location.m_Y - range)) &&
-				   (p.Y <= (m_Location.m_Y + range));
+			return Utility.InRange(m_Location, p, range);
 		}
 
 		public bool InUpdateRange(IPoint2D p)
 		{
-			if (m_NetState == null)
-				return false;
+			if (p is Item item)
+				return Utility.InRange(m_Location, item.GetWorldLocation(), item.GetUpdateRange(this));
 
-			return InRange(p, m_NetState.UpdateRange);
+			return Utility.InRange(m_Location, p, m_NetState?.UpdateRange ?? Core.GlobalUpdateRange);
+		}
+
+		public bool InUpdateRange(Point2D p, IPoint2D o)
+		{
+			if (o is Item i)
+				return Utility.InRange(p, i.GetWorldLocation(), i.GetUpdateRange(this));
+
+			return Utility.InRange(p, o, m_NetState?.UpdateRange ?? Core.GlobalUpdateRange);
+		}
+
+		public bool InUpdateRange(Point3D p, IPoint2D o)
+		{
+			if (o is Item i)
+				return Utility.InRange(p, i.GetWorldLocation(), i.GetUpdateRange(this));
+
+			return Utility.InRange(p, o, m_NetState?.UpdateRange ?? Core.GlobalUpdateRange);
 		}
 		#endregion
 
@@ -11707,9 +12161,7 @@ namespace Server
 			EventSink.InvokePaperdollRequest(new PaperdollRequestEventArgs(to, this));
 		}
 
-		private static bool m_DisableDismountInWarmode;
-
-		public static bool DisableDismountInWarmode { get => m_DisableDismountInWarmode; set => m_DisableDismountInWarmode = value; }
+		public static bool DisableDismountInWarmode { get; set; }
 
 		#region OnDoubleClick[..]
 		/// <summary>
@@ -11719,7 +12171,7 @@ namespace Server
 		/// </summary>
 		public virtual void OnDoubleClick(Mobile from)
 		{
-			if (this == from && (!m_DisableDismountInWarmode || !m_Warmode))
+			if (this == from && (!DisableDismountInWarmode || !m_Warmode))
 			{
 				var mount = Mount;
 
@@ -11777,9 +12229,7 @@ namespace Server
 			}
 		}
 
-		private static int m_BodyWeight = 14;
-
-		public static int BodyWeight { get => m_BodyWeight; set => m_BodyWeight = value; }
+		public static int BodyWeight { get; set; } = 14;
 
 		/// <summary>
 		///     Overridable. Event invoked when <paramref name="from" /> wants to see this Mobile's stats.
@@ -11787,9 +12237,9 @@ namespace Server
 		/// <param name="from"></param>
 		public virtual void OnStatsQuery(Mobile from)
 		{
-			if (from.Map == Map && Utility.InUpdateRange(from, this) && from.CanSee(this))
+			if (from.Map == Map && from.InUpdateRange(this) && from.CanSee(this))
 			{
-				from.Send(new MobileStatus(from, this));
+				MobileStatus.Send(from.NetState, this);
 			}
 
 			if (from == this)
@@ -11797,12 +12247,7 @@ namespace Server
 				Send(new StatLockInfo(this));
 			}
 
-			var ip = m_Party as IParty;
-
-			if (ip != null)
-			{
-				ip.OnStatsQuery(from, this);
-			}
+			(Party as IParty)?.OnStatsQuery(from, this);
 		}
 
 		/// <summary>
@@ -11824,7 +12269,7 @@ namespace Server
 
 		private Item m_MountItem;
 
-		[CommandProperty(AccessLevel.Decorator)]
+		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public IMount Mount
 		{
 			get
@@ -11845,7 +12290,7 @@ namespace Server
 			}
 		}
 
-		[CommandProperty(AccessLevel.Decorator)]
+		[CommandProperty(AccessLevel.Counselor)]
 		public bool Mounted => Mount != null;
 
 		private QuestArrow m_QuestArrow;
@@ -11867,13 +12312,129 @@ namespace Server
 			}
 		}
 
+		private static readonly string[] m_GuildTypes = { "", " (Chaos)", " (Order)" };
+
+		public static bool DisableHiddenSelfClick => Core.AOS;
+
+		public static bool AsciiClickMessage => !Core.AOS;
+		public static bool GuildClickMessage => !Core.AOS;
+
+		public static bool OldPropertyTitles => !Core.AOS;
+
 		public virtual bool CanTarget => true;
 		public virtual bool ClickTitle => true;
 
-		public virtual bool PropertyTitle => true;
+		public virtual bool PropertyTitle => !OldPropertyTitles || ClickTitle;
 
 		public virtual bool ShowFameTitle => true;
 		public virtual bool ShowAccessTitle => false;
+
+		/// <summary>
+		///     Overridable. Event invoked when the Mobile is single clicked.
+		/// </summary>
+		public virtual void OnSingleClick(Mobile from)
+		{
+			if (m_Deleted)
+			{
+				return;
+			}
+			else if (IsPlayer() && DisableHiddenSelfClick && Hidden && from == this)
+			{
+				return;
+			}
+
+			if (GuildClickMessage)
+			{
+				var guild = m_Guild;
+
+				if (guild != null && (m_DisplayGuildTitle || (m_Player && guild.Type != GuildType.Regular)))
+				{
+					var title = GuildTitle;
+					string type;
+
+					if (title == null)
+					{
+						title = "";
+					}
+					else
+					{
+						title = title.Trim();
+					}
+
+					if (guild.Type >= 0 && (int)guild.Type < m_GuildTypes.Length)
+					{
+						type = m_GuildTypes[(int)guild.Type];
+					}
+					else
+					{
+						type = "";
+					}
+
+					var text = String.Format(title.Length <= 0 ? "[{1}]{2}" : "[{0}, {1}]{2}", title, guild.Abbreviation, type);
+
+					PrivateOverheadMessage(MessageType.Regular, SpeechHue, true, text, from.NetState);
+				}
+			}
+
+			int hue;
+
+			if (m_NameHue != -1)
+			{
+				hue = m_NameHue;
+			}
+			else if (IsStaff())
+			{
+				hue = 11;
+			}
+			else
+			{
+				hue = Notoriety.GetHue(Notoriety.Compute(from, this));
+			}
+
+			var name = Name;
+
+			if (name == null)
+			{
+				name = String.Empty;
+			}
+
+			var prefix = "";
+
+			if (ShowFameTitle && (m_Player || m_Body.IsHuman) && m_Fame >= 10000)
+			{
+				prefix = (m_Female ? "Lady" : "Lord");
+			}
+
+			var suffix = "";
+
+			if (ClickTitle && Title != null && Title.Length > 0)
+			{
+				suffix = Title;
+			}
+
+			suffix = ApplyNameSuffix(suffix);
+
+			string val;
+
+			if (prefix.Length > 0 && suffix.Length > 0)
+			{
+				val = String.Concat(prefix, " ", name, " ", suffix);
+			}
+			else if (prefix.Length > 0)
+			{
+				val = String.Concat(prefix, " ", name);
+			}
+			else if (suffix.Length > 0)
+			{
+				val = String.Concat(name, " ", suffix);
+			}
+			else
+			{
+				val = name;
+			}
+
+			PrivateOverheadMessage(MessageType.Label, hue, AsciiClickMessage, val, from.NetState);
+		}
 
 		public bool CheckSkill(SkillName skill, double minSkill, double maxSkill)
 		{

@@ -354,20 +354,22 @@ namespace Server.Items
 
                 return BaseGemTypeNumber + (int)m_GemType - 1;
             }
-        }
+		}
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        public override void OnAfterDuped(Item newItem)
+			return value;
+		}
+
+		public override void OnAfterDuped(Item newItem)
         {
             BaseJewel jewel = newItem as BaseJewel;
 
@@ -572,8 +574,8 @@ namespace Server.Items
         public virtual bool CanRepair => m_NegativeAttributes.NoRepair == 0;
         #endregion
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -613,10 +615,12 @@ namespace Server.Items
                 }
                 #endregion
             }
+
+			base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -636,6 +640,8 @@ namespace Server.Items
                     SetHelper.RemoveSetBonus(from, SetID, this);
                 #endregion
             }
+
+			base.OnRemoved(parent);
         }
 
         public virtual void SetProtection(Type type, TextDefinition name, int amount)
@@ -749,7 +755,7 @@ namespace Server.Items
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
 
             if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
-                list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
+                list.Add(1072387, "{0}\t{1}", !m_TalismanProtection.Name.IsEmpty ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
 
             #region SA
             if ((prop = m_SAAbsorptionAttributes.EaterFire) != 0)

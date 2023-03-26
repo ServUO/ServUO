@@ -1,6 +1,7 @@
 #region References
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,20 +21,10 @@ namespace Server
 
 	public static class Core
 	{
-		static Core()
-		{
-			DataDirectories = new List<string>();
-
-			GlobalMaxUpdateRange = 24;
-			GlobalUpdateRange = 18;
-			GlobalRadarRange = 40;
-		}
-
 		public static Action<CrashedEventArgs> CrashedHandler { get; set; }
 
-		public static bool Crashed => _Crashed;
+		public static bool Crashed { get; private set; }
 
-		private static bool _Crashed;
 		private static Thread _TimerThread;
 		private static string _BaseDirectory;
 		private static string _ExePath;
@@ -88,29 +79,17 @@ namespace Server
 		public static bool Debug { get; private set; }
 
 		public static bool HaltOnWarning { get; private set; }
-		public static bool VBdotNet { get; private set; }
 
-		public static List<string> DataDirectories { get; private set; }
+		public static HashSet<string> DataDirectories { get; } = new HashSet<string>();
 
-		public static Assembly Assembly { get; set; }
+		public static Assembly Assembly { get; private set; }
 
-		public static Version Version => Assembly.GetName().Version;
+		public static Version Version { get; } = new Version(ServUO.Constants.Assembly.Version);
 
 		public static Process Process { get; private set; }
 		public static Thread Thread { get; private set; }
 
 		public static MultiTextWriter MultiConsoleOut { get; private set; }
-
-		/* 
-		 * DateTime.Now and DateTime.UtcNow are based on actual system clock time.
-		 * The resolution is acceptable but large clock jumps are possible and cause issues.
-		 * GetTickCount and GetTickCount64 have poor resolution.
-		 * GetTickCount64 is unavailable on Windows XP and Windows Server 2003.
-		 * Stopwatch.GetTimestamp() (QueryPerformanceCounter) is high resolution, but
-		 * somewhat expensive to call because of its defference to DateTime.Now,
-		 * which is why Stopwatch has been used to verify HRT before calling GetTimestamp(),
-		 * enabling the usage of DateTime.UtcNow instead.
-		 */
 
 		private static readonly bool _HighRes = Stopwatch.IsHighResolution;
 
@@ -145,26 +124,28 @@ namespace Server
 
 		public static string FindDataFile(string path)
 		{
-			if (DataDirectories.Count == 0)
-			{
-				throw new InvalidOperationException("Attempted to FindDataFile before DataDirectories list has been filled.");
-			}
-
-			string fullPath = null;
-
 			foreach (var p in DataDirectories)
 			{
-				fullPath = Path.Combine(p, path);
+				var fullPath = Path.Combine(p, path);
 
 				if (File.Exists(fullPath))
 				{
-					break;
+					return fullPath;
 				}
-
-				fullPath = null;
 			}
 
-			return fullPath;
+			var dataPath = Path.Combine(BaseDirectory, "Data");
+			var fileName = Path.GetFileName(path);
+
+			foreach (var file in Directory.EnumerateFiles(dataPath, fileName, SearchOption.AllDirectories))
+			{
+				if (Insensitive.Equals(Path.GetFileName(path), fileName))
+				{
+					return file;
+				}
+			}
+
+			return null;
 		}
 
 		public static string FindDataFile(string format, params object[] args)
@@ -173,7 +154,23 @@ namespace Server
 		}
 
 		#region Expansions
-		public static Expansion Expansion => Expansion.EJ;
+
+		private static readonly Expansion[] _Expansions = (Expansion[])Enum.GetValues(typeof(Expansion));
+
+		[ConfigProperty("Server.Expansion")]
+		public static Expansion Expansion 
+		{ 
+			get => Config.GetEnum("Server.Expansion", _Expansions[_Expansions.Length - 1]);
+			set
+			{
+				if (Expansion != value)
+				{
+					Config.SetEnum("Server.Expansion", value);
+
+					OnExpansionChanged?.Invoke();
+				}
+			}
+		}
 
 		public static bool T2A => Expansion >= Expansion.T2A;
 		public static bool UOR => Expansion >= Expansion.UOR;
@@ -186,6 +183,25 @@ namespace Server
 		public static bool HS => Expansion >= Expansion.HS;
 		public static bool TOL => Expansion >= Expansion.TOL;
 		public static bool EJ => Expansion >= Expansion.EJ;
+
+		[ConfigProperty("Siege.IsSiege")]
+		public static bool IsSiege
+		{
+			get => Config.Get("Siege.IsSiege", false);
+			set
+			{
+				if (IsSiege != value)
+				{
+					Config.Set("Siege.IsSiege", value); 
+					
+					OnSiegeStateChanged?.Invoke();
+				}
+			}
+		}
+
+		public static event Action OnSiegeStateChanged;
+		public static event Action OnExpansionChanged;
+
 		#endregion
 
 		public static string ExePath => _ExePath ?? (_ExePath = Assembly.Location);
@@ -222,7 +238,7 @@ namespace Server
 
 			if (e.IsTerminating)
 			{
-				_Crashed = true;
+				Crashed = true;
 
 				var close = false;
 
@@ -308,6 +324,137 @@ namespace Server
 			HandleClosed();
 		}
 
+		public static IEnumerable<string> ReadConsoleBuffer()
+		{
+			return ReadConsoleLines(0, Console.BufferHeight);
+		}
+
+		public static string ReadConsoleLine(int index)
+		{
+			return ReadConsoleLines(index, 1).FirstOrDefault();
+		}
+
+		public static IEnumerable<string> ReadConsoleLines(int index, int count)
+		{
+			return ReadConsole(0, index, Console.BufferWidth, count);
+		}
+
+		public static IEnumerable<string> ReadConsole(int x, int y, int width, int height)
+		{
+			var r = new Rectangle2D(x, y, width, height); // fixes invalid points
+
+			return ConsoleReader.ReadFromBuffer((short)r.X, (short)r.Y, (short)r.Width, (short)r.Height);
+		}
+
+		private static class ConsoleReader
+		{
+			public static IEnumerable<string> ReadFromBuffer(short x, short y, short width, short height)
+			{
+				var buffer = Marshal.AllocHGlobal(width * height * Marshal.SizeOf(typeof(CHAR_INFO)));
+
+				if (buffer == null)
+				{
+					throw new OutOfMemoryException();
+				}
+
+				try
+				{
+					var coord = new COORD();
+
+					var rc = new SMALL_RECT
+					{
+						Left = x,
+						Top = y,
+						Right = (short)(x + width - 1),
+						Bottom = (short)(y + height - 1)
+					};
+
+					var size = new COORD
+					{
+						X = width,
+						Y = height
+					};
+
+					const int STD_OUTPUT_HANDLE = -11;
+
+					if (!ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), buffer, size, coord, ref rc))
+					{
+						throw new Win32Exception(Marshal.GetLastWin32Error());
+					}
+
+					var ptr = buffer;
+
+					var sb = new StringBuilder();
+
+					for (var h = 0; h < height; h++)
+					{
+						for (var w = 0; w < width; w++)
+						{
+							var ci = (CHAR_INFO)Marshal.PtrToStructure(ptr, typeof(CHAR_INFO));
+							var chars = Console.OutputEncoding.GetChars(ci.charData);
+
+							sb.Append(chars[0]);
+
+							ptr += Marshal.SizeOf(typeof(CHAR_INFO));
+						}
+
+						var s = sb.ToString().TrimEnd();
+
+						sb.Clear();
+
+						if (!String.IsNullOrWhiteSpace(s))
+						{
+							yield return s;
+						}
+					}
+				}
+				finally
+				{
+					Marshal.FreeHGlobal(buffer);
+				}
+			}
+
+			[StructLayout(LayoutKind.Sequential)]
+			private struct CHAR_INFO
+			{
+				[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+				public byte[] charData;
+				public short attributes;
+			}
+
+			[StructLayout(LayoutKind.Sequential)]
+			private struct COORD
+			{
+				public short X;
+				public short Y;
+			}
+
+			[StructLayout(LayoutKind.Sequential)]
+			private struct SMALL_RECT
+			{
+				public short Left;
+				public short Top;
+				public short Right;
+				public short Bottom;
+			}
+
+			[StructLayout(LayoutKind.Sequential)]
+			private struct CONSOLE_SCREEN_BUFFER_INFO
+			{
+				public COORD dwSize;
+				public COORD dwCursorPosition;
+				public short wAttributes;
+				public SMALL_RECT srWindow;
+				public COORD dwMaximumWindowSize;
+			}
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			private static extern bool ReadConsoleOutput(IntPtr hConsoleOutput, IntPtr lpBuffer, COORD dwBufferSize, COORD dwBufferCoord, ref SMALL_RECT lpReadRegion);
+
+			[DllImport("kernel32.dll", SetLastError = true)]
+			private static extern IntPtr GetStdHandle(int nStdHandle);
+		}
+
 		public static bool Closing { get; private set; }
 
 		private static int _CycleIndex = 1;
@@ -315,7 +462,21 @@ namespace Server
 
 		public static float CyclesPerSecond => _CyclesPerSecond[(_CycleIndex - 1) % _CyclesPerSecond.Length];
 
-		public static float AverageCPS => _CyclesPerSecond.Take(_CycleIndex).Average();
+		public static float AverageCPS
+		{
+			get
+			{
+				var t = 0f;
+				var i = _CycleIndex % _CyclesPerSecond.Length;
+
+				while (--i >= 0)
+				{
+					t += _CyclesPerSecond[i];
+				}
+
+				return t / ( (_CycleIndex % _CyclesPerSecond.Length) + 1);
+			}
+		}
 
 		public static void Kill()
 		{
@@ -323,25 +484,31 @@ namespace Server
 		}
 
 #if MONO
-		private static string[] SupportedTerminals => new string[]
+		private static string[] _SupportedTerminals = 
 		{
 			"xfce4-terminal", "gnome-terminal", "xterm"
 		};
 
 		private static void RebootTerminal(int i = 0)
 		{
-			if(SupportedTerminals.Length > i)
+			if (_SupportedTerminals.Length > i)
 			{
-				try {
-					if(SupportedTerminals[i] != "xterm")
-						Process.Start(SupportedTerminals[i], $"--working-directory={BaseDirectory} -x ./ServUO.sh");
+				try
+				{
+					if (_SupportedTerminals[i] != "xterm")
+					{
+						Process.Start(_SupportedTerminals[i], $"--working-directory={BaseDirectory} -x ./ServUO.sh");
+					}
 					else
-						Process.Start(SupportedTerminals[i], $"-lcc {BaseDirectory} -e ./ServUO.sh");
+					{
+						Process.Start(_SupportedTerminals[i], $"-lcc {BaseDirectory} -e ./ServUO.sh");
+					}
+
 					Thread.Sleep(500); // a sleep here to not close the programm to quick, so that the new windows cant start.
 				}
-				catch(System.ComponentModel.Win32Exception)
+				catch (System.ComponentModel.Win32Exception)
 				{
-					RebootTerminal(i+1);
+					RebootTerminal(i + 1);
 				}
 			}
 		}
@@ -350,16 +517,19 @@ namespace Server
 		public static void Kill(bool restart)
 		{
 			HandleClosed();
-
+#if MONO
 			if (restart)
 			{
-#if MONO
 				RebootTerminal();
-				Environment.Exit(0);
 			}
+
+			Environment.Exit(0);
 #else
+			if (restart)
+			{
 				Process.Start(ExePath, Arguments);
 			}
+
 			Process.Kill();
 #endif
 		}
@@ -374,11 +544,16 @@ namespace Server
 			Closing = true;
 
 			if (Debug)
+			{
 				Console.Write("Exiting...");
+			}
 
-			World.WaitForWriteCompletion();
+			if (World.Saving)
+			{
+				World.WaitForWriteCompletion();
+			}
 
-			if (!_Crashed)
+			if (!Crashed)
 			{
 				EventSink.InvokeShutdown(new ShutdownEventArgs());
 			}
@@ -386,7 +561,9 @@ namespace Server
 			Timer.TimerThread.Set();
 
 			if (Debug)
+			{
 				Console.WriteLine("done");
+			}
 		}
 
 		private static readonly AutoResetEvent _Signal = new AutoResetEvent(true);
@@ -427,10 +604,6 @@ namespace Server
 				{
 					HaltOnWarning = true;
 				}
-				else if (Insensitive.Equals(a, "-vb"))
-				{
-					VBdotNet = true;
-				}
 				else if (Insensitive.Equals(a, "-usehrt"))
 				{
 					_UseHRT = true;
@@ -451,7 +624,6 @@ namespace Server
 					Console.WriteLine("     -profile            Enables profiling allowing to get performance diagnostic information of packets, timers etc. in AdminGump -> Maintenance. Use with caution. This increases server load.");
 					Console.WriteLine("     -service            This parameter should be set if you're running ServUO as a Windows Service. No user interaction. *Windows only*");
 					Console.WriteLine("     -usehrt             Enables High Resolution Timing if requirements are met. Increasing the resolution of the timer. *Windows only*");
-					Console.WriteLine("     -vb                 Enables compilation of VB.NET Scripts. Without this option VB.NET Scripts are skipped.");
 
 					Environment.Exit(0);
 				}
@@ -461,6 +633,10 @@ namespace Server
 			{
 				NoConsole = true;
 			}
+
+			Thread = Thread.CurrentThread;
+			Process = Process.GetCurrentProcess();
+			Assembly = Assembly.GetEntryAssembly();
 
 			try
 			{
@@ -483,10 +659,6 @@ namespace Server
 				Diagnostics.ExceptionLogging.LogException(e);
 			}
 
-			Thread = Thread.CurrentThread;
-			Process = Process.GetCurrentProcess();
-			Assembly = Assembly.GetEntryAssembly();
-
 			if (Thread != null)
 			{
 				Thread.Name = "Core Thread";
@@ -497,43 +669,28 @@ namespace Server
 				Directory.SetCurrentDirectory(BaseDirectory);
 			}
 
-			var ttObj = new Timer.TimerThread();
-
-			_TimerThread = new Thread(ttObj.TimerMain)
+			_TimerThread = new Thread(Timer.TimerThread.TimerMain)
 			{
 				Name = "Timer Thread"
 			};
 
-			var ver = Assembly.GetName().Version;
-			var buildDate = new DateTime(2000, 1, 1).AddDays(ver.Build).AddSeconds(ver.Revision * 2);
+			Console.Title = $"{ServUO.Constants.Assembly.Title} {Version}";
 
-			Utility.PushColor(ConsoleColor.Cyan);
-#if DEBUG
-			Console.WriteLine(
-				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Debug",
-				ver.Major,
-				ver.Minor,
-				ver.Build,
-				ver.Revision,
-				buildDate);
-#else
-			Console.WriteLine(
-				"ServUO - [https://www.servuo.com] Version {0}.{1}, Build {2}.{3} - Build on {4} UTC - Release",
-				ver.Major,
-				ver.Minor,
-				ver.Build,
-				ver.Revision,
-				buildDate);
-#endif
-			Utility.PopColor();
+			Utility.PushColor(Console.ForegroundColor);
+
+			BeginColor(ConsoleColor.Blue);
+
+			Console.WriteLine($"{ServUO.Constants.Assembly.Product} {Version}");
+			Console.WriteLine($"{ServUO.Constants.Assembly.Description}");
+			Console.WriteLine($"{ServUO.Constants.Assembly.Company} [{ServUO.Constants.Website}]");
+
+			NextColor(ConsoleColor.Yellow);
 
 			var s = Arguments;
 
 			if (s.Length > 0)
 			{
-				Utility.PushColor(ConsoleColor.Yellow);
-				Console.WriteLine("Core: Running with arguments: {0}", s);
-				Utility.PopColor();
+				Console.WriteLine($"Core: Running with arguments: {s}");
 			}
 
 			ProcessorCount = Environment.ProcessorCount;
@@ -545,13 +702,7 @@ namespace Server
 
 			if (MultiProcessor || Is64Bit)
 			{
-				Utility.PushColor(ConsoleColor.Green);
-				Console.WriteLine(
-					"Core: Optimizing for {0} {2}processor{1}",
-					ProcessorCount,
-					ProcessorCount == 1 ? "" : "s",
-					Is64Bit ? "64-bit " : "");
-				Utility.PopColor();
+				Console.WriteLine($"Core: Optimizing for {ProcessorCount} {(Is64Bit ? "64-bit " : "")}processor{(ProcessorCount == 1 ? "" : "s")}");
 			}
 
 			string dotnet = null;
@@ -564,9 +715,7 @@ namespace Server
 				{
 					dotnet = displayName.Invoke(null, null).ToString();
 
-					Utility.PushColor(ConsoleColor.Yellow);
 					Console.WriteLine("Core: Unix environment detected");
-					Utility.PopColor();
 
 					Unix = true;
 				}
@@ -577,71 +726,106 @@ namespace Server
 				UnsafeNativeMethods.SetConsoleCtrlHandler(m_ConsoleEventHandler, true);
 			}
 
-#if NETFX_472
-			dotnet = "4.7.2";
-#endif
+			if (String.IsNullOrWhiteSpace(dotnet))
+			{
+				dotnet = Environment.Version.ToString();
+			}
 
-#if NETFX_48
-			dotnet = "4.8";
-#endif
-
-			if (String.IsNullOrEmpty(dotnet))
-				dotnet = "MONO/CSC/Unknown";
-
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine("Core: Compiled for " + (Unix ? "MONO and running on {0}" : ".NET {0}"), dotnet);
-			Utility.PopColor();
+			Console.WriteLine($"Core: {(Unix ? $"MONO .NET {dotnet}" : $".NET {dotnet}")}");
 
 			if (GCSettings.IsServerGC)
 			{
-				Utility.PushColor(ConsoleColor.Green);
 				Console.WriteLine("Core: Server garbage collection mode enabled");
-				Utility.PopColor();
 			}
 
 			if (_UseHRT)
 			{
-				Utility.PushColor(ConsoleColor.DarkYellow);
-				Console.WriteLine(
-					"Core: Requested high resolution timing ({0})",
-					UsingHighResolutionTiming ? "Supported" : "Unsupported");
-				Utility.PopColor();
+				Console.WriteLine($"Core: High resolution timing {(UsingHighResolutionTiming ? "supported" : "unsupported")}");
 			}
 
-			Utility.PushColor(ConsoleColor.DarkYellow);
-			Console.WriteLine("RandomImpl: {0} ({1})", RandomImpl.Type.Name, RandomImpl.IsHardwareRNG ? "Hardware" : "Software");
-			Utility.PopColor();
+			Console.WriteLine($"Core: RNG using {RandomImpl.Type.Name} ({(RandomImpl.IsHardwareRNG ? "Hardware" : "Software")})");
 
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine("Core: Loading config...");
+			NextColor(ConsoleColor.DarkYellow);
+
+			Console.WriteLine("Core: Preparing...");
+			Console.WriteLine();
+
+			var sw = Stopwatch.StartNew();
+
 			Config.Load();
-			Utility.PopColor();
+
+			InitDataDirectories();
+
+			if (ScriptCompiler.Dynamic)
+			{
+				NextColor(ConsoleColor.White);
+			}
 
 			while (!ScriptCompiler.Compile(Debug, _Cache))
 			{
-				Utility.PushColor(ConsoleColor.Red);
-				Console.WriteLine("Scripts: One or more scripts failed to compile or no script files were found.");
-				Utility.PopColor();
+				sw.Stop();
+
+				NextColor(ConsoleColor.Red);
+
+				Console.WriteLine("Core: Assembly load failed");
 
 				if (Service)
 				{
-					return;
+					break;
 				}
 
-				Console.WriteLine(" - Press return to exit, or R to try again.");
+				Console.WriteLine("Core: - Press return to exit, or R to try again");
 
 				if (Console.ReadKey(true).Key != ConsoleKey.R)
 				{
-					return;
+					break;
 				}
+
+				sw.Start();
 			}
 
+			if (ScriptCompiler.Dynamic)
+			{
+				NextColor(ConsoleColor.DarkYellow);
+			}
+
+			sw.Stop();
+
+			Console.WriteLine();
+			Console.WriteLine($"Core: Preparation took {sw.Elapsed.TotalSeconds:F1} seconds");
+
+			EndColor();
+
+			Console.WriteLine();
+			Console.WriteLine("Core: Configuring...");
+			Console.WriteLine();
+
+			sw.Restart();
 			ScriptCompiler.Invoke("Configure");
+			sw.Stop();
+
+			Console.WriteLine();
+			Console.WriteLine($"Core: Configuration took {sw.Elapsed.TotalSeconds:F1} seconds");
+			Console.WriteLine();
 
 			Region.Load();
 			World.Load();
 
+			Console.WriteLine();
+			Console.WriteLine("Core: Initializing...");
+			Console.WriteLine();
+
+			sw.Restart();
 			ScriptCompiler.Invoke("Initialize");
+			sw.Stop();
+
+			Console.WriteLine();
+			Console.WriteLine($"Core: Initialization took {sw.Elapsed.TotalSeconds:F1} seconds");
+			Console.WriteLine();
+
+			sw.Reset();
+
+			DisplayDataDirectories();
 
 			MessagePump = new MessagePump();
 
@@ -651,6 +835,99 @@ namespace Server
 			}
 
 			NetState.Initialize();
+		}
+
+		[ConfigProperty("Server.DataPath")]
+		public static string DataDirectory 
+		{
+			get => Config.Get("Server.DataPath", DataDirectories.FirstOrDefault()); 
+			set
+			{
+				var old = DataDirectory;
+
+				if (old != value)
+				{
+					if (value == null)
+					{
+						DataDirectories.Remove(old);
+
+						Config.Set("Server.DataPath", value);
+					}
+					else if (!String.IsNullOrWhiteSpace(value) && File.Exists(Path.Combine(value, "client.exe")))
+					{
+						DataDirectories.Remove(old);
+
+						Config.Set("Server.DataPath", value);
+
+						DataDirectories.Add(value);
+					}
+				}
+			}
+		}
+
+		private static void InitDataDirectories()
+		{
+			var path = DataDirectory;
+
+			if (!String.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "client.exe")))
+			{
+				DataDirectories.Add(path);
+			}
+
+			while (DataDirectories.Count == 0 && !Service)
+			{
+				Utility.WriteLine(ConsoleColor.DarkYellow, "Core: Enter a path to Ultima Online:");
+
+				path = Console.ReadLine();
+
+				if (!String.IsNullOrWhiteSpace(path) && File.Exists(Path.Combine(path, "client.exe")))
+				{
+					if (DataDirectories.Add(path))
+					{
+						Config.Set("Server.DataPath", path);
+						Config.Save("Server");
+
+						Utility.WriteLine(ConsoleColor.DarkYellow, "Core: Ultima Online path has been updated...");
+					}
+
+					return;
+				}
+
+				Utility.WriteLine(ConsoleColor.Red, "Core: Invalid path...");
+			}
+		}
+
+		public static void DisplayDataDirectories()
+		{
+			Console.WriteLine();
+			Utility.WriteLine(ConsoleColor.DarkYellow, $"Core: Data Paths: {String.Join("\n > ", DataDirectories)}");
+			Console.WriteLine();
+		}
+
+		private static void BeginColor(ConsoleColor color)
+		{
+			Console.BackgroundColor = color;
+			Console.Write(new string(' ', Console.BufferWidth));
+			Console.BackgroundColor = ConsoleColor.Black;
+			Console.WriteLine();
+
+			Utility.PushColor(color);
+		}
+
+		private static void NextColor(ConsoleColor color)
+		{
+			EndColor();
+			BeginColor(color);
+		}
+
+		private static void EndColor()
+		{
+			Console.WriteLine();
+			Console.BackgroundColor = Console.ForegroundColor;
+			Console.Write(new string(' ', Console.BufferWidth));
+			Console.BackgroundColor = ConsoleColor.Black;
+
+			Utility.PopColor();
 		}
 
 		public static void Run()
@@ -676,15 +953,15 @@ namespace Server
 					Item.ProcessDeltaQueue();
 
 					Timer.Slice();
+
 					MessagePump.Slice();
 
 					NetState.FlushAll();
 					NetState.ProcessDisposedQueue();
 
-					if (Slice != null)
-					{
-						Slice();
-					}
+					Sector.Slice();
+
+					Slice?.Invoke();
 
 					if (sample++ % sampleInterval != 0)
 					{
@@ -733,11 +1010,6 @@ namespace Server
 					Utility.Separate(sb, "-haltonwarning", " ");
 				}
 
-				if (VBdotNet)
-				{
-					Utility.Separate(sb, "-vb", " ");
-				}
-
 				if (_UseHRT)
 				{
 					Utility.Separate(sb, "-usehrt", " ");
@@ -752,21 +1024,19 @@ namespace Server
 			}
 		}
 
-		public static int GlobalUpdateRange { get; set; }
-		public static int GlobalMaxUpdateRange { get; set; }
-		public static int GlobalRadarRange { get; set; }
+		public static int GlobalUpdateRange { get; set; } = 18;
+		public static int GlobalMaxUpdateRange { get; set; } = 24;
+		public static int GlobalRadarRange { get; set; } = 40;
 
-		private static int m_ItemCount, m_MobileCount, m_CustomsCount;
+		private static int m_ItemCount, m_MobileCount;
 
 		public static int ScriptItems => m_ItemCount;
 		public static int ScriptMobiles => m_MobileCount;
-		public static int ScriptCustoms => m_CustomsCount;
 
 		public static void VerifySerialization()
 		{
 			m_ItemCount = 0;
 			m_MobileCount = 0;
-			m_CustomsCount = 0;
 
 			VerifySerialization(Assembly.GetCallingAssembly());
 
@@ -778,71 +1048,58 @@ namespace Server
 
 		private static readonly Type[] m_SerialTypeArray = { typeof(Serial) };
 
+		private static readonly StringBuilder m_TypeWarning = new StringBuilder();
+
 		private static void VerifyType(Type t)
 		{
-			var isItem = t.IsSubclassOf(typeof(Item));
+			var warningSb = m_TypeWarning;
 
-			if (isItem || t.IsSubclassOf(typeof(Mobile)))
+			try
 			{
-				if (isItem)
-				{
-					Interlocked.Increment(ref m_ItemCount);
-				}
-				else
-				{
-					Interlocked.Increment(ref m_MobileCount);
-				}
+				var isItem = t.IsSubclassOf(typeof(Item));
 
-				StringBuilder warningSb = null;
-
-				try
+				if (isItem || t.IsSubclassOf(typeof(Mobile)))
 				{
-					if (t.GetConstructor(m_SerialTypeArray) == null)
+					if (isItem)
 					{
-						warningSb = new StringBuilder();
-
-						warningSb.AppendLine("       - No serialization constructor");
+						Interlocked.Increment(ref m_ItemCount);
+					}
+					else
+					{
+						Interlocked.Increment(ref m_MobileCount);
 					}
 
-					if (
-						t.GetMethod(
-							"Serialize",
-							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
+					try
 					{
-						if (warningSb == null)
+						if (t.GetConstructor(m_SerialTypeArray) == null)
 						{
-							warningSb = new StringBuilder();
+							warningSb.AppendLine("       - No serialization constructor");
 						}
 
-						warningSb.AppendLine("       - No Serialize() method");
-					}
-
-					if (
-						t.GetMethod(
-							"Deserialize",
-							BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
-					{
-						if (warningSb == null)
+						if (t.GetMethod("Serialize", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
 						{
-							warningSb = new StringBuilder();
+							warningSb.AppendLine("       - No Serialize() method");
 						}
 
-						warningSb.AppendLine("       - No Deserialize() method");
-					}
+						if (t.GetMethod("Deserialize", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly) == null)
+						{
+							warningSb.AppendLine("       - No Deserialize() method");
+						}
 
-					if (warningSb != null && warningSb.Length > 0)
+						if (warningSb.Length > 0)
+						{
+							Utility.WriteLine(ConsoleColor.Yellow, $"Warning: {t}\n{warningSb}");
+						}
+					}
+					catch
 					{
-						Utility.PushColor(ConsoleColor.Yellow);
-						Console.WriteLine("Warning: {0}\n{1}", t, warningSb);
-						Utility.PopColor();
+						Utility.WriteLine(ConsoleColor.Yellow, $"Warning: Exception in serialization verification of type {t}");
 					}
 				}
-				catch
-				{
-					Utility.PushColor(ConsoleColor.Yellow);
-					Console.WriteLine("Warning: Exception in serialization verification of type {0}", t);
-					Utility.PopColor();
-				}
+			}
+			finally
+			{
+				warningSb.Clear();
 			}
 		}
 
@@ -871,10 +1128,7 @@ namespace Server
 		{
 			FileName = file;
 
-			using (
-				var writer =
-					new StreamWriter(
-						new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
+			using (var writer = new StreamWriter(new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
 			{
 				writer.WriteLine(">>>Logging started on {0:f}.", DateTime.Now);
 				//f = Tuesday, April 10, 2001 3:51 PM 

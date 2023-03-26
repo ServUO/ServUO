@@ -448,7 +448,7 @@ namespace Server.Engines.VvV
                     eable.Free();
                 });
 
-            if (m.AccessLevel == AccessLevel.Player)
+            if (m.AccessLevel < AccessLevel.Counselor)
                 Consume();
         }
 

@@ -343,7 +343,7 @@ namespace Server.Mobiles
                 {
                     TextDefinition[] loc = PetTrainingHelper.GetLocalization(o);
 
-                    if (loc[0] == null)
+                    if (loc[0].IsEmpty)
                         continue;
 
                     if (loc[0].Number > 0)
@@ -355,7 +355,7 @@ namespace Server.Mobiles
                         AddHtml(53, y, 180, 18, loc[0].String, false, false);
                     }
 
-                    if (loc[1] != null && loc[1].Number > 0)
+                    if (!loc[1].IsEmpty && loc[1].Number > 0)
                     {
                         AddTooltip(loc[1].Number);
                     }
@@ -397,7 +397,7 @@ namespace Server.Mobiles
                             int tooltip = PetTrainingHelper.GetCategoryLocalization(profile.Advancements[i]);
                             bool skill = profile.Advancements[i] is SkillName;                            
 
-                            if (loc[0] != null)
+                            if (!loc[0].IsEmpty)
                             {
                                 if (loc[0].Number > 0)
                                 {
@@ -1751,7 +1751,7 @@ namespace Server.Mobiles
 
                 TextDefinition[] loc = PetTrainingHelper.GetLocalization(entry.TrainPoint);
 
-                if (loc[0] != null)
+                if (!loc[0].IsEmpty)
                 {
                     if (loc[0].Number > 0)
                     {

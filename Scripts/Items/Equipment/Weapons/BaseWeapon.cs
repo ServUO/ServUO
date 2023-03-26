@@ -195,19 +195,21 @@ namespace Server.Items
         public override int PoisonResistance => m_AosWeaponAttributes.ResistPoisonBonus;
         public override int EnergyResistance => m_AosWeaponAttributes.ResistEnergyBonus;
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        #region Personal Bless Deed
-        private Mobile m_BlessedBy;
+			return value;
+		}
+
+		#region Personal Bless Deed
+		private Mobile m_BlessedBy;
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BlessedBy
@@ -872,7 +874,7 @@ namespace Server.Items
                     m_MageMod.Remove();
                 }
 
-                m_MageMod = new DefaultSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon);
+                m_MageMod = new EquipedSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon, this, from);
                 from.AddSkillMod(m_MageMod);
             }
 
@@ -886,10 +888,8 @@ namespace Server.Items
             return true;
         }
 
-        public override void OnAdded(object parent)
-        {
-            base.OnAdded(parent);
-
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -920,10 +920,12 @@ namespace Server.Items
                 from.CheckStatTimers();
                 from.Delta(MobileDelta.WeaponDamage);
             }
+
+            base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile m = (Mobile)parent;
@@ -983,7 +985,9 @@ namespace Server.Items
             }
 
             LastParryChance = 0;
-        }
+
+			base.OnRemoved(parent);
+		}
 
         public void AddMysticMod(Mobile from)
         {
@@ -995,7 +999,7 @@ namespace Server.Items
             if (Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon) > value)
                 value = Enhancement.GetValue(from, ExtendedWeaponAttribute.MysticWeapon);
 
-            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + value);
+            m_MysticMod = new EquipedSkillMod(SkillName.Mysticism, true, -30 + value, this, from);
             from.AddSkillMod(m_MysticMod);
         }
 
@@ -3969,10 +3973,10 @@ namespace Server.Items
                             m_AosWeaponAttributes.MageWeapon = 30 - m_AosWeaponAttributes.MageWeapon;
                         }
 
-                        if (m_AosWeaponAttributes.MageWeapon != 0 && m_AosWeaponAttributes.MageWeapon != 30 && Parent is Mobile)
+                        if (m_AosWeaponAttributes.MageWeapon != 0 && m_AosWeaponAttributes.MageWeapon != 30 && Parent is Mobile mp1)
                         {
-                            m_MageMod = new DefaultSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon);
-                            ((Mobile)Parent).AddSkillMod(m_MageMod);
+                            m_MageMod = new EquipedSkillMod(SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon, this, mp1);
+                            mp1.AddSkillMod(m_MageMod);
                         }
 
                         if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
@@ -4042,10 +4046,10 @@ namespace Server.Items
                             m_ExtendedWeaponAttributes = new ExtendedWeaponAttributes(this);
                         }
 
-                        if (m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30 && Parent is Mobile)
+                        if (m_ExtendedWeaponAttributes.MysticWeapon != 0 && m_ExtendedWeaponAttributes.MysticWeapon != 30 && Parent is Mobile mp2)
                         {
-                            m_MysticMod = new DefaultSkillMod(SkillName.Mysticism, true, -30 + m_ExtendedWeaponAttributes.MysticWeapon);
-                            ((Mobile)Parent).AddSkillMod(m_MysticMod);
+                            m_MysticMod = new EquipedSkillMod(SkillName.Mysticism, true, -30 + m_ExtendedWeaponAttributes.MysticWeapon, this, mp2);
+                            mp2.AddSkillMod(m_MysticMod);
                         }
 
                         break;
@@ -5012,18 +5016,6 @@ namespace Server.Items
             int phys, fire, cold, pois, nrgy, chaos, direct;
 
             GetDamageTypes(null, out phys, out fire, out cold, out pois, out nrgy, out chaos, out direct);
-
-            #region Mondain's Legacy
-            if (chaos != 0)
-            {
-                list.Add(1072846, chaos.ToString()); // chaos damage ~1_val~%
-            }
-
-            if (direct != 0)
-            {
-                list.Add(1079978, direct.ToString()); // Direct Damage: ~1_PERCENT~%
-            }
-            #endregion
 
             if (phys != 0)
             {

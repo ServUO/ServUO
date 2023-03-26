@@ -1,10 +1,12 @@
 namespace Server.Items
 {
     [Flipable(0x2FB9, 0x3173)]
-    public class CloakOfSilence : BaseOuterTorso, ICanBeElfOrHuman
-    {
-        public bool ElfOnly { get { return false; } set { } }
-        public override bool IsArtifact => true;
+    public class CloakOfSilence : BaseOuterTorso, IRacialEquipment
+	{
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Race RequiredRace => Race.Human;
+
+		public override bool IsArtifact => true;
 
         [Constructable]
         public CloakOfSilence()

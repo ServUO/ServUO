@@ -14,14 +14,13 @@ namespace Server.Items
     [Furniture]
     [Flipable(0x4790, 0x4791)]
     public class CustomizableRoundedDoorMat : Item, IDyable, ICustomizableMessageItem
-    {
-        public string[] Lines { get; set; }
+	{
+		public string[] Lines => TooltipsBase;
 
-        [Constructable]
+		[Constructable]
         public CustomizableRoundedDoorMat()
             : base(0x4790)
         {
-            Lines = new string[3];
             LootType = LootType.Blessed;
         }
 
@@ -48,22 +47,6 @@ namespace Server.Items
             }
         }
 
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (Lines != null)
-            {
-                for (int i = 0; i < Lines.Length; i++)
-                {
-                    if (!string.IsNullOrEmpty(Lines[i]))
-                    {
-                        list.Add(1150301 + i, Lines[i]); // [ ~1_LINE0~ ]
-                    }
-                }
-            }
-        }
-
         public CustomizableRoundedDoorMat(Serial serial)
             : base(serial)
         {
@@ -84,23 +67,23 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // version
 
-            writer.Write(Lines.Length);
-
-            for (int i = 0; i < Lines.Length; i++)
-                writer.Write(Lines[i]);
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
 
-            Lines = new string[reader.ReadInt()];
+			if (version < 1)
+			{
+				int lines = reader.ReadInt();
 
-            for (int i = 0; i < Lines.Length; i++)
-                Lines[i] = reader.ReadString();
+				for (int i = 0; i < lines && i < Lines.Length; i++)
+					Lines[i] = reader.ReadString();
+			}
         }
     }
 }

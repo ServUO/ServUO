@@ -66,12 +66,7 @@ namespace Server.Gumps
             AddPage(0);
 
             AddBackground(0, 0, BackWidth, BackHeight, BackGumpID);
-            AddImageTiled(
-                BorderSize,
-                BorderSize,
-                TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0),
-                TotalHeight,
-                OffsetGumpID);
+            AddImageTiled(BorderSize, BorderSize, TotalWidth - (OldStyle ? SetWidth + OffsetSize : 0), TotalHeight, OffsetGumpID);
 
             int x = BorderSize + OffsetSize;
             int y = BorderSize + OffsetSize;
@@ -255,7 +250,7 @@ namespace Server.Gumps
 
                 try
                 {
-                    int serial = Utility.ToInt32(text);
+                    Serial serial = Utility.ToSerial(text);
 
                     toSet = World.FindEntity(serial);
 
@@ -268,9 +263,7 @@ namespace Server.Gumps
                     {
                         toSet = null;
                         shouldSet = false;
-                        m_Mobile.SendMessage(
-                            "The object with that serial could not be assigned to a property of type : {0}",
-                            m_Type.Name);
+                        m_Mobile.SendMessage("The object with that serial could not be assigned to a property of type : {0}", m_Type.Name);
                     }
                     else
                     {
@@ -288,11 +281,7 @@ namespace Server.Gumps
                 {
                     try
                     {
-                        CommandLogging.LogChangeProperty(
-                            m_Mobile,
-                            m_Object,
-                            m_Property.Name,
-                            "(null)");
+                        CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, "(null)");
                         m_Property.SetValue(m_Object, toSet, null);
                         PropertiesGump.OnValueChanged(m_Object, m_Property, m_Stack);
                     }

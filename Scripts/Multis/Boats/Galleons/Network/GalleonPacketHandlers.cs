@@ -12,7 +12,7 @@ namespace Server.Network
 
         public static void MultiMouseMovementRequest(NetState state, PacketReader reader)
         {
-            Serial playerSerial = reader.ReadInt32();
+            Serial playerSerial = reader.ReadSerial();
             Direction movement = (Direction)reader.ReadByte();
             reader.ReadByte(); // movement direction duplicated
             int speed = reader.ReadByte();

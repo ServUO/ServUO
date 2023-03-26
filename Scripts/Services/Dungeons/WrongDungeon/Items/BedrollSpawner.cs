@@ -204,7 +204,7 @@ namespace Server.Items
                 else
                 {
                     mt.PointDest = m_RoomDestinations[Utility.Random(m_RoomDestinations.Length)];
-                    bedroll = Bedrolls.Where(x => x.InRange(mt.PointDest, 4) && x.PointDest == Point3D.Zero).FirstOrDefault();
+                    bedroll = Bedrolls.Where(x => Utility.InRange(x, mt.PointDest, 4) && x.PointDest == Point3D.Zero).FirstOrDefault();
 
                     if (bedroll != null)
                     {

@@ -376,18 +376,20 @@ namespace Server.Items
         public virtual int BaseDexBonus => 0;
         public virtual int BaseIntBonus => 0;
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        public override bool CanEquip(Mobile from)
+			return value;
+		}
+
+		public override bool CanEquip(Mobile from)
         {
             if (from.IsPlayer())
             {
@@ -553,8 +555,8 @@ namespace Server.Items
             return m_AosClothingAttributes.LowerStatReq;
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             Mobile mob = parent as Mobile;
 
             if (mob != null)
@@ -579,8 +581,8 @@ namespace Server.Items
             base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             Mobile mob = parent as Mobile;
 
             if (mob != null)
@@ -1973,10 +1975,8 @@ namespace Server.Items
                 if (m_SetEnergyBonus != 0)
                     list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%			
             }
-            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParentEntity is Mobile)
+            else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParent is Mobile m)
             {
-                Mobile m = (Mobile)RootParentEntity;
-
                 if (m_SetPhysicalBonus != 0)
                     list.Add(1080361, SetHelper.GetSetTotalResist(m, ResistanceType.Physical).ToString()); // physical resist ~1_val~% (total)
 

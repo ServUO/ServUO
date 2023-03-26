@@ -30,7 +30,7 @@ namespace Server.ContextMenus
                 if (Owner.From is PlayerMobile)
                 {
                     Owner.From.CloseGump(typeof(BankerGump));
-                    Owner.From.SendGump(new BankerGump((PlayerMobile)Owner.From));
+					BaseGump.SendGump(new BankerGump((PlayerMobile)Owner.From));
                 }
             }
         }

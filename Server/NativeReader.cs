@@ -53,7 +53,7 @@ namespace Server
 		internal class UnsafeNativeMethods
 		{
 			[DllImport("kernel32")]
-			static internal unsafe extern bool ReadFile(IntPtr hFile, void* lpBuffer, uint nNumberOfBytesToRead, ref uint lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
+			static internal extern unsafe bool ReadFile(IntPtr hFile, void* lpBuffer, uint nNumberOfBytesToRead, ref uint lpNumberOfBytesRead, NativeOverlapped* lpOverlapped);
 		}
 
 		public unsafe int Read(FileStream source, void* buffer, int length)
@@ -84,12 +84,17 @@ namespace Server
 
 		internal unsafe int InternalRead(FileStream source, void* buffer, int bufferIndex, int length)
 		{
+			var index = source.Position;
+
 			var byteCount = 0U;
 
-			if (UnsafeNativeMethods.ReadFile(source.SafeFileHandle.DangerousGetHandle(), (byte*)buffer + bufferIndex, (uint)length, ref byteCount, null))
-				return (int)byteCount;
+			if (!UnsafeNativeMethods.ReadFile(source.SafeFileHandle.DangerousGetHandle(), (byte*)buffer + bufferIndex, (uint)length, ref byteCount, null))
+				return -1;
 
-			return -1;
+			if (byteCount > 0)
+				source.Position = index + byteCount;
+
+			return (int)byteCount;
 		}
 	}
 
@@ -98,7 +103,7 @@ namespace Server
 		internal class UnsafeNativeMethods
 		{
 			[DllImport("libc")]
-			static internal unsafe extern int read(IntPtr ptr, void* buffer, int length);
+			static internal extern unsafe int read(IntPtr ptr, void* buffer, int length);
 		}
 
 		public unsafe int Read(FileStream source, void* buffer, int length)
@@ -127,9 +132,18 @@ namespace Server
 			return -1;
 		}
 
+#pragma warning disable CS0618
 		internal unsafe int InternalRead(FileStream source, void* buffer, int bufferIndex, int length)
 		{
-			return UnsafeNativeMethods.read(source.SafeFileHandle.DangerousGetHandle(), (byte*)buffer + bufferIndex, length);
+			var index = source.Position;
+
+			var byteCount = UnsafeNativeMethods.read(source.Handle, (byte*)buffer + bufferIndex, length);
+
+			if (byteCount > 0)
+				source.Position = index + byteCount;
+
+			return byteCount;
 		}
+#pragma warning restore CS0618
 	}
 }

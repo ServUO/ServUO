@@ -1,3 +1,4 @@
+using Server.Items;
 using Server.Regions;
 using Server.Spells;
 using System.Collections;
@@ -132,21 +133,17 @@ namespace Server.Multis
 
                     items.Clear();
 
-                    for (int i = 0; i < sector.Items.Count; ++i)
+                    foreach (Item item in sector.Items)
                     {
-                        Item item = sector.Items[i];
-
-                        if (item.Visible && item.X == tileX && item.Y == tileY)
+						if (item.Visible && item.X == tileX && item.Y == tileY)
                             items.Add(item);
                     }
 
                     mobiles.Clear();
 
-                    for (int i = 0; i < sector.Mobiles.Count; ++i)
+                    foreach (Mobile m in sector.Mobiles)
                     {
-                        Mobile m = sector.Mobiles[i];
-
-                        if (m.X == tileX && m.Y == tileY)
+						if (m.X == tileX && m.Y == tileY)
                             mobiles.Add(m);
                     }
 
@@ -310,13 +307,10 @@ namespace Server.Multis
                 }
 
                 Sector sector = map.GetSector(borderPoint.X, borderPoint.Y);
-                List<Item> sectorItems = sector.Items;
 
-                for (int j = 0; j < sectorItems.Count; ++j)
+                foreach (Item item in sector.Items)
                 {
-                    Item item = sectorItems[j];
-
-                    if (item.X != borderPoint.X || item.Y != borderPoint.Y || item.Movable)
+					if (item.X != borderPoint.X || item.Y != borderPoint.Y || item.Movable)
                         continue;
 
                     ItemData id = item.ItemData;
@@ -326,58 +320,28 @@ namespace Server.Multis
                 }
             }
 
-            List<Sector> _sectors = new List<Sector>();
-            List<BaseHouse> _houses = new List<BaseHouse>();
+            HashSet<Sector> sectors = new HashSet<Sector>();
 
-            for (int i = 0; i < yard.Count; i++)
-            {
-                Sector sector = map.GetSector(yard[i]);
+			for (int i = 0; i < yard.Count; i++)
+			{
+				Sector sector = map.GetSector(yard[i]);
 
-                if (!_sectors.Contains(sector))
-                {
-                    _sectors.Add(sector);
+				if (sectors.Add(sector))
+				{
+					foreach (BaseMulti m in sector.Multis)
+					{
+						if (m is BaseHouse house && house.Contains(yard[i]))
+						{
+							return HousePlacementResult.BadStatic; // Broke rule #3
+						}
+					}
+				}
+			}
 
-                    if (sector.Multis != null)
-                    {
-                        for (int j = 0; j < sector.Multis.Count; j++)
-                        {
-                            if (sector.Multis[j] is BaseHouse)
-                            {
-                                BaseHouse _house = (BaseHouse)sector.Multis[j];
-                                if (!_houses.Contains(_house))
-                                {
-                                    _houses.Add(_house);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+			sectors.Clear();
+			sectors.TrimExcess();
 
-            for (int i = 0; i < yard.Count; ++i)
-            {
-                foreach (BaseHouse b in _houses)
-                {
-                    if (b.Contains(yard[i]))
-                        return HousePlacementResult.BadStatic; // Broke rule #3
-                }
-                /*Point2D yardPoint = yard[i];
-                IPooledEnumerable eable = map.GetMultiTilesAt( yardPoint.X, yardPoint.Y );
-                foreach ( StaticTile[] tile in eable )
-                {
-                for ( int j = 0; j < tile.Length; ++j )
-                {
-                if ( (TileData.ItemTable[tile[j].ID & TileData.MaxItemValue].Flags & (TileFlag.Impassable | TileFlag.Surface)) != 0 )
-                {
-                eable.Free();
-                return HousePlacementResult.BadStatic; // Broke rule #3
-                }
-                }
-                }
-                eable.Free();*/
-            }
-
-            return HousePlacementResult.Valid;
+			return HousePlacementResult.Valid;
         }
     }
 }

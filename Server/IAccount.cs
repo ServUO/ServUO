@@ -1,12 +1,18 @@
 #region References
 using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Xml;
+
+using Server.Network;
 #endregion
 
 namespace Server.Accounting
 {
 	public static class AccountGold
 	{
-		public static bool Enabled = false;
+		[ConfigProperty("Accounts.VirtualGold")]
+		public static bool Enabled { get => Config.Get("Accounts.VirtualGold", Core.TOL); set => Config.Set("Accounts.VirtualGold", value); }
 
 		/// <summary>
 		/// This amount specifies the value at which point Gold turns to Platinum.
@@ -16,19 +22,21 @@ namespace Server.Accounting
 		/// The client is designed to perceive the currency threashold at 1,000,000,000
 		/// if you change this, it may cause unexpected results when using secure trading.
 		/// </summary>
-		public static int CurrencyThreshold = 1000000000;
+		public const int CurrencyThreshold = 1000000000;
 
 		/// <summary>
 		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
 		/// when they are added to a bank box container.
 		/// </summary>
-		public static bool ConvertOnBank = true;
+		[ConfigProperty("Accounts.ConvertGoldOnBank")]
+		public static bool ConvertOnBank { get => Config.Get("Accounts.ConvertGoldOnBank", true); set => Config.Set("Accounts.ConvertGoldOnBank", value); }
 
 		/// <summary>
 		/// Enables or Disables automatic conversion of Gold and Checks to Bank Currency
 		/// when they are added to a secure trade container.
 		/// </summary>
-		public static bool ConvertOnTrade = false;
+		[ConfigProperty("Accounts.ConvertGoldOnTrade")]
+		public static bool ConvertOnTrade { get => Config.Get("Accounts.ConvertGoldOnTrade", true); set => Config.Set("Accounts.ConvertGoldOnTrade", value); }
 
 		public static double GetGoldTotal(Mobile m)
 		{
@@ -46,7 +54,6 @@ namespace Server.Accounting
 			{
 				return 0;
 			}
-
 
 			a.GetGoldBalance(out int gold, out var totalGold);
 
@@ -69,7 +76,6 @@ namespace Server.Accounting
 			{
 				return 0;
 			}
-
 
 			a.GetPlatBalance(out int plat, out var totalPlat);
 
@@ -104,6 +110,12 @@ namespace Server.Accounting
 		/// </summary>
 		[CommandProperty(AccessLevel.Administrator)]
 		int TotalPlat { get; }
+
+		void SetCurrency(double amount);
+
+		void SetGold(int amount);
+
+		void SetPlat(int amount);
 
 		/// <summary>
 		/// Attempts to deposit the given amount of Gold and Platinum into this account.
@@ -233,10 +245,34 @@ namespace Server.Accounting
 		bool HasPlatBalance(double amount);
 	}
 
-	public interface IAccount : IGoldAccount, IComparable<IAccount>
+	public interface ISecureAccount
+	{
+		int GetSecureBalance(Mobile m);
+		void SetSecureBalance(Mobile m, int amount);
+
+		bool HasSecureBalance(Mobile m, int amount);
+
+		bool DepositSecure(Mobile m, int amount);
+		bool WithdrawSecure(Mobile m, int amount);
+	}
+
+	public interface IStoreAccount
 	{
 		[CommandProperty(AccessLevel.Administrator, true)]
-		string Username { get; set; }
+		int Sovereigns { get; }
+
+		void SetSovereigns(int amount);
+
+		bool HasSovereigns(int amount);
+
+		bool DepositSovereigns(int amount);
+		bool WithdrawSovereigns(int amount);
+	}
+
+	public interface IAccount : IGoldAccount, ISecureAccount, IStoreAccount, IComparable, IComparable<IAccount>, IEnumerable<Mobile>
+	{
+		[CommandProperty(AccessLevel.Administrator, true)]
+		string Username { get; }
 
 		[CommandProperty(AccessLevel.Administrator, true)]
 		string Email { get; set; }
@@ -259,6 +295,9 @@ namespace Server.Accounting
 		[CommandProperty(AccessLevel.Administrator, true)]
 		DateTime LastLogin { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
+		IPAddress[] LoginIPs { get; set; }
+
 		[CommandProperty(AccessLevel.Administrator)]
 		TimeSpan Age { get; }
 
@@ -271,11 +310,81 @@ namespace Server.Accounting
 		[CommandProperty(AccessLevel.Administrator)]
 		bool Young { get; set; }
 
+		[CommandProperty(AccessLevel.Administrator, true)]
+		bool Deleted { get; }
+
 		Mobile this[int index] { get; set; }
 
 		void Delete();
 
+		string GetPassword();
 		void SetPassword(string password);
 		bool CheckPassword(string password);
+
+		int Flags { get; set; }
+
+		bool Inactive { get; }
+
+		string[] IPRestrictions { get; set; }
+
+		void CheckYoung();
+		void RemoveYoungStatus(int message);
+
+		bool GetFlag(int index);
+		void SetFlag(int index, bool value);
+
+		List<IAccountComment> Comments { get; }
+
+		void AddComment(string author, string value);
+
+		List<IAccountTag> Tags { get; }
+
+		string GetTag(string name);
+		void SetTag(string name, string value);
+		void AddTag(string name, string value);
+		void RemoveTag(string name);
+
+		bool GetBanTags(out DateTime banTime, out TimeSpan banDuration);
+		void SetBanTags(Mobile from, DateTime banTime, TimeSpan banDuration);
+		void SetUnspecifiedBan(Mobile from);
+
+		bool CheckAccess(IPAddress ipAddress);
+		bool CheckAccess(NetState ns);
+		bool HasAccess(IPAddress ipAddress);
+		bool HasAccess(NetState ns);
+		void LogAccess(IPAddress ipAddress);
+		void LogAccess(NetState ns);
+
+		bool Save(XmlElement xml);
+		bool Load(XmlElement xml);
+
+		bool Save(GenericWriter writer);
+		bool Load(GenericReader reader);
+	}
+
+	public interface IAccountComment
+	{
+		DateTime LastModified { get; set; }
+
+		string AddedBy { get; set; }
+		string Content { get; set; }
+
+		void Save(XmlElement xml);
+		void Load(XmlElement xml);
+
+		void Save(GenericWriter writer);
+		void Load(GenericReader reader);
+	}
+
+	public interface IAccountTag
+	{
+		string Name { get; set; }
+		string Value { get; set; }
+
+		void Save(XmlElement xml);
+		void Load(XmlElement xml);
+
+		void Save(GenericWriter writer);
+		void Load(GenericReader reader);
 	}
 }

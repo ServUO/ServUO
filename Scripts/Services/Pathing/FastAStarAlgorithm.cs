@@ -1,298 +1,309 @@
+#region References
 using System.Collections;
+
 using CalcMoves = Server.Movement.Movement;
 using MoveImpl = Server.Movement.MovementImpl;
+#endregion
 
 namespace Server.PathAlgorithms.FastAStar
 {
-    public struct PathNode
-    {
-        public int cost, total;
-        public int parent, next, prev;
-        public int z;
-    }
+	public struct PathNode
+	{
+		public int cost, total;
+		public int parent, next, prev;
+		public int z;
+	}
 
-    public class FastAStarAlgorithm : PathAlgorithm
-    {
-        public static PathAlgorithm Instance = new FastAStarAlgorithm();
-        private static readonly Direction[] m_Path = new Direction[AreaSize * AreaSize];
-        private static readonly PathNode[] m_Nodes = new PathNode[NodeCount];
-        private static readonly BitArray m_Touched = new BitArray(NodeCount);
-        private static readonly BitArray m_OnOpen = new BitArray(NodeCount);
-        private static readonly int[] m_Successors = new int[8];
-        private static int m_xOffset, m_yOffset;
-        private static int m_OpenList;
-        private const int MaxDepth = 300;
-        private const int AreaSize = 38;
-        private const int NodeCount = AreaSize * AreaSize * PlaneCount;
-        private const int PlaneOffset = 128;
-        private const int PlaneCount = 13;
-        private const int PlaneHeight = 20;
-        private Point3D m_Goal;
-        public int Heuristic(int x, int y, int z)
-        {
-            x -= m_Goal.X - m_xOffset;
-            y -= m_Goal.Y - m_yOffset;
-            z -= m_Goal.Z;
+	public class FastAStarAlgorithm : PathAlgorithm
+	{
+		public static PathAlgorithm Instance = new FastAStarAlgorithm();
 
-            x *= 11;
-            y *= 11;
+		private static readonly Direction[] m_Path = new Direction[AreaSize * AreaSize];
 
-            return (x * x) + (y * y) + (z * z);
-        }
+		private static readonly PathNode[] m_Nodes = new PathNode[NodeCount];
 
-        public override bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal)
-        {
-            return Utility.InRange(start, goal, AreaSize);
-        }
+		private static readonly BitArray m_Touched = new BitArray(NodeCount);
+		private static readonly BitArray m_OnOpen = new BitArray(NodeCount);
 
-        public override Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal)
-        {
-            if (!Utility.InRange(start, goal, AreaSize))
-                return null;
+		private static readonly int[] m_Successors = new int[8];
 
-            m_Touched.SetAll(false);
+		private static int m_xOffset, m_yOffset;
+		private static int m_OpenList;
 
-            m_Goal = goal;
+		private const int MaxDepth = 300;
+		private const int AreaSize = 38;
+		private const int NodeCount = AreaSize * AreaSize * PlaneCount;
+		private const int PlaneOffset = 128;
+		private const int PlaneCount = 13;
+		private const int PlaneHeight = 20;
 
-            m_xOffset = (start.X + goal.X - AreaSize) / 2;
-            m_yOffset = (start.Y + goal.Y - AreaSize) / 2;
+		private Point3D m_Goal;
 
-            int fromNode = GetIndex(start.X, start.Y, start.Z);
-            int destNode = GetIndex(goal.X, goal.Y, goal.Z);
+		public int Heuristic(int x, int y, int z)
+		{
+			x -= m_Goal.X - m_xOffset;
+			y -= m_Goal.Y - m_yOffset;
+			z -= m_Goal.Z;
 
-            m_OpenList = fromNode;
+			x *= 11;
+			y *= 11;
 
-            m_Nodes[m_OpenList].cost = 0;
-            m_Nodes[m_OpenList].total = Heuristic(start.X - m_xOffset, start.Y - m_yOffset, start.Z);
-            m_Nodes[m_OpenList].parent = -1;
-            m_Nodes[m_OpenList].next = -1;
-            m_Nodes[m_OpenList].prev = -1;
-            m_Nodes[m_OpenList].z = start.Z;
+			return (x * x) + (y * y) + (z * z);
+		}
 
-            m_OnOpen[m_OpenList] = true;
-            m_Touched[m_OpenList] = true;
+		public override bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal)
+		{
+			return Utility.InRange(start, goal, AreaSize);
+		}
 
-            int pathCount, parent;
-            int backtrack = 0, depth = 0;
+		public override Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal)
+		{
+			if (!Utility.InRange(start, goal, AreaSize))
+				return null;
 
-            Direction[] path = m_Path;
+			m_Touched.SetAll(false);
 
-            while (m_OpenList != -1)
-            {
-                int bestNode = FindBest(m_OpenList);
+			m_Goal = goal;
 
-                if (++depth > MaxDepth)
-                    break;
+			m_xOffset = (start.X + goal.X - AreaSize) / 2;
+			m_yOffset = (start.Y + goal.Y - AreaSize) / 2;
 
-                MoveImpl.Goal = goal;
+			var fromNode = GetIndex(start.X, start.Y, start.Z);
+			var destNode = GetIndex(goal.X, goal.Y, goal.Z);
 
-                int[] vals = m_Successors;
-                int count = GetSuccessors(bestNode, p, map);
+			m_OpenList = fromNode;
 
-                MoveImpl.Goal = Point3D.Zero;
+			m_Nodes[m_OpenList].cost = 0;
+			m_Nodes[m_OpenList].total = Heuristic(start.X - m_xOffset, start.Y - m_yOffset, start.Z);
+			m_Nodes[m_OpenList].parent = -1;
+			m_Nodes[m_OpenList].next = -1;
+			m_Nodes[m_OpenList].prev = -1;
+			m_Nodes[m_OpenList].z = start.Z;
 
-                if (count == 0)
-                    break;
+			m_OnOpen[m_OpenList] = true;
+			m_Touched[m_OpenList] = true;
 
-                for (int i = 0; i < count; ++i)
-                {
-                    int newNode = vals[i];
+			int pathCount, parent;
+			int backtrack = 0, depth = 0;
 
-                    bool wasTouched = m_Touched[newNode];
+			var path = m_Path;
 
-                    if (!wasTouched)
-                    {
-                        int newCost = m_Nodes[bestNode].cost + 1;
-                        int newTotal = newCost + Heuristic(newNode % AreaSize, (newNode / AreaSize) % AreaSize, m_Nodes[newNode].z);
+			while (m_OpenList != -1)
+			{
+				var bestNode = FindBest(m_OpenList);
 
-                        if (!wasTouched || m_Nodes[newNode].total > newTotal)
-                        {
-                            m_Nodes[newNode].parent = bestNode;
-                            m_Nodes[newNode].cost = newCost;
-                            m_Nodes[newNode].total = newTotal;
+				if (++depth > MaxDepth)
+					break;
 
-                            if (!wasTouched || !m_OnOpen[newNode])
-                            {
-                                AddToChain(newNode);
+				MoveImpl.Goal = goal;
 
-                                if (newNode == destNode)
-                                {
-                                    pathCount = 0;
-                                    parent = m_Nodes[newNode].parent;
+				var vals = m_Successors;
+				var count = GetSuccessors(bestNode, p, map);
 
-                                    while (parent != -1)
-                                    {
-                                        path[pathCount++] = GetDirection(parent % AreaSize, (parent / AreaSize) % AreaSize, newNode % AreaSize, (newNode / AreaSize) % AreaSize);
-                                        newNode = parent;
-                                        parent = m_Nodes[newNode].parent;
+				MoveImpl.Goal = Point3D.Zero;
 
-                                        if (newNode == fromNode)
-                                            break;
-                                    }
+				if (count == 0)
+					break;
 
-                                    Direction[] dirs = new Direction[pathCount];
+				for (var i = 0; i < count; ++i)
+				{
+					var newNode = vals[i];
 
-                                    while (pathCount > 0)
-                                        dirs[backtrack++] = path[--pathCount];
+					var wasTouched = m_Touched[newNode];
 
-                                    return dirs;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+					if (!wasTouched)
+					{
+						var newCost = m_Nodes[bestNode].cost + 1;
+						var newTotal = newCost + Heuristic(newNode % AreaSize, newNode / AreaSize % AreaSize, m_Nodes[newNode].z);
 
-            return null;
-        }
+						if (!wasTouched || m_Nodes[newNode].total > newTotal)
+						{
+							m_Nodes[newNode].parent = bestNode;
+							m_Nodes[newNode].cost = newCost;
+							m_Nodes[newNode].total = newTotal;
 
-        public int GetSuccessors(int p, IPoint3D pnt, Map map)
-        {
-            int px = p % AreaSize;
-            int py = (p / AreaSize) % AreaSize;
-            int pz = m_Nodes[p].z;
-            int x, y, z;
+							if (!wasTouched || !m_OnOpen[newNode])
+							{
+								AddToChain(newNode);
 
-            Point3D p3D = new Point3D(px + m_xOffset, py + m_yOffset, pz);
+								if (newNode == destNode)
+								{
+									pathCount = 0;
+									parent = m_Nodes[newNode].parent;
 
-            int[] vals = m_Successors;
-            int count = 0;
+									while (parent != -1)
+									{
+										path[pathCount++] = GetDirection(parent % AreaSize, parent / AreaSize % AreaSize, newNode % AreaSize, newNode / AreaSize % AreaSize);
+										newNode = parent;
+										parent = m_Nodes[newNode].parent;
 
-            for (int i = 0; i < 8; ++i)
-            {
-                switch (i)
-                {
-                    default:
-                    case 0:
-                        x = 0;
-                        y = -1;
-                        break;
-                    case 1:
-                        x = 1;
-                        y = -1;
-                        break;
-                    case 2:
-                        x = 1;
-                        y = 0;
-                        break;
-                    case 3:
-                        x = 1;
-                        y = 1;
-                        break;
-                    case 4:
-                        x = 0;
-                        y = 1;
-                        break;
-                    case 5:
-                        x = -1;
-                        y = 1;
-                        break;
-                    case 6:
-                        x = -1;
-                        y = 0;
-                        break;
-                    case 7:
-                        x = -1;
-                        y = -1;
-                        break;
-                }
+										if (newNode == fromNode)
+											break;
+									}
 
-                x += px;
-                y += py;
+									var dirs = new Direction[pathCount];
 
-                if (x < 0 || x >= AreaSize || y < 0 || y >= AreaSize)
-                    continue;
+									while (pathCount > 0)
+										dirs[backtrack++] = path[--pathCount];
 
-                if (CalcMoves.CheckMovement(pnt, map, p3D, (Direction)i, out z))
-                {
-                    int idx = GetIndex(x + m_xOffset, y + m_yOffset, z);
+									return dirs;
+								}
+							}
+						}
+					}
+				}
+			}
 
-                    if (idx >= 0 && idx < NodeCount)
-                    {
-                        m_Nodes[idx].z = z;
-                        vals[count++] = idx;
-                    }
-                }
-            }
+			return null;
+		}
 
-            return count;
-        }
+		public int GetSuccessors(int p, IPoint3D pnt, Map map)
+		{
+			var px = p % AreaSize;
+			var py = p / AreaSize % AreaSize;
+			var pz = m_Nodes[p].z;
+			int x, y;
 
-        private void RemoveFromChain(int node)
-        {
-            if (node < 0 || node >= NodeCount)
-                return;
+			var p3D = new Point3D(px + m_xOffset, py + m_yOffset, pz);
 
-            if (!m_Touched[node] || !m_OnOpen[node])
-                return;
+			var vals = m_Successors;
+			var count = 0;
 
-            int prev = m_Nodes[node].prev;
-            int next = m_Nodes[node].next;
+			for (var i = 0; i < 8; ++i)
+			{
+				switch (i)
+				{
+					default:
+					case 0:
+						x = 0;
+						y = -1;
+						break;
+					case 1:
+						x = 1;
+						y = -1;
+						break;
+					case 2:
+						x = 1;
+						y = 0;
+						break;
+					case 3:
+						x = 1;
+						y = 1;
+						break;
+					case 4:
+						x = 0;
+						y = 1;
+						break;
+					case 5:
+						x = -1;
+						y = 1;
+						break;
+					case 6:
+						x = -1;
+						y = 0;
+						break;
+					case 7:
+						x = -1;
+						y = -1;
+						break;
+				}
 
-            if (m_OpenList == node)
-                m_OpenList = next;
+				x += px;
+				y += py;
 
-            if (prev != -1)
-                m_Nodes[prev].next = next;
+				if (x < 0 || x >= AreaSize || y < 0 || y >= AreaSize)
+					continue;
 
-            if (next != -1)
-                m_Nodes[next].prev = prev;
+				if (CalcMoves.CheckMovement(pnt, map, p3D, (Direction)i, out var z))
+				{
+					var idx = GetIndex(x + m_xOffset, y + m_yOffset, z);
 
-            m_Nodes[node].prev = -1;
-            m_Nodes[node].next = -1;
-        }
+					if (idx >= 0 && idx < NodeCount)
+					{
+						m_Nodes[idx].z = z;
+						vals[count++] = idx;
+					}
+				}
+			}
 
-        private void AddToChain(int node)
-        {
-            if (node < 0 || node >= NodeCount)
-                return;
+			return count;
+		}
 
-            RemoveFromChain(node);
+		private void RemoveFromChain(int node)
+		{
+			if (node < 0 || node >= NodeCount)
+				return;
 
-            if (m_OpenList != -1)
-                m_Nodes[m_OpenList].prev = node;
+			if (!m_Touched[node] || !m_OnOpen[node])
+				return;
 
-            m_Nodes[node].next = m_OpenList;
-            m_Nodes[node].prev = -1;
+			var prev = m_Nodes[node].prev;
+			var next = m_Nodes[node].next;
 
-            m_OpenList = node;
+			if (m_OpenList == node)
+				m_OpenList = next;
 
-            m_Touched[node] = true;
-            m_OnOpen[node] = true;
-        }
+			if (prev != -1)
+				m_Nodes[prev].next = next;
 
-        private int GetIndex(int x, int y, int z)
-        {
-            x -= m_xOffset;
-            y -= m_yOffset;
-            z += PlaneOffset;
-            z /= PlaneHeight;
+			if (next != -1)
+				m_Nodes[next].prev = prev;
 
-            return x + (y * AreaSize) + (z * AreaSize * AreaSize);
-        }
+			m_Nodes[node].prev = -1;
+			m_Nodes[node].next = -1;
+		}
 
-        private int FindBest(int node)
-        {
-            int least = m_Nodes[node].total;
-            int leastNode = node;
+		private void AddToChain(int node)
+		{
+			if (node < 0 || node >= NodeCount)
+				return;
 
-            while (node != -1)
-            {
-                if (m_Nodes[node].total < least)
-                {
-                    least = m_Nodes[node].total;
-                    leastNode = node;
-                }
+			RemoveFromChain(node);
 
-                node = m_Nodes[node].next;
-            }
+			if (m_OpenList != -1)
+				m_Nodes[m_OpenList].prev = node;
 
-            RemoveFromChain(leastNode);
+			m_Nodes[node].next = m_OpenList;
+			m_Nodes[node].prev = -1;
 
-            m_Touched[leastNode] = true;
-            m_OnOpen[leastNode] = false;
+			m_OpenList = node;
 
-            return leastNode;
-        }
-    }
+			m_Touched[node] = true;
+			m_OnOpen[node] = true;
+		}
+
+		private int GetIndex(int x, int y, int z)
+		{
+			x -= m_xOffset;
+			y -= m_yOffset;
+			z += PlaneOffset;
+			z /= PlaneHeight;
+
+			return x + (y * AreaSize) + (z * AreaSize * AreaSize);
+		}
+
+		private int FindBest(int node)
+		{
+			var least = m_Nodes[node].total;
+			var leastNode = node;
+
+			while (node != -1)
+			{
+				if (m_Nodes[node].total < least)
+				{
+					least = m_Nodes[node].total;
+					leastNode = node;
+				}
+
+				node = m_Nodes[node].next;
+			}
+
+			RemoveFromChain(leastNode);
+
+			m_Touched[leastNode] = true;
+			m_OnOpen[leastNode] = false;
+
+			return leastNode;
+		}
+	}
 }

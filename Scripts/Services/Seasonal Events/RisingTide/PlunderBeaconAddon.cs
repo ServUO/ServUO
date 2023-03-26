@@ -355,7 +355,7 @@ namespace Server.Items
 
             writer.Write(InitialSpawn);
 
-            writer.WriteItem(Beacon);
+            writer.Write(Beacon);
 
             writer.WriteItemList(Cannons, true);
             writer.WriteMobileList(Crew, true);
@@ -365,7 +365,7 @@ namespace Server.Items
 
             foreach (KeyValuePair<BaseCreature, bool> kvp in Spawn)
             {
-                writer.WriteMobile(kvp.Key);
+                writer.Write(kvp.Key);
                 writer.Write(kvp.Value);
             }
         }

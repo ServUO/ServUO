@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 using Server.Network;
 #endregion
@@ -403,9 +402,10 @@ namespace Server
 
 				inv /= 100.0;
 
-				var statsOffset = ((m_UseStatMods ? m_Owner.Owner.Str : m_Owner.Owner.RawStr) * m_Info.StrScale) +
-									 ((m_UseStatMods ? m_Owner.Owner.Dex : m_Owner.Owner.RawDex) * m_Info.DexScale) +
-									 ((m_UseStatMods ? m_Owner.Owner.Int : m_Owner.Owner.RawInt) * m_Info.IntScale);
+				var statsOffset = ((m_UseStatMods ? m_Owner.Owner.Str : m_Owner.Owner.RawStr) * m_Info.StrScale) 
+					            + ((m_UseStatMods ? m_Owner.Owner.Dex : m_Owner.Owner.RawDex) * m_Info.DexScale) 
+								+ ((m_UseStatMods ? m_Owner.Owner.Int : m_Owner.Owner.RawInt) * m_Info.IntScale);
+
 				var statTotal = m_Info.StatTotal * inv;
 
 				statsOffset *= inv;
@@ -445,6 +445,8 @@ namespace Server
 							bonusObey = 0.0;
 							bonusNotObey = 0.0;
 							value = mod.Value;
+
+							break;
 						}
 					}
 				}
@@ -647,7 +649,111 @@ namespace Server
 			new SkillInfo(57, "Throwing", 0.0, 0.0, 0.0, "Bladeweaver", null, 0.0, 0.0, 0.0, 1.0, StatCode.Dex, StatCode.Str, true ),
 		};
 
-		public static SkillInfo[] Table { get => m_Table; set => m_Table = value; }
+		public static SkillInfo[] Table
+		{
+			get => m_Table; set
+			{
+				if (m_Table == value)
+				{
+					return;
+				}
+
+				var si = UseStatInfluences;
+
+				if (si)
+				{
+					DisableStatInfluences();
+				}
+
+				m_Table = value;
+
+				if (!si)
+				{
+					DisableStatInfluences();
+				}
+			}
+		}
+
+		private static double[,] m_CachedStatInfluences;
+
+		public static bool UseStatInfluences
+		{
+			get => Config.Get("Gains.UseStatInfluences", !Core.AOS);
+			set
+			{
+				Config.Set("Gains.UseStatInfluences", value);
+
+				Invalidate();
+			}
+		}
+
+		static SkillInfo()
+		{
+			Core.OnExpansionChanged += Invalidate;
+
+			Invalidate();
+		}
+
+		public static void Invalidate()
+		{
+			if (UseStatInfluences)
+			{
+				EnableStatInfluences();
+			}
+			else
+			{
+				DisableStatInfluences();
+			}
+		}
+
+		private static void DisableStatInfluences()
+		{
+			if (m_CachedStatInfluences != null)
+			{
+				return;
+			}
+
+			var table = Table;
+
+			m_CachedStatInfluences = new double[table.Length, 4];
+
+			for (var i = 0; i < table.Length; ++i)
+			{
+				var info = table[i];
+
+				m_CachedStatInfluences[i, 0] = info.StrScale;
+				m_CachedStatInfluences[i, 1] = info.DexScale;
+				m_CachedStatInfluences[i, 2] = info.IntScale;
+				m_CachedStatInfluences[i, 3] = info.StatTotal;
+
+				info.StrScale = 0.0;
+				info.DexScale = 0.0;
+				info.IntScale = 0.0;
+				info.StatTotal = 0.0;
+			}
+		}
+
+		private static void EnableStatInfluences()
+		{
+			if (m_CachedStatInfluences == null)
+			{
+				return;
+			}
+
+			var table = Table;
+
+			for (var i = 0; i < table.Length; ++i)
+			{
+				var info = table[i];
+
+				info.StrScale = m_CachedStatInfluences[i, 0];
+				info.DexScale = m_CachedStatInfluences[i, 1];
+				info.IntScale = m_CachedStatInfluences[i, 2];
+				info.StatTotal = m_CachedStatInfluences[i, 3];
+			}
+
+			m_CachedStatInfluences = null;
+		}
 	}
 
 	[PropertyObject]
@@ -987,7 +1093,7 @@ namespace Server
 		public Skills(Mobile owner)
 		{
 			m_Owner = owner;
-			m_Cap = Config.Get("PlayerCaps.TotalSkillCap", 7000); ;
+			m_Cap = Config.Get("PlayerCaps.TotalSkillCap", 7000);
 
 			var info = SkillInfo.Table;
 
@@ -1092,12 +1198,15 @@ namespace Server
 
 		public IEnumerator<Skill> GetEnumerator()
 		{
-			return m_Skills.Where(s => s != null).GetEnumerator();
+			for (var i = 0; i < m_Skills.Length; i++)
+			{
+				yield return this[i];
+			}
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return m_Skills.Where(s => s != null).GetEnumerator();
+			return GetEnumerator();
 		}
 	}
 }

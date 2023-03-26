@@ -232,7 +232,7 @@ namespace Server.Items
             writer.WriteEncodedInt(m_Spawners.Length);
 
             for (int i = 0; i < m_Spawners.Length; i++)
-                writer.WriteItem(m_Spawners[i]);
+                writer.Write(m_Spawners[i]);
         }
 
         public override void Deserialize(GenericReader reader)

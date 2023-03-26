@@ -1,21 +1,3 @@
-/***************************************************************************
-*                            BinaryMemoryWriter.cs
-*                            -------------------
-*   begin                : May 1, 2002
-*   copyright            : (C) The RunUO Software Team
-*   email                : info@runuo.com
-*
-*   $Id: BinaryMemoryWriter.cs 37 2006-06-19 17:28:24Z mark $
-*
-***************************************************************************/
-/***************************************************************************
-*
-*   This program is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 2 of the License, or
-*   (at your option) any later version.
-*
-***************************************************************************/
 using System.IO;
 
 namespace Server
@@ -23,14 +5,17 @@ namespace Server
 	public sealed class BinaryMemoryWriter : BinaryFileWriter
 	{
 		private static byte[] indexBuffer;
+
 		private readonly MemoryStream stream;
+
+		protected override int BufferSize => 512;
+
 		public BinaryMemoryWriter()
 			: base(new MemoryStream(512), true)
 		{
 			stream = UnderlyingStream as MemoryStream;
 		}
 
-		protected override int BufferSize => 512;
 		public int CommitTo(SequentialFileWriter dataFile, SequentialFileWriter indexFile, int typeCode, int serial)
 		{
 			Flush();

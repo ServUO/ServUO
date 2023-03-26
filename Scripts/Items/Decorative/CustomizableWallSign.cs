@@ -9,13 +9,12 @@ namespace Server.Items
     [Flipable(0x4B20, 0x4B21)]
     public class CustomizableWallSign : Item, ICustomizableMessageItem
     {
-        public string[] Lines { get; set; }
+		public string[] Lines => TooltipsBase;
 
         [Constructable]
         public CustomizableWallSign()
             : base(0x4B20)
         {
-            Lines = new string[3];
             LootType = LootType.Blessed;
         }
 
@@ -29,22 +28,6 @@ namespace Server.Items
             else
             {
                 from.SendLocalizedMessage(1116249); // That must be in your backpack for you to use it.
-            }
-        }
-
-        public override void GetProperties(ObjectPropertyList list)
-        {
-            base.GetProperties(list);
-
-            if (Lines != null)
-            {
-                for (int i = 0; i < Lines.Length; i++)
-                {
-                    if (!string.IsNullOrEmpty(Lines[i]))
-                    {
-                        list.Add(1150301 + i, Lines[i]); // [ ~1_LINE0~ ]
-                    }
-                }
             }
         }
 
@@ -68,23 +51,23 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-            writer.Write(0); // version
 
-            writer.Write(Lines.Length);
-
-            for (int i = 0; i < Lines.Length; i++)
-                writer.Write(Lines[i]);
+            writer.Write(1); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+
             int version = reader.ReadInt();
 
-            Lines = new string[reader.ReadInt()];
+			if (version < 1)
+			{
+				int lines = reader.ReadInt();
 
-            for (int i = 0; i < Lines.Length; i++)
-                Lines[i] = reader.ReadString();
+				for (int i = 0; i < lines && i < Lines.Length; i++)
+					Lines[i] = reader.ReadString();
+			}
         }
     }
 }

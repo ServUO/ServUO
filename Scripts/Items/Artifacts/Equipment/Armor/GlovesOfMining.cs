@@ -200,10 +200,10 @@ namespace Server.Items
 
                     m_SkillMod = null;
                 }
-                else if (m_SkillMod == null && Parent is Mobile)
+                else if (m_SkillMod == null && Parent is Mobile mp)
                 {
-                    m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, m_Bonus);
-                    ((Mobile)Parent).AddSkillMod(m_SkillMod);
+                    m_SkillMod = new EquipedSkillMod(SkillName.Mining, true, m_Bonus, this, mp);
+                    mp.AddSkillMod(m_SkillMod);
                 }
                 else if (m_SkillMod != null)
                 {
@@ -211,22 +211,22 @@ namespace Server.Items
                 }
             }
         }
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             base.OnAdded(parent);
 
-            if (m_Bonus != 0 && parent is Mobile)
+            if (m_Bonus != 0 && parent is Mobile mp)
             {
                 if (m_SkillMod != null)
                     m_SkillMod.Remove();
 
-                m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, m_Bonus);
-                ((Mobile)parent).AddSkillMod(m_SkillMod);
+                m_SkillMod = new EquipedSkillMod(SkillName.Mining, true, m_Bonus, this, mp);
+                mp.AddSkillMod(m_SkillMod);
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (m_SkillMod != null)
@@ -267,14 +267,17 @@ namespace Server.Items
                     }
             }
 
-            if (m_Bonus != 0 && Parent is Mobile)
-            {
-                if (m_SkillMod != null)
-                    m_SkillMod.Remove();
+			Timer.DelayCall(() =>
+			{
+				if (m_Bonus != 0 && Parent is Mobile mp)
+				{
+					if (m_SkillMod != null)
+						m_SkillMod.Remove();
 
-                m_SkillMod = new DefaultSkillMod(SkillName.Mining, true, m_Bonus);
-                ((Mobile)Parent).AddSkillMod(m_SkillMod);
-            }
+					m_SkillMod = new EquipedSkillMod(SkillName.Mining, true, m_Bonus, this, mp);
+					mp.AddSkillMod(m_SkillMod);
+				}
+			});
         }
     }
 }

@@ -4,6 +4,8 @@ namespace Server.Multis
 {
     public class ElfBrigandCamp : BrigandCamp
     {
+        public override Mobile Brigands => new ElfBrigand();
+
         [Constructable]
         public ElfBrigandCamp()
             : base()
@@ -15,7 +17,6 @@ namespace Server.Multis
         {
         }
 
-        public override Mobile Brigands => new ElfBrigand();
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
@@ -27,7 +28,7 @@ namespace Server.Multis
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+			reader.ReadInt();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Server.Mobiles
         {
             SpeechHue = Utility.RandomDyedHue();
             Title = "the executioner";
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = Utility.RandomBool())
             {

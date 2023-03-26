@@ -10,7 +10,7 @@ namespace Server.Items
             AddImage(0, 0, 0x761C);
             int y = 20;
 
-            if (title != null)
+            if (!title.IsEmpty)
             {
                 if (title.Number > 0)
                 {
@@ -62,17 +62,7 @@ namespace Server.Items
         {
             base.GetProperties(list);
 
-            if (Title != null)
-            {
-                if (Title.Number > 0)
-                {
-                    list.Add(Title.Number);
-                }
-                else
-                {
-                    list.Add(Title.String);
-                }
-            }
+			TextDefinition.AddTo(list, Title);
         }
 
         public override void Serialize(GenericWriter writer)

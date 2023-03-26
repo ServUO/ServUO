@@ -867,18 +867,20 @@ namespace Server.Items
             set { m_TalismanProtection = value; InvalidateProperties(); }
         }
 
-        public override double DefaultWeight
-        {
-            get
-            {
-                if (NegativeAttributes == null || NegativeAttributes.Unwieldly == 0)
-                    return base.DefaultWeight;
+		public override int GetTotal(TotalType type)
+		{
+			var value = base.GetTotal(type);
 
-                return 50;
-            }
-        }
+			if (type == TotalType.Weight)
+			{
+				if (NegativeAttributes?.Unwieldly > 0)
+					value += 50;
+			}
 
-        public int ComputeStatReq(StatType type)
+			return value;
+		}
+
+		public int ComputeStatReq(StatType type)
         {
             int v;
 
@@ -1178,12 +1180,10 @@ namespace Server.Items
             return v;
         }
 
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
+        public override void OnAdded(IEntity parent)
+		{
+            if (parent is Mobile from)
             {
-                Mobile from = (Mobile)parent;
-
                 m_AosSkillBonuses.AddTo(from);
 
                 if (IsSetItem)
@@ -1198,8 +1198,10 @@ namespace Server.Items
                 }
 
                 from.Delta(MobileDelta.Armor); // Tell them armor rating has changed
-            }
-        }
+			}
+
+			base.OnAdded(parent);
+		}
 
         public virtual double ScaleArmorByDurability(double armor)
         {
@@ -1974,8 +1976,8 @@ namespace Server.Items
             return base.OnEquip(from);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile m = (Mobile)parent;
@@ -2234,16 +2236,9 @@ namespace Server.Items
 
             AddDamageTypeProperty(list);
 
-            if (RaceDefinitions.GetRequiredRace(this) == Race.Elf)
-            {
-                list.Add(1075086); // Elves Only
-            }
-            else if (RaceDefinitions.GetRequiredRace(this) == Race.Gargoyle)
-            {
-                list.Add(1111709); // Gargoyles Only
-            }
+			RaceDefinitions.AddRaceProperty(this, list);
 
-            if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
+			if (this is SurgeShield && ((SurgeShield)this).Surge > SurgeType.None)
                 list.Add(1116176 + ((int)((SurgeShield)this).Surge));
 
             m_NegativeAttributes.GetProperties(list, this);
@@ -2303,7 +2298,7 @@ namespace Server.Items
                 list.Add(1151780, prop.ToString()); // durability +~1_VAL~%
 
             if (m_TalismanProtection != null && !m_TalismanProtection.IsEmpty && m_TalismanProtection.Amount > 0)
-                list.Add(1072387, "{0}\t{1}", m_TalismanProtection.Name != null ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
+                list.Add(1072387, "{0}\t{1}", !m_TalismanProtection.Name.IsEmpty ? m_TalismanProtection.Name.ToString() : "Unknown", m_TalismanProtection.Amount); // ~1_NAME~ Protection: +~2_val~%
 
             if ((prop = m_AosArmorAttributes.SoulCharge) != 0)
                 list.Add(1113630, prop.ToString()); // Soul Charge ~1_val~%

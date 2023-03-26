@@ -45,7 +45,7 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!ViceVsVirtueSystem.IsVvV(from) && from.AccessLevel == AccessLevel.Player)
+            if (!ViceVsVirtueSystem.IsVvV(from) && from.AccessLevel < AccessLevel.Counselor)
             {
                 from.SendLocalizedMessage(1155496); // This item can only be used by VvV participants!
                 return;
@@ -188,7 +188,7 @@ namespace Server.Engines.VvV
 
         public override void OnDoubleClick(Mobile from)
         {
-            if (!ViceVsVirtueSystem.IsVvV(from) && from.AccessLevel == AccessLevel.Player)
+            if (!ViceVsVirtueSystem.IsVvV(from) && from.AccessLevel < AccessLevel.Counselor)
             {
                 from.SendLocalizedMessage(1155561); // You are no longer in Vice vs Virtue!
             }

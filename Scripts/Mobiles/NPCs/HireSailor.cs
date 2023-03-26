@@ -8,7 +8,7 @@ namespace Server.Mobiles
         public HireSailor()
         {
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = Utility.RandomBool())
             {

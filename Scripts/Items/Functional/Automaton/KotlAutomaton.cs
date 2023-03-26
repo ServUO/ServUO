@@ -85,7 +85,7 @@ namespace Server.Items
 
         public virtual void OnResourceChanged()
         {
-            Hue = 0x8000 | CraftResources.GetHue(_Resource);
+            BodyHue = CraftResources.GetHue(_Resource) | HuePartialFlag;
 
             CraftResourceInfo resInfo = CraftResources.GetInfo(_Resource);
 

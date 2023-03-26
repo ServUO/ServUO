@@ -68,7 +68,7 @@ namespace Server.SkillHandlers
                     {
                         string message = string.Format("You notice {0} peeking into your belongings!", from.Name);
 
-                        root.Send(new AsciiMessage(-1, -1, MessageType.Label, 946, 3, "", message));
+                        root.Send(new AsciiMessage(Serial.MinusOne, -1, MessageType.Label, 946, 3, "", message));
                     }
                 }
 

@@ -29,11 +29,14 @@ namespace Server.Engines.Shadowguard
 
     [DeleteConfirm("Are you sure you want to delete this? Deleting this will delete any saved encounter data your players have.")]
     public class ShadowguardController : Item
-    {
-        public static readonly TimeSpan ReadyDuration = TimeSpan.FromSeconds(Config.Get("Shadowguard.ReadyDuration", 30));
-        public static bool RandomInstances = Config.Get("Shadowguard.RandomizeInstances", false);
+	{
+		[ConfigProperty("Shadowguard.ReadyDuration")]
+		public static TimeSpan ReadyDuration { get => Config.Get("Shadowguard.ReadyDuration", TimeSpan.FromSeconds(30.0)); set => Config.Set("Shadowguard.ReadyDuration", value.TotalSeconds); }
 
-        public static ShadowguardController Instance { get; set; }
+		[ConfigProperty("Shadowguard.RandomizeInstances")]
+		public static bool RandomInstances { get => Config.Get("Shadowguard.RandomizeInstances", false); set => Config.Set("Shadowguard.RandomizeInstances", value); }
+
+        public static ShadowguardController Instance { get; private set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public Point3D KickLocation { get; set; }
@@ -51,33 +54,33 @@ namespace Server.Engines.Shadowguard
 
         public override int LabelNumber => 1156235;  // An Enchanting Crystal Ball
 
-        public static void Initialize()
+        public static void Configure()
         {
             EventSink.Login += OnLogin;
             EventSink.Disconnected += OnDisconnected;
 
             CommandSystem.Register("AddController", AccessLevel.Administrator, e =>
+            {
+                if (Instance == null || Instance.Deleted)
                 {
-                    if (Instance == null)
-                    {
-                        ShadowguardController controller = new ShadowguardController();
-                        controller.MoveToWorld(new Point3D(501, 2192, 50), Map.TerMur);
+                    ShadowguardController controller = new ShadowguardController();
+                    controller.MoveToWorld(new Point3D(501, 2192, 50), Map.TerMur);
 
-                        e.Mobile.SendMessage("Shadowguard controller setup!");
-                    }
-                    else
-                    {
-                        e.Mobile.SendMessage("A Shadowguard controller already exists!");
-                    }
-                });
+                    e.Mobile.SendMessage("Shadowguard controller setup!");
+                }
+                else
+                {
+                    e.Mobile.SendMessage("A Shadowguard controller already exists!");
+                }
+            });
 
             CommandSystem.Register("CompleteAllRooms", AccessLevel.GameMaster, e =>
-                {
-                    if (Instance.Table == null)
-                        Instance.Table = new Dictionary<Mobile, EncounterType>();
+            {
+                if (Instance.Table == null)
+                    Instance.Table = new Dictionary<Mobile, EncounterType>();
 
-                    Instance.Table[e.Mobile] = EncounterType.Bar | EncounterType.Orchard | EncounterType.Armory | EncounterType.Fountain | EncounterType.Belfry;
-                });
+                Instance.Table[e.Mobile] = EncounterType.Bar | EncounterType.Orchard | EncounterType.Armory | EncounterType.Fountain | EncounterType.Belfry;
+            });
         }
 
         public void InitializeInstances()
@@ -182,7 +185,7 @@ namespace Server.Engines.Shadowguard
 
             if (!expired)
             {
-                foreach (PlayerMobile pm in encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in encounter.Region.AllPlayers.OfType<PlayerMobile>())
                 {
                     AddToTable(pm, encounter.Encounter);
                 }
@@ -539,7 +542,7 @@ namespace Server.Engines.Shadowguard
 
             if (Addons != null)
             {
-                Addons.IterateReverse(addon =>
+				ColUtility.IterateReverse(Addons, addon =>
                 {
                     addon.Delete();
                 });

@@ -100,7 +100,7 @@ namespace Server.Multis
 
         public void ShowSign(Mobile m)
         {
-            if (m_Owner != null && m.AccessLevel == AccessLevel.Player)
+            if (m_Owner != null && m.AccessLevel < AccessLevel.Counselor)
             {
                 if ((m_Owner.IsFriend(m)))
                 {

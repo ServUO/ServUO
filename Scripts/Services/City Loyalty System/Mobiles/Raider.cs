@@ -18,7 +18,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Title = "the raider";
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Utility.AssignRandomHair(this);
 
             SetStr(150, 200);

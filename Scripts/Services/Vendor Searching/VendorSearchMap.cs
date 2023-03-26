@@ -356,7 +356,7 @@ namespace Server.Items
                 Clicker = from;
 
                 if (VendorMap.SearchItem != null)
-                    Container = VendorMap.SearchItem.ParentEntity as Container;
+                    Container = VendorMap.SearchItem.Parent as Container;
 
                 Enabled = IsAccessible();
             }

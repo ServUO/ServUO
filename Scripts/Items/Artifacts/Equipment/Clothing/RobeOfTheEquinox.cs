@@ -1,7 +1,7 @@
 namespace Server.Items
 {
     [Flipable(0x1F03, 0x1F04)]
-    public class RobeOfTheEquinox : BaseOuterTorso, ICanBeElfOrHuman
+    public class RobeOfTheEquinox : BaseOuterTorso, IRacialEquipment
     {
         public override bool IsArtifact => true;
 
@@ -10,7 +10,10 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ElfOnly { get { return _ElfOnly; } set { _ElfOnly = value; InvalidateProperties(); } }
 
-        [Constructable]
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Race RequiredRace => ElfOnly ? Race.Elf : Race.Human;
+
+		[Constructable]
         public RobeOfTheEquinox()
             : base(0x1F04, 0xD6)
         {

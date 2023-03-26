@@ -183,7 +183,7 @@ namespace Server.Engines.Despise
             if (o is BallOfSummoning || o is BraceletOfBinding)
                 return false;
 
-            if (o is Corpse && m.AccessLevel == AccessLevel.Player)
+            if (o is Corpse && m.AccessLevel < AccessLevel.Counselor)
             {
                 Corpse c = o as Corpse;
 

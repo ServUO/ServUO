@@ -104,9 +104,9 @@ namespace Server.Items
 
             bool damageThrower = false;
 
-            if (from.Target is ThrowTarget && ((ThrowTarget)from.Target).Potion == this)
+            if (from.Target is ThrowTarget tt && tt.Potion == this)
             {
-                Target.Cancel(from);
+                tt.Cancel(from, TargetCancelType.Timeout);
             }
 
             if (IsChildOf(from.Backpack) || Parent == from)

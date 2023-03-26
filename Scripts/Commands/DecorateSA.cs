@@ -27,9 +27,7 @@ namespace Server
         {
             e.Mobile.SendMessage("Generating Stygian Abyss world decoration, please wait.");
 
-            Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Ter Mur", Map.TerMur);
-            Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Trammel", Map.Trammel);
-            Decorate.Generate("sa", "Data/Decoration/Stygian Abyss/Felucca", Map.Felucca);
+			Decorate.Generate("sa", "Data/Decoration/Ter Mur", Map.TerMur);
 
             NavreysController.GenNavery(e.Mobile);
             CommandSystem.Handle(e.Mobile, CommandSystem.Prefix + "GenToK");

@@ -9,7 +9,6 @@ using System.Linq;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.ExplodingTarPotion")]
     public class ExplodingTarPotion : BasePotion
     {
         public virtual int Radius => 4;

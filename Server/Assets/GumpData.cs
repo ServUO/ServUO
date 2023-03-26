@@ -137,6 +137,15 @@ namespace Server
 							}
 						}
 					}
+					catch (Exception e)
+					{
+						if (Core.Debug)
+							Console.WriteLine($"[Ultima]: GumpData.GetGump({nameof(index)}:{index})\n{e}");
+
+						m_Invalid[index] = true;
+
+						return null;
+					}
 					finally
 					{
 						bmp.UnlockBits(bd);

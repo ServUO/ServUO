@@ -60,8 +60,8 @@ namespace Server.Items
             int version = reader.ReadEncodedInt();
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             if (parent is Mobile)

@@ -39,8 +39,8 @@ namespace Server.Items
 
         private Timer m_Timer;
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             base.OnAdded(parent);
 
             if (parent is PlayerMobile pm)
@@ -49,8 +49,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             Stop();
@@ -190,8 +190,8 @@ namespace Server.Items
 
         private Timer m_Timer;
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             base.OnAdded(parent);
 
             if (parent is PlayerMobile pm)
@@ -200,8 +200,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             base.OnRemoved(parent);
 
             Stop();

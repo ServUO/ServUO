@@ -22,7 +22,7 @@ namespace Server.Mobiles
             SetSkill(SkillName.Mining, 36, 68);
 
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Blessed = true;
 
             if (Female = Utility.RandomBool())

@@ -195,7 +195,7 @@ namespace Server.Engines.Shadowguard
                                     }
                                     else if (Encounter != null)
                                     {
-                                        foreach (PlayerMobile pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                                        foreach (PlayerMobile pm in Encounter.Region.AllPlayers.OfType<PlayerMobile>())
                                         {
                                             if (!pm.Alive)
                                                 continue;
@@ -238,7 +238,7 @@ namespace Server.Engines.Shadowguard
 
             if (!_Thrown && Encounter != null)
             {
-                foreach (PlayerMobile pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                foreach (PlayerMobile pm in Encounter.Region.AllPlayers.OfType<PlayerMobile>())
                 {
                     if (!pm.Alive)
                         continue;

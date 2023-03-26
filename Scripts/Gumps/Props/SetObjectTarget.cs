@@ -35,21 +35,38 @@ namespace Server.Gumps
         {
             try
             {
-                if (m_Type == typeof(Type))
-                    targeted = targeted.GetType();
-                else if ((m_Type == typeof(BaseAddon) || m_Type.IsAssignableFrom(typeof(BaseAddon))) && targeted is AddonComponent)
-                    targeted = ((AddonComponent)targeted).Addon;
+				if (m_Type == typeof(Type))
+				{
+					targeted = targeted.GetType();
+				}
+				else if ((m_Type == typeof(BaseAddon) || m_Type.IsAssignableFrom(typeof(BaseAddon))) && targeted is AddonComponent)
+				{
+					targeted = ((AddonComponent)targeted).Addon;
+				}
 
-                if (m_Type.IsAssignableFrom(targeted.GetType()))
-                {
-                    CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, targeted.ToString());
-                    m_Property.SetValue(m_Object, targeted, null);
-                    PropertiesGump.OnValueChanged(m_Object, m_Property, m_Stack);
+				var type = targeted.GetType();
+
+				if (m_Type.IsAssignableFrom(type))
+				{
+					var state = TypeFilterAttribute.CheckState(m_Property, type);
+
+					if (state == TypeFilterResult.NoFilter || state == TypeFilterResult.Allowed)
+					{
+						CommandLogging.LogChangeProperty(m_Mobile, m_Object, m_Property.Name, targeted.ToString());
+
+						m_Property.SetValue(m_Object, targeted, null);
+
+						PropertiesGump.OnValueChanged(m_Object, m_Property, m_Stack);
+					}
+					else
+					{
+						m_Mobile.SendMessage("That is not a valid type for this property.");
+					}
                 }
                 else
-                {
-                    m_Mobile.SendMessage("That cannot be assigned to a property of type : {0}", m_Type.Name);
-                }
+				{
+					m_Mobile.SendMessage($"That cannot be assigned to a property of type : {m_Type.Name}");
+				}
             }
             catch
             {
@@ -57,12 +74,16 @@ namespace Server.Gumps
             }
         }
 
-        protected override void OnTargetFinish(Mobile from)
-        {
-            if (m_Type == typeof(Type))
-                from.SendGump(new PropertiesGump(m_Mobile, m_Object, m_Stack, m_List, m_Page));
-            else
-                from.SendGump(new SetObjectGump(m_Property, m_Mobile, m_Object, m_Stack, m_Type, m_Page, m_List));
-        }
+		protected override void OnTargetFinish(Mobile from)
+		{
+			if (m_Type == typeof(Type))
+			{
+				from.SendGump(new PropertiesGump(m_Mobile, m_Object, m_Stack, m_List, m_Page));
+			}
+			else
+			{
+				from.SendGump(new SetObjectGump(m_Property, m_Mobile, m_Object, m_Stack, m_Type, m_Page, m_List));
+			}
+		}
     }
 }

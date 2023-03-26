@@ -261,8 +261,8 @@ namespace Server.Items
                 HousePlacementEntry entry = entries[i];
 
                 int y = 70 + (index * 20);
-                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
-                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalStorageScalar);
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
@@ -1025,8 +1025,8 @@ namespace Server.Items
                 HousePlacementEntry entry = m_Entries[i];
 
                 int y = 70 + (index * 20);
-                int storage = (int)(entry.Storage * BaseHouse.GlobalBonusStorageScalar);
-                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalBonusStorageScalar);
+                int storage = (int)(entry.Storage * BaseHouse.GlobalStorageScalar);
+                int lockdowns = (int)(entry.Lockdowns * BaseHouse.GlobalStorageScalar);
 
                 AddButton(10, y, 4005, 4007, 1 + i, GumpButtonType.Reply, 0);
                 AddHtmlLocalized(50, y, 225, 20, entry.Description, LabelColor, false, false);
@@ -1108,18 +1108,15 @@ namespace Server.Items
                                 m_House.MovingCrate = null;
                             }
 
-                            List<Item> items = m_House.GetItems();
-                            List<Mobile> mobiles = m_House.GetMobiles();
-
                             newHouse.MoveToWorld(new Point3D(m_House.X + m_House.ConvertOffsetX, m_House.Y + m_House.ConvertOffsetY, m_House.Z + m_House.ConvertOffsetZ), m_House.Map);
                             m_House.Delete();
 
-                            foreach (Item item in items)
+                            foreach (Item item in m_House.GetItems())
                             {
                                 item.Location = newHouse.BanLocation;
                             }
 
-                            foreach (Mobile mobile in mobiles)
+                            foreach (Mobile mobile in m_House.GetMobiles())
                             {
                                 mobile.Location = newHouse.BanLocation;
                             }

@@ -9,7 +9,7 @@ namespace Server.Engines.VoidPool
 {
     public class VoidPoolRegion : BaseRegion
     {
-        private static readonly Rectangle2D[] Bounds = new Rectangle2D[]
+        private static readonly Rectangle2D[] m_Bounds = new Rectangle2D[]
         {
             new Rectangle2D(5383, 1960, 236, 80),
             new Rectangle2D(5429, 1948, 12, 10),
@@ -17,14 +17,14 @@ namespace Server.Engines.VoidPool
 
         public VoidPoolController Controller { get; private set; }
 
-        public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, DefaultPriority, Bounds)
+        public VoidPoolRegion(VoidPoolController controller, Map map) : base("Void Pool", map, DefaultPriority, m_Bounds)
         {
             Controller = controller;
         }
 
         public void SendRegionMessage(int localization)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendLocalizedMessage(localization);
             }
@@ -32,7 +32,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization, int hue)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendLocalizedMessage(localization, "", hue);
             }
@@ -40,7 +40,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(int localization, string args)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendLocalizedMessage(localization, args);
             }
@@ -48,7 +48,7 @@ namespace Server.Engines.VoidPool
 
         public void SendRegionMessage(string message)
         {
-            foreach (Mobile m in GetEnumeratedMobiles().Where(m => m.Player))
+            foreach (Mobile m in AllPlayers)
             {
                 m.SendMessage(0x25, message);
             }
@@ -93,7 +93,7 @@ namespace Server.Engines.VoidPool
 
         public override bool OnDoubleClick(Mobile m, object o)
         {
-            if (o is Corpse && m.AccessLevel == AccessLevel.Player)
+            if (o is Corpse && m.AccessLevel < AccessLevel.Counselor)
             {
                 Corpse c = o as Corpse;
 

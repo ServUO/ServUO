@@ -14,7 +14,7 @@ namespace Server.Mobiles
         public EliteNinja() : base(AIType.AI_Ninja, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Name = "an elite ninja";
 
             Body = (Female = Utility.RandomBool()) ? 0x191 : 0x190;

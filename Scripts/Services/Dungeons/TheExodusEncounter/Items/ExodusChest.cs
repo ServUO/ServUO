@@ -150,9 +150,9 @@ namespace Server.Items
                 switch (Utility.Random(2))
                 {
                     case 0:
-                        item = new ParasiticPotion(Utility.Random(1, 3)); break;
+                        item = new ParasiticPotion { Amount = Utility.Random(1, 3) }; break;
                     case 1:
-                        item = new InvisibilityPotion(Utility.Random(1, 3)); break;
+                        item = new InvisibilityPotion { Amount = Utility.Random(1, 3) }; break;
                 }
 
                 DropItem(item);

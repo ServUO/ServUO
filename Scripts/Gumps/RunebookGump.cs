@@ -266,7 +266,6 @@ namespace Server.Gumps
             private readonly Runebook m_Book;
 
             public InternalPrompt(Runebook book)
-                : base(book)
             {
                 m_Book = book;
             }

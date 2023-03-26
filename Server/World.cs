@@ -1,3 +1,4 @@
+#region References
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,30 +8,44 @@ using System.Threading;
 
 using Server.Guilds;
 using Server.Network;
+#endregion
 
 namespace Server
 {
 	public static class World
 	{
-		private static readonly bool m_Metrics = Config.Get("General.Metrics", false);
+		[ConfigProperty("General.Metrics")]
+		public static bool Metrics { get => Config.Get("General.Metrics", false); set => Config.Set("General.Metrics", value); }
+
+		private static readonly Dictionary<Serial, IEntity> m_AddQueue = new Dictionary<Serial, IEntity>();
+		private static readonly Queue<IEntity> m_DeleteQueue = new Queue<IEntity>();
+
 		private static readonly ManualResetEvent m_DiskWriteHandle = new ManualResetEvent(true);
 
-		private static Queue<IEntity> _addQueue, _deleteQueue;
+		public static DateTime LastSave { get; private set; }
 
 		public static bool Saving { get; private set; }
 		public static bool Loaded { get; private set; }
 		public static bool Loading { get; private set; }
 
-		public static readonly string MobileIndexPath = Path.Combine("Saves/Mobiles/", "Mobiles.idx");
-		public static readonly string MobileTypesPath = Path.Combine("Saves/Mobiles/", "Mobiles.tdb");
-		public static readonly string MobileDataPath = Path.Combine("Saves/Mobiles/", "Mobiles.bin");
+		public static bool Volatile => !Loaded || Saving || NetState.Paused;
 
-		public static readonly string ItemIndexPath = Path.Combine("Saves/Items/", "Items.idx");
-		public static readonly string ItemTypesPath = Path.Combine("Saves/Items/", "Items.tdb");
-		public static readonly string ItemDataPath = Path.Combine("Saves/Items/", "Items.bin");
+		public static Dictionary<Serial, Mobile> Mobiles { get; } = new Dictionary<Serial, Mobile>(0x40000);
+		public static Dictionary<Serial, Item> Items { get; } = new Dictionary<Serial, Item>(0x100000);
 
-		public static readonly string GuildIndexPath = Path.Combine("Saves/Guilds/", "Guilds.idx");
-		public static readonly string GuildDataPath = Path.Combine("Saves/Guilds/", "Guilds.bin");
+		public static readonly string MobileRootPath = Path.Combine("Saves", "Mobiles");
+		public static readonly string MobileIndexPath = Path.Combine(MobileRootPath, "Mobiles.idx");
+		public static readonly string MobileTypesPath = Path.Combine(MobileRootPath, "Mobiles.tdb");
+		public static readonly string MobileDataPath = Path.Combine(MobileRootPath, "Mobiles.bin");
+
+		public static readonly string ItemRootPath = Path.Combine("Saves", "Items");
+		public static readonly string ItemIndexPath = Path.Combine(ItemRootPath, "Items.idx");
+		public static readonly string ItemTypesPath = Path.Combine(ItemRootPath, "Items.tdb");
+		public static readonly string ItemDataPath = Path.Combine(ItemRootPath, "Items.bin");
+
+		public static readonly string GuildRootPath = Path.Combine("Saves", "Guilds");
+		public static readonly string GuildIndexPath = Path.Combine(GuildRootPath, "Guilds.idx");
+		public static readonly string GuildDataPath = Path.Combine(GuildRootPath, "Guilds.bin");
 
 		public static void NotifyDiskWriteComplete()
 		{
@@ -45,20 +60,11 @@ namespace Server
 			m_DiskWriteHandle.WaitOne();
 		}
 
-		public static Dictionary<Serial, Mobile> Mobiles { get; private set; }
-
-		public static Dictionary<Serial, Item> Items { get; private set; }
-
 		public static bool OnDelete(IEntity entity)
 		{
-			if (Saving || Loading)
+			if (Saving || Loading || !Loaded)
 			{
-				if (Saving)
-				{
-					AppendSafetyLog("delete", entity);
-				}
-
-				_deleteQueue.Enqueue(entity);
+				m_DeleteQueue.Enqueue(entity);
 
 				return false;
 			}
@@ -137,12 +143,11 @@ namespace Server
 		{
 			public BaseGuild Guild { get; }
 
-			public Serial Serial => Guild == null ? 0 : Guild.Id;
+			public Serial Serial => new Serial(Guild?.Id ?? 0);
 
 			public int TypeID => 0;
 
 			public long Position { get; }
-
 			public int Length { get; }
 
 			public GuildEntry(BaseGuild g, long pos, int length)
@@ -160,11 +165,9 @@ namespace Server
 			public Serial Serial => Item == null ? Serial.MinusOne : Item.Serial;
 
 			public int TypeID { get; }
-
 			public string TypeName { get; }
 
 			public long Position { get; }
-
 			public int Length { get; }
 
 			public ItemEntry(Item item, int typeID, string typeName, long pos, int length)
@@ -184,11 +187,9 @@ namespace Server
 			public Serial Serial => Mobile == null ? Serial.MinusOne : Mobile.Serial;
 
 			public int TypeID { get; }
-
 			public string TypeName { get; }
 
 			public long Position { get; }
-
 			public int Length { get; }
 
 			public MobileEntry(Mobile mobile, int typeID, string typeName, long pos, int length)
@@ -223,7 +224,14 @@ namespace Server
 
 					if (!Core.Service)
 					{
-						Console.WriteLine("Error: Type '{0}' was not found. Delete all of those types? (y/n)", typeName);
+						Console.WriteLine($"Error: Type '{typeName}' was not found. Delete all of those types? (y/n)");
+
+						if (typeName.StartsWith("Server.Engines.MLQuests"))
+						{
+							types.Add(null);
+							Console.Write($"World: Loading... Deleted '{typeName}'");
+							continue;
+						}
 
 						if (Console.ReadKey(true).Key == ConsoleKey.Y)
 						{
@@ -238,10 +246,10 @@ namespace Server
 					}
 					else
 					{
-						Console.WriteLine("Error: Type '{0}' was not found.", typeName);
+						Console.WriteLine($"Error: Type '{typeName}' was not found.");
 					}
 
-					throw new Exception(String.Format("Missing type '{0}'", typeName));
+					throw new Exception($"Missing type '{typeName}'");
 				}
 
 				if (t.IsAbstract)
@@ -262,7 +270,7 @@ namespace Server
 
 						if (!Core.Service)
 						{
-							Console.WriteLine("Error: Type '{0}' is abstract. Delete all of those types? (y/n)", typeName);
+							Console.WriteLine($"Error: Type '{typeName}' is abstract. Delete all of those types? (y/n)");
 
 							if (Console.ReadKey(true).Key == ConsoleKey.Y)
 							{
@@ -277,10 +285,10 @@ namespace Server
 						}
 						else
 						{
-							Console.WriteLine("Error: Type '{0}' is abstract.", typeName);
+							Console.WriteLine($"Error: Type '{typeName}' is abstract.");
 						}
 
-						throw new Exception(String.Format("Abstract type '{0}'", typeName));
+						throw new Exception($"Abstract type '{typeName}'");
 					}
 				}
 
@@ -292,7 +300,7 @@ namespace Server
 				}
 				else
 				{
-					throw new Exception(String.Format("Type '{0}' does not have a serialization constructor", t));
+					throw new Exception($"Type '{t}' does not have a serialization constructor");
 				}
 			}
 
@@ -310,15 +318,12 @@ namespace Server
 			LoadingType = null;
 
 			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("World: Loading...");
+			Console.Write("World: Loading...");
 			Utility.PopColor();
 
 			var watch = Stopwatch.StartNew();
 
 			Loading = true;
-
-			_addQueue = new Queue<IEntity>();
-			_deleteQueue = new Queue<IEntity>();
 
 			var ctorArgs = new object[1];
 
@@ -340,8 +345,6 @@ namespace Server
 
 						var mobileCount = idxReader.ReadInt32();
 
-						Mobiles = new Dictionary<Serial, Mobile>(mobileCount);
-
 						for (var i = 0; i < mobileCount; ++i)
 						{
 							var typeID = idxReader.ReadInt32();
@@ -362,7 +365,7 @@ namespace Server
 
 							try
 							{
-								ctorArgs[0] = (Serial)serial;
+								ctorArgs[0] = new Serial(serial);
 								m = (Mobile)ctor.Invoke(ctorArgs);
 							}
 							catch (Exception ex)
@@ -383,10 +386,6 @@ namespace Server
 					idxReader.Close();
 				}
 			}
-			else
-			{
-				Mobiles = new Dictionary<Serial, Mobile>();
-			}
 
 			if (File.Exists(ItemIndexPath) && File.Exists(ItemTypesPath))
 			{
@@ -401,8 +400,6 @@ namespace Server
 						var types = ReadTypes(tdbReader);
 
 						var itemCount = idxReader.ReadInt32();
-
-						Items = new Dictionary<Serial, Item>(itemCount);
 
 						for (var i = 0; i < itemCount; ++i)
 						{
@@ -424,7 +421,7 @@ namespace Server
 
 							try
 							{
-								ctorArgs[0] = (Serial)serial;
+								ctorArgs[0] = new Serial(serial);
 								item = (Item)ctor.Invoke(ctorArgs);
 							}
 							catch (Exception e)
@@ -444,10 +441,6 @@ namespace Server
 
 					idxReader.Close();
 				}
-			}
-			else
-			{
-				Items = new Dictionary<Serial, Item>();
 			}
 
 			if (File.Exists(GuildIndexPath))
@@ -469,10 +462,9 @@ namespace Server
 						var length = idxReader.ReadInt32();
 
 						createEventArgs.Id = id;
+						createEventArgs.Guild = null;
 
-						EventSink.InvokeCreateGuild(createEventArgs);
-
-						var guild = createEventArgs.Guild;
+						var guild = CreateGuild?.Invoke(createEventArgs);
 
 						if (guild != null)
 						{
@@ -492,7 +484,7 @@ namespace Server
 
 			if (File.Exists(MobileDataPath))
 			{
-				using (var bin = new FileStream(MobileDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var bin = new FileStream(MobileDataPath, FileMode.Open, FileAccess.Read, FileShare.Read, 81920))
 				{
 					var reader = new BinaryFileReader(new BinaryReader(bin));
 
@@ -513,7 +505,7 @@ namespace Server
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on {0} *****", m.GetType()));
+									throw new Exception($"***** Bad serialize on {m.GetType()} *****");
 								}
 							}
 							catch (Exception e)
@@ -537,7 +529,7 @@ namespace Server
 
 			if (!failedMobiles && File.Exists(ItemDataPath))
 			{
-				using (var bin = new FileStream(ItemDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var bin = new FileStream(ItemDataPath, FileMode.Open, FileAccess.Read, FileShare.Read, 81920))
 				{
 					var reader = new BinaryFileReader(new BinaryReader(bin));
 
@@ -558,7 +550,7 @@ namespace Server
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on {0} *****", item.GetType()));
+									throw new Exception($"***** Bad serialize on {item.GetType()} *****");
 								}
 							}
 							catch (Exception e)
@@ -584,7 +576,7 @@ namespace Server
 
 			if (!failedMobiles && !failedItems && File.Exists(GuildDataPath))
 			{
-				using (var bin = new FileStream(GuildDataPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+				using (var bin = new FileStream(GuildDataPath, FileMode.Open, FileAccess.Read, FileShare.Read, 81920))
 				{
 					var reader = new BinaryFileReader(new BinaryReader(bin));
 
@@ -603,7 +595,7 @@ namespace Server
 
 								if (reader.Position != (entry.Position + entry.Length))
 								{
-									throw new Exception(String.Format("***** Bad serialize on Guild {0} *****", g.Id));
+									throw new Exception($"***** Bad serialize on Guild {g.Id} *****");
 								}
 							}
 							catch (Exception e)
@@ -614,7 +606,7 @@ namespace Server
 								failedGuilds = true;
 								failedType = typeof(BaseGuild);
 								failedTypeID = g.Id;
-								failedSerial = g.Id;
+								failedSerial = new Serial(g.Id);
 
 								break;
 							}
@@ -631,8 +623,8 @@ namespace Server
 				Console.WriteLine("An error was encountered while loading a saved object");
 				Utility.PopColor();
 
-				Console.WriteLine(" - Type: {0}", failedType);
-				Console.WriteLine(" - Serial: {0}", failedSerial);
+				Console.WriteLine($" - Type: {failedType}");
+				Console.WriteLine($" - Serial: {failedSerial}");
 
 				if (!Core.Service)
 				{
@@ -692,15 +684,7 @@ namespace Server
 					Utility.PopColor();
 				}
 
-				throw new Exception(
-					String.Format(
-						"Load failed (items={0}, mobiles={1}, guilds={2}, type={3}, serial={4})",
-						failedItems,
-						failedMobiles,
-						failedGuilds,
-						failedType,
-						failedSerial),
-						failed);
+				throw new Exception($"Load failed (items={failedItems}, mobiles={failedMobiles}, guilds={failedGuilds}, type={failedType}, serial={failedSerial})", failed);
 			}
 
 			EventSink.InvokeWorldLoad();
@@ -709,112 +693,134 @@ namespace Server
 
 			ProcessSafetyQueues();
 
-			foreach (var item in Items.Values)
+			var list = new HashSet<object>();
+
+			list.UnionWith(Items.Values);
+			list.UnionWith(Mobiles.Values);
+
+			if (list.Count > 0)
 			{
-				if (item.Parent == null)
-					item.UpdateTotals();
+				foreach (var o in list)
+				{
+					if (o is Item i)
+					{
+						if (i.Parent == null)
+							i.UpdateTotals();
 
-				item.ClearProperties();
-			}
+						i.ClearProperties();
+					}
+					else if (o is Mobile m)
+					{
+						m.UpdateRegion();
+						m.UpdateTotals();
+						m.ClearProperties();
+					}
+				}
 
-			foreach (var m in Mobiles.Values)
-			{
-				m.UpdateRegion(); // Is this really needed?
-				m.UpdateTotals();
-
-				m.ClearProperties();
+				list.Clear();
+				list.TrimExcess();
 			}
 
 			watch.Stop();
 
 			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine(
-				"...done ({1} items, {2} mobiles) ({0:F2} seconds)",
-				watch.Elapsed.TotalSeconds,
-				Items.Count,
-				Mobiles.Count);
+			Console.WriteLine($"done ({Items.Count} items, {Mobiles.Count} mobiles) ({watch.Elapsed.TotalSeconds:F2} seconds)");
 			Utility.PopColor();
 		}
 
-		private static void ProcessSafetyQueues()
+		public static Func<CreateGuildEventArgs, BaseGuild> CreateGuild { get; set; } = e =>
 		{
-			while (_addQueue.Count > 0)
-			{
-				var entity = _addQueue.Dequeue();
+			EventSink.InvokeCreateGuild(e);
 
-				if (entity is Item item)
+			return e.Guild;
+		};
+
+		static internal void ProcessSafetyQueues()
+		{
+			int itemsAdded = 0, itemConflicts = 0, itemsDeleted = 0;
+			int mobilesAdded = 0, mobileConflicts = 0, mobilesDeleted = 0;
+
+			if (m_AddQueue.Count > 0)
+			{
+				foreach (var entry in m_AddQueue)
 				{
-					AddItem(item);
+					if (entry.Value is Item i)
+					{
+						if (Items.ContainsKey(i.Serial))
+						{
+							i.NewSerial();
+
+							++itemConflicts;
+						}
+
+						Items[i.Serial] = i;
+
+						++itemsAdded;
+					}
+					else if (entry.Value is Mobile m)
+					{
+						if (Mobiles.ContainsKey(m.Serial))
+						{
+							m.NewSerial();
+
+							++mobileConflicts;
+						}
+
+						Mobiles[m.Serial] = m;
+
+						++mobilesAdded;
+					}
 				}
-				else if (entity is Mobile mob)
+
+				m_AddQueue.Clear();
+			}
+
+			while (m_DeleteQueue.Count > 0)
+			{
+				var entity = m_DeleteQueue.Dequeue();
+
+				if (entity != null)
 				{
-					AddMobile(mob);
+					entity.Delete();
+
+					if (entity is Item)
+						++itemsDeleted;
+					else if (entity is Mobile)
+						++mobilesDeleted;
 				}
 			}
 
-			while (_deleteQueue.Count > 0)
-			{
-				var entity = _deleteQueue.Dequeue();
+			if (itemsAdded > 0 || mobilesAdded > 0)
+				Console.WriteLine("Added   ({0:#,0} items, {1:#,0} mobiles)", itemsAdded, mobilesAdded);
 
-				if (entity is Item item)
-				{
-					item.Delete();
-				}
-				else if (entity is Mobile mob)
-				{
-					mob.Delete();
-				}
-			}
+			if (itemsDeleted > 0 || mobilesDeleted > 0)
+				Console.WriteLine("Deleted ({0:#,0} items, {1:#,0} mobiles)", itemsDeleted, mobilesDeleted);
+
+			if (itemConflicts > 0 || mobileConflicts > 0)
+				Console.WriteLine("Fixed   ({0:#,0} items, {1:#,0} mobiles)", itemConflicts, mobileConflicts);
 		}
 
-		private static void AppendSafetyLog(string action, IEntity entity)
+		private static void EnsureDirectories()
 		{
-			var message =
-				String.Format(
-					"Warning: Attempted to {1} {2} during world save." + "{0}This action could cause inconsistent state." +
-					"{0}It is strongly advised that the offending scripts be corrected.",
-					Environment.NewLine,
-					action,
-					entity);
-
-			AppendSafetyLog(message);
-		}
-
-		private static void AppendSafetyLog(string message)
-		{
-			Console.WriteLine(message);
-
-			try
+			if (!Directory.Exists(MobileRootPath))
 			{
-				using (var op = new StreamWriter("world-save-errors.log", true))
-				{
-					op.WriteLine("{0}\t{1}", DateTime.UtcNow, message);
-					op.WriteLine(new StackTrace(2).ToString());
-					op.WriteLine();
-				}
+				Directory.CreateDirectory(MobileRootPath);
 			}
-			catch (Exception ex)
+
+			if (!Directory.Exists(ItemRootPath))
 			{
-				Diagnostics.ExceptionLogging.LogException(ex);
+				Directory.CreateDirectory(ItemRootPath);
+			}
+
+			if (!Directory.Exists(GuildRootPath))
+			{
+				Directory.CreateDirectory(GuildRootPath);
 			}
 		}
 
 		private static void SaveIndex<T>(List<T> list, string path) where T : IEntityEntry
 		{
-			if (!Directory.Exists("Saves/Mobiles/"))
-			{
-				Directory.CreateDirectory("Saves/Mobiles/");
-			}
-
-			if (!Directory.Exists("Saves/Items/"))
-			{
-				Directory.CreateDirectory("Saves/Items/");
-			}
-
-			if (!Directory.Exists("Saves/Guilds/"))
-			{
-				Directory.CreateDirectory("Saves/Guilds/");
-			}
+			EnsureDirectories();
 
 			using (var idx = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))
 			{
@@ -867,25 +873,14 @@ namespace Server
 			}
 
 			var strategy = SaveStrategy.Acquire();
-			Console.WriteLine("Core: Using {0} save strategy", strategy.Name.ToLowerInvariant());
+
+			Console.WriteLine($"Core: Using {strategy.Name.ToLowerInvariant()} save strategy");
 
 			Console.WriteLine("World: Saving...");
 
 			var watch = Stopwatch.StartNew();
 
-			if (!Directory.Exists("Saves/Mobiles/"))
-			{
-				Directory.CreateDirectory("Saves/Mobiles/");
-			}
-			if (!Directory.Exists("Saves/Items/"))
-			{
-				Directory.CreateDirectory("Saves/Items/");
-			}
-			if (!Directory.Exists("Saves/Guilds/"))
-			{
-				Directory.CreateDirectory("Saves/Guilds/");
-			}
-
+			EnsureDirectories();
 
 			try
 			{
@@ -896,10 +891,12 @@ namespace Server
 				throw new Exception("FATAL: Exception in EventSink.BeforeWorldSave", e);
 			}
 
-			if (m_Metrics)
+			if (Metrics)
 			{
 				using (var metrics = new SaveMetrics())
+				{
 					strategy.Save(metrics, permitBackgroundWrite);
+				}
 			}
 			else
 			{
@@ -925,15 +922,13 @@ namespace Server
 				//Sets the DiskWriteHandle.  If we allow background writes, we leave this upto the individual save strategies.
 			}
 
-			ProcessSafetyQueues();
-
 			strategy.ProcessDecay();
 
-			Console.WriteLine("Save finished in {0:F2} seconds.", watch.Elapsed.TotalSeconds);
+			Console.WriteLine($"Save finished in {watch.Elapsed.TotalSeconds:F2} seconds.");
 
 			if (message)
 			{
-				Broadcast(0x35, false, AccessLevel.Player, "World save done in {0:F1} seconds.", watch.Elapsed.TotalSeconds);
+				Broadcast(0x35, false, AccessLevel.Player, $"World save done in {watch.Elapsed.TotalSeconds:F1} seconds.");
 			}
 
 			NetState.Resume();
@@ -946,6 +941,8 @@ namespace Server
 			{
 				throw new Exception("FATAL: Exception in EventSink.AfterWorldSave", e);
 			}
+
+			LastSave = DateTime.UtcNow;
 		}
 
 		static internal List<Type> m_ItemTypes = new List<Type>();
@@ -967,52 +964,64 @@ namespace Server
 
 		public static Mobile FindMobile(Serial serial)
 		{
-			Mobiles.TryGetValue(serial, out var mob);
+			if (!serial.IsMobile)
+				return null;
 
-			return mob;
+			if (Mobiles.TryGetValue(serial, out var mob))
+				return mob;
+
+			//if (!Volatile)
+			//	return null;
+
+			if (m_AddQueue.TryGetValue(serial, out var entity))
+				return entity as Mobile;
+
+			return null;
 		}
 
 		public static void AddMobile(Mobile m)
 		{
-			if (Saving)
-			{
-				AppendSafetyLog("add", m);
-				_addQueue.Enqueue(m);
-			}
+			if (Volatile)
+				m_AddQueue[m.Serial] = m;
 			else
-			{
 				Mobiles[m.Serial] = m;
-			}
 		}
 
 		public static Item FindItem(Serial serial)
 		{
-			Items.TryGetValue(serial, out var item);
+			if (!serial.IsItem)
+				return null;
 
-			return item;
+			if (Items.TryGetValue(serial, out var item))
+				return item;
+
+			//if (!Volatile)
+			//	return null;
+
+			if (m_AddQueue.TryGetValue(serial, out var entity))
+				return entity as Item;
+
+			return null;
 		}
 
 		public static void AddItem(Item item)
 		{
-			if (Saving)
-			{
-				AppendSafetyLog("add", item);
-				_addQueue.Enqueue(item);
-			}
+			if (Volatile)
+				m_AddQueue[item.Serial] = item;
 			else
-			{
 				Items[item.Serial] = item;
-			}
 		}
 
 		public static void RemoveMobile(Mobile m)
 		{
-			Mobiles.Remove(m.Serial);
+			if (!Mobiles.Remove(m.Serial))
+				m_AddQueue.Remove(m.Serial);
 		}
 
 		public static void RemoveItem(Item item)
 		{
-			Items.Remove(item.Serial);
+			if (!Items.Remove(item.Serial))
+				m_AddQueue.Remove(item.Serial);
 		}
 	}
 }

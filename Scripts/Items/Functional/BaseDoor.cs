@@ -545,14 +545,10 @@ namespace Server.Items
             int z = p.Z;
 
             Sector sector = map.GetSector(x, y);
-            List<Item> items = sector.Items;
-            List<Mobile> mobs = sector.Mobiles;
 
-            for (int i = 0; i < items.Count; ++i)
+            foreach (Item item in sector.Items)
             {
-                Item item = items[i];
-
-                if (!(item is BaseMulti) && item.ItemID <= TileData.MaxItemValue && item.AtWorldPoint(x, y) && !(item is BaseDoor))
+				if (!(item is BaseMulti) && item.ItemID <= TileData.MaxItemValue && item.AtWorldPoint(x, y) && !(item is BaseDoor))
                 {
                     ItemData id = item.ItemData;
                     bool surface = id.Surface;
@@ -563,11 +559,9 @@ namespace Server.Items
                 }
             }
 
-            for (int i = 0; i < mobs.Count; ++i)
+            foreach (Mobile m in sector.Mobiles)
             {
-                Mobile m = mobs[i];
-
-                if (m.Location.X == x && m.Location.Y == y)
+				if (m.Location.X == x && m.Location.Y == y)
                 {
                     if (m.Hidden && m.IsPlayer())
                         continue;

@@ -12,7 +12,7 @@ namespace Server.Mobiles
             Name = NameList.RandomName("male");
             Title = "the Knight";
             Body = 0x190;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Female = false;
 
             SetStr(190, 200);

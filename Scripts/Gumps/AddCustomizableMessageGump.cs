@@ -7,7 +7,7 @@ namespace Server.Items
 {
     public interface ICustomizableMessageItem
     {
-        string[] Lines { get; set; }
+        string[] Lines { get; }
     }
 
     public class AddCustomizableMessageGump : BaseGump

@@ -29,7 +29,7 @@ namespace Server.Regions
                     }
                 }
             }
-            else if (m is PlayerMobile && m.AccessLevel == AccessLevel.Player)
+            else if (m is PlayerMobile && m.AccessLevel < AccessLevel.Counselor)
             {
                 if (m.Backpack == null)
                     KickToEntrance(m);

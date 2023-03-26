@@ -376,7 +376,7 @@ namespace Server.Engines.Shadowguard
             base.Serialize(writer);
             writer.Write(1);
 
-            writer.WriteItem(Apple);
+            writer.Write(Apple);
 
             writer.Write(Trees == null ? 0 : Trees.Count);
             if (Trees != null) Trees.ForEach(t => writer.Write(t));
@@ -1478,7 +1478,7 @@ namespace Server.Engines.Shadowguard
         {
             base.CompleteEncounter();
 
-            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
             {
                 Controller.CompleteRoof(pm);
             }
@@ -1509,7 +1509,7 @@ namespace Server.Engines.Shadowguard
             if (m == null)
                 return;
 
-            foreach (PlayerMobile pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            foreach (PlayerMobile pm in Region.AllPlayers.OfType<PlayerMobile>())
             {
                 pm.AddRewardTitle(1156318); // Destroyer of the Time Rift
             }

@@ -11,97 +11,97 @@ namespace Server.Commands
 
 	public class CommandEventArgs : EventArgs
 	{
-		private readonly Mobile m_Mobile;
-		private readonly string m_Command;
-		private readonly string m_ArgString;
-		private readonly string[] m_Arguments;
+		public Mobile Mobile { get; }
 
-		public Mobile Mobile => m_Mobile;
+		public string Command { get; }
 
-		public string Command => m_Command;
+		public string ArgString { get; }
+		public string[] Arguments { get; }
 
-		public string ArgString => m_ArgString;
-
-		public string[] Arguments => m_Arguments;
-
-		public int Length => m_Arguments.Length;
+		public int Length => Arguments.Length;
 
 		public string GetString(int index)
 		{
-			if (index < 0 || index >= m_Arguments.Length)
+			if (index < 0 || index >= Arguments.Length)
 			{
 				return "";
 			}
 
-			return m_Arguments[index];
+			return Arguments[index];
 		}
 
 		public int GetInt32(int index)
 		{
-			if (index < 0 || index >= m_Arguments.Length)
+			if (index < 0 || index >= Arguments.Length)
 			{
 				return 0;
 			}
 
-			return Utility.ToInt32(m_Arguments[index]);
+			return Utility.ToInt32(Arguments[index]);
 		}
 
 		public bool GetBoolean(int index)
 		{
-			if (index < 0 || index >= m_Arguments.Length)
+			if (index < 0 || index >= Arguments.Length)
 			{
 				return false;
 			}
 
-			return Utility.ToBoolean(m_Arguments[index]);
+			return Utility.ToBoolean(Arguments[index]);
 		}
 
 		public double GetDouble(int index)
 		{
-			if (index < 0 || index >= m_Arguments.Length)
+			if (index < 0 || index >= Arguments.Length)
 			{
 				return 0.0;
 			}
 
-			return Utility.ToDouble(m_Arguments[index]);
+			return Utility.ToDouble(Arguments[index]);
 		}
 
 		public TimeSpan GetTimeSpan(int index)
 		{
-			if (index < 0 || index >= m_Arguments.Length)
+			if (index < 0 || index >= Arguments.Length)
 			{
 				return TimeSpan.Zero;
 			}
 
-			return Utility.ToTimeSpan(m_Arguments[index]);
+			return Utility.ToTimeSpan(Arguments[index]);
+		}
+
+		public Serial GetSerial(int index)
+		{
+			if (index < 0 || index >= Arguments.Length)
+			{
+				return Serial.Zero;
+			}
+
+			return Utility.ToSerial(Arguments[index]);
 		}
 
 		public CommandEventArgs(Mobile mobile, string command, string argString, string[] arguments)
 		{
-			m_Mobile = mobile;
-			m_Command = command;
-			m_ArgString = argString;
-			m_Arguments = arguments;
+			Mobile = mobile;
+			Command = command;
+			ArgString = argString;
+			Arguments = arguments;
 		}
 	}
 
 	public class CommandEntry : IComparable
 	{
-		private readonly string m_Command;
-		private readonly CommandEventHandler m_Handler;
-		private readonly AccessLevel m_AccessLevel;
+		public string Command { get; }
 
-		public string Command => m_Command;
+		public CommandEventHandler Handler { get; }
 
-		public CommandEventHandler Handler => m_Handler;
-
-		public AccessLevel AccessLevel => m_AccessLevel;
+		public AccessLevel AccessLevel { get; }
 
 		public CommandEntry(string command, CommandEventHandler handler, AccessLevel accessLevel)
 		{
-			m_Command = command;
-			m_Handler = handler;
-			m_AccessLevel = accessLevel;
+			Command = command;
+			Handler = handler;
+			AccessLevel = accessLevel;
 		}
 
 		public int CompareTo(object obj)
@@ -122,15 +122,15 @@ namespace Server.Commands
 				throw new ArgumentException();
 			}
 
-			return m_Command.CompareTo(e.m_Command);
+			return Insensitive.Compare(Command, e.Command);
 		}
 	}
 
 	public static class CommandSystem
 	{
-		private static string m_Prefix = "[";
+		public static event Action<Mobile, string> OnCommandFail;
 
-		public static string Prefix { get => m_Prefix; set => m_Prefix = value; }
+		public static string Prefix { get; set; } = "[";
 
 		public static string[] Split(string value)
 		{
@@ -193,23 +193,19 @@ namespace Server.Commands
 			return list.ToArray();
 		}
 
-		private static readonly Dictionary<string, CommandEntry> m_Entries;
-
-		public static Dictionary<string, CommandEntry> Entries => m_Entries;
+		public static Dictionary<string, CommandEntry> Entries { get; private set; }
 
 		static CommandSystem()
 		{
-			m_Entries = new Dictionary<string, CommandEntry>(StringComparer.OrdinalIgnoreCase);
+			Entries = new Dictionary<string, CommandEntry>(StringComparer.OrdinalIgnoreCase);
 		}
 
 		public static void Register(string command, AccessLevel access, CommandEventHandler handler)
 		{
-			m_Entries[command] = new CommandEntry(command, handler, access);
+			Entries[command] = new CommandEntry(command, handler, access);
 		}
 
-		private static AccessLevel m_BadCommandIngoreLevel = AccessLevel.Player;
-
-		public static AccessLevel BadCommandIgnoreLevel { get => m_BadCommandIngoreLevel; set => m_BadCommandIngoreLevel = value; }
+		public static AccessLevel BadCommandIgnoreLevel { get; set; } = AccessLevel.Player;
 
 		public static bool Handle(Mobile from, string text)
 		{
@@ -218,11 +214,11 @@ namespace Server.Commands
 
 		public static bool Handle(Mobile from, string text, MessageType type)
 		{
-			if (text.StartsWith(m_Prefix) || type == MessageType.Command)
+			if (text.StartsWith(Prefix) || type == MessageType.Command)
 			{
 				if (type != MessageType.Command)
 				{
-					text = text.Substring(m_Prefix.Length);
+					text = text.Substring(Prefix.Length);
 				}
 
 				var indexOf = text.IndexOf(' ');
@@ -245,7 +241,7 @@ namespace Server.Commands
 					args = new string[0];
 				}
 
-				m_Entries.TryGetValue(command, out var entry);
+				Entries.TryGetValue(command, out var entry);
 
 				if (entry != null)
 				{
@@ -260,7 +256,7 @@ namespace Server.Commands
 					}
 					else
 					{
-						if (from.AccessLevel <= m_BadCommandIngoreLevel)
+						if (from.AccessLevel <= BadCommandIgnoreLevel)
 						{
 							return false;
 						}
@@ -270,12 +266,14 @@ namespace Server.Commands
 				}
 				else if (from != null)
 				{
-					if (from.AccessLevel <= m_BadCommandIngoreLevel)
+					if (from.AccessLevel <= BadCommandIgnoreLevel)
 					{
 						return false;
 					}
 
 					from.SendMessage("That is not a valid command.");
+
+					OnCommandFail?.Invoke(from, text);
 				}
 
 				return true;

@@ -55,11 +55,9 @@ namespace Server.Regions
 
         private bool ContainsDeed(Container cont)
         {
-            List<HouseRaffleDeed> deeds = cont.FindItemsByType<HouseRaffleDeed>();
-
-            for (int i = 0; i < deeds.Count; ++i)
+            foreach (var v in cont.FindItemsByType<HouseRaffleDeed>())
             {
-                if (deeds[i] == Stone.Deed)
+                if (v == Stone.Deed)
                     return true;
             }
 

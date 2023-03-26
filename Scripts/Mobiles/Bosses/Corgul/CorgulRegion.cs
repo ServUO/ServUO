@@ -20,10 +20,10 @@ namespace Server.Regions
                     if (reg.Altar != null && reg.Altar.Activated)
                         continue;
 
-                    foreach (BaseMulti multi in reg.GetEnumeratedMultis())
+                    foreach (BaseMulti multi in reg.AllMultis)
                     {
-                        if (multi is BaseBoat)
-                            reg.RemoveBoat((BaseBoat)multi);
+                        if (multi is BaseBoat b)
+                            reg.RemoveBoat(b);
                     }
                 }
             });
@@ -84,7 +84,7 @@ namespace Server.Regions
 
         public override bool OnBeginSpellCast(Mobile m, ISpell s)
         {
-            if (m.AccessLevel == AccessLevel.Player)
+            if (m.AccessLevel < AccessLevel.Counselor)
             {
                 if (s is Spells.Sixth.MarkSpell || s is Spells.Fourth.RecallSpell || s is Spells.Seventh.GateTravelSpell
                 || s is Spells.Chivalry.SacredJourneySpell)
@@ -107,9 +107,7 @@ namespace Server.Regions
 
         public void RemovePlayers(bool message)
         {
-            List<Mobile> list = GetMobiles();
-
-            foreach (Mobile m in list)
+            foreach (Mobile m in AllPlayers)
             {
                 if (message && m is PlayerMobile)
                     m.SendMessage("You have failed to meet the deadline.");
@@ -117,16 +115,15 @@ namespace Server.Regions
                 if (BaseBoat.FindBoatAt(m, m.Map) != null)
                     continue;
 
-                if (m is PlayerMobile || (m is BaseCreature && ((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned))
+                if (m is PlayerMobile || (m is BaseCreature c && (c.Controlled || c.Summoned)))
                 {
                     Point3D go = CorgulAltar.GetRandomPoint(CorgulAltar.LandKickLocation, Map);
                     BaseCreature.TeleportPets(m, go, Map);
                     m.MoveToWorld(go, Map);
                 }
-
             }
 
-            foreach (BaseBoat b in GetEnumeratedMultis().OfType<BaseBoat>())
+            foreach (BaseBoat b in AllMultis.OfType<BaseBoat>())
             {
                 RemoveBoat(b);
             }
@@ -147,13 +144,13 @@ namespace Server.Regions
             if (boat.Map != null && boat.Map != Map.Internal && m_Altar != null && m_Altar.WarpRegion != null)
             {
                 Map map = boat.Map;
-                Rectangle2D rec = m_Altar.WarpRegion.Bounds;
+                Rectangle3D rec = m_Altar.WarpRegion.Bounds;
 
                 int x = boat.X - m_Bounds.X;
                 int y = boat.Y - m_Bounds.Y;
                 int z = map.GetAverageZ(x, y);
 
-                Point3D ePnt = new Point3D(rec.X + x, rec.Y + y, -5);
+                Point3D ePnt = new Point3D(rec.Start.X + x, rec.Start.Y + y, -5);
 
                 int offsetX = ePnt.X - boat.X;
                 int offsetY = ePnt.Y - boat.Y;

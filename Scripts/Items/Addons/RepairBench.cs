@@ -103,7 +103,9 @@ namespace Server.Items
 
                 m.CloseGump(typeof(ConfirmRemoveGump));
                 m.CloseGump(typeof(RepairBenchGump));
-                Target.Cancel(m);
+
+				if (m.Target != null)
+					m.Target.Cancel(m);
             }
         }
 

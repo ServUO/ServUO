@@ -12,7 +12,6 @@ namespace Server
 
 		private readonly PerformanceCounter itemsPerSecond;
 		private readonly PerformanceCounter mobilesPerSecond;
-		private readonly PerformanceCounter dataPerSecond;
 
 		private readonly PerformanceCounter serializedBytesPerSecond;
 		private readonly PerformanceCounter writtenBytesPerSecond;
@@ -36,11 +35,6 @@ namespace Server
 					new CounterCreationData(
 					"Save - Mobiles/sec",
 					"Number of mobiles saved per second.",
-					PerformanceCounterType.RateOfCountsPerSecond32),
-
-					new CounterCreationData(
-					"Save - Customs/sec",
-					"Number of cores saved per second.",
 					PerformanceCounterType.RateOfCountsPerSecond32),
 
 					new CounterCreationData(
@@ -80,7 +74,6 @@ namespace Server
 
 			itemsPerSecond = new PerformanceCounter(PerformanceCategoryName, "Save - Items/sec", false);
 			mobilesPerSecond = new PerformanceCounter(PerformanceCategoryName, "Save - Mobiles/sec", false);
-			dataPerSecond = new PerformanceCounter(PerformanceCategoryName, "Save - Customs/sec", false);
 
 			serializedBytesPerSecond = new PerformanceCounter(PerformanceCategoryName, "Save - Serialized bytes/sec", false);
 			writtenBytesPerSecond = new PerformanceCounter(PerformanceCategoryName, "Save - Written bytes/sec", false);
@@ -108,13 +101,6 @@ namespace Server
 			serializedBytesPerSecond.IncrementBy(numberOfBytes);
 		}
 
-		public void OnDataSaved(int numberOfBytes)
-		{
-			dataPerSecond.Increment();
-
-			serializedBytesPerSecond.IncrementBy(numberOfBytes);
-		}
-
 		public void OnFileWritten(int numberOfBytes)
 		{
 			writtenBytesPerSecond.IncrementBy(numberOfBytes);
@@ -132,7 +118,6 @@ namespace Server
 
 				itemsPerSecond.Dispose();
 				mobilesPerSecond.Dispose();
-				dataPerSecond.Dispose();
 
 				serializedBytesPerSecond.Dispose();
 				writtenBytesPerSecond.Dispose();

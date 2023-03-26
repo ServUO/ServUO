@@ -386,11 +386,9 @@ namespace Server.Regions
 
                 Sector sector = map.GetSector(x, y);
 
-                for (int j = 0; j < sector.Items.Count; j++)
+                foreach (Item item in sector.Items)
                 {
-                    Item item = sector.Items[j];
-
-                    if (!(item is BaseMulti) && item.ItemID <= TileData.MaxItemValue && item.AtWorldPoint(x, y))
+					if (!(item is BaseMulti) && item.ItemID <= TileData.MaxItemValue && item.AtWorldPoint(x, y))
                     {
                         m_SpawnBuffer2.Add(item);
 
@@ -399,14 +397,16 @@ namespace Server.Regions
                             ItemData id = item.ItemData;
                             int itemZ = item.Z + id.CalcHeight;
 
-                            if (itemZ >= minZ && itemZ < maxZ)
-                                if ((id.Flags & TileFlag.Wet) != 0)
-                                {
-                                    if (water)
-                                        m_SpawnBuffer1.Add(itemZ);
-                                }
-                                else if (land && id.Surface && !id.Impassable)
-                                    m_SpawnBuffer1.Add(itemZ);
+							if (itemZ >= minZ && itemZ < maxZ)
+							{
+								if ((id.Flags & TileFlag.Wet) != 0)
+								{
+									if (water)
+										m_SpawnBuffer1.Add(itemZ);
+								}
+								else if (land && id.Surface && !id.Impassable)
+									m_SpawnBuffer1.Add(itemZ);
+							}
                         }
                     }
                 }
@@ -504,16 +504,16 @@ namespace Server.Regions
                 if (!ok)
                     continue;
 
-                for (int j = 0; j < sector.Mobiles.Count; j++)
+                foreach (Mobile m in sector.Mobiles)
                 {
-                    Mobile m = sector.Mobiles[j];
-
-                    if (m.X == x && m.Y == y && (m.IsPlayer() || !m.Hidden))
-                        if (m.Z + 16 > z && m.Z < top)
-                        {
-                            ok = false;
-                            break;
-                        }
+					if (m.X == x && m.Y == y && (m.IsPlayer() || !m.Hidden))
+					{
+						if (m.Z + 16 > z && m.Z < top)
+						{
+							ok = false;
+							break;
+						}
+					}
                 }
 
                 if (ok)

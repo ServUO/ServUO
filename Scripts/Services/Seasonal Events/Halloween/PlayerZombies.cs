@@ -318,7 +318,7 @@ namespace Server.Engines.Events
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.WriteMobile(m_DeadPlayer);
+            writer.Write(m_DeadPlayer);
         }
 
         public override void Deserialize(GenericReader reader)

@@ -2,6 +2,8 @@ using Server.Gumps;
 using Server.Multis;
 using Server.Network;
 using Server.Targeting;
+
+using System;
 using System.Collections.Generic;
 
 namespace Server.Items
@@ -265,14 +267,16 @@ namespace Server.Items
                     case 0: { break; }
                     case 1: // Stop Song
                         {
-                            sender.Mobile.Send(StopMusic.Instance);
+                            StopMusic.Send(sender);
 
                             break;
                         }
                     default:
                         {
                             int music = index - 100;
-                            sender.Mobile.Send(new PlayMusic((MusicName)music));
+
+                            if (Enum.IsDefined(typeof(MusicName), music))
+                                PlayMusic.Send(sender, (MusicName)music);
 
                             return;
                         }

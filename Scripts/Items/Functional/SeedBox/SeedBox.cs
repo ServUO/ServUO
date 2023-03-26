@@ -124,7 +124,7 @@ namespace Server.Engines.Plants
 
         public bool TryAddSeed(Mobile from, Seed seed, int index = -1)
         {
-            if (!from.Backpack.CheckHold(from, seed, true, true) || seed.Amount <= 0)
+            if (!from.Backpack.CheckHold(from, seed, true, true, true) || seed.Amount <= 0)
             {
                 return false;
             }

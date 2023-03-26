@@ -154,7 +154,7 @@ namespace Server.Mobiles
 
             foreach (Mobile m in eable)
             {
-                if (m.Player && m.AccessLevel == AccessLevel.Player && m.Alive)
+                if (m.Player && m.AccessLevel < AccessLevel.Counselor && m.Alive)
                     list.Add(m);
             }
 

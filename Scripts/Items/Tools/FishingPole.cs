@@ -317,8 +317,8 @@ namespace Server.Items
             return true;
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -327,10 +327,12 @@ namespace Server.Items
 
                 from.CheckStatTimers();
             }
+
+			base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile m = (Mobile)parent;
@@ -345,7 +347,9 @@ namespace Server.Items
 
                 m.CheckStatTimers();
             }
-        }
+
+			base.OnRemoved(parent);
+		}
 
         public override void AddCraftedProperties(ObjectPropertyList list)
         {

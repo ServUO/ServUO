@@ -1,145 +1,134 @@
+using System;
+
 using Server.Engines.Quests;
 using Server.Items;
 using Server.Mobiles;
-using System;
 
 namespace Server.Multis
 {
-    public class LizardmenCamp : BaseCamp
-    {
-        [Constructable]
-        public LizardmenCamp()
-            : base(0x1F6D)
-        {
-        }
+	public class LizardmenCamp : BaseCamp
+	{
+		public virtual Mobile Lizardmen => new Lizardman();
 
-        public LizardmenCamp(Serial serial)
-            : base(serial)
-        {
-        }
+		[CommandProperty(AccessLevel.GameMaster)]
+		public override TimeSpan DecayDelay => TimeSpan.FromMinutes(5.0);
 
-        public virtual Mobile Lizardmen => new Lizardman();
+		[Constructable]
+		public LizardmenCamp()
+			: base(0x1F6D)
+		{
+		}
 
-        [CommandProperty(AccessLevel.GameMaster)]
-        public override TimeSpan DecayDelay => TimeSpan.FromMinutes(5.0);
+		public LizardmenCamp(Serial serial)
+			: base(serial)
+		{
+		}
 
-        public override void AddComponents()
-        {
-            AddItem(new Static(0x10ee), 0, 0, 0);
-            AddItem(new Static(0xfac), 0, 7, 0);
+		public override void AddComponents()
+		{
+			AddItem(new Static(0x10ee), 0, 0, 0);
+			AddItem(new Static(0xfac), 0, 7, 0);
 
-            switch (Utility.Random(3))
-            {
-                case 0:
-                    {
-                        AddItem(new Item(0xDE3), 0, 7, 0); // Campfire
-                        AddItem(new Item(0x974), 0, 7, 1); // Cauldron
-                        break;
-                    }
-                case 1:
-                    {
-                        AddItem(new Item(0x1E95), 0, 7, 1); // Rabbit on a spit
-                        break;
-                    }
-                default:
-                    {
-                        AddItem(new Item(0x1E94), 0, 7, 1); // Chicken on a spit
-                        break;
-                    }
-            }
-            AddItem(new Item(0x41F), 4, 4, 0); // Gruesome Standart South
+			switch (Utility.Random(3))
+			{
+				case 0:
+				{
+					AddItem(new Item(0xDE3), 0, 7, 0); // Campfire
+					AddItem(new Item(0x974), 0, 7, 1); // Cauldron
+					break;
+				}
+				case 1:
+				{
+					AddItem(new Item(0x1E95), 0, 7, 1); // Rabbit on a spit
+					break;
+				}
+				default:
+				{
+					AddItem(new Item(0x1E94), 0, 7, 1); // Chicken on a spit
+					break;
+				}
+			}
 
-            AddCampChests();
+			AddItem(new Item(0x41F), 4, 4, 0); // Gruesome Standart South
 
-            for (int i = 0; i < 4; i++)
-            {
-                AddMobile(Lizardmen, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
-            }
+			AddCampChests();
 
-            switch (Utility.Random(2))
-            {
-                case 0:
-                    Prisoner = new EscortableNoble();
-                    break;
-                default:
-                    Prisoner = new EscortableSeekerOfAdventure();
-                    break;
-            }
+			for (var i = 0; i < 4; i++)
+			{
+				AddMobile(Lizardmen, Utility.RandomMinMax(-7, 7), Utility.RandomMinMax(-7, 7), 0);
+			}
 
-            Prisoner.IsPrisoner = true;
-            Prisoner.CantWalk = true;
+			switch (Utility.Random(2))
+			{
+				default:
+				case 0: Prisoner = new EscortableNoble(); break;
+				case 1: Prisoner = new EscortableSeekerOfAdventure(); break;
+			}
 
-            Prisoner.YellHue = Utility.RandomList(0x57, 0x67, 0x77, 0x87, 0x117);
-            AddMobile(Prisoner, Utility.RandomMinMax(-2, 2), Utility.RandomMinMax(-2, 2), 0);
-        }
+			Prisoner.IsPrisoner = true;
+			Prisoner.CantWalk = true;
 
-        // Don't refresh decay timer
-        public override void OnEnter(Mobile m)
-        {
-            if (m.Player && Prisoner != null && Prisoner.CantWalk)
-            {
-                int number;
+			Prisoner.YellHue = Utility.RandomList(0x57, 0x67, 0x77, 0x87, 0x117);
 
-                switch (Utility.Random(8))
-                {
-                    case 0:
-                        number = 502261;
-                        break; // HELP!
-                    case 1:
-                        number = 502262;
-                        break; // Help me!
-                    case 2:
-                        number = 502263;
-                        break; // Canst thou aid me?!
-                    case 3:
-                        number = 502264;
-                        break; // Help a poor prisoner!
-                    case 4:
-                        number = 502265;
-                        break; // Help! Please!
-                    case 5:
-                        number = 502266;
-                        break; // Aaah! Help me!
-                    case 6:
-                        number = 502267;
-                        break; // Go and get some help!
-                    default:
-                        number = 502268;
-                        break; // Quickly, I beg thee! Unlock my chains! If thou dost look at me close thou canst see them.	
-                }
-                Prisoner.Yell(number);
-            }
-        }
+			AddMobile(Prisoner, Utility.RandomMinMax(-2, 2), Utility.RandomMinMax(-2, 2), 0);
+		}
 
-        public override void AddItem(Item item, int xOffset, int yOffset, int zOffset)
-        {
-            if (item != null)
-                item.Movable = false;
+		public override void OnEnter(Mobile m)
+		{
+			base.OnEnter(m);
 
-            base.AddItem(item, xOffset, yOffset, zOffset);
-        }
+			if (m.Player && Prisoner?.Deleted == false && Prisoner.CantWalk)
+			{
+				int number;
 
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-            writer.Write(1); // version
-        }
+				switch (Utility.Random(8))
+				{
+					case 0: number = 502261; break; // HELP!
+					case 1: number = 502262; break; // Help me!
+					case 2: number = 502263; break; // Canst thou aid me?!
+					case 3: number = 502264; break; // Help a poor prisoner!
+					case 4: number = 502265; break; // Help! Please!
+					case 5: number = 502266; break; // Aaah! Help me!
+					case 6: number = 502267; break; // Go and get some help!
+					default: number = 502268; break; // Quickly, I beg thee! Unlock my chains! If thou dost look at me close thou canst see them.	
+				}
 
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-            int version = reader.ReadInt();
+				Prisoner.Yell(number);
+			}
+		}
 
-            switch (version)
-            {
-                case 1:
-                    break;
-                case 0:
-                    {
-                        Prisoner = reader.ReadMobile() as BaseCreature;
-                        break;
-                    }
-            }
-        }
-    }
+		public override void AddItem(Item item, int xOffset, int yOffset, int zOffset)
+		{
+			if (item?.Deleted == false)
+			{
+				item.Movable = false;
+			}
+
+			base.AddItem(item, xOffset, yOffset, zOffset);
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write(1); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			var version = reader.ReadInt();
+
+			switch (version)
+			{
+				case 1: break;
+				case 0:
+				{
+					Prisoner = reader.ReadMobile<BaseCreature>();
+					break;
+				}
+			}
+		}
+	}
 }

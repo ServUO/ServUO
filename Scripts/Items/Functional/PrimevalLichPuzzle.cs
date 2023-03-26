@@ -204,7 +204,7 @@ namespace Server.Engines.CannedEvil
                     m.SendMessage("Primeval Lich lever puzzle already exists: please delete the existing one first ...");
                 }
 
-                Utility.WriteConsoleColor(ConsoleColor.Green, "Primeval Lich lever puzzle already exists: please delete the existing one first ...");
+                Utility.WriteLine(ConsoleColor.Green, "Primeval Lich lever puzzle already exists: please delete the existing one first ...");
 
                 return;
             }
@@ -214,7 +214,7 @@ namespace Server.Engines.CannedEvil
                 m.SendMessage("Generating Primeval Lich lever puzzle...");
             }
 
-            Utility.WriteConsoleColor(ConsoleColor.Green, "Generating Primeval Lich lever puzzle...");
+            Utility.WriteLine(ConsoleColor.Green, "Generating Primeval Lich lever puzzle...");
 
             PrimevalLichPuzzle control = new PrimevalLichPuzzle(m);
             if (null == control || control.Deleted)
@@ -224,7 +224,7 @@ namespace Server.Engines.CannedEvil
                     m.SendMessage(33, "There was a problem generating the puzzle.");
                 }
 
-                Utility.WriteConsoleColor(ConsoleColor.Green, "There was a problem generating the puzzle.");
+                Utility.WriteLine(ConsoleColor.Green, "There was a problem generating the puzzle.");
             }
             else
             {
@@ -233,7 +233,7 @@ namespace Server.Engines.CannedEvil
                     m.SendMessage("The puzzle was successfully generated.");
                 }
 
-                Utility.WriteConsoleColor(ConsoleColor.Green, "The puzzle was successfully generated.");
+                Utility.WriteLine(ConsoleColor.Green, "The puzzle was successfully generated.");
                 WeakEntityCollection.Add("primevallich", control);
             }
         }

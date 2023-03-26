@@ -15,7 +15,7 @@ namespace Server
 
 		public FileInfo File { get; }
 
-		public int IdxLength { get; }
+		public long IdxLength { get; }
 		public int IdxCount { get; }
 
 		private readonly string _BinPath, _IdxPath;
@@ -46,25 +46,36 @@ namespace Server
 						FileStream index;
 
 						try
-						{ index = new FileStream(_IdxPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); }
-						catch { index = null; }
+						{
+							index = new FileStream(_IdxPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+						}
+						catch
+						{
+							index = null;
+						}
 
 						if (index != null)
 						{
+							byte[] buffer;
+
 							using (index)
 							{
-								IdxLength = (int)index.Length;
-								IdxCount = IdxLength / EntryDataSize;
+								buffer = new byte[index.Length];
 
-								if (Index.Length != IdxCount)
-									Index = new Entry3D[IdxCount];
+								IdxLength = index.Read(buffer, 0, buffer.Length);
+								IdxCount = buffer.Length / EntryDataSize;
 
-								unsafe
-								{
-									fixed (Entry3D* buffer = Index)
-										NativeReader.Read(index, buffer, IdxLength);
-								}
+								index.Close();
 							}
+
+							if (Index.Length != IdxCount)
+								Index = new Entry3D[IdxCount];
+
+							var gc = GCHandle.Alloc(Index, GCHandleType.Pinned);
+
+							Marshal.Copy(buffer, 0, gc.AddrOfPinnedObject(), buffer.Length);
+
+							gc.Free();
 
 							_IdxLoaded = true;
 						}
@@ -77,8 +88,13 @@ namespace Server
 					if (_BinPath != null)
 					{
 						try
-						{ File = new FileInfo(_BinPath); }
-						catch { File = null; }
+						{
+							File = new FileInfo(_BinPath);
+						}
+						catch
+						{
+							File = null;
+						}
 
 						_BinLoaded = File?.Exists ?? false;
 					}
@@ -100,8 +116,13 @@ namespace Server
 					if (_BinPath != null)
 					{
 						try
-						{ File = new FileInfo(_BinPath); }
-						catch { File = null; }
+						{
+							File = new FileInfo(_BinPath);
+						}
+						catch
+						{
+							File = null;
+						}
 
 						_BinLoaded = File?.Exists ?? false;
 					}
@@ -199,16 +220,16 @@ namespace Server
 			if (!_BinLoaded)
 			{
 				if (System.IO.File.Exists(_BinPath))
-					Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [bin] '{_BinPath}'\nThe file cannot be opened, close any applications that are using the file and try again.");
+					Utility.WriteLine(ConsoleColor.Yellow, $"Warning: Could not load [bin] '{_BinPath}'\nThe file cannot be opened, close any applications that are using the file and try again.");
 				else
-					Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [bin] '{_BinPath}'\nThe file cannot be opened, it does not exist.");
+					Utility.WriteLine(ConsoleColor.Yellow, $"Warning: Could not load [bin] '{_BinPath}'\nThe file cannot be opened, it does not exist.");
 			}
 			else if (!_IdxLoaded)
 			{
 				if (System.IO.File.Exists(_IdxPath))
-					Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [idx] '{_IdxPath}'\nThe file cannot be opened, close any applications that are using the file and try again.");
+					Utility.WriteLine(ConsoleColor.Yellow, $"Warning: Could not load [idx] '{_IdxPath}'\nThe file cannot be opened, close any applications that are using the file and try again.");
 				else
-					Utility.WriteConsoleColor(ConsoleColor.Yellow, $"Warning: Could not load [idx] '{_IdxPath}'\nThe file cannot be opened, it does not exist.");
+					Utility.WriteLine(ConsoleColor.Yellow, $"Warning: Could not load [idx] '{_IdxPath}'\nThe file cannot be opened, it does not exist.");
 			}
 
 			if (Core.Service)
@@ -219,7 +240,7 @@ namespace Server
 
 			do
 			{
-				Utility.WriteConsoleColor(ConsoleColor.Yellow, "Retry? (Y/N)");
+				Utility.WriteLine(ConsoleColor.Yellow, "Retry? (Y/N)");
 
 				key = Console.ReadKey();
 
@@ -232,9 +253,9 @@ namespace Server
 			return retry;
 		}
 
-		public bool Seek(int index, ref byte[] buffer, out int length, out int extra)
+		public bool Seek(int index, ref byte[] buffer, out int length, out int data)
 		{
-			length = extra = 0;
+			length = data = 0;
 
 			if (File == null)
 				return false;
@@ -248,27 +269,25 @@ namespace Server
 				return false;
 
 			length = e.Size;
-			extra = e.Data;
+			data = e.Data;
 
 			try
 			{
 				using (var stream = new FileStream(File.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 				{
-					unsafe
-					{
-						if (buffer == null || buffer.Length < length)
-							buffer = new byte[length];
+					stream.Seek(e.Offset, SeekOrigin.Begin);
 
-						fixed (byte* data = buffer)
-							length = NativeReader.Read(stream, e.Offset, data, length);
-					}
+					if (buffer == null || buffer.Length < length)
+						buffer = new byte[length];
+
+					length = stream.Read(buffer, 0, length);
 				}
 
 				return true;
 			}
 			catch
 			{
-				length = extra = 0;
+				length = data = 0;
 				return false;
 			}
 		}

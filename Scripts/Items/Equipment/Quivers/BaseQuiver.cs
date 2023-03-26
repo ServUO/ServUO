@@ -14,7 +14,7 @@ namespace Server.Items
     }
 
     [Alterable(typeof(DefTailoring), typeof(GargishLeatherWingArmor), true)]
-    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage, IArtifact, ICanBeElfOrHuman
+    public class BaseQuiver : Container, ICraftable, ISetItem, IVvVItem, IOwnerRestricted, IRangeDamage, IArtifact, IRacialEquipment
     {
         private bool _VvVItem;
         private Mobile _Owner;
@@ -46,9 +46,12 @@ namespace Server.Items
         {
             get { return _ElvesOnly; }
             set { _ElvesOnly = value; }
-        }
+		}
 
-        public override int DefaultGumpID => 0x108;
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Race RequiredRace => ElfOnly ? Race.Elf : Race.Human;
+
+		public override int DefaultGumpID => 0x108;
 
         public override int DefaultMaxItems => 1;
 
@@ -326,7 +329,7 @@ namespace Server.Items
             return false;
         }
 
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
             if (!Movable)
                 return false;
@@ -357,7 +360,7 @@ namespace Server.Items
                 Items.ForEach(i => currentAmount += i.Amount);
 
                 if (item.Amount + currentAmount <= m_Capacity)
-                    return base.CheckHold(m, item, message, checkItems, plusItems, plusWeight);
+                    return base.CheckHold(m, item, message, checkItems, checkWeight, plusItems, plusWeight);
             }
 
             return false;
@@ -398,8 +401,8 @@ namespace Server.Items
             InvalidateWeight();
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile mob = (Mobile)parent;
@@ -423,10 +426,12 @@ namespace Server.Items
                     }
                 }
             }
+
+			base.OnAdded(parent);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile mob = (Mobile)parent;
@@ -436,8 +441,10 @@ namespace Server.Items
 
                 if (IsSetItem && m_SetEquipped)
                     SetHelper.RemoveSetBonus(mob, SetID, this);
-            }
-        }
+			}
+
+			base.OnRemoved(parent);
+		}
 
         public override bool OnDragLift(Mobile from)
         {

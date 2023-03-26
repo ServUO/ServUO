@@ -119,7 +119,7 @@ namespace Server.Items
         {
             base.IncreaseTier();
 
-            List<object> list = new List<object>();
+            HashSet<object> list = new HashSet<object>();
             Item c;
 
             switch (Tier)

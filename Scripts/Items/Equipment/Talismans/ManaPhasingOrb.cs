@@ -44,8 +44,8 @@ namespace Server.Items
             return _ManaPhaseTable != null && _ManaPhaseTable.Contains(from);
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile && IsInManaPhase((Mobile)parent))
                 RemoveFromTable((Mobile)parent);
 

@@ -152,19 +152,15 @@ namespace Server.Engines.Quests
 
             byte type = reader.ReadByte();
 
-            switch (type)
-            {
-                case 0x0:
-                    return null; // invalid
-                case 0x1:
-                    return reader.ReadInt();
-                case 0x2:
-                    return reader.ReadString();
-                case 0x3:
-                    return reader.ReadItem();
-                case 0x4:
-                    return reader.ReadMobile();
-            }
+			switch (type)
+			{
+				case 0x0: return null; // invalid
+				case 0x1: return reader.ReadInt();
+				case 0x2: return reader.ReadString();
+				case 0x3: return reader.ReadItem();
+				case 0x4: return reader.ReadMobile();
+				case 0x5: return TextDefinition.Deserialize(reader);
+			}
 
             return null;
         }

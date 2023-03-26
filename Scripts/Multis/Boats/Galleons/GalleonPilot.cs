@@ -40,7 +40,7 @@ namespace Server.Mobiles
             InitStats(100, 100, 25);
 
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = GetGender())
             {
@@ -61,7 +61,7 @@ namespace Server.Mobiles
 
         public virtual int GetHairHue()
         {
-            return Utility.RandomHairHue();
+            return Race.RandomHairHue();
         }
 
         public virtual int GetShoeHue()

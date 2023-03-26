@@ -1,18 +1,19 @@
 using Server.Accounting;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Server.Gumps
 {
     public class BanDurationGump : Gump
     {
-        private readonly ArrayList m_List;
-        public BanDurationGump(Account a)
+        private readonly List<object> m_List;
+        public BanDurationGump(IAccount a)
             : this(MakeList(a))
         {
         }
 
-        public BanDurationGump(ArrayList list)
+        public BanDurationGump(List<object> list)
             : base((640 - 500) / 2, (480 - 305) / 2)
         {
             m_List = list;
@@ -43,9 +44,9 @@ namespace Server.Gumps
             AddTextField(170, 65, 315, height - 80, 10);
         }
 
-        public static ArrayList MakeList(object obj)
+        public static List<object> MakeList(object obj)
         {
-            ArrayList list = new ArrayList(1);
+			List<object> list = new List<object>(1);
             list.Add(obj);
             return list;
         }
@@ -94,7 +95,7 @@ namespace Server.Gumps
                     {
                         for (int i = 0; i < m_List.Count; ++i)
                         {
-                            Account a = (Account)m_List[i];
+                            IAccount a = (IAccount)m_List[i];
 
                             a.SetUnspecifiedBan(from);
                         }
@@ -236,12 +237,12 @@ namespace Server.Gumps
 
                 for (int i = 0; i < m_List.Count; ++i)
                 {
-                    Account a = (Account)m_List[i];
+                    IAccount a = (IAccount)m_List[i];
 
                     a.SetBanTags(from, DateTime.UtcNow, duration);
 
                     if (comment != null)
-                        a.Comments.Add(new AccountComment(from.RawName, string.Format("Duration: {0}, Comment: {1}", ((duration == TimeSpan.MaxValue) ? "Infinite" : duration.ToString()), comment)));
+                        a.AddComment(from.RawName, string.Format("Duration: {0}, Comment: {1}", ((duration == TimeSpan.MaxValue) ? "Infinite" : duration.ToString()), comment));
                 }
 
                 if (duration == TimeSpan.MaxValue)

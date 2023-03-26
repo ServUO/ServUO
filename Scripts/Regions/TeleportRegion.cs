@@ -71,31 +71,29 @@ namespace Server.Regions
             }
         }
 
-        public static void Initialize()
-        {
-            Timer.DelayCall(() =>
-            {
-                string filePath = Path.Combine("Data", "TeleporterRegions.xml");
+		[CallPriority(Int32.MaxValue - 1)]
+		public static void Initialize()
+		{
+			var filePath = Path.Combine(Core.BaseDirectory, "Data", "TeleporterRegions.xml");
 
-                if (!File.Exists(filePath))
-                    return;
+			if (!File.Exists(filePath))
+				return;
 
-                XmlDocument doc = new XmlDocument();
-                doc.Load(filePath);
+			var doc = new XmlDocument();
+			doc.Load(filePath);
 
-                XmlElement root = doc["TeleporterRegions"];
-                var unique = 1;
+			var root = doc["TeleporterRegions"];
+			var unique = 1;
 
-                BuildTeleporters("Teleporter", root, ref unique);
+			BuildTeleporters("Teleporter", root, ref unique);
 
-                if (Siege.SiegeShard)
-                {
-                    BuildTeleporters("SiegeTeleporter", root, ref unique);
-                }
+			if (Siege.SiegeShard)
+			{
+				BuildTeleporters("SiegeTeleporter", root, ref unique);
+			}
 
-                Console.WriteLine("Initialized {0} Teleporter Regions.", (unique - 1).ToString());
-            });
-        }
+			Console.WriteLine("Initialized {0:N0} Teleporter Regions.", unique - 1);
+		}
 
         private static void BuildTeleporters(string elementName, XmlElement root, ref int unique)
         {

@@ -83,11 +83,11 @@ namespace Server.Items
 
                 if (region != null)
                 {
-                    List<Mobile> mobiles = region.GetMobiles();
-
-                    foreach (Mobile m in mobiles)
-                        if (m is BaseCreature && ((BaseCreature)m).ControlMaster == from)
-                            m.MoveToWorld(new Point3D(3785, 1107, 20), Map);
+					foreach (Mobile m in region.AllMobiles)
+					{
+						if (m is BaseCreature c && c.ControlMaster == from)
+							m.MoveToWorld(new Point3D(3785, 1107, 20), Map);
+					}
                 }
 
                 // teleport player

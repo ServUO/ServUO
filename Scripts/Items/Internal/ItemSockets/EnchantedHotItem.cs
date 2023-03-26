@@ -76,7 +76,7 @@ namespace Server.Items
             {
                 bool found = false;
 
-                m.Backpack.Items.IterateReverse(i =>
+				ColUtility.IterateReverse(m.Backpack.Items, i =>
                 {
                     EnchantedHotItemSocket socket = i.GetSocket<EnchantedHotItemSocket>();
 

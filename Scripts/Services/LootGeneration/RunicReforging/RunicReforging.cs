@@ -685,7 +685,7 @@ namespace Server.Items
             if (list == null || list.Count == 0)
                 return;
 
-            list.IterateReverse(col =>
+			ColUtility.IterateReverse(list, col =>
             {
                 if (col != null && list.Contains(col) && !ItemPropertyInfo.ValidateProperty(item, col.Attribute, reforged))
                 {

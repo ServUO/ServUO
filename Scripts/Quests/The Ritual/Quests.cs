@@ -290,7 +290,7 @@ namespace Server.Engines.Quests.RitualQuest
                     }
                 }
 
-                if (!GetEnumeratedMobiles().Any(m => m is BexilPunchingBag && !m.Deleted))
+                if (!AllMobiles.Any(m => m is BexilPunchingBag && !m.Deleted))
                 {
                     BexilPunchingBag bex = new BexilPunchingBag();
                     bex.MoveToWorld(new Point3D(403, 3391, 38), Map.TerMur);

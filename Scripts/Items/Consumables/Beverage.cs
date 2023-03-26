@@ -128,7 +128,6 @@ namespace Server.Items
 
         [Constructable]
         public Shochu()
-            : base(0x1956)
         {
             Hue = 700;
             LootType = LootType.Blessed;

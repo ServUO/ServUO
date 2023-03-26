@@ -1035,7 +1035,7 @@ namespace Server.Items
 
             writer.Write(0); // version
 
-            writer.WriteItem(m_Teleporter);
+            writer.Write(m_Teleporter);
         }
 
         public override void Deserialize(GenericReader reader)

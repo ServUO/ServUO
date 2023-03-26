@@ -84,7 +84,6 @@ namespace Server.Engines.Khaldun
                     Type = ChampionSpawnType.Khaldun
                 };
                 champ.MoveToWorld(new Point3D(5469, 1461, 20), Map.Trammel);
-                ChampionSystem.AllSpawns.Add(champ);
             }
 
             champ = new ChampionSpawn
@@ -92,7 +91,6 @@ namespace Server.Engines.Khaldun
                 Type = ChampionSpawnType.Khaldun
             };
             champ.MoveToWorld(new Point3D(5469, 1461, 20), Map.Felucca);
-            ChampionSystem.AllSpawns.Add(champ);
 
             if (ChestSpawner.InstanceFel == null)
             {
@@ -114,10 +112,11 @@ namespace Server.Engines.Khaldun
 
         protected override void Remove()
         {
-            ChampionSystem.AllSpawns.Where(s => s.Type == ChampionSpawnType.Khaldun && Region.Find(s.Location, s.Map).IsPartOf("Khaldun")).IterateReverse(s =>
-            {
-                s.Delete();
-            });
+			ColUtility.IterateReverse(ChampionSpawn.AllSpawns, s =>
+			{
+				if (s.Type == ChampionSpawnType.Khaldun && Region.Find(s.Location, s.Map).IsPartOf("Khaldun"))
+					s.Delete();
+			});
 
             if (ChestSpawner.InstanceFel != null)
             {

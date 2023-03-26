@@ -32,7 +32,7 @@ namespace Server.Commands.Generic
             }
 
             if (assembly == null)
-                assembly = new AssemblyEmitter("__dynamic", false);
+                assembly = new AssemblyEmitter("__dynamic");
 
             m_Comparer = SortCompiler.Compile(assembly, baseType, m_Orders.ToArray());
         }

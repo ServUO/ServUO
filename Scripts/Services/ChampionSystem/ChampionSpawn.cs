@@ -14,6 +14,8 @@ namespace Server.Engines.CannedEvil
     {
         public static readonly int MaxStrayDistance = 250;
 
+		public static List<ChampionSpawn> AllSpawns { get; } = new List<ChampionSpawn>();
+
         private bool m_Active;
         private bool m_RandomizeType;
         private ChampionSpawnType m_Type;
@@ -97,6 +99,8 @@ namespace Server.Engines.CannedEvil
         public ChampionSpawn()
             : base(0xBD2)
         {
+			AllSpawns.Add(this);
+
             Movable = false;
             Visible = false;
 
@@ -120,7 +124,7 @@ namespace Server.Engines.CannedEvil
             Timer.DelayCall(TimeSpan.Zero, SetInitialSpawnArea);
         }
 
-        public void SetInitialSpawnArea()
+		public void SetInitialSpawnArea()
         {
             //Previous default used to be 24;
             SpawnArea = new Rectangle2D(new Point2D(X - SpawnRadius, Y - SpawnRadius),
@@ -684,9 +688,9 @@ namespace Server.Engines.CannedEvil
                 Respawn();
             }
 
-            if (TimerRunning && _NextGhostCheck < DateTime.UtcNow)
+            if (TimerRunning && _NextGhostCheck < DateTime.UtcNow && m_Region != null)
             {
-                foreach (PlayerMobile ghost in m_Region.GetEnumeratedMobiles().OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
+                foreach (PlayerMobile ghost in m_Region.AllPlayers.OfType<PlayerMobile>().Where(pm => !pm.Alive && (pm.Corpse == null || pm.Corpse.Deleted)))
                 {
                     Map map = ghost.Map;
                     Point3D loc = ExorcismSpell.GetNearestShrine(ghost, ref map);
@@ -1072,7 +1076,14 @@ namespace Server.Engines.CannedEvil
             UpdateRegion();
         }
 
-        public override void OnAfterDelete()
+		public override void OnDelete()
+		{
+			base.OnDelete();
+
+			AllSpawns.Remove(this);
+		}
+		
+		public override void OnAfterDelete()
         {
             base.OnAfterDelete();
 
@@ -1106,14 +1117,17 @@ namespace Server.Engines.CannedEvil
             Stop();
 
             UpdateRegion();
+
+			AllSpawns.Remove(this);
         }
 
         public ChampionSpawn(Serial serial)
             : base(serial)
-        {
-        }
+		{
+			AllSpawns.Add(this);
+		}
 
-        public virtual void RegisterDamageTo(Mobile m)
+		public virtual void RegisterDamageTo(Mobile m)
         {
             if (m == null)
                 return;
@@ -1225,7 +1239,7 @@ namespace Server.Engines.CannedEvil
             }
 
             writer.Write(m_ConfinedRoaming);
-            writer.WriteItem(m_Idol);
+            writer.Write(m_Idol);
             writer.Write(m_HasBeenAdvanced);
             writer.Write(m_SpawnArea);
 
@@ -1238,8 +1252,8 @@ namespace Server.Engines.CannedEvil
             writer.Write(m_Creatures, true);
             writer.Write(m_RedSkulls, true);
             writer.Write(m_WhiteSkulls, true);
-            writer.WriteItem(m_Platform);
-            writer.WriteItem(m_Altar);
+            writer.Write(m_Platform);
+            writer.Write(m_Altar);
             writer.Write(m_ExpireDelay);
             writer.WriteDeltaTime(m_ExpireTime);
             writer.Write(m_Champion);
@@ -1507,7 +1521,7 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player && m.Map == Map.Felucca)
+            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel < AccessLevel.Counselor && m.Map == Map.Felucca)
             {
                 if (m.Alive && m.Backpack != null)
                 {

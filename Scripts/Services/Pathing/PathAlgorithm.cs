@@ -1,33 +1,34 @@
 namespace Server.PathAlgorithms
 {
-    public abstract class PathAlgorithm
-    {
-        private static readonly Direction[] m_CalcDirections = new Direction[9]
-        {
-            Direction.Up,
-            Direction.North,
-            Direction.Right,
-            Direction.West,
-            Direction.North,
-            Direction.East,
-            Direction.Left,
-            Direction.South,
-            Direction.Down
-        };
-        public abstract bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal);
+	public abstract class PathAlgorithm
+	{
+		private static readonly Direction[] m_CalcDirections = new Direction[9]
+		{
+			Direction.Up,
+			Direction.North,
+			Direction.Right,
+			Direction.West,
+			Direction.North,
+			Direction.East,
+			Direction.Left,
+			Direction.South,
+			Direction.Down
+		};
 
-        public abstract Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal);
+		public abstract bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal);
 
-        public Direction GetDirection(int xSource, int ySource, int xDest, int yDest)
-        {
-            int x = xDest + 1 - xSource;
-            int y = yDest + 1 - ySource;
-            int v = (y * 3) + x;
+		public abstract Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal);
 
-            if (v < 0 || v >= 9)
-                return Direction.North;
+		public Direction GetDirection(int xSource, int ySource, int xDest, int yDest)
+		{
+			var x = xDest + 1 - xSource;
+			var y = yDest + 1 - ySource;
+			var v = (y * 3) + x;
 
-            return m_CalcDirections[v];
-        }
-    }
+			if (v < 0 || v >= 9)
+				return Direction.North;
+
+			return m_CalcDirections[v];
+		}
+	}
 }

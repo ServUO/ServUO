@@ -10,24 +10,28 @@ namespace Server
 	public sealed class DynamicSaveStrategy : SaveStrategy
 	{
 		private readonly ConcurrentBag<Item> _decayBag;
+
 		private readonly BlockingCollection<QueuedMemoryWriter> _itemThreadWriters;
 		private readonly BlockingCollection<QueuedMemoryWriter> _mobileThreadWriters;
 		private readonly BlockingCollection<QueuedMemoryWriter> _guildThreadWriters;
-		private readonly BlockingCollection<QueuedMemoryWriter> _dataThreadWriters;
+
 		private SaveMetrics _metrics;
+
 		private SequentialFileWriter _itemData, _itemIndex;
 		private SequentialFileWriter _mobileData, _mobileIndex;
 		private SequentialFileWriter _guildData, _guildIndex;
+
 		public DynamicSaveStrategy()
 		{
 			_decayBag = new ConcurrentBag<Item>();
+
 			_itemThreadWriters = new BlockingCollection<QueuedMemoryWriter>();
 			_mobileThreadWriters = new BlockingCollection<QueuedMemoryWriter>();
 			_guildThreadWriters = new BlockingCollection<QueuedMemoryWriter>();
-			_dataThreadWriters = new BlockingCollection<QueuedMemoryWriter>();
 		}
 
 		public override string Name => "Dynamic";
+
 		public override void Save(SaveMetrics metrics, bool permitBackgroundWrite)
 		{
 			_metrics = metrics;
@@ -55,13 +59,13 @@ namespace Server
 			else
 			{
 				Task.WaitAll(saveTasks);    //Waits for the completion of all of the tasks(committing to disk)
+
 				CloseFiles();
 			}
 		}
 
 		public override void ProcessDecay()
 		{
-
 			while (_decayBag.TryTake(out var item))
 			{
 				if (item.OnDecay())
@@ -104,35 +108,33 @@ namespace Server
 			IEnumerable<Item> items = World.Items.Values;
 
 			//Start the producer.
-			Parallel.ForEach(items, () => new QueuedMemoryWriter(),
-				(Item item, ParallelLoopState state, QueuedMemoryWriter writer) =>
+			Parallel.ForEach(items, () => new QueuedMemoryWriter(), (item, state, writer) =>
+			{
+				var startPosition = writer.Position;
+
+				item.Serialize(writer);
+
+				var size = (int)(writer.Position - startPosition);
+
+				writer.QueueForIndex(item, size);
+
+				if (item.Decays && item.Parent == null && item.Map != Map.Internal && DateTime.UtcNow > (item.LastMoved + item.DecayTime))
 				{
-					var startPosition = writer.Position;
+					_decayBag.Add(item);
+				}
 
-					item.Serialize(writer);
-
-					var size = (int)(writer.Position - startPosition);
-
-					writer.QueueForIndex(item, size);
-
-					if (item.Decays && item.Parent == null && item.Map != Map.Internal && DateTime.UtcNow > (item.LastMoved + item.DecayTime))
-					{
-						_decayBag.Add(item);
-					}
-
-					if (_metrics != null)
-					{
-						_metrics.OnItemSaved(size);
-					}
-
-					return writer;
-				},
-				(writer) =>
+				if (_metrics != null)
 				{
-					writer.Flush();
+					_metrics.OnItemSaved(size);
+				}
 
-					_itemThreadWriters.Add(writer);
-				});
+				return writer;
+			}, writer =>
+			{
+				writer.Flush();
+
+				_itemThreadWriters.Add(writer);
+			});
 
 			_itemThreadWriters.CompleteAdding();    //We only get here after the Parallel.ForEach completes.  Lets our task 
 
@@ -147,30 +149,29 @@ namespace Server
 			IEnumerable<Mobile> mobiles = World.Mobiles.Values;
 
 			//Start the producer.
-			Parallel.ForEach(mobiles, () => new QueuedMemoryWriter(),
-				(Mobile mobile, ParallelLoopState state, QueuedMemoryWriter writer) =>
+			Parallel.ForEach(mobiles, () => new QueuedMemoryWriter(), (mobile, state, writer) =>
+			{
+				var startPosition = writer.Position;
+
+				mobile.Serialize(writer);
+
+				var size = (int)(writer.Position - startPosition);
+
+				writer.QueueForIndex(mobile, size);
+
+				if (_metrics != null)
 				{
-					var startPosition = writer.Position;
+					_metrics.OnMobileSaved(size);
+				}
 
-					mobile.Serialize(writer);
+				return writer;
+			},
+			writer =>
+			{
+				writer.Flush();
 
-					var size = (int)(writer.Position - startPosition);
-
-					writer.QueueForIndex(mobile, size);
-
-					if (_metrics != null)
-					{
-						_metrics.OnMobileSaved(size);
-					}
-
-					return writer;
-				},
-				(writer) =>
-				{
-					writer.Flush();
-
-					_mobileThreadWriters.Add(writer);
-				});
+				_mobileThreadWriters.Add(writer);
+			});
 
 			_mobileThreadWriters.CompleteAdding();  //We only get here after the Parallel.ForEach completes.  Lets our task tell the consumer that we're done
 
@@ -185,30 +186,28 @@ namespace Server
 			IEnumerable<BaseGuild> guilds = BaseGuild.List.Values;
 
 			//Start the producer.
-			Parallel.ForEach(guilds, () => new QueuedMemoryWriter(),
-				(BaseGuild guild, ParallelLoopState state, QueuedMemoryWriter writer) =>
+			Parallel.ForEach(guilds, () => new QueuedMemoryWriter(), (guild, state, writer) =>
+			{
+				var startPosition = writer.Position;
+
+				guild.Serialize(writer);
+
+				var size = (int)(writer.Position - startPosition);
+
+				writer.QueueForIndex(guild, size);
+
+				if (_metrics != null)
 				{
-					var startPosition = writer.Position;
+					_metrics.OnGuildSaved(size);
+				}
 
-					guild.Serialize(writer);
+				return writer;
+			}, writer =>
+			{
+				writer.Flush();
 
-					var size = (int)(writer.Position - startPosition);
-
-					writer.QueueForIndex(guild, size);
-
-					if (_metrics != null)
-					{
-						_metrics.OnGuildSaved(size);
-					}
-
-					return writer;
-				},
-				(writer) =>
-				{
-					writer.Flush();
-
-					_guildThreadWriters.Add(writer);
-				});
+				_guildThreadWriters.Add(writer);
+			});
 
 			_guildThreadWriters.CompleteAdding();   //We only get here after the Parallel.ForEach completes.  Lets our task 
 
@@ -262,7 +261,7 @@ namespace Server
 			SaveTypeDatabase(World.MobileTypesPath, World.m_MobileTypes);
 		}
 
-		private void SaveTypeDatabase(string path, List<Type> types)
+		private void SaveTypeDatabase(string path, ICollection<Type> types)
 		{
 			var bfw = new BinaryFileWriter(path, false);
 
@@ -274,7 +273,6 @@ namespace Server
 			}
 
 			bfw.Flush();
-
 			bfw.Close();
 		}
 	}

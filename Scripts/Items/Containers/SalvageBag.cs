@@ -173,7 +173,7 @@ namespace Server.Items
         #region Salvaging
         private void SalvageIngots(Mobile from)
         {
-            bool ToolFound = from.Backpack.Items.Any(i => i is ITool && ((ITool)i).CraftSystem == DefBlacksmithy.CraftSystem);
+            bool ToolFound = from.Backpack.Items.Any(i => i is ITool t && t.CraftSystem == DefBlacksmithy.CraftSystem);
 
             if (!ToolFound)
             {
@@ -195,13 +195,9 @@ namespace Server.Items
 
             Container sBag = this;
 
-            List<Item> Smeltables = sBag.FindItemsByType<Item>();
-
-            for (int i = Smeltables.Count - 1; i >= 0; i--)
+            foreach (Item item in sBag.FindItemsByType<Item>())
             {
-                Item item = Smeltables[i];
-
-                if (item is BaseArmor)
+				if (item is BaseArmor)
                 {
                     if (Resmelt(from, item, ((BaseArmor)item).Resource))
                         salvaged++;
@@ -235,7 +231,7 @@ namespace Server.Items
 
         private void SalvageCloth(Mobile from)
         {
-            Scissors scissors = from.Backpack.FindItemByType(typeof(Scissors)) as Scissors;
+            Scissors scissors = from.Backpack.FindItemByType<Scissors>();
             if (scissors == null)
             {
                 from.SendLocalizedMessage(1079823); // You need scissors in order to salvage cloth.
@@ -247,14 +243,11 @@ namespace Server.Items
 
             Container sBag = this;
 
-            List<Item> Scissorables = sBag.FindItemsByType<Item>();
-
-            for (int i = Scissorables.Count - 1; i >= 0; i--)
+            foreach (Item item in sBag.FindItems())
             {
-                Item item = Scissorables[i];
-                if (item is IScissorable)
+				if (item is IScissorable s)
                 {
-                    if (((IScissorable)item).Scissor(from, scissors))
+                    if (s.Scissor(from, scissors))
                     {
                         salvaged++;
                     }
@@ -265,17 +258,12 @@ namespace Server.Items
                 }
             }
 
-            from.SendLocalizedMessage(1079974, string.Format("{0}\t{1}", salvaged, salvaged + notSalvaged)); // Salvaged: ~1_COUNT~/~2_NUM~ tailored items
+            from.SendLocalizedMessage(1079974, $"{salvaged}\t{salvaged + notSalvaged}"); // Salvaged: ~1_COUNT~/~2_NUM~ tailored items
 
-            Container pack = from.Backpack;
-
-            foreach (Item i in FindItemsByType(typeof(Item), true))
-            {
-                if ((i is Leather) || (i is Cloth) || (i is SpinedLeather) || (i is HornedLeather) || (i is BarbedLeather) || (i is Bandage) || (i is Bone))
-                {
-                    from.AddToBackpack(i);
-                }
-            }
+			foreach (Item i in FindItems(i => (i is Leather) || (i is Cloth) || (i is SpinedLeather) || (i is HornedLeather) || (i is BarbedLeather) || (i is Bandage) || (i is Bone)))
+			{
+				from.AddToBackpack(i);
+			}
         }
 
         private void SalvageAll(Mobile from)

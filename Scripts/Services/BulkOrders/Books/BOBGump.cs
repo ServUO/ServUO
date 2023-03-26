@@ -687,6 +687,7 @@ namespace Server.Engines.BulkOrders
                                 if (item != null)
                                 {
                                     Container pack = m_From.Backpack;
+
                                     if ((pack == null) || ((pack != null) && (!pack.CheckHold(m_From, item, true, true, 0, item.PileWeight + item.TotalWeight))))
                                     {
                                         m_From.SendLocalizedMessage(503204); // You do not have room in your backpack for this

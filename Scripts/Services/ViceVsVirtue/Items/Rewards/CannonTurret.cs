@@ -98,7 +98,7 @@ namespace Server.Engines.VvV
             {
                 if (Owner == null || (ViceVsVirtueSystem.IsEnemy(Owner, m) && m.InLOS(Location)
                                                                            && m is PlayerMobile
-                                                                           && m.AccessLevel == AccessLevel.Player))
+                                                                           && m.AccessLevel < AccessLevel.Counselor))
                 {
                     list.Add(m);
                 }

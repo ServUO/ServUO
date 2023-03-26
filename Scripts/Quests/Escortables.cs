@@ -637,10 +637,9 @@ namespace Server.Engines.Quests
             else
 				SetWearable(new Shoes(), lowHue, 1);
 
-			HairItemID = Utility.RandomList(0x203B, 0x2049, 0x2048, 0x204A);
-			HairHue = Utility.RandomHairHue();
+			Utility.AssignRandomHair(this, true);
 
-			PackGold(200, 250);
+            PackGold(200, 250);
         }
 
         public override void Serialize(GenericWriter writer)

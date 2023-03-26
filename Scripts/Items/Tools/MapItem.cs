@@ -314,7 +314,7 @@ namespace Server.Items
         private static void OnMapCommand(NetState state, PacketReader pvSrc)
         {
             Mobile from = state.Mobile;
-            MapItem map = World.FindItem(pvSrc.ReadInt32()) as MapItem;
+            MapItem map = World.FindItem(pvSrc.ReadSerial()) as MapItem;
 
             if (map == null)
                 return;

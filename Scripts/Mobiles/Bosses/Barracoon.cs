@@ -97,8 +97,7 @@ namespace Server.Mobiles
             if (mount != null)
                 mount.Rider = null;
 
-            if (m.Flying)
-                m.ToggleFlying();
+            m.Flying = false;
 
             if (m.Mounted)
                 return;

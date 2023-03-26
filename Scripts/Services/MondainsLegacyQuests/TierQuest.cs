@@ -172,7 +172,7 @@ namespace Server.Engines.Quests
 
             foreach (KeyValuePair<PlayerMobile, Dictionary<Type, int>> kvp in PlayerTierInfo)
             {
-                writer.WriteMobile(kvp.Key);
+                writer.Write(kvp.Key);
                 writer.Write(kvp.Value.Count);
 
                 foreach (KeyValuePair<Type, int> kvp2 in kvp.Value)

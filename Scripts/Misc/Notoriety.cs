@@ -189,7 +189,7 @@ namespace Server.Misc
 
         public static int CorpseNotoriety(Mobile source, Corpse target)
         {
-            if (target.AccessLevel > AccessLevel.VIP)
+            if (target.AccessLevel >= AccessLevel.Counselor)
                 return Notoriety.CanBeAttacked;
 
             Body body = target.Amount;

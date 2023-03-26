@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServerRegions>
+	<Facet name="Ilshenar">
+		<region type="ExploringDeepCreaturesRegion" name="Djinn">
+			<rect x="1724" y="508" width="18" height="22" />
+		</region>
+		<region type="MondainRegion" priority="50" name="Twisted Weald">
+			<rect x="2107" y="1145" width="147" height="135" />
+			<go x="2189" y="1253" z="0" />
+			<entrance x="1450" y="1473" />
+			<music name="DreadHornArea" />
+			<region type="TwistedWealdDesert" name="Twisted Weald Desert">
+				<rect x="2139" y="1187" width="13" height="7" />
+				<rect x="2152" y="1164" width="38" height="30" />
+				<rect x="2190" y="1164" width="35" height="48" />
+			</region>
+		</region>
+		<region priority="50" name="Sheep Farm">
+			<rect x="1303" y="1312" width="30" height="30" />
+		</region>
+		<region priority="37" name="Shrine of Valor">
+			<rect x="512" y="200" width="32" height="32" />
+			<go x="539" y="221" z="-36" />
+		</region>
+		<region priority="50" name="Chaos Shrine">
+			<rect x="1736" y="224" width="24" height="24" />
+			<go x="1748" y="236" z="0" />
+		</region>
+		<region priority="50" name="Shrine of Sacrifice">
+			<rect x="1160" y="1280" width="32" height="16" />
+			<go x="1196" y="1290" z="-25" />
+		</region>
+		<region priority="37" name="Shrine of Honesty">
+			<rect x="712" y="1344" width="24" height="32" />
+			<go x="725" y="1355" z="-61" />
+		</region>
+		<region priority="50" name="Shrine of Compassion">
+			<rect x="1200" y="448" width="32" height="40" />
+			<go x="1223" y="475" z="-16" />
+		</region>
+		<region priority="50" name="Shrine of Spirituality">
+			<rect x="1520" y="1336" width="16" height="16" />
+			<go x="1528" y="1344" z="0" />
+		</region>
+		<region priority="50" name="Shrine of Humility">
+			<rect x="272" y="1008" width="24" height="16" />
+			<go x="284" y="1016" z="0" />
+		</region>
+		<region priority="50" name="Shrine of Honor">
+			<rect x="736" y="712" width="24" height="32" />
+			<go x="748" y="728" z="0" />
+		</region>
+		<region priority="11" name="Terort Skitas">
+			<rect x="528" y="376" width="96" height="88" />
+			<go x="568" y="430" z="41" />
+		</region>
+		<region type="VerLorRegCity" priority="50" name="Ver Lor Reg">
+			<rect x="824" y="552" width="32" height="176" />
+			<rect x="752" y="576" width="72" height="128" />
+			<rect x="856" y="576" width="48" height="128" />
+			<rect x="904" y="624" width="24" height="32" />
+			<go x="840" y="571" z="0" />
+		</region>
+		<region priority="50" name="Pormir Harm">
+			<rect x="736" y="480" width="32" height="24" />
+			<go x="745" y="492" z="-66" />
+			<music name="Stones2" />
+		</region>
+		<region priority="50" name="Pormir Felwis">
+			<rect x="472" y="336" width="40" height="32" />
+			<go x="472" y="352" z="-78" />
+		</region>
+		<region priority="50" name="Cyclops Temple">
+			<rect x="880" y="1256" width="56" height="112" />
+			<go x="901" y="1297" z="-71" />
+		</region>
+		<region priority="50" name="Rat Fort">
+			<rect x="616" y="792" width="56" height="56" />
+			<go x="642" y="845" z="-58" />
+		</region>
+		<region priority="50" name="Rat Fort Cellar">
+			<rect x="160" y="736" width="32" height="32" />
+			<go x="171" y="750" z="-28" />
+		</region>
+		<region priority="50" name="Entrance to Central Ilshenar 1">
+			<rect x="1136" y="584" width="16" height="16" />
+			<go x="1141" y="594" z="-80" />
+		</region>
+		<region priority="50" name="Entrance to Central Ilshenar 2">
+			<rect x="1232" y="576" width="8" height="16" />
+			<go x="1238" y="583" z="-19" />
+		</region>
+		<region type="TownRegion" priority="41" name="Montor">
+			<rect x="1576" y="272" width="144" height="96" />
+			<rect x="1616" y="200" width="80" height="72" />
+			<rect x="1696" y="144" width="40" height="128" />
+			<rect x="1736" y="144" width="32" height="64" />
+			<go x="1646" y="319" z="48" />
+			<guards disabled="true" />
+		</region>
+		<region priority="40" name="Termir Flam">
+			<rect x="1520" y="368" width="232" height="128" />
+			<rect x="1520" y="296" width="56" height="72" />
+			<rect x="1752" y="440" width="24" height="40" />
+			<go x="1636" y="432" z="0" />
+		</region>
+		<region type="TownRegion" priority="11" name="Ancient Citadel">
+			<rect x="1448" y="496" width="104" height="104" />
+			<go x="1516" y="542" z="85" />
+			<guards disabled="true" />
+		</region>
+		<region type="TownRegion" priority="41" name="Alexandretta's Bowl">
+			<rect x="1272" y="352" width="168" height="240" />
+			<go x="1396" y="432" z="-17" />
+			<guards disabled="true" />
+		</region>
+		<region priority="2" name="Entrance to Rock Dungeon">
+			<rect x="1784" y="560" width="8" height="16" />
+			<go x="1784" y="568" z="100" />
+		</region>
+		<region type="DungeonRegion" priority="2" name="Rock Dungeon">
+			<rect x="2176" y="288" width="24" height="40" />
+			<rect x="2088" y="8" width="160" height="176" />
+			<go x="2187" y="316" z="-7" />
+			<entrance x="1788" y="571" />
+		</region>
+		<region type="TownRegion" priority="5" name="Lenmir Anfinmotas">
+			<rect x="1560" y="792" width="232" height="120" />
+			<go x="1673" y="876" z="-25" />
+			<guards disabled="true" />
+		</region>
+		<region priority="2" name="Entrance to Spider Cave">
+			<rect x="1400" y="896" width="40" height="24" />
+			<go x="1418" y="915" z="-19" />
+		</region>
+		<region type="DungeonRegion" priority="50" name="Spider Cave">
+			<rect x="1752" y="952" width="112" height="48" />
+			<rect x="1480" y="864" width="48" height="32" />
+			<go x="1785" y="991" z="-28" />
+			<entrance x="1420" y="910" />
+		</region>
+		<region priority="48" name="Twin Oaks">
+			<rect x="1536" y="1032" width="48" height="40" />
+			<go x="1560" y="1052" z="0" />
+			<region>
+				<rect x="1546" y="1037" width="21" height="20" />
+				<logoutDelay active="false" />
+			</region>
+		</region>
+		<region type="TownRegion" priority="50" name="Reg Volon">
+			<rect x="1328" y="1008" width="80" height="112" />
+			<go x="1363" y="1055" z="-13" />
+			<guards disabled="true" />
+		</region>
+		<region priority="2" name="Entrance Spectre Dungeon">
+			<rect x="1360" y="1030" width="6" height="4" />
+			<go x="1363" y="1033" z="-8" />
+		</region>
+		<region type="DungeonRegion" priority="2" name="Spectre Dungeon">
+			<rect x="1936" y="1000" width="96" height="120" />
+			<go x="1983" y="1107" z="-18" />
+			<entrance x="1362" y="1031" />
+		</region>
+		<region priority="2" name="Entrance Blood Dungeon">
+			<rect x="1736" y="1224" width="24" height="16" />
+			<go x="1747" y="1227" z="-1" />
+		</region>
+		<region type="DungeonRegion" priority="2" name="Blood Dungeon">
+			<rect x="2032" y="808" width="168" height="256" />
+			<go x="2114" y="839" z="-28" />
+			<entrance x="1745" y="1236" />
+		</region>
+		<region priority="2" name="Entrance Mushroom Cave">
+			<rect x="1448" y="1320" width="16" height="16" />
+			<go x="1460" y="1329" z="-25" />
+		</region>
+		<region priority="11" name="Mushroom Cave">
+			<rect x="1392" y="1448" width="104" height="120" />
+			<go x="1476" y="1494" z="-28" />
+		</region>
+		<region type="TownRegion" priority="48" name="Lake Shire">
+			<rect x="1144" y="1072" width="120" height="128" />
+			<go x="1212" y="1144" z="-25" />
+			<guards disabled="true" />
+		</region>
+		<region priority="2" name="Entrance Rat Cave">
+			<rect x="1024" y="1152" width="8" height="8" />
+			<go x="1031" y="1154" z="-24" />
+		</region>
+		<region priority="2" name="Rat Cave Territory">
+			<rect x="1144" y="1440" width="224" height="144" />
+			<go x="1345" y="1511" z="-3" />
+		</region>
+		<region priority="2" name="Ratman Cave">
+			<rect x="1264" y="1448" width="96" height="128" />
+			<rect x="1152" y="1456" width="104" height="104" />
+			<go x="1348" y="1511" z="-3" />
+		</region>
+		<region type="TownRegion" priority="48" name="Bet-Lem Reg">
+			<rect x="1232" y="936" width="40" height="48" />
+			<go x="1238" y="974" z="-34" />
+			<guards disabled="true" />
+		</region>
+		<region type="TownRegion" priority="48" name="Mistas">
+			<rect x="744" y="984" width="168" height="168" />
+			<rect x="744" y="1152" width="48" height="24" />
+			<go x="818" y="1073" z="-30" />
+			<guards disabled="true" />
+			<region>
+				<rect x="752" y="1131" width="16" height="21" />
+				<logoutDelay active="false" />
+			</region>
+		</region>
+		<region priority="2" name="Entrance Serpentine Passage">
+			<rect x="800" y="864" width="16" height="16" />
+			<go x="808" y="872" z="5" />
+		</region>
+		<region priority="11" name="Serpentine Passage">
+			<rect x="368" y="1488" width="192" height="104" />
+			<go x="533" y="1526" z="-25" />
+		</region>
+		<region type="DungeonRegion" priority="2" name="Ankh Dungeon">
+			<rect x="0" y="1248" width="176" height="344" />
+			<rect x="568" y="1152" width="16" height="8" />
+			<go x="156" y="1484" z="-28" />
+			<entrance x="668" y="928" />
+		</region>
+		<region priority="11" name="Kirin passage">
+			<rect x="0" y="800" width="192" height="400" />
+			<go x="11" y="881" z="-29" />
+		</region>
+		<region priority="2" name="Entrance Lizards Passage">
+			<rect x="312" y="1328" width="8" height="8" />
+			<go x="314" y="1331" z="-37" />
+		</region>
+		<region type="DungeonRegion" priority="2" name="Wisp Dungeon">
+			<rect x="616" y="1480" width="88" height="96" />
+			<rect x="704" y="1544" width="24" height="32" />
+			<rect x="704" y="1480" width="40" height="40" />
+			<rect x="816" y="1448" width="96" height="136" />
+			<rect x="944" y="1416" width="56" height="40" />
+			<rect x="912" y="1456" width="112" height="128" />
+			<rect x="832" y="1424" width="48" height="24" />
+			<rect x="744" y="1504" width="72" height="80" />
+			<rect x="744" y="1456" width="56" height="48" />
+			<go x="628" y="1524" z="-28" />
+			<entrance x="652" y="1301" />
+		</region>
+		<region priority="11" name="Lizard Passage">
+			<rect x="256" y="1560" width="80" height="32" />
+			<go x="285" y="1585" z="-27" />
+		</region>
+		<region type="ExodusDungeonRegion" priority="50" name="Exodus Dungeon">
+			<rect x="1832" y="16" width="248" height="200" />
+			<go x="1966" y="117" z="-28" />
+			<entrance x="827" y="777" />
+		</region>
+		<region priority="48" name="Lizard Man's Huts">
+			<rect x="264" y="1280" width="56" height="96" />
+			<go x="298" y="1336" z="-24" />
+		</region>
+		<region priority="50" name="Nox Tereg">
+			<rect x="344" y="1112" width="144" height="128" />
+			<go x="416" y="1176" z="0" />
+		</region>
+		<region type="DungeonRegion" priority="2" name="Sorcerer's Dungeon">
+			<rect x="368" y="0" width="120" height="120" />
+			<rect x="200" y="0" width="168" height="112" />
+			<rect x="256" y="120" width="32" height="32" />
+			<rect x="48" y="0" width="136" height="136" />
+			<rect x="224" y="112" width="24" height="32" />
+			<go x="429" y="108" z="-28" />
+			<entrance x="546" y="455" />
+		</region>
+		<region priority="50" name="Entrance Ancient Lair">
+			<rect x="936" y="488" width="8" height="8" />
+			<go x="940" y="503" z="-30" />
+		</region>
+		<region type="DungeonRegion" priority="2" name="Ancient Lair">
+			<rect x="24" y="664" width="112" height="96" />
+			<go x="86" y="744" z="-28" />
+			<entrance x="938" y="494" />
+		</region>
+		<region priority="50" name="Gypsy Camp">
+			<rect x="480" y="520" width="56" height="48" />
+			<go x="504" y="536" z="-60" />
+		</region>
+		<region priority="50" name="Gypsy Camp 1">
+			<rect x="1480" y="600" width="56" height="40" />
+			<go x="1508" y="620" z="0" />
+		</region>
+		<region priority="48" name="Gypsy Camp 2">
+			<rect x="1592" y="528" width="40" height="40" />
+			<go x="1612" y="548" z="0" />
+			<region>
+				<rect x="1617" y="546" width="12" height="8" />
+				<logoutDelay active="false" />
+			</region>
+		</region>
+		<region priority="50" name="Juka Camp">
+			<rect x="1192" y="656" width="112" height="136" />
+			<go x="1248" y="724" z="0" />
+		</region>
+		<region priority="50" name="Gypsy Camp 3">
+			<rect x="928" y="408" width="40" height="40" />
+			<go x="948" y="428" z="0" />
+		</region>
+		<region priority="50" name="Gypsy Camp 4">
+			<rect x="840" y="440" width="40" height="48" />
+			<go x="860" y="464" z="0" />
+		</region>
+		<region priority="50" name="Gypsy Camp 5">
+			<rect x="1216" y="520" width="24" height="48" />
+			<rect x="1248" y="568" width="16" height="24" />
+			<go x="1228" y="544" z="0" />
+		</region>
+		<region priority="50" name="Gypsy Camp 6">
+			<rect x="1376" y="416" width="32" height="32" />
+			<go x="1392" y="432" z="0" />
+		</region>
+		<region priority="50" name="Lord Blackthorn's Ilshenar Castle">
+			<rect x="1048" y="616" width="72" height="72" />
+			<rect x="1080" y="688" width="24" height="24" />
+			<go x="1084" y="652" z="0" />
+		</region>
+		<region priority="50" name="Shrine of the Virtues">
+			<rect x="1072" y="376" width="64" height="56" />
+			<go x="1104" y="404" z="0" />
+		</region>
+		<region priority="50" name="Pass of Karnaugh">
+			<rect x="848" y="288" width="120" height="48" />
+			<rect x="936" y="232" width="32" height="56" />
+			<rect x="968" y="248" width="120" height="56" />
+			<rect x="1000" y="304" width="24" height="16" />
+			<rect x="1048" y="304" width="136" height="56" />
+			<rect x="1184" y="336" width="64" height="56" />
+			<go x="908" y="312" z="0" />
+		</region>
+		<region priority="50" name="Vinculum Inn">
+			<rect x="658" y="654" width="13" height="24" />
+			<go x="656" y="666" z="-36" />
+			<region>
+				<rect x="658" y="654" width="13" height="24" />
+				<logoutDelay active="false" />
+			</region>
+		</region>
+	</Facet>
+</ServerRegions>

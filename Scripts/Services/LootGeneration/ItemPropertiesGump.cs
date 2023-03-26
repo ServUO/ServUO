@@ -302,9 +302,9 @@ namespace Server.Gumps
             AddLabel(5, 150, 0, "Default Max Intensity:");
 
             AddLabel(225, 30, 0, Info.Weight.ToString());
-            AddHtmlLocalized(225, 50, 250, 20, 1114057, Info.PrimaryName != null ? Info.PrimaryName.ToString() : "N/A", 0x1, false, false);
-            AddHtmlLocalized(225, 70, 250, 20, 1114057, Info.GemName != null ? Info.GemName.ToString() : "N/A", 0x1, false, false);
-            AddHtmlLocalized(225, 90, 250, 20, 1114057, Info.SpecialName != null ? Info.SpecialName.ToString() : "N/A", 0x1, false, false);
+            AddHtmlLocalized(225, 50, 250, 20, 1114057, !Info.PrimaryName.IsEmpty ? Info.PrimaryName.ToString() : "N/A", 0x1, false, false);
+            AddHtmlLocalized(225, 70, 250, 20, 1114057, !Info.GemName.IsEmpty ? Info.GemName.ToString() : "N/A", 0x1, false, false);
+            AddHtmlLocalized(225, 90, 250, 20, 1114057, !Info.SpecialName.IsEmpty ? Info.SpecialName.ToString() : "N/A", 0x1, false, false);
             AddLabel(225, 110, 0, Info.Scale.ToString());
             AddLabel(225, 130, 0, Info.Start.ToString());
             AddLabel(225, 150, 0, Info.MaxIntensity.ToString());

@@ -547,7 +547,7 @@ namespace Server.Items
             if (m_Item.Deleted || info.ButtonID == 0 || !m_From.CheckAlive())
                 return;
 
-            if (m_From.AccessLevel == AccessLevel.Player && !m_Item.IsChildOf(m_From.Backpack))
+            if (m_From.AccessLevel < AccessLevel.Counselor && !m_Item.IsChildOf(m_From.Backpack))
             {
                 m_From.LocalOverheadMessage(MessageType.Regular, 0x3B2, 500446); // That is too far away.
                 return;

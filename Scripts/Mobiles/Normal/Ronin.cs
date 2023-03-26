@@ -14,11 +14,9 @@ namespace Server.Mobiles
         public Ronin() : base(AIType.AI_Samurai, FightMode.Closest, 10, 1, 0.3, 0.6)
         {
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Name = "a ronin";
-            Body = ((Female = Utility.RandomBool()) ? Body = 0x191 : Body = 0x190);
-
-            Hue = Utility.RandomSkinHue();
+            Body = (Female = Utility.RandomBool()) ? Body = 0x191 : Body = 0x190;
 
             SetStr(326, 375);
             SetDex(31, 45);

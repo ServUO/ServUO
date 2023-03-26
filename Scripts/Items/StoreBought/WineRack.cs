@@ -121,7 +121,7 @@ namespace Server.Items
 
         public override bool TryDropItem(Mobile from, Item dropped, bool sendFullMessage)
         {
-            if (!CheckHold(from, dropped, true, true))
+            if (!CheckHold(from, dropped, true, true, true))
             {
                 return false;
             }

@@ -32,7 +32,7 @@ namespace Server.Engines.Points
 
                 TextDefinition title = sys.GetTitle(pm);
 
-                if (title != null)
+                if (!title.IsEmpty)
                 {
                     if (title.Number > 0)
                         AddHtmlLocalized(68, y + 20, 100, 20, title.Number, false, false);

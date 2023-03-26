@@ -12,6 +12,7 @@ namespace Server
 	{
 		private static readonly int bufferSize;
 		private static readonly BufferPool bufferPool;
+		
 		private readonly object syncRoot;
 		private readonly Chunk[] active;
 		private readonly Queue<Page> pending;
@@ -20,6 +21,9 @@ namespace Server
 		private int activeCount;
 		private ManualResetEvent idle;
 		private long position;
+		
+		public long Position => position;
+
 		public FileQueue(int concurrentWrites, FileCommitCallback callback)
 		{
 			if (concurrentWrites < 1)
@@ -51,7 +55,6 @@ namespace Server
 			bufferPool = new BufferPool("File Buffers", 64, bufferSize);
 		}
 
-		public long Position => position;
 		public void Dispose()
 		{
 			if (idle != null)
@@ -70,24 +73,6 @@ namespace Server
 				buffered.buffer = null;
 				buffered.length = 0;
 			}
-
-			/*lock ( syncRoot ) {
-            if ( pending.Count > 0 ) {
-            idle.Reset();
-            }
-
-            for ( int slot = 0; slot < active.Length && pending.Count > 0; ++slot ) {
-            if ( active[slot] == null ) {
-            Page page = pending.Dequeue();
-
-            active[slot] = new Chunk( this, slot, page.buffer, 0, page.length );
-
-            ++activeCount;
-
-            callback( active[slot] );
-            }
-            }
-            }*/
 
 			idle.WaitOne();
 		}
@@ -115,8 +100,8 @@ namespace Server
 
 			while (size > 0)
 			{
-				if (buffered.buffer == null)
-				{ // nothing yet buffered
+				if (buffered.buffer == null) // nothing yet buffered
+				{
 					buffered.buffer = bufferPool.AcquireBuffer();
 				}
 
@@ -130,8 +115,8 @@ namespace Server
 				offset += byteCount;
 				size -= byteCount;
 
-				if (buffered.length == page.Length)
-				{ // page full
+				if (buffered.length == page.Length) // page full
+				{
 					Append(buffered);
 
 					buffered.buffer = null;
@@ -155,7 +140,7 @@ namespace Server
 				{
 					if (active[slot] == null)
 					{
-						active[slot] = new Chunk(this, slot, page.buffer, 0, page.length);
+						active[slot] = new Chunk(this, slot, 0, page.length, page.buffer);
 
 						callback(active[slot]);
 
@@ -181,13 +166,13 @@ namespace Server
 					throw new ArgumentException();
 				}
 
-				bufferPool.ReleaseBuffer(chunk.Buffer);
+				bufferPool.ReleaseBuffer(ref chunk.Buffer);
 
 				if (pending.Count > 0)
 				{
 					var page = pending.Dequeue();
 
-					active[slot] = new Chunk(this, slot, page.buffer, 0, page.length);
+					active[slot] = new Chunk(this, slot, 0, page.length, page.buffer);
 
 					callback(active[slot]);
 				}
@@ -213,27 +198,27 @@ namespace Server
 
 		public sealed class Chunk
 		{
-			private readonly FileQueue owner;
-			private readonly int slot;
-			private readonly byte[] buffer;
-			private readonly int offset;
-			private readonly int size;
-			public Chunk(FileQueue owner, int slot, byte[] buffer, int offset, int size)
-			{
-				this.owner = owner;
-				this.slot = slot;
+			private readonly FileQueue m_Owner;
+			private readonly int m_Slot;
 
-				this.buffer = buffer;
-				this.offset = offset;
-				this.size = size;
+			public int Offset, Size;
+
+			public byte[] Buffer;
+
+			public Chunk(FileQueue owner, int slot, int offset, int size, byte[] buffer)
+			{
+				m_Owner = owner;
+				m_Slot = slot;
+
+				Offset = offset;
+				Size = size;
+
+				Buffer = buffer;
 			}
 
-			public byte[] Buffer => buffer;
-			public int Offset => 0;
-			public int Size => size;
 			public void Commit()
 			{
-				owner.Commit(this, slot);
+				m_Owner.Commit(this, m_Slot);
 			}
 		}
 	}

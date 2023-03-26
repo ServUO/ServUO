@@ -2,46 +2,88 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+
+using Server.Diagnostics;
 #endregion
 
 namespace Server
 {
 	public static class ScriptCompiler
 	{
+		[ConfigProperty("Compiler.Dynamic")]
+		public static bool Dynamic { get => Config.Get("Compiler.Dynamic", false); set => Config.Set("Compiler.Dynamic", value); }
+
 		public static Assembly[] Assemblies { get; set; }
 
 		public static bool Compile(bool debug, bool cache)
 		{
-			var assemblies = new List<Assembly>
+			try
 			{
-				Assembly.LoadFrom("Scripts.dll"),
-				typeof(ScriptCompiler).Assembly
-			};
+				var assemblies = new HashSet<Assembly>
+				{
+					typeof(ScriptCompiler).Assembly
+				};
 
-			Assemblies = assemblies.ToArray();
+				if (Dynamic)
+				{
+					Console.WriteLine("Core: Compiling scripts...");
 
-			Utility.PushColor(ConsoleColor.Yellow);
-			Console.WriteLine("Scripts: Verifying...");
-			Utility.PopColor();
+					var path = Path.Combine(Core.BaseDirectory, "Scripts");
+					
+					foreach (var proj in Directory.EnumerateFiles(path, "Scripts.csproj"))
+					{
+						try
+						{
+							var info = new ProcessStartInfo
+							{
+								FileName = "dotnet",
+								Arguments = $"build {proj} -c {(debug ? "Debug" : "Release")}",
+								ErrorDialog = false,
+								UseShellExecute = false,
+								CreateNoWindow = true,
+								WindowStyle = ProcessWindowStyle.Hidden,
+								RedirectStandardOutput = true,
+							};
 
-			var watch = Stopwatch.StartNew();
+							var proc = Process.Start(info);
 
-			Core.VerifySerialization();
+							Console.WriteLine(proc.StandardOutput.ReadToEnd());
 
-			watch.Stop();
+							proc.WaitForExit();
+						}
+						catch (Exception e)
+						{
+							ExceptionLogging.LogException(e);
+						}
 
-			Utility.PushColor(ConsoleColor.Green);
-			Console.WriteLine(
-				"Finished ({0} items, {1} mobiles, {2} customs) ({3:F2} seconds)",
-				Core.ScriptItems,
-				Core.ScriptMobiles,
-				Core.ScriptCustoms,
-				watch.Elapsed.TotalSeconds);
-			Utility.PopColor();
+						break;
+					}
+				}
 
-			return true;
+				assemblies.Add(Assembly.LoadFrom("Scripts.dll"));
+
+				Assemblies = assemblies.ToArray();
+
+				Console.WriteLine("Core: Verifying entity type serialization...");
+
+				var watch = Stopwatch.StartNew();
+
+				Core.VerifySerialization();
+
+				watch.Stop();
+
+				Console.WriteLine($"Core: Verified {Core.ScriptItems} item and {Core.ScriptMobiles} mobile types");
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				ExceptionLogging.LogException(ex);
+				return false;
+			}
 		}
 
 		public static void Invoke(string method)

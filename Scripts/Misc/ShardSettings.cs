@@ -1,28 +1,27 @@
-#region References
-using Server.Accounting;
-using Server.Services.TownCryer;
-#endregion
+using System;
 
 namespace Server
 {
     public static class ShardSettings
-    {
-        [CallPriority(int.MinValue)]
-        public static void Configure()
-        {
-            AccountGold.Enabled = true;
-            AccountGold.ConvertOnBank = true;
-            AccountGold.ConvertOnTrade = false;
-            VirtualCheck.UseEditGump = true;
+	{
+		[CallPriority(Int32.MinValue)]
+		public static void Configure()
+		{
+			Core.OnExpansionChanged += Invalidate;
+			
+			Invalidate();
+		}
 
-            TownCryerSystem.Enabled = true;
-
-            Mobile.InsuranceEnabled = !Siege.SiegeShard;
-            Mobile.VisibleDamageType = VisibleDamageType.Related;
-
-            AOS.DisableStatInfluences();
-
-            Mobile.AOSStatusHandler = AOS.GetStatus;
-        }
+		public static void Invalidate()
+		{
+			if (Core.AOS)
+			{
+				Mobile.AOSStatusHandler = AOS.GetStatus;
+			}
+			else
+			{
+				Mobile.AOSStatusHandler = null;
+			}
+		}
     }
 }

@@ -87,7 +87,7 @@ namespace Server.Engines.NewMagincia
             InitStats(100, 100, 25);
 
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             if (Female = Utility.RandomBool())
             {

@@ -9,7 +9,7 @@ namespace Server.Mobiles
         {
             Name = "a headless one";
             Body = 31;
-            Hue = Utility.RandomSkinHue() & 0x7FFF;
+            Hue = Race.RandomSkinHue();
             BaseSoundID = 0x39D;
 
             SetStr(26, 50);

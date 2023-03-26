@@ -63,7 +63,7 @@ namespace Server.RemoteAdmin
 
             ArrayList list = new ArrayList();
 
-            foreach (Account a in Accounts.GetAccounts())
+            foreach (IAccount a in Accounts.GetAccounts())
             {
                 if (!CanAccessAccount(state.Account, a))
                     continue;
@@ -150,7 +150,7 @@ namespace Server.RemoteAdmin
             string username = pvSrc.ReadString();
             string pass = pvSrc.ReadString();
 
-            Account a = Accounts.GetAccount(username) as Account;
+            IAccount a = Accounts.GetAccount(username);
 
             if (a != null && !CanAccessAccount(state.Account, a))
             {
@@ -165,7 +165,7 @@ namespace Server.RemoteAdmin
 
                 if (a == null)
                 {
-                    a = new Account(username, pass);
+                    a = Accounts.Create(username, pass);
                     CreatedAccount = true;
                 }
                 else if (pass != "(hidden)")

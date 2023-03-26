@@ -268,7 +268,7 @@ namespace Server.Items
                 AddGumpLayout();
 
                 User.CloseGump(GetType());
-                User.SendGump(this, false);
+                User.SendGump(this);
             }
 
             public void AddGumpLayout()

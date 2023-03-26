@@ -19,9 +19,10 @@ namespace Server.Mobiles
             Race = Race.Human;
             Blessed = true;
 
-            Hue = Utility.RandomSkinHue();
+			HairItemID = Hair.Human.Long;
 
-            AddItem(new LongHair(2213));
+            Hue = Race.RandomSkinHue();
+
             AddItem(new Backpack());
             AddItem(new Shoes(0x737));
             AddItem(new Skirt(0x1BB));

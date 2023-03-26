@@ -209,7 +209,7 @@ namespace Server.Items
 
         public override bool WillStack(Mobile from, Item dropped)
         {
-            return dropped is BasePotion && ((BasePotion)dropped).m_PotionEffect == m_PotionEffect && base.WillStack(from, dropped);
+            return dropped is BasePotion pot && pot.m_PotionEffect == m_PotionEffect && base.WillStack(from, pot);
         }
 
         public int OnCraft(int quality, bool makersMark, Mobile from, CraftSystem craftSystem, Type typeRes, ITool tool, CraftItem craftItem, int resHue)
@@ -223,13 +223,9 @@ namespace Server.Items
                     if ((int)PotionEffect >= (int)PotionEffect.Invisibility)
                         return 1;
 
-                    List<PotionKeg> kegs = pack.FindItemsByType<PotionKeg>();
-
-                    for (int i = 0; i < kegs.Count; ++i)
+                    foreach (PotionKeg keg in pack.FindItemsByType<PotionKeg>())
                     {
-                        PotionKeg keg = kegs[i];
-
-                        if (keg == null)
+						if (keg == null)
                             continue;
 
                         if (keg.Held <= 0 || keg.Held >= 100)

@@ -1,195 +1,177 @@
 #region References
-using Server.Guilds;
-using Server.Network;
 using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+
+using Server.Guilds;
+using Server.Network;
 #endregion
 
 namespace Server.Misc
 {
-    public class StatusPage : Timer
-    {
-        public static readonly bool Enabled = false;
+	public static class StatusPage
+	{
+		public static bool Enabled { get; set; }
 
-        private static HttpListener _Listener;
+		private static HttpListener _Listener;
 
-        private static string _StatusPage = string.Empty;
-        private static byte[] _StatusBuffer = new byte[0];
+		private static string _StatusPage = String.Empty;
+		private static byte[] _StatusBuffer = new byte[0];
 
-        private static readonly object _StatusLock = new object();
+		private static readonly Timer _RefreshTimer;
 
-        public static void Initialize()
-        {
-            if (!Enabled)
-            {
-                return;
-            }
+		static StatusPage()
+		{
+			_RefreshTimer = Timer.DelayCall(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(60.0), OnTick);
+		}
 
-            new StatusPage().Start();
+		public static void Initialize()
+		{
+			Listen();
+		}
 
-            Listen();
-        }
+		private static void Listen()
+		{
+			if (!Enabled || !HttpListener.IsSupported)
+			{
+				return;
+			}
 
-        private static void Listen()
-        {
-            if (!HttpListener.IsSupported)
-            {
-                return;
-            }
+			if (_Listener == null)
+			{
+				_Listener = new HttpListener();
+				_Listener.Prefixes.Add("http://*:80/status/");
+				_Listener.Start();
+			}
+			else if (!_Listener.IsListening)
+			{
+				_Listener.Start();
+			}
 
-            if (_Listener == null)
-            {
-                _Listener = new HttpListener();
-                _Listener.Prefixes.Add("http://*:80/status/");
-                _Listener.Start();
-            }
-            else if (!_Listener.IsListening)
-            {
-                _Listener.Start();
-            }
+			if (_Listener.IsListening)
+			{
+				_ = _Listener.BeginGetContext(ListenerCallback, null);
+			}
+		}
 
-            if (_Listener.IsListening)
-            {
-                _Listener.BeginGetContext(ListenerCallback, null);
-            }
-        }
+		private static void ListenerCallback(IAsyncResult result)
+		{
+			try
+			{
+				var context = _Listener.EndGetContext(result);
 
-        private static void ListenerCallback(IAsyncResult result)
-        {
-            try
-            {
-                HttpListenerContext context = _Listener.EndGetContext(result);
+				context.Response.ContentLength64 = _StatusBuffer.Length;
 
-                byte[] buffer;
+				context.Response.OutputStream.Write(_StatusBuffer, 0, _StatusBuffer.Length);
+				context.Response.OutputStream.Close();
+			}
+			catch (Exception e)
+			{
+				Diagnostics.ExceptionLogging.LogException(e);
+			}
 
-                lock (_StatusLock)
-                {
-                    buffer = _StatusBuffer;
-                }
+			Listen();
+		}
 
-                context.Response.ContentLength64 = buffer.Length;
-                context.Response.OutputStream.Write(buffer, 0, buffer.Length);
-                context.Response.OutputStream.Close();
-            }
-            catch (Exception e)
-            {
-                Diagnostics.ExceptionLogging.LogException(e);
-            }
+		private static string Encode(string input)
+		{
+			var sb = new StringBuilder(input);
 
-            Listen();
-        }
+			_ = sb.Replace("&", "&amp;");
+			_ = sb.Replace("<", "&lt;");
+			_ = sb.Replace(">", "&gt;");
+			_ = sb.Replace("\"", "&quot;");
+			_ = sb.Replace("'", "&apos;");
 
-        private static string Encode(string input)
-        {
-            StringBuilder sb = new StringBuilder(input);
+			return sb.ToString();
+		}
 
-            sb.Replace("&", "&amp;");
-            sb.Replace("<", "&lt;");
-            sb.Replace(">", "&gt;");
-            sb.Replace("\"", "&quot;");
-            sb.Replace("'", "&apos;");
+		private static void OnTick()
+		{
+			if (!Enabled)
+			{
+				return;
+			}
 
-            return sb.ToString();
-        }
+			_ = Directory.CreateDirectory("web");
 
-        public StatusPage()
-            : base(TimeSpan.FromSeconds(5.0), TimeSpan.FromSeconds(60.0))
-        {
-            Priority = TimerPriority.FiveSeconds;
-        }
+			using (var op = new StreamWriter("web/status.html"))
+			{
+				op.WriteLine("<!DOCTYPE html>");
+				op.WriteLine("<html>");
+				op.WriteLine("   <head>");
+				op.WriteLine("      <title>" + ServerList.ServerName + " Server Status</title>");
+				op.WriteLine("   </head>");
+				op.WriteLine("   <style type=\"text/css\">");
+				op.WriteLine("   body { background: #999; }");
+				op.WriteLine("   table { width: 100%; }");
+				op.WriteLine("   tr.ruo-header td { background: #000; color: #FFF; }");
+				op.WriteLine("   tr.odd td { background: #222; color: #DDD; }");
+				op.WriteLine("   tr.even td { background: #DDD; color: #222; }");
+				op.WriteLine("   </style>");
+				op.WriteLine("   <body>");
+				op.WriteLine("      <h1>" + ServerList.ServerName + "Server Status</h1>");
+				op.WriteLine("      <h3>Online clients</h3>");
+				op.WriteLine("      <table cellpadding=\"0\" cellspacing=\"0\">");
+				op.WriteLine("         <tr class=\"ruo-header\"><td>Name</td><td>Location</td><td>Kills</td><td>Karma/Fame</td></tr>");
 
-        protected override void OnTick()
-        {
-            if (!Directory.Exists("web"))
-            {
-                Directory.CreateDirectory("web");
-            }
+				var index = 0;
 
-            using (StreamWriter op = new StreamWriter("web/status.html"))
-            {
-                op.WriteLine("<!DOCTYPE html>");
-                op.WriteLine("<html>");
-                op.WriteLine("   <head>");
-                op.WriteLine("      <title>" + ServerList.ServerName + " Server Status</title>");
-                op.WriteLine("   </head>");
-                op.WriteLine("   <style type=\"text/css\">");
-                op.WriteLine("   body { background: #999; }");
-                op.WriteLine("   table { width: 100%; }");
-                op.WriteLine("   tr.ruo-header td { background: #000; color: #FFF; }");
-                op.WriteLine("   tr.odd td { background: #222; color: #DDD; }");
-                op.WriteLine("   tr.even td { background: #DDD; color: #222; }");
-                op.WriteLine("   </style>");
-                op.WriteLine("   <body>");
-                op.WriteLine("      <h1>" + ServerList.ServerName + "Server Status</h1>");
-                op.WriteLine("      <h3>Online clients</h3>");
-                op.WriteLine("      <table cellpadding=\"0\" cellspacing=\"0\">");
-                op.WriteLine("         <tr class=\"ruo-header\"><td>Name</td><td>Location</td><td>Kills</td><td>Karma/Fame</td></tr>");
+				foreach (var m in NetState.Instances.Where(state => state.Mobile != null).Select(state => state.Mobile))
+				{
+					++index;
 
-                int index = 0;
+					op.Write("         <tr class=\"ruo-result " + (index % 2 == 0 ? "even" : "odd") + "\"><td>");
 
-                foreach (Mobile m in NetState.Instances.Where(state => state.Mobile != null).Select(state => state.Mobile))
-                {
-                    ++index;
+					if (m.Guild is Guild g)
+					{
+						op.Write(Encode(m.Name));
+						op.Write(" [");
 
-                    Guild g = m.Guild as Guild;
+						var title = m.GuildTitle?.Trim();
 
-                    op.Write("         <tr class=\"ruo-result " + (index % 2 == 0 ? "even" : "odd") + "\"><td>");
+						if (title?.Length > 0)
+						{
+							op.Write(Encode(title));
+							op.Write(", ");
+						}
 
-                    if (g != null)
-                    {
-                        op.Write(Encode(m.Name));
-                        op.Write(" [");
+						op.Write(Encode(g.Abbreviation));
 
-                        string title = m.GuildTitle;
+						op.Write(']');
+					}
+					else
+					{
+						op.Write(Encode(m.Name));
+					}
 
-                        title = title != null ? title.Trim() : string.Empty;
+					op.Write("</td><td>");
+					op.Write(m.X);
+					op.Write(", ");
+					op.Write(m.Y);
+					op.Write(", ");
+					op.Write(m.Z);
+					op.Write(" (");
+					op.Write(m.Map);
+					op.Write(")</td><td>");
+					op.Write(m.Kills);
+					op.Write("</td><td>");
+					op.Write(m.Karma);
+					op.Write(" / ");
+					op.Write(m.Fame);
+					op.WriteLine("</td></tr>");
+				}
 
-                        if (title.Length > 0)
-                        {
-                            op.Write(Encode(title));
-                            op.Write(", ");
-                        }
+				op.WriteLine("         <tr>");
+				op.WriteLine("      </table>");
+				op.WriteLine("   </body>");
+				op.WriteLine("</html>");
+			}
 
-                        op.Write(Encode(g.Abbreviation));
-
-                        op.Write(']');
-                    }
-                    else
-                    {
-                        op.Write(Encode(m.Name));
-                    }
-
-                    op.Write("</td><td>");
-                    op.Write(m.X);
-                    op.Write(", ");
-                    op.Write(m.Y);
-                    op.Write(", ");
-                    op.Write(m.Z);
-                    op.Write(" (");
-                    op.Write(m.Map);
-                    op.Write(")</td><td>");
-                    op.Write(m.Kills);
-                    op.Write("</td><td>");
-                    op.Write(m.Karma);
-                    op.Write(" / ");
-                    op.Write(m.Fame);
-                    op.WriteLine("</td></tr>");
-                }
-
-                op.WriteLine("         <tr>");
-                op.WriteLine("      </table>");
-                op.WriteLine("   </body>");
-                op.WriteLine("</html>");
-            }
-
-            lock (_StatusLock)
-            {
-                _StatusPage = File.ReadAllText("web/status.html");
-                _StatusBuffer = Encoding.UTF8.GetBytes(_StatusPage);
-            }
-        }
-    }
+			_StatusPage = File.ReadAllText("web/status.html");
+			_StatusBuffer = Encoding.UTF8.GetBytes(_StatusPage);
+		}
+	}
 }

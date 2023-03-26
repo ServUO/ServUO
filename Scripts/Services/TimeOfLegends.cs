@@ -88,7 +88,7 @@ namespace Server
 
         public static void OnLogin(LoginEventArgs e)
         {
-            if (e.Mobile is PlayerMobile && e.Mobile.AccessLevel == AccessLevel.Player)
+            if (e.Mobile is PlayerMobile && e.Mobile.AccessLevel < AccessLevel.Counselor)
                 Timer.DelayCall(TimeSpan.FromSeconds(5), () =>
                     {
                         if (!e.Mobile.HasGump(typeof(NewCurrencyHelpGump)))

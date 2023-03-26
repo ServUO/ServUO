@@ -515,7 +515,7 @@ namespace Server.Engines.Help
                 mail.Body = writer.ToString();
             }
 
-            Email.AsyncSend(mail);
+            Email.Send(mail);
         }
     }
 

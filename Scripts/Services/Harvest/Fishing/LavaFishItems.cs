@@ -55,20 +55,20 @@ namespace Server.Items
             return name;
         }
 
-        public override void OnAdded(object parent)
-        {
-            if (parent is Mobile)
+        public override void OnAdded(IEntity parent)
+		{
+            if (parent is Mobile m)
             {
-                Mobile m = (Mobile)parent as Mobile;
-
                 if (SpiderWebbing.IsTrapped(m))
                 {
                     SpiderWebbing.RemoveEffects(m);
                 }
 
                 m.SendLocalizedMessage(1151094, GetNameInfo(ItemID)); // You manage to equip the stone ~1_token~ and find you can no longer move!
-            }
-        }
+			}
+
+			base.OnAdded(parent);
+		}
 
         public override void AddNameProperty(ObjectPropertyList list)
         {

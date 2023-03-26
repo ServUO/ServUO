@@ -9,9 +9,12 @@ namespace Server.Engines.Plants
     public class SeedBoxGump : BaseGump
     {
         public SeedBox Box { get; set; }
-        public int Page { get; set; }
 
-        public int Pages => (int)Math.Ceiling(Box.Entries.Count / 20.0);
+		private int m_Page;
+
+        public int Page { get => m_Page; set => m_Page = Math.Max(1, Math.Min(Pages, value)); }
+
+        public int Pages => 1 + (Box.Entries.Count / 20);
 
         public SeedBoxGump(PlayerMobile user, SeedBox box, int page = 1)
             : base(user, 150, 200)
@@ -95,10 +98,8 @@ namespace Server.Engines.Plants
 
         public void CheckPage(SeedEntry entry)
         {
-            int index = Box.Entries.IndexOf(entry);
-
-            Page = (int)Math.Ceiling((double)(index + 1) / 20);
-        }
+			Page = (Box.Entries.IndexOf(entry) + 1) / 20;
+		}
 
         public override void OnResponse(RelayInfo info)
         {

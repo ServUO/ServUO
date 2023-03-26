@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net48</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+		<ServerGarbageCollection>true</ServerGarbageCollection>
+		<ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>ServUO</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<DefineConstants>NEWTIMERS;NEWPARENT;ServUO;ServUO58</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="true" />
+	</ItemGroup>
+
+</Project>

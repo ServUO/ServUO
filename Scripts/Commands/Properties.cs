@@ -386,15 +386,14 @@ namespace Server.Commands
 
             if (isSerial) // mutate back
             {
-                toSet = (Serial)Convert.ToInt32(toSet);
+				toSet = new Serial(Convert.ToInt32(toSet));
             }
 
             constructed = toSet;
             return null;
         }
 
-        public static string SetDirect(
-            Mobile m, object logObject, object obj, PropertyInfo prop, string givenName, object toSet, bool shouldLog)
+        public static string SetDirect(Mobile m, object logObject, object obj, PropertyInfo prop, string givenName, object toSet, bool shouldLog)
         {
             try
             {
@@ -541,7 +540,7 @@ namespace Server.Commands
         {
             if (e.Length == 1)
             {
-                IEntity ent = World.FindEntity(e.GetInt32(0));
+                IEntity ent = World.FindEntity(e.GetSerial(0));
 
                 if (ent == null)
                 {

@@ -124,7 +124,7 @@ namespace Server.Spells.Seventh
                         Caster.BodyMod = m_NewBody;
 
                         if (m_NewBody == 400 || m_NewBody == 401)
-                            Caster.HueMod = Utility.RandomSkinHue();
+                            Caster.HueMod = Caster.Race.RandomSkinHue();
                         else
                             Caster.HueMod = 0;
 

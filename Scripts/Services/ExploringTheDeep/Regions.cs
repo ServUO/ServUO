@@ -105,7 +105,7 @@ namespace Server.Regions
 
                 PlayerMobile pm = m as PlayerMobile;
 
-                if (m.AccessLevel == AccessLevel.Player)
+                if (m.AccessLevel < AccessLevel.Counselor)
                 {
                     if (m.Mounted || m.Flying)
                     {

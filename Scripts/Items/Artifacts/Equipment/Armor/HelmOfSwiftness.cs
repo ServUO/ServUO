@@ -1,6 +1,6 @@
 namespace Server.Items
 {
-    public class HelmOfSwiftness : WingedHelm, ICanBeElfOrHuman
+    public class HelmOfSwiftness : WingedHelm, IRacialEquipment
     {
         public override bool IsArtifact => true;
 
@@ -9,7 +9,10 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ElfOnly { get { return _ElfOnly; } set { _ElfOnly = value; InvalidateProperties(); } }
 
-        [Constructable]
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Race RequiredRace => ElfOnly ? Race.Elf : Race.Human;
+
+		[Constructable]
         public HelmOfSwiftness()
             : base()
         {

@@ -32,7 +32,7 @@ namespace Server.Commands.Generic
 
                 if (mobiles)
                 {
-                    foreach (Mobile mob in reg.GetMobiles())
+                    foreach (Mobile mob in reg.AllMobiles)
                     {
                         if (!BaseCommand.IsAccessible(from, mob))
                             continue;

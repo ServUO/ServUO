@@ -9,7 +9,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Mage)
         {
             SpeechHue = Utility.RandomDyedHue();
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Title = "the mage";
             if (Female = Utility.RandomBool())
             {

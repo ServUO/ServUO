@@ -200,7 +200,7 @@ namespace Server.Engines.CityLoyalty
 
             if (t.IsSubclassOf(typeof(Mobile)))
             {
-                foreach (Mobile m in r.GetEnumeratedMobiles())
+                foreach (Mobile m in r.AllMobiles)
                 {
                     if (m.GetType() == t)
                         return true;
@@ -208,7 +208,7 @@ namespace Server.Engines.CityLoyalty
             }
             else if (t.IsSubclassOf(typeof(Item)))
             {
-                foreach (Item i in r.GetEnumeratedItems())
+                foreach (Item i in r.AllItems)
                 {
                     if (i.GetType() == t)
                         return true;

@@ -30,17 +30,16 @@ namespace Server.Commands.Generic
             Register(new KickCommand(false));
             Register(new FirewallCommand());
             Register(new TeleCommand());
-            Register(new SetCommand());
+			Register(new SwitchCommand());
+			Register(new SetCommand());
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "Immortal", "blessed", "true", ObjectTypes.Mobiles));
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "Invul", "blessed", "true", ObjectTypes.Mobiles));
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "Mortal", "blessed", "false", ObjectTypes.Mobiles));
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "NoInvul", "blessed", "false", ObjectTypes.Mobiles));
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "Squelch", "squelched", "true", ObjectTypes.Mobiles));
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "Unsquelch", "squelched", "false", ObjectTypes.Mobiles));
-
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "ShaveHair", "HairItemID", "0", ObjectTypes.Mobiles));
             Register(new AliasedSetCommand(AccessLevel.GameMaster, "ShaveBeard", "FacialHairItemID", "0", ObjectTypes.Mobiles));
-
             Register(new GetCommand());
             Register(new GetTypeCommand());
             Register(new DeleteCommand());
@@ -775,7 +774,7 @@ namespace Server.Commands.Generic
             AccessLevel = AccessLevel.Counselor;
             Supports = CommandSupport.All;
             Commands = new[] { "Set" };
-            ObjectTypes = ObjectTypes.Both;
+            ObjectTypes = ObjectTypes.All;
             Usage = "Set <propertyName> <value> [...]";
             Description = "Sets one or more property values by name of a targeted object.";
         }
@@ -801,7 +800,57 @@ namespace Server.Commands.Generic
         }
     }
 
-    public class DeleteCommand : BaseCommand
+	public class SwitchCommand : BaseCommand
+	{
+		public SwitchCommand()
+		{
+			AccessLevel = AccessLevel.Counselor;
+			Supports = CommandSupport.All;
+			Commands = new string[] { "Switch" };
+			ObjectTypes = ObjectTypes.All;
+			Usage = "Switch <propertyName> [...]";
+			Description = "Switch one or more boolean property values to their opposite states by name of a targeted object.";
+		}
+
+		public override void Execute(CommandEventArgs e, object obj)
+		{
+			if (e.Length >= 1)
+			{
+				for (var i = 0; i < e.Length; i++)
+				{
+					var prop = e.GetString(i);
+
+					var value = Properties.GetValue(e.Mobile, obj, prop);
+
+					if (Boolean.TryParse(value, out var state))
+					{
+						state = !state;
+
+						var result = Properties.SetValue(e.Mobile, obj, prop, state.ToString());
+
+						if (result == "Property has been set.")
+						{
+							AddResponse("Property has been switched.");
+						}
+						else
+						{
+							LogFailure(result);
+						}
+					}
+					else
+					{
+						LogFailure("Property is not a boolean type.");
+					}
+				}
+			}
+			else
+			{
+				LogFailure("Format: Switch <propertyName>");
+			}
+		}
+	}
+	
+	public class DeleteCommand : BaseCommand
     {
         private readonly List<object> _DeleteConfirm = new List<object>();
 

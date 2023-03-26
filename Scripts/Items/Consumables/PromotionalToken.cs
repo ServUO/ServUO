@@ -55,8 +55,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             Mobile m = null;
 
             if (parent is Item)

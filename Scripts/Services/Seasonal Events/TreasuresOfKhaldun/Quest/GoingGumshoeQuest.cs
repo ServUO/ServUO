@@ -278,7 +278,7 @@ namespace Server.Engines.Khaldun
 
         private LibraryBookcase GetBookcase()
         {
-            IPooledEnumerable eable = Map.Trammel.GetItemsInBounds(Bounds[Utility.Random(Bounds.Length)]);
+            IPooledEnumerable eable = Map.Trammel.GetItemsInBounds(QuestBounds[Utility.Random(QuestBounds.Length)]);
             List<Item> bookcases = new List<Item>();
 
             foreach (Item item in eable)
@@ -337,7 +337,7 @@ namespace Server.Engines.Khaldun
             return false;
         }
 
-        public static Rectangle2D[] Bounds =
+        public static Rectangle2D[] QuestBounds =
         {
             new Rectangle2D(4285, 961, 10, 18),
             new Rectangle2D(4325, 961, 10, 18),
@@ -406,10 +406,7 @@ namespace Server.Engines.Khaldun
             }
 
             public QuestRegion()
-                : base("Going Gumshoe Quest Region",
-                        Map.Trammel,
-                        DefaultPriority,
-                        Bounds)
+                : base("Going Gumshoe Quest Region", Map.Trammel, DefaultPriority, QuestBounds)
             {
                 Register();
             }
@@ -426,7 +423,7 @@ namespace Server.Engines.Khaldun
 
                     if (quest != null && !quest.FoundCipherBook && 0.2 > Utility.RandomDouble())
                     {
-                        Rectangle2D rec = Bounds.FirstOrDefault(b => b.Contains(m.Location));
+                        Rectangle2D rec = QuestBounds.FirstOrDefault(b => b.Contains(m.Location));
 
                         if (rec.Contains(quest.BookCase) && CanGiveMessage(m))
                         {

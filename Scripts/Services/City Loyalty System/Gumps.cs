@@ -683,7 +683,7 @@ namespace Server.Engines.CityLoyalty
                 {
                     City.HeraldMessage(User, 1154057); // Begging thy pardon but the City Treasury doth nay have the funds available to make such a deal!
                 }
-                else if (User.AccessLevel == AccessLevel.Player && City.TradeDealStart != DateTime.MinValue && City.TradeDealStart + TimeSpan.FromDays(CityLoyaltySystem.TradeDealCooldown) > DateTime.UtcNow)
+                else if (User.AccessLevel < AccessLevel.Counselor && City.TradeDealStart != DateTime.MinValue && City.TradeDealStart + TimeSpan.FromDays(CityLoyaltySystem.TradeDealCooldown) > DateTime.UtcNow)
                 {
                     City.HeraldMessage(User, 1154056); // You may only make a trade deal once per real world week!
                 }

@@ -42,7 +42,7 @@ namespace Server.Engines.Auction
             AddGumpLayout();
 
             User.CloseGump(GetType());
-            User.SendGump(this, false);
+            User.SendGump(this);
         }
 
         public string Color(string color, string str)

@@ -300,7 +300,7 @@ namespace Server.Items
         {
             base.GetContextMenuEntries(from, list);
 
-            if (from.Alive && InRange(from, 2))
+            if (from.Alive && from.InRange(this, 2))
             {
                 if ((IsLockedDown || IsSecure) && !IsAccessibleTo(from))
                     return;

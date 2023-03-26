@@ -329,7 +329,7 @@ namespace Server.Mobiles
                         switch (Utility.Random(13))
                         {
                             case 0: item = new KrampusCoinPurse(m.Karma); break;
-                            case 1: item = new CardOfSemidar(Utility.RandomMinMax(0, 6)); break;
+                            case 1: item = new CardOfSemidar(Utility.RandomEnum<CardOfSemidar.CardType>()); break;
                             case 2: item = new NiceTitleDeed(); break;
                             case 3: item = new NaughtyTitleDeed(); break;
                             case 4: item = new PunisherTitleDeed(); break;

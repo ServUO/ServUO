@@ -25,7 +25,7 @@ namespace Server.Misc
             {
                 AckPartyLocations ack = new AckPartyLocations(from, party);
 
-                if (ack.UnderlyingStream.Length > 8)
+                if (ack.Stream.Length > 8)
                     state.Send(ack);
             }
         }
@@ -41,7 +41,7 @@ namespace Server.Misc
 
                 AckGuildsLocations packet = new AckGuildsLocations(from, guild, locations);
 
-                if (packet.UnderlyingStream.Length > (locations ? 9 : 5))
+                if (packet.Stream.Length > (locations ? 9 : 5))
                     state.Send(packet);
             }
             else
@@ -113,7 +113,7 @@ namespace Server.Misc
 
                 Mobile mob = pmi.Mobile;
 
-                if (Utility.InUpdateRange(from, mob) && from.CanSee(mob))
+                if (from.InUpdateRange(mob) && from.CanSee(mob))
                     continue;
 
                 m_Stream.Write(mob.Serial);
@@ -145,7 +145,7 @@ namespace Server.Misc
                 if (mob == null || mob == from || mob.NetState == null)
                     continue;
 
-                if (locations && Utility.InUpdateRange(from, mob) && from.CanSee(mob))
+                if (locations && from.InUpdateRange(mob) && from.CanSee(mob))
                     continue;
 
                 m_Stream.Write(mob.Serial);

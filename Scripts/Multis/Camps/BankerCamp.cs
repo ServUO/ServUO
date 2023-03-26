@@ -46,7 +46,7 @@ namespace Server.Multis
         {
             base.Deserialize(reader);
 
-            int version = reader.ReadInt();
+			reader.ReadInt();
         }
     }
 }

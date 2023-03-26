@@ -31,7 +31,7 @@ namespace Server.Items
         Exceptional
     }
 
-    public class Spellbook : Item, ICraftable, ISlayer, IEngravable, IVvVItem, IOwnerRestricted, IWearableDurability
+    public class Spellbook : Item, ISpellbook, ICraftable, ISlayer, IEngravable, IVvVItem, IOwnerRestricted, IWearableDurability
     {
         private static readonly Dictionary<Mobile, List<Spellbook>> m_Table = new Dictionary<Mobile, List<Spellbook>>();
 
@@ -649,8 +649,8 @@ namespace Server.Items
             base.OnAfterDuped(newItem);
         }
 
-        public override void OnAdded(object parent)
-        {
+        public override void OnAdded(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -687,11 +687,13 @@ namespace Server.Items
                 }
 
                 from.CheckStatTimers();
-            }
-        }
+			}
 
-        public override void OnRemoved(object parent)
-        {
+			base.OnAdded(parent);
+		}
+
+        public override void OnRemoved(IEntity parent)
+		{
             if (parent is Mobile)
             {
                 Mobile from = (Mobile)parent;
@@ -710,8 +712,10 @@ namespace Server.Items
                 from.RemoveStatMod(modName + "Int");
 
                 from.CheckStatTimers();
-            }
-        }
+			}
+
+			base.OnRemoved(parent);
+		}
 
         public bool HasSpell(int spellID)
         {
@@ -732,21 +736,19 @@ namespace Server.Items
 
             if (Parent == null)
             {
-                to.Send(WorldPacket);
+                SendInfoTo(ns, to.ViewOPL);
             }
             else if (Parent is Item)
             {
-                to.Send(new ContainerContentUpdate(this));
+                ContainerContentUpdate.Send(ns, this);
             }
             else if (Parent is Mobile)
             {
-                // What will happen if the client doesn't know about our parent?
                 to.Send(new EquipUpdate(this));
             }
 
-            to.Send(new DisplaySpellbook(this));
-
-            to.Send(new SpellbookContent(this, ItemID, BookOffset + 1, m_Content));
+            DisplaySpellbook.Send(ns, this);
+            SpellbookContent.Send(ns, this, BookOffset + 1, m_Content);
         }
 
         public override void AddNameProperties(ObjectPropertyList list)

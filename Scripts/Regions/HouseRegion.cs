@@ -56,7 +56,7 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
-            if (m.AccessLevel == AccessLevel.Player && House != null && House.IsFriend(m))
+            if (m.AccessLevel < AccessLevel.Counselor && House != null && House.IsFriend(m))
             {
                 if (House is HouseFoundation)
                 {

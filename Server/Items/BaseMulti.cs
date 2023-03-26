@@ -1,21 +1,9 @@
-#region References
-using System;
-#endregion
-
 namespace Server.Items
 {
 	public class BaseMulti : Item
 	{
-		[Constructable]
-		public BaseMulti(int itemID)
-			: base(itemID)
-		{
-			Movable = false;
-		}
-
-		public BaseMulti(Serial serial)
-			: base(serial)
-		{ }
+		[Hue, CommandProperty(AccessLevel.Counselor)]
+		public virtual int MultiHue => Hue;
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public override int ItemID
@@ -42,21 +30,6 @@ namespace Server.Items
 			}
 		}
 
-		[Obsolete("Replace with calls to OnLeave and OnEnter surrounding component invalidation.", true)]
-		public virtual void RefreshComponents()
-		{
-			if (Parent == null)
-			{
-				var facet = Map;
-
-				if (facet != null)
-				{
-					facet.OnLeave(this);
-					facet.OnEnter(this);
-				}
-			}
-		}
-
 		public override int LabelNumber
 		{
 			get
@@ -67,14 +40,7 @@ namespace Server.Items
 				{
 					int id = mcl.List[0].m_ItemID;
 
-					if (id < 0x4000)
-					{
-						return 1020000 + id;
-					}
-					else
-					{
-						return 1078872 + id;
-					}
+					return id < 0x4000 ? 1020000 + id : 1078872 + id;
 				}
 
 				return base.LabelNumber;
@@ -83,9 +49,22 @@ namespace Server.Items
 
 		public virtual bool AllowsRelativeDrop => false;
 
+		public virtual MultiComponentList Components => MultiData.GetComponents(ItemID);
+
+		[Constructable]
+		public BaseMulti(int itemID)
+			: base(itemID)
+		{
+			Movable = false;
+		}
+
+		public BaseMulti(Serial serial)
+			: base(serial)
+		{ }
+
 		public override int GetUpdateRange(Mobile m)
 		{
-			var min = m.NetState != null ? m.NetState.UpdateRange : Core.GlobalUpdateRange;
+			var min = base.GetUpdateRange(m);
 			var max = Core.GlobalRadarRange - 1;
 
 			var w = Components.Width;
@@ -100,7 +79,17 @@ namespace Server.Items
 			return v;
 		}
 
-		public virtual MultiComponentList Components => MultiData.GetComponents(ItemID);
+		public override int GetPacketFlags()
+		{
+			var f = base.GetPacketFlags();
+
+			if (!ForceShowProperties)
+			{
+				f &= ~0x20;
+			}
+
+			return f;
+		}
 
 		public virtual bool Contains(Point2D p)
 		{
@@ -127,39 +116,27 @@ namespace Server.Items
 			return x >= 0 && x < mcl.Width && y >= 0 && y < mcl.Height && mcl.Tiles[x][y].Length > 0;
 		}
 
-		public bool Contains(Mobile m)
+		public virtual bool Contains(Mobile m)
 		{
-			if (m.Map == Map)
-			{
-				return Contains(m.X, m.Y);
-			}
-			else
-			{
-				return false;
-			}
+			return m.Map == Map && Contains(m.X, m.Y);
 		}
 
-		public bool Contains(Item item)
+		public virtual bool Contains(Item item)
 		{
-			if (item.Map == Map)
-			{
-				return Contains(item.X, item.Y);
-			}
-			else
-			{
-				return false;
-			}
+			return item.Map == Map && Contains(item.X, item.Y);
 		}
 
 		public override void Serialize(GenericWriter writer)
 		{
 			base.Serialize(writer);
+
 			writer.Write(1); // version
 		}
 
 		public override void Deserialize(GenericReader reader)
 		{
 			base.Deserialize(reader);
+
 			var version = reader.ReadInt();
 		}
 	}

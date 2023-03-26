@@ -71,13 +71,14 @@ namespace Server.Items
             return canDrop;
         }
 
-        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, int plusItems, int plusWeight)
+        public override bool CheckHold(Mobile m, Item item, bool message, bool checkItems, bool checkWeight, int plusItems, int plusWeight)
         {
             if (!BaseHouse.CheckSecured(this))
             {
                 m.SendLocalizedMessage(1113711); //The incubator must be secured for the egg to grow, not locked down.
                 return false;
             }
+
             if (!(item is ChickenLizardEgg))
             {
                 m.SendMessage("This will only accept chicken eggs.");

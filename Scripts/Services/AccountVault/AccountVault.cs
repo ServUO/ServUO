@@ -111,7 +111,7 @@ namespace Server.AccountVault
 
             var pm = from as PlayerMobile;
 
-            if (pm == null || pm.Account == null || !InRange(from.Location, 3))
+            if (pm == null || pm.Account == null || !pm.InRange(this, 3))
             {
                 return;
             }
@@ -124,7 +124,7 @@ namespace Server.AccountVault
 
             if (Account == null && !HasVault(from))
             {
-                TryRentVault(from as PlayerMobile, this);
+                TryRentVault(pm, this);
             }
             else if (from.Criminal)
             {
@@ -135,13 +135,14 @@ namespace Server.AccountVault
                 ProcessOpeners(from);
 
                 from.Send(Container.OPLPacket);
-                from.NetState.Send(new ContainerContentUpdate(Container));
+
+                ContainerContentUpdate.Send(from.NetState, Container);
 
                 Timer.DelayCall(TimeSpan.FromMilliseconds(250), () =>
                 {
                     Container.DisplayTo(pm);
 
-                    var manager = FindNearest<VaultManager>(pm, m => m.InRange(pm.Location, Core.GlobalUpdateRange));
+                    var manager = FindNearest<VaultManager>(pm, m => m.InUpdateRange(pm));
 
                     if (manager != null)
                     {
@@ -161,7 +162,7 @@ namespace Server.AccountVault
             base.Serialize(writer);
             writer.Write(1);
 
-            writer.WriteItem(_Container);
+            writer.Write(_Container);
             writer.Write(PastDue);
             writer.Write(Index);
 
@@ -560,7 +561,7 @@ namespace Server.AccountVault
                 {
                     if (!ValidateLocation(vault))
                     {
-                        Utility.WriteConsoleColor(ConsoleColor.Red, "Invalid Account Vault Location: {0} [{1}]", vault.Location.ToString(), vault.Map != null ? vault.Map.ToString() : "null map");
+                        Utility.WriteLine(ConsoleColor.Red, "Invalid Account Vault Location: {0} [{1}]", vault.Location.ToString(), vault.Map != null ? vault.Map.ToString() : "null map");
                         pm.SendMessage("You cannot rent an account vault in this location!");
                     }
                     else if (!SystemSettings.HasBalance(pm))
@@ -753,7 +754,7 @@ namespace Server.AccountVault
 
         public override bool CheckLift(Mobile from, Item item, ref LRReason reject)
         {
-            if (_AuctionItem && from.AccessLevel == AccessLevel.Player)
+            if (_AuctionItem && from.AccessLevel < AccessLevel.Counselor)
             {
                 return false;
             }
@@ -763,7 +764,7 @@ namespace Server.AccountVault
 
         public override bool OnDragDrop(Mobile from, Item dropped)
         {
-            if (_AuctionItem && from.AccessLevel == AccessLevel.Player)
+            if (_AuctionItem && from.AccessLevel < AccessLevel.Counselor)
             {
                 return false;
             }
@@ -773,7 +774,7 @@ namespace Server.AccountVault
 
         public override bool OnDragDropInto(Mobile from, Item dropped, Point3D p)
         {
-            if (_AuctionItem && from.AccessLevel == AccessLevel.Player)
+            if (_AuctionItem && from.AccessLevel < AccessLevel.Counselor)
             {
                 return false;
             }

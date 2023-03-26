@@ -19,7 +19,7 @@ namespace Server.Engines.VoidPool
             SetDex(100);
             SetInt(1000);
 
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Body = 0x191;
             HairItemID = 0x203C;
             HairHue = 0x46D;

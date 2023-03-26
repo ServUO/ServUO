@@ -23,7 +23,7 @@ namespace Server.Engines.Fellowship
             Name = NameList.RandomName("male");
 
             SpeechHue = 0x3B2;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
             Body = 0x190;
         }
 

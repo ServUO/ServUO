@@ -339,7 +339,7 @@ namespace Server.Engines.ResortAndCasino
             InitStats(125, 100, 25);
 
             SpeechHue = 1276;
-            Hue = Utility.RandomSkinHue();
+            Hue = Race.RandomSkinHue();
 
             Female = true;
             Body = 0x191;

@@ -81,12 +81,13 @@ namespace Server.Engines.Quests.Hag
         {
             Mobile apprentice = new Mobile
             {
-                Hue = Utility.RandomSkinHue(),
                 Female = false,
                 Body = 0x190
             };
 
-            apprentice.Delete();
+			apprentice.BodyHue = apprentice.Race.RandomSkinHue();
+
+			apprentice.Delete();
 
             return apprentice;
         }

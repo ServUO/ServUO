@@ -40,8 +40,8 @@ namespace Server.Items
             }
         }
 
-        public override void OnRemoved(object parent)
-        {
+        public override void OnRemoved(IEntity parent)
+		{
             if (m_SkillMod != null)
             {
                 if (_Table.ContainsKey(m_SkillMod.Owner))

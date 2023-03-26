@@ -167,7 +167,7 @@ namespace Server.Items
 
                         foreach (Mobile m in eable)
                         {
-                            if (m.AccessLevel == AccessLevel.Player)
+                            if (m.AccessLevel < AccessLevel.Counselor)
                             {
                                 badSpot = true;
                                 break;

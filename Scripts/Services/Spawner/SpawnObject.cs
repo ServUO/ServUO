@@ -33,7 +33,7 @@ namespace Server.Mobiles
             int count = reader.ReadInt();
             for (int i = 0; i < count; i++)
             {
-                ISpawnable e = World.FindEntity(reader.ReadInt()) as ISpawnable;
+                ISpawnable e = World.FindEntity(reader.ReadSerial()) as ISpawnable;
 
                 if (e != null)
                     SpawnedObjects.Add(e);

@@ -702,7 +702,7 @@ namespace Server.Engines.Shadowguard
             {
                 Mobile m = Combatant as Mobile;
 
-                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && CanBeHarmful(m, false) && m.AccessLevel == AccessLevel.Player)
+                if (InRange(m.Location, 10) && !InRange(m.Location, 2) && m.Alive && CanBeHarmful(m, false) && m.AccessLevel < AccessLevel.Counselor)
                 {
                     if (_NextTeleport < DateTime.UtcNow)
                     {
@@ -838,13 +838,13 @@ namespace Server.Engines.Shadowguard
                 {
                     if (Alive && Map != null)
                     {
-                        Packet flash = ScreenLightFlash.Instance;
+                        ScreenEffect flash = ScreenEffect.LightFlash;
                         IPooledEnumerable e = Map.GetClientsInRange(p, (range * 4) + 5);
 
                         foreach (NetState ns in e)
                         {
-                            if (ns.Mobile != null)
-                                ns.Mobile.Send(flash);
+                            if (ns != null)
+                                ns.Send(flash);
                         }
 
                         e.Free();

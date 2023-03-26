@@ -359,7 +359,7 @@ namespace Server.Items
             base.Serialize(writer);
             writer.Write(0);
 
-            writer.WriteItem(Beacon);
+            writer.Write(Beacon);
         }
 
         public override void Deserialize(GenericReader reader)

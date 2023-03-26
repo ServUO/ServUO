@@ -3,7 +3,7 @@ using Server.Engines.Craft;
 namespace Server.Items
 {
     [Alterable(typeof(DefTinkering), typeof(GargishGlasses), true)]
-    public class ElvenGlasses : BaseArmor, IRepairable, ICanBeElfOrHuman
+    public class ElvenGlasses : BaseArmor, IRepairable, IRacialEquipment
     {
         public override int LabelNumber => 1032216;  // elven glasses
         public CraftSystem RepairSystem => DefTinkering.CraftSystem;
@@ -13,7 +13,10 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public bool ElfOnly { get { return _ElvesOnly; } set { _ElvesOnly = value; } }
 
-        [Constructable]
+		[CommandProperty(AccessLevel.GameMaster)]
+		public Race RequiredRace => ElfOnly ? Race.Elf : Race.Human;
+
+		[Constructable]
         public ElvenGlasses()
             : base(0x2FB8)
         {

@@ -4,15 +4,16 @@ using System;
 
 namespace Server
 {
-	public struct Serial : IComparable, IComparable<Serial>
+	public struct Serial : IComparable<Serial>, IEquatable<Serial>
 	{
-		private readonly int m_Serial;
+		private static Serial m_NextMobileQueued = new Serial(0x3FFFFFFF);
+		private static Serial m_NextItemQueued = new Serial(0x7FFFFFFF);
 
-		private static Serial m_LastMobile = Zero;
-		private static Serial m_LastItem = 0x40000000;
+		private static Serial m_NextMobile = new Serial(0x00000001);
+		private static Serial m_NextItem = new Serial(0x40000001);
 
-		public static Serial LastMobile => m_LastMobile;
-		public static Serial LastItem => m_LastItem;
+		public static readonly Serial MinValue = new Serial(Int32.MinValue);
+		public static readonly Serial MaxValue = new Serial(Int32.MaxValue);
 
 		public static readonly Serial MinusOne = new Serial(-1);
 		public static readonly Serial Zero = new Serial(0);
@@ -21,12 +22,24 @@ namespace Server
 		{
 			get
 			{
-				while (World.FindMobile(m_LastMobile = m_LastMobile + 1) != null)
+				Serial s;
+
+				if (World.Volatile)
 				{
-					;
+					while (World.FindMobile(m_NextMobileQueued) != null)
+						--m_NextMobileQueued._Value;
+
+					s = m_NextMobileQueued;
+				}
+				else
+				{
+					while (World.FindMobile(m_NextMobile) != null)
+						++m_NextMobile._Value;
+
+					s = m_NextMobile;
 				}
 
-				return m_LastMobile;
+				return s;
 			}
 		}
 
@@ -34,110 +47,111 @@ namespace Server
 		{
 			get
 			{
-				while (World.FindItem(m_LastItem = m_LastItem + 1) != null)
+				Serial s;
+
+				if (World.Volatile)
 				{
-					;
+					while (World.FindItem(m_NextItemQueued) != null)
+						--m_NextItemQueued._Value;
+
+					s = m_NextItemQueued;
+				}
+				else
+				{
+					while (World.FindItem(m_NextItem) != null)
+						++m_NextItem._Value;
+
+					s = m_NextItem;
 				}
 
-				return m_LastItem;
+				return s;
 			}
 		}
 
-		private Serial(int serial)
+		private int _Value;
+
+		public int Value => _Value;
+
+		public bool IsMobile => _Value > 0 && _Value < 0x40000000;
+
+		public bool IsItem => _Value >= 0x40000000 && _Value <= 0x7FFFFFFF;
+
+		public bool IsValid => _Value > 0;
+
+		public Serial(int serial)
 		{
-			m_Serial = serial;
+			_Value = serial;
 		}
-
-		public int Value => m_Serial;
-
-		public bool IsMobile => m_Serial > 0 && m_Serial < 0x40000000;
-
-		public bool IsItem => m_Serial >= 0x40000000 && m_Serial <= 0x7FFFFFFF;
-
-		public bool IsValid => m_Serial > 0;
 
 		public override int GetHashCode()
 		{
-			return m_Serial;
+			return _Value;
 		}
 
 		public int CompareTo(Serial other)
 		{
-			return m_Serial.CompareTo(other.m_Serial);
+			return _Value.CompareTo(other._Value);
 		}
 
-		public int CompareTo(object other)
+		public int CompareTo(object o)
 		{
-			if (other is Serial)
-			{
-				return CompareTo((Serial)other);
-			}
-			else if (other == null)
-			{
-				return -1;
-			}
+			return o is Serial s ? CompareTo(s) : -1;
+		}
 
-			throw new ArgumentException();
+		public bool Equals(Serial other)
+		{
+			return _Value.Equals(other._Value);
 		}
 
 		public override bool Equals(object o)
 		{
-			if (o == null || !(o is Serial))
-			{
-				return false;
-			}
-
-			return ((Serial)o).m_Serial == m_Serial;
+			return o is Serial s && Equals(s);
 		}
 
 		public static bool operator ==(Serial l, Serial r)
 		{
-			return l.m_Serial == r.m_Serial;
+			return l._Value == r._Value;
 		}
 
 		public static bool operator !=(Serial l, Serial r)
 		{
-			return l.m_Serial != r.m_Serial;
+			return l._Value != r._Value;
 		}
 
 		public static bool operator >(Serial l, Serial r)
 		{
-			return l.m_Serial > r.m_Serial;
+			return l._Value > r._Value;
 		}
 
 		public static bool operator <(Serial l, Serial r)
 		{
-			return l.m_Serial < r.m_Serial;
+			return l._Value < r._Value;
 		}
 
 		public static bool operator >=(Serial l, Serial r)
 		{
-			return l.m_Serial >= r.m_Serial;
+			return l._Value >= r._Value;
 		}
 
 		public static bool operator <=(Serial l, Serial r)
 		{
-			return l.m_Serial <= r.m_Serial;
+			return l._Value <= r._Value;
 		}
-
-		/*public static Serial operator ++ ( Serial l )
-        {
-        return new Serial( l + 1 );
-        }*/
 
 		public override string ToString()
 		{
-			return String.Format("0x{0:X8}", m_Serial);
+			return String.Format("0x{0:X8}", _Value);
 		}
 
 		public static implicit operator int(Serial a)
 		{
-			return a.m_Serial;
+			return a._Value;
 		}
-
+		/*
 		public static implicit operator Serial(int a)
 		{
 			return new Serial(a);
 		}
+		*/
 	}
 }

@@ -70,16 +70,15 @@ namespace Server.Spells.Spellweaving
         {
             if (!Caster.Map.CanFit(p, 12, true, false))
                 return false;
+
             if (BaseHouse.FindHouseAt(p, caster.Map, 20) != null)
                 return false;
-            foreach (RegionRect r in caster.Map.GetSector(p).RegionRects)
-            {
-                if (!r.Contains(p))
-                    continue;
-                GuardedRegion reg = (GuardedRegion)Region.Find(p, caster.Map).GetRegion(typeof(GuardedRegion));
-                if (reg != null && !reg.Disabled)
-                    return false;
-            }
+
+			GuardedRegion reg = Region.Find(p, caster.Map).GetRegion<GuardedRegion>();
+
+			if (reg != null && !reg.Disabled)
+				return false;
+
             return true;
         }
 
