@@ -121,7 +121,6 @@ namespace Server.Spells.SkillMasteries
                 damage /= Target is PlayerMobile ? 5.15 : 2.5;
 
                 damage *= GetDamageScalar(Target);
-                damage /= 100;
 
                 SpellHelper.Damage(this, Target, (int)damage, 0, 0, 0, 0, 100);
             }
