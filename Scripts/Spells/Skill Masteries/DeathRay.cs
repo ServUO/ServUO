@@ -122,11 +122,6 @@ namespace Server.Spells.SkillMasteries
 
                 damage *= GetDamageScalar(Target);
 
-                int sdiBonus = SpellHelper.GetSpellDamageBonus(Caster, Target, CastSkill, Caster.Player && Target.Player);
-
-                damage *= (100 + sdiBonus);
-                damage /= 100;
-
                 SpellHelper.Damage(this, Target, (int)damage, 0, 0, 0, 0, 100);
             }
 
