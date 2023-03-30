@@ -10,6 +10,7 @@ using Server.Spells;
 using Server.Targeting;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 #endregion
 
 namespace Server.Items
@@ -147,6 +148,7 @@ namespace Server.Items
 
         private static readonly Type[][] m_EodonSpawnTypes = new Type[][]
         {
+            new Type[] { typeof(HeadlessOne), typeof(Skeleton) },
             new Type[] { typeof(MyrmidexLarvae), typeof(SilverbackGorilla), typeof(Panther), typeof(WildTiger) },
             new Type[] { typeof(AcidElemental), typeof(SandVortex), typeof(Lion), typeof(SabreToothedTiger) },
             new Type[] { typeof(AcidElemental), typeof(SandVortex), typeof(Lion), typeof(SabreToothedTiger) },
@@ -765,37 +767,20 @@ namespace Server.Items
 
         public static Type[] GetSpawnList(Type[][] table, int level)
         {
-            Type[] array;
-
             if (TreasureMapInfo.NewSystem)
             {
                 switch (level)
                 {
-                    default: array = table[level + 1]; break;
-                    case 2:
-                        List<Type> list1 = new List<Type>();
-                        list1.AddRange(table[2]);
-                        list1.AddRange(table[3]);
-
-                        array = list1.ToArray();
-                        break;
-                    case 3:
-                        List<Type> list2 = new List<Type>();
-                        list2.AddRange(table[4]);
-                        list2.AddRange(table[5]);
-
-                        array = list2.ToArray();
-                        break;
-                    case 4: array = table[6]; break;
-                    case 5: array = table[7]; break;
+                    default: return table[Math.Min(level + 1, 7)];
+                    case 0: return table[1];
+                    case 1: return table[2].Union(table[3]).ToArray();
+                    case 2: return table[4].Union(table[5]).ToArray();
+                    case 3: return table[6];
+                    case 4: return table[7];
                 }
             }
-            else
-            {
-                array = table[level];
-            }
 
-            return array;
+            return table[level];
         }
 
         public static bool HasDiggingTool(Mobile m)
