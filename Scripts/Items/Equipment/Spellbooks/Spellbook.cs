@@ -999,8 +999,8 @@ namespace Server.Items
                         m_NegativeAttributes = new NegativeAttributes(this, reader);
 
 
-                        m_MaxHitPoints = reader.ReadInt();
                         m_HitPoints = reader.ReadInt();
+                        m_MaxHitPoints = reader.ReadInt();
 
                         _VvVItem = reader.ReadBool();
                         _Owner = reader.ReadMobile();
