@@ -43,7 +43,7 @@ namespace Server.Spells.SkillMasteries
                 {
                 duration = 60;
                 }
-                else if (duration >= 60)
+                else if (skill >= 60)
                 {
                 duration = 90;
                 }
