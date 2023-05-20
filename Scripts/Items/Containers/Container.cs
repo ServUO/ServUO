@@ -209,9 +209,9 @@ namespace Server.Items
         {
             bool canDrop = base.OnDroppedInto(from, target, p);
 
-            if (canDrop && target is BankBox)
+            if (canDrop && target is BankBox && !((BankBox)target).Opened)
             {
-                CheckBank((BankBox)target, from);
+                return false;
             }
 
             return canDrop;
