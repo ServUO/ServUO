@@ -783,6 +783,11 @@ namespace Server
 
 		private void TidyObjectList<T>(ArrayList list, Predicate<T> tidy)
 		{
+			if (list == null)
+			{
+				return;
+			}
+
 			var i = list.Count;
 
 			while (--i >= 0)
@@ -798,11 +803,18 @@ namespace Server
 
 		public override void WriteObjectList<T>(ArrayList list, Action<GenericWriter, T> writer)
 		{
-			Write(list.Count);
-
-			foreach (T obj in list)
+			if (list == null)
 			{
-				writer(this, obj);
+				Write((int)0);
+			}
+			else
+			{
+				Write(list.Count);
+
+				foreach (T obj in list)
+				{
+					writer(this, obj);
+				}
 			}
 		}
 
@@ -2028,6 +2040,11 @@ namespace Server
 
 		private void TidyObjectList<T>(ArrayList list, Predicate<T> tidy)
 		{
+			if (list == null)
+			{
+				return;
+			}
+
 			var i = list.Count;
 
 			while (--i >= 0)
@@ -2043,11 +2060,18 @@ namespace Server
 
 		public override void WriteObjectList<T>(ArrayList list, Action<GenericWriter, T> writer)
 		{
-			Write(list.Count);
-
-			foreach (T obj in list)
+			if (list == null)
 			{
-				writer(this, obj);
+				Write((int)0);
+			}
+			else
+			{
+				Write(list.Count);
+
+				foreach (T obj in list)
+				{
+					writer(this, obj);
+				}
 			}
 		}
 
