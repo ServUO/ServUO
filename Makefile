@@ -1,6 +1,6 @@
 MCS=mcs
 EXENAME=ServUO
-CURPATH=`pwd`
+CURPATH=/Users/takeshi/src/ServUO
 CFGPATH=${CURPATH}/Settings
 SCRPATH=${CURPATH}/Scripts
 SRVPATH=${CURPATH}/Server
