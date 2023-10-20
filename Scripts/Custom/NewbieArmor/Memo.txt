@@ -1,0 +1,53 @@
+開発メモ
+
+public class SampleArms() : LeatherArms // アイテムクラス名 : 継承アイテム名
+{
+		[Constructable]
+		public SampleArms()             // コンストラクタ
+		{
+            // Layer = Layer.OneHanded; // 片手武器 ※要確認
+			Hue = 1174;                 // 色(1174=炎ネオン, 0x4F2=冷気ネオン)
+			LootType = LootType.Blessed;    // ブレス
+			Attributes.BonusDex = 5;        // DEX増加
+			Attributes.BonusInt = 2;        // INT増加
+			Attributes.BonusStam = 10;      // スタミナ増加
+			Attributes.BonusMana = 10;      // マナ増加
+			Attributes.RegenHits = 2;       // ヒットポイント回復
+			Attributes.RegenStam = 1;       // スタミナ回復
+            Attributes.RegenMana = 4;       // マナ回復
+            Attributes.LowerRegCost = 20;   // 秘薬コスト
+			Attributes.LowerManaCost = 10;  // マナ・コスト軽減
+			WeaponAttributes.SelfRepair = 5;    // 自己修復
+			ArmorAttributes.LowerStatReq = 100; // 装備コスト低減
+			Attributes.CastRecovery = 6;    // キャストリカバリ
+			Attributes.CastSpeed = 2;		// ファストキャスト
+
+            // 武器プロパの例
+            WeaponAttributes.HitLeechMana = 100;    // マナリーチ
+			WeaponAttributes.HitLeechStam = 100;    // スタミナリーチ
+			WeaponAttributes.HitLeechHits = 100;    // HPリーチ
+			WeaponAttributes.HitLowerDefend = 100;  // 回避低下
+			WeaponAttributes.HitLowerAttack = 100;  // 命中低下
+
+            AosElementDamages.Fire = 100;           // 攻撃属性(炎)
+            AosElementDamages.Cold = 100;           // 攻撃属性(冷気)
+            WeaponAttributes.HitFireArea = 100;     // 炎エリア
+            WeaponAttributes.HitColdArea = 100;     // 冷気エリア
+
+            Attributes.DefendChance = 20;           // 回避
+			Attributes.AttackChance = 20;           // 命中
+			Attributes.WeaponSpeed = 10;            // 速度
+			Attributes.WeaponDamage = 35;           // 武器ダメージ
+            Attributes.SpellDamage = 35;            // 魔法ダメージ
+
+			Name = "Samle Arms";        // 表示名
+		}
+
+		public override int BasePhysicalResistance => 17;   // 物理抵抗
+		public override int BaseFireResistance => 19;       // 炎抵抗
+		public override int BaseColdResistance => 18;       // 冷気抵抗
+		public override int BasePoisonResistance => 18;     // 毒抵抗
+		public override int BaseEnergyResistance => 19;     // エネルギ抵抗
+
+        ...
+}

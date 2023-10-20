@@ -1,0 +1,44 @@
+
+<html>
+	<body>
+		<h3>Evo Creature System 2.0 by Xanthos</h3>
+		<P>This system comes with the Evolution dragon, hiyru and mercenary and allows fast and easy creation of new creatures by simply filling in the details of a set of table like structures, one for each stage in the creature's evolution and copying a small set of template classes and replacing the class names with a newly chosen name. It also allows almost anyone to quickly and easily tune evos created under this framework.</P>
+		<h4>Acknowledgements</h4>
+		<P>This framework is my own design. The idea of the evolution creatures are borrowed from the creative minds of the RunUO forum. I do not know the origin of all of these ideas, however there are a few people whose code I used as a guide to model this system. Most notably are: Raelis for the Evolution Dragon and mating gump, GG521 for the Evolution Hiryu, and Sadoul/Grae for their Evolution Mercenary ideas.  Thanks also to Protius73 and bzk90 for their contributions in the forum. Dracna contributed to configuration options and code limiting the use of training elementals. Special thanks to Thundar for testing and coming up with some great ideas.</P>
+		<h4>Features</h4>
+		<ul>
+			<li> Easy creation of new evolution creatures (a.k.a. Evos), as well as the associated eggs and dust</li>
+			<li>A command (EP) that can be used by players to get the experience points of their Evo</li>
+			<li>Easy tuning of deployed Evos, by admins - no programming experience necessary for most changes</li>
+			<li>Evos can be configured to always remain "Wonderfully Happy" or, without feeding, allow loyalty to decay like other pets - see the "Spec" file of each Evo for more details.</li>
+			<li>A high hit point low damage Training Elemental comes with the system.  The Elemental reflects 10% of the damage done to and can be configured as invulnerable or killable.</li>
+			<li>A Training Elemental Deed can be given as a reward item, allowing players to place a Training Elemental spawner in their homes</li>
+			<li>The Evos in this system implement only one timer; the pregnancy timer, resulting in less server lag than many other evolution creature designs</li>
+			<li>The Evo system comes with three Evo creatures: Dragon, Hiryu, and Mercenary (mercenary has many spoken commands and can equip a large range of items including jewelry)</li>
+			<li>The Evo system comes with three Evo Guardian creatures: Guardian Dragon, Guardian Hiryu, and Guardian Mercenary.  These are superior to their normal counterparts and may drop eggs/deeds as a reward for conquering them in battle.</li>
+			<li>The system is compatible with RunUO 2.0 and requires no changes to the RunUO distro files</li>
+			<li>Easy to install and configure.</li></ul>
+		<h4>Installation</h4>
+		<P>This system is not compatible with other shrink systems as the format of shrunken pets my be different that what other systems expect. However, this shrink system will coexist with others allowing you to cut users over to the new shrink system after installation.</P>
+		<P>For installation, unzip the EVO and Utilities directories into the Xanthos directory within your customs directory. All shrink system configuration variables are maintained in ShrinkConfig.xml which, when placed in the RunUO data directory will override the hardcoded defaults. Configuration of the Evo creatures is done in your derived classes.</P>
+		<h4>How To Create A New Evo</h4>
+		<ol>
+			<li>Make a copy of the Hiryu (if it is to be a mount) or Dragon directory under the EVO directory and rename it to YourClass.</li>
+			<li>Rename all of the files, replacing EvoHiryu in each file name with YourClass.</li>
+			<li>Inside the YourClass directory, open each file and replace all occurreneces of EvoHiryu to YourClass.</li>
+			<li>In YourClass.cs, YourClassDust.cs and YourClassEgg.cs change the respective strings "a hiryu corpse", "hiryu dust", and "a hiryu egg" as appropriate.</li>
+			<li>Open YourClassSpec.cs.</li>
+			<li>In the constructor of the YourClassSpec class, edit the variable values as you see fit.</li>
+			<li>Add or remove YourClassStage<EM>X</EM> class definitions, according to how many stages you plan to have, by copying and pasting one of the exisiting definitions.</li>
+			<li>Change the assignment of the m_Stages vairable in the YourClassSpec constructor according to the number of stages YourClassStage<EM>X</EM> class definitions you have.</li>
+			<li>Edit the values of the variables in each of the YourClassStage<EM>X</EM> as appropriate for each stage of the creatures evolution. Setting any of the array type variables to null will cause them to not be changed in that stage of the evolution. Damage amount, hits, strength, dexterity and intelligence can be applied relatively or absolutely depending on the value of YourClassSpec.m_AbsoluteStatValues. All of the other variables are applied absolutely.</li>
+		</ol>
+		<h4>In Game</h4>
+		<P>Evo creatures cannot be spawned in game but must be acquired through the deeds or eggs.  GuardianEvo creatures, however can be spawned directly and have a percentage chance to drop a deed/egg as loot.  Guardians are subclasses of the various Evo creatures that also implement the IEvoGuardian interface and are meant to be much more powerful than their normal counterparts.</P>
+		<h4>Requirements</h4>
+		<p>Requires the Xanthos Utilities and Shrink System packages.</p>
+		<h4>Caveats</h4>
+		<P>You may use or modify this system in any way you desire, however I ask that you leave the original headers in the source files if you re-write or redistribute the sources in any way.</P>
+		<P>- Xanthos</P>
+	</body>
+</html>

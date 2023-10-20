@@ -31,7 +31,15 @@ namespace Server.Misc
 				m.AddItem(pack);
 			}
 
-			PackItem(m, new Gold(1000)); // Starting gold can be customized here
+			PackItem(m, new Gold(30000)); // Starting gold can be customized here
+			if (m.Race != Race.Gargoyle)
+			{
+				PackItem(m, new NewbieLRCArmor());
+				PackItem(m, new SampGear());
+			} else {
+				PackItem(m, new NewbieGargoyleArmor());
+			}
+
 		}
 
 		private static void AddShirt(Mobile m, int shirtHue)
