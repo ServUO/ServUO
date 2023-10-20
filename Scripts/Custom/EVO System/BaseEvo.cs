@@ -262,12 +262,12 @@ namespace Xanthos.Evo
 			}
 		}
 		
-		public override void Damage( int amount, Mobile defender )
+		public override int Damage( int amount, Mobile defender )
 		{
 			if ( AddPointsOnDamage )
 				AddPoints( defender );
 
-			base.Damage( amount, defender );
+			return base.Damage( amount, defender );
 		}
 
 		public override void OnGaveMeleeAttack( Mobile defender )
