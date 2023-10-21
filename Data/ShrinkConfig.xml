@@ -1,0 +1,39 @@
+<?xml version='1.0' ?>
+<!--
+	This file enables configuration of the Xanthos Shrink System module without code changes
+	You may only change the values between the '>' and '<' characters to set the configuratoin
+	parameters.  The type attribute is ignored and is only provided as a documentary guide to
+	the user. Array element names are also meaningless.  Values may be left empty, with the
+	exception of individual array elements, so that the value in the code is used.
+	
+	For example: to change the foo configuration from 50 to 100 one would change
+		<foo type="int">50</foo>
+			to
+		<foo type="int">100</foo>
+-->
+<Xanthos>
+	<ShrinkSystem version='2.0'>
+		<PetAsStatuette type="bool">true</PetAsStatuette>	<!-- Deed or statuette form -->
+		<AllowLocking type="bool">false</AllowLocking>		<!-- Allow players to lock the shrunken pet so it can only be unshrunk by the owner -->
+		<ShowPetDetails type="bool">true</ShowPetDetails>	<!-- Show stats and skills on the properties of the shrunken pet -->
+		<ShrunkenWeight type="double">10.0</ShrunkenWeight>	<!-- Weight of the shrunken pet -->
+		<BlessedLeash type="bool">false</BlessedLeash>		<!-- Loot type of the pet leash -->
+
+		<!--
+ 			Loot type of the shrunken pet (use one of three values):
+			BlessStatus.All			- All shrunken pets  are blessed
+			BlessStatus.BondedOnly	- Only shrink items for bonded pets are blessed
+			BlessStatus.None		- No shrink items are blessed
+		-->
+		<LootStatus>BlessStatus.None</LootStatus>
+		
+		<TamingRequired type="int">0</TamingRequired>		<!-- set to zero for no skill requirement to use shrink tools -->
+		<ShrinkCharges type="int">50</ShrinkCharges>		<!-- number of uses; set to -1 for infinite uses -->
+
+		<PackAnimals type="array">							<!-- To prevent pack exploits, add all pack animals for your server -->
+			<a type="string">Server.Mobiles.PackHorse</a>
+			<a type="string">Server.Mobiles.PackLlama</a>
+			<a type="string">Server.Mobiles.Beetle</a>
+		</PackAnimals>
+	</ShrinkSystem>	
+</Xanthos>
