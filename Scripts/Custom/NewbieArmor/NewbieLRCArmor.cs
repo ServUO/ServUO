@@ -10,7 +10,7 @@ namespace Server.Items
 		public NewbieLRCArmor() : this(1)
 		{
 			Movable = true;
-			Name = "Newbie LRC Gear";
+			Name = "Newbie Promised LRC Gear";
 			Hue = 1150;
 		}
 		[Constructable]
@@ -21,6 +21,7 @@ namespace Server.Items
 			DropItem(new NewbieLegs(0x592));
 			DropItem(new NewbieArms(0x592));
 			DropItem(new NewbieGloves(0x592));
+			DropItem(new NewbieNeck(0x592));
 		}
 
 		public NewbieLRCArmor(Serial serial) : base(serial)

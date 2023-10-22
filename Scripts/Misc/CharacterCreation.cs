@@ -35,7 +35,6 @@ namespace Server.Misc
 			if (m.Race != Race.Gargoyle)
 			{
 				PackItem(m, new NewbieLRCArmor());
-				PackItem(m, new SampGear());
 			} else {
 				PackItem(m, new NewbieGargoyleArmor());
 			}

@@ -12,27 +12,17 @@ namespace Server.Items
 		{
 			Hue = hue;
 			LootType = LootType.Blessed;
-			Attributes.BonusDex = 5;
-			Attributes.BonusInt = 5;
-			Attributes.BonusStam = 10;
-			Attributes.BonusMana = 10;
-			Attributes.RegenHits = 2;
-			Attributes.RegenStam = 2;
-			Attributes.RegenMana = 4;
-			Attributes.LowerRegCost = 20;
-			Attributes.LowerManaCost = 40;
+			Attributes.LowerRegCost = 17;
 			WeaponAttributes.SelfRepair = 5;
 			ArmorAttributes.LowerStatReq = 100;
-			Attributes.CastRecovery = 6;
-			Attributes.CastSpeed = 2;			
-			Name = "Newbie Cap";
+			Name = "Newbie Promised Cap";
 		}
 
-		public override int BasePhysicalResistance => 10;
-		public override int BaseFireResistance => 10;
-		public override int BaseColdResistance => 10;
-		public override int BasePoisonResistance => 10;
-		public override int BaseEnergyResistance => 10;
+		public override int BasePhysicalResistance => 7;
+		public override int BaseFireResistance => 9;
+		public override int BaseColdResistance => 6;
+		public override int BasePoisonResistance => 8;
+		public override int BaseEnergyResistance => 7;
 
 		public NewbieCap(Serial serial)
 			: base(serial)

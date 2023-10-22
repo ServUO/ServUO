@@ -18,6 +18,9 @@ namespace Server.Items
             Weight = 2.0;
             Layer = Layer.Cloak;
 
+	        LootType = LootType.Blessed;
+	        Attributes.LowerRegCost = 17;
+	        WeaponAttributes.SelfRepair = 5;
             m_AosElementDamages = new AosElementAttributes(this);
         }
 
@@ -26,11 +29,11 @@ namespace Server.Items
         {
         }
 
-        public override int PhysicalResistance => 10;
-        public override int FireResistance => 10;
-        public override int ColdResistance => 10;
-        public override int PoisonResistance => 10;
-        public override int EnergyResistance => 10;
+ //       public override int PhysicalResistance => 7;
+ //       public override int FireResistance => 9;
+ //       public override int ColdResistance => 7;
+ //       public override int PoisonResistance => 8;
+ //       public override int EnergyResistance => 6;
 
         public override int StrReq => 10;
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;

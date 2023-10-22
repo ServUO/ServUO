@@ -12,24 +12,17 @@ namespace Server.Items
 		{
 			Hue = hue;
 			LootType = LootType.Blessed;
-			Attributes.BonusDex = 5;
-			Attributes.BonusInt = 5;
-			Attributes.BonusStam = 10;
-			Attributes.BonusMana = 10;
-			Attributes.RegenHits = 2;
-			Attributes.RegenStam = 2;
-			Attributes.RegenMana = 4;
-			Attributes.LowerRegCost = 20;
+			Attributes.LowerRegCost = 16;
 			WeaponAttributes.SelfRepair = 5;
 			ArmorAttributes.LowerStatReq = 100;
-			Name = "Newbie Legs";
+			Name = "Newbie Promised Legs";
 		}
 
-		public override int BasePhysicalResistance => 15;
-		public override int BaseFireResistance => 15;
-		public override int BaseColdResistance => 15;
-		public override int BasePoisonResistance => 15;
-		public override int BaseEnergyResistance => 15;
+		public override int BasePhysicalResistance => 8;
+		public override int BaseFireResistance => 8;
+		public override int BaseColdResistance => 8;
+		public override int BasePoisonResistance => 6;
+		public override int BaseEnergyResistance => 8;
 
 		public NewbieLegs(Serial serial)
 			: base(serial)

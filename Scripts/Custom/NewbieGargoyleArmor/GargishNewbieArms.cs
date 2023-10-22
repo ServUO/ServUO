@@ -16,14 +16,9 @@ namespace Server.Items
             Weight = 2.0;
             Hue = hue;
             LootType = LootType.Blessed;
-	        Attributes.LowerRegCost = 20;
+	        Attributes.LowerRegCost = 17;
 	        WeaponAttributes.SelfRepair = 5;
 	        ArmorAttributes.LowerStatReq = 100;
-	        PhysicalBonus = 3;
-	        FireBonus = 1;
-	        ColdBonus = 2;
-	        PoisonBonus = 2;
-	        EnergyBonus = 2;
 		}
 
         public GargishNewbieArms(Serial serial)
@@ -31,11 +26,11 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance => 15;
-        public override int BaseFireResistance => 15;
-        public override int BaseColdResistance => 15;
-        public override int BasePoisonResistance => 15;
-        public override int BaseEnergyResistance => 15;
+        public override int BasePhysicalResistance => 8;
+        public override int BaseFireResistance => 9;
+        public override int BaseColdResistance => 7;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 7;
 
         public override int InitMinHits => 30;
         public override int InitMaxHits => 50;

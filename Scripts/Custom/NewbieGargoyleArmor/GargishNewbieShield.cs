@@ -9,13 +9,8 @@ namespace Server.Items
         {
             Weight = 2.0;
 	        LootType = LootType.Blessed;
+	        Attributes.LowerRegCost = 16;
 	        WeaponAttributes.SelfRepair = 5;
-	        PhysicalBonus = 3;
-	        FireBonus = 1;
-	        ColdBonus = 2;
-	        PoisonBonus = 2;
-	        EnergyBonus = 2;	
-
         }
 
         public GargishNewbieShield(Serial serial)
@@ -23,14 +18,14 @@ namespace Server.Items
         {
         }
 
-        public override int BasePhysicalResistance => 10;
-        public override int BaseFireResistance => 10;
-        public override int BaseColdResistance => 10;
-        public override int BasePoisonResistance => 10;
-        public override int BaseEnergyResistance => 10;
+        public override int BasePhysicalResistance => 8;
+        public override int BaseFireResistance => 8;
+        public override int BaseColdResistance => 8;
+        public override int BasePoisonResistance => 6;
+        public override int BaseEnergyResistance => 8;
         public override int InitMinHits => 255;
         public override int InitMaxHits => 300;
-        public override int StrReq => 95;
+        public override int StrReq => 20;
 
         public override void Deserialize(GenericReader reader)
         {
