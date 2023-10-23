@@ -67,5 +67,8 @@
 # Exclude Data Files
 /Data/PVPTournamentSystemData
 
+# for macOS user
+.DS_Store
+
 # OSI Files
 /UO-DATA
