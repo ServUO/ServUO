@@ -32,6 +32,7 @@ namespace Server.Misc
 			}
 
 			PackItem(m, new Gold(30000)); // Starting gold can be customized here
+			PackItem(m, new FullMagerySpellbook()); // add mage full spellbook
 			if (m.Race != Race.Gargoyle)
 			{
 				PackItem(m, new NewbieLRCArmor());
