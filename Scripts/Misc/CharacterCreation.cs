@@ -31,7 +31,7 @@ namespace Server.Misc
 				m.AddItem(pack);
 			}
 
-			PackItem(m, new Gold(30000)); // Starting gold can be customized here
+			PackItem(m, new BankCheck(30000)); // Starting gold can be customized here
 			if (m.Race != Race.Gargoyle)
 			{
 				PackItem(m, new NewbieLRCArmor());
