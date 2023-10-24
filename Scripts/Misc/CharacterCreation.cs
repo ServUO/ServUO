@@ -32,6 +32,7 @@ namespace Server.Misc
 			}
 
 			PackItem(m, new BankCheck(30000)); // Starting gold can be customized here
+   			PackItem(m, new FullMagerySpellbook());
 			if (m.Race != Race.Gargoyle)
 			{
 				PackItem(m, new NewbieLRCArmor());
