@@ -7,12 +7,12 @@ namespace Server.Items
 {
 	public class NewbieGiftBox : GiftBox
 	{
-		[Constructable]
-		public NewbieGiftBox() { }
+		// [Constructable]
+		// public NewbieGiftBox() { }
 		[Constructable]
 		public NewbieGiftBox(Mobile m)
 		{
-			Movable = false;
+			Movable = true;
 			Name = "Newbie Gift Box";
 			Hue = 1174;
 
