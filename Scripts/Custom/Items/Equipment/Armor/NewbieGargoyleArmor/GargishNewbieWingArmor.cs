@@ -29,11 +29,11 @@ namespace Server.Items
         {
         }
 
- //       public override int PhysicalResistance => 7;
- //       public override int FireResistance => 9;
- //       public override int ColdResistance => 7;
- //       public override int PoisonResistance => 8;
- //       public override int EnergyResistance => 6;
+        public override int PhysicalResistance => 7;
+        public override int FireResistance => 9;
+        public override int ColdResistance => 7;
+        public override int PoisonResistance => 8;
+        public override int EnergyResistance => 6;
 
         public override int StrReq => 10;
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;
