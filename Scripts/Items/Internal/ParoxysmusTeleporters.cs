@@ -48,9 +48,8 @@ namespace Server.Items
                     return base.OnMoveOver(m);					
                 }
             }
-            else
-                m.SendLocalizedMessage(1074272); // You have no way to lower yourself safely into the enormous sinkhole.
-			
+            
+            m.SendLocalizedMessage(1074272); // You have no way to lower yourself safely into the enormous sinkhole.
             return true;	
         }
 
