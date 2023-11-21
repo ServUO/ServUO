@@ -797,6 +797,11 @@
 		<tiles from="(5573, 630, 42)" frommap="Trammel" to="(5503, 571, 51)" tomap="Trammel" />
 	</Teleporter>
 	<Teleporter>
+		<tiles from="(5588, 632, 30)" frommap="Trammel" to="(1296, 1082, 0)" tomap="Trammel" />
+		<tiles from="(5588, 631, 30)" frommap="Trammel" to="(1296, 1081, 0)" tomap="Trammel" />
+		<tiles from="(5588, 630, 30)" frommap="Trammel" to="(1296, 1080, 0)" tomap="Trammel" />
+	</Teleporter>
+	<Teleporter>
 		<tiles from="(1296, 1082, 0)" frommap="Trammel" to="(5588, 632, 30)" tomap="Trammel" />
 		<tiles from="(1296, 1081, 0)" frommap="Trammel" to="(5588, 631, 30)" tomap="Trammel" />
 		<tiles from="(1296, 1080, 0)" frommap="Trammel" to="(5588, 630, 30)" tomap="Trammel" />
