@@ -644,8 +644,6 @@ namespace Server.Engines.VeteranRewards
             else if (level < 0)
                 level = 0;
 
-            e.Mobile.SkillsCap = SkillCap + SkillCapBonus;
-
             if (e.Mobile is PlayerMobile && !((PlayerMobile)e.Mobile).HasStatReward && HasHalfLevel(e.Mobile))
             {
                 Gumps.BaseGump.SendGump(new StatRewardGump((PlayerMobile)e.Mobile));
