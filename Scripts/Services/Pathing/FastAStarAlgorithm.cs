@@ -42,20 +42,20 @@ namespace Server.PathAlgorithms.FastAStar
 
         public override bool CheckCondition(IPoint3D p, Map map, Point3D start, Point3D goal)
         {
-            return Utility.InRange(start, goal, AreaSize);
+            return Utility.InRange(start, goal, AreaSize - 1);
         }
 
         public override Direction[] Find(IPoint3D p, Map map, Point3D start, Point3D goal)
         {
-            if (!Utility.InRange(start, goal, AreaSize))
+            if (!Utility.InRange(start, goal, AreaSize - 1))
                 return null;
 
             m_Touched.SetAll(false);
 
             m_Goal = goal;
 
-            m_xOffset = (start.X + goal.X - AreaSize) / 2;
-            m_yOffset = (start.Y + goal.Y - AreaSize) / 2;
+	    m_xOffset = (int)Math.Ceiling( (start.X + goal.X - AreaSize) / 2.0 );
+            m_yOffset = (int)Math.Ceiling( (start.Y + goal.Y - AreaSize) / 2.0 );
 
             int fromNode = GetIndex(start.X, start.Y, start.Z);
             int destNode = GetIndex(goal.X, goal.Y, goal.Z);
@@ -90,9 +90,6 @@ namespace Server.PathAlgorithms.FastAStar
                 int count = GetSuccessors(bestNode, p, map);
 
                 MoveImpl.Goal = Point3D.Zero;
-
-                if (count == 0)
-                    break;
 
                 for (int i = 0; i < count; ++i)
                 {
