@@ -20,8 +20,6 @@ namespace Server.Items
 
 	public class Container : Item
 	{
-		public static List<Container> AllContainers { get; } = new List<Container>(0x2000);
-
 		public static ContainerSnoopHandler SnoopHandler { get; set; }
 
 		private ContainerData m_ContainerData;
@@ -2150,8 +2148,6 @@ namespace Server.Items
 			m_MaxItems = -1;
 			m_MaxWeight = -1;
 
-			AllContainers.Add(this);
-
 			UpdateContainerData();
 		}
 
@@ -2230,7 +2226,6 @@ namespace Server.Items
 		public Container(Serial serial)
 			: base(serial)
 		{
-			AllContainers.Add(this);
 		}
 
 		public virtual bool OnStackAttempt(Mobile from, Item stack, Item dropped)
@@ -2430,15 +2425,6 @@ namespace Server.Items
 			base.OnDelete();
 
 			Openers = null;
-
-			AllContainers.Remove(this);
-		}
-
-		public override void OnAfterDelete()
-		{
-			base.OnAfterDelete();
-
-			AllContainers.Remove(this);
 		}
 
 		public virtual void DisplayTo(Mobile to)
