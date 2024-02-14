@@ -41,3 +41,9 @@
 
 !/Data/*
 !/bin/rosyln/*
+
+# for macOS user
+.DS_Store
+
+# OSI Files
+/UO-DATA
