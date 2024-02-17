@@ -68,7 +68,7 @@ namespace Server
 				AppendCompilerOption(ref sb, "/d:TRACE");
 			}
 
-            AppendCompilerOption(ref sb, "/langversion:7.3");
+            AppendCompilerOption(ref sb, "/langversion:7.2");
 
 #if MONO
 			AppendCompilerOption( ref sb, "/d:MONO" );

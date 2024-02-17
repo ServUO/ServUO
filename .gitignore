@@ -38,6 +38,7 @@
 *.csproj.user
 *.DotSettings.user
 *.ini
+*.bak
 
 !/Data/*
 !/bin/rosyln/*
