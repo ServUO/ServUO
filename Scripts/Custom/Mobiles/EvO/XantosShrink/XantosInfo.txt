@@ -1,3 +1,0 @@
-Xantos Shrink System and the Utilities folder both go into your -Custom Folder
-
-ShrinkConfig - goes into the Data Folder
