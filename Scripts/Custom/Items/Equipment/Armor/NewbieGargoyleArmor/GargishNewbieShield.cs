@@ -25,7 +25,7 @@ namespace Server.Items
         public override int BaseEnergyResistance => 8;
         public override int InitMinHits => 255;
         public override int InitMaxHits => 300;
-        public override int StrReq => 20;
+        // public override int StrReq => 20;
 
         public override void Deserialize(GenericReader reader)
         {

@@ -34,7 +34,7 @@ namespace Server.Items
         public override int InitMinHits => 30;
         public override int InitMaxHits => 50;
 
-        public override int StrReq => 20;
+        // public override int StrReq => 20;
 
         public override ArmorMeditationAllowance DefMedAllowance => ArmorMeditationAllowance.All;
         public override ArmorMaterialType MaterialType => ArmorMaterialType.Leather;

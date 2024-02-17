@@ -61,7 +61,7 @@ namespace Server.Misc
 				m.AddItem(pack);
 			}
 
-			PackItem(m, new NewbieGiftBox(m));
+			PackItem(new NewbieGiftBox(m));
 
 		}
 
