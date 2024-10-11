@@ -319,7 +319,7 @@ namespace Server
 		}
 
 		[CommandProperty(AccessLevel.Counselor, AccessLevel.GameMaster)]
-		public double Base { get => m_Base / 10.0; set => BaseFixedPoint = (int)(value * 10.0); }
+		public double Base { get => m_Base / 10.0; set => BaseFixedPoint = (int)Math.Round(value * 10.0); }
 
 		public int CapFixedPoint
 		{
