@@ -19,35 +19,26 @@ ServUO is a community driven Ultima Online Server Emulator written in C#.
 
 #### Windows
 
-Run `Compile.WIN - Debug.bat` for development, attaching a debugger and/or extended output.
+Run `_windebug.bat` for development, attaching a debugger and/or extended output.
 
-Run `Compile.WIN - Release.bat` for production environment (-debug is still a supported parameter for script debugging).
-
-After this you can run the server by executing `ServUO.exe`.
+Run `_winrelease.bat` for production environment.
 
 
-#### OSX
-```
-brew install mono
-make
-```
+#### Other Platforms
 
+Run `_makedebug` for development, attaching a debugger and/or extended output.
 
-#### Ubuntu
-```
-apt-get install mono-complete
-make
-```
+Run `_makerelease` for production environment.
 
 
 ### Summary
 
 1. Starting with the `/Config` directory, find and edit `Server.cfg` to set up the essentials.
 2. Go through the remaining `*.cfg` files to ensure they suit your needs.
-3. For Windows, run `Compile.WIN - Debug.bat` to produce `ServUO.exe`, Linux users may run `Makefile`.
-4. Run `ServUO.exe` to make sure everything boots up, if everything went well, you should see your IP adress being listened on the port you specified.
-5. Load up UO and login! - If you require instructions on setting up your particular client, visit the Discord and ask!
+3. For Windows, run `_winrelease.bat` to produce `ServUO.exe`, OSX/Linux users may run `_makerelease`.
+4. Run `ServUO`
+5. ???
+6. Profit!
 
 
-
-   [ServUO]: <https://www.servuo.com>
+    [ServUO]: <https://www.servuo.com>

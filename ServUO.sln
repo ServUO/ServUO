@@ -1,40 +1,49 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.539
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF956787-B078-4D19-B03B-4A8F2A4841AD}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		LICENSE = LICENSE
+		README.md = README.md
+		ServUO.exe.config = ServUO.exe.config
+		_makedebug = _makedebug
+		_makerelease = _makerelease
+		_windebug.bat = _windebug.bat
+		_winrelease.bat = _winrelease.bat
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultima", "Ultima\Ultima.csproj", "{E08CFBE4-E013-44EE-8829-426D05BC083F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scripts", "Scripts\Scripts.csproj", "{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3} = {AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF956787-B078-4D19-B03B-4A8F2A4841AD}"
-	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ultima", "Ultima\Ultima.csproj", "{E08CFBE4-E013-44EE-8829-426D05BC083F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Debug|x64.ActiveCfg = Debug|x64
+		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Debug|x64.Build.0 = Debug|x64
+		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Release|x64.ActiveCfg = Release|x64
+		{E08CFBE4-E013-44EE-8829-426D05BC083F}.Release|x64.Build.0 = Release|x64
+		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Debug|x64.ActiveCfg = Debug|x64
+		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Debug|x64.Build.0 = Debug|x64
+		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Release|x64.ActiveCfg = Release|x64
+		{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}.Release|x64.Build.0 = Release|x64
+		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Debug|x64.ActiveCfg = Debug|x64
+		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Debug|x64.Build.0 = Debug|x64
+		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Release|x64.ActiveCfg = Release|x64
+		{308EA7C6-2873-4E47-AF3F-ABBA3F8AB63E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

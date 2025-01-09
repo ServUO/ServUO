@@ -1,221 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AE4A9EAA-E0EB-4DC9-9604-BE4289F9F6C3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Server</RootNamespace>
-    <AssemblyName>ServUO</AssemblyName>
-    <ApplicationIcon>servuo.ico</ApplicationIcon>
-    <StartupObject>Server.Core</StartupObject>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <RuntimeIdentifiers>win7-x64;win7-x86;ubuntu.16.10-x64</RuntimeIdentifiers>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <ItemGroup>
-    <Compile Include=".\AggressorInfo.cs" />
-    <Compile Include=".\AssemblyInfo.cs" />
-    <Compile Include=".\Attributes.cs" />
-    <Compile Include=".\BaseVendor.cs" />
-    <Compile Include=".\Body.cs" />
-    <Compile Include=".\ClientVersion.cs" />
-    <Compile Include=".\Commands.cs" />
-    <Compile Include=".\ContextMenus\ContextMenu.cs" />
-    <Compile Include=".\ContextMenus\ContextMenuEntry.cs" />
-    <Compile Include=".\ContextMenus\OpenBackpackEntry.cs" />
-    <Compile Include=".\ContextMenus\PaperdollEntry.cs" />
-    <Compile Include=".\Customs Framework\Central Core\Base Types\BaseCore.cs" />
-    <Compile Include=".\Customs Framework\Central Core\Base Types\BaseModule.cs" />
-    <Compile Include=".\Customs Framework\Central Core\Base Types\BaseService.cs" />
-    <Compile Include=".\Customs Framework\Central Core\Base Types\Events.cs" />
-    <Compile Include=".\Customs Framework\Central Core\Base Types\SaveData.cs" />
-    <Compile Include=".\Customs Framework\Central Core\CustomSerial.cs" />
-    <Compile Include=".\Customs Framework\Central Core\Interfaces.cs" />
-    <Compile Include=".\Customs Framework\Custom Types\LastEditedBy.cs" />
-    <Compile Include=".\Customs Framework\Custom Types\Place.cs" />
-    <Compile Include=".\Customs Framework\Utilities\Decompressor.cs" />
-    <Compile Include=".\Customs Framework\Utilities\ObjectDumper.cs" />
-    <Compile Include=".\Customs Framework\Utilities\OutgoingPacketOverride.cs" />
-    <Compile Include=".\Customs Framework\Utilities\Utilities.cs" />
-    <Compile Include=".\Diagnostics\BaseProfile.cs" />
-    <Compile Include=".\Diagnostics\GumpProfile.cs" />
-    <Compile Include=".\Diagnostics\PacketProfile.cs" />
-    <Compile Include=".\Diagnostics\TargetProfile.cs" />
-    <Compile Include=".\Diagnostics\TimerProfile.cs" />
-    <Compile Include=".\Effects.cs" />
-    <Compile Include=".\EventLog.cs" />
-    <Compile Include=".\EventSink.cs" />
-    <Compile Include=".\ExpansionInfo.cs" />
-    <Compile Include=".\Geometry.cs" />
-    <Compile Include=".\Guild.cs" />
-    <Compile Include=".\HuePicker.cs" />
-    <Compile Include=".\IAccount.cs" />
-    <Compile Include=".\IEntity.cs" />
-    <Compile Include=".\Insensitive.cs" />
-    <Compile Include=".\Interfaces.cs" />
-    <Compile Include=".\Item.cs" />
-    <Compile Include=".\ItemBounds.cs" />
-    <Compile Include=".\Items\BaseMulti.cs" />
-    <Compile Include=".\Items\Container.cs" />
-    <Compile Include=".\Items\Containers.cs" />
-    <Compile Include=".\Items\SecureTradeContainer.cs" />
-    <Compile Include=".\Items\VirtualHair.cs" />
-    <Compile Include=".\KeywordList.cs" />
-    <Compile Include=".\Main.cs" />
-    <Compile Include=".\Map.cs" />
-    <Compile Include=".\Menus\IMenu.cs" />
-    <Compile Include=".\Menus\ItemListMenu.cs" />
-    <Compile Include=".\Menus\QuestionMenu.cs" />
-    <Compile Include=".\Mobile.cs" />
-    <Compile Include=".\Movement.cs" />
-    <Compile Include=".\MultiData.cs" />
-    <Compile Include=".\NativeReader.cs" />
-    <Compile Include=".\Network\BufferPool.cs" />
-    <Compile Include=".\Network\ByteQueue.cs" />
-    <Compile Include=".\Network\Compression.cs" />
-    <Compile Include=".\Network\EncodedPacketHandler.cs" />
-    <Compile Include=".\Network\EncodedReader.cs" />
-    <Compile Include=".\Network\Listener.cs" />
-    <Compile Include=".\Network\MessagePump.cs" />
-    <Compile Include=".\Network\NetState.cs" />
-    <Compile Include=".\Network\PacketHandler.cs" />
-    <Compile Include=".\Network\PacketHandlers.cs" />
-    <Compile Include=".\Network\PacketReader.cs" />
-    <Compile Include=".\Network\Packets.cs" />
-    <Compile Include=".\Network\PacketWriter.cs" />
-    <Compile Include=".\Network\SendQueue.cs" />
-    <Compile Include=".\Notoriety.cs" />
-    <Compile Include=".\ObjectPropertyList.cs" />
-    <Compile Include=".\Party.cs" />
-    <Compile Include=".\Persistence\BinaryMemoryWriter.cs" />
-    <Compile Include=".\Persistence\DualSaveStrategy.cs" />
-    <Compile Include=".\Persistence\DynamicSaveStrategy.cs" />
-    <Compile Include=".\Persistence\FileOperations.cs" />
-    <Compile Include=".\Persistence\FileQueue.cs" />
-    <Compile Include=".\Persistence\ParallelSaveStrategy.cs" />
-    <Compile Include=".\Persistence\QueuedMemoryWriter.cs" />
-    <Compile Include=".\Persistence\SaveMetrics.cs" />
-    <Compile Include=".\Persistence\SaveStrategy.cs" />
-    <Compile Include=".\Persistence\SequentialFileWriter.cs" />
-    <Compile Include=".\Persistence\StandardSaveStrategy.cs" />
-    <Compile Include=".\Point3DList.cs" />
-    <Compile Include=".\Poison.cs" />
-    <Compile Include=".\Prompt.cs" />
-    <Compile Include=".\QuestArrow.cs" />
-    <Compile Include=".\Race.cs" />
-    <Compile Include=".\Region.cs" />
-    <Compile Include=".\ScriptCompiler.cs" />
-    <Compile Include=".\Sector.cs" />
-    <Compile Include=".\SecureTrade.cs" />
-    <Compile Include=".\Serial.cs" />
-    <Compile Include=".\Serialization.cs" />
-    <Compile Include=".\Skills.cs" />
-    <Compile Include=".\Targeting\LandTarget.cs" />
-    <Compile Include=".\Targeting\MultiTarget.cs" />
-    <Compile Include=".\Targeting\StaticTarget.cs" />
-    <Compile Include=".\Targeting\Target.cs" />
-    <Compile Include=".\Targeting\TargetCancelType.cs" />
-    <Compile Include=".\Targeting\TargetFlags.cs" />
-    <Compile Include=".\TileData.cs" />
-    <Compile Include=".\TileList.cs" />
-    <Compile Include=".\TileMatrix.cs" />
-    <Compile Include=".\TileMatrixPatch.cs" />
-    <Compile Include=".\Timer.cs" />
-    <Compile Include=".\Utility.cs" />
-    <Compile Include=".\VirtueInfo.cs" />
-    <Compile Include=".\World.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Gumps\ECHandleInput.cs" />
-    <Compile Include="Gumps\Gump.cs" />
-    <Compile Include="Gumps\GumpAlphaRegion.cs" />
-    <Compile Include="Gumps\GumpBackground.cs" />
-    <Compile Include="Gumps\GumpButton.cs" />
-    <Compile Include="Gumps\GumpCheck.cs" />
-    <Compile Include="Gumps\GumpEntry.cs" />
-    <Compile Include="Gumps\GumpGroup.cs" />
-    <Compile Include="Gumps\GumpHtml.cs" />
-    <Compile Include="Gumps\GumpHtmlLocalized.cs" />
-    <Compile Include="Gumps\GumpImage.cs" />
-    <Compile Include="Gumps\GumpImageTileButton.cs" />
-    <Compile Include="Gumps\GumpImageTiled.cs" />
-    <Compile Include="Gumps\GumpItem.cs" />
-    <Compile Include="Gumps\GumpItemProperty.cs" />
-    <Compile Include="Gumps\GumpLabel.cs" />
-    <Compile Include="Gumps\GumpLabelCropped.cs" />
-    <Compile Include="Gumps\GumpPage.cs" />
-    <Compile Include="Gumps\GumpRadio.cs" />
-    <Compile Include="Gumps\GumpSpriteImage.cs" />
-    <Compile Include="Gumps\GumpTextEntry.cs" />
-    <Compile Include="Gumps\GumpTextEntryLimited.cs" />
-    <Compile Include="Gumps\GumpTooltip.cs" />
-    <Compile Include="Gumps\RelayInfo.cs" />
-    <Compile Include="Network\PacketThrottles.cs" />
-    <Compile Include="Network\PingListener.cs" />
-    <Compile Include="Persistence\Persistence.cs" />
-    <Compile Include="PromptExtensions.cs" />
-    <Compile Include="Random.cs" />
-    <Compile Include="Items\VirtualCheck.cs" />
-    <Compile Include="SpawnArea.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="servuo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ultima\Ultima.csproj">
-      <Project>{e08cfbe4-e013-44ee-8829-426d05bc083f}</Project>
-      <Name>Ultima</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="ServUO.exe.manifest" />
-  </ItemGroup>
-  <Import Project="..\VersionSpecificSymbols.Common.prop" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<AssemblyName>ServUO</AssemblyName>
+		<ApplicationIcon>servuo.ico</ApplicationIcon>
+		<StartupObject>Server.Core</StartupObject>
+		<ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>
+		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+		<UseVSHostingProcess>False</UseVSHostingProcess>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+		<Platforms>x64</Platforms>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+		<OutputPath>..\</OutputPath>
+		<DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+		<OutputPath>..\</OutputPath>
+		<DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
+		<DebugType>none</DebugType>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Ultima\Ultima.csproj" />
+	</ItemGroup>
 </Project>

@@ -1,0 +1,27 @@
+
+EXENAME=ServUO
+BUILD_DIR='pwd'
+EXE=$(BUILD_DIR)/$(EXENAME)
+
+.PHONY: all build run clean
+
+all: build run
+
+build:
+	@echo "Compile $(EXENAME) for Linux"
+	@dotnet build -c Release
+	@echo "Done!"
+
+run: build
+	@if [ -f "$(EXE)" ]; then \
+		clear; \
+		echo "Running $(EXENAME)..."; \
+		$(EXE) -release; \
+	else \
+		echo "Executable not found. Did the build succeed?"; \
+		exit 1; \
+	fi
+
+clean:
+	@dotnet clean
+	@echo "Cleaned build files."

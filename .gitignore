@@ -1,10 +1,12 @@
 /Ultima.dll
-/Ultima.pdb
-/Ultima.dll.mdb
 /Ultima/bin
 /Ultima/obj
+
+/Server.dll
 /Server/bin
 /Server/obj
+
+/Scripts.dll
 /Scripts/bin
 /Scripts/obj
 /Scripts/Output
@@ -29,7 +31,7 @@
 
 *.pdb
 *.exe
-*.exe.mdb
+*.mdb
 *.sh
 *.suo
 *.idea
