@@ -390,10 +390,8 @@ namespace Server.SkillHandlers
                         StolenItem.Add(stolen, m_Thief, root as Mobile);
                     }
 
-                    if (target is BaseCreature)
+                    if (target is BaseCreature bc)
                     {
-                        var bc = target as BaseCreature;
-
                         // You can repeatedly steal from pets, when owned and when released
                         // However, if creature is stolen from and then tamed, HasBeenStolen flag is true
                         if (bc.Owners.Count == 0)
