@@ -192,6 +192,16 @@ namespace Server
                     totalDamage += (int)((double)totalDamage * .1);
                 }
 
+                if (Core.HS && type == DamageType.Spell)
+                {
+                    if (from?.FindItemOnLayer(Layer.MiddleTorso) is SpellFocusingSash spellSash)
+                    {
+                        spellSash.ValidateTarget(from, m, out var sdiOffset);
+
+                        totalDamage += Scale(totalDamage, sdiOffset);
+                    }
+                }
+
                 if (totalDamage < 1)
                     totalDamage = 1;           
             }
