@@ -268,10 +268,10 @@ namespace Server
                             bin.Close();
                         }
                     }
-                    else
-                    {
-                        Console.WriteLine("Warning: Multi data files not found!");
-                    }
+                }
+                else
+                {
+                    Console.WriteLine("Warning: Multi data files not found!");
                 }
             }
         }
