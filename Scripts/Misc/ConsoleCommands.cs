@@ -139,7 +139,7 @@ namespace Server.Misc
 					return;
 				}
 
-				var ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
+				var ns = states.FirstOrDefault(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
 
 				if (ns != null)
 				{
@@ -163,7 +163,7 @@ namespace Server.Misc
 					return;
 				}
 
-				var ns = states.Find(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
+				var ns = states.FirstOrDefault(o => o.Account != null && o.Mobile != null && Insensitive.StartsWith(sub, o.Mobile.RawName));
 
 				if (ns != null)
 				{

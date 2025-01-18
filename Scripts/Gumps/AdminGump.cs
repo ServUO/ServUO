@@ -325,41 +325,38 @@ namespace Server.Gumps
                         sb.Append(((maxIOCP - curIOCP) * 100) / maxIOCP);
                         sb.Append("%");
 
-                        List<BufferPool> pools = BufferPool.Pools;
+                        IList<BufferPool> pools = BufferPool.Pools;
 
-                        lock (pools)
+                        for (int i = 0; i < pools.Count; ++i)
                         {
-                            for (int i = 0; i < pools.Count; ++i)
-                            {
-                                BufferPool pool = pools[i];
-                                string name;
-                                int freeCount;
-                                int initialCapacity;
-                                int currentCapacity;
-                                int bufferSize;
-                                int misses;
+                            BufferPool pool = pools[i];
+                            string name;
+                            int freeCount;
+                            int initialCapacity;
+                            int currentCapacity;
+                            int bufferSize;
+                            int misses;
 
-                                pool.GetInfo(out name, out freeCount, out initialCapacity, out currentCapacity, out bufferSize, out misses);
+                            pool.GetInfo(out name, out freeCount, out initialCapacity, out currentCapacity, out bufferSize, out misses);
 
-                                if (sb.Length > 0)
-                                    sb.Append("<br><br>");
+                            if (sb.Length > 0)
+                                sb.Append("<br><br>");
 
-                                sb.Append(name);
-                                sb.Append("<br>Size: ");
-                                sb.Append(FormatByteAmount(bufferSize));
-                                sb.Append("<br>Capacity: ");
-                                sb.Append(currentCapacity);
-                                sb.Append(" (");
-                                sb.Append(misses);
-                                sb.Append(" misses)<br>Available: ");
-                                sb.Append(freeCount);
-                                sb.Append("<br>Usage: ");
-                                sb.Append(((currentCapacity - freeCount) * 100) / currentCapacity);
-                                sb.Append("% : ");
-                                sb.Append(FormatByteAmount((currentCapacity - freeCount) * bufferSize));
-                                sb.Append(" of ");
-                                sb.Append(FormatByteAmount(currentCapacity * bufferSize));
-                            }
+                            sb.Append(name);
+                            sb.Append("<br>Size: ");
+                            sb.Append(FormatByteAmount(bufferSize));
+                            sb.Append("<br>Capacity: ");
+                            sb.Append(currentCapacity);
+                            sb.Append(" (");
+                            sb.Append(misses);
+                            sb.Append(" misses)<br>Available: ");
+                            sb.Append(freeCount);
+                            sb.Append("<br>Usage: ");
+                            sb.Append(((currentCapacity - freeCount) * 100) / currentCapacity);
+                            sb.Append("% : ");
+                            sb.Append(FormatByteAmount((currentCapacity - freeCount) * bufferSize));
+                            sb.Append(" of ");
+                            sb.Append(FormatByteAmount(currentCapacity * bufferSize));
                         }
 
                         this.AddLabel(20, 200, LabelHue, "Pooling:");
@@ -2041,7 +2038,7 @@ namespace Server.Gumps
 
                                     if (level > AccessLevel.VIP)
                                     {
-                                        List<NetState> clients = NetState.Instances;
+                                        IList<NetState> clients = NetState.Instances;
                                         int count = 0;
 
                                         for (int i = 0; i < clients.Count; ++i)
@@ -2178,7 +2175,7 @@ namespace Server.Gumps
                                     }
                                     else
                                     {
-                                        List<NetState> instances = NetState.Instances;
+                                        IList<NetState> instances = NetState.Instances;
 
                                         for (int i = 0; i < instances.Count; ++i)
                                         {

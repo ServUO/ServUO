@@ -2237,8 +2237,8 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				// go through all online mobiles and see if any have xmlspawner gumps open
-				List<NetState> states = NetState.Instances;
+                // go through all online mobiles and see if any have xmlspawner gumps open
+                IList<NetState> states = NetState.Instances;
 
 				for (int i = 0; i < states.Count; ++i)
 				{

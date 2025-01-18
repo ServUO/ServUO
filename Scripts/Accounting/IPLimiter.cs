@@ -32,7 +32,7 @@ namespace Server.Misc
             if (!Enabled || IsExempt(ourAddress))
                 return true;
 
-            List<NetState> netStates = NetState.Instances;
+            IList<NetState> netStates = NetState.Instances;
 
             int count = 0;
 

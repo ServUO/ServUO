@@ -81,7 +81,7 @@ namespace Server.Gumps
                 filter = filter.ToLower();
 
             List<Mobile> list = new List<Mobile>();
-            List<NetState> states = NetState.Instances;
+            IList<NetState> states = NetState.Instances;
 
             for (int i = 0; i < states.Count; ++i)
             {

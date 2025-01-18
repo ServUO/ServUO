@@ -47,8 +47,6 @@ namespace Server
 		private static DateTime _ProfileStart;
 		private static TimeSpan _ProfileTime;
 
-		public static MessagePump MessagePump { get; set; }
-
 		public static Slice Slice;
 
 		public static bool Profiling
@@ -453,6 +451,8 @@ namespace Server
 			Process = Process.GetCurrentProcess();
 			Assembly = Assembly.GetEntryAssembly();
 
+            Process.PriorityClass = ProcessPriorityClass.High;
+
 			if (Thread != null)
 			{
 				Thread.Name = "Core Thread";
@@ -641,7 +641,7 @@ namespace Server
 
 			ScriptCompiler.Invoke("Initialize");
 
-			MessagePump messagePump = MessagePump = new MessagePump();
+			MessagePump.Start();
 
 			_TimerThread.Start();
 
@@ -671,7 +671,7 @@ namespace Server
 					Item.ProcessDeltaQueue();
 
 					Timer.Slice();
-					messagePump.Slice();
+					MessagePump.Slice();
 
 					NetState.FlushAll();
 					NetState.ProcessDisposedQueue();
