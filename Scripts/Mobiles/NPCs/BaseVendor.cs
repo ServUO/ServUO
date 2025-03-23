@@ -100,8 +100,22 @@ namespace Server.Mobiles
 
         public virtual BODType BODType { get { return BODType.Smith; } }
 
-		#region Faction
-		public virtual int GetPriceScalar()
+        #region Faction
+
+        public virtual int GetPriceScalar(Mobile buyer)
+        {
+            Town town = Town.FromRegion(buyer.Region);
+
+            if (town != null)
+            {
+                return (100 + town.Tax);
+            }
+
+            return 100;
+        }
+
+
+        public virtual int GetPriceScalar()
 		{
 			Town town = Town.FromRegion(Region);
 

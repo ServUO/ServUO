@@ -23,6 +23,8 @@
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
 		<ProjectReference Include="..\Ultima\Ultima.csproj" />
 	</ItemGroup>
 </Project>

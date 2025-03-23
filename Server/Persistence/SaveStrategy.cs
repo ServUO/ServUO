@@ -14,7 +14,7 @@ namespace Server
 #if DynamicSaveStrategy
                 if (processorCount > 2)
                 {
-                    return new DynamicSaveStrategy();
+                       return new DynamicSaveStrategy();
                 }
 #else
                 if (processorCount > 16)
@@ -34,7 +34,6 @@ namespace Server
         }
 
         public abstract void Save(SaveMetrics metrics, bool permitBackgroundWrite);
-
         public abstract void ProcessDecay();
     }
 }

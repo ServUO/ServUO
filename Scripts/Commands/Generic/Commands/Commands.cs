@@ -24,6 +24,8 @@ namespace Server.Commands.Generic
 
 		public static void Initialize()
 		{
+            //Built in commands
+
 			Register(new KillCommand(true));
 			Register(new KillCommand(false));
 			Register(new HideCommand(true));

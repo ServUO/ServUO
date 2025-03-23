@@ -201,6 +201,7 @@ namespace Server.Mobiles
 
     public class BaseCreature : Mobile, IHonorTarget, IEngravable
     {
+
         public const int MaxLoyalty = 100;
 
         private bool _LockDirection;
@@ -1976,6 +1977,8 @@ namespace Server.Mobiles
             }
         }
 
+        public event Action<Mobile, int, Mobile, bool> MobileDamaged;
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (BardPacified && (HitsMax - Hits) * 0.001 > Utility.RandomDouble())
@@ -2036,6 +2039,8 @@ namespace Server.Mobiles
             {
                 Timer.DelayCall(TimeSpan.FromSeconds(10), ((PlayerMobile)@from).RecoverAmmo);
             }
+
+            MobileDamaged?.Invoke(this, amount, from, willKill);
 
             base.OnDamage(amount, from, willKill);
         }

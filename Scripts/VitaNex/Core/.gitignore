@@ -1,0 +1,19 @@
+
+# Common Directories
+/.vs
+/.JustCode
+
+# Wildcard Files
+*.rar
+*.pdb
+*.exe
+*.exe.mdb
+*.exe.config
+*.dll.config
+*.sh
+*.suo
+*.idea
+*.log
+*.bin
+*.csproj.user
+*.DotSettings.user

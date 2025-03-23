@@ -617,7 +617,7 @@ namespace Server.Mobiles
         #region Reward Stable Slots
         [CommandProperty(AccessLevel.GameMaster)]
         public int RewardStableSlots { get; set; }
-        #endregion
+        #endregion`
 
         private DateTime m_AnkhNextUse;
 

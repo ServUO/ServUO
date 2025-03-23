@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-
+using System.Threading.Tasks;
 using CustomsFramework;
 
 using Server.Guilds;
@@ -1207,7 +1207,13 @@ namespace Server
             }
         }
 
-		internal static List<Type> m_ItemTypes = new List<Type>();
+        private static Task WaitForWriteCompletionAsync()
+        {
+            return Task.Run(() => m_DiskWriteHandle.WaitOne());
+        }
+
+
+        internal static List<Type> m_ItemTypes = new List<Type>();
 		internal static List<Type> m_MobileTypes = new List<Type>();
 		internal static List<Type> _DataTypes = new List<Type>();
 

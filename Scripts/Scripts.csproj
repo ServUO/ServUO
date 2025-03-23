@@ -22,6 +22,13 @@
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Include="VitaNex\Core\.gitignore" />
+	  <None Include="VitaNex\Core\LICENSE.md" />
+	  <None Include="VitaNex\Core\Modules\EquipmentSets\Sets\PlateSet.cs-" />
+	  <None Include="VitaNex\Core\README.md" />
+	  <None Include="VitaNex\Core\VNC.cfg" />
+	</ItemGroup>
+	<ItemGroup>
 		<Reference Include="System.Web" />
 	</ItemGroup>
 	<ItemGroup>
