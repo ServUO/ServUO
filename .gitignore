@@ -43,3 +43,5 @@
 
 !/Data/*
 !/bin/rosyln/*
+Launcher/bin/
+Launcher/obj/

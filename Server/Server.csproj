@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<OutputType>Exe</OutputType>
-		<AssemblyName>ServUO</AssemblyName>
+		<OutputType>Library</OutputType>
+		<AssemblyName>Server</AssemblyName>
 		<ApplicationIcon>servuo.ico</ApplicationIcon>
-		<StartupObject>Server.Core</StartupObject>
-		<ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>
+<!--		<StartupObject>Server.Core</StartupObject>-->
+<!--		<ApplicationManifest>ServUO.exe.manifest</ApplicationManifest>-->
 		<AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<UseVSHostingProcess>False</UseVSHostingProcess>
@@ -23,6 +23,7 @@
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\Launcher\Launcher.csproj" />
 		<ProjectReference Include="..\Ultima\Ultima.csproj" />
 	</ItemGroup>
 </Project>

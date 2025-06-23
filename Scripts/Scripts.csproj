@@ -13,12 +13,12 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 		<OutputPath>..\</OutputPath>
-		<DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
+		<DefineConstants>TRACE;DEBUG;NEWTIMERS;Server</DefineConstants>
 		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 		<OutputPath>..\</OutputPath>
-		<DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
+		<DefineConstants>TRACE;NEWTIMERS;Server</DefineConstants>
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
