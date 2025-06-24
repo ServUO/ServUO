@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <OutputType>Exe</OutputType>
-    <AssemblyName>ServUO</AssemblyName>
+    <AssemblyName>Launcher</AssemblyName>
     <ApplicationIcon>servuo.ico</ApplicationIcon>
     <StartupObject>Launcher.Launcher</StartupObject>
     <ApplicationManifest>Launcher.exe.manifest</ApplicationManifest>
@@ -28,4 +28,7 @@
   <ItemGroup>
     <None Include="servuo.ico" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(TargetPath) $(ProjectDir)\..\Launcher.exe &amp;&amp; copy $(TargetDir)\Ultima.dll $(ProjectDir)\..\Ultima.dll" />
+  </Target>
 </Project>

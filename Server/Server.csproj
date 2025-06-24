@@ -26,4 +26,7 @@
 		<ProjectReference Include="..\Launcher\Launcher.csproj" />
 		<ProjectReference Include="..\Ultima\Ultima.csproj" />
 	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="copy $(TargetPath) $(ProjectDir)\..\Server.dll" />
+	</Target>
 </Project>

@@ -66,17 +66,18 @@ namespace Launcher
                     {
                         try
                         {
+                            Console.WriteLine("Compiling {0}...", proj);
                             var info = new ProcessStartInfo
                             {
                                 FileName = "dotnet",
-                                Arguments = $"build \"{proj}\" -c {(debug ? "Debug" : "Release")}",
+                                Arguments = $"build \"{proj}\" -c {(debug ? "Debug" : "Release")} --no-dependencies",
                                 ErrorDialog = false,
                                 UseShellExecute = false,
                                 CreateNoWindow = true,
                                 WindowStyle = ProcessWindowStyle.Hidden,
                                 RedirectStandardOutput = true,
+                                WorkingDirectory = Launcher.BaseDirectory
                             };
-                            Console.WriteLine("Launcher: Compiling " + info);
 
                             var proc = Process.Start(info);
 

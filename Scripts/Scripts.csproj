@@ -13,12 +13,12 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 		<OutputPath>..\</OutputPath>
-		<DefineConstants>TRACE;DEBUG;NEWTIMERS;Server</DefineConstants>
+		<DefineConstants>TRACE;DEBUG;NEWTIMERS;ServUO</DefineConstants>
 		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 		<OutputPath>..\</OutputPath>
-		<DefineConstants>TRACE;NEWTIMERS;Server</DefineConstants>
+		<DefineConstants>TRACE;NEWTIMERS;ServUO</DefineConstants>
 		<DebugType>none</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
@@ -31,4 +31,7 @@
 	<ItemGroup>
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="copy $(TargetPath) $(ProjectDir)\..\Scripts.dll" />
+	</Target>
 </Project>

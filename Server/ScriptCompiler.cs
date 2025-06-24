@@ -37,7 +37,7 @@ namespace Server
                             var info = new ProcessStartInfo
                             {
                                 FileName = "dotnet",
-                                Arguments = $"build \"{proj}\" -c {(debug ? "Debug" : "Release")}",
+                                Arguments = $"build \"{proj}\" -c {(debug ? "Debug" : "Release")} --no-dependencies",
                                 ErrorDialog = false,
                                 UseShellExecute = false,
                                 CreateNoWindow = true,
