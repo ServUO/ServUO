@@ -34,12 +34,21 @@ namespace Server.XmlSerialize
 
         public static void Configure()
         {
-            EventSink.WorldLoad += LoadWorld;
+            // EventSink.WorldLoad += LoadWorld;
+            // EventSink.ServerStarted += Save;
+
         }
 
+        public static void Save()
+        {
+            Console.WriteLine($"Accounts: {Accounts.Count}");
+            Accounts.Save(null);
+            World.Save();
+            Console.WriteLine("Test Saved");
+        }
         public static void LoadWorld()
         {
-            if( Directory.Exists( "Saves" ) || !File.Exists( "runuo1.xml" ) )
+            if( !File.Exists( "./runuo1.xml" ) )
                 return;
 
             XmlDeserializer deserializer = new XmlDeserializer( "runuo1.xml", null );
@@ -83,6 +92,7 @@ namespace Server.XmlSerialize
             WriteLine( "Reserialization is needed to create a correct state of all objects" );
             Reserialize( BaseGuild.List.Values, BaseGuild.List.Count, "Guilds" );
             Reserialize( m_Entities.Values, m_Entities.Count, "Entities" );
+            Reserialize( BaseGuild.List.Values, BaseGuild.List.Count, "Guilds" );
         }
 
         private void Reserialize( IEnumerable<object> serializableList, int count, string name )
@@ -305,9 +315,17 @@ namespace Server.XmlSerialize
                             case "account":
                                 using( XmlReader subReader = reader.ReadSubtree() )
                                 {
-                                    XmlDocument doc = new XmlDocument();
-                                    doc.Load( subReader );
-                                    new Account( doc.DocumentElement );
+                                    try
+                                    {
+                                        XmlDocument doc = new XmlDocument();
+                                        doc.Load(subReader);
+                                        var acc = new Account(doc.DocumentElement);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine("Warning: Account instance load failed from XML Save");
+                                    }
+
                                 }
                                 current++;
 

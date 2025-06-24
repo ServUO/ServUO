@@ -7,7 +7,8 @@ namespace Server.Accounting
 {
     public class Accounts
     {
-        private static Dictionary<string, IAccount> m_Accounts = new Dictionary<string, IAccount>();
+        // private static Dictionary<string, IAccount> m_Accounts = new Dictionary<string, IAccount>();
+        private static Dictionary<string, IAccount> m_Accounts = new Dictionary<string, IAccount>(32, StringComparer.OrdinalIgnoreCase);
 
         public static void Configure()
         {
@@ -45,7 +46,7 @@ namespace Server.Accounting
         {
             m_Accounts[a.Username] = a;
         }
-		
+
         public static void Remove(string username)
         {
             m_Accounts.Remove(username);
@@ -53,7 +54,7 @@ namespace Server.Accounting
 
         public static void Load()
         {
-            m_Accounts = new Dictionary<string, IAccount>(32, StringComparer.OrdinalIgnoreCase);
+            //m_Accounts = new Dictionary<string, IAccount>(32, StringComparer.OrdinalIgnoreCase);
 
             string filePath = Path.Combine("Saves/Accounts", "accounts.xml");
 

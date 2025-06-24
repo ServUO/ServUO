@@ -11,9 +11,6 @@ namespace CustomsFramework
             //sollte als Basisklasse das Selbe sein:
             //writer.WriteVersionSW( this, 0 );
             writer.Write( 0 );
-
-            // Version 0
-            writer.Write(_Deleted);
         }
 
         #endregion
@@ -23,16 +20,7 @@ namespace CustomsFramework
         {
             //sollte als Basisklasse das Selbe sein:
             //reader.ReadVersionSW( this );
-            int version = reader.ReadInt();
-
-            switch (version)
-            {
-                case 0:
-                {
-                    _Deleted = reader.ReadBool();
-                    break;
-                }
-            }
+            reader.ReadInt();
         }
     }
 }

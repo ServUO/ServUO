@@ -16,7 +16,7 @@ namespace Server.Items
         int TempHue { get; set; }
     }
 
-    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable, IQuality
+    public abstract partial class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable, IQuality
     {
         private string m_EngravedText;
 
@@ -126,7 +126,7 @@ namespace Server.Items
         public int HitPoints
         {
             get { return m_HitPoints; }
-            set 
+            set
             {
                 if (value != m_HitPoints && MaxHitPoints > 0)
                 {
@@ -381,7 +381,7 @@ namespace Server.Items
         public virtual int BaseColdResistance { get { return 0; } }
         public virtual int BasePoisonResistance { get { return 0; } }
         public virtual int BaseEnergyResistance { get { return 0; } }
-        
+
         #region Mondain's Legacy Sets
         public override int PhysicalResistance
         {
@@ -779,7 +779,7 @@ namespace Server.Items
 
             damageTaken -= Absorbed;
 
-            if (damageTaken < 0) 
+            if (damageTaken < 0)
                 damageTaken = 0;
 
             double chance = NegativeAttributes.Antique > 0 ? 80 : 25;
@@ -1064,7 +1064,7 @@ namespace Server.Items
 
             if (!string.IsNullOrEmpty(m_EngravedText))
             {
-                list.Add(1158847, Utility.FixHtml(m_EngravedText)); // Embroidered: ~1_MESSAGE~	
+                list.Add(1158847, Utility.FixHtml(m_EngravedText)); // Embroidered: ~1_MESSAGE~
             }
         }
 
@@ -1078,7 +1078,7 @@ namespace Server.Items
 
             if (m_GorgonLenseCharges > 0)
                 list.Add(1112590, m_GorgonLenseCharges.ToString()); //Gorgon Lens Charges: ~1_val~
-            
+
             #region Mondain's Legacy Sets
             if (IsSetItem)
             {
@@ -1122,7 +1122,7 @@ namespace Server.Items
 
             if ((prop = ArtifactRarity) > 0)
                 list.Add(1061078, prop.ToString()); // artifact rarity ~1_val~
-			
+
 			#region SA
             if ((prop = m_SAAbsorptionAttributes.EaterFire) != 0)
                 list.Add(1113593, prop.ToString()); // Fire Eater ~1_Val~%
@@ -1156,7 +1156,7 @@ namespace Server.Items
 
             if ((prop = m_SAAbsorptionAttributes.ResonanceKinetic) != 0)
                 list.Add(1113695, prop.ToString()); // Kinetic Resonance ~1_val~%
-			
+
 			if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
                 list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
             #endregion
@@ -1208,76 +1208,76 @@ namespace Server.Items
 
             if ((prop = m_AosAttributes.SpellChanneling) != 0)
                 list.Add(1060482); // spell channeling
-			
+
 			if ((prop = m_AosClothingAttributes.SelfRepair) != 0)
                 list.Add(1060450, prop.ToString()); // self repair ~1_val~
-			
+
 			if ((prop = m_AosAttributes.NightSight) != 0)
                 list.Add(1060441); // night sight
 
             if ((prop = m_AosAttributes.BonusStr) != 0)
                 list.Add(1060485, prop.ToString()); // strength bonus ~1_val~
-			
+
 			if ((prop = m_AosAttributes.BonusDex) != 0)
                 list.Add(1060409, prop.ToString()); // dexterity bonus ~1_val~
-			
+
 			if ((prop = m_AosAttributes.BonusInt) != 0)
                 list.Add(1060432, prop.ToString()); // intelligence bonus ~1_val~
-			
+
 			if ((prop = m_AosAttributes.BonusHits) != 0)
                 list.Add(1060431, prop.ToString()); // hit point increase ~1_val~
-			
+
 			if ((prop = m_AosAttributes.BonusStam) != 0)
                 list.Add(1060484, prop.ToString()); // stamina increase ~1_val~
-			
+
 			if ((prop = m_AosAttributes.BonusMana) != 0)
                 list.Add(1060439, prop.ToString()); // mana increase ~1_val~
 
             if ((prop = m_AosAttributes.RegenHits) != 0)
                 list.Add(1060444, prop.ToString()); // hit point regeneration ~1_val~
-			
+
 			if ((prop = m_AosAttributes.RegenStam) != 0)
                 list.Add(1060443, prop.ToString()); // stamina regeneration ~1_val~
-			
+
 			if ((prop = m_AosAttributes.RegenMana) != 0)
                 list.Add(1060440, prop.ToString()); // mana regeneration ~1_val~
-			
+
 			if ((prop = m_AosAttributes.Luck) != 0)
                 list.Add(1060436, prop.ToString()); // luck ~1_val~
-			
+
 			if ((prop = m_AosAttributes.EnhancePotions) != 0)
                 list.Add(1060411, prop.ToString()); // enhance potions ~1_val~%
-			
+
 			if ((prop = m_AosAttributes.ReflectPhysical) != 0)
                 list.Add(1060442, prop.ToString()); // reflect physical damage ~1_val~%
-			
+
 			if ((prop = m_AosAttributes.AttackChance) != 0)
                 list.Add(1060415, prop.ToString()); // hit chance increase ~1_val~%
 
             if ((prop = m_AosAttributes.WeaponSpeed) != 0)
                 list.Add(1060486, prop.ToString()); // swing speed increase ~1_val~%
-			
+
 			if ((prop = m_AosAttributes.WeaponDamage) != 0)
                 list.Add(1060401, prop.ToString()); // damage increase ~1_val~%
-			
+
 			if ((prop = m_AosAttributes.DefendChance) != 0)
                 list.Add(1060408, prop.ToString()); // defense chance increase ~1_val~%
-			
+
 			if ((prop = m_AosAttributes.CastRecovery) != 0)
-                list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~		
-			
+                list.Add(1060412, prop.ToString()); // faster cast recovery ~1_val~
+
 			if ((prop = m_AosAttributes.CastSpeed) != 0)
                 list.Add(1060413, prop.ToString()); // faster casting ~1_val~
-			
+
 			if ((prop = m_AosAttributes.SpellDamage) != 0)
                 list.Add(1060483, prop.ToString()); // spell damage increase ~1_val~%
-			
+
 			if ((prop = m_AosAttributes.LowerManaCost) != 0)
                 list.Add(1060433, prop.ToString()); // lower mana cost ~1_val~%
 
             if ((prop = m_AosAttributes.LowerRegCost) != 0)
                 list.Add(1060434, prop.ToString()); // lower reagent cost ~1_val~%
-            
+
             if ((prop = m_AosAttributes.LowerAmmoCost) != 0)
 				list.Add(1075208, prop.ToString()); // Lower Ammo Cost ~1_Percentage~%
 
@@ -1285,13 +1285,13 @@ namespace Server.Items
                 list.Add(1075210, prop.ToString()); // Increased Karma Loss ~1val~%
 
             base.AddResistanceProperties(list);
-			
+
 			if ((prop = m_AosClothingAttributes.MageArmor) != 0)
                 list.Add(1060437); // mage armor
-			
+
 			if ((prop = m_AosClothingAttributes.LowerStatReq) != 0)
                 list.Add(1060435, prop.ToString()); // lower requirements ~1_val~%
-			
+
 			if ((prop = ComputeStatReq(StatType.Str)) > 0)
                 list.Add(1061170, prop.ToString()); // strength requirement ~1_val~
 
@@ -1304,7 +1304,7 @@ namespace Server.Items
             #region Mondain's Legacy Sets
             if (IsSetItem && !m_SetEquipped)
             {
-                list.Add(1072378); // <br>Only when full set is present:				
+                list.Add(1072378); // <br>Only when full set is present:
                 GetSetProperties(list);
             }
             #endregion
@@ -1672,7 +1672,7 @@ namespace Server.Items
                             m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
 
                         m_TimesImbued = reader.ReadInt();
-                       
+
                         #endregion
 
                         m_BlessedBy = reader.ReadMobile();
@@ -2239,7 +2239,7 @@ namespace Server.Items
                     list.Add(1072385, m_SetPoisonBonus.ToString()); // poison resist +~1_val~%
 
                 if (m_SetEnergyBonus != 0)
-                    list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%			
+                    list.Add(1072386, m_SetEnergyBonus.ToString()); // energy resist +~1_val~%
             }
             else if (m_SetEquipped && SetHelper.ResistsBonusPerPiece(this) && RootParentEntity is Mobile)
             {
@@ -2262,7 +2262,7 @@ namespace Server.Items
             }
 
             if ((prop = m_SetSelfRepair) != 0)
-                list.Add(1060450, prop.ToString()); // self repair ~1_val~		
+                list.Add(1060450, prop.ToString()); // self repair ~1_val~
 
             SetHelper.GetSetProperties(list, this);
         }

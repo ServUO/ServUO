@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows.Forms;
 using Server.Items;
 using Server.Mobiles;
 using Server.Multis;
@@ -25,6 +27,7 @@ namespace Server.Misc
             {
                 if (item.Map == null)
                 {
+                    Console.WriteLine($"Item: {item.Parent}");
                     items.Add(item);
                     continue;
                 }
@@ -60,11 +63,14 @@ namespace Server.Misc
 
                     if (owner == null)
                     {
+                        Console.WriteLine($"No Owner: {items.Count}");
+
                         items.Add(box);
                         ++boxes;
                     }
                     else if (box.Items.Count == 0)
                     {
+                        Console.WriteLine($"Bankbox empty: {items.Count}");
                         items.Add(box);
                         ++boxes;
                     }
@@ -106,6 +112,7 @@ namespace Server.Misc
                 items.Add(item);
             }
 
+
             for (int i = 0; i < validItems.Count; ++i)
                 items.Remove(validItems[i]);
 
@@ -116,6 +123,7 @@ namespace Server.Misc
                 else
                     Console.WriteLine("Cleanup: Detected {0} inaccessible items, removing..", items.Count);
 
+                Environment.Exit(0);
                 for (int i = 0; i < items.Count; ++i)
                 {
                     Console.WriteLine(items[i].ToString());

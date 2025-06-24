@@ -154,6 +154,14 @@ namespace Server.XmlSerialize
                 return new AosWeaponAttributes( (Item)obj );
             if( type == typeof( PlayerMobile.ChampionTitleInfo ) )
                 return new PlayerMobile.ChampionTitleInfo();
+            if (type == typeof(SAAbsorptionAttributes))
+                return new SAAbsorptionAttributes( (Item)obj );
+            if (type == typeof(NegativeAttributes))
+                return new NegativeAttributes( (Item)obj );
+            if (type == typeof(ExtendedWeaponAttributes))
+                return new ExtendedWeaponAttributes( (Item)obj );
+            if (type == typeof(TalismanAttribute))
+                return new TalismanAttribute();
             if( type == typeof( RankDefinition ) )
                 return RankDefinition.Lowest;
 
@@ -176,6 +184,8 @@ namespace Server.XmlSerialize
                 return new ValueSetter( fieldName, null, null ); // restricted
             if( type == typeof( Mobile ) && fieldName == "m_TypeRef" )
                 return new ValueSetter( fieldName, null, null ); // restricted
+            if (type == typeof( BaseClothing) && fieldName == "m_Crafter" )
+                return new ValueSetter( "CrafterName", typeof(string), null );
             return null;
         }
 

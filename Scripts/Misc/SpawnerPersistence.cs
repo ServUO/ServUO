@@ -15,7 +15,7 @@ using Server.Multis;
 /* This script has a purpose, and please adhere to the advice before adding versions.
  * This is used for modifying, removing, adding existing spawners, etc for existing shards,
  * used for modifying, removing, adding existing spawners, etc for existing shards.
- * As this is a collaborative effort for ServUO, it's important that any modifications to 
+ * As this is a collaborative effort for ServUO, it's important that any modifications to
  * existing shards be handled for new shards.  For example, if your swapping out some spawners,
  * common practice will be to edit the spawner files for fresh-loaded servers. Please refer to
  * ServUO.com community with any questions or concerns.
@@ -53,11 +53,11 @@ namespace Server
         private static bool _SpawnsConverted;
         public static bool SpawnsConverted { get { return _SpawnsConverted; } }
 
-        public static void Configure()
-        {
-            EventSink.WorldSave += OnSave;
-            EventSink.WorldLoad += OnLoad;
-        }
+        // public static void Configure()
+        // {
+        //     EventSink.WorldSave += OnSave;
+        //     EventSink.WorldLoad += OnLoad;
+        // }
 
         public static void Initialize()
         {
@@ -156,7 +156,7 @@ namespace Server
 
         /// <summary>
         /// Checks version, and calls code appropriately.  Version 10 implements SpawnerFlag so servers don't miss out and skip versions.
-        /// After this point, there is no need to increase version anymore unless any changes 
+        /// After this point, there is no need to increase version anymore unless any changes
         /// </summary>
         public static void CheckVersion()
         {
@@ -883,7 +883,7 @@ namespace Server
 
             if (action != null)
             {
-                List<ISpawner> list = World.Items.Values.OfType<ISpawner>().Where(s => 
+                List<ISpawner> list = World.Items.Values.OfType<ISpawner>().Where(s =>
                     nameCheck == null ||  (s is Item && ((Item)s).Name != null && ((Item)s).Name.ToLower().IndexOf(nameCheck.ToLower()) >= 0)).ToList();
 
                 foreach (ISpawner spawner in list)
@@ -895,7 +895,7 @@ namespace Server
                 ColUtility.Free(list);
             }
 
-            ToConsole(String.Format("Spawner Action: Performed action to {0} spawners{1}", 
+            ToConsole(String.Format("Spawner Action: Performed action to {0} spawners{1}",
                 count.ToString(), lineCheck != null ? " containing " + lineCheck + "." : typeCheck != null ? " containing " + typeCheck.Name + "." : "."));
         }
 
@@ -1390,7 +1390,7 @@ namespace Server
         #endregion
 
         /// <summary>
-        /// Deletes all spawners from a specific file. This can be used to delete spawners from a specific system where the spawner wasn't 
+        /// Deletes all spawners from a specific file. This can be used to delete spawners from a specific system where the spawner wasn't
         /// Generated from the Spawn Folder.
         /// </summary>
         /// <param name="directory"></param>
