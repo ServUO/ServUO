@@ -31,4 +31,7 @@
 	<ItemGroup>
 		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
 	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="copy $(TargetPath) $(ProjectDir)\..\Scripts.dll" />
+	</Target>
 </Project>
