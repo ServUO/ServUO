@@ -532,7 +532,7 @@ namespace Server
 	///     Base class representing players, npcs, and creatures.
 	/// </summary>
     [System.Runtime.InteropServices.ComVisible(true)]
-	public class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
+	public partial class Mobile : IEntity, IHued, IComparable<Mobile>, ISerializable, ISpawnable, IDamageable
 	{
 		#region CompareTo(...)
 		public int CompareTo(IEntity other)
@@ -873,7 +873,7 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public bool PublicHouseContent { get; set; }
 
-        public DFAlgorithm DFA { get; set; } 
+        public DFAlgorithm DFA { get; set; }
 
         protected virtual void OnRaceChange(Race oldRace)
 		{ }
@@ -1170,11 +1170,11 @@ namespace Server
             if (PropertyTitle && Title != null && Title.Length > 0)
             {
                 suffix = Title;
-            }          
+            }
 
             suffix = ApplyNameSuffix(suffix);
 
-            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~           
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
         }
 
 		public virtual bool NewGuildDisplay { get { return false; } }
@@ -2175,7 +2175,7 @@ namespace Server
 		{
 			return (Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e));
 		}
-		
+
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool GuardImmune { get; set; }
 
@@ -5521,7 +5521,7 @@ namespace Server
 		/// </summary>
 		public virtual void OnDamage(int amount, Mobile from, bool willKill)
 		{ }
-		
+
 		public virtual bool CanBeDamaged()
 		{
 			return !m_Blessed;
@@ -6881,8 +6881,8 @@ namespace Server
                     if (state.Mobile.CanSee(this))
                     {
                         state.Mobile.ProcessDelta();
-                        
-                        p = Packet.Acquire(new NewMobileAnimation(this, type, action, Utility.Random(0, 60)));                          
+
+                        p = Packet.Acquire(new NewMobileAnimation(this, type, action, Utility.Random(0, 60)));
 
                         state.Send(p);
                     }
@@ -7622,7 +7622,7 @@ namespace Server
 		/// </summary>
 		public virtual void OnSpeech(SpeechEventArgs e)
 		{ }
-		
+
 		public void SendEverything()
 		{
 			NetState ns = m_NetState;
@@ -9970,7 +9970,7 @@ namespace Server
 
 			Point3D oldLocation = m_Location;
 			Map oldMap = m_Map;
-			
+
 			if (oldMap != null)
 			{
 				oldMap.OnLeave(this);
@@ -10041,7 +10041,7 @@ namespace Server
 				m_Region.OnLocationChanged(this, oldLocation);
 			}
 		}
-		
+
 		public virtual void SetLocation(Point3D newLocation, bool isTeleport)
 		{
 			if (m_Deleted)
@@ -10113,7 +10113,7 @@ namespace Server
 
 					eable.Free();
 
-					Packet hbpPacket = Packet.Acquire(new HealthbarPoison(this)), 
+					Packet hbpPacket = Packet.Acquire(new HealthbarPoison(this)),
 						   hbyPacket = Packet.Acquire(new HealthbarYellow(this));
 
 					Packet hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this)),
@@ -12482,7 +12482,7 @@ namespace Server
 		public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
-		public virtual bool ShowFameTitle { get { return true; } } 
+		public virtual bool ShowFameTitle { get { return true; } }
 		public virtual bool ShowAccessTitle { get { return false; } }
 
 		/// <summary>
@@ -12815,4 +12815,4 @@ namespace Server
 		{ }
 	}
 }
-    
+

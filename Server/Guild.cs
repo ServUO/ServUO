@@ -12,7 +12,7 @@ namespace Server.Guilds
 		Order
 	}
 
-	public abstract class BaseGuild : ISerializable
+	public abstract partial class BaseGuild : ISerializable
 	{
 		private readonly int m_Id;
 

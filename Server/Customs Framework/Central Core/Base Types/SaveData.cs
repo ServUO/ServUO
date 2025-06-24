@@ -6,7 +6,7 @@ using Server;
 
 namespace CustomsFramework
 {
-	public class SaveData : ICustomsEntity, IComparable<SaveData>, ISerializable
+	public partial class SaveData : ICustomsEntity, IComparable<SaveData>, ISerializable
 	{
 		#region CompareTo
 		public int CompareTo(ICustomsEntity other)

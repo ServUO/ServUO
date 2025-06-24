@@ -2764,7 +2764,7 @@ namespace Server
 		}
 	}
 
-	public interface ISerializable
+	public partial interface ISerializable
 	{
 		int TypeReference { get; }
 		int SerialIdentity { get; }

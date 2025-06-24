@@ -187,7 +187,7 @@ namespace Server
         /// <summary>
         /// Unused, using this layer makes you invisible to other players. Strange.
         /// </summary>
-        /// 
+        ///
         Reserved_1 = 0x1E,
 
         /// <summary>
@@ -671,7 +671,7 @@ namespace Server
         Spawner = 0x100
     }
 
-    public class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
+    public partial class Item : IEntity, IHued, IComparable<Item>, ISerializable, ISpawnable
     {
         #region Customs Framework
         private List<BaseModule> m_Modules = new List<BaseModule>();
@@ -857,7 +857,7 @@ namespace Server
                 }
             }
         }
-        
+
         private byte m_GridLocation = 0;
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -1262,7 +1262,7 @@ namespace Server
         public virtual void AddLootTypeProperty(ObjectPropertyList list)
         {
             if (DisplayLootType)
-            {               
+            {
                 if (m_LootType == LootType.Blessed)
                 {
                     list.Add(1038021); // blessed
@@ -1611,7 +1611,7 @@ namespace Server
         /// 	{
         /// 		if ( from.Int &gt;= 100 )
         /// 			return true;
-        /// 		
+        ///
         /// 		return base.AllowEquipedCast( from );
         ///  }</code>
         ///     When placed in an Item script, the item may be cast when equiped if the <paramref name="from" /> has 100 or more intelligence. Otherwise, it will drop to their backpack.
@@ -2620,7 +2620,7 @@ namespace Server
 
             // 14
             writer.Write(Sockets != null ? Sockets.Count : 0);
-			
+
 			if(Sockets != null)
 			{
 				foreach(var socket in Sockets)
@@ -3722,7 +3722,7 @@ namespace Server
                 state.Send(OPLPacket);
             }
         }
-        
+
         protected virtual Packet GetWorldPacketFor(NetState state)
         {
             if (state.HighSeas)
@@ -4703,7 +4703,7 @@ namespace Server
 
         #region Location Location Location!
         public virtual void OnLocationChange(Point3D oldLocation)
-        { 
+        {
             var items = Items;
 
             if (items == null)
@@ -4839,7 +4839,7 @@ namespace Server
                     int oldPileWeight = PileWeight;
 
                     m_ItemID = value;
-                    
+
                     ReleaseWorldPackets();
 
                     int newPileWeight = PileWeight;
@@ -5413,12 +5413,12 @@ namespace Server
                     }
 
                     okay = ((m_OpenSlots >> i) & match) == match;
-                  
+
                     if (okay)
                     {
                         z += i;
                         break;
-                    }                   
+                    }
                 }
 			    if (!okay)
 			    {
@@ -6159,7 +6159,7 @@ namespace Server
         {
             m_Serial = Serial.NewItem;
             m_Map = Map.Internal;
-            
+
             m_Light = LightType.Empty;
 
             m_Amount = 1;
@@ -6244,7 +6244,7 @@ namespace Server
 
 			Sockets.Add(socket);
 			socket.Owner = this;
-			
+
 			InvalidateProperties();
 		}
 
@@ -6278,7 +6278,7 @@ namespace Server
 
             InvalidateProperties();
         }
-		
+
 		public T GetSocket<T>() where T : ItemSocket
 		{
             if (Sockets == null)
@@ -6288,7 +6288,7 @@ namespace Server
 
 			return Sockets.FirstOrDefault(s => s.GetType() == typeof(T)) as T;
 		}
-		
+
 		public T GetSocket<T>(Func<T, bool> predicate) where T : ItemSocket
 		{
             if (Sockets == null)
@@ -6335,37 +6335,37 @@ namespace Server
 	{
 		[CommandProperty(AccessLevel.GameMaster)]
 		public Item Owner { get; set; }
-		
+
 		[CommandProperty(AccessLevel.GameMaster)]
 		public DateTime Expires { get; set; }
-		
+
 		public virtual TimeSpan TickDuration { get { return TimeSpan.FromMinutes(1); } }
-		
+
 		public Timer Timer { get; set; }
 
         public ItemSocket()
             : this(TimeSpan.Zero)
         {
         }
-		
+
 		public ItemSocket(TimeSpan duration)
 		{
 			if(duration != TimeSpan.Zero)
 			{
 				Expires = DateTime.UtcNow + duration;
-				
+
 				BeginTimer();
 			}
 		}
-		
+
 		protected void BeginTimer()
 		{
 			EndTimer();
-			
+
 			Timer = Timer.DelayCall(TickDuration, TickDuration, OnTick);
             Timer.Start();
 		}
-		
+
 		protected void EndTimer()
 		{
 			if(Timer != null)
@@ -6374,7 +6374,7 @@ namespace Server
 				Timer = null;
 			}
 		}
-		
+
 		protected virtual void OnTick()
 		{
 			if(Expires < DateTime.UtcNow || Owner.Deleted)
@@ -6382,18 +6382,18 @@ namespace Server
 				Remove();
 			}
 		}
-		
+
 		public virtual void Remove()
 		{
 			EndTimer();
-			
+
 			Owner.RemoveItemSocket(this);
 		}
-		
+
 		public virtual void OnRemoved()
 		{
 		}
-		
+
 		public virtual void GetProperties(ObjectPropertyList list)
 		{
 		}
@@ -6435,16 +6435,16 @@ namespace Server
 		public virtual void Serialize(GenericWriter writer)
 		{
 			writer.Write(0);
-			
+
 			writer.Write(Expires);
 		}
-		
+
 		public virtual void Deserialize(Item owner, GenericReader reader)
 		{
 			reader.ReadInt(); // version
-			
+
 			Expires = reader.ReadDateTime();
-			
+
 			if(Expires != DateTime.MinValue)
 			{
 				if(Expires < DateTime.UtcNow)
@@ -6456,16 +6456,16 @@ namespace Server
 					BeginTimer();
 				}
 			}
-			
+
 			owner.AttachSocket(this);
 		}
-		
+
 		public static void Save(ItemSocket socket, GenericWriter writer)
 		{
 			writer.Write(socket.GetType().Name);
 			socket.Serialize(writer);
 		}
-		
+
 		public static void Load(Item item, GenericReader reader)
 		{
 			var typeName = ScriptCompiler.FindTypeByName(reader.ReadString());

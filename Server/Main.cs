@@ -21,7 +21,7 @@ namespace Server
 {
     public delegate void Slice();
 
-    public static class Core
+    public static partial class Core
     {
         public static Action<CrashedEventArgs> CrashedHandler { get; set; }
 
@@ -830,7 +830,7 @@ namespace Server
                         new FileStream(FileName, append ? FileMode.Append : FileMode.Create, FileAccess.Write, FileShare.Read)))
             {
                 writer.WriteLine(">>>Logging started on {0:f}.", DateTime.Now);
-                //f = Tuesday, April 10, 2001 3:51 PM 
+                //f = Tuesday, April 10, 2001 3:51 PM
             }
 
             _NewLine = true;
