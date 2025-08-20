@@ -255,6 +255,8 @@ namespace Server.Engines.Harvest
                 from.SendLocalizedMessage(1005213); // You can't do that
         }
 
+        public override object GetLock(Mobile from, Item tool, HarvestDefinition def, object toHarvest) => this;
+
         public override void OnHarvestStarted(Mobile from, Item tool, HarvestDefinition def, object toHarvest)
         {
             base.OnHarvestStarted(from, tool, def, toHarvest);

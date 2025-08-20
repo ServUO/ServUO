@@ -468,6 +468,8 @@ namespace Server.Engines.Harvest
         }
         #endregion
 
+        public override object GetLock(Mobile from, Item tool, HarvestDefinition def, object toHarvest) => this;
+
         public override bool BeginHarvesting(Mobile from, Item tool)
         {
             if (!base.BeginHarvesting(from, tool))
@@ -490,7 +492,7 @@ namespace Server.Engines.Harvest
             if (toHarvest is LandTarget)
             {
                 from.SendLocalizedMessage(501862); // You can't mine there.
-            }            
+            }
             else if (!(toHarvest is LandTarget))
             {
                 from.SendLocalizedMessage(501863); // You can't mine that.
