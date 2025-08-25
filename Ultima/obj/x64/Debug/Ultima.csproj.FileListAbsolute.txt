@@ -1,0 +1,6 @@
+C:\OSI Style\ServUO\Ultima\obj\x64\Debug\Ultima.csproj.AssemblyReference.cache
+C:\OSI Style\ServUO\Ultima\obj\x64\Debug\Ultima.GeneratedMSBuildEditorConfig.editorconfig
+C:\OSI Style\ServUO\Ultima\obj\x64\Debug\Ultima.csproj.CoreCompileInputs.cache
+C:\OSI Style\ServUO\Ultima\obj\x64\Debug\Ultima.sourcelink.json
+C:\OSI Style\ServUO\Ultima\obj\x64\Debug\Ultima.dll
+C:\OSI Style\ServUO\Ultima.dll

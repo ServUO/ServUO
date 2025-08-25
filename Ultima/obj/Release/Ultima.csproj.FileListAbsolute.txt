@@ -1,0 +1,16 @@
+C:\OSI Style\ServUO\Ultima\bin\Release\Ultima.dll
+C:\OSI Style\ServUO\Ultima\bin\Release\Ultima.pdb
+C:\OSI Style\ServUO\Ultima\obj\Release\Ultima.csproj.AssemblyReference.cache
+C:\OSI Style\ServUO\Ultima\obj\Release\Ultima.GeneratedMSBuildEditorConfig.editorconfig
+C:\OSI Style\ServUO\Ultima\obj\Release\Ultima.csproj.CoreCompileInputs.cache
+C:\OSI Style\ServUO\Ultima\obj\Release\Ultima.sourcelink.json
+C:\OSI Style\ServUO\Ultima\obj\Release\Ultima.dll
+C:\OSI Style\ServUO\Ultima\obj\Release\Ultima.pdb
+C:\ServUO\Ultima\bin\Release\Ultima.dll
+C:\ServUO\Ultima\bin\Release\Ultima.pdb
+C:\ServUO\Ultima\obj\Release\Ultima.csproj.AssemblyReference.cache
+C:\ServUO\Ultima\obj\Release\Ultima.GeneratedMSBuildEditorConfig.editorconfig
+C:\ServUO\Ultima\obj\Release\Ultima.csproj.CoreCompileInputs.cache
+C:\ServUO\Ultima\obj\Release\Ultima.sourcelink.json
+C:\ServUO\Ultima\obj\Release\Ultima.dll
+C:\ServUO\Ultima\obj\Release\Ultima.pdb
