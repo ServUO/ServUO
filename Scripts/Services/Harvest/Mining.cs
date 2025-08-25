@@ -463,6 +463,8 @@ namespace Server.Engines.Harvest
         }
         #endregion
 
+        public override object GetLock(Mobile from, Item tool, HarvestDefinition def, object toHarvest) => this;
+
         public override bool BeginHarvesting(Mobile from, Item tool)
         {
             if (!base.BeginHarvesting(from, tool))
