@@ -1704,9 +1704,9 @@ namespace Server
             level = Math.Max(0, Math.Min(1, level));
 
             return Color.FromArgb(c.A,
-                                  (int)(c.R - (C.R * level),
-                                  (int)(c.G - (C.G * level)),
-                                  (int)(c.B - (C.B * level)));
+                                  (int)(c.R - (c.R * level)),
+                                  (int)(c.G - (c.G * level)),
+                                  (int)(c.B - (c.B * level)));
         }
 
         public static Color Lighten(this Color c, float level)
