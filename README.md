@@ -16,7 +16,7 @@
 
 [.NET 4.8] Runtime and Developer Pack
 
-[.NET 5.0] Runtime and SDK
+[.NET 10.0] Runtime and SDK
 
 [Visual Studio] for editing and compiling.
 
@@ -66,22 +66,23 @@ Projects:
 
 Shards:
 
-[Alive], [Elemental], [Heritage], [Kingdom], [Legends of Sosaria], [Outlands], [Pandora], [Paragon], [Sprituality]
++ [Elemental]
++ [Enigma]
++ [Heritage]
++ [Outlands]
++ [Pandora]
 
-   [Alive]: <https://www.uoalive.com>
    [Elemental]: <https://uoelemental.com/>
+   [Enigma]: <https://www.uo-enigma.com>
    [Heritage]: <https://www.trueuo.com>
-   [Kingdom]: <https://tbewley10310.wixsite.com/uokingdom>
-   [Legends of Sosaria]: <https://www.legendsofsosaria.com>
    [Outlands]: <https://www.uooutlands.com>
    [Pandora]: <https://www.pandorauo.com>
-   [Paragon]: <https://www.paragonuo.com>
-   [Sprituality]: <http://www.uospirituality.com>
    
    [ModernUO]: <https://github.com/modernuo/modernuo>
    [TrueUO]: <https://github.com/trueuo/trueuo>
 
-   [ServUO]: <https://www.servuo.com>
+   [ServUO]: <https://www.servuo.dev>
    [.NET 4.8]: <https://dotnet.microsoft.com/download/dotnet-framework/net48>
-   [.NET 5.0]: <https://dotnet.microsoft.com/download/dotnet/5.0>
+   [.NET 10.0]: <https://dotnet.microsoft.com/download/dotnet/10.0>
    [Visual Studio]: <https://visualstudio.microsoft.com/>
+
