@@ -2738,7 +2738,7 @@ namespace Server
 		public virtual void OnAdded(IEntity parent)
 		{ }
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+		[NoDupe, CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public Map Map
 		{
 			get => m_Map;
@@ -5096,7 +5096,7 @@ namespace Server
 		public virtual void OnParentLocationChange(Point3D oldLocation)
 		{ }
 
-		[CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
+		[NoDupe, CommandProperty(AccessLevel.Counselor, AccessLevel.Decorator)]
 		public virtual Point3D Location
 		{
 			get => m_Location;

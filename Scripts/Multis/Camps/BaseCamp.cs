@@ -315,7 +315,7 @@ namespace Server.Multis
 			{
 				if (i < m_Mobiles.Count && m_Mobiles[i]?.Deleted == false)
 				{
-					if (m_Mobiles[i] == Prisoner || m_Mobiles[i].CantWalk)
+					if (m_Mobiles[i] != Prisoner || m_Mobiles[i].CantWalk)
 					{
 						m_Mobiles[i].Delete();
 					}

@@ -338,18 +338,16 @@ namespace Server.SkillHandlers
 
                     if (bc != null && from is PlayerMobile)
                     {
-                        if (bc.Controlled || bc.Summoned)
+                        if (bc.Summoned)
                         {
                             from.SendLocalizedMessage(502708); //You can't steal from this.
                         }
-                        if (bc.HasBeenStolen)
+                        else if (bc.HasBeenStolen)
                         {
                             from.SendLocalizedMessage(1094948); //That creature has already been stolen from.  There is nothing left to steal.
                         }
                         else
                         {
-                            from.SendLocalizedMessage(1010579); // You reach into the backpack... and try to take something.
-
                             Engines.CreatureStealing.StealingHandler.HandleSteal(bc, (PlayerMobile)from, ref stolen);
 
                             if (stolen == null)
@@ -365,7 +363,6 @@ namespace Server.SkillHandlers
                     }
                     else
                     {
-                        from.SendLocalizedMessage(1010579); // You reach into the backpack... and try to take something.
                         StealRandom((Mobile)target, ref caught, ref stolen);
                     }
                 }
@@ -393,9 +390,14 @@ namespace Server.SkillHandlers
                         StolenItem.Add(stolen, m_Thief, root as Mobile);
                     }
 
-                    if (target is BaseCreature)
+                    if (target is BaseCreature bc)
                     {
-                        ((BaseCreature)target).HasBeenStolen = true;
+                        // You can repeatedly steal from pets, when owned and when released
+                        // However, if creature is stolen from and then tamed, HasBeenStolen flag is true
+                        if (bc.Owners.Count == 0)
+                        {
+                            bc.HasBeenStolen = true;
+                        }
                     }
                 }
 
@@ -450,6 +452,7 @@ namespace Server.SkillHandlers
 
                 if (pack != null && pack.Items.Count > 0)
                 {
+				    m_Thief.SendLocalizedMessage(1010579); // You reach into the backpack... and try to take something.
                     stolen = TryStealItem(pack.Items[Utility.Random(pack.Items.Count)], ref caught);
                 }
                 else

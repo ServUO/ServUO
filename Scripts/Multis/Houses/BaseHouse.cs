@@ -286,9 +286,8 @@ namespace Server.Multis
             _ = new TempNoHousingRegion(this, null);
 
             KillVendors();
-            Delete();
-
             Timer.DelayCall(OnAfterDecay, m_Region.Area, Map);
+            Delete();
         }
 
         public virtual void OnAfterDecay(Rectangle3D[] recs, Map map)

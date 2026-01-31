@@ -826,10 +826,7 @@ namespace Server.Multis
             writer.Write(PPlank);
             writer.Write(SPlank);
 
-            if (TillerMan is Mobile)
-                writer.Write(TillerMan as Mobile);
-            else if (TillerMan is Item)
-                writer.Write(TillerMan as Item);
+            writer.Write(TillerMan as IEntity);
 
             writer.Write(Hold);
             writer.Write(Anchored);
@@ -907,10 +904,7 @@ namespace Server.Multis
                         PPlank = reader.ReadItem() as Plank;
                         SPlank = reader.ReadItem() as Plank;
 
-                        if (!IsClassicBoat && !IsRowBoat)
-                            TillerMan = reader.ReadMobile() as object;
-                        else
-                            TillerMan = reader.ReadItem() as object;
+                        TillerMan = reader.ReadEntity();
 
                         Hold = reader.ReadItem() as Hold;
                         Anchored = reader.ReadBool();
