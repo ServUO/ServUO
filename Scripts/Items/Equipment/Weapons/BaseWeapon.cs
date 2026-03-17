@@ -1532,6 +1532,8 @@ namespace Server.Items
                 chance = 0.02;
             }
 
+            attacker.SendMessage("Hit chance: {0:P1} (atk {1:F1} vs def {2:F1})", chance, ourValue, theirValue);
+
             if (Core.AOS && m_AosWeaponAttributes.MageWeapon > 0 && attacker.Skills[SkillName.Magery].Value > atkSkill.Value)
                 return attacker.CheckSkill(SkillName.Magery, chance);
 
@@ -4054,7 +4056,7 @@ namespace Server.Items
                     default:
                         return;
                 }
-				
+
                 from.Animate(action, 7, 1, true, false, 0);
             }
 		}
