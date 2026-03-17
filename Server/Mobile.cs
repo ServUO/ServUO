@@ -2122,8 +2122,8 @@ namespace Server
 
                     if (!mob.InRange(combatant, rangeLoad))
                         return;
-					
-                    double loadingHitTime = WeaponLoadAndDropHelper.StartSwingMovement(weapon, mob, combatant as Mobile ?? mob);
+
+                    double loadingHitTime = weapon.GetDelay(mob).TotalSeconds;
 
                     if (loadingHitTime >= 0)
                     {
