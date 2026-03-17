@@ -3690,6 +3690,7 @@ namespace Server.Mobiles
 			{
 				Timer.DelayCall(TimeSpan.FromSeconds(10), RecoverAmmo);
 			}
+			LoseHit();
 		}
 
 		private Mobile m_InsuranceAward;

@@ -55,6 +55,7 @@ namespace Server
         TimeSpan OnSwing(Mobile attacker, IDamageable damageable);
 		void GetStatusDamage(Mobile from, out int min, out int max);
 		TimeSpan GetDelay(Mobile attacker);
+		int AnimationAction(Mobile from); // Custom Animation
 	}
 
 	public interface IHued
