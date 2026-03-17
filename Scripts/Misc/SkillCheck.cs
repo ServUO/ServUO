@@ -333,6 +333,11 @@ namespace Server.Misc
 			if (Core.AOS && Faction.InSkillLoss(from)) //Changed some time between the introduction of AoS and SE.
 				return false;
 
+            // Skills are controlled exclusively by the class system.
+            // Players never gain skills through use.
+            if (from is PlayerMobile)
+                return false;
+
 			if (from is PlayerMobile)
 			{
 				#region SA
@@ -587,7 +592,7 @@ namespace Server.Misc
                     {
                         if (atTotalCap && from is PlayerMobile)
                         {
-                            return CanLower(from, Stat.Dex) || CanLower(from, Stat.Int); 
+                            return CanLower(from, Stat.Dex) || CanLower(from, Stat.Int);
                         }
                         else
                         {

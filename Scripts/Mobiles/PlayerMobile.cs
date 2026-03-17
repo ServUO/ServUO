@@ -9,6 +9,7 @@ using Server.ContextMenus;
 using Server.Engines.BulkOrders;
 using Server.Engines.CannedEvil;
 using Server.Engines.CityLoyalty;
+using Server.Engines.ClassSystem;
 using Server.Engines.Craft;
 using Server.Engines.Help;
 using Server.Engines.PartySystem;
@@ -242,6 +243,14 @@ namespace Server.Mobiles
 		private DateTime m_LastOnline;
 		private RankDefinition m_GuildRank;
         private bool m_NextEnhanceSuccess;
+
+        // --- field (in #region VariabiliDNA) ---
+        private ClassComponent m_ClassComponent;
+        // --- property (in #region Getters & Setters) ---
+        public ClassComponent ClassComponent
+        {
+            get { return m_ClassComponent ?? (m_ClassComponent = new ClassComponent(this)); }
+        }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public bool NextEnhanceSuccess { get { return m_NextEnhanceSuccess; } set { m_NextEnhanceSuccess = value; } }
@@ -1280,7 +1289,7 @@ namespace Server.Mobiles
                     {
                         mount.Rider = from;
                     }
-                }, 
+                },
                 (EtherealMount)from.Mount);
             }
 
@@ -2406,7 +2415,7 @@ namespace Server.Mobiles
 
 				if (Core.HS)
 				{
-					list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, ToggleTrades)); // Allow Trades / Refuse Trades				
+					list.Add(new CallbackEntry(RefuseTrades ? 1154112 : 1154113, ToggleTrades)); // Allow Trades / Refuse Trades
 				}
 
 				if (m_JusticeProtectors.Count > 0)
@@ -3348,7 +3357,7 @@ namespace Server.Mobiles
 				}
 				else if (to.Backpack == null || !to.Backpack.CheckHold(to, item, false, checkItems, plusItems, plusWeight))
 				{
-					msgNum = 1004039; // The recipient of this trade would not be able to carry 
+					msgNum = 1004039; // The recipient of this trade would not be able to carry
 				}
 				else
 				{
@@ -3518,7 +3527,7 @@ namespace Server.Mobiles
 			}
 
             BaseGump.CheckCloseGumps(this);
-            
+
 			DesignContext context = m_DesignContext;
 
 			if (context == null || m_NoRecursion)
@@ -4012,7 +4021,7 @@ namespace Server.Mobiles
 			Faction.HandleDeath(this, killer);
 
 			Guilds.Guild.HandleDeath(this, killer);
-            
+
             if (m_BuffTable != null)
 			{
 				var list = new List<BuffInfo>();
@@ -4396,7 +4405,7 @@ namespace Server.Mobiles
         public override int Luck { get { return AosAttributes.GetValue(this, AosAttribute.Luck) + TenthAnniversarySculpture.GetLuckBonus(this); } }
 
         public int RealLuck
-		{ 
+		{
             get
             {
                 int facetBonus = !Siege.SiegeShard && this.Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 0;
@@ -4503,6 +4512,10 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+                case 41:
+                    m_ClassComponent = new ClassComponent(this);
+                    m_ClassComponent.Deserialize(reader);
+                    goto case 40;
                 case 40: // Version 40, moved gauntlet points, virtua artys and TOT turn ins to PointsSystem
                 case 39: // Version 39, removed ML quest save/load
                 case 38:
@@ -4969,14 +4982,15 @@ namespace Server.Mobiles
 
 			base.Serialize(writer);
 
-			writer.Write(40); // version
+            writer.Write(41); // version
+            m_ClassComponent?.Serialize(writer); // ClassComponent
 
             writer.Write((DateTime)NextGemOfSalvationUse);
 
             writer.Write((int)m_ExtendedFlags);
 
             writer.Write(RewardStableSlots);
-			
+
 			if (_BlessedItem != null && _BlessedItem.RootParent != this)
 			{
 				_BlessedItem = null;
@@ -5512,7 +5526,7 @@ namespace Server.Mobiles
 		#region Factions
 		public PlayerState FactionPlayerState { get; set; }
 		#endregion
-        
+
 		#region Quests
 		private QuestSystem m_Quest;
 		private List<QuestRestartInfo> m_DoneQuests;
@@ -5631,7 +5645,7 @@ namespace Server.Mobiles
 			{
 				m_SelectedTitle = num;
 
-                if (!silent) 
+                if (!silent)
 					SendLocalizedMessage(1074010); // You elect to hide your Reward Title.
 			}
             else if (num < m_RewardTitles.Count && num >= -1)
@@ -5745,7 +5759,7 @@ namespace Server.Mobiles
 		}
 
         public override void AddNameProperties(ObjectPropertyList list)
-        {           
+        {
             string prefix = "";
 
             if (ShowFameTitle && Fame >= 10000)
