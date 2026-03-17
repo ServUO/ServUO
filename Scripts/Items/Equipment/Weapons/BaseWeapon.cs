@@ -2234,8 +2234,10 @@ namespace Server.Items
             {
                 defender = clone;
             }
-
-			PlaySwingAnimation(attacker);
+			
+			//Commented as we handle the animation in a custom manner.
+			//PlaySwingAnimation(attacker);
+			
 
             if(defender != null)
 			    PlayHurtAnimation(defender);
@@ -3569,8 +3571,8 @@ namespace Server.Items
 		public virtual void OnMiss(Mobile attacker, IDamageable damageable)
 		{
             Mobile defender = damageable as Mobile;
-
-			PlaySwingAnimation(attacker);
+			//Commented as we handle the animation in a custom manner
+			//PlaySwingAnimation(attacker);
 			attacker.PlaySound(GetMissAttackSound(attacker, defender));
 
             if(defender != null)
@@ -4052,7 +4054,7 @@ namespace Server.Items
                     default:
                         return;
                 }
-
+				
                 from.Animate(action, 7, 1, true, false, 0);
             }
 		}
@@ -4074,6 +4076,76 @@ namespace Server.Items
                 case WeaponAnimation.Throwing: return 9;
             }
         }
+		//Custom Animation
+		public virtual int AnimationAction(Mobile from)
+		{
+        	int action = (int)Animation;
+			switch (from.Body.Type)
+            {
+                case BodyType.Sea:
+                case BodyType.Animal:
+                    {
+                        action = Utility.Random(5, 2);
+                        break;
+                    }
+                case BodyType.Monster:
+                    {
+                        switch (Animation)
+                        {
+                            default:
+                            case WeaponAnimation.Wrestle:
+                            case WeaponAnimation.Bash1H:
+                            case WeaponAnimation.Pierce1H:
+                            case WeaponAnimation.Slash1H:
+                            case WeaponAnimation.Bash2H:
+                            case WeaponAnimation.Pierce2H:
+                            case WeaponAnimation.Slash2H:
+                                action = Utility.Random(4, 3);
+                                break;
+                            case WeaponAnimation.ShootBow:
+                                return 7;
+                            case WeaponAnimation.ShootXBow:
+                                return 8;
+                        }
+
+                        break;
+                    }
+                case BodyType.Human:
+                    {
+                        if (!from.Mounted)
+                        {
+                            action = (int)Animation;
+                        }
+                        else
+                        {
+                            switch (Animation)
+                            {
+                                default:
+                                case WeaponAnimation.Wrestle:
+                                case WeaponAnimation.Bash1H:
+                                case WeaponAnimation.Pierce1H:
+                                case WeaponAnimation.Slash1H:
+                                    action = 26;
+                                    break;
+                                case WeaponAnimation.Bash2H:
+                                case WeaponAnimation.Pierce2H:
+                                case WeaponAnimation.Slash2H:
+                                    action = 29;
+                                    break;
+                                case WeaponAnimation.ShootBow:
+                                    action = 27;
+                                    break;
+                                case WeaponAnimation.ShootXBow:
+                                    action = 28;
+                                    break;
+                            }
+                        }
+
+                        break;
+                    }
+            }
+            return action;
+		}
 
 		#region Serialization/Deserialization
 		private static void SetSaveFlag(ref SaveFlag flags, SaveFlag toSet, bool setIf)

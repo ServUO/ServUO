@@ -793,6 +793,37 @@ namespace Server
 		private Timer m_ExpireAggrTimer;
 		private Timer m_LogoutTimer;
 		private Timer m_CombatTimer;
+
+		// Custom Combat DNA Style - Load/Drop Hit
+		private bool     m_IsHitLoaded;
+		private bool     m_isLoadDropActive = true;
+		private long     m_HitLostTime;
+
+		public virtual bool IsHitLoaded
+		{
+			get { return m_IsHitLoaded; }
+			set { m_IsHitLoaded = value; }
+		}
+
+		public virtual bool LoadDropActive
+		{
+			get { return m_isLoadDropActive; }
+			set
+			{
+				m_isLoadDropActive = value;
+				if (!m_isLoadDropActive)
+					LoseHit();
+			}
+		}
+
+		public virtual void LoseHit()
+		{
+			m_IsHitLoaded = false;
+			m_HitLostTime   = Core.TickCount;
+		}
+
+
+
 		private Timer m_ManaTimer, m_HitsTimer, m_StamTimer;
 		private long m_NextSkillTime;
 		private long m_NextActionMessage;
@@ -873,7 +904,7 @@ namespace Server
         [CommandProperty(AccessLevel.GameMaster)]
         public bool PublicHouseContent { get; set; }
 
-        public DFAlgorithm DFA { get; set; } 
+        public DFAlgorithm DFA { get; set; }
 
         protected virtual void OnRaceChange(Race oldRace)
 		{ }
@@ -1170,11 +1201,11 @@ namespace Server
             if (PropertyTitle && Title != null && Title.Length > 0)
             {
                 suffix = Title;
-            }          
+            }
 
             suffix = ApplyNameSuffix(suffix);
 
-            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~           
+            list.Add(1050045, "{0} \t{1}\t {2}", prefix, name, suffix); // ~1_PREFIX~~2_NAME~~3_SUFFIX~
         }
 
 		public virtual bool NewGuildDisplay { get { return false; } }
@@ -2036,51 +2067,115 @@ namespace Server
 		}
 
 		private class CombatTimer : Timer
-		{
-			private readonly Mobile m_Mobile;
+        {
+            private readonly Mobile m_Mobile;
 
-			public CombatTimer(Mobile m)
-				: base(TimeSpan.FromSeconds(0.0), TimeSpan.FromSeconds(0.01), 0)
-			{
-				m_Mobile = m;
+            public CombatTimer(Mobile m)
+                : base(TimeSpan.FromSeconds(0.0), TimeSpan.FromSeconds(0.01), 0)
+            {
+                m_Mobile = m;
 
-				if (!m_Mobile.m_Player && m_Mobile.m_Dex <= 100)
-				{
-					Priority = TimerPriority.FiftyMS;
-				}
-			}
+                if (!m_Mobile.m_Player && m_Mobile.m_Dex <= 100)
+                    Priority = TimerPriority.FiftyMS;
+            }
 
-			protected override void OnTick()
-			{
-				if (Core.TickCount - m_Mobile.m_NextCombatTime >= 0)
-				{
-					IDamageable combatant = m_Mobile.Combatant;
+            protected override void OnTick()
+            {
+                Mobile mob = m_Mobile;
 
-					// If no combatant, wrong map, one of us is a ghost, or cannot see, or deleted, then stop combat
-					if (combatant == null || combatant.Deleted || m_Mobile.m_Deleted || combatant.Map != m_Mobile.m_Map ||
-						!combatant.Alive || !m_Mobile.Alive || !m_Mobile.CanSee(combatant) || (combatant is Mobile && ((Mobile)combatant).IsDeadBondedPet) ||
-						m_Mobile.IsDeadBondedPet)
-					{
-						m_Mobile.Combatant = null;
-						return;
-					}
+                // Cooldown 1.5s after you lost the hit
+                if (Core.TickCount - mob.m_HitLostTime < 1500)
+                    return;
 
-					IWeapon weapon = m_Mobile.Weapon;
+                if (Core.TickCount - mob.m_NextCombatTime < 0)
+                    return;
 
-					if (!m_Mobile.InRange(combatant, weapon.MaxRange))
-					{
-						return;
-					}
+                IDamageable combatant = mob.Combatant;
 
-                    if (m_Mobile.InLOS(combatant))
+                if (combatant == null || combatant.Deleted || mob.m_Deleted ||
+                    combatant.Map != mob.m_Map || !combatant.Alive || !mob.Alive ||
+                    !mob.CanSee(combatant) ||
+                    (combatant is Mobile && ((Mobile)combatant).IsDeadBondedPet) ||
+                    mob.IsDeadBondedPet)
+                {
+                    mob.Combatant = null;
+                    return;
+                }
+
+                IWeapon weapon = mob.Weapon;
+
+                if (!mob.InLOS(combatant))
+                    return;
+
+                if (combatant is Mobile)
+                {
+                    Mobile mCombatant = (Mobile)combatant;
+
+                    if (mob.Z < mCombatant.Z - 5 || mob.Z > mCombatant.Z + 5)
+                        return;
+                }
+
+                // ---- PHASE 1: LOAD ----
+                if (!mob.IsHitLoaded)
+                {
+                    int rangeLoad = weapon.MaxRange > 0 ? weapon.MaxRange : 1;
+
+                    if (!mob.InRange(combatant, rangeLoad))
+                        return;
+					
+                    double loadingHitTime = WeaponLoadAndDropHelper.StartSwingMovement(weapon, mob, combatant as Mobile ?? mob);
+
+                    if (loadingHitTime >= 0)
                     {
-                        weapon.OnBeforeSwing(m_Mobile, combatant); //OnBeforeSwing for checking in regards to being hidden and whatnot
-                        m_Mobile.RevealingAction();
-                        m_Mobile.m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(m_Mobile, combatant).TotalMilliseconds;
+                        mob.IsHitLoaded   = true;
+                        mob.m_NextCombatTime = Core.TickCount + (int)(loadingHitTime * 1000);
+
+                        int frameCount = 7;
+                        int frameDelay = (int)((loadingHitTime * 1000.0) / (frameCount * 50.0));
+                        if (frameDelay < 1) frameDelay = 1;
+
+                        int animAction = weapon.AnimationAction(mob);
+
+                        // DEBUG LOAD
+                        mob.SendMessage(0x35, "[LOAD] weapon={0} loadTime={1:0.00}s frameDelay={2} animAction={3} dex={4}",
+                            weapon.GetType().Name, loadingHitTime, frameDelay, animAction, mob.Dex);
+
+                        // 15ms wait for direction change (see  WeaponLoadAndDropHelper.StartSwingMovement)
+                        Timer.DelayCall(
+                            TimeSpan.FromMilliseconds(15),
+                            () => { if (!mob.Deleted) mob.Animate(animAction, frameCount, 1, true, false, frameDelay); }
+                        );
                     }
-				}
-			}
-		}
+                    else
+                    {
+                        // DEBUG FAILED LOAD
+                        mob.SendMessage(0x25, "[LOAD FAILED] weapon={0} reason=paralyzed/frozen",
+                            weapon.GetType().Name);
+
+                        mob.m_NextCombatTime = Core.TickCount + 1000;
+                    }
+                }
+                else // ---- PHASE 2: DROP ----
+                {
+                    int dropRange = weapon.MaxRange > 0 ? weapon.MaxRange : 1;
+
+                    if (!mob.InRange(combatant, dropRange))
+                    {
+                        // DEBUG OUT OF RANGE
+                        mob.SendMessage(0x22, "[DROP FAILED] Out of range drop={0}", dropRange);
+                        return;
+                    }
+
+                    // DEBUG DROP
+                    mob.SendMessage(0x44, "[DROP] weapon={0} start dropping the Hit!", weapon.GetType().Name);
+
+                    weapon.OnBeforeSwing(mob, combatant);
+                    mob.RevealingAction();
+                    mob.m_NextCombatTime = Core.TickCount + (int)weapon.OnSwing(mob, combatant).TotalMilliseconds;
+                    mob.IsHitLoaded   = false;
+                }
+            }
+        }
 
 		private class ExpireCombatantTimer : Timer
 		{
@@ -2175,7 +2270,7 @@ namespace Server
 		{
 			return (Utility.InUpdateRange(this, e.Location) && CanSee(e) && InLOS(e));
 		}
-		
+
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool GuardImmune { get; set; }
 
@@ -2265,8 +2360,11 @@ namespace Server
 		///     Overridable. Virtual event invoked after the <see cref="Combatant" /> property has changed.
 		///     <seealso cref="Combatant" />
 		/// </summary>
+		/// DNA STYLE: when the combatant changes, you lose the hit. This is called from Combatant's setter, so it happens on both combatant change and combatant loss.
 		public virtual void OnCombatantChange()
-		{ }
+		{
+			LoseHit();
+		}
 
 		public double GetDistanceToSqrt(Point3D p)
 		{
@@ -5521,7 +5619,7 @@ namespace Server
 		/// </summary>
 		public virtual void OnDamage(int amount, Mobile from, bool willKill)
 		{ }
-		
+
 		public virtual bool CanBeDamaged()
 		{
 			return !m_Blessed;
@@ -6881,8 +6979,8 @@ namespace Server
                     if (state.Mobile.CanSee(this))
                     {
                         state.Mobile.ProcessDelta();
-                        
-                        p = Packet.Acquire(new NewMobileAnimation(this, type, action, Utility.Random(0, 60)));                          
+
+                        p = Packet.Acquire(new NewMobileAnimation(this, type, action, Utility.Random(0, 60)));
 
                         state.Send(p);
                     }
@@ -7622,7 +7720,7 @@ namespace Server
 		/// </summary>
 		public virtual void OnSpeech(SpeechEventArgs e)
 		{ }
-		
+
 		public void SendEverything()
 		{
 			NetState ns = m_NetState;
@@ -9970,7 +10068,7 @@ namespace Server
 
 			Point3D oldLocation = m_Location;
 			Map oldMap = m_Map;
-			
+
 			if (oldMap != null)
 			{
 				oldMap.OnLeave(this);
@@ -10041,7 +10139,7 @@ namespace Server
 				m_Region.OnLocationChanged(this, oldLocation);
 			}
 		}
-		
+
 		public virtual void SetLocation(Point3D newLocation, bool isTeleport)
 		{
 			if (m_Deleted)
@@ -10113,7 +10211,7 @@ namespace Server
 
 					eable.Free();
 
-					Packet hbpPacket = Packet.Acquire(new HealthbarPoison(this)), 
+					Packet hbpPacket = Packet.Acquire(new HealthbarPoison(this)),
 						   hbyPacket = Packet.Acquire(new HealthbarYellow(this));
 
 					Packet hbpKRPacket = Packet.Acquire(new HealthbarPoisonEC(this)),
@@ -12482,7 +12580,7 @@ namespace Server
 		public static bool GuildClickMessage { get { return m_GuildClickMessage; } set { m_GuildClickMessage = value; } }
 		public static bool OldPropertyTitles { get { return m_OldPropertyTitles; } set { m_OldPropertyTitles = value; } }
 
-		public virtual bool ShowFameTitle { get { return true; } } 
+		public virtual bool ShowFameTitle { get { return true; } }
 		public virtual bool ShowAccessTitle { get { return false; } }
 
 		/// <summary>
@@ -12815,4 +12913,3 @@ namespace Server
 		{ }
 	}
 }
-    
