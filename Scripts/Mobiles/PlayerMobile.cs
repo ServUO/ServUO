@@ -2373,7 +2373,6 @@ namespace Server.Mobiles
                 }
                 else if (Siege.SiegeShard)
                 {
-                    list.Add(new CallbackEntry(3006168, SiegeBlessItem));
                 }
 
                 if (Core.ML && Alive)
@@ -5922,14 +5921,14 @@ namespace Server.Mobiles
 		#region Fastwalk Prevention
 		private static bool FastwalkPrevention = true; // Is fastwalk prevention enabled?
 
-		private static int FastwalkThreshold = 400; // Fastwalk prevention will become active after 0.4 seconds
+		private static int FastwalkThreshold = 50; // Fastwalk prevention will become active after 0.05 seconds
 
 		private long m_NextMovementTime;
 		private bool m_HasMoved;
 
         public long NextMovementTime { get { return m_NextMovementTime; } }
 
-		public virtual bool UsesFastwalkPrevention { get { return IsPlayer(); } }
+		public virtual bool UsesFastwalkPrevention { get { return true; } }
 
 		public override int ComputeMovementSpeed(Direction dir, bool checkTurning)
 		{
@@ -5990,7 +5989,13 @@ namespace Server.Mobiles
 				return true;
 			}
 
-			return (ts < FastwalkThreshold);
+			if (ts >= FastwalkThreshold)
+			{
+				drop = true; // drop the packet instead of re-queuing
+				return false;
+			}
+
+			return true;
 		}
 		#endregion
 
