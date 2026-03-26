@@ -5919,9 +5919,9 @@ namespace Server.Mobiles
 		}
 
 		#region Fastwalk Prevention
-		private static bool FastwalkPrevention = true; // Is fastwalk prevention enabled?
+		private static bool FastwalkPrevention = false; // Is fastwalk prevention enabled? (disabled for now, causes glitching)
 
-		private static int FastwalkThreshold = 50; // Fastwalk prevention will become active after 0.05 seconds
+		private static int FastwalkThreshold = 200; // Fastwalk prevention will become active after 0.2 seconds
 
 		private long m_NextMovementTime;
 		private bool m_HasMoved;
@@ -5989,11 +5989,11 @@ namespace Server.Mobiles
 				return true;
 			}
 
-			if (ts >= FastwalkThreshold)
-			{
-				drop = true; // drop the packet instead of re-queuing
-				return false;
-			}
+			//if (ts >= FastwalkThreshold)
+			//{
+			//	drop = (ts >= FastwalkThreshold * 3); // only drop extreme speed hacks, re-queue minor ones
+			//	return false;
+			//}
 
 			return true;
 		}
