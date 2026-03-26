@@ -37,7 +37,7 @@ namespace Server.Misc
 		/// </summary>
 		private const int LocationSize = 4;
 
-		public static bool GGSActive { get { return !Siege.SiegeShard; } }
+		public static bool GGSActive { get { return true; } }
 
 		static SkillCheck()
 		{
@@ -270,8 +270,9 @@ namespace Server.Misc
 
             gc *= skill.Info.GainFactor;
 
-            if (gc < 0.01)
-                gc = 0.01;
+            // Boost gain chance - minimum 25% chance to gain
+            if (gc < 0.25)
+                gc = 0.25;
 
             // Pets get a 100% bonus
             if (from is BaseCreature && ((BaseCreature)from).Controlled)
@@ -376,26 +377,6 @@ namespace Server.Misc
 			if (skill.Base < skill.Cap && skill.Lock == SkillLock.Up)
 			{
 				var skills = from.Skills;
-
-				if (from is PlayerMobile && Siege.SiegeShard)
-				{
-					var minsPerGain = Siege.MinutesPerGain(from, skill);
-
-					if (minsPerGain > 0)
-					{
-						if (Siege.CheckSkillGain((PlayerMobile)from, minsPerGain, skill))
-						{
-							CheckReduceSkill(skills, toGain, skill);
-
-							if (skills.Total + toGain <= skills.Cap)
-							{
-								skill.BaseFixedPoint += toGain;
-							}
-						}
-
-						return;
-					}
-				}
 
 				if (toGain == 1 && skill.Base <= 10.0)
 					toGain = Utility.Random(4) + 1;
@@ -797,12 +778,12 @@ namespace Server.Misc
 
 		private static readonly int[][] GGSTable =
 		{
-			new[] {1, 3, 5}, // 0.0 - 4.9
-			new[] {4, 10, 18}, new[] {7, 17, 30}, new[] {9, 24, 44}, new[] {12, 31, 57}, new[] {14, 38, 90}, new[] {17, 45, 84},
-			new[] {20, 52, 96}, new[] {23, 60, 106}, new[] {25, 66, 120}, new[] {27, 72, 138}, new[] {33, 90, 162},
-			new[] {55, 150, 264}, new[] {78, 216, 390}, new[] {114, 294, 540}, new[] {144, 384, 708}, new[] {180, 492, 900},
-			new[] {228, 606, 1116}, new[] {276, 744, 1356}, new[] {336, 894, 1620}, new[] {396, 1056, 1920},
-			new[] {468, 1242, 2280}, new[] {540, 1440, 2580}, new[] {618, 1662, 3060}
+			new[] {1, 1, 1}, // 0.0 - 4.9
+			new[] {1, 1, 2}, new[] {1, 2, 3}, new[] {1, 2, 4}, new[] {2, 3, 5}, new[] {2, 3, 5}, new[] {2, 4, 6},
+			new[] {2, 4, 6}, new[] {3, 5, 7}, new[] {3, 5, 8}, new[] {3, 5, 8}, new[] {4, 6, 10},
+			new[] {5, 8, 12}, new[] {6, 10, 15}, new[] {7, 12, 18}, new[] {8, 14, 20}, new[] {9, 16, 24},
+			new[] {10, 18, 28}, new[] {12, 20, 32}, new[] {14, 24, 36}, new[] {16, 28, 40},
+			new[] {18, 32, 44}, new[] {20, 36, 48}, new[] {22, 40, 52}
 		};
 	}
 }
