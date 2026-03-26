@@ -53,6 +53,12 @@ namespace Server.Mobiles
 
 		public override bool CanBeParagon { get { return false; } }
 
+        public override void GenerateLoot()
+        {
+            AddLoot(LootPack.SuperBoss, 4);
+            AddLoot(LootPack.MedScrolls, 2);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

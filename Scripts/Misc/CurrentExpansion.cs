@@ -26,7 +26,7 @@ namespace Server
 
 			ObjectPropertyList.Enabled = Core.AOS;
 
-            Mobile.InsuranceEnabled = Core.AOS && !Siege.SiegeShard;
+            Mobile.InsuranceEnabled = Core.AOS;
 			Mobile.VisibleDamageType = Core.AOS ? VisibleDamageType.Related : VisibleDamageType.None;
 			Mobile.GuildClickMessage = !Core.AOS;
 			Mobile.AsciiClickMessage = !Core.AOS;

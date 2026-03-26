@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./ServUO.exe -debug)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet --version)"
+    ]
+  }
+}
