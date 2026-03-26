@@ -143,7 +143,7 @@ namespace Server.Items
                                    typeof(ShadowKnight), typeof(AbysmalHorror), typeof(AdrianTheGloriousLord), typeof(AndrosTheDreadLord)));
 
             Entries.Add(
-                new BossEntry(250, typeof(BasePeerless), typeof(Harrower), typeof(DemonKnight), typeof(ShadowguardBoss), typeof(Osiredon)));
+                new BossEntry(250, typeof(BasePeerless), typeof(Harrower), typeof(DemonKnight), typeof(ShadowguardBoss), typeof(Osiredon), typeof(Szavetra)));
 
             Entries.Add(
                 new BossEntry(350, typeof(ClockworkExodus), typeof(CoraTheSorceress), typeof(Charydbis), typeof(Zipactriotl), typeof(MyrmidexQueen)));
