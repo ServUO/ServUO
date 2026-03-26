@@ -19,7 +19,7 @@ namespace Server.Items
             : base(itemID)
         {
             this.m_MinSkill = -25.0;
-            this.m_MaxSkill = +25.0;
+            this.m_MaxSkill = 120.0;
         }
 
         public TrainingDummy(Serial serial)

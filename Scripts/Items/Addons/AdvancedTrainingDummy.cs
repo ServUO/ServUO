@@ -15,7 +15,7 @@ namespace Server.Items
         public AdvancedTrainingDummy(int itemID) : base(itemID)
         {
             MinSkill = -25.0;
-            MaxSkill = +60.0;
+            MaxSkill = 120.0;
         }
 
         public override void UpdateItemID()
