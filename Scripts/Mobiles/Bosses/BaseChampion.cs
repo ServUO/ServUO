@@ -248,6 +248,91 @@ namespace Server.Mobiles
             return base.OnBeforeDeath();
         }
 
+        #region Custom Artifact Drops
+        private static readonly Type[] m_CustomArtifacts = new Type[]
+        {
+            // Armor
+            typeof(GlovesOfTheHolyWarrior), typeof(GargishKiltOfTheHolyWarrior),
+            typeof(SentinelsMempo), typeof(SentinelsNecklace),
+            typeof(ShugenjasRaiment), typeof(GargishShugenjasRaiment),
+            typeof(HexweaversVisage), typeof(GargishHexweaversVisage),
+            typeof(UmbrascaleChampionsAegis), typeof(GargishUmbrascaleChampionsAegis),
+            typeof(CorruptedPaladinVambraces), typeof(GargishCorruptedPaladinVambraces),
+            typeof(GlovesOfTheArchlich), typeof(GargishKiltOfTheArchlich),
+            typeof(BalronBoneArmor), typeof(GargishBalronBoneArmor),
+            // Khal Ankur
+            typeof(MaskOfKhalAnkur), typeof(PendantOfKhalAnkur),
+            // Clothing
+            typeof(ScabbardOfJuonar), typeof(GargishScabbardOfJuonar),
+            typeof(GeneralLethesEpaulettes), typeof(GargishGeneralLethesEpaulettes),
+            typeof(LordMorphiusEpaulettes), typeof(GargishLordMorphiusEpaulettes),
+            typeof(ShadowbaneEpaulettes), typeof(GargishShadowbaneEpaulettes),
+            typeof(MantleOfTheArchlich),
+            typeof(FeudalCloakOfElements), typeof(WingArmorOfElements),
+            typeof(FeudalGhostwalkers), typeof(GargishFeudalGhostwalkers),
+            typeof(MushroomApron), typeof(GargishMushroomApron),
+            typeof(SerpentSkinQuiver), typeof(GargishSerpentSkinWingArmor),
+            typeof(RangersCloakOfAugmentation), typeof(WardensArmorOfAugmentation),
+            // Weapons - Unique
+            typeof(ExporMalasFlamus), typeof(GargishExporMalasFlamus),
+            typeof(ShugenjasWand),
+            // Slayer Weapons - Reptile
+            typeof(ReptileLeafblade), typeof(ReptileWarAxe), typeof(ReptileBroadsword),
+            typeof(ReptileDoubleAxe), typeof(ReptileWarHammer), typeof(ReptileMagicalShortbow),
+            typeof(ReptileCompositeBow), typeof(ReptileSoulGlaive), typeof(ReptileBoomerang),
+            typeof(ReptileGargishTalwar), typeof(ReptileGargishKatana), typeof(ReptileLajatang),
+            // Slayer Weapons - Repond
+            typeof(RepondLeafblade), typeof(RepondWarAxe), typeof(RepondBroadsword),
+            typeof(RepondDoubleAxe), typeof(RepondWarHammer), typeof(RepondMagicalShortbow),
+            typeof(RepondCompositeBow), typeof(RepondSoulGlaive), typeof(RepondBoomerang),
+            typeof(RepondGargishTalwar), typeof(RepondGargishKatana), typeof(RepondLajatang),
+            // Slayer Weapons - Arachnid
+            typeof(ArachnidLeafblade), typeof(ArachnidWarAxe), typeof(ArachnidBroadsword),
+            typeof(ArachnidDoubleAxe), typeof(ArachnidWarHammer), typeof(ArachnidMagicalShortbow),
+            typeof(ArachnidCompositeBow), typeof(ArachnidSoulGlaive), typeof(ArachnidBoomerang),
+            typeof(ArachnidGargishTalwar), typeof(ArachnidGargishKatana), typeof(ArachnidLajatang),
+            // Slayer Weapons - Undead
+            typeof(UndeadLeafblade), typeof(UndeadWarAxe), typeof(UndeadBroadsword),
+            typeof(UndeadDoubleAxe), typeof(UndeadWarHammer), typeof(UndeadMagicalShortbow),
+            typeof(UndeadCompositeBow), typeof(UndeadSoulGlaive), typeof(UndeadBoomerang),
+            typeof(UndeadGargishTalwar), typeof(UndeadGargishKatana), typeof(UndeadLajatang),
+            // Slayer Weapons - Demon
+            typeof(DemonLeafblade), typeof(DemonWarAxe), typeof(DemonBroadsword),
+            typeof(DemonDoubleAxe), typeof(DemonWarHammer), typeof(DemonMagicalShortbow),
+            typeof(DemonCompositeBow), typeof(DemonSoulGlaive), typeof(DemonBoomerang),
+            typeof(DemonGargishTalwar), typeof(DemonGargishKatana), typeof(DemonLajatang),
+            // Slayer Weapons - Fey
+            typeof(FeyLeafblade), typeof(FeyWarAxe), typeof(FeyBroadsword),
+            typeof(FeyDoubleAxe), typeof(FeyWarHammer), typeof(FeyMagicalShortbow),
+            typeof(FeyCompositeBow), typeof(FeySoulGlaive), typeof(FeyBoomerang),
+            typeof(FeyGargishTalwar), typeof(FeyGargishKatana), typeof(FeyLajatang),
+            // Slayer Weapons - Elemental
+            typeof(ElementalLeafblade), typeof(ElementalWarAxe), typeof(ElementalBroadsword),
+            typeof(ElementalDoubleAxe), typeof(ElementalWarHammer), typeof(ElementalMagicalShortbow),
+            typeof(ElementalCompositeBow), typeof(ElementalSoulGlaive), typeof(ElementalBoomerang),
+            typeof(ElementalGargishTalwar), typeof(ElementalGargishKatana), typeof(ElementalLajatang),
+            // Spellbooks
+            typeof(ReptilianDeathSpellbook), typeof(RepondSpellbook),
+            typeof(UndeadSpellbook), typeof(DemonSpellbook),
+            typeof(FeySpellbook), typeof(ArachnidDoomSpellbook),
+            typeof(ElementalBanSpellbook),
+            // Talisman
+            typeof(CarvedBoneRelicFromHolmes),
+        };
+
+        public static void GiveCustomArtifact(Mobile m)
+        {
+            Type type = m_CustomArtifacts[Utility.Random(m_CustomArtifacts.Length)];
+            Item artifact = Loot.Construct(type);
+
+            if (artifact != null)
+            {
+                m.AddToBackpack(artifact);
+                m.SendMessage(0x22, "You have received a custom artifact!");
+            }
+        }
+        #endregion
+
         public override void OnDeath(Container c)
         {
             if (this.Map == Map.Felucca)
@@ -274,6 +359,15 @@ namespace Server.Mobiles
 
                 if(Core.SA)
                     RefinementComponent.Roll(c, 3, 0.10);
+
+                // Custom artifact drops - 5% chance per eligible player
+                foreach (Mobile m in toGive)
+                {
+                    if (m is PlayerMobile && 0.05 > Utility.RandomDouble())
+                    {
+                        GiveCustomArtifact(m);
+                    }
+                }
             }
 
             base.OnDeath(c);
@@ -284,9 +378,9 @@ namespace Server.Mobiles
             int level;
             double random = Utility.RandomDouble();
 
-            if (0.05 >= random)
+            if (0.15 >= random)
                 level = 20;
-            else if (0.4 >= random)
+            else if (0.5 >= random)
                 level = 15;
             else
                 level = 10;

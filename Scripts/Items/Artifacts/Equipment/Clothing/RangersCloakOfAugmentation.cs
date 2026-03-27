@@ -14,10 +14,11 @@ namespace Server.Items
         public RangersCloakOfAugmentation()
         {
             Hue = 0x54A;
-            SAAbsorptionAttributes.EaterKinetic = 5;
-            Attributes.SpellDamage = 3;
-            Attributes.LowerManaCost = 1;
+            SAAbsorptionAttributes.EaterKinetic = 10;
+            Attributes.SpellDamage = 5;
+            Attributes.LowerManaCost = 8;
             Attributes.WeaponSpeed = 5;
+            StrRequirement = 10;
         }
 
         public RangersCloakOfAugmentation(Serial serial)
