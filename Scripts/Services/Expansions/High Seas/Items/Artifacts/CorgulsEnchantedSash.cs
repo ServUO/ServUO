@@ -10,7 +10,9 @@ namespace Server.Items
         [Constructable]
         public CorgulsEnchantedSash()
         {
-            Attributes.BonusStam = 1;
+            Attributes.BonusStam = 8;
+            Attributes.BonusMana = 8;
+            Attributes.EnhancePotions = 15;
             Attributes.DefendChance = 5;
         }
 

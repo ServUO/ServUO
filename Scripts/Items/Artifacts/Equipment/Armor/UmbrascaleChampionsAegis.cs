@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class UmbrascaleChampionsAegis : WingedHelm
+    public class UmbrascaleChampionsAegis : ElvenGlasses
     {
         public override bool IsArtifact { get { return true; } }
 

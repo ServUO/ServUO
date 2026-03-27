@@ -265,7 +265,7 @@ namespace Server
 				case TravelCheckType.RecallFrom:
 				case TravelCheckType.RecallTo:
 				{
-					return false;
+					return true;
 				}
 				case TravelCheckType.GateFrom:
 				case TravelCheckType.GateTo:
