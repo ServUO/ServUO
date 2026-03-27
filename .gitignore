@@ -43,3 +43,4 @@
 
 !/Data/*
 !/bin/rosyln/*
+.claude/settings.json

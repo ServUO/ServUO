@@ -12,9 +12,9 @@ namespace Server.Items
         public WardensArmorOfAugmentation()
         {
             Hue = 0x9C2;
-            AbsorptionAttributes.EaterKinetic = 5;
-            Attributes.SpellDamage = 3;
-            Attributes.LowerManaCost = 1;
+            AbsorptionAttributes.EaterKinetic = 10;
+            Attributes.SpellDamage = 5;
+            Attributes.LowerManaCost = 8;
             Attributes.WeaponSpeed = 5;
         }
 
