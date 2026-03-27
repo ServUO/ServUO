@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class HexweaversVisage : WingedHelm
+    public class HexweaversVisage : ElvenGlasses
     {
         public override bool IsArtifact { get { return true; } }
 
@@ -14,6 +14,8 @@ namespace Server.Items
 
             AbsorptionAttributes.CastingFocus = 2;
 
+            SkillBonuses.SetValues(0, GetRandomMageSkill(), 10.0);
+
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;
             Attributes.BonusHits = 5;
@@ -23,6 +25,12 @@ namespace Server.Items
             Attributes.LowerRegCost = 20;
 
             ArmorAttributes.MageArmor = 1;
+        }
+
+        public static SkillName GetRandomMageSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Necromancy, SkillName.Mysticism, SkillName.Magery, SkillName.Chivalry };
+            return skills[Utility.Random(skills.Length)];
         }
 
         public HexweaversVisage(Serial serial)
@@ -64,6 +72,8 @@ namespace Server.Items
             Hue = 1266;
 
             AbsorptionAttributes.CastingFocus = 2;
+
+            SkillBonuses.SetValues(0, HexweaversVisage.GetRandomMageSkill(), 10.0);
 
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;

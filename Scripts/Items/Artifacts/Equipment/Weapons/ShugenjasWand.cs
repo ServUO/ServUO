@@ -17,6 +17,7 @@ namespace Server.Items
             Attributes.RegenMana = 10;
 
             WeaponAttributes.MageWeapon = 30;
+            WeaponAttributes.HitLightning = 50;
 
             AosElementDamages.Physical = 100;
 

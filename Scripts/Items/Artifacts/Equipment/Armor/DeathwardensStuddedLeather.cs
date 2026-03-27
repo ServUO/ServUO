@@ -2,38 +2,34 @@ using System;
 
 namespace Server.Items
 {
-    public class UmbrascaleChampionsAegis : ElvenGlasses
+    public class DeathwardensGreaves : StuddedLegs
     {
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public UmbrascaleChampionsAegis()
+        public DeathwardensGreaves()
         {
-            Name = "Umbrascale Champion's Aegis";
-            Hue = 1109;
+            Name = "Deathwarden's Studded Leather Greaves";
+            Hue = 1150;
+            Weight = 4.0;
 
-            SkillBonuses.SetValues(0, GetRandomCombatSkill(), 15.0);
+            AbsorptionAttributes.EaterKinetic = 15;
 
             Attributes.BonusStr = 5;
-            Attributes.BonusDex = 5;
-            Attributes.BonusInt = 5;
             Attributes.BonusHits = 5;
-            Attributes.BonusStam = 8;
-            Attributes.BonusMana = 8;
-            Attributes.LowerManaCost = 8;
+            Attributes.BonusMana = 12;
+            Attributes.RegenMana = 4;
+            Attributes.SpellDamage = 8;
+            Attributes.LowerManaCost = 10;
+            Attributes.LowerRegCost = 20;
         }
 
-        public static SkillName GetRandomCombatSkill()
-        {
-            SkillName[] skills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Archery, SkillName.Throwing };
-            return skills[Utility.Random(skills.Length)];
-        }
-
-        public UmbrascaleChampionsAegis(Serial serial)
+        public DeathwardensGreaves(Serial serial)
             : base(serial)
         {
         }
 
+        public override int AosStrReq { get { return 20; } }
         public override int BasePhysicalResistance { get { return 15; } }
         public override int BaseFireResistance { get { return 15; } }
         public override int BaseColdResistance { get { return 15; } }
@@ -45,44 +41,44 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write(0); // version
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 
-    public class GargishUmbrascaleChampionsAegis : GargishGlasses
+    public class GargishDeathwardensGreaves : GargishStoneLegs
     {
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public GargishUmbrascaleChampionsAegis()
+        public GargishDeathwardensGreaves()
         {
-            Name = "Gargish Umbrascale Champion's Aegis";
-            Hue = 1109;
+            Name = "Gargish Deathwarden's Greaves";
+            Hue = 1150;
+            Weight = 5.0;
 
-            SkillBonuses.SetValues(0, UmbrascaleChampionsAegis.GetRandomCombatSkill(), 15.0);
+            AbsorptionAttributes.EaterKinetic = 15;
 
             Attributes.BonusStr = 5;
-            Attributes.BonusDex = 5;
-            Attributes.BonusInt = 5;
             Attributes.BonusHits = 5;
-            Attributes.BonusStam = 8;
-            Attributes.BonusMana = 8;
-            Attributes.LowerManaCost = 8;
+            Attributes.BonusMana = 12;
+            Attributes.RegenMana = 4;
+            Attributes.SpellDamage = 8;
+            Attributes.LowerManaCost = 10;
+            Attributes.LowerRegCost = 20;
         }
 
-        public GargishUmbrascaleChampionsAegis(Serial serial)
+        public GargishDeathwardensGreaves(Serial serial)
             : base(serial)
         {
         }
 
+        public override int AosStrReq { get { return 20; } }
         public override int BasePhysicalResistance { get { return 15; } }
         public override int BaseFireResistance { get { return 15; } }
         public override int BaseColdResistance { get { return 15; } }
@@ -94,15 +90,13 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.Write(0); // version
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-
-            int version = reader.ReadInt();
+            reader.ReadInt();
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Server.Items
             Attributes.BonusStam = 8;
             Attributes.BonusMana = 8;
             Attributes.LowerManaCost = 8;
+            Attributes.AttackChance = 5;
+            Attributes.DefendChance = 5;
         }
 
         public BalronBoneArmor(Serial serial)
@@ -28,7 +30,7 @@ namespace Server.Items
 
         public override int AosStrReq { get { return 60; } }
         public override int BasePhysicalResistance { get { return 15; } }
-        public override int BaseFireResistance { get { return 15; } }
+        public override int BaseFireResistance { get { return 20; } }
         public override int BaseColdResistance { get { return 15; } }
         public override int BasePoisonResistance { get { return 15; } }
         public override int BaseEnergyResistance { get { return 15; } }
@@ -65,6 +67,8 @@ namespace Server.Items
             Attributes.BonusStam = 8;
             Attributes.BonusMana = 8;
             Attributes.LowerManaCost = 8;
+            Attributes.AttackChance = 5;
+            Attributes.DefendChance = 5;
         }
 
         public GargishBalronBoneArmor(Serial serial)
@@ -74,7 +78,7 @@ namespace Server.Items
 
         public override int AosStrReq { get { return 60; } }
         public override int BasePhysicalResistance { get { return 15; } }
-        public override int BaseFireResistance { get { return 15; } }
+        public override int BaseFireResistance { get { return 20; } }
         public override int BaseColdResistance { get { return 15; } }
         public override int BasePoisonResistance { get { return 15; } }
         public override int BaseEnergyResistance { get { return 15; } }

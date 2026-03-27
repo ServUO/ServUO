@@ -15,6 +15,7 @@ namespace Server.Items
             Attributes.BonusDex = 5;
             Attributes.BonusHits = 10;
             Attributes.RegenHits = 2;
+            Attributes.RegenMana = 3;
         }
 
         public CrimsonCincture(Serial serial)
@@ -56,6 +57,7 @@ namespace Server.Items
             Attributes.BonusDex = 5;
             Attributes.BonusHits = 10;
             Attributes.RegenHits = 2;
+            Attributes.RegenMana = 3;
         }
 
         public GargishCrimsonCincture(Serial serial)

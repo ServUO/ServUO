@@ -12,8 +12,9 @@ namespace Server.Items
             Name = "Scabbard of Juo'nar";
             Hue = 1109;
 
-            SkillBonuses.SetValues(0, SkillName.Necromancy, 5.0);
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
             Attributes.BonusHits = 5;
+            Attributes.BonusInt = 10;
             Attributes.SpellDamage = 5;
             Attributes.CastSpeed = 1;
         }
@@ -46,8 +47,9 @@ namespace Server.Items
             Name = "Gargish Scabbard of Juo'nar";
             Hue = 1109;
 
-            SkillBonuses.SetValues(0, SkillName.Necromancy, 5.0);
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
             Attributes.BonusHits = 5;
+            Attributes.BonusInt = 10;
             Attributes.SpellDamage = 5;
             Attributes.CastSpeed = 1;
         }

@@ -2,28 +2,28 @@ using System;
 
 namespace Server.Items
 {
-    public class FeudalGhostwalkers : Sandals
+    public class KaelvoksCincture : HalfApron
     {
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public FeudalGhostwalkers()
+        public KaelvoksCincture()
         {
-            Name = "Feudal Ghostwalkers";
-            Hue = 1150;
+            Name = "Kaelvok's Cincture";
+            Hue = 1157;
+            Weight = 3.0;
+            LootType = LootType.Blessed;
 
-            SkillBonuses.SetValues(0, SkillName.Stealth, 5.0);
-            SkillBonuses.SetValues(1, SkillName.Hiding, 5.0);
-            SkillBonuses.SetValues(2, SkillName.Ninjitsu, 5.0);
-            Attributes.DefendChance = 10;
-            Attributes.BonusDex = 5;
-            Attributes.NightSight = 1;
+            Attributes.BonusStr = 5;
+            Attributes.BonusHits = 3;
+            Attributes.AttackChance = 5;
+            Attributes.WeaponSpeed = 5;
 
             MaxHitPoints = 255;
             HitPoints = 255;
         }
 
-        public FeudalGhostwalkers(Serial serial)
+        public KaelvoksCincture(Serial serial)
             : base(serial)
         {
         }
@@ -41,28 +41,30 @@ namespace Server.Items
         }
     }
 
-    public class GargishFeudalGhostwalkers : LeatherTalons
+    public class GargishKaelvoksCincture : GargoyleHalfApron
     {
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public GargishFeudalGhostwalkers()
+        public GargishKaelvoksCincture()
         {
-            Name = "Gargish Feudal Ghostwalkers";
-            Hue = 1150;
+            Name = "Gargish Kaelvok's Cincture";
+            Hue = 1157;
+            Weight = 2.0;
+            LootType = LootType.Blessed;
 
-            SkillBonuses.SetValues(0, SkillName.Stealth, 5.0);
-            SkillBonuses.SetValues(1, SkillName.Hiding, 5.0);
-            SkillBonuses.SetValues(2, SkillName.Ninjitsu, 5.0);
-            Attributes.DefendChance = 10;
-            Attributes.BonusDex = 5;
-            Attributes.NightSight = 1;
+            Attributes.BonusStr = 5;
+            Attributes.BonusHits = 3;
+            Attributes.AttackChance = 5;
+            Attributes.WeaponSpeed = 5;
+
+            StrRequirement = 10;
 
             MaxHitPoints = 255;
             HitPoints = 255;
         }
 
-        public GargishFeudalGhostwalkers(Serial serial)
+        public GargishKaelvoksCincture(Serial serial)
             : base(serial)
         {
         }

@@ -14,11 +14,22 @@ namespace Server.Items
         public RangersCloakOfAugmentation()
         {
             Hue = 0x54A;
+            SkillBonuses.SetValues(0, GetRandomRangerSkill(), 10.0);
             SAAbsorptionAttributes.EaterKinetic = 10;
             Attributes.SpellDamage = 5;
             Attributes.LowerManaCost = 8;
             Attributes.WeaponSpeed = 5;
             StrRequirement = 10;
+        }
+
+        public static SkillName GetRandomRangerSkill()
+        {
+            SkillName[] skills = new SkillName[]
+            {
+                SkillName.Hiding, SkillName.Stealth, SkillName.AnimalTaming,
+                SkillName.AnimalLore, SkillName.Poisoning
+            };
+            return skills[Utility.Random(skills.Length)];
         }
 
         public RangersCloakOfAugmentation(Serial serial)

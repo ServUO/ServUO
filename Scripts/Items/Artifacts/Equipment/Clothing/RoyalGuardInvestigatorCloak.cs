@@ -9,8 +9,11 @@ namespace Server.Items
         public RoyalGuardInvestigatorsCloak()
             : base()
         { 
-            Hue = 1163;       
-            SkillBonuses.SetValues(0, SkillName.Stealth, 20.0);        
+            Hue = 1163;
+            SkillBonuses.SetValues(0, SkillName.Stealth, 20.0);
+            Attributes.AttackChance = 15;
+            Attributes.WeaponSpeed = 10;
+            Attributes.BonusStam = 10;
         }
 
         public RoyalGuardInvestigatorsCloak(Serial serial)
