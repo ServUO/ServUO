@@ -12,6 +12,7 @@ namespace Server.Items
             Name = "General Lethe's Epaulettes";
             Hue = 1157;
 
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 10.0);
             Attributes.BonusMana = 8;
             Attributes.RegenMana = 1;
             Attributes.CastRecovery = 1;
@@ -46,6 +47,7 @@ namespace Server.Items
             Name = "Gargish General Lethe's Epaulettes";
             Hue = 1157;
 
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 10.0);
             Attributes.BonusMana = 8;
             Attributes.RegenMana = 1;
             Attributes.CastRecovery = 1;
@@ -80,6 +82,7 @@ namespace Server.Items
             Name = "Lord Morphius' Epaulettes";
             Hue = 1161;
 
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 10.0);
             Attributes.BonusStam = 8;
             Attributes.RegenStam = 2;
             Attributes.LowerManaCost = 5;
@@ -114,6 +117,7 @@ namespace Server.Items
             Name = "Gargish Lord Morphius' Epaulettes";
             Hue = 1161;
 
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 10.0);
             Attributes.BonusStam = 8;
             Attributes.RegenStam = 2;
             Attributes.LowerManaCost = 5;

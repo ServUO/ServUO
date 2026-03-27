@@ -318,6 +318,16 @@ namespace Server.Mobiles
             typeof(ElementalBanSpellbook),
             // Talisman
             typeof(CarvedBoneRelicFromHolmes),
+            typeof(ShadowMastersTalisman),
+            // Jewelry
+            typeof(SolariasSecretPoisons), typeof(GargishSolariasSecretPoisons),
+            // New Armor
+            typeof(DeathwardensGreaves), typeof(GargishDeathwardensGreaves),
+            typeof(AzaroksLegplates), typeof(GargishAzaroksLegplates),
+            // New Clothing
+            typeof(KaelvoksCincture), typeof(GargishKaelvoksCincture),
+            // Existing Updated
+            typeof(MarkOfTravesty),
         };
 
         public static void GiveCustomArtifact(Mobile m)

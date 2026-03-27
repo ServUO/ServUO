@@ -19,6 +19,7 @@ namespace Server.Items
             Attributes.BonusMana = 8;
             Attributes.AttackChance = 5;
             Attributes.DefendChance = 5;
+            Attributes.WeaponDamage = 25;
             Attributes.LowerManaCost = 8;
         }
 
@@ -67,6 +68,7 @@ namespace Server.Items
             Attributes.BonusMana = 8;
             Attributes.AttackChance = 5;
             Attributes.DefendChance = 5;
+            Attributes.WeaponDamage = 25;
             Attributes.LowerManaCost = 8;
         }
 

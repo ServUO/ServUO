@@ -2,83 +2,33 @@ using System;
 
 namespace Server.Items
 {
-    public class GlovesOfFeudalGrip : DragonGloves
+    public class AzaroksLegplates : PlateLegs
     {
-        public override int LabelNumber { get { return 1157349; } } // gloves of feudal grip
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public GlovesOfFeudalGrip()
+        public AzaroksLegplates()
         {
-            Resource = CraftResource.None;
+            Name = "Azarok's Legplates";
+            Hue = 1161;
+            Weight = 7.0;
 
-            Attributes.BonusStr = 8;
+
+            Attributes.BonusDex = 5;
+            Attributes.BonusInt = 5;
+            Attributes.BonusHits = 4;
             Attributes.BonusStam = 8;
-            Attributes.RegenHits = 3;
-            Attributes.RegenMana = 3;
-            Attributes.WeaponDamage = 30;
-            Attributes.LowerManaCost = 20;
-            SkillBonuses.SetValues(0, SkillName.Necromancy, 15.0);
+            Attributes.BonusMana = 8;
+            Attributes.LowerManaCost = 8;
+            Attributes.WeaponDamage = 20;
         }
 
-        public GlovesOfFeudalGrip(Serial serial)
+        public AzaroksLegplates(Serial serial)
             : base(serial)
         {
         }
 
-        public override int BasePhysicalResistance { get { return 20; } }
-        public override int BaseFireResistance { get { return 20; } }
-        public override int BaseColdResistance { get { return 20; } }
-        public override int BasePoisonResistance { get { return 20; } }
-        public override int BaseEnergyResistance { get { return 20; } }        
-        public override int InitMinHits { get { return 255; } }
-        public override int InitMaxHits { get { return 255; } }
-        public override CraftResource DefaultResource { get { return CraftResource.None; } }
-
-        public override void Serialize(GenericWriter writer)
-        {
-            base.Serialize(writer);
-
-            writer.WriteEncodedInt(1); // version
-        }
-
-        public override void Deserialize(GenericReader reader)
-        {
-            base.Deserialize(reader);
-
-            int version = reader.ReadEncodedInt();
-
-            if (version == 0)
-            {
-                Resource = CraftResource.None;
-            }
-        }
-    }
-
-    public class GargishKiltOfFeudalVise : GargishPlateKilt
-    {
-        public override int LabelNumber { get { return 1157367; } } // Kilt of Feudal Vise
-        public override bool IsArtifact { get { return true; } }
-
-        [Constructable]
-        public GargishKiltOfFeudalVise()
-        {
-            Resource = CraftResource.None;
-
-            Attributes.BonusStr = 8;
-            Attributes.BonusStam = 8;
-            Attributes.RegenHits = 3;
-            Attributes.RegenMana = 3;
-            Attributes.WeaponDamage = 30;
-            Attributes.LowerManaCost = 20;
-            SkillBonuses.SetValues(0, SkillName.Necromancy, 15.0);
-        }
-
-        public GargishKiltOfFeudalVise(Serial serial)
-            : base(serial)
-        {
-        }
-
+        public override int AosStrReq { get { return 90; } }
         public override int BasePhysicalResistance { get { return 20; } }
         public override int BaseFireResistance { get { return 20; } }
         public override int BaseColdResistance { get { return 20; } }
@@ -86,25 +36,65 @@ namespace Server.Items
         public override int BaseEnergyResistance { get { return 20; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
-        public override CraftResource DefaultResource { get { return CraftResource.None; } }
 
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-
-            writer.WriteEncodedInt(1); // version
+            writer.Write(0);
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
+            reader.ReadInt();
+        }
+    }
 
-            int version = reader.ReadEncodedInt();
+    public class GargishAzaroksLegplates : GargishPlateLegs
+    {
+        public override bool IsArtifact { get { return true; } }
 
-            if (version == 0)
-            {
-                Resource = CraftResource.None;
-            }
+        [Constructable]
+        public GargishAzaroksLegplates()
+        {
+            Name = "Gargish Azarok's Legplates";
+            Hue = 1161;
+            Weight = 7.0;
+
+
+            Attributes.BonusDex = 5;
+            Attributes.BonusInt = 5;
+            Attributes.BonusHits = 4;
+            Attributes.BonusStam = 8;
+            Attributes.BonusMana = 8;
+            Attributes.LowerManaCost = 8;
+            Attributes.WeaponDamage = 20;
+        }
+
+        public GargishAzaroksLegplates(Serial serial)
+            : base(serial)
+        {
+        }
+
+        public override int AosStrReq { get { return 90; } }
+        public override int BasePhysicalResistance { get { return 20; } }
+        public override int BaseFireResistance { get { return 20; } }
+        public override int BaseColdResistance { get { return 20; } }
+        public override int BasePoisonResistance { get { return 20; } }
+        public override int BaseEnergyResistance { get { return 20; } }
+        public override int InitMinHits { get { return 255; } }
+        public override int InitMaxHits { get { return 255; } }
+
+        public override void Serialize(GenericWriter writer)
+        {
+            base.Serialize(writer);
+            writer.Write(0);
+        }
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            reader.ReadInt();
         }
     }
 }

@@ -43,6 +43,8 @@ namespace Server.Items
 
             Charges = 1;
             //Caddellite Infused
+            SkillBonuses.SetValues(0, SkillName.Inscribe, 10.0);
+            SAAbsorptionAttributes.CastingFocus = 5;
             Attributes.BonusHits = 10;
             Attributes.BonusMana = 15;
             Attributes.EnhancePotions = 35;

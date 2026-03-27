@@ -4,7 +4,18 @@
       "Bash(./ServUO.exe -debug)",
       "Bash(dotnet build:*)",
       "Bash(dotnet --version)",
-      "Bash(echo $?)"
+      "Bash(echo $?)",
+      "Read(//c/code/Scripts/**)",
+      "Bash(find 'C:/code/Scripts/Custom/Premium Members/' -name *.cs -o -name *.txt)",
+      "Bash(find C:/code/Scripts/Custom/ -iname *stone* -o -iname *vendor* -o -iname *premium* -o -iname *kudos* -o -iname *reward*stone*)",
+      "Bash(find C:/code/Scripts/ -iname *premium*stone* -o -iname *reward*stone* -o -iname *kudos*stone* -o -iname *coin*stone*)",
+      "Bash(cp \"C:/code/Scripts/Custom/Premium Members/PremiumWarriorTalisman.cs\" \"c:/code/ServUO/Scripts/Custom/PremiumWarriorTalisman.cs\")",
+      "Bash(cp \"C:/code/Scripts/Custom/Premium Members/WhiteCourage.cs\" \"c:/code/ServUO/Scripts/Custom/WhiteCourage.cs\")",
+      "Bash(find C:/code/Scripts/ -iname *premium*stone* -o -iname *reward*stone* -o -iname *vendor*stone*)",
+      "Bash(grep -i \"\\\\.cs$\")"
+    ],
+    "additionalDirectories": [
+      "C:\\code\\Scripts\\Custom Arth\\Test\\Reward Tickets"
     ]
   }
 }

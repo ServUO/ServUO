@@ -15,7 +15,7 @@ namespace Server.Items
             Hue = 1153;
 
             SkillBonuses.SetValues(0, SkillName.Chivalry, 15.0);
-            SkillBonuses.SetValues(1, SkillName.Necromancy, -30.0);
+            SkillBonuses.SetValues(1, SkillName.Necromancy, 15.0);
 
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;
@@ -112,7 +112,7 @@ namespace Server.Items
             Hue = 1153;
 
             SkillBonuses.SetValues(0, SkillName.Chivalry, 15.0);
-            SkillBonuses.SetValues(1, SkillName.Necromancy, -30.0);
+            SkillBonuses.SetValues(1, SkillName.Necromancy, 15.0);
 
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;

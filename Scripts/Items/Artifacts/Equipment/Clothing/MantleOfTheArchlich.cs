@@ -13,6 +13,8 @@ namespace Server.Items
             Hue = 1150;
 
             SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
+            Attributes.BonusStr = 10;
+            Attributes.LowerManaCost = 5;
             Attributes.SpellDamage = 8;
             Attributes.CastSpeed = 1;
         }
