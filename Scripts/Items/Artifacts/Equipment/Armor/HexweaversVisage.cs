@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class HexweaversVisage : ElvenGlasses
+    public class HexweaversVisage : WingedHelm
     {
         public override bool IsArtifact { get { return true; } }
 
