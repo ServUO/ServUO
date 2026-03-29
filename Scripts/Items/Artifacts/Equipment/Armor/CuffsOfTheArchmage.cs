@@ -12,7 +12,10 @@ namespace Server.Items
         {
             SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
             Attributes.BonusMana = 5;
+            Attributes.RegenHits = 4;
+            Attributes.RegenStam = 4;
             Attributes.RegenMana = 4;
+            Attributes.LowerRegCost = 20;
             Attributes.SpellDamage = 20;
             ArmorAttributes.MageArmor = 1;
         }
@@ -55,7 +58,10 @@ namespace Server.Items
         {
             SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
             Attributes.BonusMana = 5;
+            Attributes.RegenHits = 4;
+            Attributes.RegenStam = 4;
             Attributes.RegenMana = 4;
+            Attributes.LowerRegCost = 20;
             Attributes.SpellDamage = 20;
             ArmorAttributes.MageArmor = 1;
         }

@@ -14,7 +14,7 @@ namespace Server.Items
         public RangersCloakOfAugmentation()
         {
             Hue = 0x54A;
-            SkillBonuses.SetValues(0, GetRandomRangerSkill(), 10.0);
+            SkillBonuses.SetValues(0, GetRandomRangerSkill(), 20.0);
             SAAbsorptionAttributes.EaterKinetic = 10;
             Attributes.SpellDamage = 5;
             Attributes.LowerManaCost = 8;
@@ -26,8 +26,8 @@ namespace Server.Items
         {
             SkillName[] skills = new SkillName[]
             {
-                SkillName.Hiding, SkillName.Stealth, SkillName.AnimalTaming,
-                SkillName.AnimalLore, SkillName.Poisoning
+                SkillName.AnimalTaming, SkillName.AnimalLore, SkillName.Archery,
+                SkillName.Swords, SkillName.Macing, SkillName.Fencing
             };
             return skills[Utility.Random(skills.Length)];
         }

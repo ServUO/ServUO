@@ -26,9 +26,10 @@ namespace Server.Items
             Attributes.LowerManaCost = 8;
 
             PhysicalBonus = 15;
+            FireBonus = 10;
             ArmorAttributes.SelfRepair = 5;
 
-            SkillBonuses.SetValues(0, SkillName.Parry, 10.0);
+            SkillBonuses.SetValues(0, SkillName.Parry, 20.0);
 
             if (antique)
             {
@@ -80,9 +81,10 @@ namespace Server.Items
             Attributes.LowerManaCost = 8;
 
             PhysicalBonus = 15;
+            FireBonus = 10;
             ArmorAttributes.SelfRepair = 5;
 
-            SkillBonuses.SetValues(0, SkillName.Parry, 10.0);
+            SkillBonuses.SetValues(0, SkillName.Parry, 20.0);
 
             if (antique)
             {

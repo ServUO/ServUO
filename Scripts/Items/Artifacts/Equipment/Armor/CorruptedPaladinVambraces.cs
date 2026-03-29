@@ -6,12 +6,19 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
 
+        public static SkillName GetRandomPaladinSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.MagicResist, SkillName.Necromancy, SkillName.Magery, SkillName.Mysticism, SkillName.Bushido, SkillName.Chivalry, SkillName.Spellweaving };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public CorruptedPaladinVambraces()
         {
             Name = "Corrupted Paladin Vambraces";
             Hue = 1109;
 
+            SkillBonuses.SetValues(0, GetRandomPaladinSkill(), 15.0);
             Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;
             Attributes.BonusStam = 10;
@@ -20,6 +27,7 @@ namespace Server.Items
             Attributes.RegenStam = 4;
             Attributes.RegenMana = 4;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 15;
         }
 
         public CorruptedPaladinVambraces(Serial serial)
@@ -58,6 +66,7 @@ namespace Server.Items
             Name = "Gargish Corrupted Paladin Vambraces";
             Hue = 1109;
 
+            SkillBonuses.SetValues(0, CorruptedPaladinVambraces.GetRandomPaladinSkill(), 15.0);
             Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;
             Attributes.BonusStam = 10;
@@ -66,6 +75,7 @@ namespace Server.Items
             Attributes.RegenStam = 4;
             Attributes.RegenMana = 4;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 15;
         }
 
         public GargishCorruptedPaladinVambraces(Serial serial)

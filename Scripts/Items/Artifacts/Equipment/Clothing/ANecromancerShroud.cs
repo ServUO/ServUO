@@ -9,6 +9,8 @@ namespace Server.Items
         public ANecromancerShroud()
         {
             Hue = 0x455;
+            SkillBonuses.SetValues(0, SkillName.Necromancy, 15.0);
+            Attributes.RegenHits = 2;
         }
 
         public ANecromancerShroud(Serial serial)
@@ -23,6 +25,13 @@ namespace Server.Items
                 return 1094913;
             }
         }// A Necromancer Shroud [Replica]
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
         public override int BaseColdResistance
         {
             get

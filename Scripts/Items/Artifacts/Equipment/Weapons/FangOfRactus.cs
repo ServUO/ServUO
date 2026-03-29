@@ -13,8 +13,10 @@ namespace Server.Items
             Attributes.AttackChance = 5;
             Attributes.DefendChance = 5;
             Attributes.WeaponDamage = 35;
-            WeaponAttributes.HitPoisonArea = 20;
+            WeaponAttributes.HitPoisonArea = 50;
             WeaponAttributes.ResistPoisonBonus = 15;
+            WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.HitLightning = 70;
         }
 
         public FangOfRactus(Serial serial)

@@ -9,10 +9,13 @@ namespace Server.Items
         public RoyalGuardSurvivalKnife()
         {
             Attributes.SpellChanneling = 1;
-            Attributes.Luck = 140;
+            Attributes.Luck = 300;
             Attributes.EnhancePotions = 25;
             WeaponAttributes.UseBestSkill = 1;
             WeaponAttributes.LowerStatReq = 50;
+            WeaponAttributes.MageWeapon = 30;
+            SkillBonuses.SetValues(0, SkillName.Lockpicking, 20.0);
+            SkillBonuses.SetValues(1, SkillName.RemoveTrap, 20.0);
         }
 
         public RoyalGuardSurvivalKnife(Serial serial)

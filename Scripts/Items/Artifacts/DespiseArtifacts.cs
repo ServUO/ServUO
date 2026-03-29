@@ -127,15 +127,15 @@ namespace Server.Items
 		public DespicableQuiver() : base(0x2B02)
 		{
 			Hue = 2671;
-			
+
 			DamageIncrease = 10;
 			WeightReduction = 30;
 			Attributes.BonusDex = 5;
-			SkillBonuses.SetValues( 0, SkillName.Archery, 5.0 );
+			Attributes.BonusStam = 8;
 			Attributes.ReflectPhysical = 5;
 			Attributes.AttackChance = 5;
             LowerAmmoCost = 30;
-			
+
 			switch(Utility.Random(5))
 			{
 				case 0: Resistances.Physical = 10; break;
@@ -143,6 +143,15 @@ namespace Server.Items
                 case 2: Resistances.Cold = 10; break;
                 case 3: Resistances.Poison = 10; break;
                 case 4: Resistances.Energy = 10; break;
+			}
+
+			switch(Utility.Random(5))
+			{
+				case 0: SkillBonuses.SetValues(0, SkillName.Archery, 20.0); break;
+				case 1: SkillBonuses.SetValues(0, SkillName.Swords, 20.0); break;
+				case 2: SkillBonuses.SetValues(0, SkillName.Macing, 20.0); break;
+				case 3: SkillBonuses.SetValues(0, SkillName.Fencing, 20.0); break;
+				case 4: SkillBonuses.SetValues(0, SkillName.Wrestling, 20.0); break;
 			}
 		}
 		

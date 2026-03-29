@@ -12,6 +12,7 @@ namespace Server.Items
             Attributes.BonusHits = 8;
             Attributes.RegenHits = 2;
             Attributes.DefendChance = 10;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 10.0);
         }
 
         public GauntletsOfAnger(Serial serial)
@@ -30,35 +31,35 @@ namespace Server.Items
         {
             get
             {
-                return 4;
+                return 10;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 4;
+                return 10;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 5;
+                return 10;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 6;
+                return 10;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 5;
+                return 10;
             }
         }
         public override int InitMinHits

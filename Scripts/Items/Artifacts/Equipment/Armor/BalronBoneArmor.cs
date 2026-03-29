@@ -6,12 +6,19 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
 
+        public static SkillName GetRandomCombatSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Wrestling, SkillName.Throwing };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public BalronBoneArmor()
         {
             Name = "Balron Bone Armor";
             Hue = 1109;
 
+            SkillBonuses.SetValues(0, GetRandomCombatSkill(), 20.0);
             Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;
             Attributes.BonusInt = 5;
@@ -19,6 +26,7 @@ namespace Server.Items
             Attributes.BonusStam = 8;
             Attributes.BonusMana = 8;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 15;
             Attributes.AttackChance = 5;
             Attributes.DefendChance = 5;
         }
@@ -60,6 +68,7 @@ namespace Server.Items
             Name = "Gargish Balron Bone Armor";
             Hue = 1109;
 
+            SkillBonuses.SetValues(0, BalronBoneArmor.GetRandomCombatSkill(), 20.0);
             Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;
             Attributes.BonusInt = 5;
@@ -67,6 +76,7 @@ namespace Server.Items
             Attributes.BonusStam = 8;
             Attributes.BonusMana = 8;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 15;
             Attributes.AttackChance = 5;
             Attributes.DefendChance = 5;
         }

@@ -404,9 +404,11 @@ namespace Server.Items
 		public HawkwindsRobe() : base(0x7816, 0)
 		{
 			Attributes.RegenMana = 2;
-			Attributes.SpellDamage = 5;
+			Attributes.SpellDamage = 25;
 			Attributes.LowerManaCost = 10;
 			Attributes.LowerRegCost = 10;
+			Attributes.Luck = 250;
+			SkillBonuses.SetValues(0, SkillName.EvalInt, 20.0);
 		}
 		
 		public HawkwindsRobe(Serial serial) : base(serial)

@@ -10,6 +10,11 @@ namespace Server.Items
         {
             Hue = 0x38F;
             Attributes.RegenHits = 3;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 5;
+            Attributes.RegenMana = 2;
+            Attributes.BonusStam = 8;
+            Attributes.BonusInt = 8;
             ArmorAttributes.MageArmor = 1;
             SkillBonuses.Skill_1_Name = SkillName.MagicResist;
             SkillBonuses.Skill_1_Value = 10;
@@ -38,7 +43,7 @@ namespace Server.Items
         {
             get
             {
-                return 6;
+                return 15;
             }
         }
         public override int BaseColdResistance

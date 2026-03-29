@@ -15,6 +15,8 @@ namespace Server.Items
             Attributes.SpellChanneling = 1;
             Attributes.RegenStam = 3;
             Attributes.RegenMana = 3;
+            Attributes.Luck = 300;
+            SkillBonuses.SetValues(0, SkillName.AnimalLore, 20.0);
         }
 
         public TongueOfTheBeast(Serial serial)

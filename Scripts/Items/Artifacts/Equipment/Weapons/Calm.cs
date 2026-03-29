@@ -13,6 +13,9 @@ namespace Server.Items
             Attributes.WeaponSpeed = 20;
             Attributes.WeaponDamage = 50;
             WeaponAttributes.HitLeechMana = 100;
+            WeaponAttributes.HitLeechHits = 100;
+            WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.HitColdArea = 80;
             WeaponAttributes.UseBestSkill = 1;
         }
 

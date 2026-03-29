@@ -11,24 +11,27 @@ namespace Server.Items
         {
             Hue = 2310;
             Attributes.BonusDex = 5;
-            Attributes.RegenStam = 2;
+            Attributes.BonusStam = 8;
+            Attributes.RegenStam = 3;
             Attributes.WeaponDamage = 10;
             Attributes.WeaponSpeed = 10;
+            Attributes.AttackChance = 15;
             ArmorAttributes.LowerStatReq = 50;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 20.0);
         }
 
         public AnimatedLegsoftheInsaneTinker(Serial serial)
             : base(serial)
         {
         }
-        
+
         public override int LabelNumber { get{return 1113760;} }// Animated Legs of the Insane Tinker
 
         public override int BasePhysicalResistance
         {
             get
             {
-                return 17;
+                return 15;
             }
         }
         public override int BaseFireResistance
@@ -42,7 +45,7 @@ namespace Server.Items
         {
             get
             {
-                return 7;
+                return 15;
             }
         }
         public override int BasePoisonResistance
@@ -56,7 +59,7 @@ namespace Server.Items
         {
             get
             {
-                return 2;
+                return 15;
             }
         }
         public override int InitMinHits

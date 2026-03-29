@@ -14,14 +14,27 @@ namespace Server.Items
 
             Attributes.BonusInt = 5;
             Attributes.BonusHits = 5;
+            Attributes.BonusMana = 10;
             Attributes.RegenHits = 3;
             Attributes.RegenMana = 3;
-            Attributes.SpellDamage = 5;
+            Attributes.SpellDamage = 30;
             Attributes.CastRecovery = 1;
             Attributes.LowerManaCost = 8;
             Attributes.LowerRegCost = 20;
 
             ArmorAttributes.MageArmor = 1;
+
+            SkillBonuses.SetValues(0, GetRandomSkill(), 20.0);
+        }
+
+        public static SkillName GetRandomSkill()
+        {
+            SkillName[] skills = new SkillName[]
+            {
+                SkillName.MagicResist, SkillName.EvalInt, SkillName.Focus,
+                SkillName.SpiritSpeak, SkillName.Anatomy
+            };
+            return skills[Utility.Random(skills.Length)];
         }
 
         public ShugenjasRaiment(Serial serial)
@@ -64,14 +77,17 @@ namespace Server.Items
 
             Attributes.BonusInt = 5;
             Attributes.BonusHits = 5;
+            Attributes.BonusMana = 10;
             Attributes.RegenHits = 3;
             Attributes.RegenMana = 3;
-            Attributes.SpellDamage = 5;
+            Attributes.SpellDamage = 30;
             Attributes.CastRecovery = 1;
             Attributes.LowerManaCost = 8;
             Attributes.LowerRegCost = 20;
 
             ArmorAttributes.MageArmor = 1;
+
+            SkillBonuses.SetValues(0, ShugenjasRaiment.GetRandomSkill(), 20.0);
         }
 
         public GargishShugenjasRaiment(Serial serial)

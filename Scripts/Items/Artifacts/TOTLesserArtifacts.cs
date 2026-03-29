@@ -982,8 +982,9 @@ namespace Server.Items
             LootType = LootType.Regular;
             Hue = 0x501;
 
-            Attributes.Luck = 300;
+            Attributes.Luck = 500;
             Attributes.RegenMana = 1;
+            SkillBonuses.SetValues(0, SkillName.Musicianship, 30.0);
         }
 
         public LeurociansMempoOfFortune(Serial serial)

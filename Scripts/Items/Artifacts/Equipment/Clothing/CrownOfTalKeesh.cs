@@ -11,7 +11,9 @@ namespace Server.Items
             Hue = 0x4F2;
             Attributes.BonusInt = 8;
             Attributes.RegenMana = 4;
-            Attributes.SpellDamage = 10;
+            Attributes.SpellDamage = 50;
+            Attributes.Luck = 300;
+            SkillBonuses.SetValues(0, SkillName.AnimalTaming, 20.0);
         }
 
         public CrownOfTalKeesh(Serial serial)

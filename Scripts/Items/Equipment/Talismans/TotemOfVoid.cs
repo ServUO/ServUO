@@ -19,6 +19,7 @@ namespace Server.Items
             Protection = GetRandomProtection(false);
             Attributes.RegenHits = 2;
             Attributes.LowerManaCost = 10;
+            SkillBonuses.SetValues(0, SkillName.Meditation, 20.0);
         }
 
         public TotemOfVoid(Serial serial)

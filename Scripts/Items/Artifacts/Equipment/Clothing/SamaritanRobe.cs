@@ -9,6 +9,8 @@ namespace Server.Items
         public SamaritanRobe()
         {
             Hue = 0x2a3;
+            SkillBonuses.SetValues(0, SkillName.AnimalTaming, 30.0);
+            Attributes.Luck = 500;
         }
 
         public SamaritanRobe(Serial serial)

@@ -29,6 +29,12 @@ namespace Server.Items
             }
         }
 
+        public static SkillName GetRandomKhalAnkurSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Inscribe, SkillName.MagicResist, SkillName.EvalInt, SkillName.Focus, SkillName.SpiritSpeak, SkillName.Spellweaving };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public MaskOfKhalAnkur()
             : this(0)
@@ -43,7 +49,7 @@ namespace Server.Items
 
             Charges = 1;
             //Caddellite Infused
-            SkillBonuses.SetValues(0, SkillName.Inscribe, 10.0);
+            SkillBonuses.SetValues(0, GetRandomKhalAnkurSkill(), 20.0);
             SAAbsorptionAttributes.CastingFocus = 5;
             Attributes.BonusHits = 10;
             Attributes.BonusMana = 15;

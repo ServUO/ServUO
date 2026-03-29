@@ -16,6 +16,8 @@ namespace Server.Items
             WeaponAttributes.HitManaDrain = 30;
             WeaponAttributes.HitFatigue = 30;
             WeaponAttributes.HitLowerDefend = 40;
+            WeaponAttributes.HitLightning = 70;
+            WeaponAttributes.SplinteringWeapon = 25;
             Attributes.RegenHits = 3;
             Attributes.WeaponSpeed = 20;
             Attributes.WeaponDamage = 50;

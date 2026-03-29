@@ -12,7 +12,7 @@ namespace Server.Items
             Name = "Umbrascale Champion's Aegis";
             Hue = 1109;
 
-            SkillBonuses.SetValues(0, GetRandomCombatSkill(), 15.0);
+            SkillBonuses.SetValues(0, GetRandomCombatSkill(), 20.0);
 
             Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;
@@ -67,7 +67,7 @@ namespace Server.Items
             Name = "Gargish Umbrascale Champion's Aegis";
             Hue = 1109;
 
-            SkillBonuses.SetValues(0, UmbrascaleChampionsAegis.GetRandomCombatSkill(), 15.0);
+            SkillBonuses.SetValues(0, UmbrascaleChampionsAegis.GetRandomCombatSkill(), 20.0);
 
             Attributes.BonusStr = 5;
             Attributes.BonusDex = 5;

@@ -6,12 +6,19 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
 
+        public static SkillName GetRandomSentinelSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Anatomy, SkillName.Tactics, SkillName.Healing, SkillName.EvalInt, SkillName.SpiritSpeak, SkillName.Focus };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public SentinelsMempo()
         {
             Name = "Sentinel's Mempo";
             Hue = 1157;
 
+            SkillBonuses.SetValues(0, GetRandomSentinelSkill(), 15.0);
             Attributes.BonusStr = 4;
             Attributes.BonusDex = 4;
             Attributes.BonusHits = 8;
@@ -61,6 +68,7 @@ namespace Server.Items
             Name = "Sentinel's Necklace";
             Hue = 1157;
 
+            SkillBonuses.SetValues(0, SentinelsMempo.GetRandomSentinelSkill(), 15.0);
             Attributes.BonusStr = 4;
             Attributes.BonusDex = 4;
             Attributes.BonusHits = 8;

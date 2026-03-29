@@ -13,6 +13,9 @@ namespace Server.Items
             : base(0x2684)
         {
             Hue = 0x48b;
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 15.0);
+            Attributes.SpellDamage = 30;
+            Attributes.RegenMana = 2;
         }
 
         public TheRobeOfBritanniaAri(Serial serial)

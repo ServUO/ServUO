@@ -19,6 +19,7 @@ namespace Server.Items
                 SkillName.Archery, SkillName.Wrestling
             };
             SkillBonuses.SetValues(0, combatSkills[Utility.Random(combatSkills.Length)], 20.0);
+            WeaponAttributes.HitLowerDefend = 30;
         }
 
         public CaptainJohnsHat(Serial serial)
@@ -37,35 +38,35 @@ namespace Server.Items
         {
             get
             {
-                return 2;
+                return 12;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 6;
+                return 12;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 9;
+                return 12;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 7;
+                return 12;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 23;
+                return 12;
             }
         }
         public override int InitMinHits

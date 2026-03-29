@@ -12,9 +12,9 @@ namespace Server.Items
             Name = "Feudal Ghostwalkers";
             Hue = 1150;
 
-            SkillBonuses.SetValues(0, SkillName.Stealth, 5.0);
-            SkillBonuses.SetValues(1, SkillName.Hiding, 5.0);
-            SkillBonuses.SetValues(2, SkillName.Ninjitsu, 5.0);
+            SkillBonuses.SetValues(0, SkillName.Stealth, 10.0);
+            SkillBonuses.SetValues(1, SkillName.Hiding, 10.0);
+            SkillBonuses.SetValues(2, SkillName.Ninjitsu, 10.0);
             Attributes.DefendChance = 10;
             Attributes.BonusDex = 5;
             Attributes.NightSight = 1;
@@ -51,9 +51,9 @@ namespace Server.Items
             Name = "Gargish Feudal Ghostwalkers";
             Hue = 1150;
 
-            SkillBonuses.SetValues(0, SkillName.Stealth, 5.0);
-            SkillBonuses.SetValues(1, SkillName.Hiding, 5.0);
-            SkillBonuses.SetValues(2, SkillName.Ninjitsu, 5.0);
+            SkillBonuses.SetValues(0, SkillName.Stealth, 10.0);
+            SkillBonuses.SetValues(1, SkillName.Hiding, 10.0);
+            SkillBonuses.SetValues(2, SkillName.Ninjitsu, 10.0);
             Attributes.DefendChance = 10;
             Attributes.BonusDex = 5;
             Attributes.NightSight = 1;

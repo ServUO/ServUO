@@ -9,11 +9,15 @@ namespace Server.Items
         public MelisandesCorrodedHatchet()
         {
             Hue = 0x494;
-            SkillBonuses.SetValues(0, SkillName.Lumberjacking, 5.0);
+            SkillBonuses.SetValues(0, SkillName.Lumberjacking, 20.0);
             Attributes.SpellChanneling = 1;
             Attributes.WeaponSpeed = 15;
-            Attributes.WeaponDamage = -50;
+            Attributes.WeaponDamage = 50;
             WeaponAttributes.SelfRepair = 4;
+            WeaponAttributes.HitLightning = 70;
+            WeaponAttributes.HitLowerDefend = 50;
+            Attributes.BalancedWeapon = 1;
+            WeaponAttributes.SplinteringWeapon = 30;
         }
 
         public MelisandesCorrodedHatchet(Serial serial)

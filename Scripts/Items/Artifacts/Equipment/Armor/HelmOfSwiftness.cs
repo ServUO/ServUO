@@ -25,6 +25,7 @@ namespace Server.Items
             Attributes.CastSpeed = 1;
             Attributes.CastRecovery = 2;
             ArmorAttributes.MageArmor = 1;
+            SkillBonuses.SetValues(0, SkillName.Snooping, 20.0);
         }
 
         public HelmOfSwiftness(Serial serial)

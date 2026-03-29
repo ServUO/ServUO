@@ -13,7 +13,9 @@ namespace Server.Items
             : base(0x1F03, 0x486)
         {
             Weight = 3.0;
-            Attributes.Luck = 95;
+            Attributes.Luck = 150;
+            SkillBonuses.SetValues(0, SkillName.AnimalTaming, 5.0);
+            SkillBonuses.SetValues(1, SkillName.AnimalLore, 5.0);
         }
 
         public RobeOfTheEclipse(Serial serial)

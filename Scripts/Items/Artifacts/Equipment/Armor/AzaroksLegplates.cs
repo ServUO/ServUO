@@ -21,6 +21,7 @@ namespace Server.Items
             Attributes.BonusMana = 8;
             Attributes.LowerManaCost = 8;
             Attributes.WeaponDamage = 20;
+            SkillBonuses.SetValues(0, SkillName.Healing, 15.0);
         }
 
         public AzaroksLegplates(Serial serial)
@@ -69,6 +70,7 @@ namespace Server.Items
             Attributes.BonusMana = 8;
             Attributes.LowerManaCost = 8;
             Attributes.WeaponDamage = 20;
+            SkillBonuses.SetValues(0, SkillName.Healing, 15.0);
         }
 
         public GargishAzaroksLegplates(Serial serial)

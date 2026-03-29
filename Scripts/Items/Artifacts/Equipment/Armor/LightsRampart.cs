@@ -8,9 +8,12 @@ namespace Server.Items
         [Constructable]
         public LightsRampart()
         {
-            Hue = 1272;			
+            Hue = 1272;
             Attributes.SpellChanneling = 1;
             Attributes.DefendChance = 20;
+            Attributes.EnhancePotions = 15;
+            Attributes.RegenMana = 2;
+            SkillBonuses.SetValues(0, SkillName.AnimalTaming, 20.0);
         }
 
         public LightsRampart(Serial serial)

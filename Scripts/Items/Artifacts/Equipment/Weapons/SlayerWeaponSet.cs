@@ -8,7 +8,7 @@ namespace Server.Items
         public static void ApplyCommonProperties(BaseWeapon weapon, SlayerName slayer, int damageType, AosWeaponAttribute hitArea)
         {
             weapon.Slayer = slayer;
-            weapon.WeaponAttributes.HitManaDrain = 100;
+            weapon.WeaponAttributes.HitLeechMana = 100;
             weapon.WeaponAttributes.HitLeechHits = 100;
             weapon.WeaponAttributes.HitLeechStam = 50;
             weapon.WeaponAttributes.HitLowerDefend = 50;

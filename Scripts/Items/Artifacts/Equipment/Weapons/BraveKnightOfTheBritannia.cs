@@ -11,9 +11,10 @@ namespace Server.Items
             Hue = 0x47e;
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 35;
-            WeaponAttributes.HitLeechStam = 48;
-            WeaponAttributes.HitHarm = 26;
-            WeaponAttributes.HitLeechHits = 22;
+            WeaponAttributes.HitLeechStam = 50;
+            WeaponAttributes.HitHarm = 70;
+            WeaponAttributes.HitLeechHits = 50;
+            WeaponAttributes.HitLowerDefend = 50;
         }
 
         public BraveKnightOfTheBritannia(Serial serial)

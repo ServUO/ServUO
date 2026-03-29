@@ -15,10 +15,12 @@ namespace Server.Items
 		public JadeArmband()
 		{
 			Hue = 2126;
-            Attributes.AttackChance = 10;
-            Attributes.DefendChance = 10;
+            Attributes.AttackChance = 15;
+            Attributes.DefendChance = 15;
             Attributes.WeaponSpeed = 5;
+            Attributes.LowerRegCost = 15;
             Resistances.Poison = 20;
+            SkillBonuses.SetValues(0, SkillName.Chivalry, 15.0);
 		}		
 
 		public JadeArmband( Serial serial ) : base( serial )

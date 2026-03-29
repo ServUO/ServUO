@@ -11,9 +11,11 @@ namespace Server.Items
         public EternalGuardianStaff()
         {		
             Hue = 95;
-            SkillBonuses.SetValues(0, SkillName.Mysticism, 15.0);		
+            SkillBonuses.SetValues(0, SkillName.Mysticism, 15.0);
+            WeaponAttributes.HitFireball = 70;
+            WeaponAttributes.HitLowerDefend = 50;
             Attributes.SpellDamage = 10;
-            Attributes.LowerManaCost = 5;	
+            Attributes.LowerManaCost = 5;
             Attributes.SpellChanneling = 1;	
         }
 

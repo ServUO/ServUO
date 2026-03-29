@@ -11,11 +11,26 @@ namespace Server.Items
         public Slither()
             : base(0x2F5B)
         {
-            Hue = 0x587;				
-            Blessed = RandomTalisman.GetRandomBlessed();						
+            Hue = 0x587;
+            Blessed = RandomTalisman.GetRandomBlessed();
             Attributes.BonusHits = 10;
             Attributes.RegenHits = 2;
             Attributes.DefendChance = 10;
+            Attributes.BonusMana = 10;
+            Attributes.AttackChance = 10;
+            Attributes.BonusStam = 8;
+
+            switch (Utility.Random(8))
+            {
+                case 0: SkillBonuses.SetValues(0, SkillName.MagicResist, 20.0); break;
+                case 1: SkillBonuses.SetValues(0, SkillName.Tactics, 20.0); break;
+                case 2: SkillBonuses.SetValues(0, SkillName.Anatomy, 20.0); break;
+                case 3: SkillBonuses.SetValues(0, SkillName.Healing, 20.0); break;
+                case 4: SkillBonuses.SetValues(0, SkillName.EvalInt, 20.0); break;
+                case 5: SkillBonuses.SetValues(0, SkillName.Ninjitsu, 20.0); break;
+                case 6: SkillBonuses.SetValues(0, SkillName.Bushido, 20.0); break;
+                case 7: SkillBonuses.SetValues(0, SkillName.Chivalry, 20.0); break;
+            }
         }
 
         public Slither(Serial serial)

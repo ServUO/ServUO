@@ -7,11 +7,11 @@ namespace Server.Items
     {
         public override int LabelNumber { get { return 1116619; } }
 
-        public override int BasePhysicalResistance { get { return 7; } }
-        public override int BaseFireResistance { get { return 9; } }
-        public override int BaseColdResistance { get { return 10; } }
-        public override int BasePoisonResistance { get { return 13; } }
-        public override int BaseEnergyResistance { get { return 14; } }
+        public override int BasePhysicalResistance { get { return 15; } }
+        public override int BaseFireResistance { get { return 15; } }
+        public override int BaseColdResistance { get { return 15; } }
+        public override int BasePoisonResistance { get { return 15; } }
+        public override int BaseEnergyResistance { get { return 15; } }
 
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
@@ -28,6 +28,14 @@ namespace Server.Items
             Attributes.RegenMana = 2;
             Attributes.LowerManaCost = 8;
             Attributes.LowerRegCost = 10;
+
+            switch (Utility.Random(4))
+            {
+                case 0: SkillBonuses.SetValues(0, SkillName.Inscribe, 15.0); break;
+                case 1: SkillBonuses.SetValues(0, SkillName.Wrestling, 15.0); break;
+                case 2: SkillBonuses.SetValues(0, SkillName.Alchemy, 15.0); break;
+                case 3: SkillBonuses.SetValues(0, SkillName.Poisoning, 15.0); break;
+            }
         }
 
         public LeviathanHideBracers(Serial serial)

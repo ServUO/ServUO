@@ -10,14 +10,16 @@ namespace Server.Items
         [Constructable]
         public ChannelersDefender()
         {	
-            Hue = 95;	
-            Attributes.DefendChance = 10;				
-            Attributes.AttackChance = 5;	
+            Hue = 95;
+            Attributes.DefendChance = 10;
+            Attributes.AttackChance = 5;
             Attributes.LowerManaCost = 5;
-            Attributes.WeaponSpeed = 20;					
-            Attributes.CastRecovery = 1;		
-            Attributes.SpellChanneling = 1;	
+            Attributes.WeaponSpeed = 20;
+            Attributes.CastRecovery = 1;
+            Attributes.SpellChanneling = 1;
             WeaponAttributes.HitLowerAttack = 60;
+            WeaponAttributes.HitLightning = 70;
+            WeaponAttributes.HitLowerDefend = 50;
             AosElementDamages.Energy = 100;		
         }
 

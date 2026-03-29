@@ -20,11 +20,12 @@ namespace Server.Items
         public HelmOfVengence()
         {
             Hue = 2012;
+            SkillBonuses.SetValues(0, SkillName.Parry, 20.0);
             Attributes.RegenMana = 3;
             Attributes.ReflectPhysical = 30;
-            Attributes.AttackChance = 7;
-            Attributes.WeaponDamage = 10;
-            Attributes.LowerManaCost = 8;
+            Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 25;
+            Attributes.LowerManaCost = 5;
         }
 
         public HelmOfVengence(Serial serial)

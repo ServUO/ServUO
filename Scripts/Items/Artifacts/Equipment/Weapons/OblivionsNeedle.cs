@@ -10,9 +10,11 @@ namespace Server.Items
         {
             Attributes.BonusStam = 20;
             Attributes.AttackChance = 20;
-            Attributes.DefendChance = -20;
+            Attributes.DefendChance = 10;
             Attributes.WeaponDamage = 40;
             WeaponAttributes.HitLeechStam = 50;
+            WeaponAttributes.HitLightning = 70;
+            WeaponAttributes.HitLowerDefend = 50;
         }
 
         public OblivionsNeedle(Serial serial)

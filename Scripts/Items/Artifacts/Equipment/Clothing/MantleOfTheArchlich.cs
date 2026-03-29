@@ -12,7 +12,7 @@ namespace Server.Items
             Name = "Mantle of the Archlich";
             Hue = 1150;
 
-            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
             Attributes.BonusStr = 10;
             Attributes.LowerManaCost = 5;
             Attributes.SpellDamage = 8;

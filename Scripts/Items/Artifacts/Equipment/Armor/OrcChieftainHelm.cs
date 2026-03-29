@@ -12,6 +12,9 @@ namespace Server.Items
 
             Attributes.Luck = 100;
             Attributes.RegenHits = 3;
+            Attributes.BonusStam = 15;
+            WeaponAttributes.HitLowerDefend = 30;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 20.0);
 
             if (Utility.RandomBool())
                 Attributes.BonusHits = 30;

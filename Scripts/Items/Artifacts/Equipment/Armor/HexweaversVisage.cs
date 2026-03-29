@@ -14,7 +14,7 @@ namespace Server.Items
 
             AbsorptionAttributes.CastingFocus = 2;
 
-            SkillBonuses.SetValues(0, GetRandomMageSkill(), 10.0);
+            SkillBonuses.SetValues(0, GetRandomMageSkill(), 20.0);
 
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;
@@ -29,7 +29,7 @@ namespace Server.Items
 
         public static SkillName GetRandomMageSkill()
         {
-            SkillName[] skills = new SkillName[] { SkillName.Necromancy, SkillName.Mysticism, SkillName.Magery, SkillName.Chivalry };
+            SkillName[] skills = new SkillName[] { SkillName.Necromancy, SkillName.Mysticism, SkillName.Magery, SkillName.Chivalry, SkillName.Spellweaving };
             return skills[Utility.Random(skills.Length)];
         }
 
@@ -73,7 +73,7 @@ namespace Server.Items
 
             AbsorptionAttributes.CastingFocus = 2;
 
-            SkillBonuses.SetValues(0, HexweaversVisage.GetRandomMageSkill(), 10.0);
+            SkillBonuses.SetValues(0, HexweaversVisage.GetRandomMageSkill(), 20.0);
 
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;

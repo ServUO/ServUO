@@ -13,10 +13,19 @@ namespace Server.Items
         public Tangle1()
             : base()
         {
-            Hue = 506;		
+            Hue = 506;
             Attributes.BonusInt = 10;
             Attributes.DefendChance = 5;
             Attributes.RegenMana = 2;
+
+            switch (Utility.Random(5))
+            {
+                case 0: SkillBonuses.SetValues(0, SkillName.AnimalLore, 20.0); break;
+                case 1: SkillBonuses.SetValues(0, SkillName.Mysticism, 20.0); break;
+                case 2: SkillBonuses.SetValues(0, SkillName.Magery, 20.0); break;
+                case 3: SkillBonuses.SetValues(0, SkillName.Spellweaving, 20.0); break;
+                case 4: SkillBonuses.SetValues(0, SkillName.Necromancy, 20.0); break;
+            }
         }
 
         public Tangle1(Serial serial)
@@ -52,6 +61,15 @@ namespace Server.Items
             Attributes.BonusInt = 10;
             Attributes.DefendChance = 5;
             Attributes.RegenMana = 2;
+
+            switch (Utility.Random(5))
+            {
+                case 0: SkillBonuses.SetValues(0, SkillName.AnimalLore, 20.0); break;
+                case 1: SkillBonuses.SetValues(0, SkillName.Mysticism, 20.0); break;
+                case 2: SkillBonuses.SetValues(0, SkillName.Magery, 20.0); break;
+                case 3: SkillBonuses.SetValues(0, SkillName.Spellweaving, 20.0); break;
+                case 4: SkillBonuses.SetValues(0, SkillName.Necromancy, 20.0); break;
+            }
         }
 
         public GargishTangle1(Serial serial)

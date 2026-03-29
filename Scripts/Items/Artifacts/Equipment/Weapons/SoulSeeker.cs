@@ -12,7 +12,9 @@ namespace Server.Items
             WeaponAttributes.HitLeechStam = 40;
             WeaponAttributes.HitLeechMana = 30;
             WeaponAttributes.HitLeechHits = 30;
+            WeaponAttributes.HitColdArea = 50;
             Attributes.WeaponSpeed = 60;
+            Attributes.WeaponDamage = 25;
             Slayer = SlayerName.Repond;
         }
 

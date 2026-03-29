@@ -11,6 +11,10 @@ namespace Server.Items
         {
             Hue = 0x455;
             Level = Utility.RandomMinMax(0, 2);
+            Attributes.BonusStam = 8;
+            Attributes.BonusMana = 8;
+            Attributes.RegenMana = 2;
+            SkillBonuses.SetValues(1, SkillName.MagicResist, 10.0);
         }
 
         public DetectiveBoots(Serial serial)

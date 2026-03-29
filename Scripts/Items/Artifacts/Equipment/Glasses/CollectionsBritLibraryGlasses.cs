@@ -11,10 +11,12 @@ namespace Server.Items
         public MaceAndShieldGlasses()
             : base()
         {
-            Hue = 0x1DD;		
+            Hue = 0x1DD;
             Attributes.BonusStr = 10;
-            Attributes.BonusDex = 5;		
+            Attributes.BonusDex = 5;
+            Attributes.WeaponDamage = 25;
             WeaponAttributes.HitLowerDefend = 30;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
         }
 
         public MaceAndShieldGlasses(Serial serial)
@@ -102,7 +104,9 @@ namespace Server.Items
             Hue = 0x1DD;
             Attributes.BonusStr = 10;
             Attributes.BonusDex = 5;
+            Attributes.WeaponDamage = 25;
             WeaponAttributes.HitLowerDefend = 30;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
         }
 
         public GargishMaceAndShieldGlasses(Serial serial)

@@ -11,8 +11,10 @@ namespace Server.Items
         {
             Attributes.RegenMana = 4;
             Attributes.CastRecovery = 3;
+            Attributes.LowerRegCost = 20;
             ArmorAttributes.MageArmor = 1;
             WeaponAttributes.HitLightning = 35;
+            SkillBonuses.SetValues(0, SkillName.Wrestling, 10.0);
         }
 
         public GargishBracersofAlchemicalDevastation(Serial serial) : base(serial)
@@ -28,10 +30,10 @@ namespace Server.Items
         }//Bracers of Alchemical Devastation [Replica]
 
         public override int BasePhysicalResistance { get { return 10; } }
-        public override int BaseFireResistance { get { return 8; } }
-        public override int BaseColdResistance { get { return 8; } }
-        public override int BasePoisonResistance { get { return 8; } }
-        public override int BaseEnergyResistance { get { return 8; } }
+        public override int BaseFireResistance { get { return 10; } }
+        public override int BaseColdResistance { get { return 10; } }
+        public override int BasePoisonResistance { get { return 10; } }
+        public override int BaseEnergyResistance { get { return 10; } }
         public override int InitMinHits { get { return 255; } }
         public override int InitMaxHits { get { return 255; } }
 

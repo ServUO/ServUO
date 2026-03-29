@@ -9,9 +9,11 @@ namespace Server.Items
         public Windsong()
             : base()
         {
-            Hue = 172;			
+            Hue = 172;
             Attributes.WeaponDamage = 35;
-            WeaponAttributes.SelfRepair = 3;			
+            WeaponAttributes.SelfRepair = 3;
+            WeaponAttributes.HitColdArea = 70;
+            WeaponAttributes.HitLeechMana = 40;
             Velocity = 25;			
         }
 

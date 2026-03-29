@@ -13,7 +13,13 @@ namespace Server.Items
             : base(0x2684)
         {
             Hue = 0x117;
-            Attributes.BonusHits = 3 + Utility.RandomMinMax(0, 2);
+            Attributes.BonusHits = 10;
+            Attributes.BonusInt = 10;
+            Attributes.BonusMana = 10;
+            Attributes.BonusStr = 10;
+            Attributes.BonusDex = 10;
+            Attributes.BonusStam = 10;
+            SkillBonuses.SetValues(0, SkillName.Healing, 10.0);
         }
 
         public TheMostKnowledgePerson(Serial serial)

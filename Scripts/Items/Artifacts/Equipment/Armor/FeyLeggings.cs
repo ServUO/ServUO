@@ -21,6 +21,7 @@ namespace Server.Items
             _ElfOnly = true;
 
             ArmorAttributes.MageArmor = 1;
+            SkillBonuses.SetValues(0, SkillName.Fishing, 20.0);
         }
 
         public FeyLeggings(Serial serial)

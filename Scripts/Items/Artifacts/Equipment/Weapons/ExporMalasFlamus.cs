@@ -16,7 +16,7 @@ namespace Server.Items
 
             WeaponAttributes.HitLowerAttack = 50;
             WeaponAttributes.HitLeechHits = 100;
-            WeaponAttributes.HitManaDrain = 100;
+            WeaponAttributes.HitLeechMana = 100;
             WeaponAttributes.HitLeechStam = 50;
             WeaponAttributes.HitFireArea = 70;
 
@@ -61,7 +61,7 @@ namespace Server.Items
 
             WeaponAttributes.HitLowerAttack = 50;
             WeaponAttributes.HitLeechHits = 100;
-            WeaponAttributes.HitManaDrain = 100;
+            WeaponAttributes.HitLeechMana = 100;
             WeaponAttributes.HitLeechStam = 50;
             WeaponAttributes.HitFireArea = 70;
 

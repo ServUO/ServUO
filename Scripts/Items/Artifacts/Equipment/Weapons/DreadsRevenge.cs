@@ -15,7 +15,9 @@ namespace Server.Items
         {
             Hue = 0x3A;		
             SkillBonuses.SetValues(0, SkillName.Fencing, 20.0);		
-            WeaponAttributes.HitPoisonArea = 30;
+            WeaponAttributes.HitPoisonArea = 50;
+            WeaponAttributes.HitFireball = 70;
+            WeaponAttributes.HitLowerDefend = 50;
             Attributes.AttackChance = 15;
             Attributes.WeaponSpeed = 50;
         }

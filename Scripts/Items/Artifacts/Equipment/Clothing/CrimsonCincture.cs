@@ -11,11 +11,24 @@ namespace Server.Items
         public CrimsonCincture()
             : base()
         {
-            Hue = 0x485;		
+            Hue = 0x485;
             Attributes.BonusDex = 5;
             Attributes.BonusHits = 10;
+            Attributes.BonusStam = 8;
             Attributes.RegenHits = 2;
             Attributes.RegenMana = 3;
+
+            SkillBonuses.SetValues(0, GetRandomSkill(), 20.0);
+        }
+
+        public static SkillName GetRandomSkill()
+        {
+            SkillName[] skills = new SkillName[]
+            {
+                SkillName.MagicResist, SkillName.Tactics, SkillName.Anatomy, SkillName.Focus,
+                SkillName.SpiritSpeak, SkillName.Ninjitsu, SkillName.Bushido, SkillName.Healing
+            };
+            return skills[Utility.Random(skills.Length)];
         }
 
         public CrimsonCincture(Serial serial)
@@ -56,8 +69,11 @@ namespace Server.Items
             Hue = 0x485;
             Attributes.BonusDex = 5;
             Attributes.BonusHits = 10;
+            Attributes.BonusStam = 8;
             Attributes.RegenHits = 2;
             Attributes.RegenMana = 3;
+
+            SkillBonuses.SetValues(0, CrimsonCincture.GetRandomSkill(), 20.0);
         }
 
         public GargishCrimsonCincture(Serial serial)

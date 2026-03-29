@@ -9,11 +9,14 @@ namespace Server.Items
         public Pacify()
         {
             Hue = 0x835;
+            Attributes.BalancedWeapon = 1;
             Attributes.SpellChanneling = 1;
             Attributes.AttackChance = 10;
             Attributes.WeaponSpeed = 20;
             Attributes.WeaponDamage = 50;
             WeaponAttributes.HitLeechMana = 100;
+            WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.HitLightning = 70;
             WeaponAttributes.UseBestSkill = 1;
         }
 

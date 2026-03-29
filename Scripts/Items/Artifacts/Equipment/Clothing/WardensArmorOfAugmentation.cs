@@ -12,7 +12,7 @@ namespace Server.Items
         public WardensArmorOfAugmentation()
         {
             Hue = 0x9C2;
-            SkillBonuses.SetValues(0, RangersCloakOfAugmentation.GetRandomRangerSkill(), 10.0);
+            SkillBonuses.SetValues(0, RangersCloakOfAugmentation.GetRandomRangerSkill(), 20.0);
             AbsorptionAttributes.EaterKinetic = 10;
             Attributes.SpellDamage = 5;
             Attributes.LowerManaCost = 8;

@@ -7,16 +7,27 @@ namespace Server.Items
 		public override bool IsArtifact { get { return true; } }
 		public override int LabelNumber { get { return 1113761; } } // Protector of the Battle Mage
 		
+        private static readonly SkillName[] m_PossibleBonusSkills = new SkillName[]
+        {
+            SkillName.Inscribe,
+            SkillName.AnimalLore,
+            SkillName.Alchemy
+        };
+
         [Constructable]
         public ProtectoroftheBattleMage()
             : base()
         {
-            Hue = 1159;		
-            Attributes.LowerManaCost = 8;	
+            Hue = 1159;
+            Attributes.LowerManaCost = 8;
             Attributes.RegenMana = 2;
             Attributes.LowerRegCost = 10;
-            Attributes.SpellDamage = 5;
+            Attributes.SpellDamage = 25;
+            Attributes.BonusMana = 8;
+            Attributes.RegenHits = 2;
+            Attributes.DefendChance = 15;
             AbsorptionAttributes.CastingFocus = 3;
+            SkillBonuses.SetValues(0, m_PossibleBonusSkills[Utility.Random(m_PossibleBonusSkills.Length)], 20.0);
         }
 
         public ProtectoroftheBattleMage(Serial serial)

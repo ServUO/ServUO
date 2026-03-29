@@ -14,6 +14,8 @@ namespace Server.Items
             Attributes.BonusInt = 5;
             Attributes.RegenMana = 2;
             Attributes.LowerRegCost = 10;
+            Attributes.EnhancePotions = 15;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
         }
 
         public LieutenantOfTheBritannianRoyalGuard(Serial serial)
@@ -75,6 +77,8 @@ namespace Server.Items
             Attributes.BonusInt = 5;
             Attributes.RegenMana = 2;
             Attributes.LowerRegCost = 10;
+            Attributes.EnhancePotions = 15;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
         }
 
         public GargishLieutenantOfTheBritannianRoyalGuard(Serial serial)
