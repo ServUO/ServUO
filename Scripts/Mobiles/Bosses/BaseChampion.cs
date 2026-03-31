@@ -373,7 +373,7 @@ namespace Server.Mobiles
                 // Custom artifact drops - 5% chance per eligible player
                 foreach (Mobile m in toGive)
                 {
-                    if (m is PlayerMobile && 0.05 > Utility.RandomDouble())
+                    if (m is PlayerMobile && 0.10 > Utility.RandomDouble())
                     {
                         GiveCustomArtifact(m);
                     }

@@ -11,8 +11,11 @@ namespace Server.Items
             Hue = 0x676;
             Attributes.SpellChanneling = 1;
             Attributes.CastRecovery = 3;
+            Attributes.CastSpeed = 1;
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 50;
+            WeaponAttributes.MageWeapon = 30;
+            WeaponAttributes.HitHarm = 70;
         }
 
         public LegacyOfTheDreadLord(Serial serial)

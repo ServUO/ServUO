@@ -10,7 +10,11 @@ namespace Server.Items
         {
             Hue = 0x6D1;
             Attributes.BonusDex = 15;
+            Attributes.BonusStam = 10;
             Attributes.RegenHits = 2;
+            Attributes.RegenMana = 2;
+            Attributes.WeaponSpeed = 10;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 20.0);
         }
 
         public JackalsCollar(Serial serial)

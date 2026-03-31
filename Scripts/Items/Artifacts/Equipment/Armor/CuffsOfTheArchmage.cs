@@ -18,6 +18,8 @@ namespace Server.Items
             Attributes.LowerRegCost = 20;
             Attributes.SpellDamage = 20;
             ArmorAttributes.MageArmor = 1;
+            AbsorptionAttributes.EaterFire = 15;
+            Attributes.WeaponDamage = 20;
         }
 
         public CuffsOfTheArchmage(Serial serial)
@@ -64,6 +66,8 @@ namespace Server.Items
             Attributes.LowerRegCost = 20;
             Attributes.SpellDamage = 20;
             ArmorAttributes.MageArmor = 1;
+            AbsorptionAttributes.EaterFire = 15;
+            Attributes.WeaponDamage = 20;
         }
 
         public GargishCuffsOfTheArchmage(Serial serial)

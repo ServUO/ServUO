@@ -10,6 +10,8 @@ namespace Server.Items
         {
             Hue = 0x60C;
             WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.HitLightning = 70;
+            ExtendedWeaponAttributes.BoneBreaker = 1;
             Attributes.BonusStr = 10;
             Attributes.WeaponDamage = 75;
         }

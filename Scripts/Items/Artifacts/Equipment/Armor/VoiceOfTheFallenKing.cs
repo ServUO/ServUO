@@ -10,8 +10,13 @@ namespace Server.Items
         {
             Hue = 0x76D;
             Attributes.BonusStr = 8;
+            Attributes.BonusStam = 12;
+            Attributes.BonusMana = 12;
             Attributes.RegenHits = 5;
             Attributes.RegenStam = 3;
+            Attributes.LowerManaCost = 8;
+            AbsorptionAttributes.EaterDamage = 15;
+            SkillBonuses.SetValues(0, SkillName.Healing, 20.0);
         }
 
         public VoiceOfTheFallenKing(Serial serial)
@@ -33,18 +38,39 @@ namespace Server.Items
                 return 11;
             }
         }
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
         public override int BaseColdResistance
         {
             get
             {
-                return 18;
+                return 15;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 18;
+                return 15;
             }
         }
         public override int InitMinHits

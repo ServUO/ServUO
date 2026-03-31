@@ -10,7 +10,12 @@ namespace Server.Items
         {
             Hue = 0x4F2;
             Attributes.CastRecovery = 3;
+            Attributes.CastSpeed = 2;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 20;
+            Attributes.BonusMana = 8;
+            Attributes.BonusInt = 8;
+            Attributes.RegenMana = 3;
             ArmorAttributes.MageArmor = 1;
         }
 
@@ -33,18 +38,39 @@ namespace Server.Items
                 return 10;
             }
         }
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
         public override int BaseColdResistance
         {
             get
             {
-                return 22;
+                return 15;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 17;
+                return 15;
             }
         }
         public override int InitMinHits

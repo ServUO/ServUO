@@ -9,13 +9,16 @@ namespace Server.Items
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public TheDeceiver() 
+        public TheDeceiver()
         {
             ExtendedWeaponAttributes.HitSparks = 20;
+            ExtendedWeaponAttributes.AssassinHoned = 1;
             WeaponAttributes.HitLowerAttack = 20;
             WeaponAttributes.HitEnergyArea = 75;
             WeaponAttributes.HitLowerDefend = 20;
             WeaponAttributes.HitLeechStam = 30;
+            WeaponAttributes.HitLeechMana = 30;
+            WeaponAttributes.HitLeechHits = 30;
             Attributes.LowerManaCost = 8;
             Attributes.WeaponDamage = 75;
         }

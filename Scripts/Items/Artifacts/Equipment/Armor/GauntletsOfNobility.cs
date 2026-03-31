@@ -10,8 +10,14 @@ namespace Server.Items
         {
             Hue = 0x4FE;
             Attributes.BonusStr = 8;
-            Attributes.Luck = 100;
+            Attributes.Luck = 250;
             Attributes.WeaponDamage = 20;
+            Attributes.BonusStam = 10;
+            Attributes.BonusMana = 10;
+            Attributes.RegenMana = 4;
+            Attributes.RegenHits = 4;
+            Attributes.RegenStam = 4;
+            SkillBonuses.SetValues(0, SkillName.Chivalry, 30.0);
         }
 
         public GauntletsOfNobility(Serial serial)
@@ -37,14 +43,35 @@ namespace Server.Items
         {
             get
             {
-                return 18;
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 20;
+                return 15;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int InitMinHits

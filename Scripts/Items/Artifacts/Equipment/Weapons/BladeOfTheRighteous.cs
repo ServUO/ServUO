@@ -11,6 +11,8 @@ namespace Server.Items
             Hue = 0x47E;
             Slayer = SlayerName.Exorcism;
             WeaponAttributes.HitLeechHits = 87;
+            WeaponAttributes.HitLeechMana = 87;
+            WeaponAttributes.HitLeechStam = 87;
             WeaponAttributes.UseBestSkill = 1;
             Attributes.BonusHits = 10;
             Attributes.WeaponDamage = 50;

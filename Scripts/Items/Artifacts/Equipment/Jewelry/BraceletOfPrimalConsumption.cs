@@ -10,13 +10,18 @@ namespace Server.Items
         [Constructable]
         public BraceletOfPrimalConsumption()
         {
-            AbsorptionAttributes.EaterDamage = 6;
+            AbsorptionAttributes.EaterDamage = 15;
             Attributes.Luck = 200;
+            Attributes.BonusDex = 10;
+            Attributes.BonusStam = 10;
+            Attributes.BonusInt = 10;
+            Attributes.BonusMana = 10;
             Resistances.Physical = 20;
             Resistances.Fire = 20;
             Resistances.Cold = 20;
             Resistances.Poison = 20;
             Resistances.Energy = 20;
+            SkillBonuses.SetValues(0, SkillName.Focus, 20.0);
         }
 
         public BraceletOfPrimalConsumption(Serial serial)

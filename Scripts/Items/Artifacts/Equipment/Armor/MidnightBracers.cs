@@ -11,6 +11,9 @@ namespace Server.Items
             Hue = 0x455;
             SkillBonuses.SetValues(0, SkillName.Necromancy, 20.0);
             Attributes.SpellDamage = 10;
+            Attributes.LowerRegCost = 15;
+            Attributes.BonusMana = 5;
+            Attributes.LowerManaCost = 8;
             ArmorAttributes.MageArmor = 1;
         }
 
@@ -37,7 +40,35 @@ namespace Server.Items
         {
             get
             {
-                return 23;
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int InitMinHits

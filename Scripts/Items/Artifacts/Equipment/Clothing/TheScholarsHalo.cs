@@ -11,10 +11,12 @@ namespace Server.Items
         public TheScholarsHalo()
         {
             Attributes.BonusMana = 15;
-            Attributes.RegenMana = 2;
+            Attributes.RegenMana = 6;
             Attributes.SpellDamage = 15;
             Attributes.CastSpeed = 1;
             Attributes.LowerManaCost = 10;
+            Attributes.LowerRegCost = 15;
+            SAAbsorptionAttributes.CastingFocus = 5;
         }
 
         public TheScholarsHalo(Serial serial)

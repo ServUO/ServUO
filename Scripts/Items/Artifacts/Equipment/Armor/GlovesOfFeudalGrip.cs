@@ -17,7 +17,10 @@ namespace Server.Items
             Attributes.RegenHits = 3;
             Attributes.RegenMana = 3;
             Attributes.WeaponDamage = 30;
+            Attributes.WeaponSpeed = 10;
+            Attributes.CastSpeed = 1;
             Attributes.LowerManaCost = 20;
+            AbsorptionAttributes.EaterPoison = 15;
             SkillBonuses.SetValues(0, SkillName.Necromancy, 15.0);
         }
 
@@ -70,7 +73,10 @@ namespace Server.Items
             Attributes.RegenHits = 3;
             Attributes.RegenMana = 3;
             Attributes.WeaponDamage = 30;
+            Attributes.WeaponSpeed = 10;
+            Attributes.CastSpeed = 1;
             Attributes.LowerManaCost = 20;
+            AbsorptionAttributes.EaterPoison = 15;
             SkillBonuses.SetValues(0, SkillName.Necromancy, 15.0);
         }
 

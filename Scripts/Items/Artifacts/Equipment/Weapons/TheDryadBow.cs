@@ -18,11 +18,17 @@ namespace Server.Items
         public TheDryadBow()
         {
             Hue = 0x48F;
-            SkillBonuses.SetValues(0, m_PossibleBonusSkills[Utility.Random(m_PossibleBonusSkills.Length)], (Utility.Random(4) == 0 ? 10.0 : 5.0));
+            SkillBonuses.SetValues(0, SkillName.Archery, 10.0);
             WeaponAttributes.SelfRepair = 5;
+            WeaponAttributes.HitFireball = 70;
+            WeaponAttributes.HitLowerDefend = 50;
+            Balanced = true;
             Attributes.WeaponSpeed = 50;
             Attributes.WeaponDamage = 35;
+            Attributes.LowerAmmoCost = 25;
             WeaponAttributes.ResistPoisonBonus = 15;
+            AosElementDamages.Physical = 0;
+            AosElementDamages.Poison = 100;
         }
 
         public TheDryadBow(Serial serial)

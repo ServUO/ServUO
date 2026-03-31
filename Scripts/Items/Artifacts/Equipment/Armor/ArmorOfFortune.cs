@@ -9,10 +9,16 @@ namespace Server.Items
         public ArmorOfFortune()
         {
             Hue = 0x501;
-            Attributes.Luck = 200;
+            Attributes.Luck = 300;
             Attributes.DefendChance = 15;
             Attributes.LowerRegCost = 40;
             ArmorAttributes.MageArmor = 1;
+            Attributes.BonusStr = 15;
+            Attributes.BonusDex = 15;
+            Attributes.BonusInt = 15;
+            Attributes.SpellDamage = 15;
+            Attributes.RegenMana = 2;
+            Attributes.BonusMana = 8;
         }
 
         public ArmorOfFortune(Serial serial)

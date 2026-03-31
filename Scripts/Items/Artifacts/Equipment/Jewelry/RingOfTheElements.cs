@@ -10,6 +10,12 @@ namespace Server.Items
         {
             Hue = 0x4E9;
             Attributes.Luck = 100;
+            Attributes.DefendChance = 25;
+            Attributes.EnhancePotions = 35;
+            AbsorptionAttributes.EaterFire = 10;
+            AbsorptionAttributes.EaterDamage = 10;
+            AbsorptionAttributes.EaterCold = 10;
+            AbsorptionAttributes.EaterEnergy = 10;
             Resistances.Fire = 16;
             Resistances.Cold = 16;
             Resistances.Poison = 16;

@@ -20,9 +20,14 @@ namespace Server.Items
                 case 5: AbsorptionAttributes.EaterDamage = 9; break;
             }
 
-            Attributes.BonusStam = 12;
-            Attributes.AttackChance = 10;
+            Attributes.BonusStam = 10;
+            Attributes.BonusMana = 10;
+            Attributes.AttackChance = 15;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 15;
+            Attributes.WeaponDamage = 15;
+            Attributes.WeaponSpeed = 5;
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 20.0);
         }
 
         public BritchesOfWarding(Serial serial)
@@ -71,9 +76,14 @@ namespace Server.Items
                 case 5: AbsorptionAttributes.EaterDamage = 9; break;
             }
 
-            Attributes.BonusStam = 12;
-            Attributes.AttackChance = 10;
+            Attributes.BonusStam = 10;
+            Attributes.BonusMana = 10;
+            Attributes.AttackChance = 15;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 15;
+            Attributes.WeaponDamage = 15;
+            Attributes.WeaponSpeed = 5;
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 20.0);
         }
 
         public GargishBritchesOfWarding(Serial serial)

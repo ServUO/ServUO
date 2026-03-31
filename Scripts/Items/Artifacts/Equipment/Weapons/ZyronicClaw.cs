@@ -11,6 +11,8 @@ namespace Server.Items
             Hue = 0x485;
             Slayer = SlayerName.ElementalBan;
             WeaponAttributes.HitLeechMana = 81;
+            WeaponAttributes.HitPoisonArea = 80;
+            WeaponAttributes.HitLeechHits = 80;
             Attributes.AttackChance = 30;
             Attributes.WeaponDamage = 50;
         }

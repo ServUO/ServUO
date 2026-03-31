@@ -12,6 +12,12 @@ namespace Server.Items
             ArmorAttributes.SelfRepair = 5;
             Attributes.NightSight = 1;
             Attributes.ReflectPhysical = 15;
+            Attributes.WeaponSpeed = 5;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 8;
+            AbsorptionAttributes.EaterFire = 15;
+            AbsorptionAttributes.ResonanceFire = 15;
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 20.0);
         }
 
         public TunicOfFire(Serial serial)

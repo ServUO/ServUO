@@ -14,6 +14,11 @@ namespace Server.Items
             Attributes.SpellDamage = 5;
             Attributes.LowerManaCost = 10;
             Attributes.LowerRegCost = 30;
+            Resistances.Physical = 15;
+            Resistances.Fire = 15;
+            Resistances.Cold = 15;
+            Resistances.Poison = 15;
+            Resistances.Energy = 15;
         }
 
         public PendantOfTheMagi(Serial serial)

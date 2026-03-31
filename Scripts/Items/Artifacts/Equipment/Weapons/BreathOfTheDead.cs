@@ -10,7 +10,9 @@ namespace Server.Items
         {
             Hue = 0x455;
             WeaponAttributes.HitLeechHits = 100;
-            WeaponAttributes.HitHarm = 25;
+            WeaponAttributes.HitHarm = 70;
+            WeaponAttributes.HitLowerDefend = 50;
+            Attributes.SpellChanneling = 1;
             Attributes.SpellDamage = 5;
             Attributes.WeaponDamage = 50;
         }
