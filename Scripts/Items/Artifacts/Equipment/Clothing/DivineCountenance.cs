@@ -13,6 +13,11 @@ namespace Server.Items
             Attributes.RegenMana = 2;
             Attributes.ReflectPhysical = 15;
             Attributes.LowerManaCost = 8;
+            Attributes.DefendChance = 15;
+            Attributes.LowerRegCost = 15;
+            Attributes.SpellDamage = 15;
+            Attributes.BonusMana = 8;
+            SAAbsorptionAttributes.CastingFocus = 5;
         }
 
         public DivineCountenance(Serial serial)
@@ -38,28 +43,35 @@ namespace Server.Items
         {
             get
             {
-                return 8;
+                return 18;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 6;
+                return 18;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 9;
+                return 18;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 18;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 25;
+                return 18;
             }
         }
         public override int InitMinHits

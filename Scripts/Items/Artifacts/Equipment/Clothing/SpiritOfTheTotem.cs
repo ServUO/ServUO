@@ -10,8 +10,11 @@ namespace Server.Items
         {
             Hue = 0x455;
             Attributes.BonusStr = 20;
+            Attributes.BonusDex = 20;
+            Attributes.BonusInt = 20;
             Attributes.ReflectPhysical = 15;
             Attributes.AttackChance = 15;
+            Attributes.WeaponDamage = 25;
         }
 
         public SpiritOfTheTotem(Serial serial)
@@ -37,7 +40,35 @@ namespace Server.Items
         {
             get
             {
-                return 20;
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int InitMinHits

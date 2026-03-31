@@ -10,10 +10,14 @@ namespace Server.Items
         {
             Hue = 0x530;
             Slayer = SlayerName.DragonSlaying;
-            Attributes.Luck = 110;
+            Attributes.Luck = 250;
             Attributes.WeaponDamage = 50;
             WeaponAttributes.ResistFireBonus = 20;
             WeaponAttributes.UseBestSkill = 1;
+            WeaponAttributes.HitLightning = 70;
+            WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.HitLeechMana = 80;
+            WeaponAttributes.HitLeechHits = 80;
         }
 
         public TheDragonSlayer(Serial serial)

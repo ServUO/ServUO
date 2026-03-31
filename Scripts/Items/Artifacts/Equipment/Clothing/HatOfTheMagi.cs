@@ -11,7 +11,10 @@ namespace Server.Items
             Hue = 0x481;
             Attributes.BonusInt = 8;
             Attributes.RegenMana = 4;
-            Attributes.SpellDamage = 10;
+            Attributes.SpellDamage = 25;
+            Attributes.LowerRegCost = 15;
+            SkillBonuses.SetValues(0, SkillName.Magery, 20.0);
+            SAAbsorptionAttributes.EaterEnergy = 10;
         }
 
         public HatOfTheMagi(Serial serial)
@@ -31,6 +34,27 @@ namespace Server.Items
             get
             {
                 return 11;
+            }
+        }
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 20;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 20;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 20;
             }
         }
         public override int BasePoisonResistance

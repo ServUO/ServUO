@@ -10,9 +10,13 @@ namespace Server.Items
         {
             Hue = 0x481;
             WeaponAttributes.MageWeapon = 30;
+            WeaponAttributes.HitFireball = 70;
             Attributes.SpellChanneling = 1;
             Attributes.CastSpeed = 1;
             Attributes.WeaponDamage = 50;
+            Attributes.RegenMana = 10;
+            Attributes.BonusMana = 10;
+            Attributes.AttackChance = 15;
         }
 
         public StaffOfTheMagi(Serial serial)

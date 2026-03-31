@@ -13,10 +13,13 @@ namespace Server.Items
             ExtendedWeaponAttributes.HitSwarm = 20;
             WeaponAttributes.HitLeechMana = 50;
             WeaponAttributes.HitLeechStam = 50;
+            WeaponAttributes.HitLightning = 70;
+            WeaponAttributes.HitLowerDefend = 50;
             Attributes.BonusStam = 8;
             Attributes.RegenStam = 3;
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 50;
+            Balanced = true;
         }
 
         public override void GetDamageTypes(Mobile wielder, out int phys, out int fire, out int cold, out int pois, out int nrgy, out int chaos, out int direct)

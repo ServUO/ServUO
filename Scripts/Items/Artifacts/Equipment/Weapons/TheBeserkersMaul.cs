@@ -11,6 +11,9 @@ namespace Server.Items
             Hue = 0x21;
             Attributes.WeaponSpeed = 75;
             Attributes.WeaponDamage = 50;
+            Attributes.SpellChanneling = 1;
+            WeaponAttributes.HitFireball = 70;
+            WeaponAttributes.HitLowerDefend = 50;
         }
 
         public TheBeserkersMaul(Serial serial)

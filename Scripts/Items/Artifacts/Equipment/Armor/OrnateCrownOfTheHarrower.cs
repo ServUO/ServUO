@@ -12,6 +12,11 @@ namespace Server.Items
             Attributes.RegenHits = 2;
             Attributes.RegenStam = 3;
             Attributes.WeaponDamage = 25;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 8;
+            Attributes.BonusStam = 8;
+            SkillBonuses.SetValues(0, SkillName.Necromancy, 20.0);
+            AbsorptionAttributes.EaterFire = 10;
         }
 
         public OrnateCrownOfTheHarrower(Serial serial)
@@ -33,11 +38,39 @@ namespace Server.Items
                 return 11;
             }
         }
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
         public override int BasePoisonResistance
         {
             get
             {
-                return 17;
+                return 15;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int InitMinHits

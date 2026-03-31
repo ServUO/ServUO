@@ -11,6 +11,11 @@ namespace Server.Items
             Hue = 0x21;
             Attributes.BonusHits = 5;
             Attributes.RegenHits = 10;
+            Attributes.AttackChance = 25;
+            Attributes.DefendChance = 25;
+            Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 25;
+            Attributes.SpellDamage = 25;
         }
 
         public BraceletOfHealth(Serial serial)

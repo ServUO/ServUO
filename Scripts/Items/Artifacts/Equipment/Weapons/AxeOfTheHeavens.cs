@@ -10,9 +10,22 @@ namespace Server.Items
         {
             Hue = 0x4D5;
             WeaponAttributes.HitLightning = 50;
+            WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.HitLeechMana = 80;
+            WeaponAttributes.HitLeechHits = 80;
+            WeaponAttributes.BattleLust = 1;
             Attributes.AttackChance = 15;
             Attributes.DefendChance = 15;
             Attributes.WeaponDamage = 50;
+
+            switch (Utility.Random(5))
+            {
+                case 0: AosElementDamages.Physical = 100; break;
+                case 1: AosElementDamages.Physical = 0; AosElementDamages.Fire = 100; break;
+                case 2: AosElementDamages.Physical = 0; AosElementDamages.Cold = 100; break;
+                case 3: AosElementDamages.Physical = 0; AosElementDamages.Energy = 100; break;
+                case 4: AosElementDamages.Physical = 0; AosElementDamages.Poison = 100; break;
+            }
         }
 
         public AxeOfTheHeavens(Serial serial)

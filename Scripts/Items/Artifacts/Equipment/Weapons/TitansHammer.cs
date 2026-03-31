@@ -10,6 +10,8 @@ namespace Server.Items
         {
             Hue = 0x482;
             WeaponAttributes.HitEnergyArea = 100;
+            WeaponAttributes.HitLeechMana = 80;
+            WeaponAttributes.HitLeechHits = 80;
             Attributes.BonusStr = 15;
             Attributes.AttackChance = 15;
             Attributes.WeaponDamage = 50;

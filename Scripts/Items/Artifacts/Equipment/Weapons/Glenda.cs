@@ -12,8 +12,11 @@ namespace Server.Items
         {
             ExtendedWeaponAttributes.BoneBreaker = 1;
             WeaponAttributes.HitLeechMana = 20;
+            WeaponAttributes.HitLeechHits = 20;
             WeaponAttributes.HitLowerDefend = 70;
+            WeaponAttributes.HitHarm = 30;
             Attributes.BonusStr = 16;
+            Attributes.BonusStam = 10;
             Attributes.WeaponDamage = 100;
         }
 

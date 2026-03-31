@@ -16,12 +16,19 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public AnonsBoots() 
+		public AnonsBoots()
 		{
             Hue = 1325;
 
 			Attributes.AttackChance = -5;
 			Attributes.DefendChance = 10;
+			Attributes.BonusInt = 10;
+			Attributes.BonusMana = 8;
+			Attributes.RegenHits = 2;
+			Attributes.RegenMana = 2;
+
+            SkillName[] skills = new SkillName[] { SkillName.Anatomy, SkillName.Healing, SkillName.Tactics, SkillName.EvalInt, SkillName.Focus, SkillName.SpiritSpeak };
+            SkillBonuses.SetValues(0, skills[Utility.Random(skills.Length)], 10.0);
 		}
 		
 		public AnonsBoots(Serial serial) : base(serial)
@@ -51,12 +58,19 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public AnonsBootsGargoyle() 
+		public AnonsBootsGargoyle()
 		{
             Hue = 1325;
 
 			Attributes.AttackChance = -5;
 			Attributes.DefendChance = 10;
+			Attributes.BonusInt = 10;
+			Attributes.BonusMana = 8;
+			Attributes.RegenHits = 2;
+			Attributes.RegenMana = 2;
+
+            SkillName[] skills = new SkillName[] { SkillName.Anatomy, SkillName.Healing, SkillName.Tactics, SkillName.EvalInt, SkillName.Focus, SkillName.SpiritSpeak };
+            SkillBonuses.SetValues(0, skills[Utility.Random(skills.Length)], 10.0);
 		}
 		
 		public AnonsBootsGargoyle(Serial serial) : base(serial)
@@ -83,7 +97,7 @@ namespace Server.Items
 		public override bool IsArtifact { get { return true; } }
 	
 		[Constructable]
-		public AnonsSpellbook() 
+		public AnonsSpellbook()
 		{
 			LootType = LootType.Blessed;
 			SkillBonuses.SetValues( 0, SkillName.Magery, 15.0 );
@@ -91,7 +105,8 @@ namespace Server.Items
 			Attributes.SpellDamage = 15;
 			Attributes.LowerManaCost = 10;
 			Attributes.LowerRegCost = 10;
-			
+			Attributes.RegenMana = 6;
+
 			Slayer = Utility.RandomBool() ? SlayerName.Dinosaur : SlayerName.Myrmidex;
 		}
 		
@@ -122,12 +137,14 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public BalakaisShamanStaff() 
+		public BalakaisShamanStaff()
 		{
-			SkillBonuses.SetValues( 0, SkillName.Meditation, 10.0 );
+			SkillBonuses.SetValues( 0, SkillName.Meditation, 20.0 );
 			WeaponAttributes.MageWeapon = 30;
 			Attributes.SpellChanneling = 1;
 			Attributes.EnhancePotions = 25;
+			Attributes.BalancedWeapon = 1;
+			Attributes.SpellDamage = 10;
 		}
 		
 		public BalakaisShamanStaff(Serial serial) : base(serial)
@@ -159,10 +176,12 @@ namespace Server.Items
 		[Constructable]
 		public BalakaisShamanStaffGargoyle() : base(WandEffect.None, 0, 0)
 		{
-			SkillBonuses.SetValues( 0, SkillName.Meditation, 10.0 );
+			SkillBonuses.SetValues( 0, SkillName.Meditation, 20.0 );
 			WeaponAttributes.MageWeapon = 30;
 			Attributes.SpellChanneling = 1;
 			Attributes.EnhancePotions = 25;
+			Attributes.BalancedWeapon = 1;
+			Attributes.SpellDamage = 10;
 		}
 		
 		public BalakaisShamanStaffGargoyle(Serial serial) : base(serial)
@@ -195,13 +214,21 @@ namespace Server.Items
 		public EnchantressCameo() : base(0x2F5B)
 		{
             Hue = 1645;
-			Attributes.BonusStr = 1;
+			Attributes.BonusStr = 5;
+			Attributes.BonusStam = 8;
 			Attributes.RegenHits = 2;
+			Attributes.RegenStam = 2;
 			Attributes.AttackChance = 10;
-			Attributes.WeaponSpeed = 5;
+			Attributes.WeaponSpeed = 10;
 			Attributes.WeaponDamage = 20;
 
             Slayer = (TalismanSlayerName)Utility.RandomList(11, 13, 14, 15, 16, 17);
+
+            SkillName[] fightSkills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Archery, SkillName.Wrestling, SkillName.Tactics, SkillName.Anatomy, SkillName.Throwing };
+            SkillName[] mageSkills = new SkillName[] { SkillName.Magery, SkillName.Necromancy, SkillName.Mysticism, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.Spellweaving };
+            SkillBonuses.SetValues(0, fightSkills[Utility.Random(fightSkills.Length)], 10.0);
+            SkillBonuses.SetValues(1, mageSkills[Utility.Random(mageSkills.Length)], 10.0);
+            SkillBonuses.SetValues(2, SkillName.MagicResist, 20.0);
 		}
 		
 		public EnchantressCameo(Serial serial) : base(serial)
@@ -232,23 +259,25 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public GrugorsShield() 
+		public GrugorsShield()
 		{
-			SkillBonuses.SetValues( 0, SkillName.Parry, 10.0 );
+			SkillBonuses.SetValues( 0, SkillName.Parry, 20.0 );
 			Attributes.BonusStr = 10;
 			Attributes.BonusStam = 10;
 			Attributes.RegenHits = 5;
 			Attributes.WeaponSpeed = 10;
+			Attributes.SpellChanneling = 1;
+			ArmorAttributes.SoulCharge = 30;
 
             SetProtection(typeof(BaseEodonTribesman), new TextDefinition(1156291), 60);
-			
+
 			PhysicalBonus = 4;
 			FireBonus = 4;
 			ColdBonus = 4;
 			PoisonBonus = 4;
 			EnergyBonus = 3;
 		}
-		
+
 		public GrugorsShield(Serial serial) : base(serial)
 		{
 		}
@@ -276,23 +305,25 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public GrugorsShieldGargoyle() 
+		public GrugorsShieldGargoyle()
 		{
-			SkillBonuses.SetValues( 0, SkillName.Parry, 10.0 );
+			SkillBonuses.SetValues( 0, SkillName.Parry, 20.0 );
 			Attributes.BonusStr = 10;
 			Attributes.BonusStam = 10;
 			Attributes.RegenHits = 5;
 			Attributes.WeaponSpeed = 10;
+			Attributes.SpellChanneling = 1;
+			ArmorAttributes.SoulCharge = 30;
 
             SetProtection(typeof(BaseEodonTribesman), new TextDefinition(1156291), 60);
-			
+
 			PhysicalBonus = 4;
 			FireBonus = 4;
 			ColdBonus = 4;
 			PoisonBonus = 4;
 			EnergyBonus = 3;
 		}
-		
+
 		public GrugorsShieldGargoyle(Serial serial) : base(serial)
 		{
 		}
@@ -321,13 +352,18 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public HalawasHuntingBow() 
+		public HalawasHuntingBow()
 		{
 			Slayer = SlayerName.Eodon;
 			WeaponAttributes.HitLeechMana = 20;
+			WeaponAttributes.HitFireball = 70;
+			WeaponAttributes.HitLowerDefend = 50;
 			Velocity = 60;
 			Attributes.AttackChance = 20;
 			Attributes.WeaponSpeed = 45;
+
+			AosElementDamages.Physical = 0;
+			AosElementDamages.Fire = 100;
 		}
 		
 		public HalawasHuntingBow(Serial serial) : base(serial)
@@ -360,13 +396,18 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public HalawasHuntingBowGargoyle() 
+		public HalawasHuntingBowGargoyle()
 		{
 			Slayer = SlayerName.Eodon;
 			WeaponAttributes.HitLeechMana = 20;
+			WeaponAttributes.HitFireball = 70;
+			WeaponAttributes.HitLowerDefend = 50;
 			Velocity = 60;
 			Attributes.AttackChance = 20;
 			Attributes.WeaponSpeed = 45;
+
+			AosElementDamages.Physical = 0;
+			AosElementDamages.Fire = 100;
 		}
 		
 		public HalawasHuntingBowGargoyle(Serial serial) : base(serial)
@@ -439,16 +480,23 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 	
 		[Constructable]
-		public JumusSacredHide() 
+		public JumusSacredHide()
 		{
 			Attributes.SpellDamage = 5;
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
+			Attributes.EnhancePotions = 15;
 
             SAAbsorptionAttributes.EaterPoison = 15;
-            Resistances.Fire = 5;
+            Resistances.Fire = 15;
+
+            SkillName[] mageSkills = new SkillName[] { SkillName.Magery, SkillName.Necromancy, SkillName.Mysticism, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.Spellweaving };
+            SkillBonuses.SetValues(0, mageSkills[Utility.Random(mageSkills.Length)], 15.0);
+
+            SkillName[] fightSkills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Archery, SkillName.Wrestling, SkillName.Throwing, SkillName.Tactics, SkillName.Anatomy };
+            SkillBonuses.SetValues(1, fightSkills[Utility.Random(fightSkills.Length)], 15.0);
 		}
-		
+
 		public JumusSacredHide(Serial serial) : base(serial)
 		{
 		}
@@ -478,15 +526,22 @@ namespace Server.Items
         public override int FireResistance { get { return 5; } }
 	
 		[Constructable]
-		public JumusSacredHideGargoyle () 
+		public JumusSacredHideGargoyle ()
 		{
 			Attributes.SpellDamage = 5;
 			Attributes.CastRecovery = 1;
 			Attributes.WeaponDamage = 20;
+			Attributes.EnhancePotions = 15;
 
             AbsorptionAttributes.EaterPoison = 15;
+
+            SkillName[] mageSkills = new SkillName[] { SkillName.Magery, SkillName.Necromancy, SkillName.Mysticism, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.Spellweaving };
+            SkillBonuses.SetValues(0, mageSkills[Utility.Random(mageSkills.Length)], 15.0);
+
+            SkillName[] fightSkills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Archery, SkillName.Wrestling, SkillName.Throwing, SkillName.Tactics, SkillName.Anatomy };
+            SkillBonuses.SetValues(1, fightSkills[Utility.Random(fightSkills.Length)], 15.0);
 		}
-		
+
 		public JumusSacredHideGargoyle (Serial serial) : base(serial)
 		{
 		}
@@ -511,17 +566,18 @@ namespace Server.Items
 		public override bool IsArtifact { get { return true; } }
 	
 		[Constructable]
-		public JuonarsGrimoire() 
+		public JuonarsGrimoire()
 		{
             Hue = 2500;
 
 			SkillBonuses.SetValues( 0, SkillName.Necromancy, 15.0 );
             Slayer = SlayerGroup.RandomSuperSlayerTOL();
-			
+
 			Attributes.BonusInt = 8;
 			Attributes.SpellDamage = 15;
 			Attributes.LowerManaCost = 10;
 			Attributes.LowerRegCost = 10;
+			Attributes.RegenMana = 2;
 		}
 		
 		public JuonarsGrimoire (Serial serial) : base(serial)
@@ -552,15 +608,17 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public LereisHuntingSpear() 
+		public LereisHuntingSpear()
 		{
 			WeaponAttributes.HitCurse = 10;
 			Slayer = SlayerName.ReptilianDeath;
 			WeaponAttributes.HitLeechMana = 80;
+			WeaponAttributes.HitHarm = 70;
+			WeaponAttributes.HitLowerDefend = 50;
 			Attributes.AttackChance = 20;
 			Attributes.WeaponSpeed = 30;
 			Attributes.WeaponDamage = 60;
-			
+
 			AosElementDamages.Poison = 100;
 		}
 		
@@ -594,15 +652,17 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public LereisHuntingSpearGargoyle() 
+		public LereisHuntingSpearGargoyle()
 		{
 			WeaponAttributes.HitCurse = 10;
 			Slayer = SlayerName.ReptilianDeath;
 			WeaponAttributes.HitLeechMana = 80;
+			WeaponAttributes.HitHarm = 70;
+			WeaponAttributes.HitLowerDefend = 50;
 			Attributes.AttackChance = 20;
 			Attributes.WeaponSpeed = 30;
 			Attributes.WeaponDamage = 60;
-			
+
 			AosElementDamages.Poison = 100;
 		}
 		
@@ -637,13 +697,16 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public MinaxsSandles() 
+		public MinaxsSandles()
 		{
             Hue = 1645;
 			Attributes.Luck = 150;
 			Attributes.LowerManaCost = 5;
 			Attributes.LowerRegCost = 10;
-			
+			Attributes.BonusInt = 10;
+			Attributes.BonusMana = 10;
+			Attributes.RegenMana = 2;
+
 			switch(Utility.Random(5))
 			{
                 case 0: Resistances.Physical = -3; break;
@@ -652,8 +715,11 @@ namespace Server.Items
                 case 3: Resistances.Poison = -3; break;
                 case 4: Resistances.Energy = -3; break;
 			}
+
+            SkillName[] mageSkills = new SkillName[] { SkillName.Magery, SkillName.Necromancy, SkillName.Mysticism, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.Spellweaving };
+            SkillBonuses.SetValues(0, mageSkills[Utility.Random(mageSkills.Length)], 10.0);
 		}
-		
+
 		public MinaxsSandles(Serial serial) : base(serial)
 		{
 		}
@@ -681,13 +747,16 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public MinaxsSandlesGargoyle() 
+		public MinaxsSandlesGargoyle()
 		{
             Hue = 1645;
 			Attributes.Luck = 150;
 			Attributes.LowerManaCost = 5;
 			Attributes.LowerRegCost = 10;
-			
+			Attributes.BonusInt = 10;
+			Attributes.BonusMana = 10;
+			Attributes.RegenMana = 2;
+
 			switch(Utility.Random(5))
 			{
                 case 0: Resistances.Physical = -3; break;
@@ -696,8 +765,11 @@ namespace Server.Items
                 case 3: Resistances.Poison = -3; break;
                 case 4: Resistances.Energy = -3; break;
 			}
+
+            SkillName[] mageSkills = new SkillName[] { SkillName.Magery, SkillName.Necromancy, SkillName.Mysticism, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.Spellweaving };
+            SkillBonuses.SetValues(0, mageSkills[Utility.Random(mageSkills.Length)], 10.0);
 		}
-		
+
 		public MinaxsSandlesGargoyle(Serial serial) : base(serial)
 		{
 		}
@@ -726,14 +798,19 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public OzymandiasObi() 
+		public OzymandiasObi()
 		{
-            Hue = 2105; 
+            Hue = 2105;
 			Attributes.BonusStr = 10;
 			Attributes.BonusStam = 10;
+			Attributes.RegenHits = 2;
+			Attributes.RegenMana = 2;
 			Attributes.RegenStam = 2;
+
+            SkillName[] skills = new SkillName[] { SkillName.Anatomy, SkillName.Healing, SkillName.Tactics, SkillName.Focus, SkillName.SpiritSpeak, SkillName.Meditation, SkillName.EvalInt };
+            SkillBonuses.SetValues(0, skills[Utility.Random(skills.Length)], 20.0);
 		}
-		
+
 		public OzymandiasObi(Serial serial) : base(serial)
 		{
 		}
@@ -761,14 +838,19 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public OzymandiasObiGargoyle() 
+		public OzymandiasObiGargoyle()
 		{
-             Hue = 2105; 
+            Hue = 2105;
 			Attributes.BonusStr = 10;
 			Attributes.BonusStam = 10;
+			Attributes.RegenHits = 2;
+			Attributes.RegenMana = 2;
 			Attributes.RegenStam = 2;
+
+            SkillName[] skills = new SkillName[] { SkillName.Anatomy, SkillName.Healing, SkillName.Tactics, SkillName.Focus, SkillName.SpiritSpeak, SkillName.Meditation, SkillName.EvalInt };
+            SkillBonuses.SetValues(0, skills[Utility.Random(skills.Length)], 20.0);
 		}
-		
+
 		public OzymandiasObiGargoyle(Serial serial) : base(serial)
 		{
 		}
@@ -797,12 +879,19 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public ShantysWaders() 
+		public ShantysWaders()
 		{
 			Attributes.AttackChance = 10;
 			Attributes.DefendChance = -5;
+			Attributes.BonusInt = 10;
+			Attributes.BonusMana = 8;
+			Attributes.RegenHits = 2;
+			Attributes.RegenMana = 2;
+
+            SkillName[] skills = new SkillName[] { SkillName.Anatomy, SkillName.Healing, SkillName.Tactics, SkillName.EvalInt, SkillName.Focus, SkillName.SpiritSpeak };
+            SkillBonuses.SetValues(0, skills[Utility.Random(skills.Length)], 10.0);
 		}
-		
+
 		public ShantysWaders(Serial serial) : base(serial)
 		{
 		}
@@ -830,12 +919,19 @@ namespace Server.Items
         public override int InitMaxHits{ get{ return 255; } }
 		
 		[Constructable]
-		public ShantysWadersGargoyle() 
+		public ShantysWadersGargoyle()
 		{
 			Attributes.AttackChance = 10;
 			Attributes.DefendChance = -5;
+			Attributes.BonusInt = 10;
+			Attributes.BonusMana = 8;
+			Attributes.RegenHits = 2;
+			Attributes.RegenMana = 2;
+
+            SkillName[] skills = new SkillName[] { SkillName.Anatomy, SkillName.Healing, SkillName.Tactics, SkillName.EvalInt, SkillName.Focus, SkillName.SpiritSpeak };
+            SkillBonuses.SetValues(0, skills[Utility.Random(skills.Length)], 10.0);
 		}
-		
+
 		public ShantysWadersGargoyle(Serial serial) : base(serial)
 		{
 		}
@@ -864,8 +960,13 @@ namespace Server.Items
 		{
             SAAbsorptionAttributes.EaterDamage = 5;
 			Attributes.RegenHits = 2;
-			Attributes.AttackChance = 5;
-			Attributes.DefendChance = 5;
+			Attributes.AttackChance = 15;
+			Attributes.DefendChance = 15;
+			Attributes.BonusDex = 15;
+			Attributes.BonusStam = 8;
+
+            SkillName[] fightSkills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Archery, SkillName.Wrestling, SkillName.Throwing };
+            SkillBonuses.SetValues(0, fightSkills[Utility.Random(fightSkills.Length)], 20.0);
 		}
 		
 		public TotemOfTheTribe(Serial serial) : base(serial)
@@ -897,6 +998,20 @@ namespace Server.Items
 		{
 			Hue = 2955;
 
+			Attributes.AttackChance = 10;
+			Attributes.WeaponDamage = 10;
+			Attributes.SpellDamage = 20;
+			Attributes.BonusStr = 10;
+			Attributes.BonusMana = 10;
+			Attributes.BonusStam = 10;
+			Attributes.EnhancePotions = 15;
+			Attributes.Luck = 250;
+
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
+
+            SkillName[] castSkills = new SkillName[] { SkillName.Magery, SkillName.Necromancy, SkillName.Mysticism, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.Spellweaving };
+            SkillBonuses.SetValues(1, castSkills[Utility.Random(castSkills.Length)], 10.0);
+
             switch (Utility.Random(15))
             {
                 case 0: SetProtection(typeof(BaseEodonTribesman), new TextDefinition(1156291), 40); break;
@@ -918,7 +1033,7 @@ namespace Server.Items
                 case 16: SetProtection(typeof(MyrmidexWarrior), new TextDefinition(1156135), 40); break;
             }
 		}
-		
+
 		public WamapsBoneEarrings(Serial serial) : base(serial)
 		{
 		}
@@ -950,6 +1065,20 @@ namespace Server.Items
         {
             Hue = 2955;
 
+			Attributes.AttackChance = 10;
+			Attributes.WeaponDamage = 10;
+			Attributes.SpellDamage = 20;
+			Attributes.BonusStr = 10;
+			Attributes.BonusMana = 10;
+			Attributes.BonusStam = 10;
+			Attributes.EnhancePotions = 15;
+			Attributes.Luck = 250;
+
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
+
+            SkillName[] castSkills = new SkillName[] { SkillName.Magery, SkillName.Necromancy, SkillName.Mysticism, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.Spellweaving };
+            SkillBonuses.SetValues(1, castSkills[Utility.Random(castSkills.Length)], 10.0);
+
             switch (Utility.Random(15))
             {
                 case 0: SetProtection(typeof(BaseEodonTribesman), new TextDefinition(1156291), 40); break;
@@ -971,7 +1100,7 @@ namespace Server.Items
                 case 16: SetProtection(typeof(MyrmidexWarrior), new TextDefinition(1156135), 40); break;
             }
         }
-		
+
 		public WamapsBoneEarringsGargoyle(Serial serial) : base(serial)
 		{
 		}
@@ -1039,9 +1168,13 @@ namespace Server.Items
             WeaponAttributes.HitHarm = 50;
             WeaponAttributes.HitPhysicalArea = 50;
             WeaponAttributes.HitLeechStam = 100;
+            WeaponAttributes.HitLeechMana = 80;
             WeaponAttributes.SplinteringWeapon = 20;
             Attributes.WeaponSpeed = 40;
             Attributes.WeaponDamage = 75;
+
+            AosElementDamages.Physical = 0;
+            AosElementDamages.Cold = 100;
 
             Hue = 1932;
         }

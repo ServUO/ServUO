@@ -12,7 +12,12 @@ namespace Server.Items
             Attributes.BonusDex = 8;
             Attributes.RegenStam = 6;
             Attributes.AttackChance = 15;
+            Attributes.DefendChance = 15;
+            Attributes.EnhancePotions = 25;
+            Attributes.LowerManaCost = 8;
             Resistances.Poison = 20;
+            SkillBonuses.SetValues(0, SkillName.Healing, 10.0);
+            SkillBonuses.SetValues(1, SkillName.Anatomy, 10.0);
         }
 
         public RingOfTheVile(Serial serial)

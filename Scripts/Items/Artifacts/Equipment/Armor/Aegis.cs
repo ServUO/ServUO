@@ -5,14 +5,30 @@ namespace Server.Items
     public class Aegis : HeaterShield
     {
 		public override bool IsArtifact { get { return true; } }
+
+        private static readonly SkillName[] m_PossibleBonusSkills = new SkillName[]
+        {
+            SkillName.Parry,
+            SkillName.Tactics,
+            SkillName.Anatomy,
+            SkillName.Healing,
+            SkillName.MagicResist
+        };
+
         [Constructable]
         public Aegis()
         {
             Hue = 0x47E;
             ArmorAttributes.SelfRepair = 5;
+            ArmorAttributes.ReactiveParalyze = 1;
             Attributes.ReflectPhysical = 15;
             Attributes.DefendChance = 15;
             Attributes.LowerManaCost = 8;
+            Attributes.SpellChanneling = 1;
+            Attributes.WeaponDamage = 15;
+            Attributes.RegenStam = 4;
+            Attributes.BonusStam = 8;
+            SkillBonuses.SetValues(0, m_PossibleBonusSkills[Utility.Random(m_PossibleBonusSkills.Length)], 20.0);
         }
 
         public Aegis(Serial serial)
@@ -26,7 +42,7 @@ namespace Server.Items
             {
                 return 1061602;
             }
-        }// Ægis
+        }// ï¿½gis
         public override int ArtifactRarity
         {
             get

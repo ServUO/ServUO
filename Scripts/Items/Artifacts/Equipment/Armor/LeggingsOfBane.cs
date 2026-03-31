@@ -10,8 +10,13 @@ namespace Server.Items
         {
             Hue = 0x4F5;
             ArmorAttributes.DurabilityBonus = 100;
-            Attributes.BonusStam = 8;
+            Attributes.BonusStam = 5;
+            Attributes.BonusMana = 5;
             Attributes.AttackChance = 20;
+            Attributes.WeaponDamage = 15;
+            Attributes.WeaponSpeed = 5;
+            Attributes.LowerManaCost = 5;
+            SkillBonuses.SetValues(0, SkillName.Anatomy, 20.0);
         }
 
         public LeggingsOfBane(Serial serial)
@@ -33,11 +38,39 @@ namespace Server.Items
                 return 11;
             }
         }
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
         public override int BasePoisonResistance
         {
             get
             {
-                return 36;
+                return 15;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int InitMinHits

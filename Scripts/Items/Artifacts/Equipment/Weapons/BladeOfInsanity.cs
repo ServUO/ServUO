@@ -10,6 +10,10 @@ namespace Server.Items
         {
             Hue = 0x76D;
             WeaponAttributes.HitLeechStam = 100;
+            WeaponAttributes.HitLowerDefend = 50;
+            WeaponAttributes.HitMagicArrow = 70;
+            WeaponAttributes.BattleLust = 1;
+            WeaponAttributes.HitLeechMana = 100;
             Attributes.RegenStam = 2;
             Attributes.WeaponSpeed = 30;
             Attributes.WeaponDamage = 50;

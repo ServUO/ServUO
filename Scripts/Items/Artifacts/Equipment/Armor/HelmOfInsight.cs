@@ -13,6 +13,10 @@ namespace Server.Items
             Attributes.BonusMana = 15;
             Attributes.RegenMana = 2;
             Attributes.LowerManaCost = 8;
+            Attributes.LowerRegCost = 15;
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 20.0);
+            AbsorptionAttributes.CastingFocus = 5;
+            AbsorptionAttributes.EaterFire = 10;
         }
 
         public HelmOfInsight(Serial serial)
@@ -34,11 +38,39 @@ namespace Server.Items
                 return 11;
             }
         }
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 17;
+                return 15;
             }
         }
         public override int InitMinHits

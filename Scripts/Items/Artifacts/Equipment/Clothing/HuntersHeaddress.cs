@@ -11,8 +11,10 @@ namespace Server.Items
             Hue = 0x594;
             SkillBonuses.SetValues(0, SkillName.Archery, 20);
             Attributes.BonusDex = 8;
+            Attributes.BonusStam = 10;
             Attributes.NightSight = 1;
             Attributes.AttackChance = 15;
+            Attributes.RegenStam = 4;
         }
 
         public HuntersHeaddress(Serial serial)
@@ -34,11 +36,39 @@ namespace Server.Items
                 return 11;
             }
         }
+        public override int BasePhysicalResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
         public override int BaseColdResistance
         {
             get
             {
-                return 23;
+                return 15;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int InitMinHits

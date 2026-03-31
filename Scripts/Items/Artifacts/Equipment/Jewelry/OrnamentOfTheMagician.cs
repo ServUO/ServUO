@@ -13,6 +13,14 @@ namespace Server.Items
             Attributes.CastSpeed = 2;
             Attributes.LowerManaCost = 10;
             Attributes.LowerRegCost = 20;
+            Attributes.BonusMana = 10;
+            Attributes.BonusStam = 10;
+            Attributes.RegenHits = 2;
+            Attributes.RegenMana = 2;
+            Attributes.RegenStam = 2;
+            Attributes.EnhancePotions = 15;
+            Attributes.DefendChance = 15;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 10.0);
             Resistances.Energy = 15;
         }
 

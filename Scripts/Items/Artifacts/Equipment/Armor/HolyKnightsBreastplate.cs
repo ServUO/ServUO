@@ -11,6 +11,12 @@ namespace Server.Items
             Hue = 0x47E;
             Attributes.BonusHits = 10;
             Attributes.ReflectPhysical = 15;
+            Attributes.AttackChance = 15;
+            Attributes.CastRecovery = 1;
+            Attributes.LowerManaCost = 8;
+            Attributes.RegenMana = 4;
+            SkillBonuses.SetValues(0, SkillName.Chivalry, 20.0);
+            AbsorptionAttributes.EaterDamage = 10;
         }
 
         public HolyKnightsBreastplate(Serial serial)
@@ -36,7 +42,35 @@ namespace Server.Items
         {
             get
             {
-                return 35;
+                return 15;
+            }
+        }
+        public override int BaseFireResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseColdResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BasePoisonResistance
+        {
+            get
+            {
+                return 15;
+            }
+        }
+        public override int BaseEnergyResistance
+        {
+            get
+            {
+                return 15;
             }
         }
         public override int InitMinHits

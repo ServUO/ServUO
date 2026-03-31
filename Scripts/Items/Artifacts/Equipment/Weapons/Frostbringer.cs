@@ -10,8 +10,13 @@ namespace Server.Items
         {
             Hue = 0x4F2;
             WeaponAttributes.HitDispel = 50;
+            WeaponAttributes.HitLightning = 70;
+            WeaponAttributes.HitLowerDefend = 50;
+            Balanced = true;
             Attributes.RegenStam = 10;
             Attributes.WeaponDamage = 50;
+            Attributes.WeaponSpeed = 50;
+            Attributes.LowerAmmoCost = 25;
         }
 
         public Frostbringer(Serial serial)
