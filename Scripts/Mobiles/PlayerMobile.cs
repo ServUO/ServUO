@@ -2090,7 +2090,10 @@ namespace Server.Mobiles
 				return false;
 			}
 
-			m_NextMovementTime += speed;
+			if (m_NextMovementTime == 0 || m_NextMovementTime < Core.TickCount)
+				m_NextMovementTime = Core.TickCount + speed;
+			else
+				m_NextMovementTime += speed;
 
             if (!Siege.SiegeShard && Core.TickCount - NextPassiveDetectHidden >= 0)
             {
@@ -2546,6 +2549,11 @@ namespace Server.Mobiles
 			}
 
             if (item is BaseBalmOrLotion || item is GemOfSalvation || item is SeedOfLife || item is ManaDraught)
+            {
+                return false;
+            }
+
+            if (item is PowerScroll || item is StatCapScroll || item is ScrollOfTranscendence)
             {
                 return false;
             }

@@ -5,10 +5,18 @@ namespace Server.Items
     public class SpiritOfTheTotem : BearMask
 	{
 		public override bool IsArtifact { get { return true; } }
+
+        public static SkillName GetRandomSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Swords, SkillName.Fencing, SkillName.Macing };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public SpiritOfTheTotem()
         {
             Hue = 0x455;
+            SkillBonuses.SetValues(0, GetRandomSkill(), 20.0);
             Attributes.BonusStr = 20;
             Attributes.BonusDex = 20;
             Attributes.BonusInt = 20;

@@ -6,6 +6,12 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
 
+        public static SkillName GetRandomSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Magery, SkillName.Mysticism, SkillName.Necromancy, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.MagicResist, SkillName.Spellweaving };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public SolariasSecretPoisons()
         {
@@ -14,7 +20,14 @@ namespace Server.Items
             Weight = 1.0;
 
             SkillBonuses.SetValues(0, SkillName.Ninjitsu, 10.0);
+            SkillBonuses.SetValues(1, GetRandomSkill(), 10.0);
             Attributes.AttackChance = 10;
+            Attributes.CastSpeed = 2;
+            Attributes.LowerRegCost = 10;
+            Attributes.WeaponDamage = 25;
+            Attributes.SpellDamage = 15;
+            Attributes.BonusMana = 8;
+            Attributes.BonusStam = 8;
 
             MaxHitPoints = 255;
             HitPoints = 255;
@@ -50,7 +63,14 @@ namespace Server.Items
             Weight = 1.0;
 
             SkillBonuses.SetValues(0, SkillName.Ninjitsu, 10.0);
+            SkillBonuses.SetValues(1, SolariasSecretPoisons.GetRandomSkill(), 10.0);
             Attributes.AttackChance = 10;
+            Attributes.CastSpeed = 2;
+            Attributes.LowerRegCost = 10;
+            Attributes.WeaponDamage = 25;
+            Attributes.SpellDamage = 15;
+            Attributes.BonusMana = 8;
+            Attributes.BonusStam = 8;
         }
 
         public GargishSolariasSecretPoisons(Serial serial)

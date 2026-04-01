@@ -18,17 +18,28 @@ namespace Server.Items
         public override int BaseColdResistance { get { return 7; } }
         public override int BasePoisonResistance { get { return 17; } }
         public override int BaseEnergyResistance { get { return 6; } }
-		
+
 		public override bool IsArtifact { get { return true; } }
+
+        public static SkillName GetRandomSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Tactics, SkillName.Anatomy, SkillName.Healing, SkillName.Chivalry, SkillName.Ninjitsu, SkillName.Bushido };
+            return skills[Utility.Random(skills.Length)];
+        }
 
         [Constructable]
         public PrismaticLenses()
         {
             Hue = 2068;
             WeaponAttributes.HitLowerDefend = 30;
+            SkillBonuses.SetValues(0, GetRandomSkill(), 20.0);
             Attributes.RegenHits = 2;
             Attributes.RegenStam = 3;
             Attributes.WeaponDamage = 25;
+            Attributes.BonusStam = 8;
+            Attributes.BonusMana = 8;
+            Attributes.CastSpeed = 1;
+            AbsorptionAttributes.EaterDamage = 15;
         }
 
         public PrismaticLenses(Serial serial)
@@ -69,9 +80,14 @@ namespace Server.Items
         {
             Hue = 2068;
             WeaponAttributes.HitLowerDefend = 30;
+            SkillBonuses.SetValues(0, PrismaticLenses.GetRandomSkill(), 20.0);
             Attributes.RegenHits = 2;
             Attributes.RegenStam = 3;
             Attributes.WeaponDamage = 25;
+            Attributes.BonusStam = 8;
+            Attributes.BonusMana = 8;
+            Attributes.CastSpeed = 1;
+            AbsorptionAttributes.EaterDamage = 15;
         }
 
         public GargishPrismaticLenses(Serial serial)

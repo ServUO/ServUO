@@ -15,13 +15,16 @@ namespace Server.Items
 
             AbsorptionAttributes.EaterKinetic = 15;
 
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 20.0);
             Attributes.BonusStr = 5;
             Attributes.BonusHits = 5;
             Attributes.BonusMana = 12;
             Attributes.RegenMana = 4;
+            Attributes.RegenHits = 4;
             Attributes.SpellDamage = 8;
             Attributes.LowerManaCost = 10;
             Attributes.LowerRegCost = 20;
+            Attributes.CastRecovery = 1;
         }
 
         public DeathwardensGreaves(Serial serial)
@@ -64,13 +67,16 @@ namespace Server.Items
 
             AbsorptionAttributes.EaterKinetic = 15;
 
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 20.0);
             Attributes.BonusStr = 5;
             Attributes.BonusHits = 5;
             Attributes.BonusMana = 12;
             Attributes.RegenMana = 4;
+            Attributes.RegenHits = 4;
             Attributes.SpellDamage = 8;
             Attributes.LowerManaCost = 10;
             Attributes.LowerRegCost = 20;
+            Attributes.CastRecovery = 1;
         }
 
         public GargishDeathwardensGreaves(Serial serial)
