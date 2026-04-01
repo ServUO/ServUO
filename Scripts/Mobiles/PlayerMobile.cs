@@ -3970,19 +3970,19 @@ namespace Server.Mobiles
 
                 bool gainedPath = false;
 
-                if (VirtueHelper.Award(m, VirtueName.Justice, pointsToGain, ref gainedPath))
+                if (VirtueHelper.Award(killer, VirtueName.Justice, pointsToGain, ref gainedPath))
                 {
                     if (gainedPath)
                     {
-                        m.SendLocalizedMessage(1049367); // You have gained a path in Justice!
+                        killer.SendLocalizedMessage(1049367); // You have gained a path in Justice!
                     }
                     else
                     {
-                        m.SendLocalizedMessage(1049363); // You have gained in Justice.
+                        killer.SendLocalizedMessage(1049363); // You have gained in Justice.
                     }
 
-                    m.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
-                    m.PlaySound(0x1F7);
+                    killer.FixedParticles(0x375A, 9, 20, 5027, EffectLayer.Waist);
+                    killer.PlaySound(0x1F7);
 
                     killer.m_NextJustAward = DateTime.UtcNow + TimeSpan.FromMinutes(minutesToWait);
                 }
