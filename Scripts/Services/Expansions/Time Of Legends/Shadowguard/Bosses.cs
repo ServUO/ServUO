@@ -57,7 +57,7 @@ namespace Server.Engines.Shadowguard
         {
             if (IsLastBoss)
             {
-                this.AddLoot(LootPack.SuperBoss, 7);
+                this.AddLoot(LootPack.SuperBoss, 12);
             }
         }
 		

@@ -77,6 +77,24 @@ namespace Server.Engines.Shadowguard
                         Instance.Table = new Dictionary<Mobile, EncounterType>();
 
                     Instance.Table[e.Mobile] = EncounterType.Bar | EncounterType.Orchard | EncounterType.Armory | EncounterType.Fountain | EncounterType.Belfry;
+                    e.Mobile.SendMessage("All Shadowguard rooms completed for yourself.");
+                });
+
+            CommandSystem.Register("CompleteAllRoomsTarget", AccessLevel.GameMaster, e =>
+                {
+                    e.Mobile.SendMessage("Target the player to complete all Shadowguard rooms for.");
+                    e.Mobile.BeginTarget(-1, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
+                    {
+                        if (targeted is Mobile m)
+                        {
+                            if (Instance.Table == null)
+                                Instance.Table = new Dictionary<Mobile, EncounterType>();
+
+                            Instance.Table[m] = EncounterType.Bar | EncounterType.Orchard | EncounterType.Armory | EncounterType.Fountain | EncounterType.Belfry;
+                            from.SendMessage("All Shadowguard rooms completed for {0}.", m.Name);
+                            m.SendMessage("All Shadowguard rooms have been completed for you.");
+                        }
+                    });
                 });
         }
 
