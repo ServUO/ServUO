@@ -7939,7 +7939,7 @@ namespace Server.Mobiles
                         {
                             c.OwnerAbandonTime = DateTime.MinValue;
 
-                            if (c.Map != Map.Internal)
+                            if (c.Map != Map.Internal && !c.IsBonded)
                             {
                                 c.Loyalty -= (BaseCreature.MaxLoyalty / 10);
 
