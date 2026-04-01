@@ -7938,7 +7938,7 @@ namespace Server.Mobiles
                         else if (c.Controlled && c.Commandable)
                         {
                             c.OwnerAbandonTime = DateTime.MinValue;
-
+                            // Only decrease loyalty if the creature is not bonded, or if it's a pet that can be bonded but isn't yet
                             if (c.Map != Map.Internal && !c.IsBonded)
                             {
                                 c.Loyalty -= (BaseCreature.MaxLoyalty / 10);
