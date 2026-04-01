@@ -6,6 +6,12 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
 
+        public static SkillName GetRandomSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Magery, SkillName.Mysticism, SkillName.Necromancy, SkillName.Chivalry, SkillName.Bushido, SkillName.Ninjitsu, SkillName.MagicResist };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public GlovesOfTheArchlich()
         {
@@ -14,6 +20,7 @@ namespace Server.Items
 
             AbsorptionAttributes.EaterFire = 15;
 
+            SkillBonuses.SetValues(0, GetRandomSkill(), 20.0);
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;
             Attributes.BonusHits = 5;
@@ -22,6 +29,8 @@ namespace Server.Items
             Attributes.RegenMana = 3;
             Attributes.LowerManaCost = 10;
             Attributes.LowerRegCost = 20;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 1;
 
             ArmorAttributes.MageArmor = 1;
         }
@@ -64,6 +73,7 @@ namespace Server.Items
 
             AbsorptionAttributes.EaterFire = 15;
 
+            SkillBonuses.SetValues(0, GlovesOfTheArchlich.GetRandomSkill(), 20.0);
             Attributes.BonusStr = 5;
             Attributes.BonusInt = 5;
             Attributes.BonusHits = 5;
@@ -72,6 +82,8 @@ namespace Server.Items
             Attributes.RegenMana = 3;
             Attributes.LowerManaCost = 10;
             Attributes.LowerRegCost = 20;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 1;
 
             ArmorAttributes.MageArmor = 1;
         }

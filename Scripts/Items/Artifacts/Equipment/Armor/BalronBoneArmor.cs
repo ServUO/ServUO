@@ -8,7 +8,7 @@ namespace Server.Items
 
         public static SkillName GetRandomCombatSkill()
         {
-            SkillName[] skills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Wrestling, SkillName.Throwing };
+            SkillName[] skills = new SkillName[] { SkillName.Swords, SkillName.Macing, SkillName.Fencing, SkillName.Wrestling, SkillName.Throwing, SkillName.Archery };
             return skills[Utility.Random(skills.Length)];
         }
 

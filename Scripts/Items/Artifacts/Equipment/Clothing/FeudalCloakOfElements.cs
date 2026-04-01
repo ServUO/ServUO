@@ -6,6 +6,12 @@ namespace Server.Items
     {
         public override bool IsArtifact { get { return true; } }
 
+        public static SkillName GetRandomSkill()
+        {
+            SkillName[] skills = new SkillName[] { SkillName.Magery, SkillName.Mysticism, SkillName.Necromancy, SkillName.Spellweaving, SkillName.Chivalry };
+            return skills[Utility.Random(skills.Length)];
+        }
+
         [Constructable]
         public FeudalCloakOfElements()
         {
@@ -16,10 +22,13 @@ namespace Server.Items
 
             Resistances.Fire = 15;
 
+            SkillBonuses.SetValues(0, GetRandomSkill(), 15.0);
             Attributes.RegenHits = 2;
             Attributes.RegenStam = 3;
             Attributes.RegenMana = 2;
             Attributes.Luck = 150;
+            Attributes.CastSpeed = 1;
+            Attributes.SpellDamage = 15;
         }
 
         public FeudalCloakOfElements(Serial serial)
@@ -52,10 +61,13 @@ namespace Server.Items
 
             AbsorptionAttributes.EaterDamage = 15;
 
+            SkillBonuses.SetValues(0, FeudalCloakOfElements.GetRandomSkill(), 15.0);
             Attributes.RegenHits = 2;
             Attributes.RegenStam = 3;
             Attributes.RegenMana = 2;
             Attributes.Luck = 150;
+            Attributes.CastSpeed = 1;
+            Attributes.SpellDamage = 15;
         }
 
         public WingArmorOfElements(Serial serial)

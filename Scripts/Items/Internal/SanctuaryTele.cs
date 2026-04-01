@@ -6,7 +6,7 @@ namespace Server.Items
     { 
         [Constructable]
         public SanctuaryTele()
-            : base(new Point3D(6172, 22, 0), Map.Trammel)
+            : base(new Point3D(6172, 22, 0), Map.Felucca)
         {
         }
 
