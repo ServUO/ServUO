@@ -3270,6 +3270,9 @@ namespace Server.Mobiles
                             }
                         }
 
+                        if (dropped is Server.Engines.Shadowguard.ShadowguardApple apple)
+                            apple._FedToPet = true;
+
                         dropped.Delete();
                         return true;
                     }

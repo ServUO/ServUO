@@ -130,6 +130,7 @@ namespace Server.Engines.Shadowguard
 		public OrchardEncounter Encounter { get; set; }
 
         public bool _Thrown;
+        public bool _FedToPet;
 
 		public override int Lifespan { get { return 30; } }
 	
@@ -237,7 +238,7 @@ namespace Server.Engines.Shadowguard
         {
             base.OnDelete();
 
-            if (!_Thrown && Encounter != null)
+            if (!_Thrown && !_FedToPet && Encounter != null)
             {
                 foreach (var pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                 {
