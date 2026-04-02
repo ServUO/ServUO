@@ -14,6 +14,10 @@ namespace Server.Items
             Attributes.AttackChance = 15;
             Attributes.WeaponSpeed = 10;
             Attributes.BonusStam = 10;
+            Attributes.RegenHits = 4;
+            Attributes.RegenMana = 4;
+            Attributes.RegenStam = 4;
+            SAAbsorptionAttributes.EaterFire = 15;
         }
 
         public RoyalGuardInvestigatorsCloak(Serial serial)

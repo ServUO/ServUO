@@ -13,8 +13,11 @@ namespace Server.Items
         {
             Weight = 2.0;
 			Hue = 0x21;
-			Attributes.RegenHits = 1;
-			Attributes.BonusHits = 3;
+			Attributes.RegenHits = 6;
+			Attributes.BonusHits = 10;
+			SAAbsorptionAttributes.EaterDamage = 15;
+			Attributes.EnhancePotions = 35;
+			Attributes.BonusStr = 10;
         }
 
         public CloakOfLife(Serial serial)

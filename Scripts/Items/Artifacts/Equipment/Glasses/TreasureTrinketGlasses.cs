@@ -11,6 +11,8 @@ namespace Server.Items
             Attributes.BonusInt = 10;
             Attributes.BonusHits = 5;
             Attributes.SpellDamage = 10;
+            Attributes.RegenHits = 6;
+            SkillBonuses.SetValues(0, SkillName.DetectHidden, 30.0);
             Hue = 0x1C2;
         }
 

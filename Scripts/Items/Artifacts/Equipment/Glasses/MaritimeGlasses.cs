@@ -8,9 +8,11 @@ namespace Server.Items
         [Constructable]
         public MaritimeGlasses()
         {
-            Attributes.Luck = 150;
+            Attributes.Luck = 250;
             Attributes.NightSight = 1;
             Attributes.ReflectPhysical = 20;
+            Attributes.LowerRegCost = 15;
+            SkillBonuses.SetValues(0, SkillName.Fishing, 15.0);
             Hue = 0x581;
         }
 
@@ -30,14 +32,14 @@ namespace Server.Items
         {
             get
             {
-                return 3;
+                return 15;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 4;
+                return 15;
             }
         }
         public override int BaseColdResistance
@@ -51,14 +53,14 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 3;
+                return 15;
             }
         }
         public override int InitMinHits

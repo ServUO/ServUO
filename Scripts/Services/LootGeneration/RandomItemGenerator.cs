@@ -149,7 +149,7 @@ namespace Server.Items
                 new BossEntry(350, typeof(ClockworkExodus), typeof(CoraTheSorceress), typeof(Charydbis), typeof(Zipactriotl), typeof(MyrmidexQueen)));
 
             Entries.Add(
-                new BossEntry(500, typeof(ShadowguardBoss)));
+                new BossEntry(700, typeof(ShadowguardBoss)));
         }
     }
 }

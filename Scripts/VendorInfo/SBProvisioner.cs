@@ -35,8 +35,8 @@ namespace Server.Mobiles
             {
                 Add(new GenericBuyInfo("1060834", typeof(Engines.Plants.PlantBowl), 2, 20, 0x15FD, 0));
 
-                Add(new GenericBuyInfo(typeof(Arrow), 2, 20, 0xF3F, 0, true));
-                Add(new GenericBuyInfo(typeof(Bolt), 5, 20, 0x1BFB, 0, true));
+                Add(new GenericBuyInfo(typeof(Arrow), 2, 100, 0xF3F, 0, true));
+                Add(new GenericBuyInfo(typeof(Bolt), 5, 100, 0x1BFB, 0, true));
 
                 Add(new GenericBuyInfo(typeof(Backpack), 15, 20, 0x9B2, 0));
                 Add(new GenericBuyInfo(typeof(Pouch), 6, 20, 0xE79, 0));
@@ -47,7 +47,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Lantern), 2, 20, 0xA25, 0));
                 Add(new GenericBuyInfo(typeof(OilFlask), 10, 20, 0x1C18, 0));
 
-                Add(new GenericBuyInfo(typeof(Lockpick), 12, 20, 0x14FC, 0, true));
+                Add(new GenericBuyInfo(typeof(Lockpick), 12, 100, 0x14FC, 0, true));
 
                 Add(new GenericBuyInfo(typeof(FloppyHat), 7, 20, 0x1713, Utility.RandomDyedHue()));
                 Add(new GenericBuyInfo(typeof(WideBrimHat), 8, 20, 0x1714, Utility.RandomDyedHue()));
@@ -76,10 +76,10 @@ namespace Server.Mobiles
 
                 Add(new GenericBuyInfo(typeof(Beeswax), 1, 20, 0x1422, 0, true));
 
-                Add(new GenericBuyInfo(typeof(Garlic), 3, 20, 0xF84, 0));
-                Add(new GenericBuyInfo(typeof(Ginseng), 3, 20, 0xF85, 0));
+                Add(new GenericBuyInfo(typeof(Garlic), 3, 100, 0xF84, 0));
+                Add(new GenericBuyInfo(typeof(Ginseng), 3, 100, 0xF85, 0));
 
-                Add(new GenericBuyInfo(typeof(Bottle), 5, 20, 0xF0E, 0, true));
+                Add(new GenericBuyInfo(typeof(Bottle), 5, 100, 0xF0E, 0, true));
 
                 Add(new GenericBuyInfo(typeof(RedBook), 15, 20, 0xFF1, 0));
                 Add(new GenericBuyInfo(typeof(BlueBook), 15, 20, 0xFF2, 0));
@@ -89,7 +89,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Key), 2, 20, 0x100E, 0));
 
                 Add(new GenericBuyInfo(typeof(Bedroll), 5, 20, 0xA59, 0));
-                Add(new GenericBuyInfo(typeof(Kindling), 2, 20, 0xDE1, 0, true));
+                Add(new GenericBuyInfo(typeof(Kindling), 2, 100, 0xDE1, 0, true));
 
                 Add(new GenericBuyInfo("1041205", typeof(Multis.SmallBoatDeed), 10177, 20, 0x14F2, 0));
 

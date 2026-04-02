@@ -11,9 +11,11 @@ namespace Server.Items
             Hue = 0x48D;
             Attributes.BonusInt = 10;
             Attributes.RegenMana = 3;
-            Attributes.SpellDamage = 5;
+            Attributes.SpellDamage = 30;
             Attributes.LowerManaCost = 10;
             Attributes.LowerRegCost = 30;
+            Attributes.Luck = 150;
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 10.0);
             Resistances.Physical = 15;
             Resistances.Fire = 15;
             Resistances.Cold = 15;

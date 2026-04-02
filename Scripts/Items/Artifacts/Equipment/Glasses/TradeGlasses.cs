@@ -10,6 +10,9 @@ namespace Server.Items
         {
             Attributes.BonusStr = 10;
             Attributes.BonusInt = 10;
+            Attributes.BonusDex = 10;
+            Attributes.EnhancePotions = 15;
+            SkillBonuses.SetValues(0, SkillName.Alchemy, 15.0);
         }
 
         public TradeGlasses(Serial serial)

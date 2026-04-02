@@ -10,6 +10,8 @@ namespace Server.Items
         {
             Attributes.LowerManaCost = 15;
             Attributes.LowerRegCost = 30;
+            Attributes.RegenMana = 4;
+            SkillBonuses.SetValues(0, SkillName.Necromancy, 15.0);
             Hue = 0x22D;
         }
 
@@ -29,35 +31,35 @@ namespace Server.Items
         {
             get
             {
-                return 0;
+                return 15;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 0;
+                return 15;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 0;
+                return 15;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 0;
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 0;
+                return 15;
             }
         }
         public override int InitMinHits

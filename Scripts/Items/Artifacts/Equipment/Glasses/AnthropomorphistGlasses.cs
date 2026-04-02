@@ -11,6 +11,8 @@ namespace Server.Items
             Attributes.BonusHits = 5;
             Attributes.RegenMana = 3;
             Attributes.ReflectPhysical = 20;
+            Attributes.LowerRegCost = 15;
+            SkillBonuses.SetValues(0, SkillName.Magery, 15.0);
             Hue = 0x80;
         }
 

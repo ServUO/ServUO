@@ -10,9 +10,18 @@ namespace Server.Items
         [Constructable]
         public LegendaryMapmakersGlasses()
         {
-            SkillBonuses.SetValues(0, SkillName.Cartography, Utility.RandomMinMax(1, 5));
+            SkillBonuses.SetValues(0, SkillName.Cartography, 15.0);
+            Attributes.Luck = 250;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 8;
             Quality = ItemQuality.Exceptional;
         }
+
+        public override int BasePhysicalResistance { get { return 15; } }
+        public override int BaseFireResistance { get { return 15; } }
+        public override int BaseColdResistance { get { return 15; } }
+        public override int BasePoisonResistance { get { return 15; } }
+        public override int BaseEnergyResistance { get { return 15; } }
 
         public LegendaryMapmakersGlasses(Serial serial)
             : base(serial)

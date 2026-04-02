@@ -12,7 +12,12 @@ namespace Server.Items
         {
 			Attributes.NightSight = 1;
             Attributes.RegenHits = 2;
-            Attributes.AttackChance = 5;
+            Attributes.AttackChance = 15;
+            Attributes.RegenMana = 6;
+            Attributes.BonusInt = 10;
+            Attributes.BonusMana = 10;
+            SAAbsorptionAttributes.EaterEnergy = 15;
+            Attributes.DefendChance = 15;
         }
 
         public CloakOfLight(Serial serial)
@@ -44,7 +49,12 @@ namespace Server.Items
         {
             Attributes.NightSight = 1;
             Attributes.RegenHits = 2;
-            Attributes.AttackChance = 5;
+            Attributes.AttackChance = 15;
+            Attributes.RegenMana = 6;
+            Attributes.BonusInt = 10;
+            Attributes.BonusMana = 10;
+            SAAbsorptionAttributes.EaterEnergy = 15;
+            Attributes.DefendChance = 15;
         }
 
         public WingArmorOfLight(Serial serial)

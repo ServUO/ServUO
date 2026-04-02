@@ -11,6 +11,10 @@ namespace Server.Items
             Attributes.BonusMana = 10;
             Attributes.RegenMana = 3;
             Attributes.SpellDamage = 15;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 8;
+            AbsorptionAttributes.EaterEnergy = 15;
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 15.0);
             Hue = 0x2B0;
         }
 
@@ -30,35 +34,35 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int InitMinHits

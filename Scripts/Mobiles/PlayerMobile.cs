@@ -5929,7 +5929,7 @@ namespace Server.Mobiles
 		#region Fastwalk Prevention
 		private static bool FastwalkPrevention = false; // Is fastwalk prevention enabled? (disabled for now, causes glitching)
 
-		private static int FastwalkThreshold = 200; // Fastwalk prevention will become active after 0.2 seconds
+		//private static int FastwalkThreshold = 200; // Fastwalk prevention will become active after 0.2 seconds
 
 		private long m_NextMovementTime;
 		private bool m_HasMoved;

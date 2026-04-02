@@ -267,6 +267,8 @@ namespace Server.Items
             Attributes.RegenHits = 5;
             Attributes.RegenMana = 3;
             Attributes.SpellDamage = 20;
+            Attributes.CastRecovery = 3;
+            Attributes.DefendChance = 15;
         }
 
         public bool HasSkillBonus

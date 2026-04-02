@@ -24,6 +24,11 @@ namespace Server.Items
             Attributes.RegenHits = 3;
             Attributes.RegenMana = 5;
             Attributes.WeaponDamage = 75;
+            Attributes.AttackChance = 15;
+            Attributes.DefendChance = 15;
+            Attributes.EnhancePotions = 25;
+            Attributes.BonusDex = 5;
+            Attributes.BonusStam = 8;
         }
 
         public override void OnDoubleClick(Mobile m)

@@ -14,6 +14,10 @@ namespace Server.Items
             Attributes.BonusStr = 8;
             Attributes.NightSight = 1;
             Attributes.DefendChance = 15;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
+            AbsorptionAttributes.EaterDamage = 15;
+            Attributes.RegenHits = 4;
+            Attributes.EnhancePotions = 15;
             Hue = 0x47E;
         }
 
@@ -104,6 +108,10 @@ namespace Server.Items
             Attributes.BonusStr = 8;
             Attributes.NightSight = 1;
             Attributes.DefendChance = 15;
+            SkillBonuses.SetValues(0, SkillName.MagicResist, 15.0);
+            AbsorptionAttributes.EaterDamage = 15;
+            Attributes.RegenHits = 4;
+            Attributes.EnhancePotions = 15;
             Hue = 0x47E;
         }
 

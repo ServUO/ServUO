@@ -57,7 +57,7 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(Bag), 6, 20, 0xE76, 0));
                 Add(new GenericBuyInfo(typeof(Pouch), 6, 20, 0xE79, 0));
                 Add(new GenericBuyInfo(typeof(Backpack), 15, 20, 0x9B2, 0));
-                Add(new GenericBuyInfo(typeof(Leather), 6, 20, 0x1081, 0, true));
+                Add(new GenericBuyInfo(typeof(Leather), 6, 100, 0x1081, 0, true));
 
                 Add(new GenericBuyInfo(typeof(SkinningKnife), 15, 20, 0xEC4, 0));
 

@@ -83,14 +83,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }
@@ -192,10 +192,13 @@ namespace Server.Items
         public GlassesOfTheArts()
             : base()
         {
-            Hue = 0x73;	
+            Hue = 0x73;
             Attributes.BonusInt = 5;
             Attributes.BonusStr = 5;
             Attributes.BonusHits = 15;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 15.0);
+            Attributes.RegenHits = 4;
+            Attributes.RegenMana = 4;
         }
 
         public GlassesOfTheArts(Serial serial)
@@ -214,35 +217,35 @@ namespace Server.Items
         {
             get
             {
-                return 10;
+                return 15;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 8;
+                return 15;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 8;
+                return 15;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 4;
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 10;
+                return 15;
             }
         }
         public override int InitMinHits
@@ -262,14 +265,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }
@@ -283,6 +286,9 @@ namespace Server.Items
             Attributes.BonusInt = 5;
             Attributes.BonusStr = 5;
             Attributes.BonusHits = 15;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 15.0);
+            Attributes.RegenHits = 4;
+            Attributes.RegenMana = 4;
         }
 
         public GargishGlassesOfTheArts(Serial serial)
@@ -301,35 +307,35 @@ namespace Server.Items
         {
             get
             {
-                return 10;
+                return 15;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 8;
+                return 15;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 8;
+                return 15;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 4;
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 10;
+                return 15;
             }
         }
         public override int InitMinHits
@@ -369,6 +375,9 @@ namespace Server.Items
         {
             Attributes.BonusStr = 10;
             Attributes.BonusInt = 10;
+            Attributes.BonusDex = 10;
+            Attributes.EnhancePotions = 15;
+            SkillBonuses.SetValues(0, SkillName.Alchemy, 15.0);
         }
 
         public TradesGlasses(Serial serial)
@@ -434,14 +443,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }
@@ -453,6 +462,9 @@ namespace Server.Items
         {
             Attributes.BonusStr = 10;
             Attributes.BonusInt = 10;
+            Attributes.BonusDex = 10;
+            Attributes.EnhancePotions = 15;
+            SkillBonuses.SetValues(0, SkillName.Alchemy, 15.0);
         }
 
         public GargishTradesGlasses(Serial serial)
@@ -537,10 +549,14 @@ namespace Server.Items
         [Constructable]
         public WizardsCrystalGlasses()
         {
-            Hue = 0x2B0;	
+            Hue = 0x2B0;
             Attributes.BonusMana = 10;
             Attributes.RegenMana = 3;
             Attributes.SpellDamage = 15;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 8;
+            AbsorptionAttributes.EaterEnergy = 15;
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 15.0);
         }
 
         public WizardsCrystalGlasses(Serial serial)
@@ -559,35 +575,35 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int InitMinHits
@@ -607,14 +623,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }
@@ -628,6 +644,10 @@ namespace Server.Items
             Attributes.BonusMana = 10;
             Attributes.RegenMana = 3;
             Attributes.SpellDamage = 15;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 8;
+            AbsorptionAttributes.EaterEnergy = 15;
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 15.0);
         }
 
         public GargishWizardsCrystalGlasses(Serial serial)
@@ -646,35 +666,35 @@ namespace Server.Items
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseFireResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseColdResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BasePoisonResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int BaseEnergyResistance
         {
             get
             {
-                return 5;
+                return 15;
             }
         }
         public override int InitMinHits
@@ -712,10 +732,12 @@ namespace Server.Items
         [Constructable]
         public TreasuresAndTrinketsGlasses()
         {
-            Hue = 0x5A6; // TODO check		
+            Hue = 0x5A6; // TODO check
             Attributes.BonusInt = 10;
             Attributes.BonusHits = 5;
             Attributes.SpellDamage = 10;
+            Attributes.RegenHits = 6;
+            SkillBonuses.SetValues(0, SkillName.DetectHidden, 30.0);
         }
 
         public TreasuresAndTrinketsGlasses(Serial serial)
@@ -782,14 +804,14 @@ namespace Server.Items
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
-			
+
             writer.Write((int)0); // version
         }
 
         public override void Deserialize(GenericReader reader)
         {
             base.Deserialize(reader);
-			
+
             int version = reader.ReadInt();
         }
     }
@@ -803,6 +825,8 @@ namespace Server.Items
             Attributes.BonusInt = 10;
             Attributes.BonusHits = 5;
             Attributes.SpellDamage = 10;
+            Attributes.RegenHits = 6;
+            SkillBonuses.SetValues(0, SkillName.DetectHidden, 30.0);
         }
 
         public GargishTreasuresAndTrinketsGlasses(Serial serial)

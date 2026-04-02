@@ -16,8 +16,10 @@ namespace Server.Items
 
             Attributes.BonusStr = 5;
             Attributes.BonusHits = 3;
-            Attributes.AttackChance = 5;
-            Attributes.WeaponSpeed = 5;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponSpeed = 10;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 10.0);
+            SAAbsorptionAttributes.EaterDamage = 10;
 
             MaxHitPoints = 255;
             HitPoints = 255;
@@ -55,8 +57,10 @@ namespace Server.Items
 
             Attributes.BonusStr = 5;
             Attributes.BonusHits = 3;
-            Attributes.AttackChance = 5;
-            Attributes.WeaponSpeed = 5;
+            Attributes.AttackChance = 10;
+            Attributes.WeaponSpeed = 10;
+            SkillBonuses.SetValues(0, SkillName.Tactics, 10.0);
+            SAAbsorptionAttributes.EaterDamage = 10;
 
             StrRequirement = 10;
 

@@ -55,8 +55,8 @@ namespace Server.Mobiles
                 Add(new GenericBuyInfo(typeof(WoodenBowlOfTomatoSoup), 3, 20, 0x1606, 0));
 
                 Add(new GenericBuyInfo(typeof(RoastPig), 106, 20, 0x9BB, 0, true));
-                Add(new GenericBuyInfo(typeof(SackFlour), 3, 20, 0x1039, 0, true));
-                Add(new GenericBuyInfo(typeof(JarHoney), 3, 20, 0x9EC, 0, true));
+                Add(new GenericBuyInfo(typeof(SackFlour), 3, 100, 0x1039, 0, true));
+                Add(new GenericBuyInfo(typeof(JarHoney), 3, 100, 0x9EC, 0, true));
                 Add(new GenericBuyInfo(typeof(RollingPin), 2, 20, 0x1043, 0));
                 Add(new GenericBuyInfo(typeof(FlourSifter), 2, 20, 0x103E, 0));
                 Add(new GenericBuyInfo("1044567", typeof(Skillet), 3, 20, 0x97F, 0));

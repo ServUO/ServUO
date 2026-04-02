@@ -7,7 +7,7 @@ namespace Server.Items
         public override bool IsArtifact { get { return true; } }
 
         [Constructable]
-        public SerpentSkinQuiver()
+        public SerpentSkinQuiver() : base(0x2B02)
         {
             Name = "Serpent Skin Quiver";
             Hue = 1267;
@@ -21,6 +21,8 @@ namespace Server.Items
             Attributes.Luck = 125;
             Attributes.WeaponSpeed = 10;
             Attributes.WeaponDamage = 20;
+            Attributes.BonusStam = 8;
+            Attributes.RegenHits = 2;
         }
 
         public SerpentSkinQuiver(Serial serial)
@@ -55,6 +57,8 @@ namespace Server.Items
             Attributes.Luck = 125;
             Attributes.WeaponSpeed = 10;
             Attributes.WeaponDamage = 20;
+            Attributes.BonusStam = 8;
+            Attributes.RegenHits = 2;
         }
 
         public GargishSerpentSkinWingArmor(Serial serial)

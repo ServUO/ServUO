@@ -109,6 +109,8 @@ namespace Server.Gumps
             this.m_Caster = caster;
             this.m_Scroll = scroll;
 
+            caster.BeginAction(typeof(PolymorphSpell));
+
             int x,y;
             this.AddPage(0);
             this.AddBackground(0, 0, 585, 393, 5054);
@@ -148,6 +150,9 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState state, RelayInfo info)
         {
+            // Release the polymorph lock so the spell can re-acquire it
+            m_Caster.EndAction(typeof(PolymorphSpell));
+
             if (info.ButtonID == 1 && info.Switches.Length > 0)
             {
                 int cnum = info.Switches[0];
@@ -223,6 +228,8 @@ namespace Server.Gumps
             this.m_Caster = caster;
             this.m_Scroll = scroll;
 
+            caster.BeginAction(typeof(PolymorphSpell));
+
             this.AddPage(0);
 
             this.AddBackground(0, 0, 520, 404, 0x13BE);
@@ -270,6 +277,9 @@ namespace Server.Gumps
 
         public override void OnResponse(NetState sender, RelayInfo info)
         {
+            // Release the polymorph lock so the spell can re-acquire it
+            m_Caster.EndAction(typeof(PolymorphSpell));
+
             int idx = info.ButtonID - 1;
 
             if (idx < 0 || idx >= m_Entries.Length)

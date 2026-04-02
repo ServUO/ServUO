@@ -18,6 +18,7 @@ namespace Server.Items
 
             WeaponAttributes.MageWeapon = 30;
             WeaponAttributes.HitLightning = 50;
+            WeaponAttributes.HitLowerDefend = 50;
 
             AosElementDamages.Physical = 100;
 

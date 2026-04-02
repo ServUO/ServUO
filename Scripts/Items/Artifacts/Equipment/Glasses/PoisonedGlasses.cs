@@ -10,6 +10,10 @@ namespace Server.Items
         {
             Attributes.BonusStam = 3;
             Attributes.RegenStam = 4;
+            Attributes.BonusHits = 10;
+            Attributes.RegenHits = 4;
+            AbsorptionAttributes.EaterPoison = 15;
+            SkillBonuses.SetValues(0, SkillName.Poisoning, 15.0);
             Hue = 0x113;
         }
 

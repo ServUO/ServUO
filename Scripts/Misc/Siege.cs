@@ -420,9 +420,6 @@ namespace Server
 
 		private static readonly Type[] _NoSellList =
 		{
-			typeof(BaseIngot), typeof(BaseWoodBoard), typeof(BaseLog), typeof(BaseLeather), typeof(BaseHides), typeof(Cloth),
-			typeof(BoltOfCloth), typeof(UncutCloth), typeof(Wool), typeof(Cotton), typeof(Flax), typeof(SpoolOfThread),
-			typeof(Feather), typeof(Shaft), typeof(Arrow), typeof(Bolt)
 		};
 
 		public static void TryBlessItem(PlayerMobile pm, object targeted)

@@ -11,6 +11,11 @@ namespace Server.Items
             WeaponAttributes.HitLowerDefend = 20;
             Attributes.NightSight = 1;
             Attributes.ReflectPhysical = 15;
+            Attributes.LowerRegCost = 15;
+            Attributes.LowerManaCost = 8;
+            Attributes.BonusMana = 8;
+            AbsorptionAttributes.CastingFocus = 5;
+            SkillBonuses.SetValues(0, SkillName.Wrestling, 15.0);
             Hue = 0x47F;
         }
 

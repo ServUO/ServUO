@@ -20,6 +20,10 @@ namespace Server.Items
             Attributes.RegenHits = 3;
             Attributes.RegenMana = 3;
             Attributes.DefendChance = 10;
+            Attributes.BonusMana = 8;
+            Attributes.BonusStam = 8;
+            Attributes.AttackChance = 10;
+            SAAbsorptionAttributes.EaterFire = 10;
 
             LootType = LootType.Blessed;
         }

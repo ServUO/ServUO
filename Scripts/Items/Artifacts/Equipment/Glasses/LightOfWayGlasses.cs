@@ -11,6 +11,10 @@ namespace Server.Items
             Attributes.BonusStr = 7;
             Attributes.BonusInt = 5;
             Attributes.WeaponDamage = 30;
+            Attributes.CastSpeed = 1;
+            Attributes.CastRecovery = 2;
+            Attributes.LowerManaCost = 8;
+            SkillBonuses.SetValues(0, SkillName.Chivalry, 15.0);
             Hue = 0x256;
         }
 

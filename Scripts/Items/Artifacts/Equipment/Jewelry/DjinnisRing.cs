@@ -11,6 +11,11 @@ namespace Server.Items
             Attributes.BonusInt = 5;
             Attributes.SpellDamage = 10;
             Attributes.CastSpeed = 2;
+            Attributes.EnhancePotions = 35;
+            Attributes.BonusMana = 8;
+            Attributes.RegenMana = 4;
+            Attributes.Luck = 250;
+            SkillBonuses.SetValues(0, SkillName.EvalInt, 20.0);
         }
 
         public DjinnisRing(Serial serial)
