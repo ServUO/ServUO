@@ -9,14 +9,15 @@ namespace Server.Gumps
         private const int LabelColor32 = 0xFFFFFF;
         private const int LabelHue    = 0x480;
 
-        private const int GumpWidth   = 620;
-        private const int Padding     = 10;
-        private const int HeaderH     = 25;
-        private const int CellW       = 100;
-        private const int CellH       = 25;
-        private const int Cols        = 6;
-        private const int Rows        = 3;
-        private const int GridStartY  = Padding + HeaderH + 5;
+        private const int GumpWidth    = 620;
+        private const int CollapsedW   = 175;
+        private const int Padding      = 10;
+        private const int HeaderH      = 25;
+        private const int CellW        = 100;
+        private const int CellH        = 25;
+        private const int Cols         = 6;
+        private const int Rows         = 3;
+        private const int GridStartY   = Padding + HeaderH + 5;
 
         private static readonly int ExpandedH  = GridStartY + (Rows * CellH) + Padding;
         private static readonly int CollapsedH = Padding + HeaderH + Padding;
@@ -44,23 +45,24 @@ namespace Server.Gumps
 
             AddPage(0);
 
+            int totalW = collapsed ? CollapsedW : GumpWidth;
             int totalH = collapsed ? CollapsedH : ExpandedH;
 
             // Main background
-            AddBackground(0, 0, GumpWidth, totalH, 5054);
+            AddBackground(0, 0, totalW, totalH, 5054);
 
             // Header bar
-            AddImageTiled(Padding, Padding, GumpWidth - Padding * 2, HeaderH, 2624);
-            AddAlphaRegion(Padding, Padding, GumpWidth - Padding * 2, HeaderH);
+            AddImageTiled(Padding, Padding, totalW - Padding * 2, HeaderH, 2624);
+            AddAlphaRegion(Padding, Padding, totalW - Padding * 2, HeaderH);
 
             // Title
-            AddHtml(Padding + 5, Padding + 5, 200, 20,
+            AddHtml(Padding + 5, Padding + 5, 95, 20,
                 Color("GM TOOLBAR", LabelColor32), false, false);
 
-            // Collapse / Expand toggle button
-            int toggleX = GumpWidth - Padding - 60;
+            // Collapse / Expand toggle button — hug title when collapsed, right-align when expanded
+            int toggleX = collapsed ? (Padding + 5 + 95 + 5) : (GumpWidth - Padding - 55);
             AddButton(toggleX, Padding + 4, 4005, 4007, 1, GumpButtonType.Reply, 0);
-            AddHtml(toggleX + 22, Padding + 5, 40, 20,
+            AddHtml(toggleX + 35, Padding + 5, 35, 20,
                 Color(collapsed ? "[+]" : "[-]", LabelColor32), false, false);
 
             if (!collapsed)
@@ -104,7 +106,7 @@ namespace Server.Gumps
             int y = GridStartY + row * CellH;
 
             AddButton(x + 3, y + 4, 4005, 4007, buttonID, GumpButtonType.Reply, 0);
-            AddHtml(x + 25, y + 5, CellW - 28, 20,
+            AddHtml(x + 38, y + 5, CellW - 41, 20,
                 Color(label, LabelColor32), false, false);
         }
 
@@ -154,6 +156,8 @@ namespace Server.Gumps
                 case 18: CommandSystem.Handle(from, prefix + "Save");         break;
                 case 19: CommandSystem.Handle(from, prefix + "BCast");        break;
             }
+
+            from.SendGump(new GMToolbarGump(from, m_Collapsed));
         }
     }
 }
