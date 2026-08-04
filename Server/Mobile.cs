@@ -6514,7 +6514,10 @@ namespace Server
 					{
 						state.Mobile.ProcessDelta();
 
-						p = Packet.Acquire(new NewMobileAnimation(this, type, action, Utility.Random(0, 60)));
+						if (p == null)
+						{
+							p = Packet.Acquire(new NewMobileAnimation(this, type, action, Utility.Random(0, 60)));
+						}
 
 						state.Send(p);
 					}
