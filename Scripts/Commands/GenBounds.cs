@@ -27,7 +27,7 @@ namespace Server.Bounds
 
                 for (int i = 0; i <= ArtData.MaxItemID; ++i)
                 {
-                    ArtData.Measure(Item.GetBitmap(i), out int xMin, out int yMin, out int xMax, out int yMax);
+                    Item.Measure(Item.GetBitmap(i), out int xMin, out int yMin, out int xMax, out int yMax);
 
                     bin.Write((ushort)xMin);
                     bin.Write((ushort)yMin);
