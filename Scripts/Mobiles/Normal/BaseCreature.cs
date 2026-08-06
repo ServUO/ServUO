@@ -4988,14 +4988,14 @@ namespace Server.Mobiles
                     BaseHouse house = BaseHouse.FindHouseAt(this);
                     if (house != null)
                     {
-                        if (Backpack.Items.Count == 0)
+                        if (b.Items.Count == 0)
                             b.Delete();
                         else
                             b.MoveToWorld(house.BanLocation, house.Map);
                     }
                     else
                     {
-                        if (Backpack.Items.Count == 0)
+                        if (b.Items.Count == 0)
                             b.Delete();
                         else
                             b.MoveToWorld(Location, Map);
