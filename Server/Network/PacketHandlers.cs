@@ -1754,9 +1754,9 @@ namespace Server.Network
 
 			int range = pvSrc.ReadByte();
 
-			// Don't let range drop below the minimum standard.
 			range = Math.Max(Core.GlobalUpdateRange, range);
-			
+            range = Math.Min(Core.GlobalMaxUpdateRange, range);
+
             int old = state.UpdateRange;
 
 			if (old == range)

@@ -99,7 +99,7 @@ namespace Server.Spells.Third
                     m.FixedParticles(0x373A, 10, 15, 5018, EffectLayer.Waist);
                     m.PlaySound(0x1EA);
 
-                    AddBless(Caster, length + TimeSpan.FromMilliseconds(50));
+                    AddBless(m, length + TimeSpan.FromMilliseconds(50));
                 }
             }
 

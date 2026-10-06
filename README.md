@@ -26,19 +26,34 @@ Run `_winrelease.bat` for production environment.
 
 #### Other Platforms
 
-Run `_makedebug` for development, attaching a debugger and/or extended output.
+Run `make debug` for development, attaching a debugger and/or extended output.
 
-Run `_makerelease` for production environment.
+Run `make` or `make release` for production environment. Writing release is optinal by default
 
+
+### Linux Dependencies
+
+#### Ubuntu / Debian
+```
+sudo add-apt-repository ppa:dotnet/backports
+sudo apt-get update
+sudo apt-get -y install zlib1g mono-complete dotnet-sdk-10.0 dotnet-runtime-10.0
+```
+
+#### Arch-based
+```
+sudo pacman -S make mono dotnet-sdk dotnet-runtime
+```
 
 ### Summary
 
-1. Starting with the `/Config` directory, find and edit `Server.cfg` to set up the essentials.
+1. Starting with the `/Config` directory, make sure to read the readme first, then find and edit `Server.cfg` to set up the essentials.
 2. Go through the remaining `*.cfg` files to ensure they suit your needs.
-3. For Windows, run `_winrelease.bat` to produce `ServUO.exe`, OSX/Linux users may run `_makerelease`.
+3. For Windows, run `_winrelease.bat` to produce `ServUO.exe`, OSX/Linux users may run `make`.
 4. Run `ServUO`
 5. ???
 6. Profit!
 
 
-    [ServUO]: <https://www.servuo.com>
+    [ServUO]: <https://www.servuo.dev>
+

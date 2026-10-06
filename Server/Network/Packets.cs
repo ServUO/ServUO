@@ -4641,7 +4641,7 @@ m_Stream.Write( (int) renderMode );
 
 				if (m != null)
 				{
-					m_Stream.WriteAsciiFixed(m.Name, 30);
+					m_Stream.WriteAsciiFixed(m.RawName, 30);
 					m_Stream.Fill(30); // password
 				}
 				else
@@ -4747,7 +4747,7 @@ m_Stream.Write( (int) renderMode );
 			{
 				if (a[i] != null)
 				{
-					m_Stream.WriteAsciiFixed(a[i].Name, 30);
+					m_Stream.WriteAsciiFixed(a[i].RawName, 30);
 					m_Stream.Fill(30); // password
 				}
 				else
@@ -4864,7 +4864,7 @@ m_Stream.Write( (int) renderMode );
 			{
 				if (a[i] != null)
 				{
-					m_Stream.WriteAsciiFixed(a[i].Name, 30);
+					m_Stream.WriteAsciiFixed(a[i].RawName, 30);
 					m_Stream.Fill(30); // password
 				}
 				else

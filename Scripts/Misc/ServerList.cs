@@ -36,8 +36,9 @@ namespace Server.Misc
                 var ipep = (IPEndPoint)s.LocalEndPoint;
 
                 var address = ipep.Address;
+                var addressClient = ((IPEndPoint)s.RemoteEndPoint).Address;
 
-                if (!IPAddress.IsLoopback(address) || IsPrivateNetwork(address))
+                if (!IPAddress.IsLoopback(addressClient) && !IsPrivateNetwork(addressClient))
                 {
                     address = Address;
                 }

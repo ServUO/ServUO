@@ -8,7 +8,7 @@
 		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
 		<UseVSHostingProcess>False</UseVSHostingProcess>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-		<UseWindowsForms>True</UseWindowsForms>
+		<UseWindowsForms>false</UseWindowsForms>
 		<Platforms>x64</Platforms>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
